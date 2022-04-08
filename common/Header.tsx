@@ -30,7 +30,7 @@ export const Header = () => {
 
   return (
     <div className="flex h-20 flex-row-reverse text-white">
-      <div className="relative flex align-middle pr-8 mt-5">       
+      <div className="relative flex align-middle pr-8 my-auto">       
         {wallet.connected ? (
           <div
             className="flex cursor-pointer"
@@ -41,7 +41,7 @@ export const Header = () => {
               address={wallet.publicKey || undefined}
               height="40px"
               width="40px"
-              dark={true}
+              dark={true}              
               placeholder={
                 <div
                   style={{
@@ -51,6 +51,7 @@ export const Header = () => {
                     alignItems: 'center',
                     gap: '8px',
                     cursor: 'pointer',
+                    marginRight: '5px'
                   }}
                 >
                   <div style={{ height: '40px', width: '40px' }}>
@@ -60,7 +61,7 @@ export const Header = () => {
               }
             />
             <div>
-              <div className="text-white mt-4">
+              <div className="text-white ">
                 <DisplayAddress
                   style={{ pointerEvents: 'none' }}
                   connection={ctx.connection}

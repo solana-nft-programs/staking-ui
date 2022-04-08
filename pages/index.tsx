@@ -1,10 +1,22 @@
+import { useWallet } from '@solana/wallet-adapter-react'
 import { Header } from 'common/Header'
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import Image from 'next/image'
+import { useUserTokenData } from 'providers/TokenDataProvider'
+import { useEffect } from 'react'
 import styles from '../styles/Home.module.css'
 
-const Home: NextPage = () => {
+function Home() {
+  const { setAddress, tokenDatas, loaded, refreshing } = useUserTokenData()
+  const wallet = useWallet()
+
+  useEffect(() => {
+    if (wallet && wallet.connected && wallet.publicKey) {
+      setAddress(wallet.publicKey.toBase58())
+    }
+  }, [wallet.publicKey])
+
   return (
     <div>
       <Head>
@@ -19,6 +31,21 @@ const Home: NextPage = () => {
           <div className="my-2 grid grid-cols-2 gap-4">
             <div className="rounded-md bg-white bg-opacity-5 p-10 text-gray-200">
               <p className="text-lg">Select your NFTs</p>
+              {wallet.connected && (
+                <div className="mt-3 grid grid-cols-1 rounded-md bg-white bg-opacity-5 p-5">
+                  {loaded ? (
+                    <div className="grid grid-cols-1 gap-1 md:grid-cols-3 md:gap-2">
+                      {tokenDatas.map((td) => (
+                        <div className="">
+                          <img src={td.metadata.data.image} />
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <p>Loading your NFTs...</p>
+                  )}
+                </div>
+              )}
             </div>
             <div className="rounded-md bg-white bg-opacity-5 p-10 text-gray-200">
               <p className="text-lg">View Staked NFTs</p>
