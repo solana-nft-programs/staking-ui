@@ -1,5 +1,5 @@
-import type { TokenData } from 'api/api'
 import { getTokenAccountsWithData } from 'api/api'
+import { TokenData } from 'api/types'
 import type { ReactChild } from 'react'
 import React, { useCallback, useContext, useEffect, useState } from 'react'
 

@@ -6,11 +6,8 @@ import {
   tokenManager,
   useInvalidator,
 } from '@cardinal/token-manager/dist/cjs/programs'
-import type { PaidClaimApproverData } from '@cardinal/token-manager/dist/cjs/programs/claimApprover'
-import type { TimeInvalidatorData } from '@cardinal/token-manager/dist/cjs/programs/timeInvalidator'
 import type { TokenManagerData } from '@cardinal/token-manager/dist/cjs/programs/tokenManager'
 import { tryTokenManagerAddressFromMint } from '@cardinal/token-manager/dist/cjs/programs/tokenManager/pda'
-import type { UseInvalidatorData } from '@cardinal/token-manager/dist/cjs/programs/useInvalidator'
 import * as metaplex from '@metaplex-foundation/mpl-token-metadata'
 import {
   Edition,
@@ -20,14 +17,9 @@ import {
 } from '@metaplex-foundation/mpl-token-metadata'
 import * as anchor from '@project-serum/anchor'
 import * as spl from '@solana/spl-token'
-import type {
-  AccountInfo,
-  Connection,
-  ParsedAccountData} from '@solana/web3.js';
-import {
-  PublicKey,
-  SystemProgram,
-} from '@solana/web3.js'
+import type { Connection, ParsedAccountData } from '@solana/web3.js'
+import { PublicKey, SystemProgram } from '@solana/web3.js'
+import { TokenData } from './types'
 
 export async function findAssociatedTokenAddress(
   walletAddress: PublicKey,
@@ -43,24 +35,6 @@ export async function findAssociatedTokenAddress(
       spl.ASSOCIATED_TOKEN_PROGRAM_ID
     )
   )[0]
-}
-
-export type TokenData = {
-  tokenAccount?: {
-    pubkey: PublicKey
-    account: AccountInfo<ParsedAccountData>
-  }
-  tokenManager?: AccountData<TokenManagerData>
-  metaplexData?: { pubkey: PublicKey; data: metaplex.MetadataData } | null
-  editionData?: {
-    pubkey: PublicKey
-    data: metaplex.EditionData | metaplex.MasterEditionData
-  } | null
-  metadata?: any
-  claimApprover?: AccountData<PaidClaimApproverData> | null
-  useInvalidator?: AccountData<UseInvalidatorData> | null
-  timeInvalidator?: AccountData<TimeInvalidatorData> | null
-  recipientTokenAccount?: spl.AccountInfo | null
 }
 
 export async function getTokenAccountsWithData(
@@ -108,7 +82,7 @@ export async function getTokenAccountsWithData(
       let timeInvalidatorId = null
       let useInvalidatorId = null
       if (tokenManagerId) {
-        [[timeInvalidatorId], [useInvalidatorId]] = await Promise.all([
+        ;[[timeInvalidatorId], [useInvalidatorId]] = await Promise.all([
           timeInvalidator.pda.findTimeInvalidatorAddress(tokenManagerId),
           useInvalidator.pda.findUseInvalidatorAddress(tokenManagerId),
         ])
