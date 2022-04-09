@@ -1,20 +1,23 @@
-import { createStakePool, executeTransaction } from '@cardinal/staking'
+import {
+  createStakePool,
+  executeTransaction,
+  stakePool,
+} from '@cardinal/staking'
+import { StakePoolData } from '@cardinal/staking/dist/cjs/programs/stakePool'
+import { getStakePool } from '@cardinal/staking/dist/cjs/programs/stakePool/accounts'
+import { AccountData } from '@cardinal/token-manager'
 import { Wallet } from '@metaplex/js'
-import { useConnection, useWallet } from '@solana/wallet-adapter-react'
+import { useWallet } from '@solana/wallet-adapter-react'
 import { PublicKey } from '@solana/web3.js'
 import { Header } from 'common/Header'
-import type { NextPage } from 'next'
 import Head from 'next/head'
-import Image from 'next/image'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 import { useUserTokenData } from 'providers/TokenDataProvider'
 import { useState } from 'react'
 import { useEffect } from 'react'
-import { listenerCount } from 'stream'
-import styles from '../styles/Home.module.css'
 
 function Admin() {
-  const { setAddress, address} = useUserTokenData()
+  const { setAddress, address } = useUserTokenData()
   const { connection } = useEnvironmentCtx()
   const wallet = useWallet()
 
@@ -22,6 +25,8 @@ function Admin() {
   const [collectionAddresses, setCollectionAddresses] = useState<string>('')
   const [creatorAddresses, setCreatorAddresses] = useState<string>('')
   const [authorizeNFT, setAuthorizeNFT] = useState<boolean>(false)
+  const [loading, setLoading] = useState<boolean>(false)
+  const [stakePool, setStakePool] = useState<AccountData<StakePoolData>>()
 
   useEffect(() => {
     if (wallet && wallet.connected && wallet.publicKey) {
@@ -54,12 +59,18 @@ function Admin() {
         throw 'Wallet not connected'
       }
 
-      const collectionPublicKeys = collectionAddresses.length > 0 ? collectionAddresses
-        .split(',')
-        .map((address) => new PublicKey(address.trim())) : []
-      const creatorPublicKeys = creatorAddresses.length > 0 ? creatorAddresses
-        .split(',')
-        .map((address) => new PublicKey(address.trim())) : []
+      const collectionPublicKeys =
+        collectionAddresses.length > 0
+          ? collectionAddresses
+              .split(',')
+              .map((address) => new PublicKey(address.trim()))
+          : []
+      const creatorPublicKeys =
+        creatorAddresses.length > 0
+          ? creatorAddresses
+              .split(',')
+              .map((address) => new PublicKey(address.trim()))
+          : []
 
       const stakePoolParams = {
         requiresCollections:
@@ -70,23 +81,27 @@ function Admin() {
         overlayText: overlayText.length > 0 ? overlayText : undefined,
       }
 
-      const [transaction, stakePool] = await createStakePool(
+      const [transaction, stakePoolPK] = await createStakePool(
         connection,
         wallet as Wallet,
         stakePoolParams
-      )
+      )      
 
       await executeTransaction(connection, wallet as Wallet, transaction, {
-        silent: false,        
+        silent: false,
         signers: [],
       })
+      
+      const stakePoolData = await getStakePool(connection, stakePoolPK)
+      setStakePool(stakePoolData)
 
-      alert('Stake pool created! Stake Pool Address: ' + stakePool.toString())
-
+      alert(
+        'Stake pool created! Stake Pool ID: ' +
+        stakePoolData.parsed.identifier.toString()
+      )
     } catch (e) {
       alert(`Error creating stake pool: ${e}`)
     } finally {
-      
     }
   }
 
@@ -107,6 +122,15 @@ function Admin() {
               <p className="mt-1 mb-2 text-sm">
                 All parameters for staking pool are optional
               </p>
+              {stakePool ? (
+                <div className="bg-green-600 bg-opacity-20 p-4">
+                  <p>Successfully created Stake Pool. </p>
+                  <p className="mt-2">
+                    <b>Address:</b> {stakePool.pubkey.toString()}. <br />{' '}
+                    <b>Identifier:</b> {stakePool.parsed.identifier.toString()}
+                  </p>
+                </div>
+              ) : null}
               <form className="w-full max-w-lg">
                 <div className="-mx-3 flex flex-wrap">
                   <div className="mb-6 mt-4 w-full px-3 md:mb-0">
@@ -195,7 +219,11 @@ function Admin() {
                     </span>
                   </div>
                 </div>
-                <button type="button" className="mt-4 rounded-md bg-blue-700 px-4 py-2" onClick={() => handleCreation()}>
+                <button
+                  type="button"
+                  className="mt-4 rounded-md bg-blue-700 px-4 py-2"
+                  onClick={() => handleCreation()}
+                >
                   Create Pool
                 </button>
               </form>
