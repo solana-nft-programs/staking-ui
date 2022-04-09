@@ -29,19 +29,17 @@ export const Header = () => {
     : ''
 
   return (
-    <div className="flex h-20 flex-row-reverse text-white">
-      <div className="relative flex align-middle pr-8 my-auto">       
+    <div className="flex h-20 justify-between text-white">
+      <div className="my-auto text-xl font-semibold">Cardinal Staking UI</div>
+      <div className="relative my-auto flex pr-8 align-middle">
         {wallet.connected ? (
-          <div
-            className="flex cursor-pointer"
-            onClick={() => setVisible(true)}
-          >
+          <div className="flex cursor-pointer" onClick={() => setVisible(true)}>
             <AddressImage
               connection={ctx.connection}
               address={wallet.publicKey || undefined}
               height="40px"
               width="40px"
-              dark={true}              
+              dark={true}
               placeholder={
                 <div
                   style={{
@@ -51,7 +49,7 @@ export const Header = () => {
                     alignItems: 'center',
                     gap: '8px',
                     cursor: 'pointer',
-                    marginRight: '5px'
+                    marginRight: '5px',
                   }}
                 >
                   <div style={{ height: '40px', width: '40px' }}>
@@ -83,7 +81,7 @@ export const Header = () => {
               height: '38px',
               border: 'none',
               background: 'none',
-              backgroundColor: 'none',              
+              backgroundColor: 'none',
             }}
           />
         )}

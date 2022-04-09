@@ -181,6 +181,28 @@
     ts-mocha "^8.0.0"
     typescript "^4.5.5"
 
+"@cardinal/staking@^1.0.3":
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/@cardinal/staking/-/staking-1.0.3.tgz#d7491eb994aef92c4cf55593820342fea2d42fe1"
+  integrity sha512-rrsAqtdwy/Byd/F9Xz4t95Btygwx0WN6evLEp3mRObozIqR+jiQl7i6grdzECypTu/w8KHn62aIfFk8q0KOBTQ==
+  dependencies:
+    "@cardinal/common" "^1.0.10"
+    "@cardinal/token-manager" "^0.2.22"
+    "@metaplex-foundation/mpl-token-metadata" "^1.2.5"
+
+"@cardinal/token-manager@^0.2.22":
+  version "0.2.23"
+  resolved "https://registry.yarnpkg.com/@cardinal/token-manager/-/token-manager-0.2.23.tgz#b55ca611b3d25116ac0da0258cb122253955cd4b"
+  integrity sha512-MTWvD+CCmOXpaM9oGCgvxEYaoLk/0yGDYiQZledZYY1aT6MWhYsw8bqRMH4qTUM6aKqm/RbqQP+XusSjeMa9vw==
+  dependencies:
+    "@metaplex-foundation/mpl-token-metadata" "^1.2.3"
+    "@solana/buffer-layout" "^4.0.0"
+    "@solana/spl-token" "^0.1.8"
+    borsh "^0.7.0"
+    bs58 "^4.0.1"
+    tiny-invariant "^1.2.0"
+    tslib "^2.3.1"
+
 "@cardinal/token-manager@^1.0.3":
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/@cardinal/token-manager/-/token-manager-1.0.3.tgz#698e25e688521f9faf6e219c363d93eaa2509529"
