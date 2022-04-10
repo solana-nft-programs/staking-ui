@@ -1,5 +1,5 @@
 import { getBatchedMultipleAccounts as getBatchedMultipleAccounts } from '@cardinal/common'
-import { stakePool } from '@cardinal/staking'
+import { getMintSupply, stakePool } from '@cardinal/staking'
 import { findStakeEntryId } from '@cardinal/staking/dist/cjs/programs/stakePool/pda'
 import type { AccountData } from '@cardinal/token-manager'
 import {
@@ -42,7 +42,6 @@ export async function findAssociatedTokenAddress(
 
 export async function getTokenAccountsWithData(
   connection: Connection,
-  wallet: PublicKey,
   addressId: string
 ): Promise<TokenData[]> {
   const allTokenAccounts = await connection.getParsedTokenAccountsByOwner(
@@ -97,9 +96,9 @@ export async function getTokenAccountsWithData(
       if (STAKE_POOL_ID) {
         ;[stakeEntryId] = await findStakeEntryId(
           connection,
-          wallet,
+          new PublicKey(addressId),
           STAKE_POOL_ID,
-          tokenAccount.account.data.parsed.info.mint
+          new PublicKey(tokenAccount.account.data.parsed.info.mint)
         )
       }
 

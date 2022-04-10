@@ -1,3 +1,4 @@
+import { useWallet } from '@solana/wallet-adapter-react'
 import { getTokenAccountsWithData } from 'api/api'
 import { TokenData } from 'api/types'
 import type { ReactChild } from 'react'
