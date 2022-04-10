@@ -10,6 +10,8 @@ import styles from '../styles/Home.module.css'
 function Home() {
   const { setAddress, tokenDatas, loaded, refreshing } = useUserTokenData()
   const wallet = useWallet()
+  const stakePoolAddress = "5VNgqi1mZBD2vx5CRWoUvaq4yeySygDuXUf6G97LmqtP"
+  const stakePoolIdentifier = "31"
 
   useEffect(() => {
     if (wallet && wallet.connected && wallet.publicKey) {

@@ -234,7 +234,7 @@ function Admin() {
                 <div className="bg-green-600 bg-opacity-20 p-4">
                   <p>Successfully created Stake Pool. </p>
                   <p className="mt-2">
-                    <b>Address:</b> {stakePool.pubkey.toString()}. <br />{' '}
+                    <b>Address:</b> {stakePool.pubkey.toString()} <br />{' '}
                     <b>Identifier:</b> {stakePool.parsed.identifier.toString()}
                   </p>
                 </div>
