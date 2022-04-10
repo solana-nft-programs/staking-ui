@@ -1,15 +1,39 @@
+import {
+  createStakePool,
+  executeTransaction,
+  stakePool,
+} from '@cardinal/staking'
+import { StakePoolData } from '@cardinal/staking/dist/cjs/programs/stakePool'
+import { getStakePool } from '@cardinal/staking/dist/cjs/programs/stakePool/accounts'
+import { AccountData } from '@cardinal/token-manager'
+import { Wallet } from '@metaplex/js'
 import { useWallet } from '@solana/wallet-adapter-react'
+import { PublicKey } from '@solana/web3.js'
 import { Header } from 'common/Header'
-import type { NextPage } from 'next'
 import Head from 'next/head'
-import Image from 'next/image'
+import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 import { useUserTokenData } from 'providers/TokenDataProvider'
+import { useState } from 'react'
 import { useEffect } from 'react'
-import styles from '../styles/Home.module.css'
+import Select from 'react-select'
 
 function Admin() {
-  const { setAddress, tokenDatas, loaded, refreshing } = useUserTokenData()
+  const { setAddress, address } = useUserTokenData()
+  const { connection } = useEnvironmentCtx()
   const wallet = useWallet()
+
+  const [overlayText, setOverlayText] = useState('')
+  const [collectionAddresses, setCollectionAddresses] = useState<string>('')
+  const [creatorAddresses, setCreatorAddresses] = useState<string>('')
+  const [authorizeNFT, setAuthorizeNFT] = useState<boolean>(false)
+  const [rewardAmount, setRewardAmount] = useState<string>('')
+  const [rewardDurationSeconds, setRewardDurationSeconds] = useState<string>('')
+  const [rewardMintAddress, setRewardMintAddress] = useState<string>('')
+  const [rewardDistribution, setRewardDistribution] = useState<string>('')
+  const [rewardMintSupply, setRewardMintSupply] = useState<string>('')
+
+  const [loading, setLoading] = useState<boolean>(false)
+  const [stakePool, setStakePool] = useState<AccountData<StakePoolData>>()
 
   useEffect(() => {
     if (wallet && wallet.connected && wallet.publicKey) {
@@ -19,26 +43,109 @@ function Admin() {
 
   const FormFieldTitleInput = (props: {
     title: string
-    htmlFor: string
     description: string
-    placeholder: string
   }) => (
     <>
-      <label
-        className="mb-2 block inline-block text-xs font-bold uppercase tracking-wide text-gray-200"
-        htmlFor={props.htmlFor}
-      >
+      <label className="mb-2 block text-xs font-bold uppercase tracking-wide text-gray-200">
         {props.title}
       </label>
       <p className="mb-2 text-sm italic text-gray-300">{props.description}</p>
-      <input
-        className="mb-3 block w-full appearance-none rounded border border-gray-500 bg-gray-700 py-3 px-4 leading-tight text-gray-200 focus:bg-gray-800 focus:outline-none"
-        id={props.htmlFor}
-        type="text"
-        placeholder={props.placeholder}
-      />
     </>
   )
+
+  const handleCreation = async () => {
+    try {
+      if (!address) {
+        throw 'Wallet not connected'
+      }
+      if (!wallet.wallet) {
+        throw 'Wallet not connected'
+      }
+
+      const collectionPublicKeys =
+        collectionAddresses.length > 0
+          ? collectionAddresses
+              .split(',')
+              .map((address) => new PublicKey(address.trim()))
+          : []
+      const creatorPublicKeys =
+        creatorAddresses.length > 0
+          ? creatorAddresses
+              .split(',')
+              .map((address) => new PublicKey(address.trim()))
+          : []
+
+      const stakePoolParams = {
+        requiresCollections:
+          collectionPublicKeys.length > 0 ? collectionPublicKeys : undefined,
+        requiresCreators:
+          creatorPublicKeys.length > 0 ? creatorPublicKeys : undefined,
+        requiresAuthorization: authorizeNFT,
+        overlayText: overlayText.length > 0 ? overlayText : undefined,
+      }
+
+      const [transaction, stakePoolPK] = await createStakePool(
+        connection,
+        wallet as Wallet,
+        stakePoolParams
+      )
+
+      await executeTransaction(connection, wallet as Wallet, transaction, {
+        silent: false,
+        signers: [],
+      })
+
+      const stakePoolData = await getStakePool(connection, stakePoolPK)
+      setStakePool(stakePoolData)
+
+      alert(
+        'Stake pool created! Stake Pool ID: ' +
+          stakePoolData.parsed.identifier.toString()
+      )
+    } catch (e) {
+      alert(`Error creating stake pool: ${e}`)
+    } finally {
+    }
+  }
+
+  const customStyles = {
+    control: (base: {}) => ({
+      ...base,
+      background: 'rgb(55 65 81)',
+      borderColor: 'rgb(107 114 128)',
+      color: '#fff',
+    }),
+    Input: (base: {}) => ({
+      ...base,
+      color: 'white',
+    }),
+    menu: (base: {}) => ({
+      ...base,
+      background: 'rgb(55 65 81)',
+      '&:hover': {
+        background: 'rgb(55 65 81)',
+      },
+      '&:focus': {
+        background: 'rgb(75 85 99) !important',
+      },
+      borderRadius: 0,
+      marginTop: 0,
+      color: 'rgb(20 20 20)',
+    }),
+    option: (base: {}) => ({
+      ...base,
+      '&:hover': {
+        background: 'rgb(75 85 99)',
+      },
+      '&:focus': {
+        background: 'rgb(75 85 99) !important',
+      },
+    }),
+    singleValue: (provided: {}) => ({
+      ...provided,
+      color: 'white',
+    }),
+  }
 
   return (
     <div>
@@ -57,14 +164,30 @@ function Admin() {
               <p className="mt-1 mb-2 text-sm">
                 All parameters for staking pool are optional
               </p>
-              <form className="w-full max-w-lg">                
+              {stakePool ? (
+                <div className="bg-green-600 bg-opacity-20 p-4">
+                  <p>Successfully created Stake Pool. </p>
+                  <p className="mt-2">
+                    <b>Address:</b> {stakePool.pubkey.toString()}. <br />{' '}
+                    <b>Identifier:</b> {stakePool.parsed.identifier.toString()}
+                  </p>
+                </div>
+              ) : null}
+              <form className="w-full max-w-lg">
                 <div className="-mx-3 flex flex-wrap">
                   <div className="mb-6 mt-4 w-full px-3 md:mb-0">
                     <FormFieldTitleInput
                       title={'Overlay Text'}
-                      htmlFor={'overlay-text'}
                       description={'Text to display over the rental receipt'}
+                    />
+                    <input
+                      className="mb-3 block w-full appearance-none rounded border border-gray-500 bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800 focus:outline-none"
+                      type="text"
                       placeholder={'RENTED'}
+                      value={overlayText}
+                      onChange={(e) => {
+                        setOverlayText(e.target.value)
+                      }}
                     />
                   </div>
                 </div>
@@ -72,11 +195,18 @@ function Admin() {
                   <div className="mb-6 mt-4 w-full px-3 md:mb-0">
                     <FormFieldTitleInput
                       title={'Collection Addresses []'}
-                      htmlFor={'collection-addresses'}
                       description={
-                        'Only allow NFTs with these collection addresses'
+                        'Only allow NFTs with these collection addresses (separated by commas)'
                       }
+                    />
+                    <input
+                      className="mb-3 block w-full appearance-none rounded border border-gray-500 bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800 focus:outline-none"
+                      type="text"
                       placeholder={'Cmwy..., A3fD...'}
+                      value={collectionAddresses}
+                      onChange={(e) => {
+                        setCollectionAddresses(e.target.value)
+                      }}
                     />
                   </div>
                 </div>
@@ -84,11 +214,18 @@ function Admin() {
                   <div className="mb-6 mt-4 w-full px-3 md:mb-0">
                     <FormFieldTitleInput
                       title={'Creator Addresses []'}
-                      htmlFor={'creator-addresses'}
                       description={
-                        'Only allow NFTs with these creator addresses'
+                        'Only allow NFTs with these creator addresses (separated by commas)'
                       }
+                    />
+                    <input
+                      className="mb-3 block w-full appearance-none rounded border border-gray-500 bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800 focus:outline-none"
+                      type="text"
                       placeholder={'Cmwy..., A3fD...'}
+                      value={creatorAddresses}
+                      onChange={(e) => {
+                        setCreatorAddresses(e.target.value)
+                      }}
                     />
                   </div>
                 </div>
@@ -101,17 +238,118 @@ function Admin() {
                       Authorize NFTs
                     </label>
                     <p className="mb-2 text-sm italic text-gray-300">
-                      If selected, NFTs must be authorized on-chain before entering the pool  
+                      If selected, NFTs must be authorized on-chain before
+                      entering the pool
                     </p>
                     <input
                       className="mb-3"
                       id="require-authorization"
                       type="checkbox"
-                      
-                    /> <span className="text-sm my-auto">Require Authorization</span>
+                      checked={authorizeNFT}
+                      onChange={(e) => {
+                        setAuthorizeNFT(e.target.checked)
+                      }}
+                    />{' '}
+                    <span className="my-auto text-sm">
+                      Require Authorization
+                    </span>
                   </div>
                 </div>
-                <button className="mt-4 rounded-md bg-blue-700 px-4 py-2">
+                <div>
+                  <div className="-mx-3 flex flex-wrap bg-white bg-opacity-5 pb-2">
+                    <div className="mb-6 mt-4 w-1/2 px-3 md:mb-0">
+                      <FormFieldTitleInput
+                        title={'Reward Amount'}
+                        description={
+                          'Amount of token to be paid to the staked NFT'
+                        }
+                      />
+                      <input
+                        className="mb-3 block w-full appearance-none rounded border border-gray-500 bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800 focus:outline-none"
+                        type="text"
+                        placeholder={'10'}
+                        value={rewardAmount}
+                        onChange={(e) => {
+                          setRewardAmount(e.target.value)
+                        }}
+                      />
+                    </div>
+                    <div className="mb-6 mt-4 w-1/2 px-3 md:mb-0">
+                      <FormFieldTitleInput
+                        title={'Reward Duration Seconds'}
+                        description={
+                          'Staked duration needed to receive reward amount'
+                        }
+                      />
+                      <input
+                        className="mb-3 block w-full appearance-none rounded border border-gray-500 bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800 focus:outline-none"
+                        type="text"
+                        placeholder={'60'}
+                        value={rewardDurationSeconds}
+                        onChange={(e) => {
+                          setRewardDurationSeconds(e.target.value)
+                        }}
+                      />
+                    </div>
+                    <div className="mb-6 mt-4 w-full px-3 md:mb-0">
+                      <FormFieldTitleInput
+                        title={'Reward Mint Address'}
+                        description={'The mint address of the reward token'}
+                      />
+                      <input
+                        className="mb-3 block w-full appearance-none rounded border border-gray-500 bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800 focus:outline-none"
+                        type="text"
+                        placeholder={'Cmwy...g4ds'}
+                        value={rewardMintAddress}
+                        onChange={(e) => {
+                          setRewardMintAddress(e.target.value)
+                        }}
+                      />
+                    </div>
+                    <div className="mb-6 mt-4 w-full px-3 md:mb-0">
+                      <FormFieldTitleInput
+                        title={'Reward Distribution'}
+                        description={
+                          'Mint tokens from the mint address or transfer tokens to the stake pool.'
+                        }
+                      />
+                      <Select
+                        styles={customStyles}
+                        className="mb-3"
+                        isSearchable={false}
+                        onChange={(option) =>
+                          setRewardDistribution(option!.value)
+                        }
+                        options={[
+                          { value: '0', label: 'Mint' },
+                          { value: '1', label: 'Transfer' },
+                        ]}
+                      />
+                    </div>
+                    {rewardDistribution === '1' && (
+                      <div className="mb-6 mt-4 w-full px-3 md:mb-0">
+                        <FormFieldTitleInput
+                          title={'Reward Transfer Amount'}
+                          description={'How many tokens to transfer to the stake pool for future distribution.'}
+                        />
+                        <input
+                          className="mb-3 block w-full appearance-none rounded border border-gray-500 bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800 focus:outline-none"
+                          type="text"
+                          placeholder={'1000000'}
+                          value={rewardMintSupply}
+                          onChange={(e) => {
+                            setRewardMintSupply(e.target.value)
+                          }}
+                        />
+                      </div>
+                    )}
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  className="mt-4 rounded-md bg-blue-700 px-4 py-2"
+                  onClick={() => handleCreation()}
+                >
                   Create Pool
                 </button>
               </form>
