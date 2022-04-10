@@ -1,20 +1,26 @@
 import {
   createStakePool,
+  createStakePoolAndRewardDistributor,
   executeTransaction,
   stakePool,
 } from '@cardinal/staking'
+import { RewardDistributorKind } from '@cardinal/staking/dist/cjs/programs/rewardDistributor'
+import { withInitRewardDistributor } from '@cardinal/staking/dist/cjs/programs/rewardDistributor/transaction'
 import { StakePoolData } from '@cardinal/staking/dist/cjs/programs/stakePool'
 import { getStakePool } from '@cardinal/staking/dist/cjs/programs/stakePool/accounts'
+import { withInitStakePool } from '@cardinal/staking/dist/cjs/programs/stakePool/transaction'
 import { AccountData } from '@cardinal/token-manager'
 import { Wallet } from '@metaplex/js'
+import { BN } from '@project-serum/anchor'
 import { useWallet } from '@solana/wallet-adapter-react'
-import { PublicKey } from '@solana/web3.js'
+import { PublicKey, Transaction } from '@solana/web3.js'
 import { Header } from 'common/Header'
 import Head from 'next/head'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 import { useUserTokenData } from 'providers/TokenDataProvider'
 import { useState } from 'react'
 import { useEffect } from 'react'
+import { TailSpin } from 'react-loader-spinner'
 import Select from 'react-select'
 
 function Admin() {
@@ -29,7 +35,7 @@ function Admin() {
   const [rewardAmount, setRewardAmount] = useState<string>('')
   const [rewardDurationSeconds, setRewardDurationSeconds] = useState<string>('')
   const [rewardMintAddress, setRewardMintAddress] = useState<string>('')
-  const [rewardDistribution, setRewardDistribution] = useState<string>('')
+  const [rewardDistribution, setRewardDistribution] = useState<string>('0')
   const [rewardMintSupply, setRewardMintSupply] = useState<string>('')
 
   const [loading, setLoading] = useState<boolean>(false)
@@ -54,12 +60,32 @@ function Admin() {
   )
 
   const handleCreation = async () => {
+    setStakePool(undefined)
+    setLoading(true)
     try {
       if (!address) {
         throw 'Wallet not connected'
       }
       if (!wallet.wallet) {
         throw 'Wallet not connected'
+      }
+      if (
+        (!rewardAmount && rewardDurationSeconds) ||
+        (rewardAmount && !rewardDurationSeconds)
+      ) {
+        throw 'Both reward amount and reward duration must be specified'
+      }
+      if ((rewardAmount || rewardMintAddress) && rewardDistribution === '0') {
+        throw 'Reward distribution must be specified (cannot be none)'
+      }
+      if (rewardDistribution === '1' && !rewardMintSupply) {
+        throw 'Reward mint supply must be specified (cannot be none)'
+      }
+      if (
+        (rewardAmount || rewardMintAddress || rewardDistribution !== '0') &&
+        (!rewardAmount || !rewardMintAddress)
+      ) {
+        throw 'Please fill out all the fields for reward distribution paramters'
       }
 
       const collectionPublicKeys =
@@ -74,6 +100,24 @@ function Admin() {
               .split(',')
               .map((address) => new PublicKey(address.trim()))
           : []
+      const rewardMintPublicKey = rewardMintAddress
+        ? new PublicKey(rewardMintAddress.trim())
+        : undefined
+      const rewardAmountBN = rewardAmount
+        ? new BN(parseFloat(rewardAmount))
+        : undefined
+      const rewardDurationSecondsBN = rewardDurationSeconds
+        ? new BN(parseInt(rewardDurationSeconds))
+        : undefined
+      const rewardDistributorKind =
+        rewardDistribution === '1'
+          ? RewardDistributorKind.Mint
+          : rewardDistribution === '2'
+          ? RewardDistributorKind.Treasury
+          : undefined
+      const supply = rewardMintSupply
+        ? new BN(parseFloat(rewardMintSupply))
+        : undefined
 
       const stakePoolParams = {
         requiresCollections:
@@ -84,11 +128,32 @@ function Admin() {
         overlayText: overlayText.length > 0 ? overlayText : undefined,
       }
 
-      const [transaction, stakePoolPK] = await createStakePool(
+      let transaction = new Transaction()
+
+      const [, stakePoolPK] = await withInitStakePool(
+        transaction,
         connection,
         wallet as Wallet,
         stakePoolParams
       )
+
+      if (rewardDistributorKind) {
+        const rewardDistributionParams = {
+          stakePoolId: stakePoolPK,
+          rewardMintId: rewardMintPublicKey!,
+          rewardAmount: rewardAmountBN,
+          rewardDurationSeconds: rewardDurationSecondsBN,
+          kind: rewardDistributorKind,
+          supply: supply,
+        }
+
+        await withInitRewardDistributor(
+          transaction,
+          connection,
+          wallet as Wallet,
+          rewardDistributionParams
+        )
+      }
 
       await executeTransaction(connection, wallet as Wallet, transaction, {
         silent: false,
@@ -105,6 +170,7 @@ function Admin() {
     } catch (e) {
       alert(`Error creating stake pool: ${e}`)
     } finally {
+      setLoading(false)
     }
   }
 
@@ -256,56 +322,7 @@ function Admin() {
                   </div>
                 </div>
                 <div>
-                  <div className="-mx-3 flex flex-wrap bg-white bg-opacity-5 pb-2">
-                    <div className="mb-6 mt-4 w-1/2 px-3 md:mb-0">
-                      <FormFieldTitleInput
-                        title={'Reward Amount'}
-                        description={
-                          'Amount of token to be paid to the staked NFT'
-                        }
-                      />
-                      <input
-                        className="mb-3 block w-full appearance-none rounded border border-gray-500 bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800 focus:outline-none"
-                        type="text"
-                        placeholder={'10'}
-                        value={rewardAmount}
-                        onChange={(e) => {
-                          setRewardAmount(e.target.value)
-                        }}
-                      />
-                    </div>
-                    <div className="mb-6 mt-4 w-1/2 px-3 md:mb-0">
-                      <FormFieldTitleInput
-                        title={'Reward Duration Seconds'}
-                        description={
-                          'Staked duration needed to receive reward amount'
-                        }
-                      />
-                      <input
-                        className="mb-3 block w-full appearance-none rounded border border-gray-500 bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800 focus:outline-none"
-                        type="text"
-                        placeholder={'60'}
-                        value={rewardDurationSeconds}
-                        onChange={(e) => {
-                          setRewardDurationSeconds(e.target.value)
-                        }}
-                      />
-                    </div>
-                    <div className="mb-6 mt-4 w-full px-3 md:mb-0">
-                      <FormFieldTitleInput
-                        title={'Reward Mint Address'}
-                        description={'The mint address of the reward token'}
-                      />
-                      <input
-                        className="mb-3 block w-full appearance-none rounded border border-gray-500 bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800 focus:outline-none"
-                        type="text"
-                        placeholder={'Cmwy...g4ds'}
-                        value={rewardMintAddress}
-                        onChange={(e) => {
-                          setRewardMintAddress(e.target.value)
-                        }}
-                      />
-                    </div>
+                  <div className="-mx-3 flex flex-wrap bg-white bg-opacity-5 rounded-md pb-2">
                     <div className="mb-6 mt-4 w-full px-3 md:mb-0">
                       <FormFieldTitleInput
                         title={'Reward Distribution'}
@@ -320,37 +337,102 @@ function Admin() {
                         onChange={(option) =>
                           setRewardDistribution(option!.value)
                         }
+                        defaultValue={{ label: 'None', value: '0' }}
                         options={[
-                          { value: '0', label: 'Mint' },
-                          { value: '1', label: 'Transfer' },
+                          { value: '0', label: 'None' },
+                          { value: '1', label: 'Mint' },
+                          { value: '2', label: 'Transfer' },
                         ]}
                       />
                     </div>
-                    {rewardDistribution === '1' && (
-                      <div className="mb-6 mt-4 w-full px-3 md:mb-0">
-                        <FormFieldTitleInput
-                          title={'Reward Transfer Amount'}
-                          description={'How many tokens to transfer to the stake pool for future distribution.'}
-                        />
-                        <input
-                          className="mb-3 block w-full appearance-none rounded border border-gray-500 bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800 focus:outline-none"
-                          type="text"
-                          placeholder={'1000000'}
-                          value={rewardMintSupply}
-                          onChange={(e) => {
-                            setRewardMintSupply(e.target.value)
-                          }}
-                        />
-                      </div>
+                    {rewardDistribution !== '0' && (
+                      <>
+                        <div className="mb-6 mt-4 w-1/2 px-3 md:mb-0">
+                          <FormFieldTitleInput
+                            title={'Reward Amount'}
+                            description={
+                              'Amount of token to be paid to the staked NFT'
+                            }
+                          />
+                          <input
+                            className="mb-3 block w-full appearance-none rounded border border-gray-500 bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800 focus:outline-none"
+                            type="text"
+                            placeholder={'10'}
+                            value={rewardAmount}
+                            onChange={(e) => {
+                              setRewardAmount(e.target.value)
+                            }}
+                          />
+                        </div>
+                        <div className="mb-6 mt-4 w-1/2 px-3 md:mb-0">
+                          <FormFieldTitleInput
+                            title={'Reward Duration Seconds'}
+                            description={
+                              'Staked duration needed to receive reward amount'
+                            }
+                          />
+                          <input
+                            className="mb-3 block w-full appearance-none rounded border border-gray-500 bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800 focus:outline-none"
+                            type="text"
+                            placeholder={'60'}
+                            value={rewardDurationSeconds}
+                            onChange={(e) => {
+                              setRewardDurationSeconds(e.target.value)
+                            }}
+                          />
+                        </div>
+                        <div className="mb-6 mt-4 w-full px-3 md:mb-0">
+                          <FormFieldTitleInput
+                            title={'Reward Mint Address'}
+                            description={'The mint address of the reward token'}
+                          />
+                          <input
+                            className="mb-3 block w-full appearance-none rounded border border-gray-500 bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800 focus:outline-none"
+                            type="text"
+                            placeholder={'Cmwy...g4ds'}
+                            value={rewardMintAddress}
+                            onChange={(e) => {
+                              setRewardMintAddress(e.target.value)
+                            }}
+                          />
+                        </div>
+
+                        {rewardDistribution === '2' && (
+                          <div className="mb-6 mt-4 w-full px-3 md:mb-0">
+                            <FormFieldTitleInput
+                              title={'Reward Transfer Amount'}
+                              description={
+                                'How many tokens to transfer to the stake pool for future distribution.'
+                              }
+                            />
+                            <input
+                              className="mb-3 block w-full appearance-none rounded border border-gray-500 bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800 focus:outline-none"
+                              type="text"
+                              placeholder={'1000000'}
+                              value={rewardMintSupply}
+                              onChange={(e) => {
+                                setRewardMintSupply(e.target.value)
+                              }}
+                            />
+                          </div>
+                        )}
+                      </>
                     )}
                   </div>
                 </div>
                 <button
                   type="button"
-                  className="mt-4 rounded-md bg-blue-700 px-4 py-2"
+                  className="mt-4 inline-block rounded-md bg-blue-700 px-4 py-2"
                   onClick={() => handleCreation()}
                 >
-                  Create Pool
+                  <div className="flex">
+                    {loading && (
+                      <div className="mr-2">
+                        <TailSpin color="#fff" height={20} width={20} />
+                      </div>
+                    )}
+                    Create Pool
+                  </div>
                 </button>
               </form>
             </div>
