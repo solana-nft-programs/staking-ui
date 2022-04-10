@@ -1,16 +1,24 @@
+import { AccountData } from '@cardinal/common'
+import { StakePoolData } from '@cardinal/staking/dist/cjs/programs/stakePool'
+import { getStakePool } from '@cardinal/staking/dist/cjs/programs/stakePool/accounts'
+import { findStakePoolId } from '@cardinal/staking/dist/cjs/programs/stakePool/pda'
+import { BN } from '@project-serum/anchor'
 import { useWallet } from '@solana/wallet-adapter-react'
 import { PublicKey } from '@solana/web3.js'
 import { Header } from 'common/Header'
-import { SeelectableToken } from 'components/SelectableToken'
+import { SelectableToken } from 'components/SelectableToken'
 import Head from 'next/head'
+import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 import { useUserTokenData } from 'providers/TokenDataProvider'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
 function Home() {
   const { setAddress, tokenDatas, loaded, refreshing } = useUserTokenData()
+  const { connection } = useEnvironmentCtx()
   const wallet = useWallet()
-  const stakePoolAddress = "5VNgqi1mZBD2vx5CRWoUvaq4yeySygDuXUf6G97LmqtP"
-  const stakePoolIdentifier = "31"
+  const stakePoolAddress = '5VNgqi1mZBD2vx5CRWoUvaq4yeySygDuXUf6G97LmqtP'
+  const [stakePoolIdentifier, setStakePoolIdentifier] = useState('')
+  const [stakePool, setStakePool] = useState<AccountData<StakePoolData>>()
 
   useEffect(() => {
     if (wallet && wallet.connected && wallet.publicKey) {
@@ -18,7 +26,39 @@ function Home() {
     }
   }, [wallet.publicKey])
 
-  const filteredNFTs = tokenDatas.filter((token) => token.metadata.data)
+  const loadStakePool = async () => {
+    if (stakePoolIdentifier) {
+      const [stakePoolId] = await findStakePoolId(
+        new BN(parseInt(stakePoolIdentifier))
+      )
+      setStakePool(await getStakePool(connection, stakePoolId))
+    }
+  }
+
+  const filterTokens = () => {
+    if (!stakePool) {
+      return tokenDatas
+    }
+
+    return tokenDatas.filter((token) => {
+      let valid = false
+      const creatorAddresses = stakePool.parsed.requiresCreators
+      const collectionAddresses = stakePool.parsed.requiresCollections
+      creatorAddresses.forEach((filterCreator) => {
+        if (
+          token?.metadata?.data?.properties?.creators.some(
+            (creator: { address: string }) =>
+              creator.address === filterCreator.toString()
+          )
+        ) {
+          valid = true
+        }
+      })
+      return valid
+    })
+  }
+
+  const filteredTokens = filterTokens()
 
   return (
     <div>
@@ -31,17 +71,36 @@ function Home() {
       <div>
         <div className="container mx-auto max-h-[90vh] w-full bg-[#1a1b20]">
           <Header />
+          <div className="flex rounded-md bg-white bg-opacity-5 px-10 py-5 text-gray-200">
+            <p className="my-auto">Enter Staking Pool ID:</p>
+            <input
+              className=" my-auto ml-3 block w-16 appearance-none rounded border border-gray-500 bg-gray-700 py-1 px-2 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800 focus:outline-none"
+              value={stakePoolIdentifier}
+              onChange={(e) => setStakePoolIdentifier(e.target.value)}
+            />
+            <button
+              className="ml-3 rounded-md bg-gray-500 px-2 py-1"
+              onClick={loadStakePool}
+            >
+              Load
+            </button>
+          </div>
           <div className="my-2 grid h-full grid-cols-2 gap-4">
             <div className="flex max-h-[85vh] flex-col rounded-md bg-white bg-opacity-5 p-10 text-gray-200">
               <p className="mb-3 text-lg">Select your NFTs</p>
               {wallet.connected && (
-                <div className="flex-auto my-3 overflow-auto">
+                <div className="my-3 flex-auto overflow-auto">
                   <div className="my-auto mb-4  rounded-md bg-white bg-opacity-5 p-5">
                     {loaded ? (
                       <div className="grid grid-cols-1 gap-1 md:grid-cols-2 md:gap-2 lg:grid-cols-3">
-                        {tokenDatas.filter((tk) => !tk.stakeEntryData || tk.stakeEntryData.parsed.last_staker !== PublicKey.default).map((tk) => (
-                          SeelectableToken(tk)
-                        ))}
+                        {filteredTokens
+                          .filter(
+                            (tk) =>
+                              !tk.stakeEntryData ||
+                              tk.stakeEntryData.parsed.lastStaker !==
+                                PublicKey.default
+                          )
+                          .map((tk) => SelectableToken(tk))}
                       </div>
                     ) : (
                       <p>Loading your NFTs...</p>
@@ -49,7 +108,7 @@ function Home() {
                   </div>
                 </div>
               )}
-              <div className="flex mt-2 flex-row-reverse">
+              <div className="mt-2 flex flex-row-reverse">
                 <button className="rounded-md bg-blue-700 px-4 py-2">
                   Stake NFTs
                 </button>

@@ -1,6 +1,6 @@
 import { TokenData } from "api/types"
 
-export const SeelectableToken = (
+export const SelectableToken = (
 token: TokenData
 ) => {
 
