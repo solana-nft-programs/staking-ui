@@ -26,3 +26,15 @@ export type TokenData = {
   stakeEntryData?: AccountData<StakeEntryData> | null
   recipientTokenAccount?: spl.AccountInfo | null
 }
+
+export type StakeEntryTokenData = {
+  metaplexData?: { pubkey: PublicKey; data: metaplex.MetadataData } | null
+  metadata?:
+    | {
+        pubkey: PublicKey
+        data: any
+      }
+    | undefined
+    | null
+  stakeEntryData: AccountData<StakeEntryData> | null | undefined
+}

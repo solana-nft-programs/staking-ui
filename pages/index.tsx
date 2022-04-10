@@ -1,4 +1,5 @@
 import { useWallet } from '@solana/wallet-adapter-react'
+import { PublicKey } from '@solana/web3.js'
 import { Header } from 'common/Header'
 import { SeelectableToken } from 'components/SelectableToken'
 import Head from 'next/head'
@@ -36,8 +37,8 @@ function Home() {
                   <div className="my-auto mb-4  rounded-md bg-white bg-opacity-5 p-5">
                     {loaded ? (
                       <div className="grid grid-cols-1 gap-1 md:grid-cols-2 md:gap-2 lg:grid-cols-3">
-                        {tokenDatas.map((token) => (
-                          SeelectableToken(token)
+                        {tokenDatas.filter((tk) => !tk.stakeEntryData || tk.stakeEntryData.parsed.last_staker !== PublicKey.default).map((tk) => (
+                          SeelectableToken(tk)
                         ))}
                       </div>
                     ) : (

@@ -1,11 +1,10 @@
-import { StakeEntryData } from "@cardinal/staking/dist/cjs/programs/stakePool"
 import { TokenData } from "api/types"
 
 export const SeelectableToken = (
 token: TokenData
 ) => {
 
-    function selectToken(token: StakeEntryData) {
+    function selectToken(token: TokenData) {
         console.log("selected token", token)
     }
 

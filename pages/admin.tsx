@@ -100,7 +100,7 @@ function Admin() {
 
       alert(
         'Stake pool created! Stake Pool ID: ' +
-          stakePoolData.parsed.identifier.toString()
+          stakePoolData.pubkey.toString()
       )
     } catch (e) {
       alert(`Error creating stake pool: ${e}`)
