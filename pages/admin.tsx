@@ -15,6 +15,7 @@ import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 import { useUserTokenData } from 'providers/TokenDataProvider'
 import { useState } from 'react'
 import { useEffect } from 'react'
+import Select from 'react-select'
 
 function Admin() {
   const { setAddress, address } = useUserTokenData()
@@ -25,6 +26,12 @@ function Admin() {
   const [collectionAddresses, setCollectionAddresses] = useState<string>('')
   const [creatorAddresses, setCreatorAddresses] = useState<string>('')
   const [authorizeNFT, setAuthorizeNFT] = useState<boolean>(false)
+  const [rewardAmount, setRewardAmount] = useState<string>('')
+  const [rewardDurationSeconds, setRewardDurationSeconds] = useState<string>('')
+  const [rewardMintAddress, setRewardMintAddress] = useState<string>('')
+  const [rewardDistribution, setRewardDistribution] = useState<string>('')
+  const [rewardMintSupply, setRewardMintSupply] = useState<string>('')
+
   const [loading, setLoading] = useState<boolean>(false)
   const [stakePool, setStakePool] = useState<AccountData<StakePoolData>>()
 
@@ -36,14 +43,10 @@ function Admin() {
 
   const FormFieldTitleInput = (props: {
     title: string
-    htmlFor: string
     description: string
   }) => (
     <>
-      <label
-        className="mb-2 block text-xs font-bold uppercase tracking-wide text-gray-200"
-        htmlFor={props.htmlFor}
-      >
+      <label className="mb-2 block text-xs font-bold uppercase tracking-wide text-gray-200">
         {props.title}
       </label>
       <p className="mb-2 text-sm italic text-gray-300">{props.description}</p>
@@ -85,24 +88,63 @@ function Admin() {
         connection,
         wallet as Wallet,
         stakePoolParams
-      )      
+      )
 
       await executeTransaction(connection, wallet as Wallet, transaction, {
         silent: false,
         signers: [],
       })
-      
+
       const stakePoolData = await getStakePool(connection, stakePoolPK)
       setStakePool(stakePoolData)
 
       alert(
         'Stake pool created! Stake Pool ID: ' +
-        stakePoolData.parsed.identifier.toString()
+          stakePoolData.parsed.identifier.toString()
       )
     } catch (e) {
       alert(`Error creating stake pool: ${e}`)
     } finally {
     }
+  }
+
+  const customStyles = {
+    control: (base: {}) => ({
+      ...base,
+      background: 'rgb(55 65 81)',
+      borderColor: 'rgb(107 114 128)',
+      color: '#fff',
+    }),
+    Input: (base: {}) => ({
+      ...base,
+      color: 'white',
+    }),
+    menu: (base: {}) => ({
+      ...base,
+      background: 'rgb(55 65 81)',
+      '&:hover': {
+        background: 'rgb(55 65 81)',
+      },
+      '&:focus': {
+        background: 'rgb(75 85 99) !important',
+      },
+      borderRadius: 0,
+      marginTop: 0,
+      color: 'rgb(20 20 20)',
+    }),
+    option: (base: {}) => ({
+      ...base,
+      '&:hover': {
+        background: 'rgb(75 85 99)',
+      },
+      '&:focus': {
+        background: 'rgb(75 85 99) !important',
+      },
+    }),
+    singleValue: (provided: {}) => ({
+      ...provided,
+      color: 'white',
+    }),
   }
 
   return (
@@ -136,12 +178,10 @@ function Admin() {
                   <div className="mb-6 mt-4 w-full px-3 md:mb-0">
                     <FormFieldTitleInput
                       title={'Overlay Text'}
-                      htmlFor={'overlay-text'}
                       description={'Text to display over the rental receipt'}
                     />
                     <input
                       className="mb-3 block w-full appearance-none rounded border border-gray-500 bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800 focus:outline-none"
-                      id={'overlay-text'}
                       type="text"
                       placeholder={'RENTED'}
                       value={overlayText}
@@ -155,14 +195,12 @@ function Admin() {
                   <div className="mb-6 mt-4 w-full px-3 md:mb-0">
                     <FormFieldTitleInput
                       title={'Collection Addresses []'}
-                      htmlFor={'collection-addresses'}
                       description={
                         'Only allow NFTs with these collection addresses (separated by commas)'
                       }
                     />
                     <input
                       className="mb-3 block w-full appearance-none rounded border border-gray-500 bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800 focus:outline-none"
-                      id={'collection-addresses'}
                       type="text"
                       placeholder={'Cmwy..., A3fD...'}
                       value={collectionAddresses}
@@ -176,14 +214,12 @@ function Admin() {
                   <div className="mb-6 mt-4 w-full px-3 md:mb-0">
                     <FormFieldTitleInput
                       title={'Creator Addresses []'}
-                      htmlFor={'creator-addresses'}
                       description={
                         'Only allow NFTs with these creator addresses (separated by commas)'
                       }
                     />
                     <input
                       className="mb-3 block w-full appearance-none rounded border border-gray-500 bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800 focus:outline-none"
-                      id={'creator-addresses'}
                       type="text"
                       placeholder={'Cmwy..., A3fD...'}
                       value={creatorAddresses}
@@ -217,6 +253,96 @@ function Admin() {
                     <span className="my-auto text-sm">
                       Require Authorization
                     </span>
+                  </div>
+                </div>
+                <div>
+                  <div className="-mx-3 flex flex-wrap bg-white bg-opacity-5 pb-2">
+                    <div className="mb-6 mt-4 w-1/2 px-3 md:mb-0">
+                      <FormFieldTitleInput
+                        title={'Reward Amount'}
+                        description={
+                          'Amount of token to be paid to the staked NFT'
+                        }
+                      />
+                      <input
+                        className="mb-3 block w-full appearance-none rounded border border-gray-500 bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800 focus:outline-none"
+                        type="text"
+                        placeholder={'10'}
+                        value={rewardAmount}
+                        onChange={(e) => {
+                          setRewardAmount(e.target.value)
+                        }}
+                      />
+                    </div>
+                    <div className="mb-6 mt-4 w-1/2 px-3 md:mb-0">
+                      <FormFieldTitleInput
+                        title={'Reward Duration Seconds'}
+                        description={
+                          'Staked duration needed to receive reward amount'
+                        }
+                      />
+                      <input
+                        className="mb-3 block w-full appearance-none rounded border border-gray-500 bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800 focus:outline-none"
+                        type="text"
+                        placeholder={'60'}
+                        value={rewardDurationSeconds}
+                        onChange={(e) => {
+                          setRewardDurationSeconds(e.target.value)
+                        }}
+                      />
+                    </div>
+                    <div className="mb-6 mt-4 w-full px-3 md:mb-0">
+                      <FormFieldTitleInput
+                        title={'Reward Mint Address'}
+                        description={'The mint address of the reward token'}
+                      />
+                      <input
+                        className="mb-3 block w-full appearance-none rounded border border-gray-500 bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800 focus:outline-none"
+                        type="text"
+                        placeholder={'Cmwy...g4ds'}
+                        value={rewardMintAddress}
+                        onChange={(e) => {
+                          setRewardMintAddress(e.target.value)
+                        }}
+                      />
+                    </div>
+                    <div className="mb-6 mt-4 w-full px-3 md:mb-0">
+                      <FormFieldTitleInput
+                        title={'Reward Distribution'}
+                        description={
+                          'Mint tokens from the mint address or transfer tokens to the stake pool.'
+                        }
+                      />
+                      <Select
+                        styles={customStyles}
+                        className="mb-3"
+                        isSearchable={false}
+                        onChange={(option) =>
+                          setRewardDistribution(option!.value)
+                        }
+                        options={[
+                          { value: '0', label: 'Mint' },
+                          { value: '1', label: 'Transfer' },
+                        ]}
+                      />
+                    </div>
+                    {rewardDistribution === '1' && (
+                      <div className="mb-6 mt-4 w-full px-3 md:mb-0">
+                        <FormFieldTitleInput
+                          title={'Reward Transfer Amount'}
+                          description={'How many tokens to transfer to the stake pool for future distribution.'}
+                        />
+                        <input
+                          className="mb-3 block w-full appearance-none rounded border border-gray-500 bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800 focus:outline-none"
+                          type="text"
+                          placeholder={'1000000'}
+                          value={rewardMintSupply}
+                          onChange={(e) => {
+                            setRewardMintSupply(e.target.value)
+                          }}
+                        />
+                      </div>
+                    )}
                   </div>
                 </div>
                 <button

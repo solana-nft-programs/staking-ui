@@ -11,6 +11,7 @@ import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 import { useEffect, useState } from 'react'
 import { shortPubKey } from './utils'
 import { HiUserCircle } from 'react-icons/hi'
+import Link from 'next/link'
 
 export const Header = () => {
   const ctx = useEnvironmentCtx()
@@ -32,6 +33,12 @@ export const Header = () => {
     <div className="flex h-20 justify-between text-white">
       <div className="my-auto text-xl font-semibold">Cardinal Staking UI</div>
       <div className="relative my-auto flex pr-8 align-middle">
+        <Link href="/">
+          <p className="my-auto mr-10 hover:cursor-pointer">Stake</p>
+        </Link>
+        <Link href="/admin">
+          <p className="my-auto mr-10 hover:cursor-pointer">Admin</p>
+        </Link>
         {wallet.connected ? (
           <div className="flex cursor-pointer" onClick={() => setVisible(true)}>
             <AddressImage
