@@ -1,4 +1,6 @@
 import { getBatchedMultipleAccounts as getBatchedMultipleAccounts } from '@cardinal/common'
+import { getMintSupply, stakePool } from '@cardinal/staking'
+import { findStakeEntryId } from '@cardinal/staking/dist/cjs/programs/stakePool/pda'
 import type { AccountData } from '@cardinal/token-manager'
 import {
   claimApprover,
@@ -6,11 +8,8 @@ import {
   tokenManager,
   useInvalidator,
 } from '@cardinal/token-manager/dist/cjs/programs'
-import type { PaidClaimApproverData } from '@cardinal/token-manager/dist/cjs/programs/claimApprover'
-import type { TimeInvalidatorData } from '@cardinal/token-manager/dist/cjs/programs/timeInvalidator'
 import type { TokenManagerData } from '@cardinal/token-manager/dist/cjs/programs/tokenManager'
 import { tryTokenManagerAddressFromMint } from '@cardinal/token-manager/dist/cjs/programs/tokenManager/pda'
-import type { UseInvalidatorData } from '@cardinal/token-manager/dist/cjs/programs/useInvalidator'
 import * as metaplex from '@metaplex-foundation/mpl-token-metadata'
 import {
   Edition,
@@ -20,14 +19,10 @@ import {
 } from '@metaplex-foundation/mpl-token-metadata'
 import * as anchor from '@project-serum/anchor'
 import * as spl from '@solana/spl-token'
-import type {
-  AccountInfo,
-  Connection,
-  ParsedAccountData} from '@solana/web3.js';
-import {
-  PublicKey,
-  SystemProgram,
-} from '@solana/web3.js'
+import type { Connection, ParsedAccountData } from '@solana/web3.js'
+import { PublicKey, SystemProgram } from '@solana/web3.js'
+import { STAKE_POOL_ID } from './constants'
+import { TokenData } from './types'
 
 export async function findAssociatedTokenAddress(
   walletAddress: PublicKey,
@@ -43,24 +38,6 @@ export async function findAssociatedTokenAddress(
       spl.ASSOCIATED_TOKEN_PROGRAM_ID
     )
   )[0]
-}
-
-export type TokenData = {
-  tokenAccount?: {
-    pubkey: PublicKey
-    account: AccountInfo<ParsedAccountData>
-  }
-  tokenManager?: AccountData<TokenManagerData>
-  metaplexData?: { pubkey: PublicKey; data: metaplex.MetadataData } | null
-  editionData?: {
-    pubkey: PublicKey
-    data: metaplex.EditionData | metaplex.MasterEditionData
-  } | null
-  metadata?: any
-  claimApprover?: AccountData<PaidClaimApproverData> | null
-  useInvalidator?: AccountData<UseInvalidatorData> | null
-  timeInvalidator?: AccountData<TimeInvalidatorData> | null
-  recipientTokenAccount?: spl.AccountInfo | null
 }
 
 export async function getTokenAccountsWithData(
@@ -81,6 +58,7 @@ export async function getTokenAccountsWithData(
   const metadataTuples: [
     PublicKey,
     PublicKey,
+    PublicKey | null,
     PublicKey | null,
     PublicKey | null,
     PublicKey | null,
@@ -108,17 +86,29 @@ export async function getTokenAccountsWithData(
       let timeInvalidatorId = null
       let useInvalidatorId = null
       if (tokenManagerId) {
-        [[timeInvalidatorId], [useInvalidatorId]] = await Promise.all([
+        ;[[timeInvalidatorId], [useInvalidatorId]] = await Promise.all([
           timeInvalidator.pda.findTimeInvalidatorAddress(tokenManagerId),
           useInvalidator.pda.findUseInvalidatorAddress(tokenManagerId),
         ])
       }
+
+      let stakeEntryId = null
+      if (STAKE_POOL_ID) {
+        ;[stakeEntryId] = await findStakeEntryId(
+          connection,
+          new PublicKey(addressId),
+          STAKE_POOL_ID,
+          new PublicKey(tokenAccount.account.data.parsed.info.mint)
+        )
+      }
+
       return [
         metadataId,
         editionId,
         tokenManagerId,
         timeInvalidatorId,
         useInvalidatorId,
+        stakeEntryId,
         tokenAccount.pubkey,
       ]
     })
@@ -126,6 +116,7 @@ export async function getTokenAccountsWithData(
 
   // @ts-ignore
   const metadataIds: [
+    PublicKey[],
     PublicKey[],
     PublicKey[],
     PublicKey[],
@@ -142,6 +133,7 @@ export async function getTokenAccountsWithData(
           tokenManagerId,
           timeInvalidatorId,
           useInvalidatorId,
+          stakeEntryId,
         ]
       ) => [
         [...acc[0], metaplexId],
@@ -149,8 +141,9 @@ export async function getTokenAccountsWithData(
         [...acc[2], tokenManagerId],
         [...acc[3], timeInvalidatorId],
         [...acc[4], useInvalidatorId],
+        [...acc[5], stakeEntryId],
       ],
-      [[], [], [], [], []]
+      [[], [], [], [], [], []]
     )
 
   const [
@@ -159,12 +152,14 @@ export async function getTokenAccountsWithData(
     tokenManagers,
     timeInvalidators,
     useInvalidators,
+    stakeEntries,
   ] = await Promise.all([
     getBatchedMultipleAccounts(connection, metadataIds[0]),
     getBatchedMultipleAccounts(connection, metadataIds[1]),
     tokenManager.accounts.getTokenManagers(connection, metadataIds[2]),
     timeInvalidator.accounts.getTimeInvalidators(connection, metadataIds[3]),
     useInvalidator.accounts.getUseInvalidators(connection, metadataIds[4]),
+    stakePool.accounts.getStakeEntries(connection, metadataIds[5]),
   ])
 
   const metaplexData = metaplexAccountInfos.map((accountInfo, i) => {
@@ -232,6 +227,7 @@ export async function getTokenAccountsWithData(
       tokenManagerId,
       timeInvalidatorId,
       useInvalidatorId,
+      stakeEntryId,
       tokenAccountId,
     ]) => ({
       tokenAccount: tokenAccounts.find((data) =>
@@ -256,6 +252,11 @@ export async function getTokenAccountsWithData(
           ? data.pubkey.toBase58() === useInvalidatorId?.toBase58()
           : undefined
       ),
+      stakeEntry: stakeEntries.find((data) =>
+        data?.parsed
+          ? data.pubkey.toBase58() === stakeEntryId?.toBase58()
+          : undefined
+      ),
       timeInvalidator: timeInvalidators.find((data) =>
         data?.parsed
           ? data.pubkey.toBase58() === timeInvalidatorId?.toBase58()
@@ -267,9 +268,11 @@ export async function getTokenAccountsWithData(
 
 export async function getTokenDatas(
   connection: Connection,
+  wallet: PublicKey,
   tokenManagerDatas: AccountData<TokenManagerData>[]
 ): Promise<TokenData[]> {
   const metadataTuples: [
+    PublicKey,
     PublicKey,
     PublicKey,
     PublicKey,
@@ -283,6 +286,7 @@ export async function getTokenDatas(
         [claimApproverId],
         [timeInvalidatorId],
         [useInvalidatorId],
+        [stakeEntryId],
       ] = await Promise.all([
         PublicKey.findProgramAddress(
           [
@@ -295,6 +299,12 @@ export async function getTokenDatas(
         claimApprover.pda.findClaimApproverAddress(tokenManagerData.pubkey),
         timeInvalidator.pda.findTimeInvalidatorAddress(tokenManagerData.pubkey),
         useInvalidator.pda.findUseInvalidatorAddress(tokenManagerData.pubkey),
+        stakePool.pda.findStakeEntryId(
+          connection,
+          wallet,
+          STAKE_POOL_ID,
+          tokenManagerData.parsed.mint
+        ),
       ])
 
       const recipientTokenAccountId =
@@ -309,6 +319,7 @@ export async function getTokenDatas(
         claimApproverId,
         timeInvalidatorId,
         useInvalidatorId,
+        stakeEntryId,
         recipientTokenAccountId,
       ]
     })

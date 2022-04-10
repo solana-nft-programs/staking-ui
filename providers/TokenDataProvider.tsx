@@ -1,5 +1,6 @@
-import type { TokenData } from 'api/api'
+import { useWallet } from '@solana/wallet-adapter-react'
 import { getTokenAccountsWithData } from 'api/api'
+import { TokenData } from 'api/types'
 import type { ReactChild } from 'react'
 import React, { useCallback, useContext, useEffect, useState } from 'react'
 

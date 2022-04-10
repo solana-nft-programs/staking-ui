@@ -1,11 +1,10 @@
 import { useWallet } from '@solana/wallet-adapter-react'
+import { PublicKey } from '@solana/web3.js'
 import { Header } from 'common/Header'
-import type { NextPage } from 'next'
+import { SeelectableToken } from 'components/SelectableToken'
 import Head from 'next/head'
-import Image from 'next/image'
 import { useUserTokenData } from 'providers/TokenDataProvider'
 import { useEffect } from 'react'
-import styles from '../styles/Home.module.css'
 
 function Home() {
   const { setAddress, tokenDatas, loaded, refreshing } = useUserTokenData()
@@ -40,10 +39,8 @@ function Home() {
                   <div className="my-auto mb-4  rounded-md bg-white bg-opacity-5 p-5">
                     {loaded ? (
                       <div className="grid grid-cols-1 gap-1 md:grid-cols-2 md:gap-2 lg:grid-cols-3">
-                        {tokenDatas.map((td) => (
-                          <div className="overflow-hidden">
-                            <img src={td.metadata.data.image} />
-                          </div>
+                        {tokenDatas.filter((tk) => !tk.stakeEntryData || tk.stakeEntryData.parsed.last_staker !== PublicKey.default).map((tk) => (
+                          SeelectableToken(tk)
                         ))}
                       </div>
                     ) : (
@@ -52,7 +49,7 @@ function Home() {
                   </div>
                 </div>
               )}
-              <div className="flex flex-row-reverse">
+              <div className="flex mt-2 flex-row-reverse">
                 <button className="rounded-md bg-blue-700 px-4 py-2">
                   Stake NFTs
                 </button>

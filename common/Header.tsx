@@ -30,7 +30,7 @@ export const Header = () => {
     : ''
 
   return (
-    <div className="flex h-20 justify-between text-white">
+    <div className="flex h-20 ml-5 justify-between text-white">
       <div className="my-auto text-xl font-semibold">Cardinal Staking UI</div>
       <div className="relative my-auto flex pr-8 align-middle">
         <Link href="/">
