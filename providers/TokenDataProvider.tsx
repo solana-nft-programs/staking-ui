@@ -1,9 +1,8 @@
-import { useWallet } from '@solana/wallet-adapter-react'
-import { getTokenAccountsWithData } from 'api/api'
+import { PublicKey } from '@solana/web3.js'
+import { getTokenAccountsWithData, getTokenDatas } from 'api/api'
 import { TokenData } from 'api/types'
 import type { ReactChild } from 'react'
 import React, { useCallback, useContext, useEffect, useState } from 'react'
-
 import { useEnvironmentCtx } from './EnvironmentProvider'
 
 export interface UserTokenDataValues {

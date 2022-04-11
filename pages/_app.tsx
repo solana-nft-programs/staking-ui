@@ -10,6 +10,7 @@ import {
 import { EnvironmentProvider } from 'providers/EnvironmentProvider'
 import { WalletIdentityProvider } from '@cardinal/namespaces-components'
 import { TokenAccountsProvider } from 'providers/TokenDataProvider'
+import { StakedTokenDataProvider } from 'providers/StakedTokenDataProvider'
 
 require('@solana/wallet-adapter-react-ui/styles.css')
 
@@ -19,7 +20,9 @@ const App = ({ Component, pageProps }: AppProps) => (
       <WalletIdentityProvider>
         <WalletModalProvider>
           <TokenAccountsProvider>
-            <Component {...pageProps} />
+            <StakedTokenDataProvider>
+              <Component {...pageProps} />
+            </StakedTokenDataProvider>
           </TokenAccountsProvider>
         </WalletModalProvider>
       </WalletIdentityProvider>

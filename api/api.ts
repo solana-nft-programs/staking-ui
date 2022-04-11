@@ -24,22 +24,6 @@ import { PublicKey, SystemProgram } from '@solana/web3.js'
 import { STAKE_POOL_ID } from './constants'
 import { TokenData } from './types'
 
-export async function findAssociatedTokenAddress(
-  walletAddress: PublicKey,
-  mintAddress: PublicKey
-): Promise<PublicKey> {
-  return (
-    await PublicKey.findProgramAddress(
-      [
-        walletAddress.toBuffer(),
-        spl.TOKEN_PROGRAM_ID.toBuffer(),
-        mintAddress.toBuffer(),
-      ],
-      spl.ASSOCIATED_TOKEN_PROGRAM_ID
-    )
-  )[0]
-}
-
 export async function getTokenAccountsWithData(
   connection: Connection,
   addressId: string
@@ -254,7 +238,7 @@ export async function getTokenAccountsWithData(
       ),
       stakeEntry: stakeEntries.find((data) =>
         data?.parsed
-          ? data.pubkey.toBase58() === stakeEntryId?.toBase58()
+          ? data.pubkey.toString() === stakeEntryId?.toString()
           : undefined
       ),
       timeInvalidator: timeInvalidators.find((data) =>
