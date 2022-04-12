@@ -5,6 +5,10 @@ import { TokenData } from 'api/types'
 import type { ReactChild } from 'react'
 import React, { useCallback, useContext, useEffect, useState } from 'react'
 import { useEnvironmentCtx } from './EnvironmentProvider'
+import { useRouter } from 'next/router'
+import { StakePoolData } from '@cardinal/staking/dist/cjs/programs/stakePool'
+import { AccountData } from '@cardinal/common'
+import { getStakePool } from '@cardinal/staking/dist/cjs/programs/stakePool/accounts'
 
 export interface StakedTokenDataValues {
   stakedTokenDatas: TokenData[]
@@ -30,6 +34,9 @@ const StakedTokenData: React.Context<StakedTokenDataValues> =
   })
 
 export function StakedTokenDataProvider({ children }: { children: ReactChild }) {
+  const router = useRouter()
+  const { stakePoolId } = router.query
+  const [stakePool, setStakePool] = useState<AccountData<StakePoolData>>()
   const { connection } = useEnvironmentCtx()
   const [stakedAddress, setStakedAddress] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
@@ -37,18 +44,31 @@ export function StakedTokenDataProvider({ children }: { children: ReactChild }) 
   const [stakedRefreshing, setStakedRefreshing] = useState<boolean>(false)
   const [stakedLoaded, setStakedLoaded] = useState<boolean>(false)
 
+  useEffect(() => {
+    if (stakePoolId) {
+      const setData = async () => {
+        setStakePool(await getStakePool(connection, new PublicKey(stakePoolId)))
+      }
+      setData().catch(console.error)
+    }
+  }, [stakePoolId])
+
   const refreshTokenAccounts = useCallback(() => {
     if (!stakedAddress) {
       setError(`Address not set please connect wallet to continue`)
       return
     }
 
+    if (!stakePool){
+      setError(`Invalid stake pool id`)
+      return []
+    }
+
     setStakedRefreshing(true)
     setError(null)
-    getStakeEntryDatas(connection, new PublicKey(stakedAddress))
+    getStakeEntryDatas(connection, stakePool.pubkey, new PublicKey(stakedAddress))
       .then((tokenDatas) => {
         let tokensWithMetadata = tokenDatas.filter((td) => td.metadata)
-        // tokensWithMetadata = filterTokens(config.filters, tokensWithMetadata)
         setStakedTokenDatas(tokensWithMetadata)
       })
       .catch((e) => {

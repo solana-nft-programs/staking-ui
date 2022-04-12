@@ -10,11 +10,8 @@ import {
   StakePoolData,
 } from '@cardinal/staking/dist/cjs/programs/stakePool'
 import { getStakePool } from '@cardinal/staking/dist/cjs/programs/stakePool/accounts'
-import { findStakePoolId } from '@cardinal/staking/dist/cjs/programs/stakePool/pda'
-import { BN } from '@project-serum/anchor'
 import { useWallet } from '@solana/wallet-adapter-react'
 import { PublicKey } from '@solana/web3.js'
-import { STAKE_POOL_ID } from 'api/constants'
 import { TokenData } from 'api/types'
 import { Header } from 'common/Header'
 import Head from 'next/head'
@@ -24,12 +21,15 @@ import { Wallet } from '@metaplex/js'
 import { useUserTokenData } from 'providers/TokenDataProvider'
 import { useStakedTokenData } from 'providers/StakedTokenDataProvider'
 import { LoadingSpinner } from 'common/LoadingSpinner'
+import { useRouter } from 'next/router'
+import { notify } from 'common/Notification'
 
 function Home() {
+  const router = useRouter()
+  const { stakePoolId } = router.query
   const { connection } = useEnvironmentCtx()
-  const wallet = useWallet()
-  const [stakePoolIdentifier, setStakePoolIdentifier] = useState('')
   const [stakePool, setStakePool] = useState<AccountData<StakePoolData>>()
+  const wallet = useWallet()
   const { stakedRefreshing, setStakedAddress, stakedTokenDatas, stakedLoaded } = useStakedTokenData()
   const { refreshing, setAddress, tokenDatas, loaded } = useUserTokenData()
   const [unstakedSelected, setUnstakedSelected] = useState<TokenData[]>([])
@@ -42,59 +42,61 @@ function Home() {
     }
   }, [wallet.publicKey])
 
-  const loadStakePool = async () => {
-    if (stakePoolIdentifier) {
-      const [stakePoolId] = await findStakePoolId(
-        new BN(parseInt(stakePoolIdentifier))
-      )
-      setStakePool(await getStakePool(connection, stakePoolId))
+  useEffect(() => {
+    if (stakePoolId) {
+      const setData = async () => {
+        setStakePool(await getStakePool(connection, new PublicKey(stakePoolId)))
+      }
+      setData().catch(console.error)
     }
-  }
+  }, [stakePoolId])
 
   const filterTokens = () => {
     if (!stakePool) {
       return tokenDatas
     }
+    return tokenDatas
 
-    return tokenDatas.filter((token) => {
-      let valid = false
-      const creatorAddresses = stakePool.parsed.requiresCreators
-      const collectionAddresses = stakePool.parsed.requiresCollections
-      creatorAddresses.forEach((filterCreator) => {
-        if (
-          token?.metadata?.data?.properties?.creators.some(
-            (creator: { address: string }) =>
-              creator.address === filterCreator.toString()
-          )
-        ) {
-          valid = true
-        }
-      })
-      // TODO filter out collections
-      return valid
-    })
+    // return tokenDatas.filter((token) => {
+    //   let valid = false
+    //   const creatorAddresses = stakePool.parsed.requiresCreators
+    //   const collectionAddresses = stakePool.parsed.requiresCollections
+    //   creatorAddresses.forEach((filterCreator) => {
+    //     if (
+    //       token?.metadata?.data?.properties?.creators.filter((c) => {
+    //         c === filterCreator.toString()
+    //       })
+    //     ) {
+    //       valid = true
+    //     }
+    //   })
+    //   // TODO filter out collections
+    //   return valid
+    // })
   }
 
   const filteredTokens = filterTokens()
 
   async function handle_unstake() {
     if (!wallet){throw new Error('Wallet not connected')}
+    if (!stakePool){throw new Error('No stake pool detected')}
     for (let step = 0; step < stakedSelected.length; step++) {
-        try {
+      try {
         let token = stakedSelected[step]
-        console.log(token)
         if (!token || !token.stakeEntry) {
           throw new Error('No stake entry for token')
         }
         console.log('Unstaking...')
         // stake
         const transaction = await unstake(connection, wallet as Wallet, {
-          stakePoolId: STAKE_POOL_ID,
+          stakePoolId: stakePool?.pubkey,
           originalMintId: token.stakeEntry.parsed.originalMint,
         })
         await executeTransaction(connection, wallet as Wallet, transaction, {})
+        notify({ message: `Successfully unstaked`, type: 'success' })
         console.log('Successfully unstaked')
       } catch (e) {
+        notify({ message: `Airdrop failed: ${e}`, type: 'error' })
         console.error(e)
       } finally{
         break
@@ -104,40 +106,50 @@ function Home() {
 
   async function handle_stake() {
     if (!wallet){throw new Error('Wallet not connected')}
+    if (!stakePool){throw new Error('No stake pool detected')}
+
     for (let step = 0; step < unstakedSelected.length; step++) {
-      let token = unstakedSelected[step]
-      if (!token || !token.tokenAccount) {
-        throw new Error('Token account not set')
-      }
-      console.log('Creating stake entry and stake mint...')
-      const [initTx, stakeMintKeypair] = await createStakeEntryAndStakeMint(
-        connection,
-        wallet as Wallet,
-        {
-          stakePoolId: STAKE_POOL_ID,
+      try {
+        let token = unstakedSelected[step]
+        if (!token || !token.tokenAccount) {
+          throw new Error('Token account not set')
+        }
+        console.log('Creating stake entry and stake mint...')
+        const [initTx, stakeMintKeypair] = await createStakeEntryAndStakeMint(
+          connection,
+          wallet as Wallet,
+          {
+            stakePoolId: stakePool?.pubkey,
+            originalMintId: new PublicKey(
+              token.tokenAccount.account.data.parsed.info.mint
+            ),
+          }
+        )
+        if (initTx.instructions.length > 0) {
+          await executeTransaction(connection, wallet as Wallet, initTx, {
+            signers: stakeMintKeypair ? [stakeMintKeypair] : [],
+          })
+        }
+        console.log('Successfully created stake entry and stake mint')
+        console.log('Staking...')
+        // stake
+        const transaction = await stake(connection, wallet as Wallet, {
+          stakePoolId: stakePool?.pubkey,
+          receiptType: ReceiptType.Receipt,
           originalMintId: new PublicKey(
             token.tokenAccount.account.data.parsed.info.mint
           ),
-        }
-      )
-      if (initTx.instructions.length > 0) {
-        await executeTransaction(connection, wallet as Wallet, initTx, {
-          signers: stakeMintKeypair ? [stakeMintKeypair] : [],
+          userOriginalMintTokenAccountId: token.tokenAccount?.pubkey,
         })
-      }
-      console.log('Successfully created stake entry and stake mint')
-      console.log('Staking...')
-      // stake
-      const transaction = await stake(connection, wallet as Wallet, {
-        stakePoolId: STAKE_POOL_ID,
-        receiptType: ReceiptType.Receipt,
-        originalMintId: new PublicKey(
-          token.tokenAccount.account.data.parsed.info.mint
-        ),
-        userOriginalMintTokenAccountId: token.tokenAccount?.pubkey,
-      })
-      await executeTransaction(connection, wallet as Wallet, transaction, {})
-      console.log('Successfully staked')
+        await executeTransaction(connection, wallet as Wallet, transaction, {})
+        notify({ message: `Successfully staked`, type: 'success' })
+        console.log('Successfully staked')
+        } catch (e) {
+          notify({ message: `Airdrop failed: ${e}`, type: 'error' })
+          console.error(e)
+        } finally{
+          break
+        }
     }
   }
 
@@ -155,20 +167,6 @@ function Home() {
       <div>
         <div className="container mx-auto max-h-[90vh] w-full bg-[#1a1b20]">
           <Header />
-          <div className="flex rounded-md bg-white bg-opacity-5 px-10 py-5 text-gray-200">
-            <p className="my-auto">Enter Staking Pool ID:</p>
-            <input
-              className=" my-auto ml-3 block w-16 appearance-none rounded border border-gray-500 bg-gray-700 py-1 px-2 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800 focus:outline-none"
-              value={stakePoolIdentifier}
-              onChange={(e) => setStakePoolIdentifier(e.target.value)}
-            />
-            <button
-              className="ml-3 rounded-md bg-gray-500 px-2 py-1"
-              onClick={loadStakePool}
-            >
-              Load
-            </button>
-          </div>
           <div className="my-2 grid h-full grid-cols-2 gap-4">
             <div className="flex max-h-[85vh] flex-col rounded-md bg-white bg-opacity-5 p-10 text-gray-200">
               <div className="mt-2 flex flex-row">

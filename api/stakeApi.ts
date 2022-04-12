@@ -12,12 +12,13 @@ export const STAKER_OFFSET = 82
 
 export async function getStakeEntryDatas(
   connection: Connection,
+  stakePoolId: PublicKey,
   userId: PublicKey
 ): Promise<StakeEntryTokenData[]> {
   const stakeEntries = await getStakeEntriesForUser(connection, userId)
-  const mintIds = stakeEntries.map(
-    (stakeEntry) => stakeEntry.parsed.originalMint
-  )
+  const mintIds = stakeEntries
+    .filter((entry) => entry.parsed.pool.toString() === stakePoolId.toString())
+    .map((stakeEntry) => stakeEntry.parsed.originalMint)
   const metadataTuples: [PublicKey, PublicKey][] = await Promise.all(
     mintIds.map(async (mintId) => {
       const [metaplexId] = await PublicKey.findProgramAddress(
