@@ -1,20 +1,26 @@
+import { tryGetAccount } from '@cardinal/common'
 import {
+  createRewardDistributor,
   createStakePool,
   createStakePoolAndRewardDistributor,
   executeTransaction,
   stakePool,
 } from '@cardinal/staking'
 import { RewardDistributorKind } from '@cardinal/staking/dist/cjs/programs/rewardDistributor'
+import { getRewardDistributor } from '@cardinal/staking/dist/cjs/programs/rewardDistributor/accounts'
+import { findRewardDistributorId } from '@cardinal/staking/dist/cjs/programs/rewardDistributor/pda'
 import { withInitRewardDistributor } from '@cardinal/staking/dist/cjs/programs/rewardDistributor/transaction'
 import { StakePoolData } from '@cardinal/staking/dist/cjs/programs/stakePool'
 import { getStakePool } from '@cardinal/staking/dist/cjs/programs/stakePool/accounts'
 import { withInitStakePool } from '@cardinal/staking/dist/cjs/programs/stakePool/transaction'
 import { AccountData } from '@cardinal/token-manager'
+import { withWrapSol } from '@cardinal/token-manager/dist/cjs/wrappedSol'
 import { Wallet } from '@metaplex/js'
 import { BN } from '@project-serum/anchor'
 import { useWallet } from '@solana/wallet-adapter-react'
-import { PublicKey, Transaction } from '@solana/web3.js'
+import { Keypair, PublicKey, Transaction } from '@solana/web3.js'
 import { Header } from 'common/Header'
+import { notify } from 'common/Notification'
 import Head from 'next/head'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 import { useUserTokenData } from 'providers/TokenDataProvider'
@@ -130,8 +136,7 @@ function Admin() {
 
       let transaction = new Transaction()
 
-      const [, stakePoolPK] = await withInitStakePool(
-        transaction,
+      const [, stakePoolPK] = await createStakePool(
         connection,
         wallet as Wallet,
         stakePoolParams
@@ -145,6 +150,15 @@ function Admin() {
           rewardDurationSeconds: rewardDurationSecondsBN,
           kind: rewardDistributorKind,
           supply: supply,
+        }
+
+        if (supply?.toNumber()) {
+          await withWrapSol(
+            transaction,
+            connection,
+            wallet as Wallet,
+            supply?.toNumber()
+          )
         }
 
         await withInitRewardDistributor(
@@ -162,11 +176,18 @@ function Admin() {
 
       const stakePoolData = await getStakePool(connection, stakePoolPK)
       setStakePool(stakePoolData)
+      notify({
+        message:
+          'Successfully created stake pool with ID: ' +
+          stakePoolData.pubkey.toString(),
+        type: 'success',
+      })
 
-      alert(
-        'Stake pool created! Stake Pool ID: ' +
-          stakePoolData.pubkey.toString()
+      const [rewardDistributorId] = await findRewardDistributorId(stakePoolPK)
+      const rewardDistributorData = await tryGetAccount(() =>
+        getRewardDistributor(connection, rewardDistributorId)
       )
+      console.log('hey', rewardDistributorData)
     } catch (e) {
       alert(`Error creating stake pool: ${e}`)
     } finally {
@@ -322,7 +343,7 @@ function Admin() {
                   </div>
                 </div>
                 <div>
-                  <div className="-mx-3 flex flex-wrap bg-white bg-opacity-5 rounded-md pb-2">
+                  <div className="-mx-3 flex flex-wrap rounded-md bg-white bg-opacity-5 pb-2">
                     <div className="mb-6 mt-4 w-full px-3 md:mb-0">
                       <FormFieldTitleInput
                         title={'Reward Distribution'}
