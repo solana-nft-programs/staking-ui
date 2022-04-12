@@ -134,9 +134,7 @@ function Admin() {
         overlayText: overlayText.length > 0 ? overlayText : undefined,
       }
 
-      let transaction = new Transaction()
-
-      const [, stakePoolPK] = await createStakePool(
+      const [transaction, stakePoolPK] = await createStakePool(
         connection,
         wallet as Wallet,
         stakePoolParams

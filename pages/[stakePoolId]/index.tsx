@@ -84,7 +84,7 @@ function Home() {
       throw new Error('Wallet not connected')
     }
     if (!stakePool) {
-      throw new Error('No stake pool detected')
+      throw new Error('No stake pool detected') 
     }
 
     for (let step = 0; step < stakedSelected.length; step++) {
