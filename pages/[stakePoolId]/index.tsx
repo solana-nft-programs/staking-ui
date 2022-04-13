@@ -1,10 +1,10 @@
 import { AccountData, tryGetAccount } from '@cardinal/common'
 import {
   createStakeEntryAndStakeMint,
-  executeTransaction,
   stake,
   unstake,
   claimRewards,
+  executeTransaction,
 } from '@cardinal/staking'
 import {
   ReceiptType,
@@ -84,7 +84,7 @@ function Home() {
       throw new Error('Wallet not connected')
     }
     if (!stakePool) {
-      throw new Error('No stake pool detected') 
+      throw new Error('No stake pool detected')
     }
 
     for (let step = 0; step < stakedSelected.length; step++) {
@@ -118,6 +118,7 @@ function Home() {
     if (!stakePool) {
       throw new Error('No stake pool detected')
     }
+
     for (let step = 0; step < stakedSelected.length; step++) {
       try {
         let token = stakedSelected[step]
@@ -156,6 +157,7 @@ function Home() {
         if (!token || !token.tokenAccount) {
           throw new Error('Token account not set')
         }
+
         console.log('Creating stake entry and stake mint...')
         const [initTx, stakeMintKeypair] = await createStakeEntryAndStakeMint(
           connection,

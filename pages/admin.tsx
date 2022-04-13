@@ -1,33 +1,28 @@
 import { tryGetAccount } from '@cardinal/common'
-import {
-  createRewardDistributor,
-  createStakePool,
-  createStakePoolAndRewardDistributor,
-  executeTransaction,
-  stakePool,
-} from '@cardinal/staking'
+import { createStakePool, executeTransaction } from '@cardinal/staking'
 import { RewardDistributorKind } from '@cardinal/staking/dist/cjs/programs/rewardDistributor'
 import { getRewardDistributor } from '@cardinal/staking/dist/cjs/programs/rewardDistributor/accounts'
 import { findRewardDistributorId } from '@cardinal/staking/dist/cjs/programs/rewardDistributor/pda'
 import { withInitRewardDistributor } from '@cardinal/staking/dist/cjs/programs/rewardDistributor/transaction'
 import { StakePoolData } from '@cardinal/staking/dist/cjs/programs/stakePool'
 import { getStakePool } from '@cardinal/staking/dist/cjs/programs/stakePool/accounts'
-import { withInitStakePool } from '@cardinal/staking/dist/cjs/programs/stakePool/transaction'
 import { AccountData } from '@cardinal/token-manager'
 import { withWrapSol } from '@cardinal/token-manager/dist/cjs/wrappedSol'
 import { Wallet } from '@metaplex/js'
 import { BN } from '@project-serum/anchor'
 import { useWallet } from '@solana/wallet-adapter-react'
-import { Keypair, PublicKey, Transaction } from '@solana/web3.js'
+import { PublicKey } from '@solana/web3.js'
 import { Header } from 'common/Header'
+import { LoadingSpinner } from 'common/LoadingSpinner'
 import { notify } from 'common/Notification'
 import Head from 'next/head'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 import { useUserTokenData } from 'providers/TokenDataProvider'
-import { useState } from 'react'
-import { useEffect } from 'react'
 import { TailSpin } from 'react-loader-spinner'
+import * as splToken from '@solana/spl-token'
+import { useState, useEffect } from 'react'
 import Select from 'react-select'
+import { parseMintNaturalAmountFromDecimal } from 'common/units'
 
 function Admin() {
   const { setAddress, address } = useUserTokenData()
@@ -43,6 +38,10 @@ function Admin() {
   const [rewardMintAddress, setRewardMintAddress] = useState<string>('')
   const [rewardDistribution, setRewardDistribution] = useState<string>('0')
   const [rewardMintSupply, setRewardMintSupply] = useState<string>('')
+  const [submitDisabled, setSubmitDisabled] = useState<boolean>(true)
+  const [processingMintAddress, setProcessingMintAddress] =
+    useState<boolean>(false)
+  const [mintInfo, setMintInfo] = useState<splToken.MintInfo>()
 
   const [loading, setLoading] = useState<boolean>(false)
   const [stakePool, setStakePool] = useState<AccountData<StakePoolData>>()
@@ -64,6 +63,34 @@ function Admin() {
       <p className="mb-2 text-sm italic text-gray-300">{props.description}</p>
     </>
   )
+
+  const handleMintAddress = async (address: String) => {
+    setSubmitDisabled(true)
+    setProcessingMintAddress(true)
+    try {
+      const mint = new PublicKey(address)
+      const checkMint = new splToken.Token(
+        connection,
+        mint,
+        splToken.TOKEN_PROGRAM_ID,
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        null
+      )
+      let mintInfo = await checkMint.getMintInfo()
+      setMintInfo(mintInfo)
+      setSubmitDisabled(false)
+      setProcessingMintAddress(false)
+      notify({ message: `Valid reward mint address`, type: 'success' })
+    } catch (e) {
+      if (address.length > 0) {
+        console.log(e)
+        notify({ message: `Invalid reward mint address: ${e}`, type: 'error' })
+      }
+    } finally {
+      setProcessingMintAddress(false)
+    }
+  }
 
   const handleCreation = async () => {
     setStakePool(undefined)
@@ -110,7 +137,12 @@ function Admin() {
         ? new PublicKey(rewardMintAddress.trim())
         : undefined
       const rewardAmountBN = rewardAmount
-        ? new BN(parseFloat(rewardAmount))
+        ? new BN(
+            parseMintNaturalAmountFromDecimal(
+              rewardAmount,
+              mintInfo?.decimals || 1
+            )
+          )
         : undefined
       const rewardDurationSecondsBN = rewardDurationSeconds
         ? new BN(parseInt(rewardDurationSeconds))
@@ -122,7 +154,12 @@ function Admin() {
           ? RewardDistributorKind.Treasury
           : undefined
       const supply = rewardMintSupply
-        ? new BN(parseFloat(rewardMintSupply))
+        ? new BN(
+            parseMintNaturalAmountFromDecimal(
+              rewardMintSupply,
+              mintInfo?.decimals || 1
+            )
+          )
         : undefined
 
       const stakePoolParams = {
@@ -139,6 +176,8 @@ function Admin() {
         wallet as Wallet,
         stakePoolParams
       )
+
+      console.log(supply?.toString(), rewardAmountBN?.toString())
 
       if (rewardDistributorKind) {
         const rewardDistributionParams = {
@@ -187,7 +226,7 @@ function Admin() {
       )
       console.log('hey', rewardDistributorData)
     } catch (e) {
-      alert(`Error creating stake pool: ${e}`)
+      notify({ message: `Error creating stake pool: ${e}`, type: 'error' })
     } finally {
       setLoading(false)
     }
@@ -378,6 +417,7 @@ function Admin() {
                             type="text"
                             placeholder={'10'}
                             value={rewardAmount}
+                            disabled={submitDisabled}
                             onChange={(e) => {
                               setRewardAmount(e.target.value)
                             }}
@@ -395,6 +435,7 @@ function Admin() {
                             type="text"
                             placeholder={'60'}
                             value={rewardDurationSeconds}
+                            disabled={submitDisabled}
                             onChange={(e) => {
                               setRewardDurationSeconds(e.target.value)
                             }}
@@ -408,12 +449,20 @@ function Admin() {
                           <input
                             className="mb-3 block w-full appearance-none rounded border border-gray-500 bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800 focus:outline-none"
                             type="text"
-                            placeholder={'Cmwy...g4ds'}
+                            placeholder={
+                              'Enter Mint Address First: So1111..11112'
+                            }
                             value={rewardMintAddress}
                             onChange={(e) => {
                               setRewardMintAddress(e.target.value)
+                              handleMintAddress(e.target.value)
                             }}
                           />
+                          {processingMintAddress ? (
+                            <LoadingSpinner height="25px" />
+                          ) : (
+                            ''
+                          )}
                         </div>
 
                         {rewardDistribution === '2' && (
@@ -426,6 +475,7 @@ function Admin() {
                             />
                             <input
                               className="mb-3 block w-full appearance-none rounded border border-gray-500 bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800 focus:outline-none"
+                              disabled={submitDisabled}
                               type="text"
                               placeholder={'1000000'}
                               value={rewardMintSupply}
@@ -440,8 +490,13 @@ function Admin() {
                   </div>
                 </div>
                 <button
+                  disabled={rewardDistribution !== '0' && submitDisabled}
                   type="button"
-                  className="mt-4 inline-block rounded-md bg-blue-700 px-4 py-2"
+                  className={
+                    submitDisabled && rewardDistribution !== '0'
+                      ? 'mt-4 inline-block rounded-md bg-blue-700 px-4 py-2 opacity-50'
+                      : 'mt-4 inline-block rounded-md bg-blue-700 px-4 py-2'
+                  }
                   onClick={() => handleCreation()}
                 >
                   <div className="flex">
