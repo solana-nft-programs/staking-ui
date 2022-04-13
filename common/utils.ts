@@ -1,4 +1,5 @@
-import type * as web3 from '@solana/web3.js'
+import { Wallet } from '@metaplex/js'
+import * as web3 from '@solana/web3.js'
 
 export function getExpirationString(expiration: number, UTCSecondsNow: number) {
   let day = (expiration - UTCSecondsNow) / 60 / 60 / 24

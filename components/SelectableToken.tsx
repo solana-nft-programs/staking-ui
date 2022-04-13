@@ -1,11 +1,20 @@
+import { useEnvironmentCtx } from "providers/EnvironmentProvider"
+import { useWallet } from "@solana/wallet-adapter-react"
 import { TokenData } from "api/types"
 
 export const SelectableToken = (
-token: TokenData
+token: TokenData,
+selectedTokens: TokenData[],
 ) => {
+    const { connection } = useEnvironmentCtx()
+    const wallet = useWallet()
 
-    function selectToken(token: TokenData) {
-        console.log("selected token", token)
+    function selectToken(tk: TokenData) {
+        if (selectedTokens.filter(x => x.tokenAccount?.pubkey.toString() === tk.tokenAccount?.pubkey.toString()).length > 0) {
+            selectedTokens = selectedTokens.filter(x => x.tokenAccount?.pubkey.toString() !== tk.tokenAccount?.pubkey.toString());
+        } else {
+            selectedTokens.push(tk)
+        }
     }
 
     return (

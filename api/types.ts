@@ -23,7 +23,7 @@ export type TokenData = {
   claimApprover?: AccountData<PaidClaimApproverData> | null
   useInvalidator?: AccountData<UseInvalidatorData> | null
   timeInvalidator?: AccountData<TimeInvalidatorData> | null
-  stakeEntryData?: AccountData<StakeEntryData> | null
+  stakeEntry?: AccountData<StakeEntryData> | null
   recipientTokenAccount?: spl.AccountInfo | null
 }
 

@@ -21,27 +21,11 @@ import * as anchor from '@project-serum/anchor'
 import * as spl from '@solana/spl-token'
 import type { Connection, ParsedAccountData } from '@solana/web3.js'
 import { PublicKey, SystemProgram } from '@solana/web3.js'
-import { STAKE_POOL_ID } from './constants'
 import { TokenData } from './types'
-
-export async function findAssociatedTokenAddress(
-  walletAddress: PublicKey,
-  mintAddress: PublicKey
-): Promise<PublicKey> {
-  return (
-    await PublicKey.findProgramAddress(
-      [
-        walletAddress.toBuffer(),
-        spl.TOKEN_PROGRAM_ID.toBuffer(),
-        mintAddress.toBuffer(),
-      ],
-      spl.ASSOCIATED_TOKEN_PROGRAM_ID
-    )
-  )[0]
-}
 
 export async function getTokenAccountsWithData(
   connection: Connection,
+  stakePoolId: PublicKey,
   addressId: string
 ): Promise<TokenData[]> {
   const allTokenAccounts = await connection.getParsedTokenAccountsByOwner(
@@ -93,11 +77,11 @@ export async function getTokenAccountsWithData(
       }
 
       let stakeEntryId = null
-      if (STAKE_POOL_ID) {
+      if (stakePoolId) {
         ;[stakeEntryId] = await findStakeEntryId(
           connection,
           new PublicKey(addressId),
-          STAKE_POOL_ID,
+          stakePoolId,
           new PublicKey(tokenAccount.account.data.parsed.info.mint)
         )
       }
@@ -254,7 +238,7 @@ export async function getTokenAccountsWithData(
       ),
       stakeEntry: stakeEntries.find((data) =>
         data?.parsed
-          ? data.pubkey.toBase58() === stakeEntryId?.toBase58()
+          ? data.pubkey.toString() === stakeEntryId?.toString()
           : undefined
       ),
       timeInvalidator: timeInvalidators.find((data) =>
@@ -269,6 +253,7 @@ export async function getTokenAccountsWithData(
 export async function getTokenDatas(
   connection: Connection,
   wallet: PublicKey,
+  stakePoolId: PublicKey,
   tokenManagerDatas: AccountData<TokenManagerData>[]
 ): Promise<TokenData[]> {
   const metadataTuples: [
@@ -302,7 +287,7 @@ export async function getTokenDatas(
         stakePool.pda.findStakeEntryId(
           connection,
           wallet,
-          STAKE_POOL_ID,
+          stakePoolId,
           tokenManagerData.parsed.mint
         ),
       ])

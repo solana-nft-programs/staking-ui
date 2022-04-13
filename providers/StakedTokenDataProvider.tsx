@@ -1,47 +1,48 @@
-import { AccountData } from '@cardinal/common'
-import { StakePoolData } from '@cardinal/staking/dist/cjs/programs/stakePool'
 import { PublicKey } from '@solana/web3.js'
 import { getTokenAccountsWithData, getTokenDatas } from 'api/api'
+import { getStakeEntryDatas } from 'api/stakeApi'
 import { TokenData } from 'api/types'
 import type { ReactChild } from 'react'
 import React, { useCallback, useContext, useEffect, useState } from 'react'
 import { useEnvironmentCtx } from './EnvironmentProvider'
 import { useRouter } from 'next/router'
+import { StakePoolData } from '@cardinal/staking/dist/cjs/programs/stakePool'
+import { AccountData } from '@cardinal/common'
 import { getStakePool } from '@cardinal/staking/dist/cjs/programs/stakePool/accounts'
 
-export interface UserTokenDataValues {
-  tokenDatas: TokenData[]
+export interface StakedTokenDataValues {
+  stakedTokenDatas: TokenData[]
   refreshTokenAccounts: () => void
-  setTokenDatas: (newEnvironment: TokenData[]) => void
-  setAddress: (address: string) => void
-  loaded: boolean
-  refreshing: boolean
-  address: string | null
+  setStakedTokenDatas: (newEnvironment: TokenData[]) => void
+  setStakedAddress: (address: string) => void
+  stakedLoaded: boolean
+  stakedRefreshing: boolean
+  stakedAddress: string | null
   error: string | null
 }
 
-const UserTokenData: React.Context<UserTokenDataValues> =
-  React.createContext<UserTokenDataValues>({
-    tokenDatas: [],
+const StakedTokenData: React.Context<StakedTokenDataValues> =
+  React.createContext<StakedTokenDataValues>({
+    stakedTokenDatas: [],
     refreshTokenAccounts: () => {},
-    setTokenDatas: () => {},
-    setAddress: () => {},
-    loaded: false,
-    refreshing: true,
-    address: null,
+    setStakedTokenDatas: () => {},
+    setStakedAddress: () => {},
+    stakedLoaded: false,
+    stakedRefreshing: true,
+    stakedAddress: null,
     error: null,
   })
 
-export function TokenAccountsProvider({ children }: { children: ReactChild }) {
+export function StakedTokenDataProvider({ children }: { children: ReactChild }) {
   const router = useRouter()
   const { stakePoolId } = router.query
   const [stakePool, setStakePool] = useState<AccountData<StakePoolData>>()
   const { connection } = useEnvironmentCtx()
-  const [address, setAddress] = useState<string | null>(null)
+  const [stakedAddress, setStakedAddress] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
-  const [tokenDatas, setTokenDatas] = useState<TokenData[]>([])
-  const [refreshing, setRefreshing] = useState<boolean>(false)
-  const [loaded, setLoaded] = useState<boolean>(false)
+  const [stakedTokenDatas, setStakedTokenDatas] = useState<TokenData[]>([])
+  const [stakedRefreshing, setStakedRefreshing] = useState<boolean>(false)
+  const [stakedLoaded, setStakedLoaded] = useState<boolean>(false)
 
   useEffect(() => {
     if (stakePoolId) {
@@ -53,7 +54,7 @@ export function TokenAccountsProvider({ children }: { children: ReactChild }) {
   }, [stakePoolId])
 
   const refreshTokenAccounts = useCallback(() => {
-    if (!address) {
+    if (!stakedAddress) {
       setError(`Address not set please connect wallet to continue`)
       return
     }
@@ -63,23 +64,22 @@ export function TokenAccountsProvider({ children }: { children: ReactChild }) {
       return []
     }
 
-    setRefreshing(true)
+    setStakedRefreshing(true)
     setError(null)
-    getTokenAccountsWithData(connection, stakePool?.pubkey, address)
+    getStakeEntryDatas(connection, stakePool.pubkey, new PublicKey(stakedAddress))
       .then((tokenDatas) => {
         let tokensWithMetadata = tokenDatas.filter((td) => td.metadata)
-        // tokensWithMetadata = filterTokens(config.filters, tokensWithMetadata)
-        setTokenDatas(tokensWithMetadata)
+        setStakedTokenDatas(tokensWithMetadata)
       })
       .catch((e) => {
         console.log(e)
         setError(`${e}`)
       })
       .finally(() => {
-        setLoaded(true)
-        setRefreshing(false)
+        setStakedLoaded(true)
+        setStakedRefreshing(false)
       })
-  }, [connection, setError, address, setRefreshing])
+  }, [connection, setError, stakedAddress, setStakedRefreshing])
 
   useEffect(() => {
     const interval = setInterval(
@@ -93,23 +93,23 @@ export function TokenAccountsProvider({ children }: { children: ReactChild }) {
   }, [refreshTokenAccounts])
 
   return (
-    <UserTokenData.Provider
+    <StakedTokenData.Provider
       value={{
-        address,
-        tokenDatas,
-        loaded,
+        stakedAddress,
+        stakedTokenDatas,
+        stakedLoaded,
         refreshTokenAccounts,
-        setTokenDatas,
-        setAddress,
-        refreshing,
+        setStakedTokenDatas,
+        setStakedAddress,
+        stakedRefreshing,
         error,
       }}
     >
       {children}
-    </UserTokenData.Provider>
+    </StakedTokenData.Provider>
   )
 }
 
-export function useUserTokenData(): UserTokenDataValues {
-  return useContext(UserTokenData)
+export function useStakedTokenData(): StakedTokenDataValues {
+  return useContext(StakedTokenData)
 }

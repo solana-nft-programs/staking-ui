@@ -8,16 +8,17 @@ import * as anchor from '@project-serum/anchor'
 import { AccountData } from '@cardinal/common'
 import { StakeEntryTokenData } from './types'
 
-export const STAKER_OFFSET = 80
+export const STAKER_OFFSET = 82
 
 export async function getStakeEntryDatas(
   connection: Connection,
+  stakePoolId: PublicKey,
   userId: PublicKey
 ): Promise<StakeEntryTokenData[]> {
   const stakeEntries = await getStakeEntriesForUser(connection, userId)
-  const mintIds = stakeEntries.map(
-    (stakeEntry) => stakeEntry.parsed.originalMint
-  )
+  const mintIds = stakeEntries
+    .filter((entry) => entry.parsed.pool.toString() === stakePoolId.toString())
+    .map((stakeEntry) => stakeEntry.parsed.originalMint)
   const metadataTuples: [PublicKey, PublicKey][] = await Promise.all(
     mintIds.map(async (mintId) => {
       const [metaplexId] = await PublicKey.findProgramAddress(
@@ -53,8 +54,8 @@ export async function getStakeEntryDatas(
 
   const metadata = await Promise.all(
     metaplexData.map(async (md, i) => {
-      if (!md) return null
       try {
+        if (!md) return null
         const json = await fetch(md.data.data.uri).then((r) => r.json())
         return {
           pubkey: md.pubkey,
@@ -67,18 +68,19 @@ export async function getStakeEntryDatas(
     })
   )
 
-  return metadataTuples.map()
-  // return metadataTuples.map(([metaplexId, mintId]) => ({
-  //   metaplexData: metaplexData.find(
-  //     (data) => data.pubkey.toBase58() === metaplexId.toBase58()
-  //   ),
-  //   metadata: metadata.find(
-  //     (data) => data.pubkey.toBase58() === metaplexId.toBase58()
-  //   ),
-  //   stakeEntryData: stakeEntries.find(
-  //     (data) => data.parsed.originalMint.toBase58() === mintId.toBase58()
-  //   ),
-  // }))
+  return metadataTuples.map(([metaplexId, mintId]) => ({
+    metaplexData: metaplexData.find((data) =>
+      data ? data.pubkey.toBase58() === metaplexId.toBase58() : undefined
+    ),
+    metadata: metadata.find((data) =>
+      data ? data.pubkey.toBase58() === metaplexId.toBase58() : undefined
+    ),
+    stakeEntry: stakeEntries.find((data) =>
+      data
+        ? data.parsed.originalMint.toBase58() === mintId.toBase58()
+        : undefined
+    ),
+  }))
 }
 
 export const getStakeEntriesForUser = async (

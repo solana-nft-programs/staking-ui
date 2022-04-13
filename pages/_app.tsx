@@ -1,4 +1,5 @@
 import '../styles/globals.css'
+import 'antd/dist/antd.dark.css'
 import type { AppProps } from 'next/app'
 import { WalletProvider } from '@solana/wallet-adapter-react'
 import { getWalletAdapters } from '@solana/wallet-adapter-wallets'
@@ -10,6 +11,7 @@ import {
 import { EnvironmentProvider } from 'providers/EnvironmentProvider'
 import { WalletIdentityProvider } from '@cardinal/namespaces-components'
 import { TokenAccountsProvider } from 'providers/TokenDataProvider'
+import { StakedTokenDataProvider } from 'providers/StakedTokenDataProvider'
 
 require('@solana/wallet-adapter-react-ui/styles.css')
 
@@ -19,7 +21,9 @@ const App = ({ Component, pageProps }: AppProps) => (
       <WalletIdentityProvider>
         <WalletModalProvider>
           <TokenAccountsProvider>
-            <Component {...pageProps} />
+            <StakedTokenDataProvider>
+              <Component {...pageProps} />
+            </StakedTokenDataProvider>
           </TokenAccountsProvider>
         </WalletModalProvider>
       </WalletIdentityProvider>
