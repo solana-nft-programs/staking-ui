@@ -44,7 +44,7 @@ export async function getStakeEntryDatas(
     let md
     try {
       md = {
-        pubkey: metaplexIds[i],
+        pubkey: metaplexIds[i]!,
         ...accountInfo,
         data: metaplex.MetadataData.deserialize(accountInfo?.data as Buffer),
       }
@@ -58,7 +58,7 @@ export async function getStakeEntryDatas(
         if (!md) return null
         const json = await fetch(md.data.data.uri).then((r) => r.json())
         return {
-          pubkey: md.pubkey,
+          pubkey: md.pubkey!,
           data: json,
         }
       } catch (e) {
@@ -75,7 +75,7 @@ export async function getStakeEntryDatas(
     metadata: metadata.find((data) =>
       data ? data.pubkey.toBase58() === metaplexId.toBase58() : undefined
     ),
-    stakeEntry: stakeEntries.find((data) =>
+    stakeEntryData: stakeEntries.find((data) =>
       data
         ? data.parsed.originalMint.toBase58() === mintId.toBase58()
         : undefined
