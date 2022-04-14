@@ -45,6 +45,9 @@ function Home() {
   const { refreshing, setAddress, tokenDatas, loaded } = useUserTokenData()
   const [unstakedSelected, setUnstakedSelected] = useState<TokenData[]>([])
   const [stakedSelected, setStakedSelected] = useState<TokenData[]>([])
+  const [loadingStake, setLoadingStake] = useState(false)
+  const [loadingUnstake, setLoadingUnstake] = useState(false)
+  const [loadingClaimRewards, setLoadingClaimRewards] = useState(false)
 
   useEffect(() => {
     if (wallet && wallet.connected && wallet.publicKey) {
@@ -136,6 +139,7 @@ function Home() {
   const filteredTokens = filterTokens()
 
   async function handleClaimRewards() {
+    setLoadingClaimRewards(true)
     if (!wallet) {
       throw new Error('Wallet not connected')
     }
@@ -166,8 +170,10 @@ function Home() {
         break
       }
     }
+    setLoadingClaimRewards(false)
   }
   async function handleUnstake() {
+    setLoadingUnstake(true)
     if (!wallet) {
       throw new Error('Wallet not connected')
     }
@@ -197,9 +203,11 @@ function Home() {
         break
       }
     }
+    setLoadingUnstake(false)
   }
 
   async function handleStake() {
+    setLoadingStake(true)
     if (!wallet) {
       throw new Error('Wallet not connected')
     }
@@ -251,6 +259,7 @@ function Home() {
         break
       }
     }
+    setLoadingStake(false)
   }
 
   const isUnstakedTokenSelected = (tk: TokenData) =>
@@ -281,7 +290,9 @@ function Home() {
               {wallet.connected && (
                 <div className="my-3 flex-auto overflow-auto">
                   <div className="my-auto mb-4 min-h-[60vh] rounded-md bg-white bg-opacity-5 p-5">
-                    {loaded && filteredTokens.length == 0 && <p>No NFTs found in wallet.</p>}
+                    {loaded && filteredTokens.length == 0 && (
+                      <p>No NFTs found in wallet.</p>
+                    )}
                     {loaded ? (
                       <div className="grid grid-cols-1 gap-1 md:grid-cols-2 md:gap-2 lg:grid-cols-3">
                         {filteredTokens.map((tk) => (
@@ -336,9 +347,12 @@ function Home() {
               <div className="mt-2 flex flex-row-reverse">
                 <button
                   onClick={handleStake}
-                  className="rounded-md bg-blue-700 px-4 py-2"
+                  className="my-auto flex rounded-md bg-blue-700 px-4 py-2"
                 >
-                  Stake NFTs
+                  <span className="mr-1 inline-block">
+                    {loadingStake ? <LoadingSpinner height="25px" /> : ''}
+                  </span>
+                  <span className="my-auto">Stake NFTs</span>
                 </button>
               </div>
             </div>
@@ -411,13 +425,23 @@ function Home() {
                   onClick={handleUnstake}
                   className="rounded-md bg-blue-700 px-4 py-2"
                 >
-                  Unstake NFTs
+                  <span className="mr-1 inline-block">
+                    {loadingUnstake ? <LoadingSpinner height="25px" /> : ''}
+                  </span>
+                  <span className="my-auto">Unstake NFTs</span>
                 </button>
                 <button
                   onClick={handleClaimRewards}
                   className="mr-5 rounded-md bg-blue-700 px-4 py-2"
                 >
-                  Claim Rewards
+                  <span className="mr-1 inline-block">
+                    {loadingClaimRewards ? (
+                      <LoadingSpinner height="25px" />
+                    ) : (
+                      ''
+                    )}
+                  </span>
+                  <span className="my-auto">Claim Rewards</span>
                 </button>
               </div>
             </div>
