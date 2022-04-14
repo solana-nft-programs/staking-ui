@@ -110,7 +110,7 @@ export async function getStakeEntryDatas(
     metadata: metadata.find((data) =>
       data ? data.pubkey.toBase58() === metaplexId.toBase58() : undefined
     ),
-    stakeEntryData: stakeEntries.find((data) =>
+    stakeEntry: stakeEntries.find((data) =>
       data
         ? data.parsed.originalMint.toBase58() === mintId.toBase58()
         : undefined

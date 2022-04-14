@@ -287,9 +287,12 @@ function Admin() {
               </p>
               {stakePool ? (
                 <div className="bg-green-600 bg-opacity-20 p-4">
-                  <p>Successfully created Stake Pool. </p>
+                  <p>Successfully created Stake Pool.</p>
+                  <p>
+                    Make sure you <b>SAVE THE POOL ID</b> and identifier
+                  </p>
                   <p className="mt-2">
-                    <b>Address:</b> {stakePool.pubkey.toString()} <br />{' '}
+                    <b>Pool ID:</b> {stakePool.pubkey.toString()} <br />{' '}
                     <b>Identifier:</b> {stakePool.parsed.identifier.toString()}
                   </p>
                 </div>

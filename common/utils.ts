@@ -131,7 +131,9 @@ export const handlePoolMapping = async (
       connection,
       new web3.PublicKey(addressMapping[0]!.pool)
     )
+  } else if (new web3.PublicKey(poolId)) {
+    return await getStakePool(connection, new web3.PublicKey(poolId))
   } else {
-    throw Error(`Can't find stake pool id ${poolId}`)
+    throw Error(`Cannot find stake pool id ${poolId}`)
   }
 }
