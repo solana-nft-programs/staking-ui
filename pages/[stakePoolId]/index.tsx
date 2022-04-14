@@ -269,14 +269,19 @@ function Home() {
         <div className="container mx-auto max-h-[90vh] w-full bg-[#1a1b20]">
           <Header />
           <div className="my-2 grid h-full grid-cols-2 gap-4">
-            <div className="flex max-h-[85vh] flex-col rounded-md bg-white bg-opacity-5 p-10 text-gray-200">
+            <div className="flex h-[85vh] max-h-[85vh] flex-col rounded-md bg-white bg-opacity-5 p-10 text-gray-200">
               <div className="mt-2 flex flex-row">
-                <p className="mb-3 text-lg">Select your NFTs</p>
-                {refreshing ? <LoadingSpinner height="25px" /> : ''}
+                <p className="mb-3 mr-3 inline-block text-lg">
+                  Select your NFTs
+                </p>
+                <div className="inline-block">
+                  {refreshing ? <LoadingSpinner height="25px" /> : ''}
+                </div>
               </div>
               {wallet.connected && (
                 <div className="my-3 flex-auto overflow-auto">
-                  <div className="my-auto mb-4  rounded-md bg-white bg-opacity-5 p-5">
+                  <div className="my-auto mb-4 min-h-[60vh] rounded-md bg-white bg-opacity-5 p-5">
+                    {loaded && filteredTokens.length == 0 && <p>No NFTs found in wallet.</p>}
                     {loaded ? (
                       <div className="grid grid-cols-1 gap-1 md:grid-cols-2 md:gap-2 lg:grid-cols-3">
                         {filteredTokens.map((tk) => (
@@ -337,14 +342,19 @@ function Home() {
                 </button>
               </div>
             </div>
-            <div className="rounded-md bg-white bg-opacity-5 p-10 text-gray-200">
+            <div className="h-[85vh] max-h-[85vh] rounded-md bg-white bg-opacity-5 p-10 text-gray-200">
               <div className="mt-2 flex flex-row">
-                <p className="text-lg">View Staked NFTs</p>
-                {stakedRefreshing ? <LoadingSpinner height="25px" /> : ''}
+                <p className="mr-3 text-lg">View Staked NFTs</p>
+                <div className="inline-block">
+                  {refreshing ? <LoadingSpinner height="25px" /> : ''}
+                </div>
               </div>
               {wallet.connected && (
                 <div className="my-3 flex-auto overflow-auto">
-                  <div className="my-auto mb-4  rounded-md bg-white bg-opacity-5 p-5">
+                  <div className="my-auto mb-4 min-h-[60vh] rounded-md bg-white bg-opacity-5 p-5">
+                    {stakedLoaded && stakedTokenDatas.length === 0 && (
+                      <p>No NFTs currently staked.</p>
+                    )}
                     {stakedLoaded ? (
                       <div className="grid grid-cols-1 gap-1 md:grid-cols-2 md:gap-2 lg:grid-cols-3">
                         {stakedTokenDatas.map((tk) => (
