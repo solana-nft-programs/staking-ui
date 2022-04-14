@@ -309,7 +309,6 @@ function Home() {
 
                                 <input
                                   type="checkbox"
-                                  // checked={isJamboSelected(token)}
                                   className="absolute top-[8px] right-[8px] h-4 w-4 rounded-sm text-green-600"
                                   id={tk?.tokenAccount?.pubkey.toBase58()}
                                   name={tk?.tokenAccount?.pubkey.toBase58()}
