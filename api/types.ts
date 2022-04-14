@@ -36,5 +36,5 @@ export type StakeEntryTokenData = {
       }
     | undefined
     | null
-  stakeEntryData: AccountData<StakeEntryData> | null | undefined
+  stakeEntry: AccountData<StakeEntryData> | null | undefined
 }

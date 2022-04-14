@@ -1,4 +1,6 @@
+import { BigNumber } from 'bignumber.js'
 import { AccountData, tryGetAccount } from '@cardinal/common'
+import * as splToken from '@solana/spl-token'
 import {
   createStakeEntryAndStakeMint,
   stake,
@@ -10,7 +12,10 @@ import {
   ReceiptType,
   StakePoolData,
 } from '@cardinal/staking/dist/cjs/programs/stakePool'
-import { getStakePool } from '@cardinal/staking/dist/cjs/programs/stakePool/accounts'
+import {
+  getStakeEntry,
+  getStakePool,
+} from '@cardinal/staking/dist/cjs/programs/stakePool/accounts'
 import { useWallet } from '@solana/wallet-adapter-react'
 import { PublicKey } from '@solana/web3.js'
 import { TokenData } from 'api/types'
@@ -24,18 +29,36 @@ import { useStakedTokenData } from 'providers/StakedTokenDataProvider'
 import { LoadingSpinner } from 'common/LoadingSpinner'
 import { useRouter } from 'next/router'
 import { notify } from 'common/Notification'
+import { handlePoolMapping } from 'common/utils'
+import { getPendingRewardsForPool } from 'api/stakeApi'
+import { findStakeEntryId } from '@cardinal/staking/dist/cjs/programs/stakePool/pda'
+import { getRewardDistributor } from '@cardinal/staking/dist/cjs/programs/rewardDistributor/accounts'
+import { findRewardDistributorId } from '@cardinal/staking/dist/cjs/programs/rewardDistributor/pda'
+import {
+  formatMintNaturalAmountAsDecimal,
+  getMintDecimalAmountFromNatural,
+} from 'common/units'
+import { BN } from '@project-serum/anchor'
+import { RewardDistributorData } from '@cardinal/staking/dist/cjs/programs/rewardDistributor'
 
 function Home() {
   const router = useRouter()
   const { stakePoolId } = router.query
   const { connection } = useEnvironmentCtx()
   const [stakePool, setStakePool] = useState<AccountData<StakePoolData>>()
+  const [rewardDistributor, setRewardDistributor] =
+    useState<AccountData<RewardDistributorData>>()
   const wallet = useWallet()
   const { stakedRefreshing, setStakedAddress, stakedTokenDatas, stakedLoaded } =
     useStakedTokenData()
   const { refreshing, setAddress, tokenDatas, loaded } = useUserTokenData()
   const [unstakedSelected, setUnstakedSelected] = useState<TokenData[]>([])
   const [stakedSelected, setStakedSelected] = useState<TokenData[]>([])
+  const [claimableRewards, setClaimableRewards] = useState<number>(0)
+  const [loadingRewards, setLoadingRewards] = useState<boolean>(false)
+  const [loadingStake, setLoadingStake] = useState(false)
+  const [loadingUnstake, setLoadingUnstake] = useState(false)
+  const [loadingClaimRewards, setLoadingClaimRewards] = useState(false)
 
   useEffect(() => {
     if (wallet && wallet.connected && wallet.publicKey) {
@@ -47,17 +70,86 @@ function Home() {
   useEffect(() => {
     if (stakePoolId) {
       const setData = async () => {
-        setStakePool(await getStakePool(connection, new PublicKey(stakePoolId)))
+        try {
+          const pool = await handlePoolMapping(
+            connection,
+            stakePoolId as string
+          )
+          setStakePool(pool)
+        } catch (e) {
+          notify({
+            message: `${e}`,
+            type: 'error',
+          })
+        }
       }
       setData().catch(console.error)
     }
   }, [stakePoolId])
 
-  const filterTokens = () => {
-    if (!stakePool) {
-      return tokenDatas
+  useEffect(() => {
+    if (stakePool) {
+      const getRewards = async () => {
+        setLoadingRewards(true)
+        const [rewardDistributorId] = await findRewardDistributorId(
+          stakePool!.pubkey
+        )
+        const rewardDistributorAcc = await tryGetAccount(() =>
+          getRewardDistributor(connection, rewardDistributorId)
+        )
+        if (!rewardDistributorAcc) {
+          return
+        }
+        setRewardDistributor(rewardDistributorAcc)
+        if (!wallet) {
+          throw new Error('Wallet not found')
+        }
+
+        let mint = new splToken.Token(
+          connection,
+          rewardDistributorAcc.parsed.rewardMint,
+          splToken.TOKEN_PROGRAM_ID,
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          null
+        )
+        const mintInfo = await mint.getMintInfo()
+        let total = 0
+
+        for (let i = 0; i < stakedTokenDatas.length; i++) {
+          let tk = stakedTokenDatas[i]
+          if (!tk || !tk.stakeEntry) {
+            return
+          }
+          const [stakeEntryId] = await findStakeEntryId(
+            connection,
+            wallet.publicKey!,
+            stakePool!.pubkey,
+            tk.stakeEntry?.parsed.originalMint!
+          )
+          const stakeEntry = await getStakeEntry(connection, stakeEntryId)
+          const rewards = await getPendingRewardsForPool(
+            connection,
+            tk.stakeEntry?.parsed.originalMint!,
+            stakeEntry,
+            rewardDistributorAcc
+          )
+          let amount = new BN(
+            Number(getMintDecimalAmountFromNatural(mintInfo, new BN(rewards)))
+          )
+          total += amount.toNumber()
+        }
+        setClaimableRewards(total)
+        setLoadingRewards(false)
+      }
+      getRewards().catch(console.error)
     }
-    return tokenDatas
+  }, [stakedTokenDatas, stakePool])
+
+  const filterTokens = () => {
+    return tokenDatas.filter(
+      (tk) => tk.tokenAccount?.account.data.parsed.info.state !== 'frozen'
+    )
 
     // return tokenDatas.filter((token) => {
     //   let valid = false
@@ -80,6 +172,11 @@ function Home() {
   const filteredTokens = filterTokens()
 
   async function handleClaimRewards() {
+    if (stakedSelected.length > 4) {
+      notify({ message: `Limit of 4 tokens at a time reached`, type: 'error' })
+      return
+    }
+    setLoadingClaimRewards(true)
     if (!wallet) {
       throw new Error('Wallet not connected')
     }
@@ -110,8 +207,14 @@ function Home() {
         break
       }
     }
+    setLoadingClaimRewards(false)
   }
   async function handleUnstake() {
+    if (stakedSelected.length > 4) {
+      notify({ message: `Limit of 4 tokens at a time reached`, type: 'error' })
+      return
+    }
+    setLoadingUnstake(true)
     if (!wallet) {
       throw new Error('Wallet not connected')
     }
@@ -141,12 +244,15 @@ function Home() {
         break
       }
     }
+    setLoadingUnstake(false)
   }
 
   async function handleStake() {
-    if (!wallet) {
-      throw new Error('Wallet not connected')
+    if (unstakedSelected.length > 4) {
+      notify({ message: `Limit of 4 tokens at a time reached`, type: 'error' })
+      return
     }
+    setLoadingStake(true)
     if (!stakePool) {
       throw new Error('No stake pool detected')
     }
@@ -195,11 +301,21 @@ function Home() {
         break
       }
     }
+    setLoadingStake(false)
   }
 
   const isUnstakedTokenSelected = (tk: TokenData) =>
-    unstakedSelected.includes(tk)
-  const isStakedTokenSelected = (tk: TokenData) => stakedSelected.includes(tk)
+    unstakedSelected.filter(
+      (utk) =>
+        utk.tokenAccount?.account.data.parsed.info.mint.toString() ===
+        tk.tokenAccount?.account.data.parsed.info.mint.toString()
+    ).length > 0
+  const isStakedTokenSelected = (tk: TokenData) =>
+    stakedSelected.filter(
+      (stk) =>
+        stk.tokenAccount?.account.data.parsed.info.mint.toString() ===
+        tk.tokenAccount?.account.data.parsed.info.mint.toString()
+    ).length > 0
 
   return (
     <div>
@@ -213,14 +329,21 @@ function Home() {
         <div className="container mx-auto max-h-[90vh] w-full bg-[#1a1b20]">
           <Header />
           <div className="my-2 grid h-full grid-cols-2 gap-4">
-            <div className="flex max-h-[85vh] flex-col rounded-md bg-white bg-opacity-5 p-10 text-gray-200">
+            <div className="flex h-[85vh] max-h-[85vh] flex-col rounded-md bg-white bg-opacity-5 p-10 text-gray-200">
               <div className="mt-2 flex flex-row">
-                <p className="mb-3 text-lg">Select your NFTs</p>
-                {refreshing ? <LoadingSpinner height="25px" /> : ''}
+                <p className="mb-3 mr-3 inline-block text-lg">
+                  Select your NFTs
+                </p>
+                <div className="inline-block">
+                  {refreshing ? <LoadingSpinner height="25px" /> : ''}
+                </div>
               </div>
               {wallet.connected && (
                 <div className="my-3 flex-auto overflow-auto">
-                  <div className="my-auto mb-4  rounded-md bg-white bg-opacity-5 p-5">
+                  <div className="my-auto mb-4 min-h-[60vh] rounded-md bg-white bg-opacity-5 p-5">
+                    {loaded && filteredTokens.length == 0 && (
+                      <p>No NFTs found in wallet.</p>
+                    )}
                     {loaded ? (
                       <div className="grid grid-cols-1 gap-1 md:grid-cols-2 md:gap-2 lg:grid-cols-3">
                         {filteredTokens.map((tk) => (
@@ -275,20 +398,28 @@ function Home() {
               <div className="mt-2 flex flex-row-reverse">
                 <button
                   onClick={handleStake}
-                  className="rounded-md bg-blue-700 px-4 py-2"
+                  className="my-auto flex rounded-md bg-blue-700 px-4 py-2"
                 >
-                  Stake NFTs
+                  <span className="mr-1 inline-block">
+                    {loadingStake ? <LoadingSpinner height="25px" /> : ''}
+                  </span>
+                  <span className="my-auto">Stake NFTs</span>
                 </button>
               </div>
             </div>
-            <div className="rounded-md bg-white bg-opacity-5 p-10 text-gray-200">
+            <div className="h-[85vh] max-h-[85vh] rounded-md bg-white bg-opacity-5 p-10 text-gray-200">
               <div className="mt-2 flex flex-row">
-                <p className="text-lg">View Staked NFTs</p>
-                {stakedRefreshing ? <LoadingSpinner height="25px" /> : ''}
+                <p className="mr-3 text-lg">View Staked NFTs</p>
+                <div className="inline-block">
+                  {stakedRefreshing ? <LoadingSpinner height="25px" /> : ''}
+                </div>
               </div>
               {wallet.connected && (
                 <div className="my-3 flex-auto overflow-auto">
-                  <div className="my-auto mb-4  rounded-md bg-white bg-opacity-5 p-5">
+                  <div className="my-auto mb-4 min-h-[60vh] rounded-md bg-white bg-opacity-5 p-5">
+                    {stakedLoaded && stakedTokenDatas.length === 0 && (
+                      <p>No NFTs currently staked.</p>
+                    )}
                     {stakedLoaded ? (
                       <div className="grid grid-cols-1 gap-1 md:grid-cols-2 md:gap-2 lg:grid-cols-3">
                         {stakedTokenDatas.map((tk) => (
@@ -342,17 +473,41 @@ function Home() {
               <div className="mt-2 flex flex-row-reverse">
                 <button
                   onClick={handleUnstake}
-                  className="rounded-md bg-blue-700 px-4 py-2"
+                  className="my-auto flex rounded-md bg-blue-700 px-4 py-2"
                 >
-                  Unstake NFTs
+                  <span className="mr-1 inline-block">
+                    {loadingUnstake ? <LoadingSpinner height="25px" /> : ''}
+                  </span>
+                  <span className="my-auto">Unstake NFTs</span>
                 </button>
-                <button
-                  onClick={handleClaimRewards}
-                  className="mr-5 rounded-md bg-blue-700 px-4 py-2"
-                >
-                  Claim Rewards
-                </button>
+                {rewardDistributor ? (
+                  <button
+                    onClick={handleClaimRewards}
+                    className="my-auto mr-5 flex rounded-md bg-blue-700 px-4 py-2"
+                  >
+                    <span className="mr-1 inline-block">
+                      {loadingClaimRewards ? (
+                        <LoadingSpinner height="20px" />
+                      ) : (
+                        ''
+                      )}
+                    </span>
+                    <span className="my-auto">Claim Rewards</span>
+                  </button>
+                ) : (
+                  ''
+                )}
               </div>
+              {rewardDistributor ? (
+                <div className="mt-2 flex flex-row">
+                  <p className="text-lg">
+                    Claimable Rewards: {claimableRewards} tokens
+                  </p>
+                  {loadingRewards ? <LoadingSpinner height="25px" /> : ''}
+                </div>
+              ) : (
+                ``
+              )}
             </div>
           </div>
         </div>

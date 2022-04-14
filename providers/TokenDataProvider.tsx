@@ -8,6 +8,7 @@ import React, { useCallback, useContext, useEffect, useState } from 'react'
 import { useEnvironmentCtx } from './EnvironmentProvider'
 import { useRouter } from 'next/router'
 import { getStakePool } from '@cardinal/staking/dist/cjs/programs/stakePool/accounts'
+import { handlePoolMapping } from 'common/utils'
 
 export interface UserTokenDataValues {
   tokenDatas: TokenData[]
@@ -46,7 +47,8 @@ export function TokenAccountsProvider({ children }: { children: ReactChild }) {
   useEffect(() => {
     if (stakePoolId) {
       const setData = async () => {
-        setStakePool(await getStakePool(connection, new PublicKey(stakePoolId)))
+        const pool = await handlePoolMapping(connection, stakePoolId as string)
+        setStakePool(pool)
       }
       setData().catch(console.error)
     }
@@ -58,7 +60,7 @@ export function TokenAccountsProvider({ children }: { children: ReactChild }) {
       return
     }
 
-    if (!stakePool){
+    if (!stakePool) {
       setError(`Invalid stake pool id`)
       return []
     }

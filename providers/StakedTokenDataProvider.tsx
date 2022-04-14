@@ -9,6 +9,7 @@ import { useRouter } from 'next/router'
 import { StakePoolData } from '@cardinal/staking/dist/cjs/programs/stakePool'
 import { AccountData } from '@cardinal/common'
 import { getStakePool } from '@cardinal/staking/dist/cjs/programs/stakePool/accounts'
+import { handlePoolMapping } from 'common/utils'
 
 export interface StakedTokenDataValues {
   stakedTokenDatas: TokenData[]
@@ -33,7 +34,11 @@ const StakedTokenData: React.Context<StakedTokenDataValues> =
     error: null,
   })
 
-export function StakedTokenDataProvider({ children }: { children: ReactChild }) {
+export function StakedTokenDataProvider({
+  children,
+}: {
+  children: ReactChild
+}) {
   const router = useRouter()
   const { stakePoolId } = router.query
   const [stakePool, setStakePool] = useState<AccountData<StakePoolData>>()
@@ -47,7 +52,8 @@ export function StakedTokenDataProvider({ children }: { children: ReactChild }) 
   useEffect(() => {
     if (stakePoolId) {
       const setData = async () => {
-        setStakePool(await getStakePool(connection, new PublicKey(stakePoolId)))
+        const pool = await handlePoolMapping(connection, stakePoolId as string)
+        setStakePool(pool)
       }
       setData().catch(console.error)
     }
@@ -59,14 +65,18 @@ export function StakedTokenDataProvider({ children }: { children: ReactChild }) 
       return
     }
 
-    if (!stakePool){
+    if (!stakePool) {
       setError(`Invalid stake pool id`)
       return []
     }
 
     setStakedRefreshing(true)
     setError(null)
-    getStakeEntryDatas(connection, stakePool.pubkey, new PublicKey(stakedAddress))
+    getStakeEntryDatas(
+      connection,
+      stakePool.pubkey,
+      new PublicKey(stakedAddress)
+    )
       .then((tokenDatas) => {
         let tokensWithMetadata = tokenDatas.filter((td) => td.metadata)
         setStakedTokenDatas(tokensWithMetadata)

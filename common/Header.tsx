@@ -1,7 +1,6 @@
 import { useWallet } from '@solana/wallet-adapter-react'
 import {
   useWalletModal,
-  WalletDisconnectButton,
   WalletMultiButton,
 } from '@solana/wallet-adapter-react-ui'
 import { AddressImage, DisplayAddress } from '@cardinal/namespaces-components'
@@ -12,13 +11,16 @@ import { useEffect, useState } from 'react'
 import { shortPubKey } from './utils'
 import { HiUserCircle } from 'react-icons/hi'
 import Link from 'next/link'
+import { poolMapping } from 'api/mapping'
 
 export const Header = () => {
+  const router = useRouter()
+  const { stakePoolId } = router.query
   const ctx = useEnvironmentCtx()
   const wallet = useWallet()
   const { setVisible } = useWalletModal()
-  const router = useRouter()
   const [tab, setTab] = useState<string>('wallet')
+  const [headerName, setHeaderName] = useState('Cardinal')
 
   useEffect(() => {
     const anchor = router.asPath.split('#')[1]
@@ -29,9 +31,34 @@ export const Header = () => {
     ? shortPubKey(wallet?.publicKey)
     : ''
 
+  useEffect(() => {
+    if (stakePoolId) {
+      const setData = async () => {
+        try {
+          const nameMapping = poolMapping.filter(
+            (p) => p.name === (stakePoolId as String)
+          )
+          const addressMapping = poolMapping.filter(
+            (p) => p.pool.toString() === (stakePoolId as String)
+          )
+          if (nameMapping.length > 0) {
+            setHeaderName(nameMapping[0]!.displayName)
+          } else if (addressMapping.length > 0) {
+            setHeaderName(addressMapping[0]!.displayName)
+          }
+        } catch (e) {
+          console.log(e)
+        }
+      }
+      setData().catch(console.error)
+    }
+  }, [stakePoolId])
+
   return (
-    <div className="flex h-20 ml-5 justify-between text-white">
-      <div className="my-auto text-xl font-semibold">Cardinal Staking UI</div>
+    <div className="ml-5 flex h-20 justify-between text-white">
+      <div className="my-auto text-xl font-semibold">
+        {headerName} Staking UI
+      </div>
       <div className="relative my-auto flex pr-8 align-middle">
         <Link href="/">
           <p className="my-auto mr-10 hover:cursor-pointer">Stake</p>
