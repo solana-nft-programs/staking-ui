@@ -1,5 +1,10 @@
+import { AccountData } from '@cardinal/common'
+import { StakePoolData } from '@cardinal/staking/dist/cjs/programs/stakePool'
+import { getStakePool } from '@cardinal/staking/dist/cjs/programs/stakePool/accounts'
 import { Wallet } from '@metaplex/js'
 import * as web3 from '@solana/web3.js'
+import { poolMapping } from 'api/mapping'
+import { notify } from './Notification'
 
 export function getExpirationString(expiration: number, UTCSecondsNow: number) {
   let day = (expiration - UTCSecondsNow) / 60 / 60 / 24
@@ -109,4 +114,24 @@ export const camelCase = (str: string) => {
     .split(' ')
     .map((x) => x.charAt(0).toUpperCase() + x.slice(1))
     .join('')
+}
+
+export const handlePoolMapping = async (
+  connection: web3.Connection,
+  poolId: string
+): Promise<AccountData<StakePoolData>> => {
+  const nameMapping = poolMapping.filter((p) => p.name === (poolId as String))
+  const addressMapping = poolMapping.filter(
+    (p) => p.pool.toString() === (poolId as String)
+  )
+  if (nameMapping.length > 0) {
+    return await getStakePool(connection, nameMapping[0]!.pool)
+  } else if (addressMapping.length > 0) {
+    return await getStakePool(
+      connection,
+      new web3.PublicKey(addressMapping[0]!.pool)
+    )
+  } else {
+    throw Error(`Can't find stake pool id ${poolId}`)
+  }
 }

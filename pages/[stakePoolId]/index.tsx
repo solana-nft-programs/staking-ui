@@ -10,7 +10,10 @@ import {
   ReceiptType,
   StakePoolData,
 } from '@cardinal/staking/dist/cjs/programs/stakePool'
-import { getStakePool } from '@cardinal/staking/dist/cjs/programs/stakePool/accounts'
+import {
+  getStakeEntry,
+  getStakePool,
+} from '@cardinal/staking/dist/cjs/programs/stakePool/accounts'
 import { useWallet } from '@solana/wallet-adapter-react'
 import { PublicKey } from '@solana/web3.js'
 import { TokenData } from 'api/types'
@@ -24,6 +27,12 @@ import { useStakedTokenData } from 'providers/StakedTokenDataProvider'
 import { LoadingSpinner } from 'common/LoadingSpinner'
 import { useRouter } from 'next/router'
 import { notify } from 'common/Notification'
+import { poolMapping } from 'api/mapping'
+import { handlePoolMapping } from 'common/utils'
+import { getPendingRewardsForPool } from 'api/stakeApi'
+import { findStakeEntryId } from '@cardinal/staking/dist/cjs/programs/stakePool/pda'
+import { getRewardDistributor } from '@cardinal/staking/dist/cjs/programs/rewardDistributor/accounts'
+import { findRewardDistributorId } from '@cardinal/staking/dist/cjs/programs/rewardDistributor/pda'
 
 function Home() {
   const router = useRouter()
@@ -47,17 +56,64 @@ function Home() {
   useEffect(() => {
     if (stakePoolId) {
       const setData = async () => {
-        setStakePool(await getStakePool(connection, new PublicKey(stakePoolId)))
+        try {
+          const pool = await handlePoolMapping(
+            connection,
+            stakePoolId as string
+          )
+          setStakePool(pool)
+        } catch (e) {
+          notify({
+            message: `${e}`,
+            type: 'error',
+          })
+        }
       }
       setData().catch(console.error)
     }
   }, [stakePoolId])
 
-  const filterTokens = () => {
-    if (!stakePool) {
-      return tokenDatas
+  useEffect(() => {
+    if (!wallet) {
+      throw new Error('Wallet not found')
     }
-    return tokenDatas
+    if (stakePoolId) {
+      const getRewards = async () => {
+        let amount = 0
+        stakedTokenDatas.forEach(async (tk) => {
+          const [rewardDistributorId] = await findRewardDistributorId(
+            stakePool!.pubkey
+          )
+          const rewardDistributor = await tryGetAccount(() =>
+            getRewardDistributor(connection, rewardDistributorId)
+          )
+          if (!rewardDistributor) {
+            return
+          }
+          const [stakeEntryId] = await findStakeEntryId(
+            connection,
+            wallet.publicKey!,
+            stakePool!.pubkey,
+            tk.tokenAccount?.account.data.parsed.info.mint
+          )
+          const stakeEntry = await getStakeEntry(connection, stakeEntryId)
+          const rewards = await getPendingRewardsForPool(
+            connection,
+            tk.tokenAccount?.account.data.parsed.info.mint,
+            stakeEntry,
+            rewardDistributor
+          )
+          amount += rewards
+        })
+      }
+      getRewards().catch(console.error)
+    }
+  }, [stakedTokenDatas])
+
+  const filterTokens = () => {
+    return tokenDatas.filter(
+      (tk) => tk.tokenAccount?.account.data.parsed.info.state !== 'frozen'
+    )
 
     // return tokenDatas.filter((token) => {
     //   let valid = false

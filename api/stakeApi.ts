@@ -7,8 +7,33 @@ import { Connection, PublicKey } from '@solana/web3.js'
 import * as anchor from '@project-serum/anchor'
 import { AccountData } from '@cardinal/common'
 import { StakeEntryTokenData } from './types'
+import { findRewardEntryId } from '@cardinal/staking/dist/cjs/programs/rewardDistributor/pda'
+import { RewardDistributorData } from '@cardinal/staking/dist/cjs/programs/rewardDistributor'
+import { getRewardEntry } from '@cardinal/staking/dist/cjs/programs/rewardDistributor/accounts'
 
 export const STAKER_OFFSET = 82
+
+export const getPendingRewardsForPool = async (
+  connection: Connection,
+  mint_id: PublicKey,
+  stakeEntry: AccountData<StakeEntryData>,
+  rewardDistributor: AccountData<RewardDistributorData>
+): Promise<number> => {
+  const [rewardEntryId] = await findRewardEntryId(
+    rewardDistributor.pubkey,
+    mint_id
+  )
+  const rewardEntry = await getRewardEntry(connection, rewardEntryId)
+  const rewardTimeToReceive =
+    stakeEntry.parsed.totalStakeSeconds.toNumber() -
+    rewardEntry.parsed.rewardSecondsReceived.toNumber()
+  const rewardAmountToReceive =
+    (rewardTimeToReceive /
+      rewardDistributor.parsed.rewardDurationSeconds.toNumber()) *
+    rewardDistributor.parsed.rewardAmount.toNumber() *
+    rewardEntry.parsed.multiplier.toNumber()
+  return rewardAmountToReceive
+}
 
 export async function getStakeEntryDatas(
   connection: Connection,
