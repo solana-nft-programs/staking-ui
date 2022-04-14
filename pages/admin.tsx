@@ -177,8 +177,6 @@ function Admin() {
         stakePoolParams
       )
 
-      console.log(supply?.toString(), rewardAmountBN?.toString())
-
       if (rewardDistributorKind) {
         const rewardDistributionParams = {
           stakePoolId: stakePoolPK,
@@ -224,7 +222,6 @@ function Admin() {
       const rewardDistributorData = await tryGetAccount(() =>
         getRewardDistributor(connection, rewardDistributorId)
       )
-      console.log('hey', rewardDistributorData)
     } catch (e) {
       notify({ message: `Error creating stake pool: ${e}`, type: 'error' })
     } finally {

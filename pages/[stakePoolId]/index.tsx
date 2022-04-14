@@ -1,4 +1,5 @@
 import { AccountData, tryGetAccount } from '@cardinal/common'
+import * as splToken from '@solana/spl-token'
 import {
   createStakeEntryAndStakeMint,
   stake,
@@ -27,12 +28,13 @@ import { useStakedTokenData } from 'providers/StakedTokenDataProvider'
 import { LoadingSpinner } from 'common/LoadingSpinner'
 import { useRouter } from 'next/router'
 import { notify } from 'common/Notification'
-import { poolMapping } from 'api/mapping'
 import { handlePoolMapping } from 'common/utils'
 import { getPendingRewardsForPool } from 'api/stakeApi'
 import { findStakeEntryId } from '@cardinal/staking/dist/cjs/programs/stakePool/pda'
 import { getRewardDistributor } from '@cardinal/staking/dist/cjs/programs/rewardDistributor/accounts'
 import { findRewardDistributorId } from '@cardinal/staking/dist/cjs/programs/rewardDistributor/pda'
+import { formatMintNaturalAmountAsDecimal } from 'common/units'
+import { BN } from '@project-serum/anchor'
 
 function Home() {
   const router = useRouter()
@@ -45,6 +47,8 @@ function Home() {
   const { refreshing, setAddress, tokenDatas, loaded } = useUserTokenData()
   const [unstakedSelected, setUnstakedSelected] = useState<TokenData[]>([])
   const [stakedSelected, setStakedSelected] = useState<TokenData[]>([])
+  const [claimableRewards, setClaimableRewards] = useState<number>(0)
+  const [loadingRewards, setLoadingRewards] = useState<boolean>(false)
 
   useEffect(() => {
     if (wallet && wallet.connected && wallet.publicKey) {
@@ -79,32 +83,52 @@ function Home() {
     }
     if (stakePoolId) {
       const getRewards = async () => {
-        let amount = 0
-        stakedTokenDatas.forEach(async (tk) => {
-          const [rewardDistributorId] = await findRewardDistributorId(
-            stakePool!.pubkey
-          )
-          const rewardDistributor = await tryGetAccount(() =>
-            getRewardDistributor(connection, rewardDistributorId)
-          )
-          if (!rewardDistributor) {
+        setLoadingRewards(true)
+        const [rewardDistributorId] = await findRewardDistributorId(
+          stakePool!.pubkey
+        )
+        const rewardDistributor = await tryGetAccount(() =>
+          getRewardDistributor(connection, rewardDistributorId)
+        )
+        if (!rewardDistributor) {
+          return
+        }
+        let mint = new splToken.Token(
+          connection,
+          rewardDistributor.parsed.rewardMint,
+          splToken.TOKEN_PROGRAM_ID,
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          null
+        )
+        const mintInfo = await mint.getMintInfo()
+        let total = 0
+
+        for (let i = 0; i < stakedTokenDatas.length; i++) {
+          let tk = stakedTokenDatas[i]
+          if (!tk || !tk.stakeEntry) {
             return
           }
           const [stakeEntryId] = await findStakeEntryId(
             connection,
             wallet.publicKey!,
             stakePool!.pubkey,
-            tk.tokenAccount?.account.data.parsed.info.mint
+            tk.stakeEntry?.parsed.originalMint!
           )
           const stakeEntry = await getStakeEntry(connection, stakeEntryId)
           const rewards = await getPendingRewardsForPool(
             connection,
-            tk.tokenAccount?.account.data.parsed.info.mint,
+            tk.stakeEntry?.parsed.originalMint!,
             stakeEntry,
             rewardDistributor
           )
-          amount += rewards
-        })
+          let amount = new BN(
+            Number(formatMintNaturalAmountAsDecimal(mintInfo, new BN(rewards)))
+          )
+          total += amount.toNumber()
+        }
+        setClaimableRewards(total)
+        setLoadingRewards(false)
       }
       getRewards().catch(console.error)
     }
@@ -409,6 +433,10 @@ function Home() {
                 >
                   Claim Rewards
                 </button>
+              </div>
+              <div className="mt-2 flex flex-row">
+                <p className="text-lg">Claimable Rewards: {claimableRewards}</p>
+                {loadingRewards ? <LoadingSpinner height="25px" /> : ''}
               </div>
             </div>
           </div>

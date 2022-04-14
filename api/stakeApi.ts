@@ -1,7 +1,7 @@
 import { stakePool } from '@cardinal/staking'
 import { StakeEntryData } from '@cardinal/staking/dist/cjs/programs/stakePool'
 import * as metaplex from '@metaplex-foundation/mpl-token-metadata'
-import { getBatchedMultipleAccounts } from '@cardinal/common'
+import { getBatchedMultipleAccounts, tryGetAccount } from '@cardinal/common'
 import { BorshAccountsCoder } from '@project-serum/anchor'
 import { Connection, PublicKey } from '@solana/web3.js'
 import * as anchor from '@project-serum/anchor'
@@ -19,19 +19,29 @@ export const getPendingRewardsForPool = async (
   stakeEntry: AccountData<StakeEntryData>,
   rewardDistributor: AccountData<RewardDistributorData>
 ): Promise<number> => {
+  const UTCNow = Date.now() / 1000
   const [rewardEntryId] = await findRewardEntryId(
     rewardDistributor.pubkey,
     mint_id
   )
-  const rewardEntry = await getRewardEntry(connection, rewardEntryId)
+  const rewardEntry = await tryGetAccount(() =>
+    getRewardEntry(connection, rewardEntryId)
+  )
+  let rewardsReceived = new anchor.BN(0)
+  let multiplier = new anchor.BN(1)
+  if (rewardEntry) {
+    rewardsReceived = rewardEntry.parsed.rewardSecondsReceived
+    multiplier = rewardEntry.parsed.multiplier
+  }
   const rewardTimeToReceive =
-    stakeEntry.parsed.totalStakeSeconds.toNumber() -
-    rewardEntry.parsed.rewardSecondsReceived.toNumber()
+    UTCNow -
+    stakeEntry.parsed.lastStakedAt.toNumber() -
+    rewardsReceived.toNumber()
   const rewardAmountToReceive =
     (rewardTimeToReceive /
       rewardDistributor.parsed.rewardDurationSeconds.toNumber()) *
     rewardDistributor.parsed.rewardAmount.toNumber() *
-    rewardEntry.parsed.multiplier.toNumber()
+    multiplier.toNumber()
   return rewardAmountToReceive
 }
 
