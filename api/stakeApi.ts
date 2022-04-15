@@ -1,49 +1,15 @@
+import * as splToken from '@solana/spl-token'
 import { stakePool } from '@cardinal/staking'
 import { StakeEntryData } from '@cardinal/staking/dist/cjs/programs/stakePool'
 import * as metaplex from '@metaplex-foundation/mpl-token-metadata'
-import { getBatchedMultipleAccounts, tryGetAccount } from '@cardinal/common'
+import { getBatchedMultipleAccounts } from '@cardinal/common'
 import { BorshAccountsCoder } from '@project-serum/anchor'
 import { Connection, PublicKey } from '@solana/web3.js'
 import * as anchor from '@project-serum/anchor'
 import { AccountData } from '@cardinal/common'
 import { StakeEntryTokenData } from './types'
-import { findRewardEntryId } from '@cardinal/staking/dist/cjs/programs/rewardDistributor/pda'
-import { RewardDistributorData } from '@cardinal/staking/dist/cjs/programs/rewardDistributor'
-import { getRewardEntry } from '@cardinal/staking/dist/cjs/programs/rewardDistributor/accounts'
 
 export const STAKER_OFFSET = 82
-
-export const getPendingRewardsForPool = async (
-  connection: Connection,
-  mint_id: PublicKey,
-  stakeEntry: AccountData<StakeEntryData>,
-  rewardDistributor: AccountData<RewardDistributorData>
-): Promise<number> => {
-  const UTCNow = Date.now() / 1000
-  const [rewardEntryId] = await findRewardEntryId(
-    rewardDistributor.pubkey,
-    mint_id
-  )
-  const rewardEntry = await tryGetAccount(() =>
-    getRewardEntry(connection, rewardEntryId)
-  )
-  let rewardsReceived = new anchor.BN(0)
-  let multiplier = new anchor.BN(1)
-  if (rewardEntry) {
-    rewardsReceived = rewardEntry.parsed.rewardSecondsReceived
-    multiplier = rewardEntry.parsed.multiplier
-  }
-  const rewardTimeToReceive =
-    UTCNow -
-    stakeEntry.parsed.lastStakedAt.toNumber() -
-    rewardsReceived.toNumber()
-  const rewardAmountToReceive =
-    (rewardTimeToReceive /
-      rewardDistributor.parsed.rewardDurationSeconds.toNumber()) *
-    rewardDistributor.parsed.rewardAmount.toNumber() *
-    multiplier.toNumber()
-  return rewardAmountToReceive
-}
 
 export async function getStakeEntryDatas(
   connection: Connection,
