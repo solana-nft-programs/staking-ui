@@ -138,19 +138,7 @@ export const handlePoolMapping = async (
   }
 }
 
-export const getMintDetails = async (mintId: string) => {
-  return await fetch(
-    'https://raw.githubusercontent.com/solana-labs/token-list/main/src/tokens/solana.tokenlist.json'
-  )
+export const getMintsDetails = async () =>
+  await fetch('https://token-list.solana.com/solana.tokenlist.json')
     .then((response) => response.json())
-    .then((data) => {
-      let out = data.tokens.filter((tk: { address: string }) => {
-        return tk.address === mintId
-      })
-      if (out.length > 0) {
-        return [out[0]]
-      } else {
-        return out
-      }
-    })
-}
+    .then((data) => data['tokens'])

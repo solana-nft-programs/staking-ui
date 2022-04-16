@@ -1,4 +1,3 @@
-import { BigNumber } from 'bignumber.js'
 import { AccountData, tryGetAccount } from '@cardinal/common'
 import * as splToken from '@solana/spl-token'
 import {
@@ -25,16 +24,14 @@ import { useStakedTokenData } from 'providers/StakedTokenDataProvider'
 import { LoadingSpinner } from 'common/LoadingSpinner'
 import { useRouter } from 'next/router'
 import { notify } from 'common/Notification'
-import { getMintDetails, handlePoolMapping } from 'common/utils'
+import { handlePoolMapping } from 'common/utils'
 import { getRewardDistributor } from '@cardinal/staking/dist/cjs/programs/rewardDistributor/accounts'
 import { findRewardDistributorId } from '@cardinal/staking/dist/cjs/programs/rewardDistributor/pda'
-import {
-  getMintDecimalAmountFromNatural,
-  getMintNaturalAmountFromDecimal,
-} from 'common/units'
+import { getMintDecimalAmountFromNatural } from 'common/units'
 import { BN } from '@project-serum/anchor'
 import { RewardDistributorData } from '@cardinal/staking/dist/cjs/programs/rewardDistributor'
 import { getPendingRewardsForPool } from '@cardinal/staking'
+import { useTokenList } from 'providers/TokenListProvider'
 
 function Home() {
   const router = useRouter()
@@ -57,6 +54,7 @@ function Home() {
   const [mintName, setMintName] = useState('')
   const [loadingMintName, setLoadingMintName] = useState(true)
   const [mintInfo, setMintInfo] = useState<splToken.MintInfo>()
+  const { tokenList } = useTokenList()
 
   useEffect(() => {
     if (wallet && wallet.connected && wallet.publicKey) {
@@ -109,11 +107,12 @@ function Home() {
 
         if (rewardDistributor && mintName.length === 0) {
           setLoadingMintName(true)
-          const mintDetails = await getMintDetails(
-            rewardDistributor?.parsed.rewardMint.toString()
+          const tokenListData = tokenList.find(
+            (tk) =>
+              tk.address === rewardDistributor?.parsed.rewardMint.toString()
           )
-          if (mintDetails) {
-            setMintName(mintDetails[0].name)
+          if (tokenListData) {
+            setMintName(tokenListData.name)
           }
           setLoadingMintName(false)
         }
@@ -244,6 +243,7 @@ function Home() {
       } catch (e) {
         notify({ message: `Transaction failed: ${e}`, type: 'error' })
         console.error(e)
+        break
       }
     }
     setLoadingUnstake(false)
@@ -266,7 +266,7 @@ function Home() {
         }
 
         console.log('Creating stake entry and stake mint...')
-        const [initTx, stakeMintKeypair] = await createStakeEntryAndStakeMint(
+        const [initTx, , stakeMintKeypair] = await createStakeEntryAndStakeMint(
           connection,
           wallet as Wallet,
           {
@@ -301,6 +301,7 @@ function Home() {
       } catch (e) {
         notify({ message: `Transaction failed: ${e}`, type: 'error' })
         console.error(e)
+        break
       }
     }
     setLoadingStake(false)
@@ -427,13 +428,18 @@ function Home() {
                               <div className="relative">
                                 <img
                                   className="mt-2 rounded-lg"
-                                  src={tk.metadata?.data.image}
-                                  alt={tk.metadata?.data.name}
+                                  src={
+                                    tk.metadata?.data.image ||
+                                    tk.tokeListData?.logoURI
+                                  }
+                                  alt={
+                                    tk.metadata?.data.name ||
+                                    tk.tokeListData?.name
+                                  }
                                 ></img>
 
                                 <input
                                   type="checkbox"
-                                  // checked={isJamboSelected(token)}
                                   className="absolute top-[8px] right-[8px] h-4 w-4 rounded-sm text-green-600"
                                   id={tk?.tokenAccount?.pubkey.toBase58()}
                                   name={tk?.tokenAccount?.pubkey.toBase58()}
@@ -456,6 +462,20 @@ function Home() {
                                 />
                               </div>
                             </label>
+                            {tk.tokeListData ? (
+                              <span>
+                                {Number(
+                                  (
+                                    tk.tokenAccount?.account.data.parsed.info
+                                      .tokenAmount.amount /
+                                    10 ** tk.tokeListData.decimals
+                                  ).toFixed(2)
+                                )}{' '}
+                                {tk.tokeListData.symbol}
+                              </span>
+                            ) : (
+                              ''
+                            )}
                           </div>
                         ))}
                       </div>
@@ -504,8 +524,14 @@ function Home() {
                               <div className="relative">
                                 <img
                                   className="mt-2 rounded-lg"
-                                  src={tk.metadata?.data.image}
-                                  alt={tk.metadata?.data.name}
+                                  src={
+                                    tk.metadata?.data.image ||
+                                    tk.tokeListData?.logoURI
+                                  }
+                                  alt={
+                                    tk.metadata?.data.name ||
+                                    tk.tokeListData?.name
+                                  }
                                 ></img>
 
                                 <input

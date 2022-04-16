@@ -7,8 +7,8 @@ import type { ReactChild } from 'react'
 import React, { useCallback, useContext, useEffect, useState } from 'react'
 import { useEnvironmentCtx } from './EnvironmentProvider'
 import { useRouter } from 'next/router'
-import { getStakePool } from '@cardinal/staking/dist/cjs/programs/stakePool/accounts'
 import { handlePoolMapping } from 'common/utils'
+import { TokenListData, useTokenList } from './TokenListProvider'
 
 export interface UserTokenDataValues {
   tokenDatas: TokenData[]
@@ -43,6 +43,7 @@ export function TokenAccountsProvider({ children }: { children: ReactChild }) {
   const [tokenDatas, setTokenDatas] = useState<TokenData[]>([])
   const [refreshing, setRefreshing] = useState<boolean>(false)
   const [loaded, setLoaded] = useState<boolean>(false)
+  const { tokenList } = useTokenList()
 
   useEffect(() => {
     if (stakePoolId) {
@@ -68,10 +69,32 @@ export function TokenAccountsProvider({ children }: { children: ReactChild }) {
     setRefreshing(true)
     setError(null)
     getTokenAccountsWithData(connection, stakePool?.pubkey, address)
-      .then((tokenDatas) => {
-        let tokensWithMetadata = tokenDatas.filter((td) => td.metadata)
-        // tokensWithMetadata = filterTokens(config.filters, tokensWithMetadata)
-        setTokenDatas(tokensWithMetadata)
+      .then(async (tokenDatas) => {
+        const hydratedTokenDatas = tokenDatas.reduce((acc, tokenData) => {
+          let tokenListData: TokenListData | undefined
+          try {
+            tokenListData = tokenList.find(
+              (t) =>
+                t.address ===
+                tokenData.tokenAccount?.account.data.parsed.info.mint.toString()
+            )
+          } catch (e) {}
+
+          if (tokenListData) {
+            acc.push({
+              ...tokenData,
+              tokeListData: tokenListData,
+            })
+          } else if (tokenData.metadata) {
+            acc.push({
+              ...tokenData,
+              tokeListData: undefined,
+            })
+          }
+          return acc
+        }, [] as TokenData[])
+
+        setTokenDatas(hydratedTokenDatas)
       })
       .catch((e) => {
         console.log(e)
@@ -92,7 +115,7 @@ export function TokenAccountsProvider({ children }: { children: ReactChild }) {
       10000
     )
     return () => clearInterval(interval)
-  }, [refreshTokenAccounts])
+  }, [refreshTokenAccounts, tokenList])
 
   return (
     <UserTokenData.Provider
