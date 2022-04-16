@@ -282,13 +282,13 @@
   integrity sha512-kDDfYDgONngQ/0cKkdkJl2xPXNnOBc43Y0K/9L/mhpz2d5mb5X0WofltSgmwl5UdWo19evJrQARF10bxSXymeQ==
   dependencies:
     "@cardinal/common" "^1.0.10"
-    "@cardinal/token-manager" "^0.2.22"
+    "@cardinal/token-manager" "^1.1.0"
     "@metaplex-foundation/mpl-token-metadata" "^1.2.5"
 
-"@cardinal/token-manager@^0.2.22":
-  version "0.2.23"
-  resolved "https://registry.yarnpkg.com/@cardinal/token-manager/-/token-manager-0.2.23.tgz#b55ca611b3d25116ac0da0258cb122253955cd4b"
-  integrity sha512-MTWvD+CCmOXpaM9oGCgvxEYaoLk/0yGDYiQZledZYY1aT6MWhYsw8bqRMH4qTUM6aKqm/RbqQP+XusSjeMa9vw==
+"@cardinal/token-manager@^1.0.3":
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/@cardinal/token-manager/-/token-manager-1.0.3.tgz#698e25e688521f9faf6e219c363d93eaa2509529"
+  integrity sha512-TNSQWDi7EiH155qxjwPO/5sLTo3re9WsOTjXtESoE+whJFa8u2beEwD8r3pny3r4R/5a+Fkm1f0+GK0WgaHX9g==
   dependencies:
     "@metaplex-foundation/mpl-token-metadata" "^1.2.3"
     "@solana/buffer-layout" "^4.0.0"
@@ -298,10 +298,10 @@
     tiny-invariant "^1.2.0"
     tslib "^2.3.1"
 
-"@cardinal/token-manager@^1.0.3":
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/@cardinal/token-manager/-/token-manager-1.0.3.tgz#698e25e688521f9faf6e219c363d93eaa2509529"
-  integrity sha512-TNSQWDi7EiH155qxjwPO/5sLTo3re9WsOTjXtESoE+whJFa8u2beEwD8r3pny3r4R/5a+Fkm1f0+GK0WgaHX9g==
+"@cardinal/token-manager@^1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@cardinal/token-manager/-/token-manager-1.1.0.tgz#5c64e2cdeaea0e7455ebca96f3d86180dc5c45e4"
+  integrity sha512-632KWT2fSB+3s/+vc5RCiFXPLjvUbnaFS/0NMa9h7dlZ7gVG1pV2A8ICv+IAhMAAN4jTt+Lr4d6M6244mlWRTg==
   dependencies:
     "@metaplex-foundation/mpl-token-metadata" "^1.2.3"
     "@solana/buffer-layout" "^4.0.0"
