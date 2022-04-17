@@ -137,3 +137,8 @@ export const handlePoolMapping = async (
     throw Error(`Cannot find stake pool id ${poolId}`)
   }
 }
+
+export const getMintsDetails = async () =>
+  await fetch('https://token-list.solana.com/solana.tokenlist.json')
+    .then((response) => response.json())
+    .then((data) => data['tokens'])

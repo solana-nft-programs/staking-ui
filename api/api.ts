@@ -1,5 +1,5 @@
 import { getBatchedMultipleAccounts as getBatchedMultipleAccounts } from '@cardinal/common'
-import { getMintSupply, stakePool } from '@cardinal/staking'
+import { stakePool } from '@cardinal/staking'
 import { findStakeEntryId } from '@cardinal/staking/dist/cjs/programs/stakePool/pda'
 import type { AccountData } from '@cardinal/token-manager'
 import {

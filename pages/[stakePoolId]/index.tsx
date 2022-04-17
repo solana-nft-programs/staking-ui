@@ -1,4 +1,3 @@
-import { BigNumber } from 'bignumber.js'
 import { AccountData, tryGetAccount } from '@cardinal/common'
 import * as splToken from '@solana/spl-token'
 import {
@@ -12,10 +11,6 @@ import {
   ReceiptType,
   StakePoolData,
 } from '@cardinal/staking/dist/cjs/programs/stakePool'
-import {
-  getStakeEntry,
-  getStakePool,
-} from '@cardinal/staking/dist/cjs/programs/stakePool/accounts'
 import { useWallet } from '@solana/wallet-adapter-react'
 import { PublicKey } from '@solana/web3.js'
 import { TokenData } from 'api/types'
@@ -30,16 +25,13 @@ import { LoadingSpinner } from 'common/LoadingSpinner'
 import { useRouter } from 'next/router'
 import { notify } from 'common/Notification'
 import { handlePoolMapping } from 'common/utils'
-import { getPendingRewardsForPool } from 'api/stakeApi'
-import { findStakeEntryId } from '@cardinal/staking/dist/cjs/programs/stakePool/pda'
 import { getRewardDistributor } from '@cardinal/staking/dist/cjs/programs/rewardDistributor/accounts'
 import { findRewardDistributorId } from '@cardinal/staking/dist/cjs/programs/rewardDistributor/pda'
-import {
-  formatMintNaturalAmountAsDecimal,
-  getMintDecimalAmountFromNatural,
-} from 'common/units'
+import { getMintDecimalAmountFromNatural } from 'common/units'
 import { BN } from '@project-serum/anchor'
 import { RewardDistributorData } from '@cardinal/staking/dist/cjs/programs/rewardDistributor'
+import { getPendingRewardsForPool } from '@cardinal/staking'
+import { useTokenList } from 'providers/TokenListProvider'
 
 function Home() {
   const router = useRouter()
@@ -59,6 +51,10 @@ function Home() {
   const [loadingStake, setLoadingStake] = useState(false)
   const [loadingUnstake, setLoadingUnstake] = useState(false)
   const [loadingClaimRewards, setLoadingClaimRewards] = useState(false)
+  const [mintName, setMintName] = useState('')
+  const [loadingMintName, setLoadingMintName] = useState(true)
+  const [mintInfo, setMintInfo] = useState<splToken.MintInfo>()
+  const { tokenList } = useTokenList()
 
   useEffect(() => {
     if (wallet && wallet.connected && wallet.publicKey) {
@@ -94,57 +90,65 @@ function Home() {
         const [rewardDistributorId] = await findRewardDistributorId(
           stakePool!.pubkey
         )
-        const rewardDistributorAcc = await tryGetAccount(() =>
-          getRewardDistributor(connection, rewardDistributorId)
-        )
-        if (!rewardDistributorAcc) {
-          return
+
+        let rewardDistributorAcc: AccountData<RewardDistributorData> | null
+        if (!rewardDistributor) {
+          rewardDistributorAcc = await tryGetAccount(() =>
+            getRewardDistributor(connection, rewardDistributorId)
+          )
+          if (!rewardDistributorAcc) {
+            return
+          }
+          setRewardDistributor(rewardDistributorAcc)
         }
-        setRewardDistributor(rewardDistributorAcc)
         if (!wallet) {
           throw new Error('Wallet not found')
         }
 
+        if (rewardDistributor && mintName.length === 0) {
+          setLoadingMintName(true)
+          const tokenListData = tokenList.find(
+            (tk) =>
+              tk.address === rewardDistributor?.parsed.rewardMint.toString()
+          )
+          if (tokenListData) {
+            setMintName(tokenListData.name)
+          }
+          setLoadingMintName(false)
+        }
+
         let mint = new splToken.Token(
           connection,
-          rewardDistributorAcc.parsed.rewardMint,
+          rewardDistributor!.parsed.rewardMint,
           splToken.TOKEN_PROGRAM_ID,
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
           null
         )
-        const mintInfo = await mint.getMintInfo()
-        let total = 0
+        setMintInfo(await mint.getMintInfo())
 
-        for (let i = 0; i < stakedTokenDatas.length; i++) {
-          let tk = stakedTokenDatas[i]
+        let mintIds: PublicKey[] = []
+        stakedTokenDatas.forEach((tk) => {
           if (!tk || !tk.stakeEntry) {
             return
           }
-          const [stakeEntryId] = await findStakeEntryId(
-            connection,
-            wallet.publicKey!,
-            stakePool!.pubkey,
-            tk.stakeEntry?.parsed.originalMint!
-          )
-          const stakeEntry = await getStakeEntry(connection, stakeEntryId)
-          const rewards = await getPendingRewardsForPool(
-            connection,
-            tk.stakeEntry?.parsed.originalMint!,
-            stakeEntry,
-            rewardDistributorAcc
-          )
-          let amount = new BN(
-            Number(getMintDecimalAmountFromNatural(mintInfo, new BN(rewards)))
-          )
-          total += amount.toNumber()
-        }
-        setClaimableRewards(total)
+          mintIds.push(tk.stakeEntry?.parsed.originalMint!)
+        })
+        const rewards = await getPendingRewardsForPool(
+          connection,
+          wallet.publicKey!,
+          mintIds,
+          rewardDistributor!
+        )
+        let amount = new BN(
+          Number(getMintDecimalAmountFromNatural(mintInfo!, new BN(rewards)))
+        )
+        setClaimableRewards(amount.toNumber())
         setLoadingRewards(false)
       }
       getRewards().catch(console.error)
     }
-  }, [stakedTokenDatas, stakePool])
+  }, [stakedTokenDatas])
 
   const filterTokens = () => {
     return tokenDatas.filter(
@@ -210,17 +214,13 @@ function Home() {
     setLoadingClaimRewards(false)
   }
   async function handleUnstake() {
-    if (stakedSelected.length > 4) {
-      notify({ message: `Limit of 4 tokens at a time reached`, type: 'error' })
-      return
-    }
-    setLoadingUnstake(true)
     if (!wallet) {
       throw new Error('Wallet not connected')
     }
     if (!stakePool) {
       throw new Error('No stake pool detected')
     }
+    setLoadingUnstake(true)
 
     for (let step = 0; step < stakedSelected.length; step++) {
       try {
@@ -235,12 +235,14 @@ function Home() {
           originalMintId: token.stakeEntry.parsed.originalMint,
         })
         await executeTransaction(connection, wallet as Wallet, transaction, {})
-        notify({ message: `Successfully unstaked`, type: 'success' })
+        notify({
+          message: `Successfully unstaked ${step + 1}/${stakedSelected.length}`,
+          type: 'success',
+        })
         console.log('Successfully unstaked')
       } catch (e) {
         notify({ message: `Transaction failed: ${e}`, type: 'error' })
         console.error(e)
-      } finally {
         break
       }
     }
@@ -248,14 +250,13 @@ function Home() {
   }
 
   async function handleStake() {
-    if (unstakedSelected.length > 4) {
-      notify({ message: `Limit of 4 tokens at a time reached`, type: 'error' })
-      return
+    if (!wallet) {
+      throw new Error('Wallet not connected')
     }
-    setLoadingStake(true)
     if (!stakePool) {
       throw new Error('No stake pool detected')
     }
+    setLoadingStake(true)
 
     for (let step = 0; step < unstakedSelected.length; step++) {
       try {
@@ -265,7 +266,7 @@ function Home() {
         }
 
         console.log('Creating stake entry and stake mint...')
-        const [initTx, stakeMintKeypair] = await createStakeEntryAndStakeMint(
+        const [initTx, , stakeMintKeypair] = await createStakeEntryAndStakeMint(
           connection,
           wallet as Wallet,
           {
@@ -292,12 +293,14 @@ function Home() {
           userOriginalMintTokenAccountId: token.tokenAccount?.pubkey,
         })
         await executeTransaction(connection, wallet as Wallet, transaction, {})
-        notify({ message: `Successfully staked`, type: 'success' })
+        notify({
+          message: `Successfully staked ${step + 1}/${unstakedSelected.length}`,
+          type: 'success',
+        })
         console.log('Successfully staked')
       } catch (e) {
         notify({ message: `Transaction failed: ${e}`, type: 'error' })
         console.error(e)
-      } finally {
         break
       }
     }
@@ -305,17 +308,17 @@ function Home() {
   }
 
   const isUnstakedTokenSelected = (tk: TokenData) =>
-    unstakedSelected.filter(
+    unstakedSelected.some(
       (utk) =>
         utk.tokenAccount?.account.data.parsed.info.mint.toString() ===
         tk.tokenAccount?.account.data.parsed.info.mint.toString()
-    ).length > 0
+    )
   const isStakedTokenSelected = (tk: TokenData) =>
-    stakedSelected.filter(
+    stakedSelected.some(
       (stk) =>
-        stk.tokenAccount?.account.data.parsed.info.mint.toString() ===
-        tk.tokenAccount?.account.data.parsed.info.mint.toString()
-    ).length > 0
+        stk.stakeEntry?.parsed.originalMint.toString() ===
+        tk.stakeEntry?.parsed.originalMint.toString()
+    )
 
   return (
     <div>
@@ -328,6 +331,73 @@ function Home() {
       <div>
         <div className="container mx-auto max-h-[90vh] w-full bg-[#1a1b20]">
           <Header />
+          {rewardDistributor ? (
+            <div className="flex h-[10vh] max-h-[10vh] rounded-md bg-white bg-opacity-5 p-10 text-gray-200">
+              <p className="mb-3 inline-block text-lg ">
+                Reward Mint:{' '}
+                <a
+                  className="text-white underline"
+                  href={
+                    'https://explorer.solana.com/address/' +
+                    rewardDistributor.parsed.rewardMint.toString()
+                  }
+                >
+                  {mintName}
+                </a>
+              </p>
+              {loadingMintName ? (
+                <div className="mb-3 ml-2 inline-block text-lg">
+                  <LoadingSpinner height="25px" />
+                </div>
+              ) : (
+                ''
+              )}
+              <p className="mb-3 ml-10 inline-block text-lg ">
+                Reward Duration Seconds:{' '}
+                {rewardDistributor.parsed.rewardDurationSeconds.toNumber()}
+              </p>
+              <p className="mb-3 ml-10 inline-block text-lg ">
+                Rewards Issued:{' '}
+                {rewardDistributor.parsed.rewardsIssued.toNumber()}
+              </p>
+              {rewardDistributor.parsed.maxSupply ? (
+                <p className="mb-3 ml-10 inline-block text-lg ">
+                  Max Supply: {rewardDistributor.parsed.maxSupply.toNumber()}
+                </p>
+              ) : (
+                ''
+              )}
+              <p className="mb-3 ml-10 mr-2 inline-block text-lg ">
+                Claimable Rewards: {claimableRewards} {mintName}
+              </p>
+              {loadingRewards ? (
+                <div className="mb-3 mr-3 inline-block text-lg">
+                  <LoadingSpinner height="25px" />
+                </div>
+              ) : (
+                ''
+              )}
+              {mintInfo ? (
+                <p className="mb-3 ml-10 mr-2 inline-block text-lg ">
+                  Rewards Rate:{' '}
+                  {(
+                    Number(
+                      getMintDecimalAmountFromNatural(
+                        mintInfo!,
+                        new BN(rewardDistributor.parsed.rewardAmount)
+                      )
+                    ) /
+                    rewardDistributor.parsed.rewardDurationSeconds.toNumber()
+                  ).toFixed(2)}{' '}
+                  {mintName}
+                </p>
+              ) : (
+                ''
+              )}
+            </div>
+          ) : (
+            ''
+          )}
           <div className="my-2 grid h-full grid-cols-2 gap-4">
             <div className="flex h-[85vh] max-h-[85vh] flex-col rounded-md bg-white bg-opacity-5 p-10 text-gray-200">
               <div className="mt-2 flex flex-row">
@@ -358,34 +428,54 @@ function Home() {
                               <div className="relative">
                                 <img
                                   className="mt-2 rounded-lg"
-                                  src={tk.metadata?.data.image}
-                                  alt={tk.metadata?.data.name}
+                                  src={
+                                    tk.metadata?.data.image ||
+                                    tk.tokeListData?.logoURI
+                                  }
+                                  alt={
+                                    tk.metadata?.data.name ||
+                                    tk.tokeListData?.name
+                                  }
                                 ></img>
 
                                 <input
                                   type="checkbox"
-                                  // checked={isJamboSelected(token)}
                                   className="absolute top-[8px] right-[8px] h-4 w-4 rounded-sm text-green-600"
                                   id={tk?.tokenAccount?.pubkey.toBase58()}
                                   name={tk?.tokenAccount?.pubkey.toBase58()}
                                   onChange={() => {
                                     if (isUnstakedTokenSelected(tk)) {
-                                      setUnstakedSelected((tks) =>
-                                        tks.filter(
+                                      setUnstakedSelected(
+                                        unstakedSelected.filter(
                                           (data) =>
                                             data.tokenAccount?.account.data.parsed.info.mint.toString() !==
                                             tk.tokenAccount?.account.data.parsed.info.mint.toString()
                                         )
                                       )
                                     } else {
-                                      setUnstakedSelected((tokens) =>
-                                        tokens.concat(tk)
-                                      )
+                                      setUnstakedSelected([
+                                        ...unstakedSelected,
+                                        tk,
+                                      ])
                                     }
                                   }}
                                 />
                               </div>
                             </label>
+                            {tk.tokeListData ? (
+                              <span>
+                                {Number(
+                                  (
+                                    tk.tokenAccount?.account.data.parsed.info
+                                      .tokenAmount.amount /
+                                    10 ** tk.tokeListData.decimals
+                                  ).toFixed(2)
+                                )}{' '}
+                                {tk.tokeListData.symbol}
+                              </span>
+                            ) : (
+                              ''
+                            )}
                           </div>
                         ))}
                       </div>
@@ -434,28 +524,32 @@ function Home() {
                               <div className="relative">
                                 <img
                                   className="mt-2 rounded-lg"
-                                  src={tk.metadata?.data.image}
-                                  alt={tk.metadata?.data.name}
+                                  src={
+                                    tk.metadata?.data.image ||
+                                    tk.tokeListData?.logoURI
+                                  }
+                                  alt={
+                                    tk.metadata?.data.name ||
+                                    tk.tokeListData?.name
+                                  }
                                 ></img>
 
                                 <input
                                   type="checkbox"
                                   className="absolute top-[8px] right-[8px] h-4 w-4 rounded-sm text-green-600"
-                                  id={tk?.tokenAccount?.pubkey.toBase58()}
-                                  name={tk?.tokenAccount?.pubkey.toBase58()}
+                                  id={tk?.stakeEntry?.pubkey.toBase58()}
+                                  name={tk?.stakeEntry?.pubkey.toBase58()}
                                   onChange={() => {
                                     if (isStakedTokenSelected(tk)) {
-                                      setStakedSelected((tks) =>
-                                        tks.filter(
+                                      setStakedSelected(
+                                        stakedSelected.filter(
                                           (data) =>
-                                            data.tokenAccount?.account.data.parsed.info.mint.toString() !==
-                                            tk.tokenAccount?.account.data.parsed.info.mint.toString()
+                                            data.stakeEntry?.parsed.originalMint.toString() !==
+                                            tk.stakeEntry?.parsed.originalMint.toString()
                                         )
                                       )
                                     } else {
-                                      setStakedSelected((tokens) =>
-                                        tokens.concat(tk)
-                                      )
+                                      setStakedSelected([...stakedSelected, tk])
                                     }
                                   }}
                                 />
@@ -498,16 +592,6 @@ function Home() {
                   ''
                 )}
               </div>
-              {rewardDistributor ? (
-                <div className="mt-2 flex flex-row">
-                  <p className="text-lg">
-                    Claimable Rewards: {claimableRewards} tokens
-                  </p>
-                  {loadingRewards ? <LoadingSpinner height="25px" /> : ''}
-                </div>
-              ) : (
-                ``
-              )}
             </div>
           </div>
         </div>

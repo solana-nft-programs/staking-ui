@@ -7,6 +7,7 @@ import type { PaidClaimApproverData } from '@cardinal/token-manager/dist/cjs/pro
 import type { TimeInvalidatorData } from '@cardinal/token-manager/dist/cjs/programs/timeInvalidator'
 import type { UseInvalidatorData } from '@cardinal/token-manager/dist/cjs/programs/useInvalidator'
 import type { StakeEntryData } from '@cardinal/staking/dist/cjs/programs/stakePool'
+import { TokenListData } from 'providers/TokenListProvider'
 
 export type TokenData = {
   tokenAccount?: {
@@ -20,6 +21,7 @@ export type TokenData = {
     data: metaplex.EditionData | metaplex.MasterEditionData
   } | null
   metadata?: any
+  tokeListData?: TokenListData
   claimApprover?: AccountData<PaidClaimApproverData> | null
   useInvalidator?: AccountData<UseInvalidatorData> | null
   timeInvalidator?: AccountData<TimeInvalidatorData> | null

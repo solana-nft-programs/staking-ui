@@ -12,6 +12,7 @@ import { shortPubKey } from './utils'
 import { HiUserCircle } from 'react-icons/hi'
 import Link from 'next/link'
 import { poolMapping } from 'api/mapping'
+import { Airdrop } from './Airdrop'
 
 export const Header = () => {
   const router = useRouter()
@@ -56,8 +57,15 @@ export const Header = () => {
 
   return (
     <div className="ml-5 flex h-20 justify-between text-white">
-      <div className="my-auto text-xl font-semibold">
+      <div className="my-auto flex text-xl font-semibold">
         {headerName} Staking UI
+        {ctx.environment.label === 'devnet' ? (
+          <div className="ml-5 mt-0.5">
+            <Airdrop />
+          </div>
+        ) : (
+          ''
+        )}
       </div>
       <div className="relative my-auto flex pr-8 align-middle">
         <Link href="/">
