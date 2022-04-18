@@ -1,18 +1,22 @@
 import { PublicKey } from '@solana/web3.js'
 
-export const poolMapping: {
+export type StakePoolMetadata = {
   name: string
   displayName: string
-  pool: PublicKey
-}[] = [
+  pubkey: PublicKey
+  imageUrl?: string
+}
+
+export const stakePoolMetadatas: StakePoolMetadata[] = [
   {
     name: 'cardinal',
     displayName: 'Cardinal',
-    pool: new PublicKey('4bsRsyCSSMgFSNJAi5wvh4UX9vMZDf1MwUrHUszfmLbb'),
+    pubkey: new PublicKey('4bsRsyCSSMgFSNJAi5wvh4UX9vMZDf1MwUrHUszfmLbb'),
+    imageUrl: './logo.svg',
   },
   {
     name: 'jambo',
     displayName: 'Jambo Mambo',
-    pool: new PublicKey('9L86DUzzHDQtWyhooEj7d6g44aSqCGYf49WFRkdTyJnt'),
+    pubkey: new PublicKey('9L86DUzzHDQtWyhooEj7d6g44aSqCGYf49WFRkdTyJnt'),
   },
 ]
