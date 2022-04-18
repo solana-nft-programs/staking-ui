@@ -285,19 +285,6 @@
     "@cardinal/token-manager" "^1.1.0"
     "@metaplex-foundation/mpl-token-metadata" "^1.2.5"
 
-"@cardinal/token-manager@^1.0.3":
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/@cardinal/token-manager/-/token-manager-1.0.3.tgz#698e25e688521f9faf6e219c363d93eaa2509529"
-  integrity sha512-TNSQWDi7EiH155qxjwPO/5sLTo3re9WsOTjXtESoE+whJFa8u2beEwD8r3pny3r4R/5a+Fkm1f0+GK0WgaHX9g==
-  dependencies:
-    "@metaplex-foundation/mpl-token-metadata" "^1.2.3"
-    "@solana/buffer-layout" "^4.0.0"
-    "@solana/spl-token" "^0.1.8"
-    borsh "^0.7.0"
-    bs58 "^4.0.1"
-    tiny-invariant "^1.2.0"
-    tslib "^2.3.1"
-
 "@cardinal/token-manager@^1.1.0":
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/@cardinal/token-manager/-/token-manager-1.1.0.tgz#5c64e2cdeaea0e7455ebca96f3d86180dc5c45e4"
