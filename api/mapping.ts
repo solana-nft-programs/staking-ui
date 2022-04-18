@@ -8,7 +8,7 @@ export const poolMapping: {
   {
     name: 'cardinal',
     displayName: 'Cardinal',
-    pool: new PublicKey('9Kkq4sMQUmxsqKHRk3iJXQwQ7Bfv9N9oV4jkftpuvEvv'),
+    pool: new PublicKey('4bsRsyCSSMgFSNJAi5wvh4UX9vMZDf1MwUrHUszfmLbb'),
   },
   {
     name: 'jambo',

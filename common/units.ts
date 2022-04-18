@@ -68,3 +68,10 @@ export function getMintDecimalAmountFromNatural(
 ) {
   return new BigNumber(naturalAmount.toString()).shiftedBy(-mint.decimals)
 }
+
+export function getMintDecimalAmountFromNaturalV2(
+  decimals: number,
+  naturalAmount: BN
+) {
+  return new BigNumber(naturalAmount.toString()).shiftedBy(-decimals)
+}

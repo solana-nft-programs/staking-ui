@@ -1,7 +1,7 @@
 import { PublicKey } from '@solana/web3.js'
 import { getTokenAccountsWithData, getTokenDatas } from 'api/api'
 import { getStakeEntryDatas } from 'api/stakeApi'
-import { TokenData } from 'api/types'
+import { StakeEntryTokenData, TokenData } from 'api/types'
 import type { ReactChild } from 'react'
 import React, { useCallback, useContext, useEffect, useState } from 'react'
 import { useEnvironmentCtx } from './EnvironmentProvider'
@@ -10,6 +10,7 @@ import { StakePoolData } from '@cardinal/staking/dist/cjs/programs/stakePool'
 import { AccountData } from '@cardinal/common'
 import { getStakePool } from '@cardinal/staking/dist/cjs/programs/stakePool/accounts'
 import { handlePoolMapping } from 'common/utils'
+import { TokenListData, useTokenList } from './TokenListProvider'
 
 export interface StakedTokenDataValues {
   stakedTokenDatas: TokenData[]
@@ -48,6 +49,7 @@ export function StakedTokenDataProvider({
   const [stakedTokenDatas, setStakedTokenDatas] = useState<TokenData[]>([])
   const [stakedRefreshing, setStakedRefreshing] = useState<boolean>(false)
   const [stakedLoaded, setStakedLoaded] = useState<boolean>(false)
+  const { tokenList } = useTokenList()
 
   useEffect(() => {
     if (stakePoolId) {
@@ -78,8 +80,31 @@ export function StakedTokenDataProvider({
       new PublicKey(stakedAddress)
     )
       .then((tokenDatas) => {
-        let tokensWithMetadata = tokenDatas.filter((td) => td.metadata)
-        setStakedTokenDatas(tokensWithMetadata)
+        const hydratedTokenDatas = tokenDatas.reduce((acc, tokenData) => {
+          let tokenListData: TokenListData | undefined
+          try {
+            tokenListData = tokenList.find(
+              (t) =>
+                t.address ===
+                tokenData.stakeEntry?.parsed.originalMint.toString()
+            )
+          } catch (e) {}
+
+          if (tokenListData) {
+            acc.push({
+              ...tokenData,
+              tokenListData: tokenListData,
+            })
+          } else if (tokenData.metadata) {
+            acc.push({
+              ...tokenData,
+              tokenListData: undefined,
+            })
+          }
+          return acc
+        }, [] as StakeEntryTokenData[])
+
+        setStakedTokenDatas(hydratedTokenDatas)
       })
       .catch((e) => {
         console.log(e)

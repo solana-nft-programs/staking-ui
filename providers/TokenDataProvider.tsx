@@ -83,12 +83,12 @@ export function TokenAccountsProvider({ children }: { children: ReactChild }) {
           if (tokenListData) {
             acc.push({
               ...tokenData,
-              tokeListData: tokenListData,
+              tokenListData: tokenListData,
             })
           } else if (tokenData.metadata) {
             acc.push({
               ...tokenData,
-              tokeListData: undefined,
+              tokenListData: undefined,
             })
           }
           return acc
