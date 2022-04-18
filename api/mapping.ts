@@ -15,4 +15,9 @@ export const poolMapping: {
     displayName: 'Jambo Mambo',
     pool: new PublicKey('9L86DUzzHDQtWyhooEj7d6g44aSqCGYf49WFRkdTyJnt'),
   },
+  {
+    name: 'portals',
+    displayName: 'Portals',
+    pool: new PublicKey('6H492AzY8eAS3VNjP7JpyurxCg17RH9wocBNfx4FAA6Q'),
+  },
 ]
