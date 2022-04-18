@@ -8,10 +8,10 @@ import { AddressImage, DisplayAddress } from '@cardinal/namespaces-components'
 import { useRouter } from 'next/router'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 import { useEffect, useState } from 'react'
-import { shortPubKey } from './utils'
+import { firstParam, shortPubKey } from './utils'
 import { HiUserCircle } from 'react-icons/hi'
 import Link from 'next/link'
-import { poolMapping } from 'api/mapping'
+import { stakePoolMetadatas } from 'api/mapping'
 import { Airdrop } from './Airdrop'
 
 export const Header = () => {
@@ -36,16 +36,18 @@ export const Header = () => {
     if (stakePoolId) {
       const setData = async () => {
         try {
-          const nameMapping = poolMapping.filter(
+          const nameMapping = stakePoolMetadatas.find(
             (p) => p.name === (stakePoolId as String)
           )
-          const addressMapping = poolMapping.filter(
-            (p) => p.pool.toString() === (stakePoolId as String)
+          const addressMapping = stakePoolMetadatas.find(
+            (p) => p.pubkey.toString() === (stakePoolId as String)
           )
-          if (nameMapping.length > 0) {
-            setHeaderName(nameMapping[0]!.displayName)
-          } else if (addressMapping.length > 0) {
-            setHeaderName(addressMapping[0]!.displayName)
+          if (nameMapping) {
+            setHeaderName(nameMapping.displayName)
+          } else if (addressMapping) {
+            setHeaderName(addressMapping.displayName)
+          } else {
+            setHeaderName(shortPubKey(firstParam(stakePoolId)))
           }
         } catch (e) {
           console.log(e)

@@ -232,9 +232,8 @@ function Admin() {
   const customStyles = {
     control: (base: {}) => ({
       ...base,
-      background: 'rgb(55 65 81)',
-      borderColor: 'rgb(107 114 128)',
-      color: '#fff',
+      background: 'rgb(55, 65, 81)',
+      borderColor: 'rgb(107, 114, 128)',
     }),
     Input: (base: {}) => ({
       ...base,
@@ -242,24 +241,24 @@ function Admin() {
     }),
     menu: (base: {}) => ({
       ...base,
-      background: 'rgb(55 65 81)',
+      background: 'rgb(55, 65, 81)',
       '&:hover': {
-        background: 'rgb(55 65 81)',
+        background: 'rgb(55, 65, 81)',
       },
       '&:focus': {
-        background: 'rgb(75 85 99) !important',
+        background: 'rgb(75, 85, 99) !important',
       },
       borderRadius: 0,
       marginTop: 0,
-      color: 'rgb(20 20 20)',
     }),
     option: (base: {}) => ({
       ...base,
+      background: 'rgb(55, 65, 81)',
       '&:hover': {
-        background: 'rgb(75 85 99)',
+        background: 'rgb(75, 85, 99)',
       },
       '&:focus': {
-        background: 'rgb(75 85 99) !important',
+        background: 'rgb(75, 85, 99) !important',
       },
     }),
     singleValue: (provided: {}) => ({
