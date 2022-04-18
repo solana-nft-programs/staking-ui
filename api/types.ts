@@ -21,15 +21,18 @@ export type TokenData = {
     data: metaplex.EditionData | metaplex.MasterEditionData
   } | null
   metadata?: any
-  tokeListData?: TokenListData
+  tokenListData?: TokenListData
   claimApprover?: AccountData<PaidClaimApproverData> | null
   useInvalidator?: AccountData<UseInvalidatorData> | null
   timeInvalidator?: AccountData<TimeInvalidatorData> | null
   stakeEntry?: AccountData<StakeEntryData> | null
   recipientTokenAccount?: spl.AccountInfo | null
+  amountToStake?: number | null
+  amountToUnStake?: number | null
 }
 
 export type StakeEntryTokenData = {
+  tokenListData?: TokenListData
   metaplexData?: { pubkey: PublicKey; data: metaplex.MetadataData } | null
   metadata?:
     | {
