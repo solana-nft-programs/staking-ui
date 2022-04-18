@@ -22,6 +22,6 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
   {
     name: 'portals',
     displayName: 'Portals',
-    pool: new PublicKey('6H492AzY8eAS3VNjP7JpyurxCg17RH9wocBNfx4FAA6Q'),
+    pubkey: new PublicKey('6H492AzY8eAS3VNjP7JpyurxCg17RH9wocBNfx4FAA6Q'),
   },
 ]
