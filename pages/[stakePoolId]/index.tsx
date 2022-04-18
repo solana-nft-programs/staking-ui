@@ -162,8 +162,8 @@ function Home() {
   const filterTokens = () => {
     return tokenDatas.filter((token) => {
       let filterOut = false
-      const creatorAddresses = stakePool.parsed.requiresCreators
-      const collectionAddresses = stakePool.parsed.requiresCollections
+      const creatorAddresses = stakePool?.parsed.requiresCreators
+      const collectionAddresses = stakePool?.parsed.requiresCollections
       if (token.tokenAccount?.account.data.parsed.info.state === 'frozen') {
         filterOut = true
       }
@@ -176,7 +176,7 @@ function Home() {
         creatorAddresses.forEach((filterCreator) => {
           if (
             token?.metadata?.data?.properties?.creators
-              .map((c) => c.address)
+              .map((c: any) => c.address)
               .indexOf(filterCreator.toString()) !== -1
           ) {
             hasCreator = true
@@ -185,14 +185,13 @@ function Home() {
         if (!hasCreator) {
           filterOut = true
         }
-      }    
+      }
 
       if (collectionAddresses && collectionAddresses.length > 0) {
         let hasCollection = false
         collectionAddresses.forEach((collectionAddress) => {
           if (
-            token.metaplexData?.data?.collection &&
-            token.metaplexData?.data?.collection.verified &&
+            token.metaplexData?.data?.collection?.verified &&
             token.metaplexData?.data?.collection.key.toString() ===
               collectionAddress.toString()
           ) {
@@ -203,7 +202,11 @@ function Home() {
           filterOut = true
         }
       }
-            
+
+      if (token.stakeAuthorization) {
+        filterOut = false
+      }
+
       return !filterOut
     })
   }
