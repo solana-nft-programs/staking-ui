@@ -83,6 +83,8 @@ function Admin() {
       setProcessingMintAddress(false)
       notify({ message: `Valid reward mint address`, type: 'success' })
     } catch (e) {
+      setMintInfo(undefined)
+      setSubmitDisabled(true)
       if (address.length > 0) {
         console.log(e)
         notify({ message: `Invalid reward mint address: ${e}`, type: 'error' })
@@ -232,9 +234,8 @@ function Admin() {
   const customStyles = {
     control: (base: {}) => ({
       ...base,
-      background: 'rgb(55 65 81)',
-      borderColor: 'rgb(107 114 128)',
-      color: '#fff',
+      background: 'rgb(55, 65, 81)',
+      borderColor: 'rgb(107, 114, 128)',
     }),
     Input: (base: {}) => ({
       ...base,
@@ -242,24 +243,24 @@ function Admin() {
     }),
     menu: (base: {}) => ({
       ...base,
-      background: 'rgb(55 65 81)',
+      background: 'rgb(55, 65, 81)',
       '&:hover': {
-        background: 'rgb(55 65 81)',
+        background: 'rgb(55, 65, 81)',
       },
       '&:focus': {
-        background: 'rgb(75 85 99) !important',
+        background: 'rgb(75, 85, 99) !important',
       },
       borderRadius: 0,
       marginTop: 0,
-      color: 'rgb(20 20 20)',
     }),
     option: (base: {}) => ({
       ...base,
+      background: 'rgb(55, 65, 81)',
       '&:hover': {
-        background: 'rgb(75 85 99)',
+        background: 'rgb(75, 85, 99)',
       },
       '&:focus': {
-        background: 'rgb(75 85 99) !important',
+        background: 'rgb(75, 85, 99) !important',
       },
     }),
     singleValue: (provided: {}) => ({
@@ -380,7 +381,7 @@ function Admin() {
                   </div>
                 </div>
                 <div>
-                  <div className="-mx-3 flex flex-wrap rounded-md bg-white bg-opacity-5 pb-2">
+                  <div className="-mx-3 mt-5 flex flex-wrap rounded-md bg-white bg-opacity-5 pb-2">
                     <div className="mb-6 mt-4 w-full px-3 md:mb-0">
                       <FormFieldTitleInput
                         title={'Reward Distribution'}
@@ -405,47 +406,19 @@ function Admin() {
                     </div>
                     {rewardDistribution !== '0' && (
                       <>
-                        <div className="mb-6 mt-4 w-1/2 px-3 md:mb-0">
-                          <FormFieldTitleInput
-                            title={'Reward Amount'}
-                            description={
-                              'Amount of token to be paid to the staked NFT'
-                            }
-                          />
-                          <input
-                            className="mb-3 block w-full appearance-none rounded border border-gray-500 bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800 focus:outline-none"
-                            type="text"
-                            placeholder={'10'}
-                            value={rewardAmount}
-                            disabled={submitDisabled}
-                            onChange={(e) => {
-                              setRewardAmount(e.target.value)
-                            }}
-                          />
-                        </div>
-                        <div className="mb-6 mt-4 w-1/2 px-3 md:mb-0">
-                          <FormFieldTitleInput
-                            title={'Reward Duration Seconds'}
-                            description={
-                              'Staked duration needed to receive reward amount'
-                            }
-                          />
-                          <input
-                            className="mb-3 block w-full appearance-none rounded border border-gray-500 bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800 focus:outline-none"
-                            type="text"
-                            placeholder={'60'}
-                            value={rewardDurationSeconds}
-                            disabled={submitDisabled}
-                            onChange={(e) => {
-                              setRewardDurationSeconds(e.target.value)
-                            }}
-                          />
-                        </div>
-                        <div className="mb-6 mt-4 w-full px-3 md:mb-0">
+                        <div className="relative mb-6 mt-4 w-full px-3 md:mb-0">
+                          {processingMintAddress ? (
+                            <div className="absolute right-10">
+                              <LoadingSpinner height="25px" />
+                            </div>
+                          ) : (
+                            ''
+                          )}
                           <FormFieldTitleInput
                             title={'Reward Mint Address'}
                             description={'The mint address of the reward token'}
                           />
+
                           <input
                             className="mb-3 block w-full appearance-none rounded border border-gray-500 bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800 focus:outline-none"
                             type="text"
@@ -458,32 +431,67 @@ function Admin() {
                               handleMintAddress(e.target.value)
                             }}
                           />
-                          {processingMintAddress ? (
-                            <LoadingSpinner height="25px" />
-                          ) : (
-                            ''
-                          )}
                         </div>
+                        {mintInfo && (
+                          <>
+                            <div className="mb-6 mt-4 w-1/2 px-3 md:mb-0">
+                              <FormFieldTitleInput
+                                title={'Reward Amount'}
+                                description={
+                                  'Amount of token to be paid to the staked NFT'
+                                }
+                              />
+                              <input
+                                className="mb-3 block w-full appearance-none rounded border border-gray-500 bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800 focus:outline-none"
+                                type="text"
+                                placeholder={'10'}
+                                value={rewardAmount}
+                                disabled={submitDisabled}
+                                onChange={(e) => {
+                                  setRewardAmount(e.target.value)
+                                }}
+                              />
+                            </div>
+                            <div className="mb-6 mt-4 w-1/2 px-3 md:mb-0">
+                              <FormFieldTitleInput
+                                title={'Reward Duration Seconds'}
+                                description={
+                                  'Staked duration needed to receive reward amount'
+                                }
+                              />
+                              <input
+                                className="mb-3 block w-full appearance-none rounded border border-gray-500 bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800 focus:outline-none"
+                                type="text"
+                                placeholder={'60'}
+                                value={rewardDurationSeconds}
+                                disabled={submitDisabled}
+                                onChange={(e) => {
+                                  setRewardDurationSeconds(e.target.value)
+                                }}
+                              />
+                            </div>
 
-                        {rewardDistribution === '2' && (
-                          <div className="mb-6 mt-4 w-full px-3 md:mb-0">
-                            <FormFieldTitleInput
-                              title={'Reward Transfer Amount'}
-                              description={
-                                'How many tokens to transfer to the stake pool for future distribution.'
-                              }
-                            />
-                            <input
-                              className="mb-3 block w-full appearance-none rounded border border-gray-500 bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800 focus:outline-none"
-                              disabled={submitDisabled}
-                              type="text"
-                              placeholder={'1000000'}
-                              value={rewardMintSupply}
-                              onChange={(e) => {
-                                setRewardMintSupply(e.target.value)
-                              }}
-                            />
-                          </div>
+                            {rewardDistribution === '2' && (
+                              <div className="mb-6 mt-4 w-full px-3 md:mb-0">
+                                <FormFieldTitleInput
+                                  title={'Reward Transfer Amount'}
+                                  description={
+                                    'How many tokens to transfer to the stake pool for future distribution.'
+                                  }
+                                />
+                                <input
+                                  className="mb-3 block w-full appearance-none rounded border border-gray-500 bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800 focus:outline-none"
+                                  disabled={submitDisabled}
+                                  type="text"
+                                  placeholder={'1000000'}
+                                  value={rewardMintSupply}
+                                  onChange={(e) => {
+                                    setRewardMintSupply(e.target.value)
+                                  }}
+                                />
+                              </div>
+                            )}
+                          </>
                         )}
                       </>
                     )}

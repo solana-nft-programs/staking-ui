@@ -36,7 +36,7 @@ import { BN } from '@project-serum/anchor'
 import { RewardDistributorData } from '@cardinal/staking/dist/cjs/programs/rewardDistributor'
 import { getPendingRewardsForPool } from '@cardinal/staking'
 import { useTokenList } from 'providers/TokenListProvider'
-import { getStakeEntriesForPool } from '@cardinal/staking/dist/cjs/programs/stakePool/accounts'
+import { getActiveStakeEntriesForPool } from '@cardinal/staking/dist/cjs/programs/stakePool/accounts'
 
 function Home() {
   const router = useRouter()
@@ -79,7 +79,7 @@ function Home() {
           )
           setStakePool(pool)
           setTotalStaked(
-            (await getStakeEntriesForPool(connection, pool.pubkey)).length
+            (await getActiveStakeEntriesForPool(connection, pool.pubkey)).length
           )
         } catch (e) {
           notify({
