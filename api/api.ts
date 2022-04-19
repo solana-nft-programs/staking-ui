@@ -48,8 +48,6 @@ export async function getTokenAccountsWithData(
     PublicKey | null,
     PublicKey | null,
     PublicKey | null,
-    PublicKey | null,
-    PublicKey | null,
     PublicKey
   ][] = await Promise.all(
     tokenAccounts.map(async (tokenAccount) => {
@@ -70,15 +68,6 @@ export async function getTokenAccountsWithData(
           new PublicKey(tokenAccount.account.data.parsed.info.mint)
         ),
       ])
-
-      let timeInvalidatorId = null
-      let useInvalidatorId = null
-      if (tokenManagerId) {
-        ;[[timeInvalidatorId], [useInvalidatorId]] = await Promise.all([
-          timeInvalidator.pda.findTimeInvalidatorAddress(tokenManagerId),
-          useInvalidator.pda.findUseInvalidatorAddress(tokenManagerId),
-        ])
-      }
 
       let stakeEntryId = null
       let stakeAuthorizationId = null
@@ -101,8 +90,6 @@ export async function getTokenAccountsWithData(
         metadataId,
         editionId,
         tokenManagerId,
-        timeInvalidatorId,
-        useInvalidatorId,
         stakeEntryId,
         stakeAuthorizationId,
         tokenAccount.pubkey,
@@ -128,8 +115,6 @@ export async function getTokenAccountsWithData(
           metaplexId,
           editionId,
           tokenManagerId,
-          timeInvalidatorId,
-          useInvalidatorId,
           stakeEntryId,
           stakeAuthorizationId,
         ]
@@ -137,8 +122,6 @@ export async function getTokenAccountsWithData(
         [...acc[0], metaplexId],
         [...acc[1], editionId],
         [...acc[2], tokenManagerId],
-        [...acc[3], timeInvalidatorId],
-        [...acc[4], useInvalidatorId],
         [...acc[5], stakeEntryId],
         [...acc[6], stakeAuthorizationId],
       ],
@@ -149,16 +132,12 @@ export async function getTokenAccountsWithData(
     metaplexAccountInfos,
     editionInfos,
     tokenManagers,
-    timeInvalidators,
-    useInvalidators,
     stakeEntries,
     stakeAuthorizationIds,
   ] = await Promise.all([
     getBatchedMultipleAccounts(connection, metadataIds[0]),
     getBatchedMultipleAccounts(connection, metadataIds[1]),
     tokenManager.accounts.getTokenManagers(connection, metadataIds[2]),
-    timeInvalidator.accounts.getTimeInvalidators(connection, metadataIds[3]),
-    useInvalidator.accounts.getUseInvalidators(connection, metadataIds[4]),
     stakePool.accounts.getStakeEntries(connection, metadataIds[5]),
     stakePool.accounts.getStakeAuthorizations(connection, metadataIds[6]),
   ])
@@ -226,8 +205,6 @@ export async function getTokenAccountsWithData(
       metaplexId,
       editionId,
       tokenManagerId,
-      timeInvalidatorId,
-      useInvalidatorId,
       stakeEntryId,
       stakeAuthorizationId,
       tokenAccountId,
@@ -249,11 +226,6 @@ export async function getTokenAccountsWithData(
       metadata: metadata.find((data) =>
         data ? data.pubkey.toBase58() === metaplexId.toBase58() : undefined
       ),
-      useInvalidator: useInvalidators.find((data) =>
-        data?.parsed
-          ? data.pubkey.toBase58() === useInvalidatorId?.toBase58()
-          : undefined
-      ),
       stakeEntry: stakeEntries.find((data) =>
         data?.parsed
           ? data.pubkey.toString() === stakeEntryId?.toString()
@@ -262,11 +234,6 @@ export async function getTokenAccountsWithData(
       stakeAuthorization: stakeAuthorizationIds.find((data) =>
         data?.parsed
           ? data.pubkey.toString() === stakeAuthorizationId?.toString()
-          : undefined
-      ),
-      timeInvalidator: timeInvalidators.find((data) =>
-        data?.parsed
-          ? data.pubkey.toBase58() === timeInvalidatorId?.toBase58()
           : undefined
       ),
     })
@@ -462,103 +429,4 @@ export async function getTokenDatas(
       ),
     })
   )
-}
-
-export async function getTokenData(
-  connection: Connection,
-  tokenManagerId: PublicKey
-): Promise<TokenData> {
-  const tokenManagerData = await tokenManager.accounts.getTokenManager(
-    connection,
-    tokenManagerId
-  )
-
-  const mintId = tokenManagerData.parsed.mint
-  const [[metaplexId]] = await Promise.all([
-    PublicKey.findProgramAddress(
-      [
-        anchor.utils.bytes.utf8.encode(metaplex.MetadataProgram.PREFIX),
-        metaplex.MetadataProgram.PUBKEY.toBuffer(),
-        mintId.toBuffer(),
-      ],
-      metaplex.MetadataProgram.PUBKEY
-    ),
-  ])
-
-  const [[timeInvalidatorId], [useInvalidatorId]] = await Promise.all([
-    timeInvalidator.pda.findTimeInvalidatorAddress(tokenManagerId),
-    useInvalidator.pda.findUseInvalidatorAddress(tokenManagerId),
-  ])
-
-  const [
-    metaplexData,
-    timeInvalidatorData,
-    useInvalidatorData,
-    claimApproverData,
-  ] = await Promise.all([
-    metaplex.Metadata.load(connection, metaplexId).catch((e) => {
-      console.log('Failed to get metaplex data', e)
-      return null
-    }),
-    timeInvalidator.accounts
-      .getTimeInvalidator(connection, timeInvalidatorId)
-      .catch((e) => {
-        console.log('Failed to get time invalidator data', e)
-        return null
-      }),
-    useInvalidator.accounts
-      .getUseInvalidator(connection, useInvalidatorId)
-      .catch((e) => {
-        console.log('Failed to get use invalidator data', e)
-        return null
-      }),
-    claimApprover.accounts
-      .getClaimApprover(connection, tokenManagerId)
-      .catch((e) => {
-        console.log('Failed to get use invalidator data', e)
-        return null
-      }),
-  ])
-
-  let metadata: any | null = null
-  if (metaplexData) {
-    try {
-      const json = await fetch(metaplexData.data.data.uri).then((r) => r.json())
-      metadata = { pubkey: metaplexData.pubkey, data: json }
-    } catch (e) {
-      console.log('Failed to get metadata data', e)
-    }
-  }
-
-  let recipientTokenAccount: spl.AccountInfo | null = null
-  if (tokenManagerData?.parsed.recipientTokenAccount) {
-    try {
-      const mint = new spl.Token(
-        connection,
-        tokenManagerData?.parsed.mint,
-        spl.TOKEN_PROGRAM_ID,
-        // @ts-ignore
-        null
-      )
-      recipientTokenAccount = await mint.getAccountInfo(
-        tokenManagerData?.parsed.recipientTokenAccount
-      )
-    } catch (e) {
-      console.log('Failed to get recipient token account', e)
-    }
-  }
-
-  return {
-    metaplexData,
-    tokenManager: tokenManagerData,
-    claimApprover:
-      tokenManagerData.parsed.claimApprover?.toString() ===
-      claimApproverData?.pubkey?.toString()
-        ? claimApproverData
-        : undefined,
-    useInvalidator: useInvalidatorData,
-    timeInvalidator: timeInvalidatorData,
-    metadata,
-    recipientTokenAccount,
-  }
 }

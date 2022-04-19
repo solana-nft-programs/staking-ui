@@ -4,9 +4,10 @@ import * as metaplex from '@metaplex-foundation/mpl-token-metadata'
 import { PublicKey, AccountInfo, ParsedAccountData } from '@solana/web3.js'
 import type { TokenManagerData } from '@cardinal/token-manager/dist/cjs/programs/tokenManager'
 import type { PaidClaimApproverData } from '@cardinal/token-manager/dist/cjs/programs/claimApprover'
-import type { TimeInvalidatorData } from '@cardinal/token-manager/dist/cjs/programs/timeInvalidator'
-import type { UseInvalidatorData } from '@cardinal/token-manager/dist/cjs/programs/useInvalidator'
-import type { StakeAuthorizationData, StakeEntryData } from '@cardinal/staking/dist/cjs/programs/stakePool'
+import type {
+  StakeAuthorizationData,
+  StakeEntryData,
+} from '@cardinal/staking/dist/cjs/programs/stakePool'
 import { TokenListData } from 'providers/TokenListProvider'
 
 export type TokenData = {
@@ -23,8 +24,6 @@ export type TokenData = {
   metadata?: any
   tokenListData?: TokenListData
   claimApprover?: AccountData<PaidClaimApproverData> | null
-  useInvalidator?: AccountData<UseInvalidatorData> | null
-  timeInvalidator?: AccountData<TimeInvalidatorData> | null
   stakeEntry?: AccountData<StakeEntryData> | null
   stakeAuthorization?: AccountData<StakeAuthorizationData> | null
   recipientTokenAccount?: spl.AccountInfo | null
