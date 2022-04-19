@@ -321,7 +321,7 @@ function Admin() {
                     <FormFieldTitleInput
                       title={'Collection Addresses []'}
                       description={
-                        'Only allow NFTs with these collection addresses (separated by commas)'
+                        'Allow any NFTs with these collection addresses (separated by commas)'
                       }
                     />
                     <input
@@ -340,7 +340,7 @@ function Admin() {
                     <FormFieldTitleInput
                       title={'Creator Addresses []'}
                       description={
-                        'Only allow NFTs with these creator addresses (separated by commas)'
+                        'Allow any NFTs with these creator addresses (separated by commas)'
                       }
                     />
                     <input
@@ -357,14 +357,14 @@ function Admin() {
                 <div className="-mx-3 flex flex-wrap">
                   <div className="mb-6 mt-4 w-full px-3 md:mb-0">
                     <label
-                      className="mb-2 block inline-block text-xs font-bold uppercase tracking-wide text-gray-200"
+                      className="mb-2 block text-xs font-bold uppercase tracking-wide text-gray-200"
                       htmlFor="require-authorization"
                     >
                       Authorize NFTs
                     </label>
                     <p className="mb-2 text-sm italic text-gray-300">
-                      If selected, NFTs must be authorized on-chain before
-                      entering the pool
+                      If selected, NFTs / specific mints can be arbitrarily
+                      authorized to enter the pool
                     </p>
                     <input
                       className="mb-3"
