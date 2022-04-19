@@ -1,4 +1,4 @@
-import { createMint } from '@cardinal/common'
+import { createMint, withCreateMint } from '@cardinal/common'
 import {
   CreateMasterEditionV3,
   CreateMetadataV2,
@@ -27,29 +27,25 @@ export async function airdropNFT(
   wallet: Wallet,
   airdropMetadatas: AirdropMetadata[]
 ): Promise<string> {
+  const transaction = new Transaction()
   const randInt = Math.round(Math.random() * (airdropMetadatas.length - 1))
   const metadata: AirdropMetadata | undefined = airdropMetadatas[randInt]
   if (!metadata) throw new Error('No configured airdrops found')
-  const tokenCreator = Keypair.generate()
-  const fromAirdropSignature = await connection.requestAirdrop(
-    tokenCreator.publicKey,
-    LAMPORTS_PER_SOL
-  )
-  await connection.confirmTransaction(fromAirdropSignature)
 
-  const [_masterEditionTokenAccountId, masterEditionMint] = await createMint(
+  const masterEditionMint = Keypair.generate()
+  const [_masterEditionTokenAccountId] = await withCreateMint(
+    transaction,
     connection,
-    tokenCreator,
+    wallet,
     wallet.publicKey,
-    1,
-    tokenCreator.publicKey
+    masterEditionMint.publicKey
   )
 
   const masterEditionMetadataId = await Metadata.getPDA(
     masterEditionMint.publicKey
   )
   const metadataTx = new CreateMetadataV2(
-    { feePayer: tokenCreator.publicKey },
+    { feePayer: wallet.publicKey },
     {
       metadata: masterEditionMetadataId,
       metadataData: new DataV2({
@@ -61,9 +57,9 @@ export async function airdropNFT(
         collection: null,
         uses: null,
       }),
-      updateAuthority: tokenCreator.publicKey,
+      updateAuthority: wallet.publicKey,
       mint: masterEditionMint.publicKey,
-      mintAuthority: tokenCreator.publicKey,
+      mintAuthority: wallet.publicKey,
     }
   )
 
@@ -72,32 +68,29 @@ export async function airdropNFT(
   )
   const masterEditionTx = new CreateMasterEditionV3(
     {
-      feePayer: tokenCreator.publicKey,
+      feePayer: wallet.publicKey,
       recentBlockhash: (await connection.getRecentBlockhash('max')).blockhash,
     },
     {
       edition: masterEditionId,
       metadata: masterEditionMetadataId,
-      updateAuthority: tokenCreator.publicKey,
+      updateAuthority: wallet.publicKey,
       mint: masterEditionMint.publicKey,
-      mintAuthority: tokenCreator.publicKey,
+      mintAuthority: wallet.publicKey,
       maxSupply: new BN(1),
     }
   )
-  const transaction = new Transaction()
+
   transaction.instructions = [
+    ...transaction.instructions,
     ...metadataTx.instructions,
     ...masterEditionTx.instructions,
   ]
 
-  const txid = await executeTransaction(
-    connection,
-    new SignerWallet(tokenCreator),
-    transaction,
-    {
-      confirmOptions: { commitment: 'confirmed', maxRetries: 3 },
-    }
-  )
+  const txid = await executeTransaction(connection, wallet, transaction, {
+    confirmOptions: { commitment: 'confirmed', maxRetries: 3 },
+    signers: [masterEditionMint],
+  })
   console.log(
     `Master edition (${masterEditionId.toString()}) created with metadata (${masterEditionMetadataId.toString()})`
   )
