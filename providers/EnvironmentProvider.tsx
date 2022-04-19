@@ -1,4 +1,6 @@
 import { Connection } from '@solana/web3.js'
+import { firstParam } from 'common/utils'
+import { NextPageContext } from 'next'
 import { useRouter } from 'next/router'
 import React, { useContext, useMemo, useState } from 'react'
 
@@ -38,17 +40,34 @@ export const ENVIRONMENTS: Environment[] = [
 const EnvironmentContext: React.Context<null | EnvironmentContextValues> =
   React.createContext<null | EnvironmentContextValues>(null)
 
+export const getInitialProps = async ({
+  ctx,
+}: {
+  ctx: NextPageContext
+}): Promise<{ cluster: string }> => {
+  const cluster = (ctx.query.project || ctx.query.host)?.includes('dev')
+    ? 'devnet'
+    : (ctx.query.project || ctx.query.host)?.includes('test')
+    ? 'testnet'
+    : ctx.query.cluster || process.env.BASE_CLUSTER
+  return {
+    cluster: firstParam(cluster),
+  }
+}
+
 export function EnvironmentProvider({
   children,
+  defaultCluster,
 }: {
   children: React.ReactChild
+  defaultCluster: string
 }) {
   const { query } = useRouter()
   const cluster = (query.project || query.host)?.includes('dev')
     ? 'devnet'
     : (query.project || query.host)?.includes('test')
     ? 'testnet'
-    : query.cluster || process.env.BASE_CLUSTER
+    : query.cluster || defaultCluster || process.env.BASE_CLUSTER
   const foundEnvironment = ENVIRONMENTS.find((e) => e.label === cluster)
   const [environment, setEnvironment] = useState<Environment>(
     foundEnvironment ?? ENVIRONMENTS[0]!

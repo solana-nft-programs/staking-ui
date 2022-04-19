@@ -13,7 +13,7 @@ import { TokenListData, useTokenList } from './TokenListProvider'
 
 export interface StakedTokenDataValues {
   stakedTokenDatas: TokenData[]
-  refreshTokenAccounts: () => void
+  refreshStakedTokenDatas: (reload?: boolean) => void
   setStakedTokenDatas: (newEnvironment: TokenData[]) => void
   setStakedAddress: (address: string) => void
   stakedLoaded: boolean
@@ -25,7 +25,7 @@ export interface StakedTokenDataValues {
 const StakedTokenData: React.Context<StakedTokenDataValues> =
   React.createContext<StakedTokenDataValues>({
     stakedTokenDatas: [],
-    refreshTokenAccounts: () => {},
+    refreshStakedTokenDatas: () => {},
     setStakedTokenDatas: () => {},
     setStakedAddress: () => {},
     stakedLoaded: false,
@@ -60,71 +60,78 @@ export function StakedTokenDataProvider({
     }
   }, [stakePoolId])
 
-  const refreshTokenAccounts = useCallback(() => {
-    if (!stakedAddress) {
-      setError(`Address not set please connect wallet to continue`)
-      return
-    }
+  const refreshStakedTokenDatas = useCallback(
+    (reload?: boolean) => {
+      if (!stakedAddress) {
+        setError(`Address not set please connect wallet to continue`)
+        return
+      }
 
-    if (!stakePool) {
-      setError(`Invalid stake pool id`)
-      return []
-    }
+      if (!stakePool) {
+        setError(`Invalid stake pool id`)
+        return []
+      }
 
-    setStakedRefreshing(true)
-    setError(null)
-    getStakeEntryDatas(
-      connection,
-      stakePool.pubkey,
-      new PublicKey(stakedAddress)
-    )
-      .then((tokenDatas) => {
-        const hydratedTokenDatas = tokenDatas.reduce((acc, tokenData) => {
-          let tokenListData: TokenListData | undefined
-          try {
-            tokenListData = tokenList.find(
-              (t) =>
-                t.address ===
-                tokenData.stakeEntry?.parsed.originalMint.toString()
-            )
-          } catch (e) {}
+      if (reload) {
+        setStakedLoaded(false)
+      }
 
-          if (tokenListData) {
-            acc.push({
-              ...tokenData,
-              tokenListData: tokenListData,
-            })
-          } else if (tokenData.metadata) {
-            acc.push({
-              ...tokenData,
-              tokenListData: undefined,
-            })
-          }
-          return acc
-        }, [] as StakeEntryTokenData[])
+      setStakedRefreshing(true)
+      setError(null)
+      getStakeEntryDatas(
+        connection,
+        stakePool.pubkey,
+        new PublicKey(stakedAddress)
+      )
+        .then((tokenDatas) => {
+          const hydratedTokenDatas = tokenDatas.reduce((acc, tokenData) => {
+            let tokenListData: TokenListData | undefined
+            try {
+              tokenListData = tokenList.find(
+                (t) =>
+                  t.address ===
+                  tokenData.stakeEntry?.parsed.originalMint.toString()
+              )
+            } catch (e) {}
 
-        setStakedTokenDatas(hydratedTokenDatas)
-      })
-      .catch((e) => {
-        console.log(e)
-        setError(`${e}`)
-      })
-      .finally(() => {
-        setStakedLoaded(true)
-        setStakedRefreshing(false)
-      })
-  }, [connection, setError, stakedAddress, setStakedRefreshing])
+            if (tokenListData) {
+              acc.push({
+                ...tokenData,
+                tokenListData: tokenListData,
+              })
+            } else if (tokenData.metadata) {
+              acc.push({
+                ...tokenData,
+                tokenListData: undefined,
+              })
+            }
+            return acc
+          }, [] as StakeEntryTokenData[])
+
+          setStakedTokenDatas(hydratedTokenDatas)
+        })
+        .catch((e) => {
+          console.log(e)
+          setError(`${e}`)
+        })
+        .finally(() => {
+          setStakedLoaded(true)
+          setStakedRefreshing(false)
+        })
+    },
+    [connection, setError, stakedAddress, setStakedRefreshing]
+  )
 
   useEffect(() => {
     const interval = setInterval(
       (function getTokenAccountsInterval(): () => void {
-        refreshTokenAccounts()
+        refreshStakedTokenDatas()
         return getTokenAccountsInterval
       })(),
       10000
     )
     return () => clearInterval(interval)
-  }, [refreshTokenAccounts])
+  }, [refreshStakedTokenDatas])
 
   return (
     <StakedTokenData.Provider
@@ -132,7 +139,7 @@ export function StakedTokenDataProvider({
         stakedAddress,
         stakedTokenDatas,
         stakedLoaded,
-        refreshTokenAccounts,
+        refreshStakedTokenDatas,
         setStakedTokenDatas,
         setStakedAddress,
         stakedRefreshing,
