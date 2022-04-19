@@ -46,9 +46,15 @@ function Home() {
   const [rewardDistributor, setRewardDistributor] =
     useState<AccountData<RewardDistributorData>>()
   const wallet = useWallet()
-  const { stakedRefreshing, setStakedAddress, stakedTokenDatas, stakedLoaded } =
-    useStakedTokenData()
-  const { refreshing, setAddress, tokenDatas, loaded } = useUserTokenData()
+  const {
+    stakedRefreshing,
+    setStakedAddress,
+    stakedTokenDatas,
+    stakedLoaded,
+    refreshStakedTokenDatas,
+  } = useStakedTokenData()
+  const { refreshing, setAddress, tokenDatas, loaded, refreshTokenAccounts } =
+    useUserTokenData()
   const [unstakedSelected, setUnstakedSelected] = useState<TokenData[]>([])
   const [stakedSelected, setStakedSelected] = useState<TokenData[]>([])
   const [claimableRewards, setClaimableRewards] = useState<number>(0)
@@ -297,6 +303,8 @@ function Home() {
         break
       }
     }
+    refreshTokenAccounts(true)
+    refreshStakedTokenDatas(true)
     setLoadingUnstake(false)
   }
 
@@ -380,10 +388,10 @@ function Home() {
         notify({ message: `Transaction failed: ${e}`, type: 'error' })
         console.error(e)
         break
-      } finally {
-        setLoadingStake(false)
       }
     }
+    refreshTokenAccounts(true)
+    refreshStakedTokenDatas(true)
     setLoadingStake(false)
   }
 
@@ -425,12 +433,10 @@ function Home() {
                   {mintName}
                 </a>
               </p>
-              {loadingMintName ? (
+              {loadingMintName && (
                 <div className="mb-3 ml-2 inline-block text-lg">
                   <LoadingSpinner height="25px" />
                 </div>
-              ) : (
-                ''
               )}
               <p className="mb-3 ml-10 inline-block text-lg ">
                 Total tokens staked: {totalStaked}
@@ -445,12 +451,10 @@ function Home() {
               <p className="mb-3 ml-10 mr-2 inline-block text-lg ">
                 Claimable Rewards: {claimableRewards} {mintName}
               </p>
-              {loadingRewards ? (
+              {loadingRewards && (
                 <div className="mb-3 mr-3 inline-block text-lg">
                   <LoadingSpinner height="25px" />
                 </div>
-              ) : (
-                ''
               )}
               {mintInfo ? (
                 <p className="mb-3 ml-10 mr-2 inline-block text-lg ">
@@ -480,7 +484,7 @@ function Home() {
                   Select Your Tokens
                 </p>
                 <div className="inline-block">
-                  {refreshing ? <LoadingSpinner height="25px" /> : ''}
+                  {refreshing && loaded && <LoadingSpinner height="25px" />}
                 </div>
               </div>
               {wallet.connected && (
@@ -638,7 +642,7 @@ function Home() {
                   className="my-auto flex rounded-md bg-blue-700 px-4 py-2"
                 >
                   <span className="mr-1 inline-block">
-                    {loadingStake ? <LoadingSpinner height="25px" /> : ''}
+                    {loadingStake && <LoadingSpinner height="25px" />}
                   </span>
                   <span className="my-auto">Stake Tokens</span>
                 </button>
@@ -648,7 +652,9 @@ function Home() {
               <div className="mt-2 flex flex-row">
                 <p className="mr-3 text-lg">View Staked Tokens</p>
                 <div className="inline-block">
-                  {stakedRefreshing ? <LoadingSpinner height="25px" /> : ''}
+                  {stakedRefreshing && stakedLoaded && (
+                    <LoadingSpinner height="25px" />
+                  )}
                 </div>
               </div>
               {wallet.connected && (
@@ -786,11 +792,7 @@ function Home() {
                     className="my-auto mr-5 flex rounded-md bg-blue-700 px-4 py-2"
                   >
                     <span className="mr-1 inline-block">
-                      {loadingClaimRewards ? (
-                        <LoadingSpinner height="20px" />
-                      ) : (
-                        ''
-                      )}
+                      {loadingClaimRewards && <LoadingSpinner height="20px" />}
                     </span>
                     <span className="my-auto">Claim Rewards</span>
                   </button>

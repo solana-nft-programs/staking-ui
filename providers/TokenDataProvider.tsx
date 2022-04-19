@@ -11,7 +11,7 @@ import { TokenListData, useTokenList } from './TokenListProvider'
 
 export interface UserTokenDataValues {
   tokenDatas: TokenData[]
-  refreshTokenAccounts: () => void
+  refreshTokenAccounts: (reload?: boolean) => void
   setTokenDatas: (newEnvironment: TokenData[]) => void
   setAddress: (address: string) => void
   loaded: boolean
@@ -54,56 +54,63 @@ export function TokenAccountsProvider({ children }: { children: ReactChild }) {
     }
   }, [stakePoolId])
 
-  const refreshTokenAccounts = useCallback(() => {
-    if (!address) {
-      setError(`Address not set please connect wallet to continue`)
-      return
-    }
+  const refreshTokenAccounts = useCallback(
+    (reload?: boolean) => {
+      if (!address) {
+        setError(`Address not set please connect wallet to continue`)
+        return
+      }
 
-    if (!stakePool) {
-      setError(`Invalid stake pool id`)
-      return []
-    }
+      if (!stakePool) {
+        setError(`Invalid stake pool id`)
+        return []
+      }
 
-    setRefreshing(true)
-    setError(null)
-    getTokenAccountsWithData(connection, stakePool?.pubkey, address)
-      .then(async (tokenDatas) => {
-        const hydratedTokenDatas = tokenDatas.reduce((acc, tokenData) => {
-          let tokenListData: TokenListData | undefined
-          try {
-            tokenListData = tokenList.find(
-              (t) =>
-                t.address ===
-                tokenData.tokenAccount?.account.data.parsed.info.mint.toString()
-            )
-          } catch (e) {}
+      if (reload) {
+        setLoaded(false)
+      }
 
-          if (tokenListData) {
-            acc.push({
-              ...tokenData,
-              tokenListData: tokenListData,
-            })
-          } else if (tokenData.metadata) {
-            acc.push({
-              ...tokenData,
-              tokenListData: undefined,
-            })
-          }
-          return acc
-        }, [] as TokenData[])
+      setRefreshing(true)
+      setError(null)
+      getTokenAccountsWithData(connection, stakePool?.pubkey, address)
+        .then(async (tokenDatas) => {
+          const hydratedTokenDatas = tokenDatas.reduce((acc, tokenData) => {
+            let tokenListData: TokenListData | undefined
+            try {
+              tokenListData = tokenList.find(
+                (t) =>
+                  t.address ===
+                  tokenData.tokenAccount?.account.data.parsed.info.mint.toString()
+              )
+            } catch (e) {}
 
-        setTokenDatas(hydratedTokenDatas)
-      })
-      .catch((e) => {
-        console.log(e)
-        setError(`${e}`)
-      })
-      .finally(() => {
-        setLoaded(true)
-        setRefreshing(false)
-      })
-  }, [connection, setError, address, setRefreshing])
+            if (tokenListData) {
+              acc.push({
+                ...tokenData,
+                tokenListData: tokenListData,
+              })
+            } else if (tokenData.metadata) {
+              acc.push({
+                ...tokenData,
+                tokenListData: undefined,
+              })
+            }
+            return acc
+          }, [] as TokenData[])
+
+          setTokenDatas(hydratedTokenDatas)
+        })
+        .catch((e) => {
+          console.log(e)
+          setError(`${e}`)
+        })
+        .finally(() => {
+          setLoaded(true)
+          setRefreshing(false)
+        })
+    },
+    [connection, setError, address, setRefreshing]
+  )
 
   useEffect(() => {
     const interval = setInterval(
