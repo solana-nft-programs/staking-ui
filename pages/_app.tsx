@@ -8,7 +8,10 @@ import {
   WalletModalProvider,
   WalletMultiButton,
 } from '@solana/wallet-adapter-react-ui'
-import { EnvironmentProvider } from 'providers/EnvironmentProvider'
+import {
+  EnvironmentProvider,
+  getInitialProps,
+} from 'providers/EnvironmentProvider'
 import { WalletIdentityProvider } from '@cardinal/namespaces-components'
 import { TokenAccountsProvider } from 'providers/TokenDataProvider'
 import { StakedTokenDataProvider } from 'providers/StakedTokenDataProvider'
@@ -16,8 +19,12 @@ import { TokenListProvider } from 'providers/TokenListProvider'
 
 require('@solana/wallet-adapter-react-ui/styles.css')
 
-const App = ({ Component, pageProps }: AppProps) => (
-  <EnvironmentProvider>
+const App = ({
+  Component,
+  pageProps,
+  cluster,
+}: AppProps & { cluster: string }) => (
+  <EnvironmentProvider defaultCluster={cluster}>
     <WalletProvider wallets={getWalletAdapters()}>
       <WalletIdentityProvider>
         <WalletModalProvider>
@@ -33,5 +40,7 @@ const App = ({ Component, pageProps }: AppProps) => (
     </WalletProvider>
   </EnvironmentProvider>
 )
+
+App.getInitialProps = getInitialProps
 
 export default App
