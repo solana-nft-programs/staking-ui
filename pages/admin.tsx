@@ -303,12 +303,12 @@ function Admin() {
                   <div className="mb-6 mt-4 w-full px-3 md:mb-0">
                     <FormFieldTitleInput
                       title={'Overlay Text'}
-                      description={'Text to display over the rental receipt'}
+                      description={'Text to display over the receipt'}
                     />
                     <input
                       className="mb-3 block w-full appearance-none rounded border border-gray-500 bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800 focus:outline-none"
                       type="text"
-                      placeholder={'RENTED'}
+                      placeholder={'STAKED'}
                       value={overlayText}
                       onChange={(e) => {
                         setOverlayText(e.target.value)
