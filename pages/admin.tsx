@@ -367,7 +367,7 @@ function Admin() {
                       authorized to enter the pool
                     </p>
                     <input
-                      className="mb-3"
+                      className="mb-3 cursor-pointer"
                       id="require-authorization"
                       type="checkbox"
                       checked={authorizeNFT}
@@ -375,7 +375,10 @@ function Admin() {
                         setAuthorizeNFT(e.target.checked)
                       }}
                     />{' '}
-                    <span className="my-auto text-sm">
+                    <span
+                      className="my-auto cursor-pointer text-sm"
+                      onClick={() => setAuthorizeNFT(!authorizeNFT)}
+                    >
                       Require Authorization
                     </span>
                   </div>
