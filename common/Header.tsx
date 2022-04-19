@@ -32,23 +32,21 @@ export const Header = () => {
     ? shortPubKey(wallet?.publicKey)
     : ''
 
+  const nameMapping = stakePoolMetadatas.find(
+    (p) => p.name === (stakePoolId as String)
+  )
+  const addressMapping = stakePoolMetadatas.find(
+    (p) => p.pubkey.toString() === (stakePoolId as String)
+  )
   useEffect(() => {
     if (stakePoolId) {
       const setData = async () => {
         try {
-          const nameMapping = stakePoolMetadatas.find(
-            (p) => p.name === (stakePoolId as String)
+          setHeaderName(
+            nameMapping?.displayName ||
+              addressMapping?.displayName ||
+              shortPubKey(firstParam(stakePoolId))
           )
-          const addressMapping = stakePoolMetadatas.find(
-            (p) => p.pubkey.toString() === (stakePoolId as String)
-          )
-          if (nameMapping) {
-            setHeaderName(nameMapping.displayName)
-          } else if (addressMapping) {
-            setHeaderName(addressMapping.displayName)
-          } else {
-            setHeaderName(shortPubKey(firstParam(stakePoolId)))
-          }
         } catch (e) {
           console.log(e)
         }
@@ -59,25 +57,66 @@ export const Header = () => {
 
   return (
     <div className="ml-5 flex h-20 justify-between text-white">
-      <div className="my-auto flex text-xl font-semibold">
-        {headerName} Staking UI
-        {ctx.environment.label === 'devnet' ? (
-          <div className="ml-5 mt-0.5">
+      <div className="flex items-center gap-3">
+        <a
+          href={
+            nameMapping?.websiteUrl ||
+            addressMapping?.websiteUrl ||
+            `/${
+              ctx.environment.label !== 'mainnet'
+                ? `?cluster=${ctx.environment.label}`
+                : ''
+            }`
+          }
+          className="cursor-pointer text-xl font-semibold text-white hover:text-gray-400"
+        >
+          {headerName} Staking UI
+        </a>
+        {ctx.environment.label !== 'mainnet' && (
+          <div className="cursor-pointer rounded-md bg-[#9945ff] p-1 text-[10px] italic text-white">
+            {ctx.environment.label}
+          </div>
+        )}
+        {ctx.environment.label !== 'mainnet' ? (
+          <div className="mt-0.5">
             <Airdrop />
           </div>
         ) : (
           ''
         )}
       </div>
-      <div className="relative my-auto flex pr-8 align-middle">
-        <Link href="/">
+      <div className="relative my-auto flex items-center pr-8 align-middle">
+        <div
+          onClick={() =>
+            router.push(
+              `/${
+                ctx.environment.label !== 'mainnet'
+                  ? `?cluster=${ctx.environment.label}`
+                  : ''
+              }`
+            )
+          }
+        >
           <p className="my-auto mr-10 hover:cursor-pointer">Stake</p>
-        </Link>
-        <Link href="/admin">
+        </div>
+        <div
+          onClick={() =>
+            router.push(
+              `/admin${
+                ctx.environment.label !== 'mainnet'
+                  ? `?cluster=${ctx.environment.label}`
+                  : ''
+              }`
+            )
+          }
+        >
           <p className="my-auto mr-10 hover:cursor-pointer">Admin</p>
-        </Link>
+        </div>
         {wallet.connected ? (
-          <div className="flex cursor-pointer" onClick={() => setVisible(true)}>
+          <div
+            className="flex cursor-pointer gap-2"
+            onClick={() => setVisible(true)}
+          >
             <AddressImage
               connection={ctx.connection}
               address={wallet.publicKey || undefined}

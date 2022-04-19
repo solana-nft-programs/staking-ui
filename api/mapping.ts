@@ -5,6 +5,7 @@ export type StakePoolMetadata = {
   displayName: string
   pubkey: PublicKey
   imageUrl?: string
+  websiteUrl?: string
 }
 
 export const stakePoolMetadatas: StakePoolMetadata[] = [
@@ -12,7 +13,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     name: 'cardinal',
     displayName: 'Cardinal',
     pubkey: new PublicKey('4bsRsyCSSMgFSNJAi5wvh4UX9vMZDf1MwUrHUszfmLbb'),
-    imageUrl: './logo.svg',
+    imageUrl: './logo-colored.png',
   },
   {
     name: 'jambo',

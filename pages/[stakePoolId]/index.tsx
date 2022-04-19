@@ -481,7 +481,7 @@ function Home() {
             ''
           )}
           <div className="my-2 grid h-full grid-cols-2 gap-4">
-            <div className="flex h-[85vh] max-h-[85vh] flex-col rounded-md bg-white bg-opacity-5 p-10 text-gray-200">
+            <div className="h-[85vh] max-h-[85vh] flex-col rounded-md bg-white bg-opacity-5 p-10 text-gray-200">
               <div className="mt-2 flex flex-row">
                 <p className="mb-3 mr-3 inline-block text-lg">
                   Select Your Tokens
@@ -494,10 +494,12 @@ function Home() {
                 <div className="my-3 flex-auto overflow-auto">
                   <div className="my-auto mb-4 min-h-[60vh] rounded-md bg-white bg-opacity-5 p-5">
                     {loaded && filteredTokens.length == 0 && (
-                      <p>No tokens found in wallet.</p>
+                      <p className="text-gray-400">
+                        No tokens found in wallet.
+                      </p>
                     )}
                     {loaded ? (
-                      <div className="grid grid-cols-1 gap-1 md:grid-cols-2 md:gap-2 lg:grid-cols-3">
+                      <div className="grid grid-cols-1 gap-1 md:grid-cols-2 md:gap-4 lg:grid-cols-3">
                         {filteredTokens.map((tk) => (
                           <div
                             className="relative"
@@ -620,7 +622,11 @@ function Home() {
                         ))}
                       </div>
                     ) : (
-                      <p>Loading your tokens...</p>
+                      <div className="grid grid-cols-1 gap-1 md:grid-cols-2 md:gap-4 lg:grid-cols-3">
+                        <div className="h-[300px] animate-pulse rounded-lg bg-white bg-opacity-5 p-10"></div>
+                        <div className="h-[300px] animate-pulse rounded-lg bg-white bg-opacity-5 p-10"></div>
+                        <div className="h-[300px] animate-pulse rounded-lg bg-white bg-opacity-5 p-10"></div>
+                      </div>
                     )}
                   </div>
                 </div>
@@ -656,10 +662,12 @@ function Home() {
                 <div className="my-3 flex-auto overflow-auto">
                   <div className="my-auto mb-4 min-h-[60vh] rounded-md bg-white bg-opacity-5 p-5">
                     {stakedLoaded && stakedTokenDatas.length === 0 && (
-                      <p>No tokens currently staked.</p>
+                      <p className="text-gray-400">
+                        No tokens currently staked.
+                      </p>
                     )}
                     {stakedLoaded ? (
-                      <div className="grid grid-cols-1 gap-1 md:grid-cols-2 md:gap-2 lg:grid-cols-3">
+                      <div className="grid grid-cols-1 gap-1 md:grid-cols-2 md:gap-4 lg:grid-cols-3">
                         {stakedTokenDatas.map((tk) => (
                           <div
                             className="relative"
@@ -744,7 +752,11 @@ function Home() {
                         ))}
                       </div>
                     ) : (
-                      <p>Loading your tokens...</p>
+                      <div className="grid grid-cols-1 gap-1 md:grid-cols-2 md:gap-4 lg:grid-cols-3">
+                        <div className="h-[300px] animate-pulse rounded-lg bg-white bg-opacity-5 p-10"></div>
+                        <div className="h-[300px] animate-pulse rounded-lg bg-white bg-opacity-5 p-10"></div>
+                        <div className="h-[300px] animate-pulse rounded-lg bg-white bg-opacity-5 p-10"></div>
+                      </div>
                     )}
                   </div>
                 </div>

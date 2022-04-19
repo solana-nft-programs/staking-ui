@@ -286,9 +286,9 @@ function Admin() {
               <p className="mt-1 mb-2 text-sm">
                 All parameters for staking pool are optional
               </p>
-              {stakePool ? (
-                <div className="bg-green-600 bg-opacity-20 p-4">
-                  <p>Successfully created Stake Pool.</p>
+              {stakePool && (
+                <div className="rounded-lg bg-green-600 bg-opacity-20 p-4">
+                  <p className="font-bold">Successfully created Stake Pool.</p>
                   <p>
                     Make sure you <b>SAVE THE POOL ID</b> and identifier
                   </p>
@@ -297,7 +297,7 @@ function Admin() {
                     <b>Identifier:</b> {stakePool.parsed.identifier.toString()}
                   </p>
                 </div>
-              ) : null}
+              )}
               <form className="w-full max-w-lg">
                 <div className="-mx-3 flex flex-wrap">
                   <div className="mb-6 mt-4 w-full px-3 md:mb-0">

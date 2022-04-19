@@ -46,6 +46,8 @@ export function EnvironmentProvider({
   const { query } = useRouter()
   const cluster = (query.project || query.host)?.includes('dev')
     ? 'devnet'
+    : (query.project || query.host)?.includes('test')
+    ? 'testnet'
     : query.cluster || process.env.BASE_CLUSTER
   const foundEnvironment = ENVIRONMENTS.find((e) => e.label === cluster)
   const [environment, setEnvironment] = useState<Environment>(
@@ -54,7 +56,7 @@ export function EnvironmentProvider({
 
   useMemo(() => {
     const foundEnvironment = ENVIRONMENTS.find((e) => e.label === cluster)
-    setEnvironment(foundEnvironment ?? ENVIRONMENTS[2]!)
+    setEnvironment(foundEnvironment ?? ENVIRONMENTS[0]!)
   }, [cluster])
 
   const connection = useMemo(

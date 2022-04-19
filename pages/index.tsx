@@ -127,7 +127,7 @@ function Home() {
                   </div>
                   {stakePool.stakePoolMetadata?.imageUrl && (
                     <img
-                      className="mt-5 h-[150px] w-[150px] rounded-md"
+                      className="mx-auto mt-5 h-[150px] w-[150px] rounded-md"
                       src={stakePool.stakePoolMetadata.imageUrl}
                       alt={stakePool.stakePoolMetadata.name}
                     />
