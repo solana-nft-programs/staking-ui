@@ -423,25 +423,8 @@ function Home() {
         <div className="container mx-auto max-h-[90vh] w-full bg-[#1a1b20]">
           <Header />
           {rewardDistributor ? (
-            <div className="flex h-[10vh] max-h-[10vh] rounded-md bg-white bg-opacity-5 p-10 text-gray-200">
+            <div className="mx-5 flex h-[10vh] max-h-[10vh] rounded-md bg-white bg-opacity-5 p-10 text-gray-200">             
               <p className="mb-3 inline-block text-lg ">
-                Reward Mint:{' '}
-                <a
-                  className="text-white underline"
-                  href={
-                    'https://explorer.solana.com/address/' +
-                    rewardDistributor.parsed.rewardMint.toString()
-                  }
-                >
-                  {mintName}
-                </a>
-              </p>
-              {loadingMintName && (
-                <div className="mb-3 ml-2 inline-block text-lg">
-                  <LoadingSpinner height="25px" />
-                </div>
-              )}
-              <p className="mb-3 ml-10 inline-block text-lg ">
                 Total tokens staked: {totalStaked}
               </p>
               {rewardDistributor.parsed.maxSupply ? (
@@ -469,9 +452,17 @@ function Home() {
                         new BN(rewardDistributor.parsed.rewardAmount)
                       )
                     ) /
-                    rewardDistributor.parsed.rewardDurationSeconds.toNumber()
-                  ).toFixed(2)}{' '}
-                  {mintName}
+                    rewardDistributor.parsed.rewardDurationSeconds.toNumber() * 86400
+                  ).toPrecision(3)}{' '}
+                  <a
+                    className="text-white underline"
+                    href={
+                      'https://explorer.solana.com/address/' +
+                      rewardDistributor.parsed.rewardMint.toString()
+                    }
+                  >
+                    {mintName}
+                  </a> / Day
                 </p>
               ) : (
                 ''
@@ -480,8 +471,8 @@ function Home() {
           ) : (
             ''
           )}
-          <div className="my-2 grid h-full grid-cols-2 gap-4">
-            <div className="ml-5 h-[85vh] max-h-[85vh] flex-col rounded-md bg-white bg-opacity-5 p-10 text-gray-200">
+          <div className="my-2 mx-5 grid h-full grid-cols-2 gap-4">
+            <div className="h-[85vh] max-h-[85vh] flex-col rounded-md bg-white bg-opacity-5 p-10 text-gray-200">
               <div className="mt-2 flex flex-row">
                 <p className="mb-3 mr-3 inline-block text-lg">
                   Select Your Tokens
@@ -651,7 +642,7 @@ function Home() {
                 </button>
               </div>
             </div>
-            <div className="mr-5 h-[85vh] max-h-[85vh] rounded-md bg-white bg-opacity-5 p-10 text-gray-200">
+            <div className="h-[85vh] max-h-[85vh] rounded-md bg-white bg-opacity-5 p-10 text-gray-200">
               <div className="mt-2 flex flex-row">
                 <p className="mr-3 text-lg">View Staked Tokens</p>
                 <div className="inline-block">
