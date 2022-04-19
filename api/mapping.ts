@@ -19,4 +19,9 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     displayName: 'Jambo Mambo',
     pubkey: new PublicKey('9L86DUzzHDQtWyhooEj7d6g44aSqCGYf49WFRkdTyJnt'),
   },
+  {
+    name: 'portals',
+    displayName: 'Portals',
+    pubkey: new PublicKey('6H492AzY8eAS3VNjP7JpyurxCg17RH9wocBNfx4FAA6Q'),
+  },
 ]

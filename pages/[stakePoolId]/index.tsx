@@ -160,26 +160,55 @@ function Home() {
   }, [stakedTokenDatas])
 
   const filterTokens = () => {
-    return tokenDatas.filter(
-      (tk) => tk.tokenAccount?.account.data.parsed.info.state !== 'frozen'
-    )
+    return tokenDatas.filter((token) => {
+      let filterOut = false
+      const creatorAddresses = stakePool?.parsed.requiresCreators
+      const collectionAddresses = stakePool?.parsed.requiresCollections
+      if (token.tokenAccount?.account.data.parsed.info.state === 'frozen') {
+        filterOut = true
+      }
+      if (token?.metaplexData?.data?.data?.uri.includes('api.cardinal.so')) {
+        filterOut = true
+      }
 
-    // return tokenDatas.filter((token) => {
-    //   let valid = false
-    //   const creatorAddresses = stakePool.parsed.requiresCreators
-    //   const collectionAddresses = stakePool.parsed.requiresCollections
-    //   creatorAddresses.forEach((filterCreator) => {
-    //     if (
-    //       token?.metadata?.data?.properties?.creators.filter((c) => {
-    //         c === filterCreator.toString()
-    //       })
-    //     ) {
-    //       valid = true
-    //     }
-    //   })
-    //   // TODO filter out collections
-    //   return valid
-    // })
+      if (creatorAddresses && creatorAddresses.length > 0) {
+        let hasCreator = false
+        creatorAddresses.forEach((filterCreator) => {
+          if (
+            token?.metadata?.data?.properties?.creators
+              .map((c: any) => c.address)
+              .indexOf(filterCreator.toString()) !== -1
+          ) {
+            hasCreator = true
+          }
+        })
+        if (!hasCreator) {
+          filterOut = true
+        }
+      }
+
+      if (collectionAddresses && collectionAddresses.length > 0) {
+        let hasCollection = false
+        collectionAddresses.forEach((collectionAddress) => {
+          if (
+            token.metaplexData?.data?.collection?.verified &&
+            token.metaplexData?.data?.collection.key.toString() ===
+              collectionAddress.toString()
+          ) {
+            hasCollection = true
+          }
+        })
+        if (!hasCollection) {
+          filterOut = true
+        }
+      }
+
+      if (token.stakeAuthorization) {
+        filterOut = false
+      }
+
+      return !filterOut
+    })
   }
 
   const filteredTokens = filterTokens()

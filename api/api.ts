@@ -1,6 +1,9 @@
 import { getBatchedMultipleAccounts as getBatchedMultipleAccounts } from '@cardinal/common'
 import { stakePool } from '@cardinal/staking'
-import { findStakeEntryId } from '@cardinal/staking/dist/cjs/programs/stakePool/pda'
+import {
+  findStakeAuthorizationId,
+  findStakeEntryId,
+} from '@cardinal/staking/dist/cjs/programs/stakePool/pda'
 import type { AccountData } from '@cardinal/token-manager'
 import {
   claimApprover,
@@ -46,6 +49,7 @@ export async function getTokenAccountsWithData(
     PublicKey | null,
     PublicKey | null,
     PublicKey | null,
+    PublicKey | null,
     PublicKey
   ][] = await Promise.all(
     tokenAccounts.map(async (tokenAccount) => {
@@ -77,13 +81,20 @@ export async function getTokenAccountsWithData(
       }
 
       let stakeEntryId = null
+      let stakeAuthorizationId = null
       if (stakePoolId) {
-        ;[stakeEntryId] = await findStakeEntryId(
-          connection,
-          new PublicKey(addressId),
-          stakePoolId,
-          new PublicKey(tokenAccount.account.data.parsed.info.mint)
-        )
+        ;[[stakeEntryId], [stakeAuthorizationId]] = await Promise.all([
+          findStakeEntryId(
+            connection,
+            new PublicKey(addressId),
+            stakePoolId,
+            new PublicKey(tokenAccount.account.data.parsed.info.mint)
+          ),
+          await findStakeAuthorizationId(
+            stakePoolId,
+            new PublicKey(tokenAccount.account.data.parsed.info.mint)
+          ),
+        ])
       }
 
       return [
@@ -93,6 +104,7 @@ export async function getTokenAccountsWithData(
         timeInvalidatorId,
         useInvalidatorId,
         stakeEntryId,
+        stakeAuthorizationId,
         tokenAccount.pubkey,
       ]
     })
@@ -100,6 +112,7 @@ export async function getTokenAccountsWithData(
 
   // @ts-ignore
   const metadataIds: [
+    PublicKey[],
     PublicKey[],
     PublicKey[],
     PublicKey[],
@@ -118,6 +131,7 @@ export async function getTokenAccountsWithData(
           timeInvalidatorId,
           useInvalidatorId,
           stakeEntryId,
+          stakeAuthorizationId,
         ]
       ) => [
         [...acc[0], metaplexId],
@@ -126,8 +140,9 @@ export async function getTokenAccountsWithData(
         [...acc[3], timeInvalidatorId],
         [...acc[4], useInvalidatorId],
         [...acc[5], stakeEntryId],
+        [...acc[6], stakeAuthorizationId],
       ],
-      [[], [], [], [], [], []]
+      [[], [], [], [], [], [], []]
     )
 
   const [
@@ -137,6 +152,7 @@ export async function getTokenAccountsWithData(
     timeInvalidators,
     useInvalidators,
     stakeEntries,
+    stakeAuthorizationIds,
   ] = await Promise.all([
     getBatchedMultipleAccounts(connection, metadataIds[0]),
     getBatchedMultipleAccounts(connection, metadataIds[1]),
@@ -144,6 +160,7 @@ export async function getTokenAccountsWithData(
     timeInvalidator.accounts.getTimeInvalidators(connection, metadataIds[3]),
     useInvalidator.accounts.getUseInvalidators(connection, metadataIds[4]),
     stakePool.accounts.getStakeEntries(connection, metadataIds[5]),
+    stakePool.accounts.getStakeAuthorizations(connection, metadataIds[6]),
   ])
 
   const metaplexData = metaplexAccountInfos.map((accountInfo, i) => {
@@ -212,6 +229,7 @@ export async function getTokenAccountsWithData(
       timeInvalidatorId,
       useInvalidatorId,
       stakeEntryId,
+      stakeAuthorizationId,
       tokenAccountId,
     ]) => ({
       tokenAccount: tokenAccounts.find((data) =>
@@ -239,6 +257,11 @@ export async function getTokenAccountsWithData(
       stakeEntry: stakeEntries.find((data) =>
         data?.parsed
           ? data.pubkey.toString() === stakeEntryId?.toString()
+          : undefined
+      ),
+      stakeAuthorization: stakeAuthorizationIds.find((data) =>
+        data?.parsed
+          ? data.pubkey.toString() === stakeAuthorizationId?.toString()
           : undefined
       ),
       timeInvalidator: timeInvalidators.find((data) =>
