@@ -139,6 +139,8 @@ export const handlePoolMapping = async (
 }
 
 export const getMintsDetails = async () =>
-  await fetch('https://token-list.solana.com/solana.tokenlist.json')
+  await fetch(
+    'https://raw.githubusercontent.com/solana-labs/token-list/main/src/tokens/solana.tokenlist.json'
+  )
     .then((response) => response.json())
     .then((data) => data['tokens'])
