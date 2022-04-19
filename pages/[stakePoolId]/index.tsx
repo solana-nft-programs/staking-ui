@@ -167,7 +167,7 @@ function Home() {
 
   const filterTokens = () => {
     return tokenDatas.filter((token) => {
-      let isAllowed = false
+      let isAllowed = true
       const creatorAddresses = stakePool?.parsed.requiresCreators
       const collectionAddresses = stakePool?.parsed.requiresCollections
       if (token.tokenAccount?.account.data.parsed.info.state === 'frozen') {
