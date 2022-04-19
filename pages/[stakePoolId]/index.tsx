@@ -623,9 +623,9 @@ function Home() {
                       </div>
                     ) : (
                       <div className="grid grid-cols-1 gap-1 md:grid-cols-2 md:gap-4 lg:grid-cols-3">
-                        <div className="h-[300px] animate-pulse rounded-lg bg-white bg-opacity-5 p-10"></div>
-                        <div className="h-[300px] animate-pulse rounded-lg bg-white bg-opacity-5 p-10"></div>
-                        <div className="h-[300px] animate-pulse rounded-lg bg-white bg-opacity-5 p-10"></div>
+                        <div className="h-[200px] animate-pulse rounded-lg bg-white bg-opacity-5 p-10"></div>
+                        <div className="h-[200px] animate-pulse rounded-lg bg-white bg-opacity-5 p-10"></div>
+                        <div className="h-[200px] animate-pulse rounded-lg bg-white bg-opacity-5 p-10"></div>
                       </div>
                     )}
                   </div>
@@ -753,9 +753,9 @@ function Home() {
                       </div>
                     ) : (
                       <div className="grid grid-cols-1 gap-1 md:grid-cols-2 md:gap-4 lg:grid-cols-3">
-                        <div className="h-[300px] animate-pulse rounded-lg bg-white bg-opacity-5 p-10"></div>
-                        <div className="h-[300px] animate-pulse rounded-lg bg-white bg-opacity-5 p-10"></div>
-                        <div className="h-[300px] animate-pulse rounded-lg bg-white bg-opacity-5 p-10"></div>
+                        <div className="h-[200px] animate-pulse rounded-lg bg-white bg-opacity-5 p-10"></div>
+                        <div className="h-[200px] animate-pulse rounded-lg bg-white bg-opacity-5 p-10"></div>
+                        <div className="h-[200px] animate-pulse rounded-lg bg-white bg-opacity-5 p-10"></div>
                       </div>
                     )}
                   </div>

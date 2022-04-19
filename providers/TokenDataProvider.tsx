@@ -1,6 +1,5 @@
 import { AccountData } from '@cardinal/common'
 import { StakePoolData } from '@cardinal/staking/dist/cjs/programs/stakePool'
-import { PublicKey } from '@solana/web3.js'
 import { getTokenAccountsWithData, getTokenDatas } from 'api/api'
 import { TokenData } from 'api/types'
 import type { ReactChild } from 'react'
