@@ -105,6 +105,10 @@ function Home() {
                       `/${
                         stakePool.stakePoolMetadata?.name ||
                         stakePool.stakePoolData.pubkey.toString()
+                      }${
+                        environment.label !== 'mainnet'
+                          ? `?cluster=${environment.label}`
+                          : ''
                       }`
                     )
                   }
@@ -152,6 +156,10 @@ function Home() {
                         `/${
                           stakePool.stakePoolMetadata?.name ||
                           stakePool.stakePoolData.pubkey.toString()
+                        }${
+                          environment.label !== 'mainnet'
+                            ? `?cluster=${environment.label}`
+                            : ''
                         }`
                       )
                     }
