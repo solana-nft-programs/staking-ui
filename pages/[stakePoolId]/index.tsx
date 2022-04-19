@@ -175,7 +175,8 @@ function Home() {
         let hasCreator = false
         creatorAddresses.forEach((filterCreator) => {
           if (
-            (token?.metadata?.data?.properties?.creators || [])
+            token?.metadata?.data?.properties?.creators &&
+            token?.metadata?.data?.properties?.creators
               .map((c: any) => c.address)
               .indexOf(filterCreator.toString()) !== -1
           ) {
