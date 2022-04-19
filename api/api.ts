@@ -122,8 +122,8 @@ export async function getTokenAccountsWithData(
         [...acc[0], metaplexId],
         [...acc[1], editionId],
         [...acc[2], tokenManagerId],
-        [...acc[5], stakeEntryId],
-        [...acc[6], stakeAuthorizationId],
+        [...acc[3], stakeEntryId],
+        [...acc[4], stakeAuthorizationId],
       ],
       [[], [], [], [], [], [], []]
     )
@@ -138,8 +138,8 @@ export async function getTokenAccountsWithData(
     getBatchedMultipleAccounts(connection, metadataIds[0]),
     getBatchedMultipleAccounts(connection, metadataIds[1]),
     tokenManager.accounts.getTokenManagers(connection, metadataIds[2]),
-    stakePool.accounts.getStakeEntries(connection, metadataIds[5]),
-    stakePool.accounts.getStakeAuthorizations(connection, metadataIds[6]),
+    stakePool.accounts.getStakeEntries(connection, metadataIds[3]),
+    stakePool.accounts.getStakeAuthorizations(connection, metadataIds[4]),
   ])
 
   const metaplexData = metaplexAccountInfos.map((accountInfo, i) => {

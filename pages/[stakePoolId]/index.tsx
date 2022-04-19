@@ -492,7 +492,7 @@ function Home() {
               </div>
               {wallet.connected && (
                 <div className="my-3 flex-auto overflow-auto">
-                  <div className="my-auto mb-4 min-h-[60vh] rounded-md bg-white bg-opacity-5 p-5">
+                  <div className="my-auto mb-4 h-[60vh] overflow-scroll rounded-md bg-white bg-opacity-5 p-5">
                     {loaded && filteredTokens.length == 0 && (
                       <p className="text-gray-400">
                         No tokens found in wallet.
@@ -660,7 +660,7 @@ function Home() {
               </div>
               {wallet.connected && (
                 <div className="my-3 flex-auto overflow-auto">
-                  <div className="my-auto mb-4 min-h-[60vh] rounded-md bg-white bg-opacity-5 p-5">
+                  <div className="my-auto mb-4 h-[60vh] rounded-md bg-white bg-opacity-5 p-5">
                     {stakedLoaded && stakedTokenDatas.length === 0 && (
                       <p className="text-gray-400">
                         No tokens currently staked.

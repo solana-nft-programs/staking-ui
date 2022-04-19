@@ -70,6 +70,7 @@ export function TokenAccountsProvider({ children }: { children: ReactChild }) {
     setError(null)
     getTokenAccountsWithData(connection, stakePool?.pubkey, address)
       .then(async (tokenDatas) => {
+        console.log('------->', tokenDatas)
         const hydratedTokenDatas = tokenDatas.reduce((acc, tokenData) => {
           let tokenListData: TokenListData | undefined
           try {
