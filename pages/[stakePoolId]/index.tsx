@@ -481,7 +481,7 @@ function Home() {
             ''
           )}
           <div className="my-2 grid h-full grid-cols-2 gap-4">
-            <div className="h-[85vh] max-h-[85vh] flex-col rounded-md bg-white bg-opacity-5 p-10 text-gray-200">
+            <div className="ml-5 h-[85vh] max-h-[85vh] flex-col rounded-md bg-white bg-opacity-5 p-10 text-gray-200">
               <div className="mt-2 flex flex-row">
                 <p className="mb-3 mr-3 inline-block text-lg">
                   Select Your Tokens
@@ -651,7 +651,7 @@ function Home() {
                 </button>
               </div>
             </div>
-            <div className="h-[85vh] max-h-[85vh] rounded-md bg-white bg-opacity-5 p-10 text-gray-200">
+            <div className="mr-5 h-[85vh] max-h-[85vh] rounded-md bg-white bg-opacity-5 p-10 text-gray-200">
               <div className="mt-2 flex flex-row">
                 <p className="mr-3 text-lg">View Staked Tokens</p>
                 <div className="inline-block">
