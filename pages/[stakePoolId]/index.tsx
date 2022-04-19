@@ -157,7 +157,7 @@ function Home() {
         )
         let amount = new BN(
           Number(getMintDecimalAmountFromNatural(mintInfo!, new BN(rewards)))
-        )
+        )        
         setClaimableRewards(amount.toNumber())
         setLoadingRewards(false)
       }
@@ -166,7 +166,7 @@ function Home() {
   }, [stakedTokenDatas])
 
   const filterTokens = () => {
-    return tokenDatas.filter((token) => {
+    return tokenDatas.filter((token) => {      
       let isAllowed = true
       const creatorAddresses = stakePool?.parsed.requiresCreators
       const collectionAddresses = stakePool?.parsed.requiresCollections
@@ -423,49 +423,52 @@ function Home() {
         <div className="container mx-auto max-h-[90vh] w-full bg-[#1a1b20]">
           <Header />
           {rewardDistributor ? (
-            <div className="mx-5 flex h-[10vh] max-h-[10vh] rounded-md bg-white bg-opacity-5 p-10 text-gray-200">             
-              <p className="mb-3 inline-block text-lg ">
-                Total tokens staked: {totalStaked}
+            <div className="mx-5 mb-4 flex flex-col rounded-md bg-white bg-opacity-5 p-10 text-gray-200 md:max-h-[100px] md:flex-row md:justify-between">
+              <p className="mb-3 mr-10 inline-block text-lg ">
+                Total Tokens in Pool: {totalStaked}
               </p>
-              {rewardDistributor.parsed.maxSupply ? (
-                <p className="mb-3 ml-10 inline-block text-lg ">
-                  Max Supply: {rewardDistributor.parsed.maxSupply.toNumber()}
-                </p>
-              ) : (
-                ''
-              )}
-              <p className="mb-3 ml-10 mr-2 inline-block text-lg ">
-                Claimable Rewards: {claimableRewards} {mintName}
-              </p>
-              {loadingRewards && (
-                <div className="mb-3 mr-3 inline-block text-lg">
-                  <LoadingSpinner height="25px" />
-                </div>
-              )}
               {mintInfo ? (
-                <p className="mb-3 ml-10 mr-2 inline-block text-lg ">
-                  Rewards Rate:{' '}
-                  {(
-                    Number(
-                      getMintDecimalAmountFromNatural(
-                        mintInfo!,
-                        new BN(rewardDistributor.parsed.rewardAmount)
-                      )
-                    ) /
-                    rewardDistributor.parsed.rewardDurationSeconds.toNumber() * 86400
-                  ).toPrecision(3)}{' '}
-                  <a
-                    className="text-white underline"
-                    href={
-                      'https://explorer.solana.com/address/' +
-                      rewardDistributor.parsed.rewardMint.toString()
-                    }
-                  >
-                    {mintName}
-                  </a> / Day
-                </p>
+                <>
+                  <p className="mb-3 mr-10 mr-2 inline-block text-lg ">
+                    Rewards Rate:{' '}
+                    {(
+                      (Number(
+                        getMintDecimalAmountFromNatural(
+                          mintInfo!,
+                          new BN(rewardDistributor.parsed.rewardAmount)
+                        )
+                      ) /
+                        rewardDistributor.parsed.rewardDurationSeconds.toNumber()) *
+                      86400
+                    ).toPrecision(3)}{' '}
+                    <a
+                      className="text-white underline"
+                      href={
+                        'https://explorer.solana.com/address/' +
+                        rewardDistributor.parsed.rewardMint.toString()
+                      }
+                    >
+                      {mintName}
+                    </a>{' '}
+                    / Day
+                  </p>
+                  <p className="mb-3 mr-10 mr-2 flex text-lg ">
+                    {loadingRewards && (
+                      <div className="mr-2">
+                        <LoadingSpinner height="25px" />
+                      </div>
+                    )}
+                    Claimable Rewards: {claimableRewards.toPrecision(3)}{' '}
+                    {mintName}{' '}
+                  </p>
+                </>
               ) : (
-                ''
+                <div className="flex">
+                  <div className="mr-2">
+                    <LoadingSpinner height="25px" />
+                  </div>
+                  <p>Loading Pool Rewards Info...</p>
+                </div>
               )}
             </div>
           ) : (
@@ -483,7 +486,7 @@ function Home() {
               </div>
               {wallet.connected && (
                 <div className="my-3 flex-auto overflow-auto">
-                  <div className="my-auto mb-4 h-[60vh] overflow-scroll rounded-md bg-white bg-opacity-5 p-5">
+                  <div className="my-auto mb-4 h-[60vh] overflow-y-auto overflow-x-hidden rounded-md bg-white bg-opacity-5 p-5">
                     {loaded && filteredTokens.length == 0 && (
                       <p className="text-gray-400">
                         No tokens found in wallet.
@@ -503,7 +506,7 @@ function Home() {
                               <div className="relative">
                                 <div>
                                   <img
-                                    className="mt-2 rounded-lg"
+                                    className="mx-2 mt-4 mb-2 rounded-xl w-[190px] h-[190px] object-contain bg-white bg-opacity-5"
                                     src={
                                       tk.metadata?.data.image ||
                                       tk.tokenListData?.logoURI
@@ -513,28 +516,27 @@ function Home() {
                                       tk.tokenListData?.name
                                     }
                                   />
-                                  {tk.tokenListData ? (
-                                    <div className="absolute bottom-2 left-2">
-                                      {tk.tokenListData.name}
+
+                                  {tk.tokenListData && (
+                                    <div className="mx-2 flex justify-between">
+                                      <div className="float-left mr-2 text-ellipsis inline overflow-clip whitespace-nowrap ">
+                                        {tk.tokenListData.name}
+                                      </div>
+
+                                      <div className="float-right text-ellipsis whitespace-nowrap">
+                                        {Number(
+                                          (
+                                            tk.tokenAccount?.account.data.parsed
+                                              .info.tokenAmount.amount /
+                                            10 ** tk.tokenListData.decimals
+                                          ).toFixed(2)
+                                        )}{' '}
+                                        {tk.tokenListData.symbol}
+                                      </div>
                                     </div>
-                                  ) : (
-                                    ''
-                                  )}
-                                  {tk.tokenListData ? (
-                                    <div className="absolute bottom-2 right-2">
-                                      {Number(
-                                        (
-                                          tk.tokenAccount?.account.data.parsed
-                                            .info.tokenAmount.amount /
-                                          10 ** tk.tokenListData.decimals
-                                        ).toFixed(2)
-                                      )}{' '}
-                                      {tk.tokenListData.symbol}
-                                    </div>
-                                  ) : (
-                                    ''
                                   )}
                                 </div>
+                                <p className="text-white capitalize mx-2">{tk.metadata?.data?.name}</p>
 
                                 <input
                                   placeholder={
@@ -644,7 +646,12 @@ function Home() {
             </div>
             <div className="h-[85vh] max-h-[85vh] rounded-md bg-white bg-opacity-5 p-10 text-gray-200">
               <div className="mt-2 flex flex-row">
-                <p className="mr-3 text-lg">View Staked Tokens</p>
+                <p className="mr-3 text-lg">
+                  View Staked Tokens{' '}
+                  {stakedLoaded && stakedTokenDatas
+                    ? `(${stakedTokenDatas.length})`
+                    : null}
+                </p>
                 <div className="inline-block">
                   {stakedRefreshing && stakedLoaded && (
                     <LoadingSpinner height="25px" />
