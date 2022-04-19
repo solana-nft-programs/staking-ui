@@ -161,54 +161,46 @@ function Home() {
 
   const filterTokens = () => {
     return tokenDatas.filter((token) => {
-      let filterOut = false
+      let isAllowed = false
       const creatorAddresses = stakePool?.parsed.requiresCreators
       const collectionAddresses = stakePool?.parsed.requiresCollections
       if (token.tokenAccount?.account.data.parsed.info.state === 'frozen') {
-        filterOut = true
+        isAllowed = false
       }
       if (token?.metaplexData?.data?.data?.uri.includes('api.cardinal.so')) {
-        filterOut = true
+        isAllowed = false
       }
 
       if (creatorAddresses && creatorAddresses.length > 0) {
-        let hasCreator = false
         creatorAddresses.forEach((filterCreator) => {
           if (
-            token?.metadata?.data?.properties?.creators &&
-            token?.metadata?.data?.properties?.creators
-              .map((c: any) => c.address)
-              .indexOf(filterCreator.toString()) !== -1
+            token?.metaplexData?.data?.data?.creators &&
+            (token?.metaplexData?.data?.data?.creators).some(
+              (c) => c.address === filterCreator.toString() && c.verified
+            )
           ) {
-            hasCreator = true
+            isAllowed = true
           }
         })
-        if (!hasCreator) {
-          filterOut = true
-        }
       }
 
-      if (collectionAddresses && collectionAddresses.length > 0) {
-        let hasCollection = false
+      if (collectionAddresses && collectionAddresses.length > 0 && !isAllowed) {
         collectionAddresses.forEach((collectionAddress) => {
           if (
             token.metaplexData?.data?.collection?.verified &&
-            token.metaplexData?.data?.collection.key.toString() ===
+            token.metaplexData?.data?.collection?.key.toString() ===
               collectionAddress.toString()
           ) {
-            hasCollection = true
+            isAllowed = true
           }
         })
-        if (!hasCollection) {
-          filterOut = true
-        }
       }
 
       if (token.stakeAuthorization) {
-        filterOut = false
+        isAllowed = true
       }
 
-      return !filterOut
+      return isAllowed
     })
   }
 
