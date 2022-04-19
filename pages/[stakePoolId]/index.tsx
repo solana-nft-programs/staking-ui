@@ -176,6 +176,9 @@ function Home() {
       if (token?.metaplexData?.data?.data?.uri.includes('api.cardinal.so')) {
         isAllowed = false
       }
+      if (creatorAddresses || collectionAddresses) {
+        isAllowed = false
+      }
 
       if (creatorAddresses && creatorAddresses.length > 0) {
         creatorAddresses.forEach((filterCreator) => {
