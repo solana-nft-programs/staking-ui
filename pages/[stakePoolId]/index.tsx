@@ -37,6 +37,7 @@ import { RewardDistributorData } from '@cardinal/staking/dist/cjs/programs/rewar
 import { getPendingRewardsForPool } from '@cardinal/staking'
 import { useTokenList } from 'providers/TokenListProvider'
 import { getActiveStakeEntriesForPool } from '@cardinal/staking/dist/cjs/programs/stakePool/accounts'
+import { stakePoolMetadatas } from 'api/mapping'
 
 function Home() {
   const router = useRouter()
@@ -66,7 +67,15 @@ function Home() {
   const [loadingMintName, setLoadingMintName] = useState(true)
   const [mintInfo, setMintInfo] = useState<splToken.MintInfo>()
   const [totalStaked, setTotalStaked] = useState<number>()
+  const [showFungibleTokens, setShowFungibleTokens] = useState(false)
   const { tokenList } = useTokenList()
+
+  const nameMapping = stakePoolMetadatas.find(
+    (p) => p.name === (stakePoolId as String)
+  )
+  const addressMapping = stakePoolMetadatas.find(
+    (p) => p.pubkey.toString() === (stakePoolId as String)
+  )
 
   useEffect(() => {
     if (wallet && wallet.connected && wallet.publicKey) {
@@ -158,6 +167,7 @@ function Home() {
         let amount = new BN(
           Number(getMintDecimalAmountFromNatural(mintInfo!, new BN(rewards)))
         )
+        console.log(rewards)
         setClaimableRewards(amount.toNumber())
         setLoadingRewards(false)
       }
@@ -167,6 +177,12 @@ function Home() {
 
   const filterTokens = () => {
     return tokenDatas.filter((token) => {
+      if (
+        (showFungibleTokens && !token.tokenListData) ||
+        (!showFungibleTokens && token.tokenListData)
+      ) {
+        return false
+      }
       let isAllowed = true
       const creatorAddresses = stakePool?.parsed.requiresCreators
       const collectionAddresses = stakePool?.parsed.requiresCollections
@@ -208,7 +224,6 @@ function Home() {
       if (token.stakeAuthorization) {
         isAllowed = true
       }
-
       return isAllowed
     })
   }
@@ -300,14 +315,15 @@ function Home() {
           type: 'success',
         })
         console.log('Successfully unstaked')
+        refreshTokenAccounts(true)
+        refreshStakedTokenDatas(true)
       } catch (e) {
         notify({ message: `Transaction failed: ${e}`, type: 'error' })
         console.error(e)
         break
       }
     }
-    refreshTokenAccounts(true)
-    refreshStakedTokenDatas(true)
+
     setLoadingUnstake(false)
   }
 
@@ -387,14 +403,14 @@ function Home() {
           type: 'success',
         })
         console.log('Successfully staked')
+        refreshTokenAccounts(true)
+        refreshStakedTokenDatas(true)
       } catch (e) {
         notify({ message: `Transaction failed: ${e}`, type: 'error' })
         console.error(e)
         break
       }
     }
-    refreshTokenAccounts(true)
-    refreshStakedTokenDatas(true)
     setLoadingStake(false)
   }
 
@@ -423,204 +439,247 @@ function Home() {
         <div className="container mx-auto max-h-[90vh] w-full bg-[#1a1b20]">
           <Header />
           {rewardDistributor ? (
-            <div className="flex h-[10vh] max-h-[10vh] rounded-md bg-white bg-opacity-5 p-10 text-gray-200">
-              <p className="mb-3 inline-block text-lg ">
-                Reward Mint:{' '}
-                <a
-                  className="text-white underline"
-                  href={
-                    'https://explorer.solana.com/address/' +
-                    rewardDistributor.parsed.rewardMint.toString()
-                  }
-                >
-                  {mintName}
-                </a>
+            <div className="mx-5 mb-4 flex flex-col rounded-md bg-white bg-opacity-5 p-10 text-gray-200 md:max-h-[100px] md:flex-row md:justify-between">
+              <p className="mb-3 mr-10 inline-block w-52 text-lg">
+                Total Staked: {totalStaked}
               </p>
-              {loadingMintName && (
-                <div className="mb-3 ml-2 inline-block text-lg">
-                  <LoadingSpinner height="25px" />
-                </div>
-              )}
-              <p className="mb-3 ml-10 inline-block text-lg ">
-                Total tokens staked: {totalStaked}
-              </p>
-              {rewardDistributor.parsed.maxSupply ? (
-                <p className="mb-3 ml-10 inline-block text-lg ">
-                  Max Supply: {rewardDistributor.parsed.maxSupply.toNumber()}
+
+              {(nameMapping?.maxStaked || addressMapping?.maxStaked) && (
+                <p className="mb-3 mr-10 inline-block w-52 text-lg">
+                  {/*TODO: Change how many total NFTs can possibly be staked for your collection (default 10000) */}
+                  Percent Staked:{' '}
+                  {totalStaked
+                    ? (totalStaked * 100) /
+                      (nameMapping?.maxStaked
+                        ? nameMapping?.maxStaked
+                        : addressMapping?.maxStaked!)
+                    : 0}
+                  %
                 </p>
-              ) : (
-                ''
-              )}
-              <p className="mb-3 ml-10 mr-2 inline-block text-lg ">
-                Claimable Rewards: {claimableRewards} {mintName}
-              </p>
-              {loadingRewards && (
-                <div className="mb-3 mr-3 inline-block text-lg">
-                  <LoadingSpinner height="25px" />
-                </div>
               )}
               {mintInfo ? (
-                <p className="mb-3 ml-10 mr-2 inline-block text-lg ">
-                  Rewards Rate:{' '}
-                  {(
-                    Number(
-                      getMintDecimalAmountFromNatural(
-                        mintInfo!,
-                        new BN(rewardDistributor.parsed.rewardAmount)
-                      )
-                    ) /
-                    rewardDistributor.parsed.rewardDurationSeconds.toNumber()
-                  ).toFixed(2)}{' '}
-                  {mintName}
-                </p>
+                <>
+                  <p className="mb-3 mr-10 mr-2 inline-block text-lg ">
+                    Rewards Rate:{' '}
+                    {(
+                      (Number(
+                        getMintDecimalAmountFromNatural(
+                          mintInfo!,
+                          new BN(rewardDistributor.parsed.rewardAmount)
+                        )
+                      ) /
+                        rewardDistributor.parsed.rewardDurationSeconds.toNumber()) *
+                      86400
+                    ).toPrecision(3)}{' '}
+                    <a
+                      className="text-white underline"
+                      href={
+                        'https://explorer.solana.com/address/' +
+                        rewardDistributor.parsed.rewardMint.toString()
+                      }
+                    >
+                      {mintName}
+                    </a>{' '}
+                    / Day
+                  </p>
+                  <p className="mb-3 mr-10 mr-2 flex text-lg ">
+                    {loadingRewards && (
+                      <div className="mr-2">
+                        <LoadingSpinner height="25px" />
+                      </div>
+                    )}
+                    Earnings: &nbsp;{claimableRewards.toPrecision(3)} {mintName}{' '}
+                  </p>
+                </>
               ) : (
-                ''
+                <div className="flex">
+                  <div className="mr-2">
+                    <LoadingSpinner height="25px" />
+                  </div>
+                  <p>Loading Pool Rewards Info...</p>
+                </div>
               )}
             </div>
           ) : (
             ''
           )}
-          <div className="my-2 grid h-full grid-cols-2 gap-4">
-            <div className="ml-5 h-[85vh] max-h-[85vh] flex-col rounded-md bg-white bg-opacity-5 p-10 text-gray-200">
-              <div className="mt-2 flex flex-row">
-                <p className="mb-3 mr-3 inline-block text-lg">
-                  Select Your Tokens
-                </p>
-                <div className="inline-block">
-                  {refreshing && loaded && <LoadingSpinner height="25px" />}
-                </div>
+          <div className="my-2 mx-5 grid h-full grid-cols-1 gap-4 md:grid-cols-2">
+            <div className="h-[85vh] max-h-[85vh] flex-col rounded-md bg-white bg-opacity-5 p-10 text-gray-200">
+              <div className="mt-2 flex flex-row justify-between">
+                <>
+                  <p className="mb-3 mr-3 inline-block text-lg">
+                    Select Your Tokens
+                  </p>
+                  <div className="inline-block">
+                    {refreshing && loaded && <LoadingSpinner height="25px" />}
+                  </div>
+                </>
+                <button
+                  onClick={() => {
+                    setShowFungibleTokens(!showFungibleTokens)
+                  }}
+                  className="text-md mb-3 mr-3 inline-block rounded-md bg-white bg-opacity-5 px-4 py-1 hover:bg-opacity-10"
+                >
+                  {showFungibleTokens ? 'Show NFTs' : 'Show FTs'}
+                </button>
               </div>
               {wallet.connected && (
                 <div className="my-3 flex-auto overflow-auto">
-                  <div className="my-auto mb-4 h-[60vh] overflow-scroll rounded-md bg-white bg-opacity-5 p-5">
+                  <div className="relative my-auto mb-4 h-[60vh] overflow-y-auto overflow-x-hidden rounded-md bg-white bg-opacity-5 p-5">
                     {loaded && filteredTokens.length == 0 && (
                       <p className="text-gray-400">
                         No tokens found in wallet.
                       </p>
                     )}
                     {loaded ? (
-                      <div className="grid grid-cols-1 gap-1 md:grid-cols-2 md:gap-4 lg:grid-cols-3">
-                        {filteredTokens.map((tk) => (
-                          <div
-                            className="relative"
-                            key={tk?.tokenAccount?.pubkey.toBase58()}
-                          >
-                            <label
-                              htmlFor={tk?.tokenAccount?.pubkey.toBase58()}
-                              className="relative"
-                            >
-                              <div className="relative">
-                                <div>
-                                  <img
-                                    className="mt-2 rounded-lg"
-                                    src={
-                                      tk.metadata?.data.image ||
-                                      tk.tokenListData?.logoURI
-                                    }
-                                    alt={
-                                      tk.metadata?.data.name ||
-                                      tk.tokenListData?.name
-                                    }
-                                  />
-                                  {tk.tokenListData ? (
-                                    <div className="absolute bottom-2 left-2">
-                                      {tk.tokenListData.name}
-                                    </div>
-                                  ) : (
-                                    ''
-                                  )}
-                                  {tk.tokenListData ? (
-                                    <div className="absolute bottom-2 right-2">
-                                      {Number(
-                                        (
-                                          tk.tokenAccount?.account.data.parsed
-                                            .info.tokenAmount.amount /
-                                          10 ** tk.tokenListData.decimals
-                                        ).toFixed(2)
-                                      )}{' '}
-                                      {tk.tokenListData.symbol}
-                                    </div>
-                                  ) : (
-                                    ''
-                                  )}
-                                </div>
+                      <>
+                        <div
+                          className={
+                            'grid grid-cols-2 gap-1 md:gap-4 lg:grid-cols-2 xl:grid-cols-3'
+                          }
+                        >
+                          {filteredTokens.map((tk) => (
+                            <>
+                              <div
+                                className="relative w-44 md:w-auto 2xl:w-48"
+                                key={tk?.tokenAccount?.pubkey.toBase58()}
+                              >
+                                <label
+                                  htmlFor={tk?.tokenAccount?.pubkey.toBase58()}
+                                  className="relative"
+                                >
+                                  <div className="relative">
+                                    <div>
+                                      <div className="relative">
+                                        {loadingStake &&
+                                          isUnstakedTokenSelected(tk) && (
+                                            <div>
+                                              <div className="absolute top-0 left-0 z-10 flex h-full w-full justify-center rounded-xl bg-black bg-opacity-80  align-middle">
+                                                <p className="my-auto flex">
+                                                  <span className="mr-2">
+                                                    <LoadingSpinner height="25px" />
+                                                  </span>
+                                                  Staking token...
+                                                </p>
+                                              </div>
+                                            </div>
+                                          )}
+                                        <img
+                                          className="mx-auto mt-4 mb-2 rounded-xl bg-white bg-opacity-5 object-contain md:h-40 md:w-40 2xl:h-48 2xl:w-48"
+                                          src={
+                                            tk.metadata?.data.image ||
+                                            tk.tokenListData?.logoURI
+                                          }
+                                          alt={
+                                            tk.metadata?.data.name ||
+                                            tk.tokenListData?.name
+                                          }
+                                        />
+                                      </div>
 
-                                <input
-                                  placeholder={
-                                    tk.tokenAccount?.account.data.parsed.info
-                                      .tokenAmount.amount > 1
-                                      ? '1'
-                                      : ''
-                                  }
-                                  autoComplete="off"
-                                  type={
-                                    tk.tokenAccount?.account.data.parsed.info
-                                      .tokenAmount.amount > 1
-                                      ? 'text'
-                                      : 'checkbox'
-                                  }
-                                  className={`absolute h-4 ${
-                                    tk.tokenAccount?.account.data.parsed.info
-                                      .tokenAmount.amount > 1
-                                      ? `w-20 py-3 px-2 text-right`
-                                      : 'w-4'
-                                  } top-2 right-2 rounded-sm font-medium text-black focus:outline-none`}
-                                  id={tk?.tokenAccount?.pubkey.toBase58()}
-                                  name={tk?.tokenAccount?.pubkey.toBase58()}
-                                  onChange={(e) => {
-                                    const amount = Number(e.target.value)
-                                    if (
-                                      tk.tokenAccount?.account.data.parsed.info
-                                        .tokenAmount.amount > 1
-                                    ) {
-                                      if (
-                                        e.target.value.length > 0 &&
-                                        !amount
-                                      ) {
-                                        notify({
-                                          message:
-                                            'Please enter a valid amount',
-                                          type: 'error',
-                                        })
-                                        setUnstakedSelected(
-                                          unstakedSelected.filter(
-                                            (data) =>
-                                              data.tokenAccount?.account.data.parsed.info.mint.toString() !==
-                                              tk.tokenAccount?.account.data.parsed.info.mint.toString()
-                                          )
-                                        )
-                                        return
-                                      }
-                                      tk.amountToStake = amount
-                                    }
+                                      {tk.tokenListData ? (
+                                        <div className="mx-2 flex justify-start">
+                                          {/* <div className="float-left mr-2 inline overflow-clip text-ellipsis whitespace-nowrap ">
+                                        {tk.tokenListData.name}
+                                      </div> */}
 
-                                    if (isUnstakedTokenSelected(tk)) {
-                                      setUnstakedSelected(
-                                        unstakedSelected.filter(
-                                          (data) =>
-                                            data.tokenAccount?.account.data.parsed.info.mint.toString() !==
-                                            tk.tokenAccount?.account.data.parsed.info.mint.toString()
-                                        )
-                                      )
-                                    } else {
-                                      if (
+                                          <div className="float-left text-ellipsis whitespace-nowrap">
+                                            {Number(
+                                              (
+                                                tk.tokenAccount?.account.data
+                                                  .parsed.info.tokenAmount
+                                                  .amount /
+                                                10 ** tk.tokenListData.decimals
+                                              ).toFixed(2)
+                                            )}{' '}
+                                            {tk.tokenListData.symbol}
+                                          </div>
+                                        </div>
+                                      ) : (
+                                        <p className="mx-2 overflow-clip text-ellipsis whitespace-nowrap capitalize text-white">
+                                          {tk.metadata?.data?.name}
+                                        </p>
+                                      )}
+                                    </div>
+
+                                    <input
+                                      placeholder={
                                         tk.tokenAccount?.account.data.parsed
                                           .info.tokenAmount.amount > 1
-                                      ) {
-                                        tk.amountToStake = amount
+                                          ? '1'
+                                          : ''
                                       }
-                                      setUnstakedSelected([
-                                        ...unstakedSelected,
-                                        tk,
-                                      ])
-                                    }
-                                  }}
-                                />
+                                      autoComplete="off"
+                                      type={
+                                        tk.tokenAccount?.account.data.parsed
+                                          .info.tokenAmount.amount > 1
+                                          ? 'text'
+                                          : 'checkbox'
+                                      }
+                                      className={`absolute h-4 ${
+                                        tk.tokenAccount?.account.data.parsed
+                                          .info.tokenAmount.amount > 1
+                                          ? `w-20 py-3 px-2 text-right`
+                                          : 'w-4'
+                                      } top-2 right-2 rounded-sm font-medium text-black focus:outline-none`}
+                                      id={tk?.tokenAccount?.pubkey.toBase58()}
+                                      name={tk?.tokenAccount?.pubkey.toBase58()}
+                                      onChange={(e) => {
+                                        const amount = Number(e.target.value)
+                                        if (
+                                          tk.tokenAccount?.account.data.parsed
+                                            .info.tokenAmount.amount > 1
+                                        ) {
+                                          if (
+                                            e.target.value.length > 0 &&
+                                            !amount
+                                          ) {
+                                            notify({
+                                              message:
+                                                'Please enter a valid amount',
+                                              type: 'error',
+                                            })
+                                            setUnstakedSelected(
+                                              unstakedSelected.filter(
+                                                (data) =>
+                                                  data.tokenAccount?.account.data.parsed.info.mint.toString() !==
+                                                  tk.tokenAccount?.account.data.parsed.info.mint.toString()
+                                              )
+                                            )
+                                            return
+                                          }
+                                          tk.amountToStake = amount
+                                        }
+
+                                        if (isUnstakedTokenSelected(tk)) {
+                                          setUnstakedSelected(
+                                            unstakedSelected.filter(
+                                              (data) =>
+                                                data.tokenAccount?.account.data.parsed.info.mint.toString() !==
+                                                tk.tokenAccount?.account.data.parsed.info.mint.toString()
+                                            )
+                                          )
+                                        } else {
+                                          if (
+                                            tk.tokenAccount?.account.data.parsed
+                                              .info.tokenAmount.amount > 1
+                                          ) {
+                                            tk.amountToStake = amount
+                                          }
+                                          setUnstakedSelected([
+                                            ...unstakedSelected,
+                                            tk,
+                                          ])
+                                        }
+                                      }}
+                                    />
+                                  </div>
+                                </label>
                               </div>
-                            </label>
-                          </div>
-                        ))}
-                      </div>
+                            </>
+                          ))}
+                        </div>
+                      </>
                     ) : (
                       <div className="grid grid-cols-1 gap-1 md:grid-cols-2 md:gap-4 lg:grid-cols-3">
                         <div className="h-[200px] animate-pulse rounded-lg bg-white bg-opacity-5 p-10"></div>
@@ -642,7 +701,7 @@ function Home() {
                     }
                     handleStake()
                   }}
-                  className="my-auto flex rounded-md bg-blue-700 px-4 py-2"
+                  className="my-auto flex rounded-md bg-blue-700 px-4 py-2 hover:bg-blue-800"
                 >
                   <span className="mr-1 inline-block">
                     {loadingStake && <LoadingSpinner height="25px" />}
@@ -651,9 +710,14 @@ function Home() {
                 </button>
               </div>
             </div>
-            <div className="mr-5 h-[85vh] max-h-[85vh] rounded-md bg-white bg-opacity-5 p-10 text-gray-200">
+            <div className="h-[85vh] max-h-[85vh] rounded-md bg-white bg-opacity-5 p-10 text-gray-200">
               <div className="mt-2 flex flex-row">
-                <p className="mr-3 text-lg">View Staked Tokens</p>
+                <p className="mr-3 text-lg">
+                  View Staked Tokens{' '}
+                  {stakedLoaded && stakedTokenDatas
+                    ? `(${stakedTokenDatas.length})`
+                    : null}
+                </p>
                 <div className="inline-block">
                   {stakedRefreshing && stakedLoaded && (
                     <LoadingSpinner height="25px" />
@@ -669,12 +733,27 @@ function Home() {
                       </p>
                     )}
                     {stakedLoaded ? (
-                      <div className="grid grid-cols-1 gap-1 md:grid-cols-2 md:gap-4 lg:grid-cols-3">
+                      <div className="grid grid-cols-2 gap-1 md:grid-cols-2 md:gap-4 lg:grid-cols-3">
                         {stakedTokenDatas.map((tk) => (
                           <div
                             className="relative"
                             key={tk?.tokenAccount?.pubkey.toBase58()}
                           >
+                            {(loadingUnstake || loadingClaimRewards) &&
+                              isStakedTokenSelected(tk) && (
+                                <div>
+                                  <div className="absolute top-0 left-0 z-10 flex h-full w-full justify-center rounded-lg bg-black bg-opacity-80  align-middle">
+                                    <p className="my-auto flex">
+                                      <span className="mr-2">
+                                        <LoadingSpinner height="25px" />
+                                      </span>
+                                      {loadingUnstake
+                                        ? 'Unstaking token...'
+                                        : 'Claiming rewards...'}
+                                    </p>
+                                  </div>
+                                </div>
+                              )}
                             <label
                               htmlFor={tk?.tokenAccount?.pubkey.toBase58()}
                               className="relative"
@@ -682,7 +761,7 @@ function Home() {
                               <div className="relative">
                                 <div>
                                   <img
-                                    className="mt-2 rounded-lg"
+                                    className="rounded-lg"
                                     src={
                                       tk.metadata?.data.image ||
                                       tk.tokenListData?.logoURI
