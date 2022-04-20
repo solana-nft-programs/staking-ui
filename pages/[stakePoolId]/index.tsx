@@ -66,6 +66,7 @@ function Home() {
   const [loadingMintName, setLoadingMintName] = useState(true)
   const [mintInfo, setMintInfo] = useState<splToken.MintInfo>()
   const [totalStaked, setTotalStaked] = useState<number>()
+  const [showFungibleTokens, setShowFungibleTokens] = useState(false)
   const { tokenList } = useTokenList()
 
   useEffect(() => {
@@ -167,50 +168,59 @@ function Home() {
 
   const filterTokens = () => {
     return tokenDatas.filter((token) => {
-      return true
-      let isAllowed = true
-      const creatorAddresses = stakePool?.parsed.requiresCreators
-      const collectionAddresses = stakePool?.parsed.requiresCollections
-      if (token.tokenAccount?.account.data.parsed.info.state === 'frozen') {
-        isAllowed = false
-      }
-      if (token?.metaplexData?.data?.data?.uri.includes('api.cardinal.so')) {
-        isAllowed = false
-      }
-      if (creatorAddresses || collectionAddresses) {
-        isAllowed = false
-      }
+      if (showFungibleTokens) {
+        return token.tokenListData ? true : false
+      } else {
+        if (token.tokenListData) {
+          return false
+        }
+        let isAllowed = true
+        const creatorAddresses = stakePool?.parsed.requiresCreators
+        const collectionAddresses = stakePool?.parsed.requiresCollections
+        if (token.tokenAccount?.account.data.parsed.info.state === 'frozen') {
+          isAllowed = false
+        }
+        if (token?.metaplexData?.data?.data?.uri.includes('api.cardinal.so')) {
+          isAllowed = false
+        }
+        if (creatorAddresses || collectionAddresses) {
+          isAllowed = false
+        }
 
-      if (creatorAddresses && creatorAddresses.length > 0) {
-        creatorAddresses.forEach((filterCreator) => {
-          if (
-            token?.metaplexData?.data?.data?.creators &&
-            (token?.metaplexData?.data?.data?.creators).some(
-              (c) => c.address === filterCreator.toString() && c.verified
-            )
-          ) {
-            isAllowed = true
-          }
-        })
-      }
+        if (creatorAddresses && creatorAddresses.length > 0) {
+          creatorAddresses.forEach((filterCreator) => {
+            if (
+              token?.metaplexData?.data?.data?.creators &&
+              (token?.metaplexData?.data?.data?.creators).some(
+                (c) => c.address === filterCreator.toString() && c.verified
+              )
+            ) {
+              isAllowed = true
+            }
+          })
+        }
 
-      if (collectionAddresses && collectionAddresses.length > 0 && !isAllowed) {
-        collectionAddresses.forEach((collectionAddress) => {
-          if (
-            token.metaplexData?.data?.collection?.verified &&
-            token.metaplexData?.data?.collection?.key.toString() ===
-              collectionAddress.toString()
-          ) {
-            isAllowed = true
-          }
-        })
-      }
+        if (
+          collectionAddresses &&
+          collectionAddresses.length > 0 &&
+          !isAllowed
+        ) {
+          collectionAddresses.forEach((collectionAddress) => {
+            if (
+              token.metaplexData?.data?.collection?.verified &&
+              token.metaplexData?.data?.collection?.key.toString() ===
+                collectionAddress.toString()
+            ) {
+              isAllowed = true
+            }
+          })
+        }
 
-      if (token.stakeAuthorization) {
-        isAllowed = true
+        if (token.stakeAuthorization) {
+          isAllowed = true
+        }
+        return isAllowed
       }
-
-      return isAllowed
     })
   }
 
@@ -476,13 +486,23 @@ function Home() {
           )}
           <div className="my-2 mx-5 grid h-full grid-cols-1 gap-4 md:grid-cols-2">
             <div className="h-[85vh] max-h-[85vh] flex-col rounded-md bg-white bg-opacity-5 p-10 text-gray-200">
-              <div className="mt-2 flex flex-row">
-                <p className="mb-3 mr-3 inline-block text-lg">
-                  Select Your Tokens
-                </p>
-                <div className="inline-block">
-                  {refreshing && loaded && <LoadingSpinner height="25px" />}
-                </div>
+              <div className="mt-2 flex flex-row justify-between">
+                <>
+                  <p className="mb-3 mr-3 inline-block text-lg">
+                    Select Your Tokens
+                  </p>
+                  <div className="inline-block">
+                    {refreshing && loaded && <LoadingSpinner height="25px" />}
+                  </div>
+                </>
+                <button
+                  onClick={() => {
+                    setShowFungibleTokens(!showFungibleTokens)
+                  }}
+                  className="text-md mb-3 mr-3 inline-block rounded-md bg-white bg-opacity-5 px-4 py-1 hover:bg-opacity-10"
+                >
+                  {showFungibleTokens ? 'Show NFTs' : 'Show FTs'}
+                </button>
               </div>
               {wallet.connected && (
                 <div className="my-3 flex-auto overflow-auto">
@@ -493,10 +513,10 @@ function Home() {
                       </p>
                     )}
                     {loaded ? (
-                      <div className="grid grid-cols-2 gap-1 lg:grid-cols-2 md:gap-4 xl:grid-cols-3">
+                      <div className="grid grid-cols-2 gap-1 md:gap-4 lg:grid-cols-2 xl:grid-cols-3">
                         {filteredTokens.map((tk) => (
                           <div
-                            className="relative md:w-auto w-44 2xl:w-48"
+                            className="relative w-44 md:w-auto 2xl:w-48"
                             key={tk?.tokenAccount?.pubkey.toBase58()}
                           >
                             <label
@@ -506,7 +526,7 @@ function Home() {
                               <div className="relative">
                                 <div>
                                   <img
-                                    className="md:h-40 md:w-40 2xl:h-48 2xl:w-48 mx-auto object-contain mt-4 mb-2 rounded-xl bg-white bg-opacity-5"
+                                    className="mx-auto mt-4 mb-2 rounded-xl bg-white bg-opacity-5 object-contain md:h-40 md:w-40 2xl:h-48 2xl:w-48"
                                     src={
                                       tk.metadata?.data.image ||
                                       tk.tokenListData?.logoURI
@@ -638,7 +658,7 @@ function Home() {
                     }
                     handleStake()
                   }}
-                  className="my-auto flex rounded-md bg-blue-700 px-4 py-2"
+                  className="my-auto flex rounded-md bg-blue-700 px-4 py-2 hover:bg-blue-800"
                 >
                   <span className="mr-1 inline-block">
                     {loadingStake && <LoadingSpinner height="25px" />}
