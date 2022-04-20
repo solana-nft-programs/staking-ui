@@ -37,6 +37,7 @@ import { RewardDistributorData } from '@cardinal/staking/dist/cjs/programs/rewar
 import { getPendingRewardsForPool } from '@cardinal/staking'
 import { useTokenList } from 'providers/TokenListProvider'
 import { getActiveStakeEntriesForPool } from '@cardinal/staking/dist/cjs/programs/stakePool/accounts'
+import { stakePoolMetadatas } from 'api/mapping'
 
 function Home() {
   const router = useRouter()
@@ -68,6 +69,13 @@ function Home() {
   const [totalStaked, setTotalStaked] = useState<number>()
   const [showFungibleTokens, setShowFungibleTokens] = useState(false)
   const { tokenList } = useTokenList()
+
+  const nameMapping = stakePoolMetadatas.find(
+    (p) => p.name === (stakePoolId as String)
+  )
+  const addressMapping = stakePoolMetadatas.find(
+    (p) => p.pubkey.toString() === (stakePoolId as String)
+  )
 
   useEffect(() => {
     if (wallet && wallet.connected && wallet.publicKey) {
@@ -159,6 +167,7 @@ function Home() {
         let amount = new BN(
           Number(getMintDecimalAmountFromNatural(mintInfo!, new BN(rewards)))
         )
+        console.log(rewards)
         setClaimableRewards(amount.toNumber())
         setLoadingRewards(false)
       }
@@ -436,9 +445,23 @@ function Home() {
           <Header />
           {rewardDistributor ? (
             <div className="mx-5 mb-4 flex flex-col rounded-md bg-white bg-opacity-5 p-10 text-gray-200 md:max-h-[100px] md:flex-row md:justify-between">
-              <p className="mb-3 mr-10 inline-block text-lg ">
-                Total Tokens in Pool: {totalStaked}
+              <p className="mb-3 mr-10 inline-block w-52 text-lg">
+                Total Staked: {totalStaked}
               </p>
+
+              {(nameMapping?.maxStaked || addressMapping?.maxStaked) && (
+                <p className="mb-3 mr-10 inline-block w-52 text-lg">
+                  {/*TODO: Change how many total NFTs can possibly be staked for your collection (default 10000) */}
+                  Percent Staked:{' '}
+                  {totalStaked
+                    ? (totalStaked * 100) /
+                      (nameMapping?.maxStaked
+                        ? nameMapping?.maxStaked
+                        : addressMapping?.maxStaked!)
+                    : 0}
+                  %
+                </p>
+              )}
               {mintInfo ? (
                 <>
                   <p className="mb-3 mr-10 mr-2 inline-block text-lg ">
