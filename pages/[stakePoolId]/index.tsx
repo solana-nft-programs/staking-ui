@@ -177,59 +177,54 @@ function Home() {
 
   const filterTokens = () => {
     return tokenDatas.filter((token) => {
-      if (showFungibleTokens) {
-        return token.tokenListData ? true : false
-      } else {
-        if (token.tokenListData) {
-          return false
-        }
-        let isAllowed = true
-        const creatorAddresses = stakePool?.parsed.requiresCreators
-        const collectionAddresses = stakePool?.parsed.requiresCollections
-        if (token.tokenAccount?.account.data.parsed.info.state === 'frozen') {
-          isAllowed = false
-        }
-        if (token?.metaplexData?.data?.data?.uri.includes('api.cardinal.so')) {
-          isAllowed = false
-        }
-        if (creatorAddresses || collectionAddresses) {
-          isAllowed = false
-        }
-
-        if (creatorAddresses && creatorAddresses.length > 0) {
-          creatorAddresses.forEach((filterCreator) => {
-            if (
-              token?.metaplexData?.data?.data?.creators &&
-              (token?.metaplexData?.data?.data?.creators).some(
-                (c) => c.address === filterCreator.toString() && c.verified
-              )
-            ) {
-              isAllowed = true
-            }
-          })
-        }
-
-        if (
-          collectionAddresses &&
-          collectionAddresses.length > 0 &&
-          !isAllowed
-        ) {
-          collectionAddresses.forEach((collectionAddress) => {
-            if (
-              token.metaplexData?.data?.collection?.verified &&
-              token.metaplexData?.data?.collection?.key.toString() ===
-                collectionAddress.toString()
-            ) {
-              isAllowed = true
-            }
-          })
-        }
-
-        if (token.stakeAuthorization) {
-          isAllowed = true
-        }
-        return isAllowed
+      if (
+        (showFungibleTokens && !token.tokenListData) ||
+        (!showFungibleTokens && token.tokenListData)
+      ) {
+        return false
       }
+      let isAllowed = true
+      const creatorAddresses = stakePool?.parsed.requiresCreators
+      const collectionAddresses = stakePool?.parsed.requiresCollections
+      if (token.tokenAccount?.account.data.parsed.info.state === 'frozen') {
+        isAllowed = false
+      }
+      if (token?.metaplexData?.data?.data?.uri.includes('api.cardinal.so')) {
+        isAllowed = false
+      }
+      if (creatorAddresses || collectionAddresses) {
+        isAllowed = false
+      }
+
+      if (creatorAddresses && creatorAddresses.length > 0) {
+        creatorAddresses.forEach((filterCreator) => {
+          if (
+            token?.metaplexData?.data?.data?.creators &&
+            (token?.metaplexData?.data?.data?.creators).some(
+              (c) => c.address === filterCreator.toString() && c.verified
+            )
+          ) {
+            isAllowed = true
+          }
+        })
+      }
+
+      if (collectionAddresses && collectionAddresses.length > 0 && !isAllowed) {
+        collectionAddresses.forEach((collectionAddress) => {
+          if (
+            token.metaplexData?.data?.collection?.verified &&
+            token.metaplexData?.data?.collection?.key.toString() ===
+              collectionAddress.toString()
+          ) {
+            isAllowed = true
+          }
+        })
+      }
+
+      if (token.stakeAuthorization) {
+        isAllowed = true
+      }
+      return isAllowed
     })
   }
 
