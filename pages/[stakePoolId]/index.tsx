@@ -157,7 +157,7 @@ function Home() {
         )
         let amount = new BN(
           Number(getMintDecimalAmountFromNatural(mintInfo!, new BN(rewards)))
-        )        
+        )
         setClaimableRewards(amount.toNumber())
         setLoadingRewards(false)
       }
@@ -166,7 +166,8 @@ function Home() {
   }, [stakedTokenDatas])
 
   const filterTokens = () => {
-    return tokenDatas.filter((token) => {      
+    return tokenDatas.filter((token) => {
+      return true
       let isAllowed = true
       const creatorAddresses = stakePool?.parsed.requiresCreators
       const collectionAddresses = stakePool?.parsed.requiresCollections
@@ -458,8 +459,7 @@ function Home() {
                         <LoadingSpinner height="25px" />
                       </div>
                     )}
-                    Claimable Rewards: {claimableRewards.toPrecision(3)}{' '}
-                    {mintName}{' '}
+                    Earnings: &nbsp;{claimableRewards.toPrecision(3)} {mintName}{' '}
                   </p>
                 </>
               ) : (
@@ -474,7 +474,7 @@ function Home() {
           ) : (
             ''
           )}
-          <div className="my-2 mx-5 grid h-full grid-cols-2 gap-4">
+          <div className="my-2 mx-5 grid h-full grid-cols-1 gap-4 md:grid-cols-2">
             <div className="h-[85vh] max-h-[85vh] flex-col rounded-md bg-white bg-opacity-5 p-10 text-gray-200">
               <div className="mt-2 flex flex-row">
                 <p className="mb-3 mr-3 inline-block text-lg">
@@ -493,10 +493,10 @@ function Home() {
                       </p>
                     )}
                     {loaded ? (
-                      <div className="grid grid-cols-1 gap-1 md:grid-cols-2 md:gap-4 lg:grid-cols-3">
+                      <div className="grid grid-cols-2 gap-1 lg:grid-cols-2 md:gap-4 xl:grid-cols-3">
                         {filteredTokens.map((tk) => (
                           <div
-                            className="relative"
+                            className="relative md:w-auto w-44 2xl:w-48"
                             key={tk?.tokenAccount?.pubkey.toBase58()}
                           >
                             <label
@@ -506,7 +506,7 @@ function Home() {
                               <div className="relative">
                                 <div>
                                   <img
-                                    className="mx-2 mt-4 mb-2 rounded-xl w-[190px] h-[190px] object-contain bg-white bg-opacity-5"
+                                    className="md:h-40 md:w-40 2xl:h-48 2xl:w-48 mx-auto object-contain mt-4 mb-2 rounded-xl bg-white bg-opacity-5"
                                     src={
                                       tk.metadata?.data.image ||
                                       tk.tokenListData?.logoURI
@@ -517,13 +517,13 @@ function Home() {
                                     }
                                   />
 
-                                  {tk.tokenListData && (
-                                    <div className="mx-2 flex justify-between">
-                                      <div className="float-left mr-2 text-ellipsis inline overflow-clip whitespace-nowrap ">
+                                  {tk.tokenListData ? (
+                                    <div className="mx-2 flex justify-start">
+                                      {/* <div className="float-left mr-2 inline overflow-clip text-ellipsis whitespace-nowrap ">
                                         {tk.tokenListData.name}
-                                      </div>
+                                      </div> */}
 
-                                      <div className="float-right text-ellipsis whitespace-nowrap">
+                                      <div className="float-left text-ellipsis whitespace-nowrap">
                                         {Number(
                                           (
                                             tk.tokenAccount?.account.data.parsed
@@ -534,9 +534,12 @@ function Home() {
                                         {tk.tokenListData.symbol}
                                       </div>
                                     </div>
+                                  ) : (
+                                    <p className="mx-2 overflow-clip text-ellipsis whitespace-nowrap capitalize text-white">
+                                      {tk.metadata?.data?.name}
+                                    </p>
                                   )}
                                 </div>
-                                <p className="text-white capitalize mx-2">{tk.metadata?.data?.name}</p>
 
                                 <input
                                   placeholder={
@@ -667,7 +670,7 @@ function Home() {
                       </p>
                     )}
                     {stakedLoaded ? (
-                      <div className="grid grid-cols-1 gap-1 md:grid-cols-2 md:gap-4 lg:grid-cols-3">
+                      <div className="grid grid-cols-2 gap-1 md:grid-cols-2 md:gap-4 lg:grid-cols-3">
                         {stakedTokenDatas.map((tk) => (
                           <div
                             className="relative"
