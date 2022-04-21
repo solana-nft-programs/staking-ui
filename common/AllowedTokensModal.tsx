@@ -6,6 +6,9 @@ import {
 import { getStakeAuthorizationsForPool } from '@cardinal/staking/dist/cjs/programs/stakePool/accounts'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 import { useCallback, useEffect, useState } from 'react'
+import { pubKeyUrl } from 'common/utils'
+import { shortPubKey } from '@cardinal/namespaces-components'
+import { ShortPubKeyUrl } from './Pubkeys'
 
 export const AllowedTokensModal = ({
   handleClose,
@@ -14,7 +17,7 @@ export const AllowedTokensModal = ({
   handleClose: () => any
   stakePool: AccountData<StakePoolData> | undefined
 }) => {
-  const { connection } = useEnvironmentCtx()
+  const { connection, environment } = useEnvironmentCtx()
   const [stakeAuths, setStakeAuths] = useState<
     AccountData<StakeAuthorizationData>[]
   >([])
@@ -59,9 +62,8 @@ export const AllowedTokensModal = ({
       }}
     >
       <div
-        className="fixed inset-x-0 top-8 z-50 mx-auto rounded-3xl border border-[#A7A7A7] bg-[#2A2A2A] px-7 pb-10 md:px-10"
+        className="fixed inset-x-0 top-8 z-50 mx-auto rounded-3xl bg-[#2A2A2A] px-7 pb-10 md:px-10"
         style={{
-          border: '2px solid #A7A7A7',
           width: '90%',
           maxWidth: '1200px',
           maxHeight: 'calc(100vh - 64px)',
@@ -91,14 +93,7 @@ export const AllowedTokensModal = ({
               ) : (
                 <span className="flex flex-col">
                   {stakePool?.parsed.requiresCreators.map((c) => (
-                    <a
-                      className="mr-2 text-white underline underline-offset-2"
-                      href={
-                        'https://explorer.solana.com/address/' + c.toString()
-                      }
-                    >
-                      {c.toString()}
-                    </a>
+                    <ShortPubKeyUrl pubkey={c} cluster={environment.label} />
                   ))}
                 </span>
               )}
