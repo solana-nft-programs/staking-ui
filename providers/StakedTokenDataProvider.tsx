@@ -151,6 +151,6 @@ export function StakedTokenDataProvider({
   )
 }
 
-export function useStakedTokenData(): StakedTokenDataValues {
-  return useContext(StakedTokenData)
-}
+// export function useStakedTokenData(): StakedTokenDataValues {
+//   return useContext(StakedTokenData)
+// }

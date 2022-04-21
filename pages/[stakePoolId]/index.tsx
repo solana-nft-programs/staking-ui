@@ -20,57 +20,67 @@ import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 import { useEffect, useState } from 'react'
 import { Wallet } from '@metaplex/js'
 import { useUserTokenData } from 'providers/TokenDataProvider'
-import { useStakedTokenData } from 'providers/StakedTokenDataProvider'
 import { LoadingSpinner } from 'common/LoadingSpinner'
 import { useRouter } from 'next/router'
 import { notify } from 'common/Notification'
 import { handlePoolMapping } from 'common/utils'
-import { getRewardDistributor } from '@cardinal/staking/dist/cjs/programs/rewardDistributor/accounts'
-import { findRewardDistributorId } from '@cardinal/staking/dist/cjs/programs/rewardDistributor/pda'
 import {
   getMintDecimalAmountFromNatural,
   getMintDecimalAmountFromNaturalV2,
   getMintNaturalAmountFromDecimal,
 } from 'common/units'
 import { BN } from '@project-serum/anchor'
-import { RewardDistributorData } from '@cardinal/staking/dist/cjs/programs/rewardDistributor'
-import { getPendingRewardsForPool } from '@cardinal/staking'
 import { useTokenList } from 'providers/TokenListProvider'
 import { getActiveStakeEntriesForPool } from '@cardinal/staking/dist/cjs/programs/stakePool/accounts'
 import { stakePoolMetadatas } from 'api/mapping'
 import { AllowedTokensModal } from '../../common/AllowedTokensModal'
+import { useStakedTokenData } from 'hooks/useStakedTokenDatas'
+import { useRewardDistributorData } from 'hooks/useRewardDistributorData'
+import { useRewards } from 'hooks/useRewards'
+import { useRewardMintInfo } from 'hooks/useRewardMintInfo'
 
 function Home() {
   const router = useRouter()
   const { stakePoolId } = router.query
   const { connection } = useEnvironmentCtx()
   const [stakePool, setStakePool] = useState<AccountData<StakePoolData>>()
-  const [rewardDistributor, setRewardDistributor] =
-    useState<AccountData<RewardDistributorData>>()
   const wallet = useWallet()
+
   const {
     stakedRefreshing,
-    setStakedAddress,
     stakedTokenDatas,
     stakedLoaded,
     refreshStakedTokenDatas,
-  } = useStakedTokenData()
+  } = useStakedTokenData(wallet.publicKey, stakePool)
+
+  const {
+    rewardDistributor,
+    loadingRewardDistributorData,
+    refreshRewardDistributorData,
+    refreshingRewardDistributorData,
+    rewardDistributorDataError,
+  } = useRewardDistributorData(wallet.publicKey, stakePool)
+
+  const { rewardMintInfo, rewardMintName } = useRewardMintInfo(
+    wallet.publicKey,
+    stakePool
+  )
+
+  const { claimableRewards, rewardsLoaded } = useRewards(
+    wallet.publicKey,
+    stakePool
+  )
+
   const { refreshing, setAddress, tokenDatas, loaded, refreshTokenAccounts } =
     useUserTokenData()
   const [unstakedSelected, setUnstakedSelected] = useState<TokenData[]>([])
   const [stakedSelected, setStakedSelected] = useState<TokenData[]>([])
-  const [claimableRewards, setClaimableRewards] = useState<number>(0)
-  const [loadingRewards, setLoadingRewards] = useState<boolean>(false)
   const [loadingStake, setLoadingStake] = useState(false)
   const [loadingUnstake, setLoadingUnstake] = useState(false)
   const [loadingClaimRewards, setLoadingClaimRewards] = useState(false)
-  const [mintName, setMintName] = useState('')
-  const [loadingMintName, setLoadingMintName] = useState(true)
-  const [mintInfo, setMintInfo] = useState<splToken.MintInfo>()
   const [totalStaked, setTotalStaked] = useState<number>()
   const [showFungibleTokens, setShowFungibleTokens] = useState(false)
   const [showModal, setShowModal] = useState<boolean>()
-  const { tokenList } = useTokenList()
 
   const nameMapping = stakePoolMetadatas.find(
     (p) => p.name === (stakePoolId as String)
@@ -82,7 +92,6 @@ function Home() {
   useEffect(() => {
     if (wallet && wallet.connected && wallet.publicKey) {
       setAddress(wallet.publicKey.toBase58())
-      setStakedAddress(wallet.publicKey.toBase58())
     }
   }, [wallet.publicKey])
 
@@ -109,125 +118,52 @@ function Home() {
     }
   }, [stakePoolId])
 
-  useEffect(() => {
-    if (stakePool) {
-      const getRewards = async () => {
-        setLoadingRewards(true)
-        const [rewardDistributorId] = await findRewardDistributorId(
-          stakePool!.pubkey
-        )
-
-        let rewardDistributorAcc: AccountData<RewardDistributorData> | null
-        if (!rewardDistributor) {
-          rewardDistributorAcc = await tryGetAccount(() =>
-            getRewardDistributor(connection, rewardDistributorId)
-          )
-          if (!rewardDistributorAcc) {
-            return
-          }
-          setRewardDistributor(rewardDistributorAcc)
-        }
-        if (!wallet) {
-          throw new Error('Wallet not found')
-        }
-
-        if (rewardDistributor && mintName.length === 0) {
-          setLoadingMintName(true)
-          const tokenListData = tokenList.find(
-            (tk) =>
-              tk.address === rewardDistributor?.parsed.rewardMint.toString()
-          )
-          if (tokenListData) {
-            setMintName(tokenListData.name)
-          }
-          setLoadingMintName(false)
-        }
-
-        let mint = new splToken.Token(
-          connection,
-          rewardDistributor!.parsed.rewardMint,
-          splToken.TOKEN_PROGRAM_ID,
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
-          null
-        )
-        setMintInfo(await mint.getMintInfo())
-
-        let mintIds: PublicKey[] = []
-        stakedTokenDatas.forEach((tk) => {
-          if (!tk || !tk.stakeEntry) {
-            return
-          }
-          mintIds.push(tk.stakeEntry?.parsed.originalMint!)
-        })
-        const rewards = await getPendingRewardsForPool(
-          connection,
-          wallet.publicKey!,
-          mintIds,
-          rewardDistributor!
-        )
-        let amount = new BN(
-          Number(getMintDecimalAmountFromNatural(mintInfo!, new BN(rewards)))
-        )
-        setClaimableRewards(amount.toNumber())
-        setLoadingRewards(false)
-      }
-      getRewards().catch(console.error)
+  const filteredTokens = tokenDatas.filter((token) => {
+    if (
+      (showFungibleTokens && !token.tokenListData) ||
+      (!showFungibleTokens && token.tokenListData) ||
+      !stakePool
+    ) {
+      return false
     }
-  }, [stakedTokenDatas])
+    let isAllowed = true
+    const creatorAddresses = stakePool.parsed.requiresCreators
+    const collectionAddresses = stakePool.parsed.requiresCollections
+    if (token.tokenAccount?.account.data.parsed.info.state === 'frozen') {
+      return false
+    }
 
-  const filterTokens = () => {
-    return tokenDatas.filter((token) => {
-      if (
-        (showFungibleTokens && !token.tokenListData) ||
-        (!showFungibleTokens && token.tokenListData)
-      ) {
-        return false
-      }
-      let isAllowed = true
-      const creatorAddresses = stakePool?.parsed.requiresCreators
-      const collectionAddresses = stakePool?.parsed.requiresCollections
-      if (token.tokenAccount?.account.data.parsed.info.state === 'frozen') {
-        return false
-      }
-      // if (token?.metaplexData?.data?.data?.uri.includes('api.cardinal.so')) {
-      //   isAllowed = false
-      // }
+    if (creatorAddresses && creatorAddresses.length > 0) {
+      isAllowed = false
+      creatorAddresses.forEach((filterCreator) => {
+        if (
+          token?.metaplexData?.data?.data?.creators &&
+          (token?.metaplexData?.data?.data?.creators).some(
+            (c) => c.address === filterCreator.toString() && c.verified
+          )
+        ) {
+          isAllowed = true
+        }
+      })
+    }
 
-      if (creatorAddresses && creatorAddresses.length > 0) {
-        isAllowed = false
-        creatorAddresses.forEach((filterCreator) => {
-          if (
-            token?.metaplexData?.data?.data?.creators &&
-            (token?.metaplexData?.data?.data?.creators).some(
-              (c) => c.address === filterCreator.toString() && c.verified
-            )
-          ) {
-            isAllowed = true
-          }
-        })
-      }
+    if (collectionAddresses && collectionAddresses.length > 0 && !isAllowed) {
+      collectionAddresses.forEach((collectionAddress) => {
+        if (
+          token.metaplexData?.data?.collection?.verified &&
+          token.metaplexData?.data?.collection?.key.toString() ===
+            collectionAddress.toString()
+        ) {
+          isAllowed = true
+        }
+      })
+    }
 
-      if (collectionAddresses && collectionAddresses.length > 0 && !isAllowed) {
-        collectionAddresses.forEach((collectionAddress) => {
-          if (
-            token.metaplexData?.data?.collection?.verified &&
-            token.metaplexData?.data?.collection?.key.toString() ===
-              collectionAddress.toString()
-          ) {
-            isAllowed = true
-          }
-        })
-      }
-
-      if (token.stakeAuthorization) {
-        isAllowed = true
-      }
-      return isAllowed
-    })
-  }
-
-  const filteredTokens = filterTokens()
+    if (token.stakeAuthorization) {
+      isAllowed = true
+    }
+    return isAllowed
+  })
 
   async function handleClaimRewards() {
     if (stakedSelected.length > 4) {
@@ -423,7 +359,7 @@ function Home() {
         <div>
           <div className="container mx-auto max-h-[90vh] w-full bg-[#1a1b20]">
             <Header />
-            {rewardDistributor ? (
+            {rewardDistributor && rewardMintInfo && rewardsLoaded && (
               <div className="mx-5 mb-4 flex flex-col rounded-md bg-white bg-opacity-5 p-10 text-gray-200 md:max-h-[100px] md:flex-row md:justify-between">
                 <p className="mb-3 mr-10 inline-block w-52 text-lg">
                   Total Staked: {totalStaked}
@@ -442,14 +378,14 @@ function Home() {
                     %
                   </p>
                 )}
-                {mintInfo ? (
+                {rewardMintInfo ? (
                   <>
                     <p className="mb-3 mr-10 inline-block text-lg ">
                       Rewards Rate:{' '}
                       {(
                         (Number(
                           getMintDecimalAmountFromNatural(
-                            mintInfo!,
+                            rewardMintInfo!,
                             new BN(rewardDistributor.parsed.rewardAmount)
                           )
                         ) /
@@ -463,18 +399,19 @@ function Home() {
                           rewardDistributor.parsed.rewardMint.toString()
                         }
                       >
-                        {mintName}
+                        {rewardMintName}
                       </a>{' '}
                       / Day
                     </p>
                     <p className="mb-3 mr-10 flex text-lg ">
-                      {loadingRewards && (
+                      {!rewardsLoaded ? (
                         <div className="mr-2">
                           <LoadingSpinner height="25px" />
                         </div>
+                      ) : (
+                        `Earnings: ${claimableRewards.toPrecision(3)}
+                          ${rewardMintName}`
                       )}
-                      Earnings: &nbsp;{claimableRewards.toPrecision(3)}{' '}
-                      {mintName}{' '}
                     </p>
                   </>
                 ) : (
@@ -486,8 +423,6 @@ function Home() {
                   </div>
                 )}
               </div>
-            ) : (
-              ''
             )}
             <div className="my-2 mx-5 grid h-full grid-cols-1 gap-4 md:grid-cols-2">
               <div className="h-[85vh] max-h-[85vh] flex-col rounded-md bg-white bg-opacity-5 p-10 text-gray-200">
@@ -534,7 +469,7 @@ function Home() {
                             }
                           >
                             {filteredTokens.map((tk) => (
-                              <>
+                              <div key={tk.tokenAccount?.pubkey.toString()}>
                                 <div
                                   className="relative w-44 md:w-auto 2xl:w-48"
                                   key={tk?.tokenAccount?.pubkey.toBase58()}
@@ -673,7 +608,7 @@ function Home() {
                                     </div>
                                   </label>
                                 </div>
-                              </>
+                              </div>
                             ))}
                           </div>
                         </>

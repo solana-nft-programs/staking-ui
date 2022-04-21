@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@cardinal/common": "^1.0.10",
-    "@cardinal/namespaces-components": "^2.5.2",
+    "@cardinal/namespaces-components": "^3.0.0",
     "@cardinal/staking": "^1.1.6",
     "@cardinal/token-manager": "^1.1.0",
     "@metaplex/js": "^4.12.0",
