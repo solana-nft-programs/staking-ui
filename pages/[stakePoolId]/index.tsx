@@ -1,5 +1,4 @@
 import { AccountData, tryGetAccount } from '@cardinal/common'
-import * as splToken from '@solana/spl-token'
 import {
   createStakeEntryAndStakeMint,
   stake,
@@ -23,7 +22,7 @@ import { useUserTokenData } from 'providers/TokenDataProvider'
 import { LoadingSpinner } from 'common/LoadingSpinner'
 import { useRouter } from 'next/router'
 import { notify } from 'common/Notification'
-import { handlePoolMapping } from 'common/utils'
+import { handlePoolMapping, pubKeyUrl } from 'common/utils'
 import {
   formatMintNaturalAmountAsDecimal,
   getMintDecimalAmountFromNatural,
@@ -33,7 +32,6 @@ import {
 import { BN } from '@project-serum/anchor'
 import { getActiveStakeEntriesForPool } from '@cardinal/staking/dist/cjs/programs/stakePool/accounts'
 import { stakePoolMetadatas } from 'api/mapping'
-import { AllowedTokensModal } from '../../common/AllowedTokensModal'
 import { useStakedTokenData } from 'hooks/useStakedTokenDatas'
 import { useRewardDistributorData } from 'hooks/useRewardDistributorData'
 import { useRewards } from 'hooks/useRewards'
@@ -43,7 +41,7 @@ import { AllowedTokens } from 'common/AllowedTokens'
 function Home() {
   const router = useRouter()
   const { stakePoolId } = router.query
-  const { connection } = useEnvironmentCtx()
+  const { connection, environment } = useEnvironmentCtx()
   const [stakePool, setStakePool] = useState<AccountData<StakePoolData>>()
   const wallet = useWallet()
 
@@ -393,10 +391,11 @@ function Home() {
                       ).toPrecision(3)}{' '}
                       <a
                         className="text-white underline"
-                        href={
-                          'https://explorer.solana.com/address/' +
-                          rewardDistributor.parsed.rewardMint.toString()
-                        }
+                        target="_blank"
+                        href={pubKeyUrl(
+                          rewardDistributor.parsed.rewardMint,
+                          environment.label
+                        )}
                       >
                         {rewardMintName}
                       </a>{' '}
