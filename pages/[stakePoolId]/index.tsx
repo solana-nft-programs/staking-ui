@@ -231,6 +231,8 @@ function Home() {
       }
     }
 
+    setStakedSelected([])
+    setUnstakedSelected([])
     setLoadingUnstake(false)
   }
 
@@ -318,6 +320,9 @@ function Home() {
         break
       }
     }
+
+    setStakedSelected([])
+    setUnstakedSelected([])
     setLoadingStake(false)
   }
 
@@ -478,12 +483,12 @@ function Home() {
                                             isUnstakedTokenSelected(tk) && (
                                               <div>
                                                 <div className="absolute top-0 left-0 z-10 flex h-full w-full justify-center rounded-xl bg-black bg-opacity-80  align-middle">
-                                                  <p className="my-auto flex">
+                                                  <div className="my-auto flex">
                                                     <span className="mr-2">
                                                       <LoadingSpinner height="25px" />
                                                     </span>
                                                     Staking token...
-                                                  </p>
+                                                  </div>
                                                 </div>
                                               </div>
                                             )}
