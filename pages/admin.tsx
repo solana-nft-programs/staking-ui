@@ -17,7 +17,6 @@ import { LoadingSpinner } from 'common/LoadingSpinner'
 import { notify } from 'common/Notification'
 import Head from 'next/head'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
-import { useUserTokenData } from 'providers/TokenDataProvider'
 import { TailSpin } from 'react-loader-spinner'
 import * as splToken from '@solana/spl-token'
 import { useState, useEffect } from 'react'
@@ -25,7 +24,6 @@ import Select from 'react-select'
 import { parseMintNaturalAmountFromDecimal } from 'common/units'
 
 function Admin() {
-  const { setAddress, address } = useUserTokenData()
   const { connection } = useEnvironmentCtx()
   const wallet = useWallet()
 
@@ -45,12 +43,6 @@ function Admin() {
 
   const [loading, setLoading] = useState<boolean>(false)
   const [stakePool, setStakePool] = useState<AccountData<StakePoolData>>()
-
-  useEffect(() => {
-    if (wallet && wallet.connected && wallet.publicKey) {
-      setAddress(wallet.publicKey.toBase58())
-    }
-  }, [wallet.publicKey])
 
   const FormFieldTitleInput = (props: {
     title: string
@@ -98,10 +90,7 @@ function Admin() {
     setStakePool(undefined)
     setLoading(true)
     try {
-      if (!address) {
-        throw 'Wallet not connected'
-      }
-      if (!wallet.wallet) {
+      if (!wallet?.connected) {
         throw 'Wallet not connected'
       }
       if (

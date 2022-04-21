@@ -1,5 +1,4 @@
 import { PublicKey } from '@solana/web3.js'
-import { getTokenAccountsWithData, getTokenDatas } from 'api/api'
 import { getStakeEntryDatas } from 'api/api'
 import { StakeEntryTokenData, TokenData } from 'api/types'
 import type { ReactChild } from 'react'
@@ -151,6 +150,6 @@ export function StakedTokenDataProvider({
   )
 }
 
-export function useStakedTokenData(): StakedTokenDataValues {
-  return useContext(StakedTokenData)
-}
+// export function useStakedTokenData(): StakedTokenDataValues {
+//   return useContext(StakedTokenData)
+// }
