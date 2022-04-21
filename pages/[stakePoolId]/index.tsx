@@ -95,7 +95,7 @@ function Home() {
         if (
           token?.metaplexData?.data?.data?.creators &&
           (token?.metaplexData?.data?.data?.creators).some(
-            (c) => c.address === filterCreator.toString() && c.verified
+            (c) => c.address === filterCreator.toString() && (c.verified || environment.label == 'devnet')
           )
         ) {
           isAllowed = true
