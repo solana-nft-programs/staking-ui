@@ -1,4 +1,3 @@
-import { AccountData, tryGetAccount } from '@cardinal/common'
 import {
   createStakeEntryAndStakeMint,
   stake,
@@ -6,23 +5,19 @@ import {
   claimRewards,
   executeTransaction,
 } from '@cardinal/staking'
-import {
-  ReceiptType,
-  StakePoolData,
-} from '@cardinal/staking/dist/cjs/programs/stakePool'
+import { ReceiptType } from '@cardinal/staking/dist/cjs/programs/stakePool'
 import { useWallet } from '@solana/wallet-adapter-react'
 import { PublicKey } from '@solana/web3.js'
 import { TokenData } from 'api/types'
 import { Header } from 'common/Header'
 import Head from 'next/head'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
-import { useEffect, useMemo, useState } from 'react'
+import { useState } from 'react'
 import { Wallet } from '@metaplex/js'
 import { useUserTokenData } from 'providers/TokenDataProvider'
 import { LoadingSpinner } from 'common/LoadingSpinner'
-import { useRouter } from 'next/router'
 import { notify } from 'common/Notification'
-import { handlePoolMapping, pubKeyUrl, secondstoDuration } from 'common/utils'
+import { pubKeyUrl, secondstoDuration } from 'common/utils'
 import {
   formatMintNaturalAmountAsDecimal,
   getMintDecimalAmountFromNatural,
@@ -30,31 +25,24 @@ import {
   getMintNaturalAmountFromDecimal,
 } from 'common/units'
 import { BN } from '@project-serum/anchor'
-import { getActiveStakeEntriesForPool } from '@cardinal/staking/dist/cjs/programs/stakePool/accounts'
-import { stakePoolMetadatas } from 'api/mapping'
-import { useStakedTokenData } from 'hooks/useStakedTokenDatas'
+import { useStakedTokenDatas } from 'hooks/useStakedTokenDatas'
 import { useRewardDistributorData } from 'hooks/useRewardDistributorData'
 import { useRewards } from 'hooks/useRewards'
 import { useRewardMintInfo } from 'hooks/useRewardMintInfo'
 import { AllowedTokens } from 'common/AllowedTokens'
+import { useStakePoolEntries } from 'hooks/useStakePoolEntries'
+import { useStakePoolData } from 'hooks/useStakePoolData'
+import { useStakePoolMaxStaked } from 'hooks/useStakePoolMaxStaked'
 
 function Home() {
-  const router = useRouter()
-  const { stakePoolId } = router.query
   const { connection, environment } = useEnvironmentCtx()
-  const [stakePool, setStakePool] = useState<AccountData<StakePoolData>>()
   const wallet = useWallet()
-
-  const {
-    stakedRefreshing,
-    stakedTokenDatas,
-    stakedLoaded,
-    refreshStakedTokenDatas,
-  } = useStakedTokenData(wallet.publicKey, stakePool)
+  const { data: stakePool } = useStakePoolData()
+  const stakedTokenDatas = useStakedTokenDatas()
 
   const {
     rewardDistributor,
-    loadingRewardDistributorData,
+    loadedRewardDistributorData,
     refreshRewardDistributorData,
     refreshingRewardDistributorData,
     rewardDistributorDataError,
@@ -65,8 +53,16 @@ function Home() {
     stakePool
   )
 
-  const { rewardMap, claimableRewards, rewardsLoaded, refreshRewards } =
-    useRewards(wallet.publicKey, stakePool)
+  const {
+    rewardMap,
+    claimableRewards,
+    rewardsLoaded,
+    refreshRewards,
+    refreshingRewards,
+  } = useRewards(wallet.publicKey, stakePool)
+
+  const stakePoolEntries = useStakePoolEntries()
+  const maxStaked = useStakePoolMaxStaked()
 
   const { refreshing, tokenDatas, loaded, refreshTokenAccounts } =
     useUserTokenData()
@@ -75,51 +71,8 @@ function Home() {
   const [loadingStake, setLoadingStake] = useState(false)
   const [loadingUnstake, setLoadingUnstake] = useState(false)
   const [loadingClaimRewards, setLoadingClaimRewards] = useState(false)
-  const [totalStaked, setTotalStaked] = useState<number>()
   const [showFungibleTokens, setShowFungibleTokens] = useState(false)
   const [showAllowedTokens, setShowAllowedTokens] = useState<boolean>()
-
-  const nameMapping = stakePoolMetadatas.find(
-    (p) => p.name === (stakePoolId as String)
-  )
-  const addressMapping = stakePoolMetadatas.find(
-    (p) => p.pubkey.toString() === (stakePoolId as String)
-  )
-
-  const refreshActiveStakeEntries = async () => {
-    try {
-      if (stakePool?.pubkey) {
-        setTotalStaked(
-          (await getActiveStakeEntriesForPool(connection, stakePool?.pubkey))
-            .length
-        )
-      }
-    } catch (e) {
-      notify({
-        message: `${e}`,
-        type: 'error',
-      })
-    }
-  }
-
-  const refreshStakePoolData = async () => {
-    try {
-      const pool = await handlePoolMapping(connection, stakePoolId as string)
-      refreshActiveStakeEntries()
-      setStakePool(pool)
-    } catch (e) {
-      notify({
-        message: `${e}`,
-        type: 'error',
-      })
-    }
-  }
-
-  useMemo(() => {
-    if (stakePoolId) {
-      refreshStakePoolData().catch(console.error)
-    }
-  }, [stakePoolId])
 
   const filteredTokens = tokenDatas.filter((token) => {
     if (
@@ -236,7 +189,7 @@ function Home() {
         })
         console.log('Successfully unstaked')
         await refreshTokenAccounts(true)
-        await refreshStakedTokenDatas(true)
+        await stakedTokenDatas.refresh(true)
       } catch (e) {
         notify({ message: `Transaction failed: ${e}`, type: 'error' })
         console.error(e)
@@ -244,7 +197,8 @@ function Home() {
       }
     }
 
-    refreshActiveStakeEntries()
+    refreshRewards(true)
+    stakePoolEntries.refresh()
     setStakedSelected([])
     setUnstakedSelected([])
     setLoadingUnstake(false)
@@ -327,7 +281,7 @@ function Home() {
         })
         console.log('Successfully staked')
         await refreshTokenAccounts(true)
-        await refreshStakedTokenDatas(true)
+        await stakedTokenDatas.refresh(true)
       } catch (e) {
         notify({ message: `Transaction failed: ${e}`, type: 'error' })
         console.error(e)
@@ -335,8 +289,8 @@ function Home() {
       }
     }
 
-    refreshActiveStakeEntries()
-    refreshRewards()
+    stakePoolEntries.refresh()
+    refreshRewards(true)
     setStakedSelected([])
     setUnstakedSelected([])
     setLoadingStake(false)
@@ -370,19 +324,16 @@ function Home() {
             {rewardDistributor && rewardMintInfo && rewardsLoaded && (
               <div className="mx-5 mb-4 flex flex-col rounded-md bg-white bg-opacity-5 p-10 text-gray-200 md:max-h-[100px] md:flex-row md:justify-between">
                 <p className="mb-3 mr-10 inline-block w-52 text-lg">
-                  Total Staked: {totalStaked}
+                  Total Staked: {stakePoolEntries.data?.length}
                 </p>
 
-                {(nameMapping?.maxStaked || addressMapping?.maxStaked) && (
+                {maxStaked && (
                   <p className="mb-3 mr-10 inline-block w-52 text-lg">
                     {/*TODO: Change how many total NFTs can possibly be staked for your collection (default 10000) */}
                     Percent Staked:{' '}
-                    {totalStaked
+                    {stakePoolEntries.data?.length
                       ? Math.floor(
-                          ((totalStaked * 100) /
-                            (nameMapping?.maxStaked
-                              ? nameMapping?.maxStaked
-                              : addressMapping?.maxStaked!)) *
+                          ((stakePoolEntries.data?.length * 100) / maxStaked) *
                             10000
                         ) / 10000
                       : 0}
@@ -415,26 +366,29 @@ function Home() {
                       </a>{' '}
                       / Day
                     </p>
-                    <p className="mb-3 mr-10 flex text-lg ">
-                      {!rewardsLoaded ? (
-                        <div className="mr-2">
-                          <LoadingSpinner height="25px" />
+                    <div className="mb-3 mr-10 flex min-w-[200px] text-lg">
+                      {!rewardMintInfo || !rewardsLoaded ? (
+                        <div className="relative flex h-8 w-full items-center justify-center">
+                          <span className="text-gray-500"></span>
+                          <div className="absolute w-full animate-pulse items-center justify-center rounded-lg bg-white bg-opacity-10 p-5"></div>
                         </div>
                       ) : (
+                        Object.values(rewardMap).length > 0 &&
                         `Earnings: ${formatMintNaturalAmountAsDecimal(
                           rewardMintInfo,
-                          claimableRewards
+                          claimableRewards,
+                          6
                         )}
                           ${rewardMintName}`
                       )}
-                    </p>
+                    </div>
                   </>
                 ) : (
-                  <div className="flex">
-                    <div className="mr-2">
-                      <LoadingSpinner height="25px" />
-                    </div>
-                    <p>Loading Pool Rewards Info...</p>
+                  <div className="relative flex w-full items-center justify-center">
+                    <span className="text-gray-500">
+                      Loading Pool Rewards Info...
+                    </span>
+                    <div className="absolute w-full animate-pulse items-center justify-center rounded-lg bg-white bg-opacity-10 p-5"></div>
                   </div>
                 )}
               </div>
@@ -657,12 +611,12 @@ function Home() {
                 <div className="mt-2 flex flex-row">
                   <p className="mr-3 text-lg">
                     View Staked Tokens{' '}
-                    {stakedLoaded && stakedTokenDatas
-                      ? `(${stakedTokenDatas.length})`
-                      : null}
+                    {stakedTokenDatas.loaded &&
+                      stakedTokenDatas.data &&
+                      `(${stakedTokenDatas.data.length})`}
                   </p>
                   <div className="inline-block">
-                    {stakedRefreshing && stakedLoaded && (
+                    {stakedTokenDatas.refreshing && stakedTokenDatas.loaded && (
                       <LoadingSpinner height="25px" />
                     )}
                   </div>
@@ -670,17 +624,18 @@ function Home() {
                 {wallet.connected && (
                   <div className="my-3 flex-auto overflow-auto">
                     <div className="relative my-auto mb-4 h-[60vh] overflow-y-auto overflow-x-hidden rounded-md bg-white bg-opacity-5 p-5">
-                      {stakedLoaded && stakedTokenDatas.length === 0 && (
-                        <p className="text-gray-400">
-                          No tokens currently staked.
-                        </p>
-                      )}
-                      {stakedLoaded ? (
+                      {stakedTokenDatas.loaded &&
+                        stakedTokenDatas.data?.length === 0 && (
+                          <p className="text-gray-400">
+                            No tokens currently staked.
+                          </p>
+                        )}
+                      {stakedTokenDatas.loaded && stakedTokenDatas.data ? (
                         <div className="grid grid-cols-2 gap-1 md:grid-cols-2 md:gap-4 lg:grid-cols-3">
-                          {stakedTokenDatas.map((tk) => (
+                          {stakedTokenDatas.data.map((tk) => (
                             <div
                               className="relative"
-                              key={tk?.tokenAccount?.pubkey.toBase58()}
+                              key={tk?.stakeEntry?.pubkey.toBase58()}
                             >
                               {(loadingUnstake || loadingClaimRewards) &&
                                 isStakedTokenSelected(tk) && (
@@ -698,7 +653,7 @@ function Home() {
                                   </div>
                                 )}
                               <label
-                                htmlFor={tk?.tokenAccount?.pubkey.toBase58()}
+                                htmlFor={tk?.stakeEntry?.pubkey.toBase58()}
                                 className="relative"
                               >
                                 <div className="relative">

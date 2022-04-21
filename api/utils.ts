@@ -150,11 +150,10 @@ export const calculatePendingRewards = (
     rewardEntry?.parsed.rewardSecondsReceived || new BN(0)
   const multiplier = rewardEntry?.parsed.multiplier || new BN(1)
 
-  const rewardTimeToReceive = new BN(UTCNow)
+  let rewardAmountToReceive = new BN(UTCNow)
     .sub(stakeEntry.parsed.lastStakedAt)
     .add(stakeEntry.parsed.totalStakeSeconds)
     .sub(rewardSecondsReceived)
-  let rewardAmountToReceive = rewardTimeToReceive
     .div(rewardDistributor.parsed.rewardDurationSeconds)
     .mul(rewardDistributor.parsed.rewardAmount)
     .mul(multiplier)
@@ -177,6 +176,7 @@ export const calculatePendingRewards = (
   const nextRewardsIn = rewardDistributor.parsed.rewardDurationSeconds.sub(
     new BN(UTCNow)
       .sub(stakeEntry.parsed.lastStakedAt)
+      .add(stakeEntry.parsed.totalStakeSeconds)
       .mod(rewardDistributor.parsed.rewardDurationSeconds)
   )
 
@@ -185,7 +185,6 @@ export const calculatePendingRewards = (
   //   new BN(UTCNow).sub(stakeEntry.parsed.lastStakedAt).toString(),
   //   rewardSecondsReceived.toString(),
   //   stakeEntry.parsed.totalStakeSeconds.toString(),
-  //   rewardTimeToReceive.toString(),
   //   rewardAmountToReceive.toString()
   // )
 

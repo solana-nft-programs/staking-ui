@@ -7,7 +7,7 @@ import { Keypair, PublicKey } from '@solana/web3.js'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 import { useMemo, useState } from 'react'
 import { useRewardDistributorData } from './useRewardDistributorData'
-import { useStakedTokenData } from './useStakedTokenDatas'
+import { useStakedTokenDatas } from './useStakedTokenDatas'
 import { useUTCNow } from 'providers/UTCNowProvider'
 import { findRewardEntryId } from '@cardinal/staking/dist/cjs/programs/rewardDistributor/pda'
 import { RewardEntryData } from '@cardinal/staking/dist/cjs/programs/rewardDistributor'
@@ -35,7 +35,7 @@ export const useRewards = (
 
   const { UTCNow } = useUTCNow()
 
-  const { stakedTokenDatas } = useStakedTokenData(stakedAddress, stakePool)
+  const { data: stakedTokenDatas } = useStakedTokenDatas()
 
   const [error, setError] = useState<string | null>(null)
   const [rewardEntries, setRewardEntries] =
@@ -76,7 +76,7 @@ export const useRewards = (
   }
 
   const refreshRewardEntries = async (reload?: boolean) => {
-    if (rewardDistributor) {
+    if (rewardDistributor && stakedTokenDatas) {
       try {
         const stakeEntries = stakedTokenDatas
           .filter((tk) => tk && tk.stakeEntry)
@@ -107,6 +107,7 @@ export const useRewards = (
       [mintId: string]: { claimableRewards: BN; nextRewardsIn: BN }
     } = {}
     if (
+      stakedTokenDatas &&
       rewardDistributor &&
       rewardEntries &&
       rewardDistributorTokenAccountInfo
@@ -162,22 +163,6 @@ export const useRewards = (
       try {
         await refreshRewardDistributorAccount()
         await refreshRewardEntries()
-        // let mintIds: PublicKey[] = []
-        // stakedTokenDatas.forEach((tk) => {
-        //   if (!tk || !tk.stakeEntry) {
-        //     return
-        //   }
-        //   mintIds.push(tk.stakeEntry?.parsed.originalMint!)
-        // })
-        // const rewards = await getPendingRewardsForPool(
-        //   connection,
-        //   stakedAddress,
-        //   mintIds,
-        //   rewardDistributor,
-        //   UTCNow
-        // )
-        // console.log(rewards.toString(), UTCNow)
-        // setClaimableRewards(rewards)
       } catch (e) {
         console.log('Error fetching rewards', e)
         setError(`${e}`)

@@ -2,13 +2,11 @@ import { PublicKey } from '@solana/web3.js'
 import { getStakeEntryDatas } from 'api/api'
 import { StakeEntryTokenData, TokenData } from 'api/types'
 import type { ReactChild } from 'react'
-import React, { useCallback, useContext, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { useEnvironmentCtx } from './EnvironmentProvider'
 import { useRouter } from 'next/router'
-import { StakePoolData } from '@cardinal/staking/dist/cjs/programs/stakePool'
-import { AccountData } from '@cardinal/common'
-import { handlePoolMapping } from 'common/utils'
 import { TokenListData, useTokenList } from './TokenListProvider'
+import { useStakePoolData } from 'hooks/useStakePoolData'
 
 export interface StakedTokenDataValues {
   stakedTokenDatas: TokenData[]
@@ -39,8 +37,6 @@ export function StakedTokenDataProvider({
   children: ReactChild
 }) {
   const router = useRouter()
-  const { stakePoolId } = router.query
-  const [stakePool, setStakePool] = useState<AccountData<StakePoolData>>()
   const { connection } = useEnvironmentCtx()
   const [stakedAddress, setStakedAddress] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
@@ -48,16 +44,7 @@ export function StakedTokenDataProvider({
   const [stakedRefreshing, setStakedRefreshing] = useState<boolean>(false)
   const [stakedLoaded, setStakedLoaded] = useState<boolean>(false)
   const { tokenList } = useTokenList()
-
-  useEffect(() => {
-    if (stakePoolId) {
-      const setData = async () => {
-        const pool = await handlePoolMapping(connection, stakePoolId as string)
-        setStakePool(pool)
-      }
-      setData().catch(console.error)
-    }
-  }, [stakePoolId])
+  const { data: stakePool } = useStakePoolData()
 
   const refreshStakedTokenDatas = useCallback(
     (reload?: boolean) => {
