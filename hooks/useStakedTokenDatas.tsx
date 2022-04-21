@@ -45,7 +45,6 @@ export const useStakedTokenData = (
 
     setStakedRefreshing(true)
     setError(null)
-
     try {
       const tokenDatas = await getStakeEntryDatas(
         connection,
@@ -89,16 +88,17 @@ export const useStakedTokenData = (
     void refreshStakedTokenDatas()
   }, [(stakedAddress || '').toString(), stakePool?.pubkey.toString()])
 
+  // TODO why doesnt this work
   //   useEffect(() => {
   //     const interval = setInterval(
-  //       (function getTokenAccountsInterval(): () => void {
+  //       (function refreshInterval(): () => void {
   //         refreshStakedTokenDatas()
-  //         return getTokenAccountsInterval
+  //         return refreshInterval
   //       })(),
-  //       20000
+  //       1000
   //     )
   //     return () => clearInterval(interval)
-  //   }, [refreshStakedTokenDatas])
+  //   }, [stakePool?.pubkey.toString()])
 
   return {
     stakedAddress,

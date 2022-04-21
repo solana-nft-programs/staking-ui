@@ -22,7 +22,7 @@ import { useUserTokenData } from 'providers/TokenDataProvider'
 import { LoadingSpinner } from 'common/LoadingSpinner'
 import { useRouter } from 'next/router'
 import { notify } from 'common/Notification'
-import { handlePoolMapping, pubKeyUrl } from 'common/utils'
+import { handlePoolMapping, pubKeyUrl, secondstoDuration } from 'common/utils'
 import {
   formatMintNaturalAmountAsDecimal,
   getMintDecimalAmountFromNatural,
@@ -65,10 +65,8 @@ function Home() {
     stakePool
   )
 
-  const { claimableRewards, rewardsLoaded, refreshRewards } = useRewards(
-    wallet.publicKey,
-    stakePool
-  )
+  const { rewardMap, claimableRewards, rewardsLoaded, refreshRewards } =
+    useRewards(wallet.publicKey, stakePool)
 
   const { refreshing, tokenDatas, loaded, refreshTokenAccounts } =
     useUserTokenData()
@@ -88,26 +86,38 @@ function Home() {
     (p) => p.pubkey.toString() === (stakePoolId as String)
   )
 
+  const refreshActiveStakeEntries = async () => {
+    try {
+      if (stakePool?.pubkey) {
+        setTotalStaked(
+          (await getActiveStakeEntriesForPool(connection, stakePool?.pubkey))
+            .length
+        )
+      }
+    } catch (e) {
+      notify({
+        message: `${e}`,
+        type: 'error',
+      })
+    }
+  }
+
+  const refreshStakePoolData = async () => {
+    try {
+      const pool = await handlePoolMapping(connection, stakePoolId as string)
+      refreshActiveStakeEntries()
+      setStakePool(pool)
+    } catch (e) {
+      notify({
+        message: `${e}`,
+        type: 'error',
+      })
+    }
+  }
+
   useMemo(() => {
     if (stakePoolId) {
-      const setData = async () => {
-        try {
-          const pool = await handlePoolMapping(
-            connection,
-            stakePoolId as string
-          )
-          setStakePool(pool)
-          setTotalStaked(
-            (await getActiveStakeEntriesForPool(connection, pool.pubkey)).length
-          )
-        } catch (e) {
-          notify({
-            message: `${e}`,
-            type: 'error',
-          })
-        }
-      }
-      setData().catch(console.error)
+      refreshStakePoolData().catch(console.error)
     }
   }, [stakePoolId])
 
@@ -193,6 +203,7 @@ function Home() {
         break
       }
     }
+
     refreshRewards(true)
     setLoadingClaimRewards(false)
   }
@@ -224,8 +235,8 @@ function Home() {
           type: 'success',
         })
         console.log('Successfully unstaked')
-        refreshTokenAccounts(true)
-        refreshStakedTokenDatas(true)
+        await refreshTokenAccounts(true)
+        await refreshStakedTokenDatas(true)
       } catch (e) {
         notify({ message: `Transaction failed: ${e}`, type: 'error' })
         console.error(e)
@@ -233,6 +244,7 @@ function Home() {
       }
     }
 
+    refreshActiveStakeEntries()
     setStakedSelected([])
     setUnstakedSelected([])
     setLoadingUnstake(false)
@@ -314,8 +326,8 @@ function Home() {
           type: 'success',
         })
         console.log('Successfully staked')
-        refreshTokenAccounts(true)
-        refreshStakedTokenDatas(true)
+        await refreshTokenAccounts(true)
+        await refreshStakedTokenDatas(true)
       } catch (e) {
         notify({ message: `Transaction failed: ${e}`, type: 'error' })
         console.error(e)
@@ -323,6 +335,8 @@ function Home() {
       }
     }
 
+    refreshActiveStakeEntries()
+    refreshRewards()
     setStakedSelected([])
     setUnstakedSelected([])
     setLoadingStake(false)
@@ -676,14 +690,14 @@ function Home() {
                                 isStakedTokenSelected(tk) && (
                                   <div>
                                     <div className="absolute top-0 left-0 z-10 flex h-full w-full justify-center rounded-lg bg-black bg-opacity-80  align-middle">
-                                      <p className="my-auto flex">
+                                      <div className="mx-auto flex items-center justify-center">
                                         <span className="mr-2">
                                           <LoadingSpinner height="25px" />
                                         </span>
                                         {loadingUnstake
                                           ? 'Unstaking token...'
-                                          : 'Claiming rewards...'}
-                                      </p>
+                                          : 'Claim rewards...'}
+                                      </div>
                                     </div>
                                   </div>
                                 )}
@@ -711,7 +725,7 @@ function Home() {
                                     ) : (
                                       ''
                                     )}
-                                    {tk.tokenListData ? (
+                                    {tk.tokenListData && (
                                       <div className="absolute bottom-2 right-2">
                                         {Number(
                                           getMintDecimalAmountFromNaturalV2(
@@ -723,9 +737,24 @@ function Home() {
                                         )}{' '}
                                         {tk.tokenListData.symbol}
                                       </div>
-                                    ) : (
-                                      ''
                                     )}
+                                    {rewardMap &&
+                                      rewardMap[
+                                        tk.stakeEntry?.parsed.originalMint.toString() ||
+                                          ''
+                                      ] &&
+                                      rewardDistributor?.parsed.rewardDurationSeconds.gt(
+                                        new BN(60)
+                                      ) && (
+                                        <div className="mt-1 flex items-center justify-center text-xs">
+                                          {secondstoDuration(
+                                            rewardMap[
+                                              tk.stakeEntry?.parsed.originalMint.toString() ||
+                                                ''
+                                            ]?.nextRewardsIn.toNumber() || 0
+                                          )}{' '}
+                                        </div>
+                                      )}
                                   </div>
 
                                   <input
@@ -808,7 +837,10 @@ function Home() {
                         }
                         handleClaimRewards()
                       }}
-                      className="my-auto mr-5 flex rounded-md bg-blue-700 px-4 py-2"
+                      disabled={!claimableRewards.gt(new BN(0))}
+                      className={`my-auto mr-5 flex rounded-md bg-${
+                        claimableRewards.gt(new BN(0)) ? 'blue-700' : 'gray-700'
+                      } px-4 py-2`}
                     >
                       <span className="mr-1 inline-block">
                         {loadingClaimRewards && (

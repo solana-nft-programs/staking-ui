@@ -251,6 +251,7 @@ export async function getStakeEntryDatas(
   const mintIds = stakeEntries
     .filter((entry) => entry.parsed.pool.toString() === stakePoolId.toString())
     .map((stakeEntry) => stakeEntry.parsed.originalMint)
+
   const metadataTuples: [PublicKey, PublicKey][] = await Promise.all(
     mintIds.map(async (mintId) => {
       const [metaplexId] = await PublicKey.findProgramAddress(
