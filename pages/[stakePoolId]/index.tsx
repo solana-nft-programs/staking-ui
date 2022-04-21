@@ -370,10 +370,13 @@ function Home() {
                     {/*TODO: Change how many total NFTs can possibly be staked for your collection (default 10000) */}
                     Percent Staked:{' '}
                     {totalStaked
-                      ? (totalStaked * 100) /
-                        (nameMapping?.maxStaked
-                          ? nameMapping?.maxStaked
-                          : addressMapping?.maxStaked!)
+                      ? Math.floor(
+                          ((totalStaked * 100) /
+                            (nameMapping?.maxStaked
+                              ? nameMapping?.maxStaked
+                              : addressMapping?.maxStaked!)) *
+                            10000
+                        ) / 10000
                       : 0}
                     %
                   </p>
