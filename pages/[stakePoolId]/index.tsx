@@ -25,6 +25,7 @@ import { useRouter } from 'next/router'
 import { notify } from 'common/Notification'
 import { handlePoolMapping } from 'common/utils'
 import {
+  formatMintNaturalAmountAsDecimal,
   getMintDecimalAmountFromNatural,
   getMintDecimalAmountFromNaturalV2,
   getMintNaturalAmountFromDecimal,
@@ -66,7 +67,7 @@ function Home() {
     stakePool
   )
 
-  const { claimableRewards, rewardsLoaded } = useRewards(
+  const { claimableRewards, rewardsLoaded, refreshRewards } = useRewards(
     wallet.publicKey,
     stakePool
   )
@@ -194,8 +195,10 @@ function Home() {
         break
       }
     }
+    refreshRewards(true)
     setLoadingClaimRewards(false)
   }
+
   async function handleUnstake() {
     if (!wallet) {
       throw new Error('Wallet not connected')
@@ -405,7 +408,10 @@ function Home() {
                           <LoadingSpinner height="25px" />
                         </div>
                       ) : (
-                        `Earnings: ${claimableRewards.toPrecision(3)}
+                        `Earnings: ${formatMintNaturalAmountAsDecimal(
+                          rewardMintInfo,
+                          claimableRewards
+                        )}
                           ${rewardMintName}`
                       )}
                     </p>

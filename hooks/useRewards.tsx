@@ -1,17 +1,16 @@
 import { AccountData } from '@cardinal/common'
-import { getPendingRewardsForPool } from '@cardinal/staking'
+import { getPendingRewardsForPool } from '../api/utils'
 import { StakePoolData } from '@cardinal/staking/dist/cjs/programs/stakePool'
 import { BN } from '@project-serum/anchor'
 import type { PublicKey } from '@solana/web3.js'
-import { getMintDecimalAmountFromNatural } from 'common/units'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 import { useMemo, useState } from 'react'
 import { useRewardDistributorData } from './useRewardDistributorData'
-import { useRewardMintInfo } from './useRewardMintInfo'
 import { useStakedTokenData } from './useStakedTokenDatas'
+import { useUTCNow } from 'providers/UTCNowProvider'
 
 export interface UseRewardsValues {
-  claimableRewards: number
+  claimableRewards: BN
   refreshRewards: (reload?: boolean) => void
   rewardsLoaded: boolean
   refreshingRewards: boolean
@@ -30,12 +29,12 @@ export const useRewards = (
     stakePool
   )
 
-  const { rewardMintInfo } = useRewardMintInfo(stakedAddress, stakePool)
+  const { UTCNow } = useUTCNow()
 
   const { stakedTokenDatas } = useStakedTokenData(stakedAddress, stakePool)
 
   const [error, setError] = useState<string | null>(null)
-  const [claimableRewards, setClaimableRewards] = useState<number>(0)
+  const [claimableRewards, setClaimableRewards] = useState<BN>(new BN(0))
   const [refreshingRewards, setRefreshingRewards] = useState<boolean>(false)
   const [rewardsLoaded, setRewardsLoaded] = useState<boolean>(false)
 
@@ -57,7 +56,7 @@ export const useRewards = (
     setRefreshingRewards(true)
     setError(null)
 
-    if (rewardDistributor && rewardMintInfo) {
+    if (rewardDistributor) {
       try {
         let mintIds: PublicKey[] = []
         stakedTokenDatas.forEach((tk) => {
@@ -70,14 +69,10 @@ export const useRewards = (
           connection,
           stakedAddress,
           mintIds,
-          rewardDistributor
+          rewardDistributor,
+          UTCNow
         )
-        let amount = new BN(
-          Number(
-            getMintDecimalAmountFromNatural(rewardMintInfo, new BN(rewards))
-          )
-        )
-        setClaimableRewards(amount.toNumber())
+        setClaimableRewards(rewards)
       } catch (e) {
         console.log('Error fetching rewards', e)
         setError(`${e}`)
@@ -94,7 +89,6 @@ export const useRewards = (
     (stakedAddress || '').toString(),
     stakePool?.pubkey.toString(),
     rewardDistributor?.pubkey.toString(),
-    rewardMintInfo,
   ])
 
   return {

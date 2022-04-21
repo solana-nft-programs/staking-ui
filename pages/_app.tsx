@@ -3,11 +3,7 @@ import 'antd/dist/antd.dark.css'
 import type { AppProps } from 'next/app'
 import { WalletProvider } from '@solana/wallet-adapter-react'
 import { getWalletAdapters } from '@solana/wallet-adapter-wallets'
-import {
-  WalletDisconnectButton,
-  WalletModalProvider,
-  WalletMultiButton,
-} from '@solana/wallet-adapter-react-ui'
+import { WalletModalProvider } from '@solana/wallet-adapter-react-ui'
 import {
   EnvironmentProvider,
   getInitialProps,
@@ -16,6 +12,7 @@ import { WalletIdentityProvider } from '@cardinal/namespaces-components'
 import { TokenAccountsProvider } from 'providers/TokenDataProvider'
 import { StakedTokenDataProvider } from 'providers/StakedTokenDataProvider'
 import { TokenListProvider } from 'providers/TokenListProvider'
+import { UTCNowProvider } from 'providers/UTCNowProvider'
 
 require('@solana/wallet-adapter-react-ui/styles.css')
 
@@ -24,21 +21,23 @@ const App = ({
   pageProps,
   cluster,
 }: AppProps & { cluster: string }) => (
-  <EnvironmentProvider defaultCluster={cluster}>
-    <WalletProvider wallets={getWalletAdapters()}>
-      <WalletIdentityProvider>
-        <WalletModalProvider>
-          <TokenListProvider>
-            <TokenAccountsProvider>
-              <StakedTokenDataProvider>
-                <Component {...pageProps} />
-              </StakedTokenDataProvider>
-            </TokenAccountsProvider>
-          </TokenListProvider>
-        </WalletModalProvider>
-      </WalletIdentityProvider>
-    </WalletProvider>
-  </EnvironmentProvider>
+  <UTCNowProvider>
+    <EnvironmentProvider defaultCluster={cluster}>
+      <WalletProvider wallets={getWalletAdapters()}>
+        <WalletIdentityProvider>
+          <WalletModalProvider>
+            <TokenListProvider>
+              <TokenAccountsProvider>
+                <StakedTokenDataProvider>
+                  <Component {...pageProps} />
+                </StakedTokenDataProvider>
+              </TokenAccountsProvider>
+            </TokenListProvider>
+          </WalletModalProvider>
+        </WalletIdentityProvider>
+      </WalletProvider>
+    </EnvironmentProvider>
+  </UTCNowProvider>
 )
 
 App.getInitialProps = getInitialProps
