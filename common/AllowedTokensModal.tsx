@@ -41,7 +41,6 @@ export const AllowedTokensModal = ({
           stakePool?.pubkey
         )
         setStakeAuths(data)
-        console.log(stakeAuths)
       }
       setData().catch(console.error)
     }
@@ -88,7 +87,7 @@ export const AllowedTokensModal = ({
             <div className="flex flex-col">
               <span className="mb-2">Allowed Creators:</span>
               {stakePool?.parsed.requiresCreators.length === 0 ? (
-                <span>Any Creator</span>
+                <span>No required creators</span>
               ) : (
                 <span className="flex flex-col">
                   {stakePool?.parsed.requiresCreators.map((c) => (
@@ -107,7 +106,7 @@ export const AllowedTokensModal = ({
             <div className="ml-5 flex flex-col">
               <span className="mb-2">Allowed Collections:</span>
               {stakePool?.parsed.requiresCollections.length === 0 ? (
-                <span>Any Collection</span>
+                <span>No required collections</span>
               ) : (
                 <span className="flex flex-col">
                   {stakePool?.parsed.requiresCollections.map((c) => (
@@ -126,7 +125,7 @@ export const AllowedTokensModal = ({
             <div className="ml-5 flex flex-col">
               <span className="mb-2">White Listed Mints:</span>
               {stakeAuths.length === 0 ? (
-                <span>Any Mint</span>
+                <span>No whitelisted mints</span>
               ) : (
                 <span className="flex flex-col">
                   {stakeAuths.map((a) => (

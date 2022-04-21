@@ -1,4 +1,4 @@
-import { AccountData, findAta, tryGetAccount } from '@cardinal/common'
+import { AccountData, tryGetAccount } from '@cardinal/common'
 import * as splToken from '@solana/spl-token'
 import {
   createStakeEntryAndStakeMint,
@@ -169,7 +169,6 @@ function Home() {
         let amount = new BN(
           Number(getMintDecimalAmountFromNatural(mintInfo!, new BN(rewards)))
         )
-        console.log(rewards)
         setClaimableRewards(amount.toNumber())
         setLoadingRewards(false)
       }
@@ -194,11 +193,9 @@ function Home() {
       // if (token?.metaplexData?.data?.data?.uri.includes('api.cardinal.so')) {
       //   isAllowed = false
       // }
-      if (creatorAddresses || collectionAddresses) {
-        isAllowed = true
-      }
 
       if (creatorAddresses && creatorAddresses.length > 0) {
+        isAllowed = false
         creatorAddresses.forEach((filterCreator) => {
           if (
             token?.metaplexData?.data?.data?.creators &&
@@ -257,7 +254,6 @@ function Home() {
           stakePoolId: stakePool.pubkey,
           originalMintId: token.stakeEntry.parsed.originalMint,
         })
-        console.log(transaction)
         await executeTransaction(connection, wallet as Wallet, transaction, {})
         notify({ message: `Successfully claimed rewards`, type: 'success' })
         console.log('Successfully claimed rewards')
@@ -286,26 +282,6 @@ function Home() {
           throw new Error('No stake entry for token')
         }
         console.log('Unstaking...')
-        const checkMint = new splToken.Token(
-          connection,
-          token.stakeEntry.parsed.originalMint,
-          splToken.TOKEN_PROGRAM_ID,
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
-          null
-        )
-        let acc = await findAta(
-          token.stakeEntry.parsed.originalMint,
-          token.stakeEntry.pubkey,
-          true
-        )
-        let a = await checkMint.getAccountInfo(acc)
-        console.log(a.amount.toNumber())
-        console.log(token.stakeEntry.pubkey.toString(), a.owner.toString())
-        console.log(
-          a.mint.toString(),
-          token.stakeEntry.parsed.originalMint.toString()
-        )
         // unstake
         const transaction = await unstake(connection, wallet as Wallet, {
           stakePoolId: stakePool?.pubkey,
