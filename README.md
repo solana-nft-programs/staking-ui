@@ -39,7 +39,7 @@ To create a stake pool, navigate to the admin page located at http://localhost:3
 
 **Note:** All configurations in the admin page are optional. Also, filters in the stake pool configuration are **union-based**, if any one of the conditions is met, then the NFT will be allowed to stake in the pool.
 
-After creating your stake pool, you will receive a **```Stake Pool Id```**. View your stake pool at http://localhost:3000/[```stakePoolId```]
+After creating your stake pool, you will receive a **```Stake Pool Id```**. View your stake pool at http://localhost:3000/[stakePoolId]
 
 **Pool Creation Parameters:**
 ```typescript
@@ -93,6 +93,11 @@ export type StakePoolMetadata = {
 In ```api/maping.ts```, add your own object to the stakePoolMetadatas array. You'll now be able to access your project at http://localhost:3000/[name]. 
 
 In order to get a custom Cardinal URL, **deploy your pool** on mainnet and then **make a PR** to our ```api/mapping.ts``` file in this repo with updates containing your pool's metadata. 
+
+### Deployment and Beyond
+Now that you've made and deployed your Cardinal stake pool, you can either stick with Cardinal's UX for the stake pool experience or build your own. 
+
+Simply modify ```pages/[stakePoolId]/index.tsx``` with your own react styling, and host the stake pool on your own domain. 
 
 ## Have questions?
 Join our **[Discord](https://discord.gg/stX2FAYbVq)** to get technical support as you build on Cardinal. 
