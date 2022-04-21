@@ -43,7 +43,7 @@ import { AllowedTokensModal } from '../../common/AllowedTokensModal'
 function Home() {
   const router = useRouter()
   const { stakePoolId } = router.query
-  const { connection } = useEnvironmentCtx()
+  const { environment, connection } = useEnvironmentCtx()
   const [stakePool, setStakePool] = useState<AccountData<StakePoolData>>()
   const [rewardDistributor, setRewardDistributor] =
     useState<AccountData<RewardDistributorData>>()
@@ -190,9 +190,6 @@ function Home() {
       if (token.tokenAccount?.account.data.parsed.info.state === 'frozen') {
         return false
       }
-      // if (token?.metaplexData?.data?.data?.uri.includes('api.cardinal.so')) {
-      //   isAllowed = false
-      // }
 
       if (creatorAddresses && creatorAddresses.length > 0) {
         isAllowed = false
@@ -200,7 +197,9 @@ function Home() {
           if (
             token?.metaplexData?.data?.data?.creators &&
             (token?.metaplexData?.data?.data?.creators).some(
-              (c) => c.address === filterCreator.toString() && c.verified
+              (c) =>
+                c.address === filterCreator.toString() &&
+                (c.verified || environment.label == 'devnet')
             )
           ) {
             isAllowed = true

@@ -2,6 +2,7 @@ import { createMint, withCreateMint } from '@cardinal/common'
 import {
   CreateMasterEditionV3,
   CreateMetadataV2,
+  Creator,
   DataV2,
   MasterEdition,
   Metadata,
@@ -19,16 +20,20 @@ import { useUserTokenData } from 'providers/TokenDataProvider'
 import { AsyncButton } from './Button'
 
 import { executeTransaction } from '@cardinal/staking'
+import { useRouter } from 'next/router'
+import { StakePoolMetadata, stakePoolMetadatas } from 'api/mapping'
 
 export type AirdropMetadata = { name: string; symbol: string; uri: string }
 
 export async function airdropNFT(
   connection: Connection,
   wallet: Wallet,
-  airdropMetadatas: AirdropMetadata[]
+  airdropMetadatas: AirdropMetadata[],
+  stakePool?: StakePoolMetadata
 ): Promise<string> {
   const transaction = new Transaction()
   const randInt = Math.round(Math.random() * (airdropMetadatas.length - 1))
+  const creators = stakePool?.filters?.find((f) => f.type === 'creators')
   const metadata: AirdropMetadata | undefined = airdropMetadatas[randInt]
   if (!metadata) throw new Error('No configured airdrops found')
 
@@ -53,7 +58,24 @@ export async function airdropNFT(
         symbol: metadata.symbol,
         uri: metadata.uri,
         sellerFeeBasisPoints: 10,
-        creators: null,
+        creators: creators
+          ? (creators.value as string[])
+              .map(
+                (c) =>
+                  new Creator({
+                    address: c,
+                    verified: false,
+                    share: 100,
+                  })
+              )
+              .concat(
+                new Creator({
+                  address: wallet.publicKey.toString(),
+                  verified: false,
+                  share: 0,
+                })
+              )
+          : null,
         collection: null,
         uses: null,
       }),
@@ -101,6 +123,16 @@ export const Airdrop = () => {
   const { connection } = useEnvironmentCtx()
   const wallet = useWallet()
   const { refreshTokenAccounts } = useUserTokenData()
+  const router = useRouter()
+  const { stakePoolId } = router.query
+
+  const nameMapping = stakePoolMetadatas.find(
+    (p) => p.name === (stakePoolId as String)
+  )
+  const addressMapping = stakePoolMetadatas.find(
+    (p) => p.pubkey.toString() === (stakePoolId as String)
+  )
+  const stakePoolMapping = nameMapping ? nameMapping : addressMapping
 
   return (
     <AsyncButton
@@ -110,7 +142,7 @@ export const Airdrop = () => {
       handleClick={async () => {
         if (!wallet.connected) return
         try {
-          await airdropNFT(connection, asWallet(wallet), airdrops || [])
+          await airdropNFT(connection, asWallet(wallet), stakePoolMapping?.airdrops || airdrops || [], stakePoolMapping)
           await refreshTokenAccounts()
         } catch (e) {
           notify({ message: `Airdrop failed: ${e}`, type: 'error' })
@@ -148,7 +180,7 @@ export const AirdropSol = () => {
   )
 }
 
-const airdrops: { name: string; symbol: string; uri: string }[] = [
+let airdrops: { name: string; symbol: string; uri: string }[] = [
   {
     name: 'Origin Jambo',
     symbol: 'JAMB',
