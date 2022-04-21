@@ -37,6 +37,7 @@ import { useStakedTokenData } from 'hooks/useStakedTokenDatas'
 import { useRewardDistributorData } from 'hooks/useRewardDistributorData'
 import { useRewards } from 'hooks/useRewards'
 import { useRewardMintInfo } from 'hooks/useRewardMintInfo'
+import { AllowedTokens } from 'common/AllowedTokens'
 
 function Home() {
   const router = useRouter()
@@ -79,7 +80,7 @@ function Home() {
   const [loadingClaimRewards, setLoadingClaimRewards] = useState(false)
   const [totalStaked, setTotalStaked] = useState<number>()
   const [showFungibleTokens, setShowFungibleTokens] = useState(false)
-  const [showModal, setShowModal] = useState<boolean>()
+  const [showAllowedTokens, setShowAllowedTokens] = useState<boolean>()
 
   const nameMapping = stakePoolMetadatas.find(
     (p) => p.name === (stakePoolId as String)
@@ -341,12 +342,6 @@ function Home() {
 
   return (
     <>
-      {showModal && (
-        <AllowedTokensModal
-          stakePool={stakePool}
-          handleClose={() => setShowModal(false)}
-        />
-      )}
       <div>
         <Head>
           <title>Cardinal Staking UI</title>
@@ -439,10 +434,10 @@ function Home() {
 
                   <div className="flex flex-row">
                     <button
-                      onClick={() => setShowModal(true)}
+                      onClick={() => setShowAllowedTokens(!showAllowedTokens)}
                       className="text-md mr-5 inline-block rounded-md bg-white bg-opacity-5 px-4 py-1 hover:bg-opacity-10 focus:outline-none"
                     >
-                      Show Allowed Tokens
+                      {showAllowedTokens ? 'Hide' : 'Show'} Allowed Tokens
                     </button>
                     <button
                       onClick={() => {
@@ -454,6 +449,9 @@ function Home() {
                     </button>
                   </div>
                 </div>
+                {showAllowedTokens && (
+                  <AllowedTokens stakePool={stakePool}></AllowedTokens>
+                )}
                 {wallet.connected && (
                   <div className="my-3 flex-auto overflow-auto">
                     <div className="relative my-auto mb-4 h-[60vh] overflow-y-auto overflow-x-hidden rounded-md bg-white bg-opacity-5 p-5">

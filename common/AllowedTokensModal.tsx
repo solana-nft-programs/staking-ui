@@ -6,8 +6,6 @@ import {
 import { getStakeAuthorizationsForPool } from '@cardinal/staking/dist/cjs/programs/stakePool/accounts'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 import { useCallback, useEffect, useState } from 'react'
-import { pubKeyUrl } from 'common/utils'
-import { shortPubKey } from '@cardinal/namespaces-components'
 import { ShortPubKeyUrl } from './Pubkeys'
 
 export const AllowedTokensModal = ({
@@ -89,7 +87,9 @@ export const AllowedTokensModal = ({
             <div className="flex flex-col">
               <span className="mb-2">Allowed Creators:</span>
               {stakePool?.parsed.requiresCreators.length === 0 ? (
-                <span>No required creators</span>
+                <span className="text-xs text-gray-500">
+                  No required creators
+                </span>
               ) : (
                 <span className="flex flex-col">
                   {stakePool?.parsed.requiresCreators.map((c) => (
@@ -101,18 +101,13 @@ export const AllowedTokensModal = ({
             <div className="ml-5 flex flex-col">
               <span className="mb-2">Allowed Collections:</span>
               {stakePool?.parsed.requiresCollections.length === 0 ? (
-                <span>No required collections</span>
+                <span className="text-xs text-gray-500">
+                  No required collections
+                </span>
               ) : (
                 <span className="flex flex-col">
                   {stakePool?.parsed.requiresCollections.map((c) => (
-                    <a
-                      className="mr-2 text-white underline underline-offset-2"
-                      href={
-                        'https://explorer.solana.com/address/' + c.toString()
-                      }
-                    >
-                      {c.toString()}
-                    </a>
+                    <ShortPubKeyUrl pubkey={c} cluster={environment.label} />
                   ))}
                 </span>
               )}
@@ -120,19 +115,16 @@ export const AllowedTokensModal = ({
             <div className="ml-5 flex flex-col">
               <span className="mb-2">White Listed Mints:</span>
               {stakeAuths.length === 0 ? (
-                <span>No whitelisted mints</span>
+                <span className="text-xs text-gray-500">
+                  No whitelisted mints
+                </span>
               ) : (
                 <span className="flex flex-col">
                   {stakeAuths.map((a) => (
-                    <a
-                      className="mr-2 text-white underline underline-offset-2"
-                      href={
-                        'https://explorer.solana.com/address/' +
-                        a.parsed.mint.toString()
-                      }
-                    >
-                      {a.toString()}
-                    </a>
+                    <ShortPubKeyUrl
+                      pubkey={a.parsed.mint}
+                      cluster={environment.label}
+                    />
                   ))}
                 </span>
               )}
