@@ -5,6 +5,7 @@ import {
   findStakeAuthorizationId,
   findStakeEntryId,
 } from '@cardinal/staking/dist/cjs/programs/stakePool/pda'
+import { findStakeEntryIdFromMint } from '@cardinal/staking/dist/cjs/programs/stakePool/utils'
 import type { AccountData } from '@cardinal/token-manager'
 import {
   claimApprover,
@@ -74,7 +75,7 @@ export async function getTokenAccountsWithData(
       let stakeAuthorizationId = null
       if (stakePoolId) {
         ;[[stakeEntryId], [stakeAuthorizationId]] = await Promise.all([
-          findStakeEntryId(
+          findStakeEntryIdFromMint(
             connection,
             new PublicKey(addressId),
             stakePoolId,
@@ -275,7 +276,7 @@ export async function getTokenDatas(
         claimApprover.pda.findClaimApproverAddress(tokenManagerData.pubkey),
         timeInvalidator.pda.findTimeInvalidatorAddress(tokenManagerData.pubkey),
         useInvalidator.pda.findUseInvalidatorAddress(tokenManagerData.pubkey),
-        stakePool.pda.findStakeEntryId(
+        findStakeEntryIdFromMint(
           connection,
           wallet,
           stakePoolId,
