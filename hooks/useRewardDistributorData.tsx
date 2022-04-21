@@ -12,7 +12,7 @@ import { useMemo, useState } from 'react'
 export interface UseRewardDistributorDataValues {
   rewardDistributor: AccountData<RewardDistributorData> | undefined
   refreshRewardDistributorData: (reload?: boolean) => void
-  loadingRewardDistributorData: boolean
+  loadedRewardDistributorData: boolean
   refreshingRewardDistributorData: boolean
   rewardDistributorDataError: string | undefined
 }
@@ -28,7 +28,7 @@ export const useRewardDistributorData = (
     useState<AccountData<RewardDistributorData>>()
   const [refreshingRewardDistributorData, setRefreshingRewardDistributorData] =
     useState<boolean>(false)
-  const [loadingRewardDistributorData, setLoadingRewardDistributorData] =
+  const [loadedRewardDistributorData, setLoadedRewardDistributorData] =
     useState<boolean>(false)
   const { tokenList } = useTokenList()
 
@@ -45,7 +45,7 @@ export const useRewardDistributorData = (
     }
 
     if (reload) {
-      setLoadingRewardDistributorData(false)
+      setLoadedRewardDistributorData(false)
     }
     setRewardDistributorDataError(undefined)
 
@@ -84,7 +84,7 @@ export const useRewardDistributorData = (
       console.log('Error fetching staked token datas', e)
       setRewardDistributorDataError(`${e}`)
     } finally {
-      setLoadingRewardDistributorData(true)
+      setLoadedRewardDistributorData(true)
       setRefreshingRewardDistributorData(false)
     }
   }
@@ -95,7 +95,7 @@ export const useRewardDistributorData = (
 
   return {
     rewardDistributor,
-    loadingRewardDistributorData,
+    loadedRewardDistributorData,
     refreshRewardDistributorData,
     refreshingRewardDistributorData,
     rewardDistributorDataError,

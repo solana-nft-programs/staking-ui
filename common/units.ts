@@ -57,9 +57,12 @@ export function getMintMinAmountAsDecimal(mint: MintInfo) {
 
 export function formatMintNaturalAmountAsDecimal(
   mint: MintInfo,
-  naturalAmount: BN
+  naturalAmount: BN,
+  decimalPlaces?: number
 ) {
-  return getMintDecimalAmountFromNatural(mint, naturalAmount).toFormat()
+  return getMintDecimalAmountFromNatural(mint, naturalAmount).toFormat(
+    decimalPlaces
+  )
 }
 
 export function getMintDecimalAmountFromNatural(

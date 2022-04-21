@@ -1,4 +1,5 @@
 import { AccountData } from '@cardinal/common'
+import { tryPublicKey } from '@cardinal/namespaces-components'
 import { StakePoolData } from '@cardinal/staking/dist/cjs/programs/stakePool'
 import { getStakePool } from '@cardinal/staking/dist/cjs/programs/stakePool/accounts'
 import * as web3 from '@solana/web3.js'
@@ -112,30 +113,6 @@ export const camelCase = (str: string) => {
     .split(' ')
     .map((x) => x.charAt(0).toUpperCase() + x.slice(1))
     .join('')
-}
-
-export const handlePoolMapping = async (
-  connection: web3.Connection,
-  poolId: string
-): Promise<AccountData<StakePoolData>> => {
-  const nameMapping = stakePoolMetadatas.find(
-    (p) => p.name === (poolId as String)
-  )
-  const addressMapping = stakePoolMetadatas.find(
-    (p) => p.pubkey.toString() === (poolId as String)
-  )
-  if (nameMapping) {
-    return await getStakePool(connection, nameMapping.pubkey)
-  } else if (addressMapping) {
-    return await getStakePool(
-      connection,
-      new web3.PublicKey(addressMapping.pubkey)
-    )
-  } else if (new web3.PublicKey(poolId)) {
-    return await getStakePool(connection, new web3.PublicKey(poolId))
-  } else {
-    throw Error(`Cannot find stake pool id ${poolId}`)
-  }
 }
 
 export const getMintsDetails = async () =>
