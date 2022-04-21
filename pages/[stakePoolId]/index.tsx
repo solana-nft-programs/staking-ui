@@ -17,7 +17,7 @@ import { TokenData } from 'api/types'
 import { Header } from 'common/Header'
 import Head from 'next/head'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Wallet } from '@metaplex/js'
 import { useUserTokenData } from 'providers/TokenDataProvider'
 import { LoadingSpinner } from 'common/LoadingSpinner'
@@ -30,7 +30,6 @@ import {
   getMintNaturalAmountFromDecimal,
 } from 'common/units'
 import { BN } from '@project-serum/anchor'
-import { useTokenList } from 'providers/TokenListProvider'
 import { getActiveStakeEntriesForPool } from '@cardinal/staking/dist/cjs/programs/stakePool/accounts'
 import { stakePoolMetadatas } from 'api/mapping'
 import { AllowedTokensModal } from '../../common/AllowedTokensModal'
@@ -71,7 +70,7 @@ function Home() {
     stakePool
   )
 
-  const { refreshing, setAddress, tokenDatas, loaded, refreshTokenAccounts } =
+  const { refreshing, tokenDatas, loaded, refreshTokenAccounts } =
     useUserTokenData()
   const [unstakedSelected, setUnstakedSelected] = useState<TokenData[]>([])
   const [stakedSelected, setStakedSelected] = useState<TokenData[]>([])
@@ -89,13 +88,7 @@ function Home() {
     (p) => p.pubkey.toString() === (stakePoolId as String)
   )
 
-  useEffect(() => {
-    if (wallet && wallet.connected && wallet.publicKey) {
-      setAddress(wallet.publicKey.toBase58())
-    }
-  }, [wallet.publicKey])
-
-  useEffect(() => {
+  useMemo(() => {
     if (stakePoolId) {
       const setData = async () => {
         try {
@@ -461,7 +454,7 @@ function Home() {
                     <div className="relative my-auto mb-4 h-[60vh] overflow-y-auto overflow-x-hidden rounded-md bg-white bg-opacity-5 p-5">
                       {loaded && filteredTokens.length == 0 && (
                         <p className="text-gray-400">
-                          No tokens found in wallet.
+                          No allowed tokens found in wallet.
                         </p>
                       )}
                       {loaded ? (
@@ -473,10 +466,7 @@ function Home() {
                           >
                             {filteredTokens.map((tk) => (
                               <div key={tk.tokenAccount?.pubkey.toString()}>
-                                <div
-                                  className="relative w-44 md:w-auto 2xl:w-48"
-                                  key={tk?.tokenAccount?.pubkey.toBase58()}
-                                >
+                                <div className="relative w-44 md:w-auto 2xl:w-48">
                                   <label
                                     htmlFor={tk?.tokenAccount?.pubkey.toBase58()}
                                     className="relative"
