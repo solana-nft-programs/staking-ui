@@ -9,7 +9,6 @@ import { pubKeyUrl, shortPubKey } from 'common/utils'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
-import { useUserTokenData } from 'providers/TokenDataProvider'
 import { useEffect, useState } from 'react'
 import { FaQuestion } from 'react-icons/fa'
 
@@ -25,21 +24,13 @@ export type StakePool = {
 }
 
 function Home() {
-  const { setAddress, address } = useUserTokenData()
   const { connection, environment } = useEnvironmentCtx()
-  const wallet = useWallet()
   const [stakePools, setStakePools] = useState<[StakePool[], StakePool[]]>([
     [],
     [],
   ])
   const [stakePoolsLoaded, setStakePoolsLoaded] = useState(false)
   const router = useRouter()
-
-  useEffect(() => {
-    if (wallet && wallet.connected && wallet.publicKey) {
-      setAddress(wallet.publicKey.toBase58())
-    }
-  }, [wallet.publicKey])
 
   useEffect(() => {
     const setData = async () => {
