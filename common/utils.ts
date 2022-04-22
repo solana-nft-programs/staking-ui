@@ -1,9 +1,4 @@
-import { AccountData } from '@cardinal/common'
-import { tryPublicKey } from '@cardinal/namespaces-components'
-import { StakePoolData } from '@cardinal/staking/dist/cjs/programs/stakePool'
-import { getStakePool } from '@cardinal/staking/dist/cjs/programs/stakePool/accounts'
 import * as web3 from '@solana/web3.js'
-import { stakePoolMetadatas } from 'api/mapping'
 
 export function getExpirationString(expiration: number, UTCSecondsNow: number) {
   let day = (expiration - UTCSecondsNow) / 60 / 60 / 24
@@ -86,7 +81,6 @@ export function secondstoDuration(durationSeconds: number) {
   return duration
 }
 
-// eslint-disable-next-line @typescript-eslint/ban-types
 export const withSleep = async (fn: Function, sleep = 2000) => {
   await new Promise((r) => setTimeout(r, sleep))
   await fn()
