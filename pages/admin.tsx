@@ -1,4 +1,8 @@
-import { tryGetAccount } from '@cardinal/common'
+import {
+  findAta,
+  tryGetAccount,
+  withFindOrInitAssociatedTokenAccount,
+} from '@cardinal/common'
 import { createStakePool, executeTransaction } from '@cardinal/staking'
 import { RewardDistributorKind } from '@cardinal/staking/dist/cjs/programs/rewardDistributor'
 import { getRewardDistributor } from '@cardinal/staking/dist/cjs/programs/rewardDistributor/accounts'
@@ -21,7 +25,10 @@ import { TailSpin } from 'react-loader-spinner'
 import * as splToken from '@solana/spl-token'
 import { useState, useEffect } from 'react'
 import Select from 'react-select'
-import { parseMintNaturalAmountFromDecimal } from 'common/units'
+import {
+  getMintDecimalAmountFromNaturalV2,
+  parseMintNaturalAmountFromDecimal,
+} from 'common/units'
 
 function Admin() {
   const { connection } = useEnvironmentCtx()
@@ -40,6 +47,7 @@ function Admin() {
   const [processingMintAddress, setProcessingMintAddress] =
     useState<boolean>(false)
   const [mintInfo, setMintInfo] = useState<splToken.MintInfo>()
+  const [maxMintSupply, setMaxMintSupply] = useState<number>(0)
 
   const [loading, setLoading] = useState<boolean>(false)
   const [stakePool, setStakePool] = useState<AccountData<StakePoolData>>()
@@ -59,6 +67,13 @@ function Admin() {
   const handleMintAddress = async (address: String) => {
     setSubmitDisabled(true)
     setProcessingMintAddress(true)
+    if (!wallet?.connected) {
+      notify({
+        message: `Wallet not connected`,
+        type: 'error',
+      })
+      return
+    }
     try {
       const mint = new PublicKey(address)
       const checkMint = new splToken.Token(
@@ -70,7 +85,21 @@ function Admin() {
         null
       )
       let mintInfo = await checkMint.getMintInfo()
+      const mintAta = await findAta(mint, wallet.publicKey!, true)
+      let data = await checkMint.getAccountInfo(mintAta)
+      if (!data) {
+        notify({
+          message: 'User has no associated token address for given mint',
+          type: 'error',
+        })
+        return
+      }
       setMintInfo(mintInfo)
+      const decimalAmount = getMintDecimalAmountFromNaturalV2(
+        mintInfo.decimals,
+        new BN(data.amount)
+      )
+      setMaxMintSupply(Number(decimalAmount.toFixed(3)))
       setSubmitDisabled(false)
       setProcessingMintAddress(false)
       notify({ message: `Valid reward mint address`, type: 'success' })
@@ -178,14 +207,7 @@ function Admin() {
           supply: supply,
         }
 
-        if (supply?.toNumber()) {
-          await withWrapSol(
-            transaction,
-            connection,
-            wallet as Wallet,
-            supply?.toNumber()
-          )
-        }
+        console.log(rewardDistributionParams.kind)
 
         await withInitRewardDistributor(
           transaction,
@@ -208,11 +230,6 @@ function Admin() {
           stakePoolData.pubkey.toString(),
         type: 'success',
       })
-
-      const [rewardDistributorId] = await findRewardDistributorId(stakePoolPK)
-      const rewardDistributorData = await tryGetAccount(() =>
-        getRewardDistributor(connection, rewardDistributorId)
-      )
     } catch (e) {
       notify({ message: `Error creating stake pool: ${e}`, type: 'error' })
     } finally {
@@ -385,9 +402,10 @@ function Admin() {
                         styles={customStyles}
                         className="mb-3"
                         isSearchable={false}
-                        onChange={(option) =>
+                        onChange={(option) => {
                           setRewardDistribution(option!.value)
-                        }
+                          setRewardMintSupply('')
+                        }}
                         defaultValue={{ label: 'None', value: '0' }}
                         options={[
                           { value: '0', label: 'None' },
@@ -440,6 +458,13 @@ function Admin() {
                                 value={rewardAmount}
                                 disabled={submitDisabled}
                                 onChange={(e) => {
+                                  const amount = Number(e.target.value)
+                                  if (!amount && e.target.value.length != 0) {
+                                    notify({
+                                      message: `Invalid reward amount`,
+                                      type: 'error',
+                                    })
+                                  }
                                   setRewardAmount(e.target.value)
                                 }}
                               />
@@ -458,31 +483,73 @@ function Admin() {
                                 value={rewardDurationSeconds}
                                 disabled={submitDisabled}
                                 onChange={(e) => {
+                                  const seconds = Number(e.target.value)
+                                  if (!seconds && e.target.value.length != 0) {
+                                    notify({
+                                      message: `Invalid reward duration seconds`,
+                                      type: 'error',
+                                    })
+                                  }
                                   setRewardDurationSeconds(e.target.value)
                                 }}
                               />
                             </div>
 
-                            {rewardDistribution === '2' && (
-                              <div className="mb-6 mt-4 w-full px-3 md:mb-0">
-                                <FormFieldTitleInput
-                                  title={'Reward Transfer Amount'}
-                                  description={
-                                    'How many tokens to transfer to the stake pool for future distribution.'
-                                  }
-                                />
+                            <div className="mb-6 mt-4 w-full px-3 md:mb-0">
+                              <FormFieldTitleInput
+                                title={
+                                  rewardDistribution === '1'
+                                    ? 'Reward Max Supply'
+                                    : 'Reward Transfer Amount'
+                                }
+                                description={
+                                  rewardDistribution === '1'
+                                    ? 'Max number of tokens to mint (max: mint supply).'
+                                    : 'How many tokens to transfer to the stake pool for future distribution (max: your asscociated token account balance).'
+                                }
+                              />
+                              <div className="mb-3 block flex appearance-none justify-between rounded border border-gray-500 bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800">
                                 <input
-                                  className="mb-3 block w-full appearance-none rounded border border-gray-500 bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800 focus:outline-none"
+                                  className="mr-5 w-full bg-transparent focus:outline-none"
                                   disabled={submitDisabled}
                                   type="text"
                                   placeholder={'1000000'}
                                   value={rewardMintSupply}
                                   onChange={(e) => {
+                                    const supply = Number(e.target.value)
+                                    if (!supply && e.target.value.length != 0) {
+                                      notify({
+                                        message: `Invalid reward mint supply`,
+                                        type: 'error',
+                                      })
+                                    }
                                     setRewardMintSupply(e.target.value)
                                   }}
                                 />
+                                <div
+                                  className="cursor-pointer"
+                                  onClick={() => {
+                                    if (rewardDistribution === '1') {
+                                      console.log(mintInfo)
+                                      setRewardMintSupply(
+                                        mintInfo.supply
+                                          .toString()
+                                          .replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+                                      )
+                                    } else {
+                                      setRewardMintSupply(
+                                        String(maxMintSupply).replace(
+                                          /\B(?=(\d{3})+(?!\d))/g,
+                                          ','
+                                        )
+                                      )
+                                    }
+                                  }}
+                                >
+                                  Max
+                                </div>
                               </div>
-                            )}
+                            </div>
                           </>
                         )}
                       </>
