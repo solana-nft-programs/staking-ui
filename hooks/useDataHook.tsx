@@ -63,7 +63,7 @@ export function useDataHook<T>(
         params?.refreshInterval
       )
       return () => clearInterval(interval)
-    }, [])
+    }, [...dependencies])
   }
 
   return {

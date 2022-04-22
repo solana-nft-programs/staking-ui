@@ -2,10 +2,10 @@ import { useDataHook } from './useDataHook'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 import { AccountData } from '@cardinal/common'
 import { useRewardDistributorData } from './useRewardDistributorData'
-import { getRewardEntries } from 'api/utils'
 import { findRewardEntryId } from '@cardinal/staking/dist/cjs/programs/rewardDistributor/pda'
 import { useStakedTokenDatas } from './useStakedTokenDatas'
 import { RewardEntryData } from '@cardinal/staking/dist/cjs/programs/rewardDistributor'
+import { getRewardEntries } from '@cardinal/staking/dist/cjs/programs/rewardDistributor/accounts'
 
 export const useRewardEntries = () => {
   const { data: rewardDistibutorData } = useRewardDistributorData()
