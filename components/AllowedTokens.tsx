@@ -6,7 +6,7 @@ import {
 import { getStakeAuthorizationsForPool } from '@cardinal/staking/dist/cjs/programs/stakePool/accounts'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 import { useMemo, useState } from 'react'
-import { ShortPubKeyUrl } from './Pubkeys'
+import { ShortPubKeyUrl } from '../common/Pubkeys'
 
 export const AllowedTokens = ({
   stakePool,
