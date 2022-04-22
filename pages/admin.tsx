@@ -23,7 +23,7 @@ import Head from 'next/head'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 import { TailSpin } from 'react-loader-spinner'
 import * as splToken from '@solana/spl-token'
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import Select from 'react-select'
 import {
   getMintDecimalAmountFromNaturalV2,
@@ -41,7 +41,8 @@ function Admin() {
   const [rewardAmount, setRewardAmount] = useState<string>('')
   const [rewardDurationSeconds, setRewardDurationSeconds] = useState<string>('')
   const [rewardMintAddress, setRewardMintAddress] = useState<string>('')
-  const [rewardDistribution, setRewardDistribution] = useState<string>('0')
+  const [rewardDistributorKind, setRewardDistributorKind] =
+    useState<RewardDistributorKind>()
   const [rewardMintSupply, setRewardMintSupply] = useState<string>('')
   const [submitDisabled, setSubmitDisabled] = useState<boolean>(true)
   const [processingMintAddress, setProcessingMintAddress] =
@@ -128,14 +129,11 @@ function Admin() {
       ) {
         throw 'Both reward amount and reward duration must be specified'
       }
-      if ((rewardAmount || rewardMintAddress) && rewardDistribution === '0') {
+      if ((rewardAmount || rewardMintAddress) && !rewardDistributorKind) {
         throw 'Reward distribution must be specified (cannot be none)'
       }
-      if (rewardDistribution === '1' && !rewardMintSupply) {
-        throw 'Reward mint supply must be specified (cannot be none)'
-      }
       if (
-        (rewardAmount || rewardMintAddress || rewardDistribution !== '0') &&
+        (rewardAmount || rewardMintAddress || rewardDistributorKind) &&
         (!rewardAmount || !rewardMintAddress)
       ) {
         throw 'Please fill out all the fields for reward distribution paramters'
@@ -167,12 +165,6 @@ function Admin() {
       const rewardDurationSecondsBN = rewardDurationSeconds
         ? new BN(parseInt(rewardDurationSeconds))
         : undefined
-      const rewardDistributorKind =
-        rewardDistribution === '1'
-          ? RewardDistributorKind.Mint
-          : rewardDistribution === '2'
-          ? RewardDistributorKind.Treasury
-          : undefined
       const supply = rewardMintSupply
         ? new BN(
             parseMintNaturalAmountFromDecimal(
@@ -198,7 +190,7 @@ function Admin() {
       )
 
       if (rewardDistributorKind) {
-        const rewardDistributionParams = {
+        const rewardDistributorKindParams = {
           stakePoolId: stakePoolPK,
           rewardMintId: rewardMintPublicKey!,
           rewardAmount: rewardAmountBN,
@@ -207,13 +199,11 @@ function Admin() {
           supply: supply,
         }
 
-        console.log(rewardDistributionParams.kind)
-
         await withInitRewardDistributor(
           transaction,
           connection,
           wallet as Wallet,
-          rewardDistributionParams
+          rewardDistributorKindParams
         )
       }
 
@@ -403,7 +393,12 @@ function Admin() {
                         className="mb-3"
                         isSearchable={false}
                         onChange={(option) => {
-                          setRewardDistribution(option!.value)
+                          setRewardDistributorKind(
+                            {
+                              '1': RewardDistributorKind.Mint,
+                              '2': RewardDistributorKind.Treasury,
+                            }[option?.value ?? '']
+                          )
                           setRewardMintSupply('')
                         }}
                         defaultValue={{ label: 'None', value: '0' }}
@@ -414,7 +409,7 @@ function Admin() {
                         ]}
                       />
                     </div>
-                    {rewardDistribution !== '0' && (
+                    {rewardDistributorKind && (
                       <>
                         <div className="relative mb-6 mt-4 w-full px-3 md:mb-0">
                           {processingMintAddress ? (
@@ -498,17 +493,19 @@ function Admin() {
                             <div className="mb-6 mt-4 w-full px-3 md:mb-0">
                               <FormFieldTitleInput
                                 title={
-                                  rewardDistribution === '1'
+                                  rewardDistributorKind ===
+                                  RewardDistributorKind.Mint
                                     ? 'Reward Max Supply'
                                     : 'Reward Transfer Amount'
                                 }
                                 description={
-                                  rewardDistribution === '1'
+                                  rewardDistributorKind ===
+                                  RewardDistributorKind.Treasury
                                     ? 'Max number of tokens to mint (max: mint supply).'
                                     : 'How many tokens to transfer to the stake pool for future distribution (max: your asscociated token account balance).'
                                 }
                               />
-                              <div className="mb-3 block flex appearance-none justify-between rounded border border-gray-500 bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800">
+                              <div className="mb-3 flex appearance-none justify-between rounded border border-gray-500 bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800">
                                 <input
                                   className="mr-5 w-full bg-transparent focus:outline-none"
                                   disabled={submitDisabled}
@@ -517,6 +514,11 @@ function Admin() {
                                   value={rewardMintSupply}
                                   onChange={(e) => {
                                     const supply = Number(e.target.value)
+                                    console.log(
+                                      supply,
+                                      !supply,
+                                      e.target.value.length != 0
+                                    )
                                     if (!supply && e.target.value.length != 0) {
                                       notify({
                                         message: `Invalid reward mint supply`,
@@ -529,8 +531,10 @@ function Admin() {
                                 <div
                                   className="cursor-pointer"
                                   onClick={() => {
-                                    if (rewardDistribution === '1') {
-                                      console.log(mintInfo)
+                                    if (
+                                      rewardDistributorKind ===
+                                      RewardDistributorKind.Mint
+                                    ) {
                                       setRewardMintSupply(
                                         mintInfo.supply
                                           .toString()
@@ -557,10 +561,10 @@ function Admin() {
                   </div>
                 </div>
                 <button
-                  disabled={rewardDistribution !== '0' && submitDisabled}
+                  disabled={rewardDistributorKind && submitDisabled}
                   type="button"
                   className={
-                    submitDisabled && rewardDistribution !== '0'
+                    submitDisabled && rewardDistributorKind
                       ? 'mt-4 inline-block rounded-md bg-blue-700 px-4 py-2 opacity-50'
                       : 'mt-4 inline-block rounded-md bg-blue-700 px-4 py-2'
                   }

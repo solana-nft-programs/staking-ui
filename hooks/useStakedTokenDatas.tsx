@@ -5,6 +5,7 @@ import { useWalletId } from './useWalletId'
 import { getStakeEntryDatas } from 'api/api'
 import { useTokenList } from 'providers/TokenListProvider'
 import { StakeEntryTokenData } from 'api/types'
+import { useWallet } from '@solana/wallet-adapter-react'
 
 export const useStakedTokenDatas = () => {
   const stakePoolId = useStakePoolId()

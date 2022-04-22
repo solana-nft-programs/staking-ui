@@ -29,7 +29,7 @@ import { useStakedTokenDatas } from 'hooks/useStakedTokenDatas'
 import { useRewardDistributorData } from 'hooks/useRewardDistributorData'
 import { useRewards } from 'hooks/useRewards'
 import { useRewardMintInfo } from 'hooks/useRewardMintInfo'
-import { AllowedTokens } from 'common/AllowedTokens'
+import { AllowedTokens } from 'components/AllowedTokens'
 import { useStakePoolEntries } from 'hooks/useStakePoolEntries'
 import { useStakePoolData } from 'hooks/useStakePoolData'
 import { useStakePoolMaxStaked } from 'hooks/useStakePoolMaxStaked'
@@ -244,11 +244,6 @@ function Home() {
         tk.stakeEntry?.parsed.originalMint.toString()
     )
 
-  const claimableRewards = Object.values(rewards.data || {}).reduce(
-    (acc, { claimableRewards }) => acc.add(claimableRewards),
-    new BN(0)
-  )
-
   return (
     <>
       <div>
@@ -319,7 +314,7 @@ function Home() {
                       </span>
                     </div>
                     <div className="flex min-w-[200px] text-lg">
-                      {!rewardMintInfo || !rewards.loaded ? (
+                      {!rewardMintInfo || !rewards.data ? (
                         <div className="relative flex h-8 w-full items-center justify-center">
                           <span className="text-gray-500"></span>
                           <div className="absolute w-full animate-pulse items-center justify-center rounded-lg bg-white bg-opacity-10 p-5"></div>
@@ -327,10 +322,10 @@ function Home() {
                       ) : (
                         `Earnings: ${formatMintNaturalAmountAsDecimal(
                           rewardMintInfo.data.mintInfo,
-                          claimableRewards,
+                          rewards.data.claimableRewards,
                           6
                         )}
-                          ${rewardMintInfo.data.tokenListData?.name}`
+                          ${rewardMintInfo.data.tokenListData?.name ?? '???'}`
                       )}
                     </div>
                   </>
@@ -648,7 +643,7 @@ function Home() {
                                         </div>
                                       )}
                                       {rewards.data &&
-                                        rewards.data[
+                                        rewards.data.rewardMap[
                                           tk.stakeEntry?.parsed.originalMint.toString() ||
                                             ''
                                         ] &&
@@ -657,7 +652,7 @@ function Home() {
                                         ) && (
                                           <div className="mt-1 flex items-center justify-center text-xs">
                                             {secondstoDuration(
-                                              rewards.data[
+                                              rewards.data.rewardMap[
                                                 tk.stakeEntry?.parsed.originalMint.toString() ||
                                                   ''
                                               ]?.nextRewardsIn.toNumber() || 0
@@ -742,9 +737,11 @@ function Home() {
                         }
                         handleClaimRewards()
                       }}
-                      disabled={!claimableRewards.gt(new BN(0))}
+                      disabled={!rewards.data?.claimableRewards.gt(new BN(0))}
                       className={`my-auto mr-5 flex rounded-md bg-${
-                        claimableRewards.gt(new BN(0)) ? 'blue-700' : 'gray-700'
+                        rewards?.data?.claimableRewards.gt(new BN(0))
+                          ? 'blue-700'
+                          : 'gray-700'
                       } px-4 py-2`}
                     >
                       <span className="mr-1 inline-block">

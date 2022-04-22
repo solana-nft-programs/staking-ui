@@ -276,25 +276,26 @@
     ts-mocha "^8.0.0"
     typescript "^4.5.5"
 
-"@cardinal/staking@^1.1.6":
-  version "1.1.6"
-  resolved "https://registry.yarnpkg.com/@cardinal/staking/-/staking-1.1.6.tgz#6047b096f69b61fdeee568eb41160bee5bc1ad0d"
-  integrity sha512-/+h0/8aYqUdtjwZNEHsVHj50lJGpONn/+K/XA9ETz7+D+09L8dO0CaAiBwSYZqZQjkg5XggiYA0/0t2/4QM8gw==
+"@cardinal/staking@^1.2.0":
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/@cardinal/staking/-/staking-1.2.0.tgz#b8003b400c5eae3c9b188627dfd0c765b90764cb"
+  integrity sha512-EKl0J4Z25JPjbnF7tBqqUbp6KKNaws0nhReVFBvDVkR7RfXvaJ6mZIAzL5ohloHdDryjQfoXrPGOa4OsC9q2ag==
   dependencies:
     "@cardinal/common" "^1.0.10"
-    "@cardinal/token-manager" "^1.1.0"
+    "@cardinal/token-manager" "^1.2.0"
     "@metaplex-foundation/mpl-token-metadata" "^1.2.5"
 
-"@cardinal/token-manager@^1.1.0":
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/@cardinal/token-manager/-/token-manager-1.1.0.tgz#5c64e2cdeaea0e7455ebca96f3d86180dc5c45e4"
-  integrity sha512-632KWT2fSB+3s/+vc5RCiFXPLjvUbnaFS/0NMa9h7dlZ7gVG1pV2A8ICv+IAhMAAN4jTt+Lr4d6M6244mlWRTg==
+"@cardinal/token-manager@^1.2.0":
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/@cardinal/token-manager/-/token-manager-1.2.0.tgz#641bc43370b4ee8f202a8a6fbf27a6c58996fe27"
+  integrity sha512-V5XSJ8kYWjwVrPEHgOLIwcAoc6ps+G7Lt6C+gq7Iae1xXdCZrpbGkQRmFoGiY/cNLO6Aioo62cgrsfhg0gXt5w==
   dependencies:
     "@metaplex-foundation/mpl-token-metadata" "^1.2.3"
     "@solana/buffer-layout" "^4.0.0"
     "@solana/spl-token" "^0.1.8"
     borsh "^0.7.0"
     bs58 "^4.0.1"
+    superstruct "^0.15.4"
     tiny-invariant "^1.2.0"
     tslib "^2.3.1"
 
@@ -763,10 +764,10 @@
     snake-case "^3.0.4"
     toml "^3.0.0"
 
-"@project-serum/anchor@^0.23.0":
-  version "0.23.0"
-  resolved "https://registry.yarnpkg.com/@project-serum/anchor/-/anchor-0.23.0.tgz#2b2eb6b51601b073e8db26663aa2d6c2f2841771"
-  integrity sha512-LV2/ifZOJVFTZ4GbEloXln3iVfCvO1YM8i7BBCrUm4tehP7irMx4nr4/IabHWOzrQcQElsxSP/lb1tBp+2ff8A==
+"@project-serum/anchor@^0.24.2":
+  version "0.24.2"
+  resolved "https://registry.yarnpkg.com/@project-serum/anchor/-/anchor-0.24.2.tgz#a3c52a99605c80735f446ca9b3a4885034731004"
+  integrity sha512-0/718g8/DnEuwAidUwh5wLYphUYXhUbiClkuRNhvNoa+1Y8a4g2tJyxoae+emV+PG/Gikd/QUBNMkIcimiIRTA==
   dependencies:
     "@project-serum/borsh" "^0.2.5"
     "@solana/web3.js" "^1.36.0"
@@ -778,7 +779,6 @@
     cross-fetch "^3.1.5"
     crypto-hash "^1.3.0"
     eventemitter3 "^4.0.7"
-    find "^0.3.0"
     js-sha256 "^0.9.0"
     pako "^2.0.3"
     snake-case "^3.0.4"
@@ -5335,6 +5335,11 @@ superstruct@^0.14.2:
   version "0.14.2"
   resolved "https://registry.yarnpkg.com/superstruct/-/superstruct-0.14.2.tgz#0dbcdf3d83676588828f1cf5ed35cda02f59025b"
   integrity sha512-nPewA6m9mR3d6k7WkZ8N8zpTWfenFH3q9pA2PkuiZxINr9DKB2+40wEQf0ixn8VaGuJ78AB6iWOtStI+/4FKZQ==
+
+superstruct@^0.15.4:
+  version "0.15.4"
+  resolved "https://registry.yarnpkg.com/superstruct/-/superstruct-0.15.4.tgz#e3381dd84ca07e704e19f69eda74eee1a5efb1f9"
+  integrity sha512-eOoMeSbP9ZJChNOm/9RYjE+F36rYR966AAqeG3xhQB02j2sfAUXDp4EQ/7bAOqnlJnuFDB8yvOu50SocvKpUEw==
 
 supports-color@8.1.1, supports-color@^8.0.0:
   version "8.1.1"
