@@ -453,6 +453,7 @@ function Home() {
                                     </div>
 
                                     <input
+                                      disabled={loadingStake || loadingUnstake}
                                       placeholder={
                                         tk.tokenAccount?.account.data.parsed
                                           .info.tokenAmount.amount > 1
@@ -661,6 +662,7 @@ function Home() {
                                     </div>
 
                                     <input
+                                      disabled={loadingStake || loadingUnstake}
                                       placeholder={
                                         tk.stakeEntry!.parsed.amount.toNumber() >
                                         1
