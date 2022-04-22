@@ -9,7 +9,7 @@ import { PublicKey } from '@solana/web3.js'
 
 export interface UserTokenDataValues {
   tokenDatas: TokenData[]
-  refreshTokenAccounts: (reload?: boolean) => void
+  refreshTokenAccounts: (reload?: boolean) => Promise<void>
   setTokenDatas: (newEnvironment: TokenData[]) => void
   setAddress: (address: string) => void
   setStakePoolId: (stakePoolId: PublicKey) => void
@@ -22,7 +22,7 @@ export interface UserTokenDataValues {
 const UserTokenData: React.Context<UserTokenDataValues> =
   React.createContext<UserTokenDataValues>({
     tokenDatas: [],
-    refreshTokenAccounts: () => {},
+    refreshTokenAccounts: async () => {},
     setTokenDatas: () => {},
     setAddress: () => {},
     setStakePoolId: () => {},
@@ -63,6 +63,7 @@ export function TokenAccountsProvider({ children }: { children: ReactChild }) {
       setRefreshing(true)
       setError(undefined)
       try {
+        console.log('Fetching user token datas')
         const tokenDatas = await getTokenAccountsWithData(
           connection,
           address,

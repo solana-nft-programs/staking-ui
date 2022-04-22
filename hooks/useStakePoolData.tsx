@@ -8,8 +8,12 @@ import { getStakePool } from '@cardinal/staking/dist/cjs/programs/stakePool/acco
 export const useStakePoolData = () => {
   const stakePoolId = useStakePoolId()
   const { connection } = useEnvironmentCtx()
-  return useDataHook<AccountData<StakePoolData> | undefined>(async () => {
-    if (!stakePoolId) throw Error(`Cannot find stake pool id ${stakePoolId}`)
-    return getStakePool(connection, stakePoolId)
-  }, [stakePoolId])
+  return useDataHook<AccountData<StakePoolData> | undefined>(
+    async () => {
+      if (!stakePoolId) return
+      return getStakePool(connection, stakePoolId)
+    },
+    [stakePoolId?.toString()],
+    { name: 'stakePoolData' }
+  )
 }

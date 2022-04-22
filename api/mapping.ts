@@ -1,4 +1,4 @@
-import { AirdropMetadata } from './../common/Airdrop';
+import { AirdropMetadata } from './../common/Airdrop'
 import { PublicKey } from '@solana/web3.js'
 
 export type StakePoolMetadata = {
@@ -8,8 +8,8 @@ export type StakePoolMetadata = {
   filters?: {
     type: 'creators' | 'symbol' | 'issuer'
     value: string | string[]
-  }[],
-  airdrops?: AirdropMetadata[],
+  }[]
+  airdrops?: AirdropMetadata[]
   imageUrl?: string
   websiteUrl?: string
   maxStaked?: number
@@ -60,6 +60,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     name: 'portals',
     displayName: 'Portals',
     pubkey: new PublicKey('5pTqPBTBvbueU6PQWcthcyAwKBjcu89GoPRNtD3AKEJZ'),
+    imageUrl: './logos/portals.svg',
     maxStaked: 10000,
   },
 ]
