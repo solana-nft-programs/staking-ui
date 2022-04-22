@@ -69,7 +69,7 @@ export const useAllowedTokenDatas = (showFungibleTokens: boolean) => {
 
       return filteredTokens
     },
-    [stakePool, showFungibleTokens],
+    [stakePool, showFungibleTokens, tokenDatas],
     { name: 'allowedTokenDatas' }
   )
 }
