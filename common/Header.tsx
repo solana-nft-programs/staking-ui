@@ -23,6 +23,7 @@ export const Header = () => {
   const [tab, setTab] = useState<string>('wallet')
   const [headerName, setHeaderName] = useState('Cardinal')
   const stakePool = useStakePoolData()
+  const whiteListPaths = ['/', 'admin']
 
   useEffect(() => {
     const anchor = router.asPath.split('#')[1]
@@ -85,11 +86,13 @@ export const Header = () => {
         ) : (
           ''
         )}
-        {stakePool.loaded && !stakePool.data && (
-          <div className="underline underline-offset-2">
-            No Stake Pool Found
-          </div>
-        )}
+        {stakePool.loaded &&
+          !stakePool.data &&
+          !whiteListPaths.includes(window.location.pathname) && (
+            <div className="underline underline-offset-2">
+              No Stake Pool Found
+            </div>
+          )}
       </div>
       <div className="relative my-auto flex items-center pr-8 align-middle">
         <div
