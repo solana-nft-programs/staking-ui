@@ -1,17 +1,10 @@
-import {
-  findAta,
-  tryGetAccount,
-  withFindOrInitAssociatedTokenAccount,
-} from '@cardinal/common'
+import { findAta } from '@cardinal/common'
 import { createStakePool, executeTransaction } from '@cardinal/staking'
 import { RewardDistributorKind } from '@cardinal/staking/dist/cjs/programs/rewardDistributor'
-import { getRewardDistributor } from '@cardinal/staking/dist/cjs/programs/rewardDistributor/accounts'
-import { findRewardDistributorId } from '@cardinal/staking/dist/cjs/programs/rewardDistributor/pda'
 import { withInitRewardDistributor } from '@cardinal/staking/dist/cjs/programs/rewardDistributor/transaction'
 import { StakePoolData } from '@cardinal/staking/dist/cjs/programs/stakePool'
 import { getStakePool } from '@cardinal/staking/dist/cjs/programs/stakePool/accounts'
 import { AccountData } from '@cardinal/token-manager'
-import { withWrapSol } from '@cardinal/token-manager/dist/cjs/wrappedSol'
 import { Wallet } from '@metaplex/js'
 import { BN } from '@project-serum/anchor'
 import { useWallet } from '@solana/wallet-adapter-react'
@@ -29,9 +22,15 @@ import {
   getMintDecimalAmountFromNaturalV2,
   parseMintNaturalAmountFromDecimal,
 } from 'common/units'
+import { Placeholder, StakePool } from 'pages'
+import { pubKeyUrl, shortPubKey } from 'common/utils'
+import { FaQuestion } from 'react-icons/fa'
+import { useStakePoolsByAuthority } from 'hooks/useStakePoolsByAuthority'
+import { useStakePoolsMetadatas } from 'hooks/useStakePoolsMetadata'
+import { FormFieldTitleInput } from 'common/FormFieldInput'
 
 function Admin() {
-  const { connection } = useEnvironmentCtx()
+  const { connection, environment } = useEnvironmentCtx()
   const wallet = useWallet()
 
   const [overlayText, setOverlayText] = useState('')
@@ -49,20 +48,27 @@ function Admin() {
     useState<boolean>(false)
   const [mintInfo, setMintInfo] = useState<splToken.MintInfo>()
   const [maxMintSupply, setMaxMintSupply] = useState<number>(0)
-
   const [loading, setLoading] = useState<boolean>(false)
   const [stakePool, setStakePool] = useState<AccountData<StakePoolData>>()
 
-  const FormFieldTitleInput = (props: {
-    title: string
-    description: string
-  }) => (
-    <>
-      <label className="mb-2 block text-xs font-bold uppercase tracking-wide text-gray-200">
-        {props.title}
-      </label>
-      <p className="mb-2 text-sm italic text-gray-300">{props.description}</p>
-    </>
+  const stakePools = useStakePoolsByAuthority()
+  const stakePoolsMetadata = useStakePoolsMetadatas(
+    stakePools.data?.map((s) => s.pubkey)
+  )
+
+  const [stakePoolsWithMetadata, stakePoolsWithoutMetadata] = (
+    stakePools.data || []
+  ).reduce(
+    (acc, stakePoolData) => {
+      const stakePoolMetadata = (stakePoolsMetadata.data || {})[
+        stakePoolData.pubkey.toString()
+      ]
+      if (stakePoolMetadata) {
+        return [[...acc[0], { stakePoolMetadata, stakePoolData }], acc[1]]
+      }
+      return [acc[0], [...acc[1], { stakePoolData }]]
+    },
+    [[] as StakePool[], [] as StakePool[]]
   )
 
   const handleMintAddress = async (address: String) => {
@@ -276,9 +282,9 @@ function Admin() {
       <div>
         <div className="container mx-auto max-h-[90vh] w-full bg-[#1a1b20]">
           <Header />
-          <div className="my-2 grid h-full grid-cols-1 gap-4">
-            <div className="rounded-md bg-white bg-opacity-5 p-10 text-gray-200">
-              <p className="text-lg font-bold">Create Staking Pool</p>
+          <div className="my-2 grid h-full grid-cols-2 gap-4 rounded-md bg-white bg-opacity-5 p-10 text-gray-200">
+            <div>
+              <p className="text-lg font-bold">Create New Staking Pool</p>
               <p className="mt-1 mb-2 text-sm">
                 All parameters for staking pool are optional
               </p>
@@ -580,6 +586,93 @@ function Admin() {
                   </div>
                 </button>
               </form>
+            </div>
+            <div>
+              <div className="mb-5 text-lg font-bold">Your pools</div>
+              <div className="grid grid-cols-3 gap-5">
+                {!stakePools.loaded && !stakePoolsMetadata.loaded ? (
+                  <>
+                    <Placeholder />
+                    <Placeholder />
+                  </>
+                ) : stakePoolsWithMetadata.length > 0 ||
+                  stakePoolsWithoutMetadata.length > 0 ? (
+                  stakePoolsWithMetadata
+                    .concat(stakePoolsWithoutMetadata)
+                    .map((stakePool) => (
+                      <div
+                        className="h-[300px] cursor-pointer rounded-lg bg-white bg-opacity-5 p-10 transition-all duration-100 hover:scale-[1.01]"
+                        onClick={() => {
+                          window.open(
+                            `/admin/${
+                              stakePool.stakePoolMetadata?.name ||
+                              stakePool.stakePoolData.pubkey.toString()
+                            }${
+                              environment.label !== 'mainnet'
+                                ? `?cluster=${environment.label}`
+                                : ''
+                            }`,
+                            '_blank',
+                            'noopener,noreferrer'
+                          )
+                        }}
+                      >
+                        {stakePool.stakePoolMetadata?.displayName ? (
+                          <div className="text-center font-bold">
+                            {stakePool.stakePoolMetadata?.displayName}
+                          </div>
+                        ) : (
+                          <div className="text-center font-bold text-white">
+                            <a
+                              className="text-white"
+                              target="_blank"
+                              rel="noreferrer"
+                              href={pubKeyUrl(
+                                stakePool.stakePoolData.pubkey,
+                                environment.label
+                              )}
+                            >
+                              {shortPubKey(stakePool.stakePoolData.pubkey)}
+                            </a>
+                          </div>
+                        )}
+                        <div className="text-gray text-center">
+                          <a
+                            className="text-xs text-gray-500"
+                            target="_blank"
+                            rel="noreferrer"
+                            href={pubKeyUrl(
+                              stakePool.stakePoolData.pubkey,
+                              environment.label
+                            )}
+                          >
+                            {shortPubKey(stakePool.stakePoolData.pubkey)}
+                          </a>
+                        </div>
+                        {stakePool.stakePoolMetadata?.imageUrl ? (
+                          <img
+                            className="mx-auto mt-5 h-[150px] w-[150px] rounded-md"
+                            src={stakePool.stakePoolMetadata.imageUrl}
+                            alt={stakePool.stakePoolMetadata.name}
+                          />
+                        ) : (
+                          <div className="flex justify-center align-middle">
+                            <div className="mt-5 flex h-[150px] w-[150px] items-center justify-center rounded-full bg-white bg-opacity-5 text-5xl text-white text-opacity-40">
+                              {/* {shortPubKey(stakePool.stakePoolData.pubkey)} */}
+                              <FaQuestion />
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    ))
+                ) : (
+                  <div>
+                    {wallet
+                      ? 'Connect your wallet to fetch pools.'
+                      : 'No pools found...'}
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </div>

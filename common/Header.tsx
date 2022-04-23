@@ -10,9 +10,9 @@ import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 import { useEffect, useState } from 'react'
 import { firstParam, shortPubKey } from './utils'
 import { HiUserCircle } from 'react-icons/hi'
-import Link from 'next/link'
 import { stakePoolMetadatas } from 'api/mapping'
 import { Airdrop } from './Airdrop'
+import { useStakePoolData } from 'hooks/useStakePoolData'
 
 export const Header = () => {
   const router = useRouter()
@@ -22,6 +22,7 @@ export const Header = () => {
   const { setVisible } = useWalletModal()
   const [tab, setTab] = useState<string>('wallet')
   const [headerName, setHeaderName] = useState('Cardinal')
+  const stakePool = useStakePoolData()
 
   useEffect(() => {
     const anchor = router.asPath.split('#')[1]
@@ -83,6 +84,11 @@ export const Header = () => {
           </div>
         ) : (
           ''
+        )}
+        {stakePool.loaded && !stakePool.data && (
+          <div className="underline underline-offset-2">
+            No Stake Pool Found
+          </div>
         )}
       </div>
       <div className="relative my-auto flex items-center pr-8 align-middle">

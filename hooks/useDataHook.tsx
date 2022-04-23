@@ -1,7 +1,7 @@
 import { notify } from 'common/Notification'
 import { DependencyList, useEffect, useMemo, useState } from 'react'
 
-const DEBUG = true
+const DEBUG = false
 
 export interface DataHookValues<T> {
   refresh: (reload?: boolean) => Promise<void>
