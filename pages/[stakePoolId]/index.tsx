@@ -647,7 +647,7 @@ function Home() {
                                           tk.stakeEntry?.parsed.originalMint.toString() ||
                                             ''
                                         ] &&
-                                        rewardDistibutorData.data?.parsed.rewardDurationSeconds.gt(
+                                        rewardDistibutorData.data?.parsed.rewardDurationSeconds.gte(
                                           new BN(60)
                                         ) && (
                                           <div className="mt-1 flex items-center justify-center text-xs">

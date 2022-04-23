@@ -38,26 +38,20 @@ export const useRewards = () => {
         .map((tk) => tk.stakeEntry!)
       const mintIds = stakeEntries.map((entry) => entry.parsed.originalMint)
 
-      // return getRewardMap(
-      //   mintIds,
-      //   stakeEntries,
-      //   rewardEntries,
-      //   rewardDistributorData,
-      //   rewardDistributorTokenAccount.amount
-      // )
       for (let i = 0; i < mintIds.length; i++) {
         const mintId = mintIds[i]!
         const stakeEntry = stakeEntries.find((stakeEntry) =>
           stakeEntry.parsed.originalMint.equals(mintId)
         )
         const rewardEntry = rewardEntries.find((rewardEntry) =>
-          rewardEntry.parsed.mint.equals(mintId)
+          rewardEntry.parsed?.mint.equals(mintId)
         )
 
-        if (mintId && stakeEntry && rewardEntry) {
+        if (mintId && stakeEntry) {
           const [claimableRewards, nextRewardsIn] = calculatePendingRewards(
             rewardDistributorData,
             stakeEntry,
+            // @ts-ignore
             rewardEntry,
             rewardDistributorTokenAccount.amount,
             UTCNow
@@ -89,7 +83,7 @@ export const useRewards = () => {
         claimableRewards = rewardDistributorTokenAccount.amount
       }
 
-      return { rewardMap, claimableRewards: new BN(0) }
+      return { rewardMap, claimableRewards }
     },
     [
       rewardDistributorData?.pubkey?.toString(),
