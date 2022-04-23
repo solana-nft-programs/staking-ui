@@ -115,3 +115,15 @@ export const getMintsDetails = async () =>
   )
     .then((response) => response.json())
     .then((data) => data['tokens'])
+
+export const tryPublicKey = (
+  publicKeyString: web3.PublicKey | string | string[] | undefined | null
+): web3.PublicKey | null => {
+  if (publicKeyString instanceof web3.PublicKey) return publicKeyString
+  if (!publicKeyString) return null
+  try {
+    return new web3.PublicKey(publicKeyString)
+  } catch (e) {
+    return null
+  }
+}
