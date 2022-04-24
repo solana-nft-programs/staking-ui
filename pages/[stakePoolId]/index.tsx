@@ -39,7 +39,7 @@ function Home() {
   const { connection, environment } = useEnvironmentCtx()
   const wallet = useWallet()
   const userTokenAccounts = useUserTokenData()
-  const { data: stakePool } = useStakePoolData()
+  const { data: stakePool, loaded: stakePoolLoaded } = useStakePoolData()
   const stakedTokenDatas = useStakedTokenDatas()
   const rewardDistibutorData = useRewardDistributorData()
   const rewardMintInfo = useRewardMintInfo()
@@ -256,6 +256,11 @@ function Home() {
         <div>
           <div className="container mx-auto max-h-[90vh] w-full bg-[#1a1b20]">
             <Header />
+            {!stakePool && stakePoolLoaded && (
+              <div className="mb-5 w-full text-center text-lg font-semibold">
+                Stake pool not found
+              </div>
+            )}
             {(maxStaked || rewardDistibutorData.data) && (
               <div className="mx-5 mb-4 flex flex-col items-center gap-4 rounded-md bg-white bg-opacity-5 p-10 text-gray-200 md:max-h-[100px] md:flex-row md:justify-between">
                 {stakePoolEntries.data ? (

@@ -9,6 +9,10 @@ export type StakePoolMetadata = {
     type: 'creators' | 'symbol' | 'issuer'
     value: string | string[]
   }[]
+  colors?: {
+    primary: string
+    secondary: string
+  }
   airdrops?: AirdropMetadata[]
   imageUrl?: string
   websiteUrl?: string
@@ -21,6 +25,10 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     displayName: 'Cardinal',
     pubkey: new PublicKey('4bsRsyCSSMgFSNJAi5wvh4UX9vMZDf1MwUrHUszfmLbb'),
     imageUrl: './logo-colored.png',
+    colors: {
+      primary: '#00A8FF',
+      secondary: '#00A8FF',
+    },
   },
   {
     name: 'jambo',

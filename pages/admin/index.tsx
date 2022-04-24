@@ -33,10 +33,11 @@ function Admin() {
   const { connection, environment } = useEnvironmentCtx()
   const wallet = useWallet()
 
-  const [overlayText, setOverlayText] = useState('')
+  const [overlayText, setOverlayText] = useState('STAKED')
   const [collectionAddresses, setCollectionAddresses] = useState<string>('')
   const [creatorAddresses, setCreatorAddresses] = useState<string>('')
   const [authorizeNFT, setAuthorizeNFT] = useState<boolean>(false)
+  const [resetOnStake, setResetOnStake] = useState<boolean>(false)
   const [rewardAmount, setRewardAmount] = useState<string>('')
   const [rewardDurationSeconds, setRewardDurationSeconds] = useState<string>('')
   const [rewardMintAddress, setRewardMintAddress] = useState<string>('')
@@ -186,6 +187,7 @@ function Admin() {
         requiresCreators:
           creatorPublicKeys.length > 0 ? creatorPublicKeys : undefined,
         requiresAuthorization: authorizeNFT,
+        resetOnStake: resetOnStake,
         overlayText: overlayText.length > 0 ? overlayText : undefined,
       }
 
@@ -356,6 +358,25 @@ function Admin() {
                     />
                   </div>
                 </div>
+                {/* <div className="-mx-3 flex flex-wrap">
+                  <div className="mb-6 mt-4 w-full px-3 md:mb-0">
+                    <FormFieldTitleInput
+                      title={'Stake Pool Image'}
+                      description={
+                        'Allow any NFTs with these creator addresses (separated by commas)'
+                      }
+                    />
+                    <input
+                      className="mb-3 block w-full appearance-none rounded border border-gray-500 bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800 focus:outline-none"
+                      type="text"
+                      placeholder={'Cmwy..., A3fD...'}
+                      value={creatorAddresses}
+                      onChange={(e) => {
+                        setCreatorAddresses(e.target.value)
+                      }}
+                    />
+                  </div>
+                </div> */}
                 <div className="-mx-3 flex flex-wrap">
                   <div className="mb-6 mt-4 w-full px-3 md:mb-0">
                     <label
@@ -382,6 +403,35 @@ function Admin() {
                       onClick={() => setAuthorizeNFT(!authorizeNFT)}
                     >
                       Require Authorization
+                    </span>
+                  </div>
+                </div>
+                <div className="-mx-3 flex flex-wrap">
+                  <div className="mb-6 mt-4 w-full px-3 md:mb-0">
+                    <label
+                      className="mb-2 block text-xs font-bold uppercase tracking-wide text-gray-200"
+                      htmlFor="require-authorization"
+                    >
+                      Reset on stake
+                    </label>
+                    <p className="mb-2 text-sm italic text-gray-300">
+                      If selected, tokens will lose their total staked seconds
+                      (will be reset to zero) when they get re-staked
+                    </p>
+                    <input
+                      className="mb-3 cursor-pointer"
+                      id="require-authorization"
+                      type="checkbox"
+                      checked={resetOnStake}
+                      onChange={(e) => {
+                        setResetOnStake(e.target.checked)
+                      }}
+                    />{' '}
+                    <span
+                      className="my-auto cursor-pointer text-sm"
+                      onClick={() => setResetOnStake(!resetOnStake)}
+                    >
+                      Reset on unstake
                     </span>
                   </div>
                 </div>

@@ -1,7 +1,6 @@
 import { AccountData } from '@cardinal/common'
 import { StakePoolData } from '@cardinal/staking/dist/cjs/programs/stakePool'
 import { getAllStakePools } from '@cardinal/staking/dist/cjs/programs/stakePool/accounts'
-import { useWallet } from '@solana/wallet-adapter-react'
 import { StakePoolMetadata, stakePoolMetadatas } from 'api/mapping'
 import { Header } from 'common/Header'
 import { notify } from 'common/Notification'
