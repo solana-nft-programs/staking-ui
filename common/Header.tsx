@@ -12,7 +12,7 @@ import { firstParam, shortPubKey } from './utils'
 import { HiUserCircle } from 'react-icons/hi'
 import { stakePoolMetadatas } from 'api/mapping'
 import { Airdrop } from './Airdrop'
-import { useStakePoolData } from 'hooks/useStakePoolData'
+import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
 
 export const Header = () => {
   const router = useRouter()
@@ -22,6 +22,7 @@ export const Header = () => {
   const { setVisible } = useWalletModal()
   const [tab, setTab] = useState<string>('wallet')
   const [headerName, setHeaderName] = useState('Cardinal')
+  const { data: stakePoolMetadata } = useStakePoolMetadata()
 
   useEffect(() => {
     const anchor = router.asPath.split('#')[1]
@@ -56,7 +57,7 @@ export const Header = () => {
   }, [stakePoolId])
 
   return (
-    <div className="ml-5 flex h-20 justify-between text-white">
+    <div className={`flex h-20 justify-between pl-5 text-white`}>
       <div className="flex items-center gap-3">
         <a
           href={
