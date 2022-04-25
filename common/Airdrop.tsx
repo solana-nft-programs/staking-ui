@@ -22,6 +22,8 @@ import { AsyncButton } from './Button'
 import { executeTransaction } from '@cardinal/staking'
 import { useRouter } from 'next/router'
 import { StakePoolMetadata, stakePoolMetadatas } from 'api/mapping'
+import { useStakePoolId } from 'hooks/useStakePoolId'
+import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
 
 export type AirdropMetadata = { name: string; symbol: string; uri: string }
 
@@ -123,16 +125,7 @@ export const Airdrop = () => {
   const { connection } = useEnvironmentCtx()
   const wallet = useWallet()
   const { refreshTokenAccounts } = useUserTokenData()
-  const router = useRouter()
-  const { stakePoolId } = router.query
-
-  const nameMapping = stakePoolMetadatas.find(
-    (p) => p.name === (stakePoolId as String)
-  )
-  const addressMapping = stakePoolMetadatas.find(
-    (p) => p.pubkey.toString() === (stakePoolId as String)
-  )
-  const stakePoolMapping = nameMapping ? nameMapping : addressMapping
+  const { data: stakePoolMetadata } = useStakePoolMetadata()
 
   return (
     <AsyncButton
@@ -142,7 +135,12 @@ export const Airdrop = () => {
       handleClick={async () => {
         if (!wallet.connected) return
         try {
-          await airdropNFT(connection, asWallet(wallet), stakePoolMapping?.airdrops || airdrops || [], stakePoolMapping)
+          await airdropNFT(
+            connection,
+            asWallet(wallet),
+            stakePoolMetadata?.airdrops || airdrops || [],
+            stakePoolMetadata
+          )
           await refreshTokenAccounts()
         } catch (e) {
           notify({ message: `Airdrop failed: ${e}`, type: 'error' })

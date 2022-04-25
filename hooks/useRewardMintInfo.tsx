@@ -15,6 +15,7 @@ export const useRewardMintInfo = () => {
   >(
     async () => {
       if (!rewardDistibutorData) return
+      console.log(rewardDistibutorData?.parsed.rewardMint.toString())
       const tokenListData = tokenList.find(
         (tk) =>
           tk.address === rewardDistibutorData?.parsed.rewardMint.toString()

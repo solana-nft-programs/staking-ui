@@ -311,8 +311,9 @@ function Admin() {
                     />
                     <input
                       className="mb-3 block w-full appearance-none rounded border border-gray-500 bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800 focus:outline-none"
+                      defaultValue="STAKED"
                       type="text"
-                      placeholder={'STAKED'}
+                      // placeholder={'STAKED'}
                       value={overlayText}
                       onChange={(e) => {
                         setOverlayText(e.target.value)
