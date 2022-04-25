@@ -250,6 +250,7 @@ function Home() {
     <div
       style={{
         background: stakePoolMetadata?.colors?.primary,
+        height: rewardDistibutorData.data ? '110vh' : '100vh',
       }}
     >
       <Head>
@@ -259,11 +260,7 @@ function Home() {
       </Head>
 
       <div>
-        <div
-          className={`container mx-auto h-[${
-            rewardDistibutorData.data ? '110' : '100'
-          }vh] w-full`}
-        >
+        <div className={`container mx-auto w-full`}>
           <Header />
           {!stakePool && stakePoolLoaded && (
             <div className="mb-5 w-full text-center text-lg font-semibold">
