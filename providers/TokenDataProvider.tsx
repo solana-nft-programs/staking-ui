@@ -6,16 +6,15 @@ import { useEnvironmentCtx } from './EnvironmentProvider'
 import { TokenListData, useTokenList } from './TokenListProvider'
 import { useWallet } from '@solana/wallet-adapter-react'
 import { PublicKey } from '@solana/web3.js'
+import { useWalletId } from 'hooks/useWalletId'
 
 export interface UserTokenDataValues {
   tokenDatas: TokenData[]
   refreshTokenAccounts: (reload?: boolean) => Promise<void>
   setTokenDatas: (newEnvironment: TokenData[]) => void
-  setAddress: (address: string) => void
   setStakePoolId: (stakePoolId: PublicKey) => void
   loaded: boolean
   refreshing: boolean
-  address: string | undefined
   error: string | undefined
 }
 
@@ -24,18 +23,15 @@ const UserTokenData: React.Context<UserTokenDataValues> =
     tokenDatas: [],
     refreshTokenAccounts: async () => {},
     setTokenDatas: () => {},
-    setAddress: () => {},
     setStakePoolId: () => {},
     loaded: false,
     refreshing: true,
-    address: undefined,
     error: undefined,
   })
 
 export function TokenAccountsProvider({ children }: { children: ReactChild }) {
   const { connection } = useEnvironmentCtx()
-  const wallet = useWallet()
-  const [address, setAddress] = useState<string>()
+  const walletId = useWalletId()
   const [stakePoolId, setStakePoolId] = useState<PublicKey>()
   const [error, setError] = useState<string>()
   const [tokenDatas, setTokenDatas] = useState<TokenData[]>([])
@@ -43,15 +39,9 @@ export function TokenAccountsProvider({ children }: { children: ReactChild }) {
   const [loaded, setLoaded] = useState<boolean>(false)
   const { tokenList } = useTokenList()
 
-  useEffect(() => {
-    if (wallet && wallet.connected && wallet.publicKey) {
-      setAddress(wallet.publicKey.toBase58())
-    }
-  }, [wallet.publicKey?.toString()])
-
   const refreshTokenAccounts = useCallback(
     async (reload?: boolean) => {
-      if (!address) {
+      if (!walletId) {
         setError(`Address not set please connect wallet to continue`)
         return
       }
@@ -66,7 +56,7 @@ export function TokenAccountsProvider({ children }: { children: ReactChild }) {
         console.log('Fetching user token datas')
         const tokenDatas = await getTokenAccountsWithData(
           connection,
-          address,
+          walletId?.toString(),
           stakePoolId
         )
         const hydratedTokenDatas = tokenDatas.reduce((acc, tokenData) => {
@@ -102,7 +92,13 @@ export function TokenAccountsProvider({ children }: { children: ReactChild }) {
         setRefreshing(false)
       }
     },
-    [connection, setError, address, stakePoolId?.toString(), setRefreshing]
+    [
+      connection,
+      setError,
+      walletId?.toString(),
+      stakePoolId?.toString(),
+      setRefreshing,
+    ]
   )
 
   useEffect(() => {
@@ -119,12 +115,10 @@ export function TokenAccountsProvider({ children }: { children: ReactChild }) {
   return (
     <UserTokenData.Provider
       value={{
-        address,
         tokenDatas,
         loaded,
         refreshTokenAccounts,
         setTokenDatas,
-        setAddress,
         setStakePoolId,
         refreshing,
         error,
