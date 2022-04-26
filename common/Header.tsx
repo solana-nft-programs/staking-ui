@@ -7,71 +7,38 @@ import { AddressImage, DisplayAddress } from '@cardinal/namespaces-components'
 
 import { useRouter } from 'next/router'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
-import { useEffect, useState } from 'react'
-import { firstParam, shortPubKey } from './utils'
+import { shortPubKey } from './utils'
 import { HiUserCircle } from 'react-icons/hi'
-import { stakePoolMetadatas } from 'api/mapping'
 import { Airdrop } from './Airdrop'
 import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
 
 export const Header = () => {
   const router = useRouter()
-  const { stakePoolId } = router.query
   const ctx = useEnvironmentCtx()
   const wallet = useWallet()
   const { setVisible } = useWalletModal()
-  const [tab, setTab] = useState<string>('wallet')
-  const [headerName, setHeaderName] = useState('Cardinal')
   const { data: stakePoolMetadata } = useStakePoolMetadata()
-
-  useEffect(() => {
-    const anchor = router.asPath.split('#')[1]
-    if (anchor !== tab) setTab(anchor || 'wallet')
-  }, [router.asPath, tab])
-
-  const walletAddressFormatted = wallet?.publicKey
-    ? shortPubKey(wallet?.publicKey)
-    : ''
-
-  const nameMapping = stakePoolMetadatas.find(
-    (p) => p.name === (stakePoolId as String)
-  )
-  const addressMapping = stakePoolMetadatas.find(
-    (p) => p.pubkey.toString() === (stakePoolId as String)
-  )
-  useEffect(() => {
-    if (stakePoolId) {
-      const setData = async () => {
-        try {
-          setHeaderName(
-            nameMapping?.displayName ||
-              addressMapping?.displayName ||
-              shortPubKey(firstParam(stakePoolId))
-          )
-        } catch (e) {
-          console.log(e)
-        }
-      }
-      setData().catch(console.error)
-    }
-  }, [stakePoolId])
 
   return (
     <div className={`flex h-20 justify-between pl-5 text-white`}>
       <div className="flex items-center gap-3">
         <a
+          target="_blank"
           href={
-            nameMapping?.websiteUrl ||
-            addressMapping?.websiteUrl ||
+            stakePoolMetadata?.websiteUrl ||
             `/${
               ctx.environment.label !== 'mainnet'
                 ? `?cluster=${ctx.environment.label}`
                 : ''
             }`
           }
-          className="cursor-pointer text-xl font-semibold text-white hover:text-gray-400"
+          className="flex cursor-pointer text-xl font-semibold text-white hover:text-gray-400"
         >
-          {headerName} Staking UI
+          {stakePoolMetadata?.imageUrl ? (
+            <img className="h-[35px]" src={stakePoolMetadata?.imageUrl} />
+          ) : (
+            `${stakePoolMetadata?.displayName || 'Cardinal'} Staking UI`
+          )}
         </a>
         {ctx.environment.label !== 'mainnet' && (
           <div className="cursor-pointer rounded-md bg-[#9945ff] p-1 text-[10px] italic text-white">
@@ -153,7 +120,9 @@ export const Header = () => {
                   dark={true}
                 />
               </div>
-              <div style={{ color: 'gray' }}>{walletAddressFormatted}</div>
+              <div style={{ color: 'gray' }}>
+                {wallet?.publicKey ? shortPubKey(wallet?.publicKey) : ''}
+              </div>
             </div>
           </div>
         ) : (

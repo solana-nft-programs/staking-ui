@@ -12,6 +12,7 @@ export type StakePoolMetadata = {
   colors?: {
     primary: string
     secondary: string
+    accent?: string
     fontColor?: string
   }
   airdrops?: AirdropMetadata[]
@@ -52,15 +53,17 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     },
   },
   {
-    name: 'Blockasset',
+    name: 'blockasset',
     displayName: 'Blockasset',
     pubkey: new PublicKey('3BZCupFU6X3wYJwgTsKS2vTs4VeMrhSZgx4P2TfzExtP'),
+    websiteUrl: 'https://blockasset.co/',
     imageUrl:
       'https://blockasset.co/static/logo-e51ac9985ba7aef4ac8c1b1ae1c00511.png',
     colors: {
       primary: '#000000',
       secondary: '#4da1de',
-      fontColor: '#1fcfb1',
+      accent: '#1fcfb11c',
+      fontColor: '#FFFFFF',
     },
   },
 ]
