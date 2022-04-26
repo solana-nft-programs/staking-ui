@@ -273,7 +273,14 @@ function Home() {
             </div>
           )}
           {(maxStaked || rewardDistibutorData.data) && (
-            <div className="mx-5 mb-4 flex flex-col items-center gap-4 rounded-md bg-white bg-opacity-5 p-10 text-gray-200 md:max-h-[100px] md:flex-row md:justify-between">
+            <div
+              className="mx-5 mb-4 flex flex-col items-center gap-4 rounded-md bg-white bg-opacity-5 p-10 text-gray-200 md:max-h-[100px] md:flex-row md:justify-between"
+              style={{
+                border: stakePoolMetadata?.colors?.accent
+                  ? `2px solid ${stakePoolMetadata?.colors?.accent}`
+                  : '',
+              }}
+            >
               {stakePoolEntries.data ? (
                 <>
                   <div className="inline-block text-lg">
@@ -355,6 +362,11 @@ function Home() {
           <div className="my-2 mx-5 grid h-[80vh] max-h-[80vh] grid-cols-1 gap-4 md:grid-cols-2">
             <div
               className={`flex-col rounded-md bg-white bg-opacity-5 p-10 text-gray-200`}
+              style={{
+                border: stakePoolMetadata?.colors?.accent
+                  ? `2px solid ${stakePoolMetadata?.colors?.accent}`
+                  : '',
+              }}
             >
               <div className="mt-2 flex w-full flex-row justify-between">
                 <div className="flex flex-row">
@@ -575,7 +587,14 @@ function Home() {
                 </button>
               </div>
             </div>
-            <div className="rounded-md bg-white bg-opacity-5 p-10 text-gray-200">
+            <div
+              className="rounded-md bg-white bg-opacity-5 p-10 text-gray-200"
+              style={{
+                border: stakePoolMetadata?.colors?.accent
+                  ? `2px solid ${stakePoolMetadata?.colors?.accent}`
+                  : '',
+              }}
+            >
               <div className="mt-2 flex flex-row">
                 <p className="mr-3 text-lg">
                   View Staked Tokens{' '}

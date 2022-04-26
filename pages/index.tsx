@@ -89,7 +89,7 @@ function Home() {
             ) : stakePools[0].length > 0 ? (
               stakePools[0].map((stakePool) => (
                 <div
-                  className="h-[300px] cursor-pointer rounded-lg bg-white bg-opacity-5 p-10 transition-all duration-100 hover:scale-[1.01]"
+                  className="flex h-[300px] cursor-pointer flex-col rounded-lg bg-white bg-opacity-5 p-10 transition-all duration-100 hover:scale-[1.01]"
                   onClick={() =>
                     router.push(
                       `/${
@@ -119,13 +119,15 @@ function Home() {
                       {shortPubKey(stakePool.stakePoolData.pubkey)}
                     </a>
                   </div>
-                  {stakePool.stakePoolMetadata?.imageUrl && (
-                    <img
-                      className="mx-auto mt-5 h-[150px] w-[150px] rounded-md"
-                      src={stakePool.stakePoolMetadata.imageUrl}
-                      alt={stakePool.stakePoolMetadata.name}
-                    />
-                  )}
+                  <div className="flex flex-grow items-center justify-center">
+                    {stakePool.stakePoolMetadata?.imageUrl && (
+                      <img
+                        className="max-h-[150px] rounded-md"
+                        src={stakePool.stakePoolMetadata.imageUrl}
+                        alt={stakePool.stakePoolMetadata.name}
+                      />
+                    )}
+                  </div>
                 </div>
               ))
             ) : (
@@ -140,7 +142,7 @@ function Home() {
               <div className="grid grid-cols-4 gap-5">
                 {stakePools[1].map((stakePool) => (
                   <div
-                    className="h-[300px] cursor-pointer rounded-lg bg-white bg-opacity-5 p-10 transition-all duration-100 hover:scale-[1.01]"
+                    className="flex h-[300px] cursor-pointer flex-col rounded-lg bg-white bg-opacity-5 p-10 transition-all duration-100 hover:scale-[1.01]"
                     onClick={() =>
                       router.push(
                         `/${
@@ -180,8 +182,8 @@ function Home() {
                         {shortPubKey(stakePool.stakePoolData.pubkey)}
                       </a>
                     </div>
-                    <div className="flex justify-center align-middle">
-                      <div className="mt-5 flex h-[150px] w-[150px] items-center justify-center rounded-full bg-white bg-opacity-5 text-5xl text-white text-opacity-40">
+                    <div className="flex flex-grow items-center justify-center">
+                      <div className="flex h-[150px] w-[150px] items-center justify-center rounded-full bg-white bg-opacity-5 text-5xl text-white text-opacity-40">
                         {/* {shortPubKey(stakePool.stakePoolData.pubkey)} */}
                         <FaQuestion />
                       </div>
