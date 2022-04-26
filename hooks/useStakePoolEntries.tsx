@@ -8,6 +8,7 @@ import { useStakePoolData } from './useStakePoolData'
 export const useStakePoolEntries = () => {
   const { connection } = useEnvironmentCtx()
   const stakePool = useStakePoolData()
+
   return useDataHook<AccountData<StakeEntryData>[] | undefined>(async () => {
     if (stakePool?.data?.pubkey) {
       return getActiveStakeEntriesForPool(connection, stakePool.data.pubkey)
