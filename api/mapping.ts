@@ -59,6 +59,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     websiteUrl: 'https://blockasset.co/',
     imageUrl:
       'https://blockasset.co/static/logo-e51ac9985ba7aef4ac8c1b1ae1c00511.png',
+    maxStaked: 11791,
     colors: {
       primary: '#000000',
       secondary: '#4da1de',
