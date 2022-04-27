@@ -23,7 +23,7 @@ const App = ({
 }: AppProps & { cluster: string }) => (
   <UTCNowProvider>
     <EnvironmentProvider defaultCluster={cluster}>
-      <WalletProvider wallets={getWalletAdapters()}>
+      <WalletProvider wallets={getWalletAdapters()} autoConnect>
         <WalletIdentityProvider>
           <WalletModalProvider>
             <TokenListProvider>

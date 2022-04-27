@@ -36,6 +36,7 @@ export function TokenListProvider({ children }: { children: ReactChild }) {
   const [loaded, setLoaded] = useState<boolean>(false)
 
   useEffect(() => {
+    console.log('Fetching token list')
     const fetchData = async () => {
       const data = await getMintsDetails()
       setTokenList(data)

@@ -1,3 +1,4 @@
+import { darken } from 'polished'
 import { useWallet } from '@solana/wallet-adapter-react'
 import {
   useWalletModal,
@@ -20,7 +21,15 @@ export const Header = () => {
   const { data: stakePoolMetadata } = useStakePoolMetadata()
 
   return (
-    <div className={`flex h-20 justify-between pl-5 text-white`}>
+    <div
+      className={`flex h-20 justify-between px-20 text-white`}
+      // style={{
+      //   background: darken(
+      //     0.04,
+      //     stakePoolMetadata?.colors?.primary ?? 'rgb(26, 27, 32)'
+      //   ),
+      // }}
+    >
       <div className="flex items-center gap-3">
         <a
           target="_blank"
@@ -53,7 +62,7 @@ export const Header = () => {
           ''
         )}
       </div>
-      <div className="relative my-auto flex items-center pr-8 align-middle">
+      <div className="relative my-auto flex items-center align-middle">
         <div
           onClick={() =>
             router.push(

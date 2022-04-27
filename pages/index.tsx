@@ -2,6 +2,7 @@ import { AccountData } from '@cardinal/common'
 import { StakePoolData } from '@cardinal/staking/dist/cjs/programs/stakePool'
 import { getAllStakePools } from '@cardinal/staking/dist/cjs/programs/stakePool/accounts'
 import { StakePoolMetadata, stakePoolMetadatas } from 'api/mapping'
+import { Footer } from 'common/Footer'
 import { Header } from 'common/Header'
 import { notify } from 'common/Notification'
 import { pubKeyUrl, shortPubKey } from 'common/utils'
@@ -74,7 +75,7 @@ function Home() {
 
       <div>
         <Header />
-        <div className="container mx-auto max-h-[90vh] w-full px-5">
+        <div className="container mx-auto w-full px-5">
           <div className="mt-10 mb-5 text-lg font-bold">Stake Pools</div>
           <div className="grid grid-cols-4 gap-5">
             {!stakePoolsLoaded ? (
@@ -194,6 +195,7 @@ function Home() {
             </>
           )}
         </div>
+        <Footer />
       </div>
     </div>
   )
