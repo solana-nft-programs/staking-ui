@@ -28,6 +28,7 @@ import { FaQuestion } from 'react-icons/fa'
 import { useStakePoolsByAuthority } from 'hooks/useStakePoolsByAuthority'
 import { useStakePoolsMetadatas } from 'hooks/useStakePoolsMetadata'
 import { FormFieldTitleInput } from 'common/FormFieldInput'
+import { Footer } from 'common/Footer'
 
 function Admin() {
   const { connection, environment } = useEnvironmentCtx()
@@ -282,9 +283,9 @@ function Admin() {
       </Head>
 
       <div>
-        <div className="container mx-auto max-h-[90vh] w-full bg-[#1a1b20]">
+        <div className="w-full bg-[#1a1b20]">
           <Header />
-          <div className="my-2 grid h-full grid-cols-2 gap-4 rounded-md bg-white bg-opacity-5 p-10 text-gray-200">
+          <div className="mx-10 my-2 grid h-full grid-cols-2 gap-4 rounded-md bg-white bg-opacity-5 p-10 text-gray-200">
             <div>
               <p className="text-lg font-bold">Create New Staking Pool</p>
               <p className="mt-1 mb-2 text-sm">
@@ -726,6 +727,7 @@ function Admin() {
               </div>
             </div>
           </div>
+          <Footer />
         </div>
       </div>
     </div>
