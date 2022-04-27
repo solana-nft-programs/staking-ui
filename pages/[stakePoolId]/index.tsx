@@ -260,8 +260,8 @@ function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <div className={`mx-auto w-full`}>
-        <Header />
+      <Header />
+      <div className={`container mx-auto w-full`}>
         {!stakePool && stakePoolLoaded && (
           <div className="mb-5 w-full text-center text-lg font-semibold">
             Stake pool not found
@@ -780,8 +780,8 @@ function Home() {
             </div>
           </div>
         </div>
-        <Footer />
       </div>
+      <Footer bgColor={stakePoolMetadata?.colors?.primary} />
     </div>
   )
 }

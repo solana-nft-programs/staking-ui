@@ -1,89 +1,113 @@
-import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
-import { darken } from 'polished'
+import { darken, lighten } from 'polished'
+import { FaDiscord, FaGithub, FaMedium, FaTwitter } from 'react-icons/fa'
 
-export const Footer = () => {
-  const { data: stakePoolMetadata } = useStakePoolMetadata()
+const SOCIALS = {
+  discord: { icon: <FaDiscord />, link: 'https://discord.gg/byq6uNTugq' },
+  github: { icon: <FaGithub />, link: 'https://github.com/cardinal-labs' },
+  medium: { icon: <FaMedium />, link: 'https://cardinal-labs.medium.com/' },
+  twitter: { icon: <FaTwitter />, link: 'https://twitter.com/cardinal_labs' },
+}
 
+export const Footer = ({
+  bgColor = 'rgb(26, 27, 32)',
+  accentColor = '#FFFFFF',
+}: {
+  bgColor?: string
+  accentColor?: string
+}) => {
   return (
     <div
-      className="mt-10 py-10"
+      className="mt-10 px-10 pt-5 md:px-32"
       style={{
-        background: darken(
-          0.06,
-          stakePoolMetadata?.colors?.primary
-            ? stakePoolMetadata?.colors?.primary
-            : 'rgb(26, 27, 32)'
-        ),
+        background: darken(0.03, bgColor),
       }}
     >
-      <div className="mx-32 flex flex-row justify-start py-10">
-        <span className="flex w-3/5 flex-row">
+      <div className="flex w-full flex-wrap items-start justify-between gap-10 py-10">
+        <div className="flex items-center">
           <img
-            className="inline-block h-[40px]"
+            className="inline-block h-[28px]"
             src="./cardinal-crosshair.svg"
           />
-          <span className="ml-3 text-3xl font-bold">Cardinal</span>
-        </span>
-        <div className="flex w-1/3 gap-20 self-start text-center">
-          <span className="flex flex-col items-start">
-            <div className="mb-5 text-xl font-bold">App</div>
-            <a href="/" className="text-lg text-gray-400">
+          <span className="ml-3 text-2xl font-semibold">Cardinal</span>
+        </div>
+        <div className="flex gap-10 self-end text-center md:gap-20">
+          <span className="flex flex-col items-start gap-1">
+            <div className="mb-2 text-lg font-semibold">App</div>
+            <a href="/" className="text-gray-400">
               Pools
             </a>
-            <a href="/admin" className="text-lg text-gray-400">
+            <a href="/admin" className="text-gray-400">
               Admin
             </a>
           </span>
-          <span className="flex flex-col items-start">
-            <div className="mb-5 text-xl font-bold">Resources</div>
-            <a
-              href="https://docs.cardinal.so/"
-              className="text-lg text-gray-400"
-            >
-              Docs
+          <span className="flex flex-col items-start gap-1">
+            <div className="mb-2 text-lg font-semibold">Resources</div>
+            <a href="https://docs.cardinal.so/" className="text-gray-400">
+              Documentation
             </a>
             <a
               href="https://github.com/cardinal-labs"
-              className="text-lg text-gray-400"
+              className="text-gray-400"
             >
               Github
             </a>
-            <a href="" className="text-lg text-gray-400">
-              Terms
+            <a href="mailto:team@cardinal.so" className="text-gray-400">
+              Contact
             </a>
-            <a href="" className="text-lg text-gray-400">
+            {/*<a href="" className="text-gray-400">
               Privacy
-            </a>
+            </a> */}
           </span>
-          <span className="flex flex-col items-start">
-            <div className="mb-5 text-xl font-bold">Company</div>
-            <a
-              href="https://www.cardinal.so/"
-              className="text-lg text-gray-400"
-            >
+          {/* <span className="flex flex-col items-start">
+            <div className="mb-5 text-lg font-semibold">Company</div>
+            <a href="https://www.cardinal.so/" className="text-gray-400">
               Website
             </a>
-            <a href="" className="text-lg text-gray-400">
+            <a href="" className="text-gray-400">
               Blog
             </a>
             <a
               href="https://twitter.com/cardinal_labs"
-              className="text-lg text-gray-400"
+              className="text-gray-400"
             >
               Twitter
             </a>
             <a
               href="https://discord.com/invite/byq6uNTugq"
-              className="text-lg text-gray-400"
+              className="text-gray-400"
             >
               Discord
             </a>
-          </span>
+          </span> */}
         </div>
       </div>
-      <div className="text-md flex flex-row justify-center font-medium">
-        Copyright 2022 Cardinal Labs. All rights reserved
+      <div
+        className="text-md flex items-center justify-between border-t py-8 text-gray-400"
+        style={{ borderColor: lighten(0.2, bgColor) }}
+      >
+        <div className="flex items-center justify-center gap-2 text-gray-400">
+          Powered by Cardinal
+        </div>
+        <div className="flex gap-4 text-gray-200">
+          {Object.entries(SOCIALS).map(([id, { icon, link }]) => {
+            return (
+              <a
+                key={id}
+                href={link}
+                target="_blank"
+                rel="noreferrer"
+                style={{ color: accentColor }}
+                className={`hover:text-primary opacity-80 transition-opacity hover:opacity-100`}
+              >
+                {icon}
+              </a>
+            )
+          })}
+        </div>
       </div>
+      {/* <div className="text-md flex flex-row justify-center font-medium">
+        Copyright 2022 Cardinal Labs. All rights reserved
+      </div> */}
     </div>
   )
 }

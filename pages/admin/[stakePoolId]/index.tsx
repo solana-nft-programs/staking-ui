@@ -4,6 +4,7 @@ import { withUpdateStakePool } from '@cardinal/staking/dist/cjs/programs/stakePo
 import { Wallet } from '@metaplex/js'
 import { useWallet } from '@solana/wallet-adapter-react'
 import { PublicKey, Transaction } from '@solana/web3.js'
+import { Footer } from 'common/Footer'
 import { FormFieldTitleInput } from 'common/FormFieldInput'
 import { Header } from 'common/Header'
 import { notify } from 'common/Notification'
@@ -88,190 +89,187 @@ function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <div>
-        <div className="container mx-auto max-h-[90vh] w-full bg-[#1a1b20]">
-          <Header />
-          <div className="my-2 grid h-full grid-cols-2 gap-4 rounded-md bg-white bg-opacity-5 p-10 text-gray-200">
-            <div>
-              <p className="text-lg font-bold">Update Staking Pool</p>
-              <p className="mt-1 mb-2 text-sm">
-                All parameters for staking pool are optional
-              </p>
-              <form className="w-full max-w-lg">
-                <div className="-mx-3 flex flex-wrap">
-                  <div className="mb-6 mt-4 w-full px-3 md:mb-0">
-                    <FormFieldTitleInput
-                      title={'Overlay Text'}
-                      description={'Text to display over the receipt'}
-                    />
-                    <input
-                      className="mb-3 block w-full appearance-none rounded border border-gray-500 bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800 focus:outline-none"
-                      type="text"
-                      placeholder={'STAKED'}
-                      value={overlayText}
-                      onChange={(e) => {
-                        setOverlayText(e.target.value)
-                      }}
-                    />
-                  </div>
+      <Header />
+      <div className="container mx-auto max-h-[90vh] w-full bg-[#1a1b20]">
+        <div className="my-2 grid h-full grid-cols-2 gap-4 rounded-md bg-white bg-opacity-5 p-10 text-gray-200">
+          <div>
+            <p className="text-lg font-bold">Update Staking Pool</p>
+            <p className="mt-1 mb-2 text-sm">
+              All parameters for staking pool are optional
+            </p>
+            <form className="w-full max-w-lg">
+              <div className="-mx-3 flex flex-wrap">
+                <div className="mb-6 mt-4 w-full px-3 md:mb-0">
+                  <FormFieldTitleInput
+                    title={'Overlay Text'}
+                    description={'Text to display over the receipt'}
+                  />
+                  <input
+                    className="mb-3 block w-full appearance-none rounded border border-gray-500 bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800 focus:outline-none"
+                    type="text"
+                    placeholder={'STAKED'}
+                    value={overlayText}
+                    onChange={(e) => {
+                      setOverlayText(e.target.value)
+                    }}
+                  />
                 </div>
-                <div className="-mx-3 flex flex-wrap">
-                  <div className="mb-6 mt-4 w-full px-3 md:mb-0">
-                    <FormFieldTitleInput
-                      title={'Collection Addresses []'}
-                      description={
-                        'Allow any NFTs with these collection addresses (separated by commas)'
-                      }
-                    />
-                    <input
-                      className="mb-3 block w-full appearance-none rounded border border-gray-500 bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800 focus:outline-none"
-                      type="text"
-                      placeholder={'Cmwy..., A3fD...'}
-                      value={collectionAddresses}
-                      onChange={(e) => {
-                        setCollectionAddresses(e.target.value)
-                      }}
-                    />
-                  </div>
+              </div>
+              <div className="-mx-3 flex flex-wrap">
+                <div className="mb-6 mt-4 w-full px-3 md:mb-0">
+                  <FormFieldTitleInput
+                    title={'Collection Addresses []'}
+                    description={
+                      'Allow any NFTs with these collection addresses (separated by commas)'
+                    }
+                  />
+                  <input
+                    className="mb-3 block w-full appearance-none rounded border border-gray-500 bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800 focus:outline-none"
+                    type="text"
+                    placeholder={'Cmwy..., A3fD...'}
+                    value={collectionAddresses}
+                    onChange={(e) => {
+                      setCollectionAddresses(e.target.value)
+                    }}
+                  />
                 </div>
-                <div className="-mx-3 flex flex-wrap">
-                  <div className="mb-6 mt-4 w-full px-3 md:mb-0">
-                    <FormFieldTitleInput
-                      title={'Creator Addresses []'}
-                      description={
-                        'Allow any NFTs with these creator addresses (separated by commas)'
-                      }
-                    />
-                    <input
-                      className="mb-3 block w-full appearance-none rounded border border-gray-500 bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800 focus:outline-none"
-                      type="text"
-                      placeholder={'Cmwy..., A3fD...'}
-                      value={creatorAddresses}
-                      onChange={(e) => {
-                        setCreatorAddresses(e.target.value)
-                      }}
-                    />
-                  </div>
+              </div>
+              <div className="-mx-3 flex flex-wrap">
+                <div className="mb-6 mt-4 w-full px-3 md:mb-0">
+                  <FormFieldTitleInput
+                    title={'Creator Addresses []'}
+                    description={
+                      'Allow any NFTs with these creator addresses (separated by commas)'
+                    }
+                  />
+                  <input
+                    className="mb-3 block w-full appearance-none rounded border border-gray-500 bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800 focus:outline-none"
+                    type="text"
+                    placeholder={'Cmwy..., A3fD...'}
+                    value={creatorAddresses}
+                    onChange={(e) => {
+                      setCreatorAddresses(e.target.value)
+                    }}
+                  />
                 </div>
-                <div className="-mx-3 flex flex-wrap">
-                  <div className="mb-6 mt-4 w-full px-3 md:mb-0">
-                    <label
-                      className="mb-2 block text-xs font-bold uppercase tracking-wide text-gray-200"
-                      htmlFor="require-authorization"
-                    >
-                      Authorize NFTs
-                    </label>
-                    <p className="mb-2 text-sm italic text-gray-300">
-                      If selected, NFTs / specific mints can be arbitrarily
-                      authorized to enter the pool
-                    </p>
-                    <input
-                      className="mb-3 cursor-pointer"
-                      id="require-authorization"
-                      type="checkbox"
-                      checked={authorizeNFT}
-                      onChange={(e) => {
-                        setAuthorizeNFT(e.target.checked)
-                      }}
-                    />{' '}
-                    <span
-                      className="my-auto cursor-pointer text-sm"
-                      onClick={() => setAuthorizeNFT(!authorizeNFT)}
-                    >
-                      Require Authorization
-                    </span>
-                  </div>
+              </div>
+              <div className="-mx-3 flex flex-wrap">
+                <div className="mb-6 mt-4 w-full px-3 md:mb-0">
+                  <label
+                    className="mb-2 block text-xs font-bold uppercase tracking-wide text-gray-200"
+                    htmlFor="require-authorization"
+                  >
+                    Authorize NFTs
+                  </label>
+                  <p className="mb-2 text-sm italic text-gray-300">
+                    If selected, NFTs / specific mints can be arbitrarily
+                    authorized to enter the pool
+                  </p>
+                  <input
+                    className="mb-3 cursor-pointer"
+                    id="require-authorization"
+                    type="checkbox"
+                    checked={authorizeNFT}
+                    onChange={(e) => {
+                      setAuthorizeNFT(e.target.checked)
+                    }}
+                  />{' '}
+                  <span
+                    className="my-auto cursor-pointer text-sm"
+                    onClick={() => setAuthorizeNFT(!authorizeNFT)}
+                  >
+                    Require Authorization
+                  </span>
                 </div>
+              </div>
 
-                <button
-                  type="button"
-                  className={
-                    'mt-4 inline-block rounded-md bg-blue-700 px-4 py-2'
-                  }
-                  onClick={() => handleUpdate()}
-                >
-                  <div className="flex">
-                    {loading && (
-                      <div className="mr-2">
-                        <TailSpin color="#fff" height={20} width={20} />
-                      </div>
-                    )}
-                    Update Pool
-                  </div>
-                </button>
-              </form>
-            </div>
-            <div>
-              <p className="text-lg font-bold">Current Staking Pool</p>
-              <p className="mt-1 mb-5 text-sm">
-                The parameters currently in place for the stake pool
-              </p>
-              {stakePool.loaded ? (
-                <>
-                  <span className="-mx-3 flex w-full flex-wrap px-3 md:mb-0">
-                    <label className="inline-block text-sm font-bold uppercase tracking-wide text-gray-200">
-                      Overlay Text:
-                    </label>
-                    <label className="inline-block pl-2">
-                      {stakePool.data?.parsed.overlayText || '[None]'}
-                    </label>
-                  </span>
-                  <span className="-mx-3 mt-3 flex w-full flex-wrap px-3 md:mb-0">
-                    <label className="inline-block text-sm font-bold uppercase tracking-wide text-gray-200">
-                      Collection Addresses:
-                    </label>
-                    <label className="inline-block pl-2">
-                      {stakePool.data?.parsed.requiresCollections &&
-                      stakePool.data?.parsed.requiresCollections.length !== 0
-                        ? stakePool.data?.parsed.requiresCollections.map(
-                            (collection) => (
-                              <ShortPubKeyUrl
-                                pubkey={collection}
-                                cluster={environment.label}
-                                className="pr-2 text-sm text-white"
-                              />
-                            )
-                          )
-                        : '[None]'}
-                    </label>
-                  </span>
-                  <span className="-mx-3 mt-3 flex w-full flex-wrap px-3 md:mb-0">
-                    <label className="inline-block text-sm font-bold uppercase tracking-wide text-gray-200">
-                      Creator Addresses:
-                    </label>
-                    <label className="inline-block pl-2">
-                      {stakePool.data?.parsed.requiresCreators &&
-                      stakePool.data?.parsed.requiresCreators.length !== 0
-                        ? stakePool.data?.parsed.requiresCreators.map(
-                            (creator) => (
-                              <ShortPubKeyUrl
-                                pubkey={creator}
-                                cluster={environment.label}
-                                className="pr-2 text-sm text-white"
-                              />
-                            )
-                          )
-                        : '[None]'}
-                    </label>
-                  </span>
-                  <span className="-mx-3 mt-3 flex w-full flex-wrap px-3 md:mb-0">
-                    <label className="inline-block text-sm font-bold uppercase tracking-wide text-gray-200">
-                      Requires Authorization:{' '}
-                      {stakePool.data?.parsed.requiresAuthorization.toString() ||
-                        '[None]'}
-                    </label>
-                  </span>
-                </>
-              ) : (
-                <div className="relative flex h-8 w-full items-center justify-center">
-                  <span className="text-gray-500"></span>
-                  <div className="absolute w-full animate-pulse items-center justify-center rounded-lg bg-white bg-opacity-10 p-5"></div>
+              <button
+                type="button"
+                className={'mt-4 inline-block rounded-md bg-blue-700 px-4 py-2'}
+                onClick={() => handleUpdate()}
+              >
+                <div className="flex">
+                  {loading && (
+                    <div className="mr-2">
+                      <TailSpin color="#fff" height={20} width={20} />
+                    </div>
+                  )}
+                  Update Pool
                 </div>
-              )}
-            </div>
+              </button>
+            </form>
+          </div>
+          <div>
+            <p className="text-lg font-bold">Current Staking Pool</p>
+            <p className="mt-1 mb-5 text-sm">
+              The parameters currently in place for the stake pool
+            </p>
+            {stakePool.loaded ? (
+              <>
+                <span className="-mx-3 flex w-full flex-wrap px-3 md:mb-0">
+                  <label className="inline-block text-sm font-bold uppercase tracking-wide text-gray-200">
+                    Overlay Text:
+                  </label>
+                  <label className="inline-block pl-2">
+                    {stakePool.data?.parsed.overlayText || '[None]'}
+                  </label>
+                </span>
+                <span className="-mx-3 mt-3 flex w-full flex-wrap px-3 md:mb-0">
+                  <label className="inline-block text-sm font-bold uppercase tracking-wide text-gray-200">
+                    Collection Addresses:
+                  </label>
+                  <label className="inline-block pl-2">
+                    {stakePool.data?.parsed.requiresCollections &&
+                    stakePool.data?.parsed.requiresCollections.length !== 0
+                      ? stakePool.data?.parsed.requiresCollections.map(
+                          (collection) => (
+                            <ShortPubKeyUrl
+                              pubkey={collection}
+                              cluster={environment.label}
+                              className="pr-2 text-sm text-white"
+                            />
+                          )
+                        )
+                      : '[None]'}
+                  </label>
+                </span>
+                <span className="-mx-3 mt-3 flex w-full flex-wrap px-3 md:mb-0">
+                  <label className="inline-block text-sm font-bold uppercase tracking-wide text-gray-200">
+                    Creator Addresses:
+                  </label>
+                  <label className="inline-block pl-2">
+                    {stakePool.data?.parsed.requiresCreators &&
+                    stakePool.data?.parsed.requiresCreators.length !== 0
+                      ? stakePool.data?.parsed.requiresCreators.map(
+                          (creator) => (
+                            <ShortPubKeyUrl
+                              pubkey={creator}
+                              cluster={environment.label}
+                              className="pr-2 text-sm text-white"
+                            />
+                          )
+                        )
+                      : '[None]'}
+                  </label>
+                </span>
+                <span className="-mx-3 mt-3 flex w-full flex-wrap px-3 md:mb-0">
+                  <label className="inline-block text-sm font-bold uppercase tracking-wide text-gray-200">
+                    Requires Authorization:{' '}
+                    {stakePool.data?.parsed.requiresAuthorization.toString() ||
+                      '[None]'}
+                  </label>
+                </span>
+              </>
+            ) : (
+              <div className="relative flex h-8 w-full items-center justify-center">
+                <span className="text-gray-500"></span>
+                <div className="absolute w-full animate-pulse items-center justify-center rounded-lg bg-white bg-opacity-10 p-5"></div>
+              </div>
+            )}
           </div>
         </div>
       </div>
+      <Footer />
     </div>
   )
 }

@@ -75,7 +75,7 @@ function Home() {
 
       <div>
         <Header />
-        <div className="mx-auto w-full px-5">
+        <div className="container mx-auto w-full px-5">
           <div className="mt-10 mb-5 text-lg font-bold">Stake Pools</div>
           <div className="grid grid-cols-4 gap-5">
             {!stakePoolsLoaded ? (
