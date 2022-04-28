@@ -32,7 +32,7 @@ export const useRewardMintInfo = () => {
         tokenListData,
       }
     },
-    [rewardDistibutorData?.pubkey?.toString()],
+    [rewardDistibutorData?.pubkey?.toString(), tokenList],
     { name: 'rewardDistributorTokenAccount' }
   )
 }

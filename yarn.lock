@@ -276,10 +276,10 @@
     ts-mocha "^8.0.0"
     typescript "^4.5.5"
 
-"@cardinal/staking@^1.2.5":
-  version "1.2.5"
-  resolved "https://registry.yarnpkg.com/@cardinal/staking/-/staking-1.2.5.tgz#0c695034a4e7ba51d7e502da6269566a125612b1"
-  integrity sha512-mBWJM0zpuNMxksypfpPzFMx7YzSOEImx7+tnkqdJ5CK1VbcnFf1KvYlEVelwj8RjXVrAeTWD6lFBw6mCHDusWQ==
+"@cardinal/staking@^1.2.6":
+  version "1.2.6"
+  resolved "https://registry.yarnpkg.com/@cardinal/staking/-/staking-1.2.6.tgz#75e9f49292b1a06f8b037af7324e7ba6e308c7fd"
+  integrity sha512-82c9gtznanG8VEWSZyCNlmj67T9o+DPYhmTApJNIDda9EALhe87+z99HG/K6HOACLSFx4MueLcMthugqEkkhBA==
   dependencies:
     "@cardinal/common" "^1.0.10"
     "@cardinal/token-manager" "^1.2.0"

@@ -5,7 +5,7 @@ import { BN } from '@project-serum/anchor'
 import { useRewardDistributorTokenAccount } from './useRewardDistributorTokenAccount'
 import { useUTCNow } from 'providers/UTCNowProvider'
 import { useRewardEntries } from './useRewardEntries'
-import { calculatePendingRewards, getRewardMap } from '@cardinal/staking'
+import { getRewardMap } from '@cardinal/staking'
 
 export const useRewards = () => {
   const { data: rewardDistributorData } = useRewardDistributorData()
@@ -19,9 +19,6 @@ export const useRewards = () => {
     claimableRewards: BN
   }>(
     async () => {
-      const rewardMap: {
-        [mintId: string]: { claimableRewards: BN; nextRewardsIn: BN }
-      } = {}
       if (
         !(
           stakedTokenDatas &&
@@ -38,52 +35,13 @@ export const useRewards = () => {
         .map((tk) => tk.stakeEntry!)
       const mintIds = stakeEntries.map((entry) => entry.parsed.originalMint)
 
-      for (let i = 0; i < mintIds.length; i++) {
-        const mintId = mintIds[i]!
-        const stakeEntry = stakeEntries.find((stakeEntry) =>
-          stakeEntry.parsed.originalMint.equals(mintId)
-        )
-        const rewardEntry = rewardEntries.find((rewardEntry) =>
-          rewardEntry.parsed?.mint.equals(mintId)
-        )
-
-        if (mintId && stakeEntry) {
-          const [claimableRewards, nextRewardsIn] = calculatePendingRewards(
-            rewardDistributorData,
-            stakeEntry,
-            // @ts-ignore
-            rewardEntry,
-            rewardDistributorTokenAccount.amount,
-            UTCNow
-          )
-          rewardMap[mintId.toString()] = {
-            claimableRewards,
-            nextRewardsIn,
-          }
-        }
-      }
-
-      // Compute too many rewards
-      let claimableRewards = Object.values(rewardMap).reduce(
-        (acc, { claimableRewards }) => acc.add(claimableRewards),
-        new BN(0)
+      return getRewardMap(
+        mintIds,
+        stakeEntries,
+        rewardEntries,
+        rewardDistributorData,
+        rewardDistributorTokenAccount.amount
       )
-      if (
-        rewardDistributorData.parsed.maxSupply &&
-        rewardDistributorData.parsed.rewardsIssued
-          .add(claimableRewards)
-          .gte(rewardDistributorData.parsed.maxSupply)
-      ) {
-        claimableRewards = rewardDistributorData.parsed.maxSupply.sub(
-          rewardDistributorData.parsed.rewardsIssued
-        )
-      }
-
-      if (claimableRewards > rewardDistributorTokenAccount.amount) {
-        claimableRewards = rewardDistributorTokenAccount.amount
-      }
-
-      return { rewardMap, claimableRewards }
     },
     [
       rewardDistributorData?.pubkey?.toString(),
