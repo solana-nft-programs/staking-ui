@@ -26,7 +26,7 @@ export const Footer = ({
         <div className="flex items-center">
           <img
             className="inline-block h-[28px]"
-            src="./cardinal-crosshair.svg"
+            src="/cardinal-crosshair.svg"
           />
           <span className="ml-3 text-2xl font-semibold">Cardinal</span>
         </div>
