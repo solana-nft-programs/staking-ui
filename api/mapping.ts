@@ -28,7 +28,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     name: 'cardinal',
     displayName: 'Cardinal',
     pubkey: new PublicKey('4bsRsyCSSMgFSNJAi5wvh4UX9vMZDf1MwUrHUszfmLbb'),
-    imageUrl: './logo-colored.png',
+    imageUrl: '/logo-colored.png',
     colors: {
       primary: 'rgb(54,21,38,0.9)',
       secondary: 'rgb(157,120,138, 0.6)',
@@ -44,7 +44,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     name: 'portals',
     displayName: 'Portals',
     pubkey: new PublicKey('5pTqPBTBvbueU6PQWcthcyAwKBjcu89GoPRNtD3AKEJZ'),
-    imageUrl: './logos/portals.svg',
+    imageUrl: '/logos/portals.svg',
     maxStaked: 10000,
     colors: {
       primary: 'rgba(0,1,1,255)',

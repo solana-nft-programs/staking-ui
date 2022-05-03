@@ -236,44 +236,6 @@ function Admin() {
     }
   }
 
-  const customStyles = {
-    control: (base: {}) => ({
-      ...base,
-      background: 'rgb(55, 65, 81)',
-      borderColor: 'rgb(107, 114, 128)',
-    }),
-    Input: (base: {}) => ({
-      ...base,
-      color: 'white',
-    }),
-    menu: (base: {}) => ({
-      ...base,
-      background: 'rgb(55, 65, 81)',
-      '&:hover': {
-        background: 'rgb(55, 65, 81)',
-      },
-      '&:focus': {
-        background: 'rgb(75, 85, 99) !important',
-      },
-      borderRadius: 0,
-      marginTop: 0,
-    }),
-    option: (base: {}) => ({
-      ...base,
-      background: 'rgb(55, 65, 81)',
-      '&:hover': {
-        background: 'rgb(75, 85, 99)',
-      },
-      '&:focus': {
-        background: 'rgb(75, 85, 99) !important',
-      },
-    }),
-    singleValue: (provided: {}) => ({
-      ...provided,
-      color: 'white',
-    }),
-  }
-
   return (
     <div>
       <Head>
@@ -359,25 +321,6 @@ function Admin() {
                   />
                 </div>
               </div>
-              {/* <div className="-mx-3 flex flex-wrap">
-                  <div className="mb-6 mt-4 w-full px-3 md:mb-0">
-                    <FormFieldTitleInput
-                      title={'Stake Pool Image'}
-                      description={
-                        'Allow any NFTs with these creator addresses (separated by commas)'
-                      }
-                    />
-                    <input
-                      className="mb-3 block w-full appearance-none rounded border border-gray-500 bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800 focus:outline-none"
-                      type="text"
-                      placeholder={'Cmwy..., A3fD...'}
-                      value={creatorAddresses}
-                      onChange={(e) => {
-                        setCreatorAddresses(e.target.value)
-                      }}
-                    />
-                  </div>
-                </div> */}
               <div className="-mx-3 flex flex-wrap">
                 <div className="mb-6 mt-4 w-full px-3 md:mb-0">
                   <label
@@ -571,11 +514,6 @@ function Admin() {
                                 value={rewardMintSupply}
                                 onChange={(e) => {
                                   const supply = Number(e.target.value)
-                                  console.log(
-                                    supply,
-                                    !supply,
-                                    e.target.value.length != 0
-                                  )
                                   if (!supply && e.target.value.length != 0) {
                                     notify({
                                       message: `Invalid reward mint supply`,
@@ -733,3 +671,41 @@ function Admin() {
 }
 
 export default Admin
+
+export const customStyles = {
+  control: (base: {}) => ({
+    ...base,
+    background: 'rgb(55, 65, 81)',
+    borderColor: 'rgb(107, 114, 128)',
+  }),
+  Input: (base: {}) => ({
+    ...base,
+    color: 'white',
+  }),
+  menu: (base: {}) => ({
+    ...base,
+    background: 'rgb(55, 65, 81)',
+    '&:hover': {
+      background: 'rgb(55, 65, 81)',
+    },
+    '&:focus': {
+      background: 'rgb(75, 85, 99) !important',
+    },
+    borderRadius: 0,
+    marginTop: 0,
+  }),
+  option: (base: {}) => ({
+    ...base,
+    background: 'rgb(55, 65, 81)',
+    '&:hover': {
+      background: 'rgb(75, 85, 99)',
+    },
+    '&:focus': {
+      background: 'rgb(75, 85, 99) !important',
+    },
+  }),
+  singleValue: (provided: {}) => ({
+    ...provided,
+    color: 'white',
+  }),
+}

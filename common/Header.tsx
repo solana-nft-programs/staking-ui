@@ -21,15 +21,7 @@ export const Header = () => {
   const { data: stakePoolMetadata } = useStakePoolMetadata()
 
   return (
-    <div
-      className={`flex h-20 justify-between px-20 text-white`}
-      // style={{
-      //   background: darken(
-      //     0.04,
-      //     stakePoolMetadata?.colors?.primary ?? 'rgb(26, 27, 32)'
-      //   ),
-      // }}
-    >
+    <div className={`flex h-20 justify-between px-20 text-white`}>
       <div className="flex items-center gap-3">
         <a
           target="_blank"
