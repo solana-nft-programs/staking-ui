@@ -263,7 +263,7 @@ function Admin() {
                   ))
               ) : (
                 <div>
-                  {wallet
+                  {!wallet.connected
                     ? 'Connect your wallet to fetch pools.'
                     : 'No pools found...'}
                 </div>

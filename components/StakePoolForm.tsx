@@ -1,6 +1,12 @@
-import { withFindOrInitAssociatedTokenAccount } from '@cardinal/common'
+import {
+  AccountData,
+  withFindOrInitAssociatedTokenAccount,
+} from '@cardinal/common'
 import { executeTransaction } from '@cardinal/staking'
-import { RewardDistributorKind } from '@cardinal/staking/dist/cjs/programs/rewardDistributor'
+import {
+  RewardDistributorData,
+  RewardDistributorKind,
+} from '@cardinal/staking/dist/cjs/programs/rewardDistributor'
 import { Wallet } from '@metaplex/js'
 import { BN } from '@project-serum/anchor'
 import { useWallet } from '@solana/wallet-adapter-react'
@@ -10,13 +16,14 @@ import { notify } from 'common/Notification'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 import { TailSpin } from 'react-loader-spinner'
 import * as splToken from '@solana/spl-token'
-import { useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import Select from 'react-select'
 import { getMintDecimalAmountFromNaturalV2 } from 'common/units'
 import { FormFieldTitleInput } from 'common/FormFieldInput'
 import * as Yup from 'yup'
 import { tryPublicKey } from 'common/utils'
 import { useFormik } from 'formik'
+import { StakePoolData } from '@cardinal/staking/dist/cjs/programs/stakePool'
 
 const publicKeyValidationTest = (value: string | undefined): boolean => {
   return tryPublicKey(value) ? true : false
@@ -73,8 +80,14 @@ const creationFormSchema = Yup.object({
 export type CreationForm = Yup.InferType<typeof creationFormSchema>
 
 export function StakePoolForm({
+  type = 'create',
+  stakePoolData,
+  rewardDistributorData,
   handleSubmit,
 }: {
+  type?: 'update' | 'create'
+  stakePoolData?: AccountData<StakePoolData>
+  rewardDistributorData?: AccountData<RewardDistributorData>
   handleSubmit: (
     values: CreationForm,
     rewardMintInfo?: splToken.MintInfo
@@ -83,15 +96,27 @@ export function StakePoolForm({
   const { connection } = useEnvironmentCtx()
   const wallet = useWallet()
   const initialValues: CreationForm = {
-    overlayText: 'STAKED',
-    requireCollections: [],
-    requireCreators: [],
-    requiresAuthorization: false,
-    rewardDistributorKind: undefined,
-    rewardMintAddress: undefined,
-    rewardAmount: undefined,
-    rewardDurationSeconds: undefined,
-    rewardMintSupply: undefined,
+    overlayText: stakePoolData?.parsed.overlayText ?? 'STAKED',
+    requireCollections: (stakePoolData?.parsed.requiresCollections ?? []).map(
+      (pk) => pk.toString()
+    ),
+    requireCreators: (stakePoolData?.parsed.requiresCreators ?? []).map((pk) =>
+      pk.toString()
+    ),
+    requiresAuthorization: stakePoolData?.parsed.requiresAuthorization ?? false,
+    rewardDistributorKind: rewardDistributorData?.parsed.kind,
+    rewardMintAddress: rewardDistributorData?.parsed.rewardMint
+      ? rewardDistributorData?.parsed.rewardMint.toString()
+      : undefined,
+    rewardAmount: rewardDistributorData?.parsed.rewardAmount
+      ? rewardDistributorData?.parsed.rewardAmount.toString()
+      : undefined,
+    rewardDurationSeconds: rewardDistributorData?.parsed.rewardDurationSeconds
+      ? rewardDistributorData?.parsed.rewardDurationSeconds.toString()
+      : undefined,
+    rewardMintSupply: rewardDistributorData?.parsed.maxSupply
+      ? rewardDistributorData?.parsed.maxSupply.toString()
+      : undefined,
   }
   const formState = useFormik({
     initialValues,
@@ -108,75 +133,80 @@ export function StakePoolForm({
   const [maxMintSupply, setMaxMintSupply] = useState<number>(0)
   const [loading, setLoading] = useState<boolean>(false)
 
-  const handleMintAddress = async (address: String) => {
-    if (!wallet?.connected) {
-      notify({
-        message: `Wallet not connected`,
-        type: 'error',
-      })
-      return
-    }
-    setSubmitDisabled(true)
-    setProcessingMintAddress(true)
-    try {
-      const mint = new PublicKey(address)
-      const checkMint = new splToken.Token(
-        connection,
-        mint,
-        splToken.TOKEN_PROGRAM_ID,
-        Keypair.generate() // unused
-      )
-      let mintInfo = await checkMint.getMintInfo()
-
-      let userAta: splToken.AccountInfo | undefined = undefined
-      try {
-        const transaction = new Transaction()
-        const mintAta = await withFindOrInitAssociatedTokenAccount(
-          transaction,
-          connection,
-          mint,
-          wallet.publicKey!,
-          wallet.publicKey!,
-          true
-        )
-        if (transaction.instructions.length > 0) {
-          await executeTransaction(
-            connection,
-            wallet as Wallet,
-            transaction,
-            {}
-          )
-        }
-        userAta = await checkMint.getAccountInfo(mintAta)
-      } catch (e) {
+  useMemo(async () => {
+    if (values.rewardMintAddress) {
+      if (!wallet?.connected) {
         notify({
-          message:
-            "Failed to get user's associated token address for given mint",
+          message: `Wallet not connected`,
           type: 'error',
         })
+        return
       }
-      setMintInfo(mintInfo)
-      if (userAta) {
-        const decimalAmount = getMintDecimalAmountFromNaturalV2(
-          mintInfo.decimals,
-          new BN(userAta.amount)
-        )
-        setMaxMintSupply(Number(decimalAmount.toFixed(3)))
-      }
-      setSubmitDisabled(false)
-      setProcessingMintAddress(false)
-      notify({ message: `Valid reward mint address`, type: 'success' })
-    } catch (e) {
-      setMintInfo(undefined)
       setSubmitDisabled(true)
-      if (address.length > 0) {
-        console.log(e)
-        notify({ message: `Invalid reward mint address: ${e}`, type: 'error' })
+      setProcessingMintAddress(true)
+      try {
+        const mint = new PublicKey(values.rewardMintAddress)
+        const checkMint = new splToken.Token(
+          connection,
+          mint,
+          splToken.TOKEN_PROGRAM_ID,
+          Keypair.generate() // unused
+        )
+        let mintInfo = await checkMint.getMintInfo()
+
+        let userAta: splToken.AccountInfo | undefined = undefined
+        try {
+          const transaction = new Transaction()
+          const mintAta = await withFindOrInitAssociatedTokenAccount(
+            transaction,
+            connection,
+            mint,
+            wallet.publicKey!,
+            wallet.publicKey!,
+            true
+          )
+          if (transaction.instructions.length > 0) {
+            await executeTransaction(
+              connection,
+              wallet as Wallet,
+              transaction,
+              {}
+            )
+          }
+          userAta = await checkMint.getAccountInfo(mintAta)
+        } catch (e) {
+          notify({
+            message:
+              "Failed to get user's associated token address for given mint",
+            type: 'error',
+          })
+        }
+        setMintInfo(mintInfo)
+        if (userAta) {
+          const decimalAmount = getMintDecimalAmountFromNaturalV2(
+            mintInfo.decimals,
+            new BN(userAta.amount)
+          )
+          setMaxMintSupply(Number(decimalAmount.toFixed(3)))
+        }
+        setSubmitDisabled(false)
+        setProcessingMintAddress(false)
+        notify({ message: `Valid reward mint address`, type: 'success' })
+      } catch (e) {
+        setMintInfo(undefined)
+        setSubmitDisabled(true)
+        if (values.rewardMintAddress.length > 0) {
+          console.log(e)
+          notify({
+            message: `Invalid reward mint address: ${e}`,
+            type: 'error',
+          })
+        }
+      } finally {
+        setProcessingMintAddress(false)
       }
-    } finally {
-      setProcessingMintAddress(false)
     }
-  }
+  }, [values.rewardMintAddress?.toString()])
 
   return (
     <form className="w-full max-w-lg">
@@ -384,8 +414,9 @@ export function StakePoolForm({
             />
             <Select
               styles={customStyles}
-              className="mb-3"
+              className={`mb-3 ${type === 'update' ? 'opacity-40' : ''}`}
               isSearchable={false}
+              isDisabled={type === 'update'}
               onChange={(option) =>
                 setFieldValue(
                   'rewardDistributorKind',
@@ -394,7 +425,12 @@ export function StakePoolForm({
                     : undefined
                 )
               }
-              defaultValue={{ label: 'None', value: '0' }}
+              value={{
+                value: values.rewardDistributorKind?.toString() ?? '0',
+                label: values.rewardDistributorKind
+                  ? RewardDistributorKind[values.rewardDistributorKind]
+                  : 'None',
+              }}
               options={[
                 { value: '0', label: 'None' },
                 { value: '1', label: 'Mint' },
@@ -422,13 +458,16 @@ export function StakePoolForm({
                     values.rewardMintAddress !== '' && errors.rewardMintAddress
                       ? 'border-red-500'
                       : 'border-gray-500'
+                  }
+                  ${
+                    type === 'update' ? 'opacity-40' : ''
                   } mb-3 block w-full appearance-none rounded border border-gray-500 bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800 focus:outline-none`}
                   type="text"
+                  disabled={type === 'update'}
                   placeholder={'Enter Mint Address First: So1111..11112'}
                   value={values.rewardMintAddress}
                   onChange={(e) => {
                     setFieldValue('rewardMintAddress', e.target.value)
-                    handleMintAddress(e.target.value)
                   }}
                 />
               </div>
@@ -446,19 +485,21 @@ export function StakePoolForm({
                         errors.rewardAmount
                           ? 'border-red-500'
                           : 'border-gray-500'
+                      } ${
+                        type === 'update' ? 'opacity-40' : ''
                       } mb-3 block w-full appearance-none rounded border border-gray-500 bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800 focus:outline-none`}
                       type="text"
                       placeholder={'10'}
+                      disabled={submitDisabled || type === 'update'}
                       value={values.rewardAmount}
-                      disabled={submitDisabled}
                       onChange={(e) => {
-                        const amount = Number(e.target.value)
-                        if (!amount && e.target.value.length != 0) {
-                          notify({
-                            message: `Invalid reward amount`,
-                            type: 'error',
-                          })
-                        }
+                        // const amount = Number(e.target.value)
+                        // if (!amount && e.target.value.length != 0) {
+                        //   notify({
+                        //     message: `Invalid reward amount`,
+                        //     type: 'error',
+                        //   })
+                        // }
                         setFieldValue('rewardAmount', e.target.value)
                       }}
                     />
@@ -475,19 +516,21 @@ export function StakePoolForm({
                         errors.rewardDurationSeconds
                           ? 'border-red-500'
                           : 'border-gray-500'
+                      } ${
+                        type === 'update' ? 'opacity-40' : ''
                       } mb-3 block w-full appearance-none rounded border border-gray-500 bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800 focus:outline-none`}
                       type="text"
                       placeholder={'60'}
                       value={values.rewardDurationSeconds}
-                      disabled={submitDisabled}
+                      disabled={submitDisabled || type === 'update'}
                       onChange={(e) => {
-                        const seconds = Number(e.target.value)
-                        if (!seconds && e.target.value.length != 0) {
-                          notify({
-                            message: `Invalid reward duration seconds`,
-                            type: 'error',
-                          })
-                        }
+                        // const seconds = Number(e.target.value)
+                        // if (!seconds && e.target.value.length !== 0) {
+                        //   notify({
+                        //     message: `Invalid reward duration seconds`,
+                        //     type: 'error',
+                        //   })
+                        // }
                         setFieldValue('rewardDurationSeconds', e.target.value)
                       }}
                     />
@@ -513,11 +556,13 @@ export function StakePoolForm({
                         errors.rewardMintSupply
                           ? 'border-red-500'
                           : 'border-gray-500'
+                      } ${
+                        type === 'update' ? 'opacity-40' : ''
                       } mb-3 flex appearance-none justify-between rounded border border-gray-500 bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800`}
                     >
                       <input
                         className={`mr-5 w-full bg-transparent focus:outline-none`}
-                        disabled={submitDisabled}
+                        disabled={submitDisabled || type === 'update'}
                         type="text"
                         placeholder={'1000000'}
                         value={
@@ -590,7 +635,7 @@ export function StakePoolForm({
               <TailSpin color="#fff" height={20} width={20} />
             </div>
           )}
-          Create Pool
+          {type.charAt(0).toUpperCase() + type.slice(1)} Pool
         </div>
       </button>
     </form>
