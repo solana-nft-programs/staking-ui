@@ -38,7 +38,7 @@ import {
 } from 'common/units'
 import { customStyles } from '../index'
 
-function Home() {
+function AdminStakePool() {
   const wallet = useWallet()
   const { connection, environment } = useEnvironmentCtx()
   const stakePool = useStakePoolData()
@@ -849,4 +849,4 @@ function Home() {
   )
 }
 
-export default Home
+export default AdminStakePool
