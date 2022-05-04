@@ -1,4 +1,8 @@
-import { findAta, tryGetAccount } from '@cardinal/common'
+import {
+  findAta,
+  tryGetAccount,
+  withFindOrInitAssociatedTokenAccount,
+} from '@cardinal/common'
 import { executeTransaction } from '@cardinal/staking'
 import { getRewardDistributor } from '@cardinal/staking/dist/cjs/programs/rewardDistributor/accounts'
 import { findRewardDistributorId } from '@cardinal/staking/dist/cjs/programs/rewardDistributor/pda'
@@ -14,7 +18,7 @@ import {
 import { Wallet } from '@metaplex/js'
 import { BN } from '@project-serum/anchor'
 import { useWallet } from '@solana/wallet-adapter-react'
-import { PublicKey, Transaction } from '@solana/web3.js'
+import { Keypair, PublicKey, Transaction } from '@solana/web3.js'
 import Select from 'react-select'
 import { Footer } from 'common/Footer'
 import { FormFieldTitleInput } from 'common/FormFieldInput'
@@ -26,13 +30,13 @@ import Head from 'next/head'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 import { useState } from 'react'
 import { TailSpin } from 'react-loader-spinner'
-import { customStyles } from '..'
 import { RewardDistributorKind } from '@cardinal/staking/dist/cjs/programs/rewardDistributor'
 import { LoadingSpinner } from 'common/LoadingSpinner'
 import {
   getMintDecimalAmountFromNaturalV2,
   parseMintNaturalAmountFromDecimal,
 } from 'common/units'
+import { customStyles } from '../index'
 
 function Home() {
   const wallet = useWallet()
@@ -281,8 +285,6 @@ function Home() {
   }
 
   const handleMintAddress = async (address: String) => {
-    setSubmitDisabled(true)
-    setProcessingMintAddress(true)
     if (!wallet?.connected) {
       notify({
         message: `Wallet not connected`,
@@ -290,32 +292,53 @@ function Home() {
       })
       return
     }
+    setSubmitDisabled(true)
+    setProcessingMintAddress(true)
     try {
       const mint = new PublicKey(address)
       const checkMint = new splToken.Token(
         connection,
         mint,
         splToken.TOKEN_PROGRAM_ID,
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        null
+        Keypair.generate() // unused
       )
       let mintInfo = await checkMint.getMintInfo()
-      const mintAta = await findAta(mint, wallet.publicKey!, true)
-      let data = await checkMint.getAccountInfo(mintAta)
-      if (!data) {
+
+      let userAta: splToken.AccountInfo | undefined = undefined
+      try {
+        const transaction = new Transaction()
+        const mintAta = await withFindOrInitAssociatedTokenAccount(
+          transaction,
+          connection,
+          mint,
+          wallet.publicKey!,
+          wallet.publicKey!,
+          true
+        )
+        if (transaction.instructions.length > 0) {
+          await executeTransaction(
+            connection,
+            wallet as Wallet,
+            transaction,
+            {}
+          )
+        }
+        userAta = await checkMint.getAccountInfo(mintAta)
+      } catch (e) {
         notify({
-          message: 'User has no associated token address for given mint',
+          message:
+            "Failed to get user's associated token address for given mint",
           type: 'error',
         })
-        return
       }
       setMintInfo(mintInfo)
-      const decimalAmount = getMintDecimalAmountFromNaturalV2(
-        mintInfo.decimals,
-        new BN(data.amount)
-      )
-      setMaxMintSupply(Number(decimalAmount.toFixed(3)))
+      if (userAta) {
+        const decimalAmount = getMintDecimalAmountFromNaturalV2(
+          mintInfo.decimals,
+          new BN(userAta.amount)
+        )
+        setMaxMintSupply(Number(decimalAmount.toFixed(3)))
+      }
       setSubmitDisabled(false)
       setProcessingMintAddress(false)
       notify({ message: `Valid reward mint address`, type: 'success' })
