@@ -41,7 +41,6 @@ export const useStakedTokenDatas = () => {
         }
         return acc
       }, [] as StakeEntryTokenData[])
-
       return hydratedTokenDatas
     },
     [stakePoolId?.toString(), walletId?.toString(), tokenList],

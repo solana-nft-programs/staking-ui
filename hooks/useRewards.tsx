@@ -14,6 +14,7 @@ export const useRewards = () => {
   const { data: stakedTokenDatas } = useStakedTokenDatas()
   const { data: rewardEntries } = useRewardEntries()
   const { UTCNow } = useUTCNow()
+
   return useDataHook<{
     rewardMap: { [mintId: string]: { claimableRewards: BN; nextRewardsIn: BN } }
     claimableRewards: BN

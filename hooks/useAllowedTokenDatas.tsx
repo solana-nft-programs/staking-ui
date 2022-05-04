@@ -25,6 +25,7 @@ export const useAllowedTokenDatas = (showFungibleTokens: boolean) => {
         let isAllowed = true
         const creatorAddresses = stakePool.parsed.requiresCreators
         const collectionAddresses = stakePool.parsed.requiresCollections
+        const requiresAuthorization = stakePool.parsed.requiresAuthorization
         if (token.tokenAccount?.account.data.parsed.info.state === 'frozen') {
           return false
         }
@@ -61,8 +62,8 @@ export const useAllowedTokenDatas = (showFungibleTokens: boolean) => {
           })
         }
 
-        if (token.stakeAuthorization) {
-          isAllowed = true
+        if (requiresAuthorization && !token.stakeAuthorization) {
+          isAllowed = false
         }
         return isAllowed
       })
