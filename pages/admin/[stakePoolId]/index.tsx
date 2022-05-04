@@ -83,7 +83,7 @@ function AdminStakePool() {
           wallet as Wallet,
           {
             stakePoolId: stakePool.data.pubkey,
-            rewardDistributorId: rewardDistributorId,
+            rewardDistributorId: rewardDistributor.pubkey,
             mintId: mint,
             multiplier: new BN(multiplier),
           }

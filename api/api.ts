@@ -247,10 +247,12 @@ export async function getStakeEntryDatas(
   stakePoolId: PublicKey,
   userId: PublicKey
 ): Promise<StakeEntryTokenData[]> {
-  const stakeEntries = await getStakeEntriesForUser(connection, userId)
-  const mintIds = stakeEntries
-    .filter((entry) => entry.parsed.pool.toString() === stakePoolId.toString())
-    .map((stakeEntry) => stakeEntry.parsed.originalMint)
+  const stakeEntries = (
+    await getStakeEntriesForUser(connection, userId)
+  ).filter((entry) => entry.parsed.pool.toString() === stakePoolId.toString())
+  const mintIds = stakeEntries.map(
+    (stakeEntry) => stakeEntry.parsed.originalMint
+  )
 
   const metadataTuples: [PublicKey, PublicKey][] = await Promise.all(
     mintIds.map(async (mintId) => {

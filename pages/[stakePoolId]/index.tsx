@@ -764,7 +764,9 @@ function Home() {
                   }}
                   disabled={!rewards.data?.claimableRewards.gt(new BN(0))}
                   style={{
-                    background: stakePoolMetadata?.colors?.secondary,
+                    background:
+                      stakePoolMetadata?.colors?.secondary ||
+                      defaultSecondaryColor,
                     color: stakePoolMetadata?.colors?.fontColor,
                   }}
                   className={`my-auto mr-5 flex rounded-md px-4 py-2`}
