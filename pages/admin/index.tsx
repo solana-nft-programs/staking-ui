@@ -29,22 +29,70 @@ import { useStakePoolsByAuthority } from 'hooks/useStakePoolsByAuthority'
 import { useStakePoolsMetadatas } from 'hooks/useStakePoolsMetadata'
 import { FormFieldTitleInput } from 'common/FormFieldInput'
 import { Footer } from 'common/Footer'
+import * as Yup from 'yup'
+import { tryPublicKey } from 'common/utils'
+import { useFormik } from 'formik'
+
+const publicKeyValidationTest = (value: string | undefined): boolean => {
+  return tryPublicKey(value) ? true : false
+}
+
+const creationFormSchema = Yup.object({
+  overlayText: Yup.string(),
+  requireCollections: Yup.array()
+    .of(
+      Yup.string().test(
+        'is-public-key',
+        'Invalid collection address',
+        publicKeyValidationTest
+      )
+    )
+    .required(),
+  requireCreators: Yup.array()
+    .of(
+      Yup.string().test(
+        'is-public-key',
+        'Invalid creator address',
+        publicKeyValidationTest
+      )
+    )
+    .required(),
+  requiresAuthorization: Yup.boolean(),
+  rewardDistributorKind: Yup.number().optional().min(0).max(2),
+  rewardMintAddress: Yup.string().test(
+    'is-public-key',
+    'Invalid reward mint address',
+    publicKeyValidationTest
+  ),
+  rewardAmount: Yup.number(),
+  rewardDurationSeconds: Yup.number(),
+  rewardMintSupply: Yup.number(),
+})
+
+type CreationForm = Yup.InferType<typeof creationFormSchema>
 
 function Admin() {
   const { connection, environment } = useEnvironmentCtx()
   const wallet = useWallet()
+  const initialValues: CreationForm = {
+    overlayText: 'STAKED',
+    requireCollections: [],
+    requireCreators: [],
+    requiresAuthorization: false,
+    rewardDistributorKind: undefined,
+    rewardMintAddress: undefined,
+    rewardAmount: undefined,
+    rewardDurationSeconds: undefined,
+    rewardMintSupply: undefined,
+  }
+  const formState = useFormik({
+    initialValues,
+    onSubmit: (values) => {},
+    validationSchema: creationFormSchema,
+  })
+  const { values, errors, setFieldValue, handleChange } = formState
+  console.log(JSON.stringify(formState, null, 2))
 
-  const [overlayText, setOverlayText] = useState('STAKED')
-  const [collectionAddresses, setCollectionAddresses] = useState<string>('')
-  const [creatorAddresses, setCreatorAddresses] = useState<string>('')
-  const [authorizeNFT, setAuthorizeNFT] = useState<boolean>(false)
-  const [resetOnStake, setResetOnStake] = useState<boolean>(false)
-  const [rewardAmount, setRewardAmount] = useState<string>('')
-  const [rewardDurationSeconds, setRewardDurationSeconds] = useState<string>('')
-  const [rewardMintAddress, setRewardMintAddress] = useState<string>('')
-  const [rewardDistributorKind, setRewardDistributorKind] =
-    useState<RewardDistributorKind>()
-  const [rewardMintSupply, setRewardMintSupply] = useState<string>('')
   const [submitDisabled, setSubmitDisabled] = useState<boolean>(true)
   const [processingMintAddress, setProcessingMintAddress] =
     useState<boolean>(false)
@@ -151,80 +199,71 @@ function Admin() {
         throw 'Wallet not connected'
       }
       if (
-        (!rewardAmount && rewardDurationSeconds) ||
-        (rewardAmount && !rewardDurationSeconds)
+        (!values.rewardAmount && values.rewardDurationSeconds) ||
+        (values.rewardAmount && !values.rewardDurationSeconds)
       ) {
         throw 'Both reward amount and reward duration must be specified'
       }
-      if ((rewardAmount || rewardMintAddress) && !rewardDistributorKind) {
+      if (
+        (values.rewardAmount || values.rewardMintAddress) &&
+        !values.rewardDistributorKind
+      ) {
         throw 'Reward distribution must be specified (cannot be none)'
       }
       if (
-        (rewardAmount || rewardMintAddress || rewardDistributorKind) &&
-        (!rewardAmount || !rewardMintAddress)
+        (values.rewardAmount ||
+          values.rewardMintAddress ||
+          values.rewardDistributorKind) &&
+        (!values.rewardAmount || !values.rewardMintAddress)
       ) {
         throw 'Please fill out all the fields for reward distribution paramters'
       }
 
-      const collectionPublicKeys =
-        collectionAddresses.length > 0
-          ? collectionAddresses
-              .split(',')
-              .map((address) => new PublicKey(address.trim()))
-          : []
-      const creatorPublicKeys =
-        creatorAddresses.length > 0
-          ? creatorAddresses
-              .split(',')
-              .map((address) => new PublicKey(address.trim()))
-          : []
-      const rewardMintPublicKey = rewardMintAddress
-        ? new PublicKey(rewardMintAddress.trim())
-        : undefined
-      const rewardAmountBN = rewardAmount
-        ? new BN(
-            parseMintNaturalAmountFromDecimal(
-              rewardAmount,
-              mintInfo?.decimals || 1
-            )
-          )
-        : undefined
-      const rewardDurationSecondsBN = rewardDurationSeconds
-        ? new BN(parseInt(rewardDurationSeconds))
-        : undefined
-      const supply = rewardMintSupply
-        ? new BN(
-            parseMintNaturalAmountFromDecimal(
-              rewardMintSupply,
-              mintInfo?.decimals || 1
-            )
-          )
-        : undefined
+      const collectionPublicKeys = values.requireCollections
+        .map((c) => tryPublicKey(c))
+        .filter((c) => c) as PublicKey[]
+      const creatorPublicKeys = values.requireCreators
+        .map((c) => tryPublicKey(c))
+        .filter((c) => c) as PublicKey[]
 
       const stakePoolParams = {
         requiresCollections:
           collectionPublicKeys.length > 0 ? collectionPublicKeys : undefined,
         requiresCreators:
           creatorPublicKeys.length > 0 ? creatorPublicKeys : undefined,
-        requiresAuthorization: authorizeNFT,
-        resetOnStake: resetOnStake,
-        overlayText: overlayText.length > 0 ? overlayText : undefined,
+        requiresAuthorization: values.requiresAuthorization,
+        overlayText: values.overlayText || undefined,
       }
-
       const [transaction, stakePoolPK] = await createStakePool(
         connection,
         wallet as Wallet,
         stakePoolParams
       )
 
-      if (rewardDistributorKind) {
+      if (values.rewardDistributorKind) {
         const rewardDistributorKindParams = {
           stakePoolId: stakePoolPK,
-          rewardMintId: rewardMintPublicKey!,
-          rewardAmount: rewardAmountBN,
-          rewardDurationSeconds: rewardDurationSecondsBN,
-          kind: rewardDistributorKind,
-          supply: supply,
+          rewardMintId: new PublicKey(values.rewardMintAddress!.trim())!,
+          rewardAmount: values.rewardAmount
+            ? new BN(
+                parseMintNaturalAmountFromDecimal(
+                  values.rewardAmount,
+                  mintInfo?.decimals || 1
+                )
+              )
+            : undefined,
+          rewardDurationSeconds: values.rewardDurationSeconds
+            ? new BN(values.rewardDurationSeconds)
+            : undefined,
+          kind: values.rewardDistributorKind,
+          supply: values.rewardMintSupply
+            ? new BN(
+                parseMintNaturalAmountFromDecimal(
+                  values.rewardMintSupply,
+                  mintInfo?.decimals || 1
+                )
+              )
+            : undefined,
         }
 
         await withInitRewardDistributor(
@@ -267,7 +306,7 @@ function Admin() {
       <div className="container mx-auto w-full bg-[#1a1b20]">
         <div className="mx-10 my-2 grid h-full grid-cols-2 gap-4 rounded-md bg-white bg-opacity-5 p-10 text-gray-200">
           <div>
-            <p className="text-lg font-bold">Create New Staking Pool</p>
+            <p className="text-lg font-bold">Create Staking Pool</p>
             <p className="mt-1 mb-2 text-sm">
               All parameters for staking pool are optional
             </p>
@@ -292,13 +331,11 @@ function Admin() {
                   />
                   <input
                     className="mb-3 block w-full appearance-none rounded border border-gray-500 bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800 focus:outline-none"
-                    defaultValue="STAKED"
                     type="text"
-                    // placeholder={'STAKED'}
-                    value={overlayText}
-                    onChange={(e) => {
-                      setOverlayText(e.target.value)
-                    }}
+                    placeholder={'STAKED'}
+                    name="overlayText"
+                    value={values.overlayText}
+                    onChange={handleChange}
                   />
                 </div>
               </div>
@@ -307,37 +344,156 @@ function Admin() {
                   <FormFieldTitleInput
                     title={'Collection Addresses []'}
                     description={
-                      'Allow any NFTs with these collection addresses (separated by commas)'
+                      'Allow any NFTs with these collection addresses'
                     }
                   />
-                  <input
-                    className="mb-3 block w-full appearance-none rounded border border-gray-500 bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800 focus:outline-none"
-                    type="text"
-                    placeholder={'Cmwy..., A3fD...'}
-                    value={collectionAddresses}
-                    onChange={(e) => {
-                      setCollectionAddresses(e.target.value)
-                    }}
-                  />
+                  <div
+                    className={`${
+                      values.requireCollections[0] !== '' &&
+                      errors.requireCollections?.at(0)
+                        ? 'border-red-500'
+                        : 'border-gray-500'
+                    } mb-3 flex appearance-none justify-between rounded border bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800`}
+                  >
+                    <input
+                      className={`mr-5 w-full bg-transparent focus:outline-none`}
+                      type="text"
+                      placeholder={'CmAy...A3fD'}
+                      name="requireCollections"
+                      value={values.requireCollections[0]}
+                      onChange={(e) =>
+                        setFieldValue('requireCollections[0]', e.target.value)
+                      }
+                    />
+                    <div
+                      className="cursor-pointer text-xs text-gray-400"
+                      onClick={() =>
+                        setFieldValue(`requireCollections`, [
+                          '',
+                          ...values.requireCollections,
+                        ])
+                      }
+                    >
+                      Add
+                    </div>
+                  </div>
+                  {values.requireCollections.map(
+                    (v, i) =>
+                      i > 0 && (
+                        <div
+                          className={`${
+                            errors.requireCollections?.at(i)
+                              ? 'border-red-500'
+                              : 'border-gray-500'
+                          } mb-3 flex appearance-none justify-between rounded border bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800`}
+                        >
+                          <input
+                            className={`mr-5 w-full bg-transparent focus:outline-none`}
+                            type="text"
+                            placeholder={'CmAy...A3fD'}
+                            name="requireCollections"
+                            value={v}
+                            onChange={(e) =>
+                              setFieldValue(
+                                `requireCollections[${i}]`,
+                                e.target.value
+                              )
+                            }
+                          />
+                          <div
+                            className="cursor-pointer text-xs text-gray-400"
+                            onClick={() =>
+                              setFieldValue(
+                                `requireCollections`,
+                                values.requireCollections.filter(
+                                  (_, ix) => ix !== i
+                                )
+                              )
+                            }
+                          >
+                            Remove
+                          </div>
+                        </div>
+                      )
+                  )}
                 </div>
               </div>
               <div className="-mx-3 flex flex-wrap">
                 <div className="mb-6 mt-4 w-full px-3 md:mb-0">
                   <FormFieldTitleInput
                     title={'Creator Addresses []'}
-                    description={
-                      'Allow any NFTs with these creator addresses (separated by commas)'
-                    }
+                    description={'Allow any NFTs with these creator addresses'}
                   />
-                  <input
-                    className="mb-3 block w-full appearance-none rounded border border-gray-500 bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800 focus:outline-none"
-                    type="text"
-                    placeholder={'Cmwy..., A3fD...'}
-                    value={creatorAddresses}
-                    onChange={(e) => {
-                      setCreatorAddresses(e.target.value)
-                    }}
-                  />
+
+                  <div
+                    className={`${
+                      values.requireCreators[0] !== '' &&
+                      errors.requireCreators?.at(0)
+                        ? 'border-red-500'
+                        : 'border-gray-500'
+                    } mb-3 flex appearance-none justify-between rounded border bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800`}
+                  >
+                    <input
+                      className={`mr-5 w-full bg-transparent focus:outline-none`}
+                      type="text"
+                      placeholder={'CmAy...A3fD'}
+                      name="requireCreators"
+                      value={values.requireCreators[0]}
+                      onChange={(e) =>
+                        setFieldValue('requireCreators[0]', e.target.value)
+                      }
+                    />
+                    <div
+                      className="cursor-pointer text-xs text-gray-400"
+                      onClick={() =>
+                        setFieldValue(`requireCreators`, [
+                          '',
+                          ...values.requireCreators,
+                        ])
+                      }
+                    >
+                      Add
+                    </div>
+                  </div>
+                  {values.requireCreators.map(
+                    (v, i) =>
+                      i > 0 && (
+                        <div
+                          className={`${
+                            errors.requireCreators?.at(i)
+                              ? 'border-red-500'
+                              : 'border-gray-500'
+                          } mb-3 flex appearance-none justify-between rounded border bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800`}
+                        >
+                          <input
+                            className={`mr-5 w-full bg-transparent focus:outline-none`}
+                            type="text"
+                            placeholder={'CmAy...A3fD'}
+                            name="requireCreators"
+                            value={v}
+                            onChange={(e) =>
+                              setFieldValue(
+                                `requireCreators[${i}]`,
+                                e.target.value
+                              )
+                            }
+                          />
+                          <div
+                            className="cursor-pointer text-xs text-gray-400"
+                            onClick={() =>
+                              setFieldValue(
+                                `requireCreators`,
+                                values.requireCreators.filter(
+                                  (_, ix) => ix !== i
+                                )
+                              )
+                            }
+                          >
+                            Remove
+                          </div>
+                        </div>
+                      )
+                  )}
                 </div>
               </div>
               <div className="-mx-3 flex flex-wrap">
@@ -356,45 +512,20 @@ function Admin() {
                     className="mb-3 cursor-pointer"
                     id="require-authorization"
                     type="checkbox"
-                    checked={authorizeNFT}
-                    onChange={(e) => {
-                      setAuthorizeNFT(e.target.checked)
-                    }}
+                    name="requiresAuthorization"
+                    checked={values.requiresAuthorization}
+                    onChange={handleChange}
                   />{' '}
                   <span
                     className="my-auto cursor-pointer text-sm"
-                    onClick={() => setAuthorizeNFT(!authorizeNFT)}
+                    onClick={() =>
+                      setFieldValue(
+                        'requiresAuthorization',
+                        !values.requiresAuthorization
+                      )
+                    }
                   >
                     Require Authorization
-                  </span>
-                </div>
-              </div>
-              <div className="-mx-3 flex flex-wrap">
-                <div className="mb-6 mt-4 w-full px-3 md:mb-0">
-                  <label
-                    className="mb-2 block text-xs font-bold uppercase tracking-wide text-gray-200"
-                    htmlFor="require-authorization"
-                  >
-                    Reset on stake
-                  </label>
-                  <p className="mb-2 text-sm italic text-gray-300">
-                    If selected, tokens will lose their total staked seconds
-                    (will be reset to zero) when they get re-staked
-                  </p>
-                  <input
-                    className="mb-3 cursor-pointer"
-                    id="require-authorization"
-                    type="checkbox"
-                    checked={resetOnStake}
-                    onChange={(e) => {
-                      setResetOnStake(e.target.checked)
-                    }}
-                  />{' '}
-                  <span
-                    className="my-auto cursor-pointer text-sm"
-                    onClick={() => setResetOnStake(!resetOnStake)}
-                  >
-                    Reset on unstake
                   </span>
                 </div>
               </div>
@@ -411,15 +542,14 @@ function Admin() {
                       styles={customStyles}
                       className="mb-3"
                       isSearchable={false}
-                      onChange={(option) => {
-                        setRewardDistributorKind(
-                          {
-                            '1': RewardDistributorKind.Mint,
-                            '2': RewardDistributorKind.Treasury,
-                          }[option?.value ?? '']
+                      onChange={(option) =>
+                        setFieldValue(
+                          'rewardDistributorKind',
+                          option?.value
+                            ? parseInt(option?.value) || undefined
+                            : undefined
                         )
-                        setRewardMintSupply('')
-                      }}
+                      }
                       defaultValue={{ label: 'None', value: '0' }}
                       options={[
                         { value: '0', label: 'None' },
@@ -428,7 +558,7 @@ function Admin() {
                       ]}
                     />
                   </div>
-                  {rewardDistributorKind && (
+                  {values.rewardDistributorKind && (
                     <>
                       <div className="relative mb-6 mt-4 w-full px-3 md:mb-0">
                         {processingMintAddress ? (
@@ -444,14 +574,19 @@ function Admin() {
                         />
 
                         <input
-                          className="mb-3 block w-full appearance-none rounded border border-gray-500 bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800 focus:outline-none"
+                          className={`${
+                            values.rewardMintAddress !== '' &&
+                            errors.rewardMintAddress
+                              ? 'border-red-500'
+                              : 'border-gray-500'
+                          } mb-3 block w-full appearance-none rounded border border-gray-500 bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800 focus:outline-none`}
                           type="text"
                           placeholder={
                             'Enter Mint Address First: So1111..11112'
                           }
-                          value={rewardMintAddress}
+                          value={values.rewardMintAddress}
                           onChange={(e) => {
-                            setRewardMintAddress(e.target.value)
+                            setFieldValue('rewardMintAddress', e.target.value)
                             handleMintAddress(e.target.value)
                           }}
                         />
@@ -466,10 +601,14 @@ function Admin() {
                               }
                             />
                             <input
-                              className="mb-3 block w-full appearance-none rounded border border-gray-500 bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800 focus:outline-none"
+                              className={`${
+                                errors.rewardAmount
+                                  ? 'border-red-500'
+                                  : 'border-gray-500'
+                              } mb-3 block w-full appearance-none rounded border border-gray-500 bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800 focus:outline-none`}
                               type="text"
                               placeholder={'10'}
-                              value={rewardAmount}
+                              value={values.rewardAmount}
                               disabled={submitDisabled}
                               onChange={(e) => {
                                 const amount = Number(e.target.value)
@@ -479,7 +618,7 @@ function Admin() {
                                     type: 'error',
                                   })
                                 }
-                                setRewardAmount(e.target.value)
+                                setFieldValue('rewardAmount', e.target.value)
                               }}
                             />
                           </div>
@@ -491,10 +630,14 @@ function Admin() {
                               }
                             />
                             <input
-                              className="mb-3 block w-full appearance-none rounded border border-gray-500 bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800 focus:outline-none"
+                              className={`${
+                                errors.rewardDurationSeconds
+                                  ? 'border-red-500'
+                                  : 'border-gray-500'
+                              } mb-3 block w-full appearance-none rounded border border-gray-500 bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800 focus:outline-none`}
                               type="text"
                               placeholder={'60'}
-                              value={rewardDurationSeconds}
+                              value={values.rewardDurationSeconds}
                               disabled={submitDisabled}
                               onChange={(e) => {
                                 const seconds = Number(e.target.value)
@@ -504,7 +647,10 @@ function Admin() {
                                     type: 'error',
                                   })
                                 }
-                                setRewardDurationSeconds(e.target.value)
+                                setFieldValue(
+                                  'rewardDurationSeconds',
+                                  e.target.value
+                                )
                               }}
                             />
                           </div>
@@ -512,54 +658,66 @@ function Admin() {
                           <div className="mb-6 mt-4 w-full px-3 md:mb-0">
                             <FormFieldTitleInput
                               title={
-                                rewardDistributorKind ===
+                                values.rewardDistributorKind ===
                                 RewardDistributorKind.Mint
                                   ? 'Reward Max Supply'
                                   : 'Reward Transfer Amount'
                               }
                               description={
-                                rewardDistributorKind ===
+                                values.rewardDistributorKind ===
                                 RewardDistributorKind.Treasury
                                   ? 'Max number of tokens to mint (max: mint supply).'
                                   : 'How many tokens to transfer to the stake pool for future distribution (max: your asscociated token account balance).'
                               }
                             />
-                            <div className="mb-3 flex appearance-none justify-between rounded border border-gray-500 bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800">
+                            <div
+                              className={`${
+                                errors.rewardMintSupply
+                                  ? 'border-red-500'
+                                  : 'border-gray-500'
+                              } mb-3 flex appearance-none justify-between rounded border border-gray-500 bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800`}
+                            >
                               <input
-                                className="mr-5 w-full bg-transparent focus:outline-none"
+                                className={`mr-5 w-full bg-transparent focus:outline-none`}
                                 disabled={submitDisabled}
                                 type="text"
                                 placeholder={'1000000'}
-                                value={rewardMintSupply}
+                                value={
+                                  values.rewardMintSupply
+                                    ? values.rewardMintSupply
+                                        .toString()
+                                        .replaceAll(',', '')
+                                        .replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+                                    : undefined
+                                }
                                 onChange={(e) => {
-                                  const supply = Number(e.target.value)
+                                  const supply = Number(
+                                    e.target.value.replaceAll(',', '')
+                                  )
                                   if (!supply && e.target.value.length != 0) {
                                     notify({
                                       message: `Invalid reward mint supply`,
                                       type: 'error',
                                     })
                                   }
-                                  setRewardMintSupply(e.target.value)
+                                  setFieldValue('rewardMintSupply', supply)
                                 }}
                               />
                               <div
                                 className="cursor-pointer"
                                 onClick={() => {
                                   if (
-                                    rewardDistributorKind ===
+                                    values.rewardDistributorKind ===
                                     RewardDistributorKind.Mint
                                   ) {
-                                    setRewardMintSupply(
-                                      mintInfo.supply
-                                        .toString()
-                                        .replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+                                    setFieldValue(
+                                      'rewardMintSupply',
+                                      mintInfo.supply.toNumber()
                                     )
                                   } else {
-                                    setRewardMintSupply(
-                                      String(maxMintSupply).replace(
-                                        /\B(?=(\d{3})+(?!\d))/g,
-                                        ','
-                                      )
+                                    setFieldValue(
+                                      'rewardMintSupply',
+                                      maxMintSupply
                                     )
                                   }
                                 }}
@@ -575,10 +733,12 @@ function Admin() {
                 </div>
               </div>
               <button
-                disabled={rewardDistributorKind && submitDisabled}
+                disabled={Boolean(
+                  values.rewardDistributorKind && submitDisabled
+                )}
                 type="button"
                 className={
-                  submitDisabled && rewardDistributorKind
+                  submitDisabled && values.rewardDistributorKind
                     ? 'mt-4 inline-block rounded-md bg-blue-700 px-4 py-2 opacity-50'
                     : 'mt-4 inline-block rounded-md bg-blue-700 px-4 py-2'
                 }
