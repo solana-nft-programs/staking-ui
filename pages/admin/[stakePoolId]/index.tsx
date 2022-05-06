@@ -290,7 +290,7 @@ function AdminStakePool() {
                 </p>
                 {stakePool.loaded ? (
                   <>
-                    <span className="flex w-full flex-wrap px-3 md:mb-0">
+                    <span className="flex w-full flex-wrap md:mb-0">
                       <label className="inline-block text-sm font-bold uppercase tracking-wide text-gray-200">
                         Overlay Text:
                       </label>
@@ -298,7 +298,7 @@ function AdminStakePool() {
                         {stakePool.data?.parsed.overlayText || '[None]'}
                       </label>
                     </span>
-                    <span className="mt-3 flex w-full flex-wrap px-3 md:mb-0">
+                    <span className="mt-3 flex w-full flex-wrap md:mb-0">
                       <label className="inline-block text-sm font-bold uppercase tracking-wide text-gray-200">
                         Collection Addresses:
                       </label>
@@ -317,7 +317,7 @@ function AdminStakePool() {
                           : '[None]'}
                       </label>
                     </span>
-                    <span className="mt-3 flex w-full flex-wrap px-3 md:mb-0">
+                    <span className="mt-3 flex w-full flex-wrap md:mb-0">
                       <label className="inline-block text-sm font-bold uppercase tracking-wide text-gray-200">
                         Creator Addresses:
                       </label>
@@ -336,7 +336,7 @@ function AdminStakePool() {
                           : '[None]'}
                       </label>
                     </span>
-                    <span className="mt-3 flex w-full flex-wrap px-3 md:mb-0">
+                    <span className="mt-3 flex w-full flex-wrap md:mb-0">
                       <label className="inline-block text-sm font-bold uppercase tracking-wide text-gray-200">
                         Requires Authorization:{' '}
                         {stakePool.data?.parsed.requiresAuthorization.toString() ||

@@ -26,7 +26,6 @@ import { CreationForm, StakePoolForm } from 'components/StakePoolForm'
 function Admin() {
   const { connection, environment } = useEnvironmentCtx()
   const wallet = useWallet()
-  // const [stakePool, setStakePool] = useState<AccountData<StakePoolData>>()
   const [stakePoolId, setStakePoolId] = useState<PublicKey>()
 
   const stakePools = useStakePoolsByAuthority()

@@ -40,7 +40,6 @@ import { Footer } from 'common/Footer'
 import { shortPubKey } from '@cardinal/namespaces-components'
 import { useRewardDistributorTokenAccount } from 'hooks/useRewardDistributorTokenAccount'
 import { useRewardEntries } from 'hooks/useRewardEntries'
-import { config } from 'process'
 
 function Home() {
   const { connection, environment } = useEnvironmentCtx()
@@ -478,28 +477,24 @@ function Home() {
                                     }
                                   />
                                 </div>
-
                                 {tk.tokenListData ? (
-                                  <div className="mx-2 flex justify-start">
-                                    {/* <div className="float-left mr-2 inline overflow-clip text-ellipsis whitespace-nowrap ">
-                                        {tk.tokenListData.name}
-                                      </div> */}
-
-                                    <div className="float-left text-ellipsis whitespace-nowrap">
-                                      {Number(
-                                        (
-                                          tk.tokenAccount?.account.data.parsed
-                                            .info.tokenAmount.amount /
-                                          10 ** tk.tokenListData.decimals
-                                        ).toFixed(2)
-                                      )}{' '}
-                                      {tk.tokenListData.symbol}
-                                    </div>
+                                  <div className="absolute bottom-2 left-2">
+                                    {tk.tokenListData.name}
                                   </div>
                                 ) : (
-                                  <p className="mx-2 overflow-clip text-ellipsis whitespace-nowrap capitalize text-white">
-                                    {tk.metadata?.data?.name}
-                                  </p>
+                                  ''
+                                )}
+                                {tk.tokenListData && (
+                                  <div className="absolute bottom-2 right-2">
+                                    {Number(
+                                      (
+                                        tk.tokenAccount?.account.data.parsed
+                                          .info.tokenAmount.amount /
+                                        10 ** tk.tokenListData.decimals
+                                      ).toFixed(2)
+                                    )}{' '}
+                                    {tk.tokenListData.symbol}
+                                  </div>
                                 )}
                               </div>
 
