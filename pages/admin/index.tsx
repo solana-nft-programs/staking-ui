@@ -109,7 +109,7 @@ function Admin() {
                 parseMintNaturalAmountFromDecimal(
                   values.rewardAmount,
                   rewardMintInfo?.decimals || 1
-                )
+                ).toString()
               )
             : undefined,
           rewardDurationSeconds: values.rewardDurationSeconds
@@ -121,7 +121,7 @@ function Admin() {
                 parseMintNaturalAmountFromDecimal(
                   values.rewardMintSupply,
                   rewardMintInfo?.decimals || 1
-                )
+                ).toString()
               )
             : undefined,
         }
