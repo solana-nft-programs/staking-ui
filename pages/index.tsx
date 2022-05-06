@@ -42,11 +42,7 @@ function Home() {
               const stakePoolMetadata = stakePoolMetadatas.find(
                 (md) => md.pubkey.toString() === stakePoolData.pubkey.toString()
               )
-              if (
-                stakePoolMetadata &&
-                stakePoolMetadata.name !== 'portals' &&
-                stakePoolMetadata.name !== 'jambo'
-              ) {
+              if (stakePoolMetadata) {
                 return [
                   [...acc[0], { stakePoolMetadata, stakePoolData }],
                   acc[1],

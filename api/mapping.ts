@@ -35,24 +35,6 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     },
   },
   {
-    name: 'jambo',
-    displayName: 'Jambo Mambo',
-    pubkey: new PublicKey('9L86DUzzHDQtWyhooEj7d6g44aSqCGYf49WFRkdTyJnt'),
-    maxStaked: 4444,
-  },
-  {
-    name: 'portals',
-    displayName: 'Portals',
-    pubkey: new PublicKey('5pTqPBTBvbueU6PQWcthcyAwKBjcu89GoPRNtD3AKEJZ'),
-    imageUrl: '/logos/portals.svg',
-    maxStaked: 10000,
-    colors: {
-      primary: 'rgba(0,1,1,255)',
-      secondary: 'rgba(129,221,238,255)',
-      fontColor: 'rgba(0,0,0,255)',
-    },
-  },
-  {
     name: 'blockasset',
     displayName: 'Blockasset',
     pubkey: new PublicKey('3BZCupFU6X3wYJwgTsKS2vTs4VeMrhSZgx4P2TfzExtP'),
