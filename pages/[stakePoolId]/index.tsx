@@ -39,6 +39,8 @@ import { defaultSecondaryColor } from 'api/mapping'
 import { Footer } from 'common/Footer'
 import { shortPubKey } from '@cardinal/namespaces-components'
 import { useRewardDistributorTokenAccount } from 'hooks/useRewardDistributorTokenAccount'
+import { useRewardEntries } from 'hooks/useRewardEntries'
+import { config } from 'process'
 
 function Home() {
   const { connection, environment } = useEnvironmentCtx()
@@ -50,6 +52,7 @@ function Home() {
   const rewardMintInfo = useRewardMintInfo()
   const stakePoolEntries = useStakePoolEntries()
   const maxStaked = useStakePoolMaxStaked()
+  const rewardEntries = useRewardEntries()
   const rewards = useRewards()
 
   const [unstakedSelected, setUnstakedSelected] = useState<TokenData[]>([])
@@ -695,6 +698,34 @@ function Home() {
                                     {tk.tokenListData.symbol}
                                   </div>
                                 )}
+                                {tk.stakeEntry?.pubkey &&
+                                  rewardEntries.data &&
+                                  !rewardEntries.data
+                                    .find((entry) =>
+                                      entry.parsed.stakeEntry.equals(
+                                        tk.stakeEntry?.pubkey!
+                                      )
+                                    )
+                                    ?.parsed.multiplier.eq(new BN(0)) && (
+                                    <div
+                                      className="absolute top-2 left-2 flex h-6 w-6 items-center justify-center rounded-full text-[8px]"
+                                      style={{
+                                        color:
+                                          stakePoolMetadata?.colors?.secondary,
+                                        background:
+                                          stakePoolMetadata?.colors?.primary,
+                                      }}
+                                    >
+                                      {rewardEntries.data
+                                        .find((entry) =>
+                                          entry.parsed.stakeEntry.equals(
+                                            tk.stakeEntry?.pubkey!
+                                          )
+                                        )
+                                        ?.parsed.multiplier.toString()}
+                                      x
+                                    </div>
+                                  )}
                                 {rewards.data &&
                                   rewards.data.rewardMap[
                                     tk.stakeEntry?.pubkey.toString() || ''
