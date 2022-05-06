@@ -5,13 +5,6 @@ import { BN } from '@project-serum/anchor'
 import { useRewardDistributorTokenAccount } from './useRewardDistributorTokenAccount'
 import { useUTCNow } from 'providers/UTCNowProvider'
 import { useRewardEntries } from './useRewardEntries'
-import { PublicKey } from '@solana/web3.js'
-import { AccountData } from '@cardinal/common'
-import { StakeEntryData } from '@cardinal/staking/dist/cjs/programs/stakePool'
-import {
-  RewardDistributorData,
-  RewardEntryData,
-} from '@cardinal/staking/dist/cjs/programs/rewardDistributor'
 import { getRewardMap } from '@cardinal/staking'
 
 export const useRewards = () => {
@@ -44,7 +37,7 @@ export const useRewards = () => {
         .filter((tk) => tk && tk.stakeEntry)
         .map((tk) => tk.stakeEntry!)
 
-      return getRewardMap2(
+      return getRewardMap(
         stakeEntries,
         rewardEntries,
         rewardDistributorData,
@@ -60,5 +53,3 @@ export const useRewards = () => {
     { name: 'rewardMap' }
   )
 }
-
-
