@@ -16,7 +16,9 @@ export const useRewards = () => {
   const { UTCNow } = useUTCNow()
 
   return useDataHook<{
-    rewardMap: { [mintId: string]: { claimableRewards: BN; nextRewardsIn: BN } }
+    rewardMap: {
+      [stakeEntryId: string]: { claimableRewards: BN; nextRewardsIn: BN }
+    }
     claimableRewards: BN
   }>(
     async () => {
@@ -34,10 +36,8 @@ export const useRewards = () => {
       const stakeEntries = stakedTokenDatas
         .filter((tk) => tk && tk.stakeEntry)
         .map((tk) => tk.stakeEntry!)
-      const mintIds = stakeEntries.map((entry) => entry.parsed.originalMint)
 
       return getRewardMap(
-        mintIds,
         stakeEntries,
         rewardEntries,
         rewardDistributorData,
