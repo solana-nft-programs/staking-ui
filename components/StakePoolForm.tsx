@@ -124,7 +124,6 @@ export function StakePoolForm({
     validationSchema: creationFormSchema,
   })
   const { values, errors, setFieldValue, handleChange } = formState
-  console.log(JSON.stringify(formState, null, 2))
 
   const [submitDisabled, setSubmitDisabled] = useState<boolean>(true)
   const [processingMintAddress, setProcessingMintAddress] =
