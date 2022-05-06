@@ -28,6 +28,7 @@ import { parseMintNaturalAmountFromDecimal } from 'common/units'
 import { CreationForm, StakePoolForm } from 'components/StakePoolForm'
 import { useRewardDistributorData } from 'hooks/useRewardDistributorData'
 import { tryPublicKey } from 'common/utils'
+import { findStakeEntryIdFromMint } from '@cardinal/staking/dist/cjs/programs/stakePool/utils'
 
 function AdminStakePool() {
   const wallet = useWallet()
@@ -77,6 +78,12 @@ function AdminStakePool() {
       }
       for (let i = 0; i < pubKeysToSetMultiplier.length; i++) {
         let mint = pubKeysToSetMultiplier[i]!
+        const [stakeEntryId] = await findStakeEntryIdFromMint(
+          connection,
+          wallet.publicKey!,
+          stakePool.data.pubkey,
+          mint
+        )
         const transaction = await withUpdateRewardEntry(
           new Transaction(),
           connection,
@@ -84,7 +91,7 @@ function AdminStakePool() {
           {
             stakePoolId: stakePool.data.pubkey,
             rewardDistributorId: rewardDistributor.pubkey,
-            mintId: mint,
+            stakeEntryId: stakeEntryId,
             multiplier: new BN(multiplier),
           }
         )

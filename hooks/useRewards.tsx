@@ -5,6 +5,13 @@ import { BN } from '@project-serum/anchor'
 import { useRewardDistributorTokenAccount } from './useRewardDistributorTokenAccount'
 import { useUTCNow } from 'providers/UTCNowProvider'
 import { useRewardEntries } from './useRewardEntries'
+import { PublicKey } from '@solana/web3.js'
+import { AccountData } from '@cardinal/common'
+import { StakeEntryData } from '@cardinal/staking/dist/cjs/programs/stakePool'
+import {
+  RewardDistributorData,
+  RewardEntryData,
+} from '@cardinal/staking/dist/cjs/programs/rewardDistributor'
 import { getRewardMap } from '@cardinal/staking'
 
 export const useRewards = () => {
@@ -16,7 +23,9 @@ export const useRewards = () => {
   const { UTCNow } = useUTCNow()
 
   return useDataHook<{
-    rewardMap: { [mintId: string]: { claimableRewards: BN; nextRewardsIn: BN } }
+    rewardMap: {
+      [stakeEntryId: string]: { claimableRewards: BN; nextRewardsIn: BN }
+    }
     claimableRewards: BN
   }>(
     async () => {
@@ -34,10 +43,8 @@ export const useRewards = () => {
       const stakeEntries = stakedTokenDatas
         .filter((tk) => tk && tk.stakeEntry)
         .map((tk) => tk.stakeEntry!)
-      const mintIds = stakeEntries.map((entry) => entry.parsed.originalMint)
 
-      return getRewardMap(
-        mintIds,
+      return getRewardMap2(
         stakeEntries,
         rewardEntries,
         rewardDistributorData,
@@ -53,3 +60,5 @@ export const useRewards = () => {
     { name: 'rewardMap' }
   )
 }
+
+

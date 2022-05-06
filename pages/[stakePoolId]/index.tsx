@@ -37,6 +37,8 @@ import { useAllowedTokenDatas } from 'hooks/useAllowedTokenDatas'
 import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
 import { defaultSecondaryColor } from 'api/mapping'
 import { Footer } from 'common/Footer'
+import { shortPubKey } from '@cardinal/namespaces-components'
+import { useRewardDistributorTokenAccount } from 'hooks/useRewardDistributorTokenAccount'
 
 function Home() {
   const { connection, environment } = useEnvironmentCtx()
@@ -59,6 +61,7 @@ function Home() {
   const [showAllowedTokens, setShowAllowedTokens] = useState<boolean>()
   const { data: filteredTokens } = useAllowedTokenDatas(showFungibleTokens)
   const { data: stakePoolMetadata } = useStakePoolMetadata()
+  const rewardDistributorTokenAccountData = useRewardDistributorTokenAccount()
 
   async function handleClaimRewards() {
     if (stakedSelected.length > 4) {
@@ -84,7 +87,7 @@ function Home() {
 
         const transaction = await claimRewards(connection, wallet as Wallet, {
           stakePoolId: stakePool.pubkey,
-          originalMintId: token.stakeEntry.parsed.originalMint,
+          stakeEntryId: token.stakeEntry.pubkey,
         })
         await executeTransaction(connection, wallet as Wallet, transaction, {})
         notify({ message: `Successfully claimed rewards`, type: 'success' })
@@ -97,6 +100,8 @@ function Home() {
       }
     }
 
+    rewardDistibutorData.refresh()
+    rewardDistributorTokenAccountData.refresh()
     setLoadingClaimRewards(false)
   }
 
@@ -252,6 +257,7 @@ function Home() {
         stk.stakeEntry?.parsed.originalMint.toString() ===
         tk.stakeEntry?.parsed.originalMint.toString()
     )
+
   return (
     <div style={{ background: stakePoolMetadata?.colors?.primary }}>
       <Head>
@@ -314,7 +320,7 @@ function Home() {
                       ) /
                         rewardDistibutorData.data.parsed.rewardDurationSeconds.toNumber()) *
                       86400
-                    ).toPrecision(3)}{' '}
+                    ).toPrecision(4)}{' '}
                     <a
                       className="text-white underline"
                       target="_blank"
@@ -328,19 +334,43 @@ function Home() {
                     / Day
                   </span>
                 </div>
-                <div className="flex min-w-[200px] text-lg">
+                <div className="flex min-w-[200px] flex-col text-lg">
                   {!rewardMintInfo || !rewards.data ? (
                     <div className="relative flex h-8 w-full items-center justify-center">
                       <span className="text-gray-500"></span>
                       <div className="absolute w-full animate-pulse items-center justify-center rounded-lg bg-white bg-opacity-10 p-5"></div>
                     </div>
                   ) : (
-                    `Earnings: ${formatMintNaturalAmountAsDecimal(
-                      rewardMintInfo.data.mintInfo,
-                      rewards.data.claimableRewards,
-                      6
-                    )}
-                          ${rewardMintInfo.data.tokenListData?.name ?? '???'}`
+                    <>
+                      <div>
+                        Earnings:{' '}
+                        {formatMintNaturalAmountAsDecimal(
+                          rewardMintInfo.data.mintInfo,
+                          rewards.data.claimableRewards,
+                          6
+                        )}{' '}
+                        {rewardMintInfo.data.tokenListData?.name ?? '???'}
+                      </div>
+                      <div className="text-xs text-gray-500">
+                        <a
+                          target={'_blank'}
+                          href={pubKeyUrl(
+                            rewardDistibutorData.data.pubkey,
+                            environment.label
+                          )}
+                        >
+                          {shortPubKey(rewardDistibutorData.data.pubkey)}
+                        </a>{' '}
+                        {rewardDistributorTokenAccountData.data
+                          ? formatMintNaturalAmountAsDecimal(
+                              rewardMintInfo.data.mintInfo,
+                              rewardDistributorTokenAccountData.data.amount,
+                              6
+                            )
+                          : ''}{' '}
+                        Left
+                      </div>
+                    </>
                   )}
                 </div>
               </>
@@ -667,8 +697,7 @@ function Home() {
                                 )}
                                 {rewards.data &&
                                   rewards.data.rewardMap[
-                                    tk.stakeEntry?.parsed.originalMint.toString() ||
-                                      ''
+                                    tk.stakeEntry?.pubkey.toString() || ''
                                   ] &&
                                   rewardDistibutorData.data?.parsed.rewardDurationSeconds.gte(
                                     new BN(60)
@@ -676,8 +705,7 @@ function Home() {
                                     <div className="mt-1 flex items-center justify-center text-xs">
                                       {secondstoDuration(
                                         rewards.data.rewardMap[
-                                          tk.stakeEntry?.parsed.originalMint.toString() ||
-                                            ''
+                                          tk.stakeEntry?.pubkey.toString() || ''
                                         ]?.nextRewardsIn.toNumber() || 0
                                       )}{' '}
                                     </div>
@@ -709,8 +737,8 @@ function Home() {
                                     setStakedSelected(
                                       stakedSelected.filter(
                                         (data) =>
-                                          data.stakeEntry?.parsed.originalMint.toString() !==
-                                          tk.stakeEntry?.parsed.originalMint.toString()
+                                          data.stakeEntry?.pubkey.toString() !==
+                                          tk.stakeEntry?.pubkey.toString()
                                       )
                                     )
                                   } else {

@@ -18,16 +18,16 @@ export const useRewardEntries = () => {
         return
       }
 
-      const stakeEntries = stakedTokenDatas
+      const stakeEntryIds = stakedTokenDatas
         .filter((tk) => tk && tk.stakeEntry)
         .map((tk) => tk.stakeEntry!)
-      const mintIds = stakeEntries.map((entry) => entry.parsed.originalMint)
+        .map((entry) => entry.pubkey)
 
       const rewardEntryIds = await Promise.all(
-        mintIds.map(
-          async (mintId) =>
+        stakeEntryIds.map(
+          async (stakeEntryId) =>
             (
-              await findRewardEntryId(rewardDistibutorId, mintId)
+              await findRewardEntryId(rewardDistibutorId, stakeEntryId)
             )[0]
         )
       )
