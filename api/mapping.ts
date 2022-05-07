@@ -40,11 +40,11 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     name: 'MetaOps',
     displayName: 'MetaOps PFP Vault',
     pubkey: new PublicKey('FP9BRAohGJDximSTa9HR3UNCd9KA5QUApyctMpASrsJp'),
-    websiteUrl: 'https://blockasset.co/',
+    websiteUrl: 'https://metaopsgaming.com/',
     receiptType: ReceiptType.Original,
     imageUrl:
       'https://www.metaopsvault.com/img/staking_hub_header_logo.0b7bc420.png',
-    maxStaked: 5555,
+    maxStaked: 2000,
     colors: {
       primary: '#000000',
       secondary: '#4da1de',
