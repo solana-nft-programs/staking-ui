@@ -752,13 +752,18 @@ function Home() {
                                 )}
                                 {tk.stakeEntry?.pubkey &&
                                   rewardEntries.data &&
+                                  rewardEntries.data.find((entry) =>
+                                    entry.parsed.stakeEntry.equals(
+                                      tk.stakeEntry?.pubkey!
+                                    )
+                                  )?.parsed.multiplier &&
                                   !rewardEntries.data
                                     .find((entry) =>
                                       entry.parsed.stakeEntry.equals(
                                         tk.stakeEntry?.pubkey!
                                       )
                                     )
-                                    ?.parsed.multiplier.eq(new BN(0)) && (
+                                    ?.parsed.multiplier.eq(new BN(1)) && (
                                     <div
                                       className="absolute top-2 left-2 flex h-6 w-6 items-center justify-center rounded-full text-[8px]"
                                       style={{
