@@ -39,7 +39,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
   {
     name: 'MetaOps',
     displayName: 'MetaOps PFP Vault',
-    pubkey: new PublicKey('BeunK2rKRNXbL6YsMkKDPD4f24Ms4dcj2JpsN6KCjBjY'),
+    pubkey: new PublicKey('FP9BRAohGJDximSTa9HR3UNCd9KA5QUApyctMpASrsJp'),
     websiteUrl: 'https://metaopsgaming.com/',
     receiptType: ReceiptType.Original,
     imageUrl:
