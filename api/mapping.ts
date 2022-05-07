@@ -52,4 +52,36 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       fontColor: '#FFFFFF',
     },
   },
+  {
+    name: 'meta-ops',
+    displayName: 'MetaOps PFP Vault',
+    pubkey: new PublicKey('FP9BRAohGJDximSTa9HR3UNCd9KA5QUApyctMpASrsJp'),
+    websiteUrl: 'https://metaopsgaming.com/',
+    receiptType: ReceiptType.Original,
+    imageUrl:
+      'https://www.metaopsvault.com/img/staking_hub_header_logo.0b7bc420.png',
+    maxStaked: 5555,
+    colors: {
+      primary: '#000000',
+      secondary: '#4da1de',
+      accent: '#1fcfb11c',
+      fontColor: '#FFFFFF',
+    },
+  },
+  {
+    name: 'meta-ops-founders-vault',
+    displayName: 'MetaOps Founders Passes Vault',
+    pubkey: new PublicKey('BeunK2rKRNXbL6YsMkKDPD4f24Ms4dcj2JpsN6KCjBjY'),
+    websiteUrl: 'https://metaopsgaming.com/',
+    receiptType: ReceiptType.Original,
+    imageUrl:
+      'https://www.metaopsvault.com/img/staking_hub_header_logo.0b7bc420.png',
+    maxStaked: 2000,
+    colors: {
+      primary: '#000000',
+      secondary: '#4da1de',
+      accent: '#1fcfb11c',
+      fontColor: '#FFFFFF',
+    },
+  },
 ]
