@@ -276,7 +276,7 @@
     ts-mocha "^8.0.0"
     typescript "^4.5.5"
 
-"@cardinal/staking@^1.4.1":
+"@cardinal/staking@^1.4.0":
   version "1.4.1"
   resolved "https://registry.yarnpkg.com/@cardinal/staking/-/staking-1.4.1.tgz#4bd1ed056db8f0da0373e85b0283b26e850754f8"
   integrity sha512-Y2i7Q0H0y45jkPGSOUsJJEuyseTa/uYfXDLkAvDXD2lummDCiRlnCBLRCwtG+UfwuExZW7cFIL8Rv+jI5U/XSg==

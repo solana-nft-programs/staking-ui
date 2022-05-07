@@ -412,10 +412,7 @@ function Home() {
 
               <div className="flex flex-row">
                 <button
-                  onClick={() => {
-                    console.log(rewardDistibutorData)
-                    setShowAllowedTokens(!showAllowedTokens)
-                  }}
+                  onClick={() => setShowAllowedTokens(!showAllowedTokens)}
                   className="text-md mr-5 inline-block rounded-md bg-white bg-opacity-5 px-4 py-1 hover:bg-opacity-10 focus:outline-none"
                 >
                   {showAllowedTokens ? 'Hide' : 'Show'} Allowed Tokens
@@ -760,12 +757,11 @@ function Home() {
                                     )
                                   )?.parsed.multiplier &&
                                   !rewardEntries.data
-                                    .find((entry) => {
-                                      console.log(entry.pubkey.toString())
-                                      return entry.parsed.stakeEntry.equals(
+                                    .find((entry) =>
+                                      entry.parsed.stakeEntry.equals(
                                         tk.stakeEntry?.pubkey!
                                       )
-                                    })
+                                    )
                                     ?.parsed.multiplier.eq(new BN(0)) && (
                                     <div
                                       className="absolute top-2 left-2 flex h-6 w-6 items-center justify-center rounded-full text-[8px]"
