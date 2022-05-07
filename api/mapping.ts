@@ -37,14 +37,14 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     },
   },
   {
-    name: 'blockasset',
-    displayName: 'Blockasset',
-    pubkey: new PublicKey('3BZCupFU6X3wYJwgTsKS2vTs4VeMrhSZgx4P2TfzExtP'),
+    name: 'MetaOps',
+    displayName: 'MetaOps PFP Vault',
+    pubkey: new PublicKey('FP9BRAohGJDximSTa9HR3UNCd9KA5QUApyctMpASrsJp'),
     websiteUrl: 'https://blockasset.co/',
     receiptType: ReceiptType.Original,
     imageUrl:
-      'https://blockasset.co/static/logo-e51ac9985ba7aef4ac8c1b1ae1c00511.png',
-    maxStaked: 11791,
+      'https://www.metaopsvault.com/img/staking_hub_header_logo.0b7bc420.png',
+    maxStaked: 5555,
     colors: {
       primary: '#000000',
       secondary: '#4da1de',
