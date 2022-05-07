@@ -37,7 +37,39 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     },
   },
   {
-    name: 'MetaOps',
+    name: 'blockasset',
+    displayName: 'Blockasset',
+    pubkey: new PublicKey('3BZCupFU6X3wYJwgTsKS2vTs4VeMrhSZgx4P2TfzExtP'),
+    websiteUrl: 'https://blockasset.co/',
+    receiptType: ReceiptType.Original,
+    imageUrl:
+      'https://blockasset.co/static/logo-e51ac9985ba7aef4ac8c1b1ae1c00511.png',
+    maxStaked: 11791,
+    colors: {
+      primary: '#000000',
+      secondary: '#4da1de',
+      accent: '#1fcfb11c',
+      fontColor: '#FFFFFF',
+    },
+  },
+  {
+    name: 'meta-ops',
+    displayName: 'MetaOps PFP Vault',
+    pubkey: new PublicKey('FP9BRAohGJDximSTa9HR3UNCd9KA5QUApyctMpASrsJp'),
+    websiteUrl: 'https://metaopsgaming.com/',
+    receiptType: ReceiptType.Original,
+    imageUrl:
+      'https://www.metaopsvault.com/img/staking_hub_header_logo.0b7bc420.png',
+    maxStaked: 5555,
+    colors: {
+      primary: '#000000',
+      secondary: '#4da1de',
+      accent: '#1fcfb11c',
+      fontColor: '#FFFFFF',
+    },
+  },
+  {
+    name: 'meta-ops-founders-vault',
     displayName: 'MetaOps Founders Passes Vault',
     pubkey: new PublicKey('BeunK2rKRNXbL6YsMkKDPD4f24Ms4dcj2JpsN6KCjBjY'),
     websiteUrl: 'https://metaopsgaming.com/',
