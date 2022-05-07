@@ -32,7 +32,9 @@ export const useRewardEntries = () => {
         )
       )
 
-      return getRewardEntries(connection, rewardEntryIds)
+      return (await getRewardEntries(connection, rewardEntryIds)).filter(
+        (rewardEntry) => rewardEntry.parsed
+      )
     },
     [rewardDistibutorData?.pubkey?.toString(), stakedTokenDatas],
     { name: 'rewardEntries' }
