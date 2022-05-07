@@ -193,24 +193,23 @@ function Home() {
           return
         }
 
-        console.log('Creating stake entry and stake mint...')
-        const [initTx, , stakeMintKeypair] = await createStakeEntryAndStakeMint(
-          connection,
-          wallet as Wallet,
-          {
-            stakePoolId: stakePool?.pubkey,
-            originalMintId: new PublicKey(
-              token.tokenAccount.account.data.parsed.info.mint
-            ),
+        if (receiptType === ReceiptType.Receipt) {
+          console.log('Creating stake entry and stake mint...')
+          const [initTx, , stakeMintKeypair] =
+            await createStakeEntryAndStakeMint(connection, wallet as Wallet, {
+              stakePoolId: stakePool?.pubkey,
+              originalMintId: new PublicKey(
+                token.tokenAccount.account.data.parsed.info.mint
+              ),
+            })
+          if (initTx.instructions.length > 0) {
+            await executeTransaction(connection, wallet as Wallet, initTx, {
+              signers: stakeMintKeypair ? [stakeMintKeypair] : [],
+            })
           }
-        )
-        if (initTx.instructions.length > 0) {
-          await executeTransaction(connection, wallet as Wallet, initTx, {
-            signers: stakeMintKeypair ? [stakeMintKeypair] : [],
-          })
+          console.log('Successfully created stake entry and stake mint')
         }
 
-        console.log('Successfully created stake entry and stake mint')
         console.log('Staking...')
         // stake
         const transaction = await stake(connection, wallet as Wallet, {
