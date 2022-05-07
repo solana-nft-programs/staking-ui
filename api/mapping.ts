@@ -1,5 +1,6 @@
 import { AirdropMetadata } from './../common/Airdrop'
 import { PublicKey } from '@solana/web3.js'
+import { ReceiptType } from '@cardinal/staking/dist/cjs/programs/stakePool'
 
 export type StakePoolMetadata = {
   name: string
@@ -9,6 +10,7 @@ export type StakePoolMetadata = {
     type: 'creators' | 'symbol' | 'issuer'
     value: string | string[]
   }[]
+  receiptType?: ReceiptType
   colors?: {
     primary: string
     secondary: string
@@ -39,6 +41,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     displayName: 'Blockasset',
     pubkey: new PublicKey('3BZCupFU6X3wYJwgTsKS2vTs4VeMrhSZgx4P2TfzExtP'),
     websiteUrl: 'https://blockasset.co/',
+    receiptType: ReceiptType.Original,
     imageUrl:
       'https://blockasset.co/static/logo-e51ac9985ba7aef4ac8c1b1ae1c00511.png',
     maxStaked: 11791,

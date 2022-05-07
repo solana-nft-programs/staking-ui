@@ -40,6 +40,9 @@ import { Footer } from 'common/Footer'
 import { shortPubKey } from '@cardinal/namespaces-components'
 import { useRewardDistributorTokenAccount } from 'hooks/useRewardDistributorTokenAccount'
 import { useRewardEntries } from 'hooks/useRewardEntries'
+import { Switch } from '@headlessui/react'
+import { FaInfoCircle } from 'react-icons/fa'
+import { MouseoverTooltip } from 'common/Tooltip'
 
 function Home() {
   const { connection, environment } = useEnvironmentCtx()
@@ -58,6 +61,9 @@ function Home() {
   const [stakedSelected, setStakedSelected] = useState<TokenData[]>([])
   const [loadingStake, setLoadingStake] = useState(false)
   const [loadingUnstake, setLoadingUnstake] = useState(false)
+  const [receiptType, setReceiptType] = useState<ReceiptType>(
+    ReceiptType.Original
+  )
   const [loadingClaimRewards, setLoadingClaimRewards] = useState(false)
   const [showFungibleTokens, setShowFungibleTokens] = useState(false)
   const [showAllowedTokens, setShowAllowedTokens] = useState<boolean>()
@@ -209,7 +215,7 @@ function Home() {
         // stake
         const transaction = await stake(connection, wallet as Wallet, {
           stakePoolId: stakePool?.pubkey,
-          receiptType: ReceiptType.Receipt,
+          receiptType: receiptType,
           originalMintId: new PublicKey(
             token.tokenAccount.account.data.parsed.info.mint
           ),
@@ -576,7 +582,58 @@ function Home() {
                 )}
               </div>
             </div>
-            <div className="mt-2 flex flex-row-reverse">
+
+            <div className="mt-2 flex items-center justify-between">
+              {!stakePoolMetadata?.receiptType && (
+                <MouseoverTooltip
+                  title={
+                    receiptType === ReceiptType.Original
+                      ? 'Lock the original token(s) in your wallet when you stake'
+                      : 'Receive a dynamically generated NFT receipt representing your stake'
+                  }
+                >
+                  <div className="flex cursor-pointer flex-row gap-2">
+                    <Switch
+                      checked={receiptType === ReceiptType.Original}
+                      onChange={() =>
+                        setReceiptType(
+                          receiptType === ReceiptType.Original
+                            ? ReceiptType.Receipt
+                            : ReceiptType.Original
+                        )
+                      }
+                      style={{
+                        background:
+                          stakePoolMetadata?.colors?.secondary ||
+                          defaultSecondaryColor,
+                        color: stakePoolMetadata?.colors?.fontColor,
+                      }}
+                      className={`relative inline-flex h-6 w-11 items-center rounded-full`}
+                    >
+                      <span className="sr-only">Receipt Type</span>
+                      <span
+                        className={`${
+                          receiptType === ReceiptType.Original
+                            ? 'translate-x-6'
+                            : 'translate-x-1'
+                        } inline-block h-4 w-4 transform rounded-full bg-white`}
+                      />
+                    </Switch>
+                    <div className="flex items-center gap-1">
+                      <span
+                        style={{
+                          color: stakePoolMetadata?.colors?.fontColor,
+                        }}
+                      >
+                        {receiptType === ReceiptType.Original
+                          ? 'Original'
+                          : 'Receipt'}
+                      </span>
+                      <FaInfoCircle />
+                    </div>
+                  </div>
+                </MouseoverTooltip>
+              )}
               <button
                 onClick={() => {
                   if (unstakedSelected.length === 0) {
