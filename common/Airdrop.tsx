@@ -1,4 +1,4 @@
-import { createMint, withCreateMint } from '@cardinal/common'
+import { withCreateMint } from '@cardinal/common'
 import {
   CreateMasterEditionV3,
   CreateMetadataV2,
@@ -9,7 +9,6 @@ import {
 } from '@metaplex-foundation/mpl-token-metadata'
 import { BN } from '@project-serum/anchor'
 import type { Wallet } from '@saberhq/solana-contrib'
-import { SignerWallet } from '@saberhq/solana-contrib'
 import { useWallet } from '@solana/wallet-adapter-react'
 import type { Connection } from '@solana/web3.js'
 import { Keypair, LAMPORTS_PER_SOL, Transaction } from '@solana/web3.js'
@@ -20,9 +19,7 @@ import { useUserTokenData } from 'providers/TokenDataProvider'
 import { AsyncButton } from './Button'
 
 import { executeTransaction } from '@cardinal/staking'
-import { useRouter } from 'next/router'
-import { StakePoolMetadata, stakePoolMetadatas } from 'api/mapping'
-import { useStakePoolId } from 'hooks/useStakePoolId'
+import { StakePoolMetadata } from 'api/mapping'
 import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
 
 export type AirdropMetadata = { name: string; symbol: string; uri: string }
@@ -67,7 +64,7 @@ export async function airdropNFT(
                   new Creator({
                     address: c,
                     verified: false,
-                    share: 100,
+                    share: 1 / creators.value.length,
                   })
               )
               .concat(
@@ -141,6 +138,7 @@ export const Airdrop = () => {
             stakePoolMetadata?.airdrops || airdrops || [],
             stakePoolMetadata
           )
+          notify({ message: 'Aidrop successfull', type: 'success' })
           await refreshTokenAccounts()
         } catch (e) {
           notify({ message: `Airdrop failed: ${e}`, type: 'error' })

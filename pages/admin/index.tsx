@@ -137,6 +137,9 @@ function Admin() {
       await executeTransaction(connection, wallet as Wallet, transaction, {
         silent: false,
         signers: [],
+        confirmOptions: {
+          skipPreflight: true,
+        },
       })
       setStakePoolId(stakePoolPK)
 

@@ -51,6 +51,22 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       accent: '#1fcfb11c',
       fontColor: '#FFFFFF',
     },
+    airdrops: [
+      {
+        name: 'Blockasset Legends',
+        symbol: 'LEGENDS',
+        uri: 'https://arweave.net/Q5y8_OehSOYCkGiX-hV1H6qiczoDaVdk4Eyi4lhhdQE',
+      },
+    ],
+    filters: [
+      {
+        type: 'creators',
+        value: [
+          'GghbWF9xtKmJCp7JMSo4HNZ8dwGkSjRyWm1vNC58jZES',
+          'H2oh994VjarQ5m69wUSaahQrHLefmjRa1WoipV7brWqd',
+        ],
+      },
+    ],
   },
   {
     name: 'meta-ops',
