@@ -762,7 +762,7 @@ function Home() {
                                         tk.stakeEntry?.pubkey!
                                       )
                                     )
-                                    ?.parsed.multiplier.eq(new BN(1)) && (
+                                    ?.parsed.multiplier.eq(new BN(0)) && (
                                     <div
                                       className="absolute top-2 left-2 flex h-6 w-6 items-center justify-center rounded-full text-[8px]"
                                       style={{

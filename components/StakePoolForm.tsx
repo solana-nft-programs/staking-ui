@@ -492,14 +492,14 @@ export function StakePoolForm({
                       disabled={submitDisabled || type === 'update'}
                       value={values.rewardAmount}
                       onChange={(e) => {
-                        // const amount = Number(e.target.value)
-                        // if (!amount && e.target.value.length != 0) {
-                        //   notify({
-                        //     message: `Invalid reward amount`,
-                        //     type: 'error',
-                        //   })
-                        // }
-                        setFieldValue('rewardAmount', e.target.value)
+                        const amount = Number(e.target.value)
+                        if (!amount && e.target.value.length != 0) {
+                          notify({
+                            message: `Invalid reward amount`,
+                            type: 'error',
+                          })
+                        }
+                        setFieldValue('rewardAmount', e.target.value.toString())
                       }}
                     />
                   </div>
@@ -523,14 +523,17 @@ export function StakePoolForm({
                       value={values.rewardDurationSeconds}
                       disabled={submitDisabled || type === 'update'}
                       onChange={(e) => {
-                        // const seconds = Number(e.target.value)
-                        // if (!seconds && e.target.value.length !== 0) {
-                        //   notify({
-                        //     message: `Invalid reward duration seconds`,
-                        //     type: 'error',
-                        //   })
-                        // }
-                        setFieldValue('rewardDurationSeconds', e.target.value)
+                        const seconds = Number(e.target.value)
+                        if (!seconds && e.target.value.length !== 0) {
+                          notify({
+                            message: `Invalid reward duration seconds`,
+                            type: 'error',
+                          })
+                        }
+                        setFieldValue(
+                          'rewardDurationSeconds',
+                          e.target.value.toString()
+                        )
                       }}
                     />
                   </div>
@@ -576,13 +579,17 @@ export function StakePoolForm({
                           const supply = Number(
                             e.target.value.replaceAll(',', '')
                           )
+                          console.log(supply)
                           if (!supply && e.target.value.length != 0) {
                             notify({
                               message: `Invalid reward mint supply`,
                               type: 'error',
                             })
                           }
-                          setFieldValue('rewardMintSupply', supply.toString())
+                          setFieldValue(
+                            'rewardMintSupply',
+                            e.target.value.toString()
+                          )
                         }}
                       />
                       <div
