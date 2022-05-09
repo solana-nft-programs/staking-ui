@@ -583,7 +583,7 @@ function Home() {
             </div>
 
             <div className="mt-2 flex items-center justify-between">
-              {!stakePoolMetadata?.receiptType && (
+              {!stakePoolMetadata?.receiptType ? (
                 <MouseoverTooltip
                   title={
                     receiptType === ReceiptType.Original
@@ -632,6 +632,8 @@ function Home() {
                     </div>
                   </div>
                 </MouseoverTooltip>
+              ) : (
+                <div></div>
               )}
               <button
                 onClick={() => {
