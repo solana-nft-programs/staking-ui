@@ -45,7 +45,7 @@ export const getInitialProps = async ({
 }: {
   ctx: NextPageContext
 }): Promise<{ cluster: string }> => {
-  const cluster = (ctx.query.project || ctx.query.host)?.includes('dev')
+  const cluster = (ctx.req?.headers.host || ctx.query.host)?.includes('dev')
     ? 'devnet'
     : (ctx.query.project || ctx.query.host)?.includes('test')
     ? 'testnet'
@@ -65,7 +65,7 @@ export function EnvironmentProvider({
   const { query } = useRouter()
   const cluster = (query.project || query.host)?.includes('dev')
     ? 'devnet'
-    : (query.project || query.host)?.includes('test')
+    : query.host?.includes('test')
     ? 'testnet'
     : query.cluster || defaultCluster || process.env.BASE_CLUSTER
   const foundEnvironment = ENVIRONMENTS.find((e) => e.label === cluster)
