@@ -7,7 +7,7 @@ export const useStakePoolsMetadatas = (mintIds: PublicKey[] | undefined) => {
     async () =>
       (mintIds || []).reduce((acc, mintId) => {
         const stakePoolMetadata = stakePoolMetadatas.find(
-          (md) => md.pubkey.toString() === mintId.toString()
+          (md) => md.stakePoolAddress.toString() === mintId.toString()
         )
         return { ...acc, [mintId.toString()]: stakePoolMetadata }
       }, {}),

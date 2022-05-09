@@ -5,7 +5,7 @@ import { ReceiptType } from '@cardinal/staking/dist/cjs/programs/stakePool'
 export type StakePoolMetadata = {
   name: string
   displayName: string
-  pubkey: PublicKey
+  stakePoolAddress: PublicKey
   filters?: {
     type: 'creators' | 'symbol' | 'issuer'
     value: string | string[]
@@ -29,7 +29,9 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
   {
     name: 'cardinal',
     displayName: 'Cardinal',
-    pubkey: new PublicKey('4bsRsyCSSMgFSNJAi5wvh4UX9vMZDf1MwUrHUszfmLbb'),
+    stakePoolAddress: new PublicKey(
+      '4bsRsyCSSMgFSNJAi5wvh4UX9vMZDf1MwUrHUszfmLbb'
+    ),
     imageUrl: '/logo-colored.png',
     colors: {
       primary: 'rgb(54,21,38,0.9)',
@@ -39,7 +41,9 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
   {
     name: 'blockasset',
     displayName: 'Blockasset',
-    pubkey: new PublicKey('3BZCupFU6X3wYJwgTsKS2vTs4VeMrhSZgx4P2TfzExtP'),
+    stakePoolAddress: new PublicKey(
+      '3BZCupFU6X3wYJwgTsKS2vTs4VeMrhSZgx4P2TfzExtP'
+    ),
     websiteUrl: 'https://blockasset.co/',
     receiptType: ReceiptType.Original,
     imageUrl:
@@ -71,7 +75,9 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
   {
     name: 'meta-ops',
     displayName: 'MetaOps PFP Vault',
-    pubkey: new PublicKey('FP9BRAohGJDximSTa9HR3UNCd9KA5QUApyctMpASrsJp'),
+    stakePoolAddress: new PublicKey(
+      'FP9BRAohGJDximSTa9HR3UNCd9KA5QUApyctMpASrsJp'
+    ),
     websiteUrl: 'https://metaopsgaming.com/',
     receiptType: ReceiptType.Original,
     imageUrl:
@@ -87,7 +93,9 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
   {
     name: 'meta-ops-founders-vault',
     displayName: 'MetaOps Founders Passes Vault',
-    pubkey: new PublicKey('BeunK2rKRNXbL6YsMkKDPD4f24Ms4dcj2JpsN6KCjBjY'),
+    stakePoolAddress: new PublicKey(
+      'BeunK2rKRNXbL6YsMkKDPD4f24Ms4dcj2JpsN6KCjBjY'
+    ),
     websiteUrl: 'https://metaopsgaming.com/',
     receiptType: ReceiptType.Original,
     imageUrl:

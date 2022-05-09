@@ -40,7 +40,9 @@ function Home() {
           allStakePoolDatas.reduce(
             (acc, stakePoolData) => {
               const stakePoolMetadata = stakePoolMetadatas.find(
-                (md) => md.pubkey.toString() === stakePoolData.pubkey.toString()
+                (md) =>
+                  md.stakePoolAddress.toString() ===
+                  stakePoolData.pubkey.toString()
               )
               if (stakePoolMetadata) {
                 return [

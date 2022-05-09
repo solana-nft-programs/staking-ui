@@ -8,10 +8,12 @@ export const useStakePoolId = () => {
   } = useRouter()
   const nameMapping = stakePoolMetadatas.find((p) => p.name === stakePoolId)
   const addressMapping = stakePoolMetadatas.find(
-    (p) => p.pubkey.toString() === stakePoolId
+    (p) => p.stakePoolAddress.toString() === stakePoolId
   )
   const publicKey =
-    nameMapping?.pubkey || addressMapping?.pubkey || tryPublicKey(stakePoolId)
+    nameMapping?.stakePoolAddress ||
+    addressMapping?.stakePoolAddress ||
+    tryPublicKey(stakePoolId)
 
   return publicKey
 }
