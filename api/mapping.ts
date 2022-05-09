@@ -103,7 +103,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
   {
     name: 'okaybulls',
     displayName: 'Okaybulls',
-    pubkey: new PublicKey('BeunK2rKRNXbL6YsMkKDPD4f24Ms4dcj2JpsN6KCjBjY'),
+    pubkey: new PublicKey('BoJSbpVoTGVJdjdRRSKnXPb4uUP2MvDwhT5bbpep3sGM'),
     websiteUrl: 'https://okaybulls.com/',
     receiptType: ReceiptType.Original,
     imageUrl:
