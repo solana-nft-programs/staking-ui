@@ -107,7 +107,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     websiteUrl: 'https://okaybulls.com/',
     receiptType: ReceiptType.Original,
     imageUrl:
-      'https://rawcdn.githack.com/okaybulls/token/fb8f19a8139c0be093815f0b9fc0ff80133c0e36/token.png',
+      'https://rawcdn.githack.com/okaybulls/token/114a638611c6564e7aa4c7cd70d2b5359a6968c5/logo.png',
     maxStaked: 10000,
     colors: {
       primary: '#1C1C1C',
