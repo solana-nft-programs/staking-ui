@@ -108,4 +108,20 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       fontColor: '#FFFFFF',
     },
   },
+  {
+    name: 'okaybulls',
+    displayName: 'Okaybulls',
+    pubkey: new PublicKey('34Mu6xQSWzJDwyXrQcbmuRA6JjJQEWwwzhFubmrGD2qx'),
+    websiteUrl: 'https://okaybulls.com/',
+    receiptType: ReceiptType.Original,
+    imageUrl:
+      'https://rawcdn.githack.com/okaybulls/token/114a638611c6564e7aa4c7cd70d2b5359a6968c5/logo.png',
+    maxStaked: 10000,
+    colors: {
+      primary: '#1C1C1C',
+      secondary: '#F4431C',
+      accent: '#F4431C',
+      fontColor: '#FFFFFF',
+    },
+  },  
 ]
