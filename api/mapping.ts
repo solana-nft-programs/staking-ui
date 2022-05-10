@@ -121,8 +121,8 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     maxStaked: 10000,
     colors: {
       primary: '#1C1C1C',
-      secondary: '#434343',
-      accent: '#F4431C',
+      secondary: '#F4431C',
+      accent: '#434343',
       fontColor: '#FFFFFF',
     },
   },
