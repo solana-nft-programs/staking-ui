@@ -327,7 +327,10 @@ function Home() {
                         )
                       ) /
                         rewardDistibutorData.data.parsed.rewardDurationSeconds.toNumber()) *
-                      86400
+                      86400 *
+                      (rewardDistibutorData.data.parsed.defaultMultiplier.toNumber() /
+                        10 **
+                          rewardDistibutorData.data.parsed.multiplierDecimals)
                     ).toPrecision(4)}{' '}
                     <a
                       className="text-white underline"
