@@ -19,6 +19,7 @@ import { LoadingSpinner } from 'common/LoadingSpinner'
 import { notify } from 'common/Notification'
 import { pubKeyUrl, secondstoDuration } from 'common/utils'
 import {
+  formatAmountAsDecimal,
   formatMintNaturalAmountAsDecimal,
   getMintDecimalAmountFromNatural,
   getMintDecimalAmountFromNaturalV2,
@@ -766,7 +767,7 @@ function Home() {
                                     )
                                     ?.parsed.multiplier.eq(new BN(0)) && (
                                     <div
-                                      className="absolute top-2 left-2 flex h-6 w-6 items-center justify-center rounded-full text-[8px]"
+                                      className="absolute top-1 left-1 flex items-center justify-center rounded-full bg-[#9945ff] px-1 py-1 text-[8px]"
                                       style={{
                                         color:
                                           stakePoolMetadata?.colors?.secondary,
@@ -774,13 +775,18 @@ function Home() {
                                           stakePoolMetadata?.colors?.primary,
                                       }}
                                     >
-                                      {rewardEntries.data
-                                        .find((entry) =>
-                                          entry.parsed.stakeEntry.equals(
-                                            tk.stakeEntry?.pubkey!
-                                          )
-                                        )
-                                        ?.parsed.multiplier.toString()}
+                                      {rewardDistibutorData.data?.parsed
+                                        .multiplierDecimals !== undefined &&
+                                        formatAmountAsDecimal(
+                                          rewardDistibutorData.data?.parsed
+                                            .multiplierDecimals,
+                                          rewardEntries.data.find((entry) =>
+                                            entry.parsed.stakeEntry.equals(
+                                              tk.stakeEntry?.pubkey!
+                                            )
+                                          )?.parsed.multiplier!,
+                                          6
+                                        ).toString()}
                                       x
                                     </div>
                                   )}
