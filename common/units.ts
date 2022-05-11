@@ -78,3 +78,15 @@ export function getMintDecimalAmountFromNaturalV2(
 ) {
   return new BigNumber(naturalAmount.toString()).shiftedBy(-decimals)
 }
+
+export function formatAmountAsDecimal(
+  decimals: number,
+  naturalAmount: BN,
+  decimalPlaces?: number
+) {
+  return new Number(
+    new BigNumber(naturalAmount.toString())
+      .shiftedBy(-decimals)
+      .toFixed(decimalPlaces ?? 0)
+  ).toString()
+}
