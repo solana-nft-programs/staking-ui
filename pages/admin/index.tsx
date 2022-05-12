@@ -151,15 +151,10 @@ function Admin() {
       })
       // const stakePoolData = await getStakePool(connection, stakePoolPK)
     } catch (e) {
-      const hex = (e as SendTransactionError).message.split(' ').at(-1)
-      if (hex) {
-        notify({
-          message: `Error updating stake pool: ${parseError(hex)}`,
-          type: 'error',
-        })
-      } else {
-        notify({ message: `Error updating stake pool: ${e}`, type: 'error' })
-      }
+      notify({
+        message: parseError(e, 'Error updating stake pool'),
+        type: 'error',
+      })
     }
   }
 

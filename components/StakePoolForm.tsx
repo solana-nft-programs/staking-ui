@@ -2,7 +2,7 @@ import {
   AccountData,
   withFindOrInitAssociatedTokenAccount,
 } from '@cardinal/common'
-import { errors_map, executeTransaction, parseError } from '@cardinal/staking'
+import { executeTransaction, parseError } from '@cardinal/staking'
 import {
   RewardDistributorData,
   RewardDistributorKind,
@@ -21,7 +21,7 @@ import { notify } from 'common/Notification'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 import { TailSpin } from 'react-loader-spinner'
 import * as splToken from '@solana/spl-token'
-import { useEffect, useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 import Select from 'react-select'
 import { getMintDecimalAmountFromNaturalV2 } from 'common/units'
 import { FormFieldTitleInput } from 'common/FormFieldInput'
@@ -179,20 +179,13 @@ export function StakePoolForm({
           }
           userAta = await checkMint.getAccountInfo(mintAta)
         } catch (e) {
-          const hex = (e as SendTransactionError).message.split(' ').at(-1)
-          if (hex) {
-            notify({
-              message: `Failed to get user's associated token address for given mint: ${parseError(
-                hex
-              )}`,
-              type: 'error',
-            })
-          } else {
-            notify({
-              message: `Failed to get user's associated token address for given mint: ${e}`,
-              type: 'error',
-            })
-          }
+          notify({
+            message: parseError(
+              e,
+              "Failed to get user's associated token address for given mint"
+            ),
+            type: 'error',
+          })
         }
         setMintInfo(mintInfo)
         if (userAta) {

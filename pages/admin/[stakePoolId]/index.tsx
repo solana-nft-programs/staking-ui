@@ -1,5 +1,5 @@
 import { tryGetAccount } from '@cardinal/common'
-import { errors_map, executeTransaction, parseError } from '@cardinal/staking'
+import { executeTransaction, parseError } from '@cardinal/staking'
 import { getRewardDistributor } from '@cardinal/staking/dist/cjs/programs/rewardDistributor/accounts'
 import { findRewardDistributorId } from '@cardinal/staking/dist/cjs/programs/rewardDistributor/pda'
 import {
@@ -105,15 +105,10 @@ function AdminStakePool() {
         })
       }
     } catch (e) {
-      const hex = (e as SendTransactionError).message.split(' ').at(-1)
-      if (hex) {
-        notify({
-          message: `Error setting multiplier: ${parseError(hex)}`,
-          type: 'error',
-        })
-      } else {
-        notify({ message: `Error setting multiplier: ${e}`, type: 'error' })
-      }
+      notify({
+        message: parseError(e, 'Error setting multiplier'),
+        type: 'error',
+      })
     } finally {
       setLoadingHandleMultipliers(false)
     }
@@ -161,15 +156,10 @@ function AdminStakePool() {
         })
       }
     } catch (e) {
-      const hex = (e as SendTransactionError).message.split(' ').at(-1)
-      if (hex) {
-        notify({
-          message: `Error authorizing mint: ${parseError(hex)}`,
-          type: 'error',
-        })
-      } else {
-        notify({ message: `Error authorizing mint: ${e}`, type: 'error' })
-      }
+      notify({
+        message: parseError(e, 'Error authorizing mint'),
+        type: 'error',
+      })
     } finally {
       setLoadingHandleAuthorizeMints(false)
     }
@@ -262,15 +252,10 @@ function AdminStakePool() {
 
       await setTimeout(() => stakePool.refresh(true), 1000)
     } catch (e) {
-      const hex = (e as SendTransactionError).message.split(' ').at(-1)
-      if (hex) {
-        notify({
-          message: `Error updating stake pool: ${parseError(hex)}`,
-          type: 'error',
-        })
-      } else {
-        notify({ message: `Error updating stake pool: ${e}`, type: 'error' })
-      }
+      notify({
+        message: parseError(e, 'Error updating stake pool'),
+        type: 'error',
+      })
     }
   }
   return (

@@ -8,7 +8,7 @@ import {
 } from '@cardinal/staking'
 import { ReceiptType } from '@cardinal/staking/dist/cjs/programs/stakePool'
 import { useWallet } from '@solana/wallet-adapter-react'
-import { PublicKey, SendTransactionError } from '@solana/web3.js'
+import { PublicKey } from '@solana/web3.js'
 import { TokenData } from 'api/types'
 import { Header } from 'common/Header'
 import Head from 'next/head'
@@ -103,15 +103,10 @@ function Home() {
         notify({ message: `Successfully claimed rewards`, type: 'success' })
         console.log('Successfully claimed rewards')
       } catch (e) {
-        const hex = (e as SendTransactionError).message.split(' ').at(-1)
-        if (hex) {
-          notify({
-            message: `Transaction failed: ${parseError(hex)}`,
-            type: 'error',
-          })
-        } else {
-          notify({ message: `Transaction failed: ${e}`, type: 'error' })
-        }
+        notify({
+          message: parseError(e, 'Transaction failed'),
+          type: 'error',
+        })
       } finally {
         break
       }
@@ -157,15 +152,10 @@ function Home() {
         stakedTokenDatas.refresh(true).then(() => stakedTokenDatas.refresh())
         stakePoolEntries.refresh().then(() => stakePoolEntries.refresh())
       } catch (e) {
-        const hex = (e as SendTransactionError).message.split(' ').at(-1)
-        if (hex) {
-          notify({
-            message: `Transaction failed: ${parseError(hex)}`,
-            type: 'error',
-          })
-        } else {
-          notify({ message: `Transaction failed: ${e}`, type: 'error' })
-        }
+        notify({
+          message: parseError(e, 'Transaction failed'),
+          type: 'error',
+        })
         break
       }
     }
@@ -258,15 +248,10 @@ function Home() {
         stakedTokenDatas.refresh(true).then(() => stakedTokenDatas.refresh())
         stakePoolEntries.refresh().then(() => stakePoolEntries.refresh())
       } catch (e) {
-        const hex = (e as SendTransactionError).message.split(' ').at(-1)
-        if (hex) {
-          notify({
-            message: `Transaction failed: ${parseError(hex)}`,
-            type: 'error',
-          })
-        } else {
-          notify({ message: `Transaction failed: ${e}`, type: 'error' })
-        }
+        notify({
+          message: parseError(e, 'Transaction failed'),
+          type: 'error',
+        })
         break
       }
     }
