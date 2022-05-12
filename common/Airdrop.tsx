@@ -48,6 +48,7 @@ export async function airdropNFT(
   const masterEditionMetadataId = await Metadata.getPDA(
     masterEditionMint.publicKey
   )
+  console.log(metadata.uri, )
   const metadataTx = new CreateMetadataV2(
     { feePayer: wallet.publicKey },
     {
@@ -57,24 +58,13 @@ export async function airdropNFT(
         symbol: metadata.symbol,
         uri: metadata.uri,
         sellerFeeBasisPoints: 10,
-        creators: creators
-          ? (creators.value as string[])
-              .map(
-                (c) =>
-                  new Creator({
-                    address: c,
-                    verified: false,
-                    share: 1 / creators.value.length,
-                  })
-              )
-              .concat(
-                new Creator({
-                  address: wallet.publicKey.toString(),
-                  verified: false,
-                  share: 0,
-                })
-              )
-          : null,
+        creators: [
+          new Creator({
+            address: wallet.publicKey.toString(),
+            verified: false,
+            share: 100,
+          }),
+        ],
         collection: null,
         uses: null,
       }),

@@ -1,5 +1,5 @@
 import { tryGetAccount } from '@cardinal/common'
-import { executeTransaction } from '@cardinal/staking'
+import { errors_map, executeTransaction, parseError } from '@cardinal/staking'
 import { getRewardDistributor } from '@cardinal/staking/dist/cjs/programs/rewardDistributor/accounts'
 import { findRewardDistributorId } from '@cardinal/staking/dist/cjs/programs/rewardDistributor/pda'
 import {
@@ -14,7 +14,7 @@ import {
 import { Wallet } from '@metaplex/js'
 import { BN } from '@project-serum/anchor'
 import { useWallet } from '@solana/wallet-adapter-react'
-import { PublicKey, Transaction } from '@solana/web3.js'
+import { PublicKey, SendTransactionError, Transaction } from '@solana/web3.js'
 import { Footer } from 'common/Footer'
 import { Header } from 'common/Header'
 import { notify } from 'common/Notification'
@@ -42,8 +42,6 @@ function AdminStakePool() {
     useState<boolean>(false)
   const [loadingHandleMultipliers, setLoadingHandleMultipliers] =
     useState<boolean>(false)
-
-  console.log(stakePool)
 
   const handleMutliplier = async () => {
     setLoadingHandleMultipliers(true)
@@ -107,10 +105,15 @@ function AdminStakePool() {
         })
       }
     } catch (e) {
-      notify({
-        message: `Error setting mutliplier for mint: ${e}`,
-        type: 'error',
-      })
+      const hex = (e as SendTransactionError).message.split(' ').at(-1)
+      if (hex) {
+        notify({
+          message: `Error setting multiplier: ${parseError(hex)}`,
+          type: 'error',
+        })
+      } else {
+        notify({ message: `Error setting multiplier: ${e}`, type: 'error' })
+      }
     } finally {
       setLoadingHandleMultipliers(false)
     }
@@ -158,7 +161,15 @@ function AdminStakePool() {
         })
       }
     } catch (e) {
-      notify({ message: `Error authorizing mint: ${e}`, type: 'error' })
+      const hex = (e as SendTransactionError).message.split(' ').at(-1)
+      if (hex) {
+        notify({
+          message: `Error authorizing mint: ${parseError(hex)}`,
+          type: 'error',
+        })
+      } else {
+        notify({ message: `Error authorizing mint: ${e}`, type: 'error' })
+      }
     } finally {
       setLoadingHandleAuthorizeMints(false)
     }
@@ -251,7 +262,15 @@ function AdminStakePool() {
 
       await setTimeout(() => stakePool.refresh(true), 1000)
     } catch (e) {
-      notify({ message: `Error updating stake pool: ${e}`, type: 'error' })
+      const hex = (e as SendTransactionError).message.split(' ').at(-1)
+      if (hex) {
+        notify({
+          message: `Error updating stake pool: ${parseError(hex)}`,
+          type: 'error',
+        })
+      } else {
+        notify({ message: `Error updating stake pool: ${e}`, type: 'error' })
+      }
     }
   }
   return (
