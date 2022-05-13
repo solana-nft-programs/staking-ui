@@ -34,12 +34,11 @@ export const useAllowedTokenDatas = (showFungibleTokens: boolean) => {
           isAllowed = false
           creatorAddresses.forEach((filterCreator) => {
             if (
-              token?.metaplexData?.data?.data?.creators &&
-              (token?.metaplexData?.data?.data?.creators).some(
-                (c) =>
-                  c.address === filterCreator.toString() &&
-                  (c.verified || environment.label == 'devnet')
-              )
+              environment.label == 'devnet' ||
+              (token?.metaplexData?.data?.data?.creators &&
+                (token?.metaplexData?.data?.data?.creators).some(
+                  (c) => c.address === filterCreator.toString() && c.verified
+                ))
             ) {
               isAllowed = true
             }

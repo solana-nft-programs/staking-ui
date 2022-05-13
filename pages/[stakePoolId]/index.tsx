@@ -4,6 +4,7 @@ import {
   unstake,
   claimRewards,
   executeTransaction,
+  parseError,
 } from '@cardinal/staking'
 import { ReceiptType } from '@cardinal/staking/dist/cjs/programs/stakePool'
 import { useWallet } from '@solana/wallet-adapter-react'
@@ -102,8 +103,10 @@ function Home() {
         notify({ message: `Successfully claimed rewards`, type: 'success' })
         console.log('Successfully claimed rewards')
       } catch (e) {
-        notify({ message: `Transaction failed: ${e}`, type: 'error' })
-        console.error(e)
+        notify({
+          message: parseError(e, 'Transaction failed'),
+          type: 'error',
+        })
       } finally {
         break
       }
@@ -149,8 +152,10 @@ function Home() {
         stakedTokenDatas.refresh(true).then(() => stakedTokenDatas.refresh())
         stakePoolEntries.refresh().then(() => stakePoolEntries.refresh())
       } catch (e) {
-        notify({ message: `Transaction failed: ${e}`, type: 'error' })
-        console.error(e)
+        notify({
+          message: parseError(e, 'Transaction failed'),
+          type: 'error',
+        })
         break
       }
     }
@@ -243,8 +248,10 @@ function Home() {
         stakedTokenDatas.refresh(true).then(() => stakedTokenDatas.refresh())
         stakePoolEntries.refresh().then(() => stakePoolEntries.refresh())
       } catch (e) {
-        notify({ message: `Transaction failed: ${e}`, type: 'error' })
-        console.error(e)
+        notify({
+          message: parseError(e, 'Transaction failed'),
+          type: 'error',
+        })
         break
       }
     }

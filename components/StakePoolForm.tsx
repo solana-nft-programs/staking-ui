@@ -2,7 +2,7 @@ import {
   AccountData,
   withFindOrInitAssociatedTokenAccount,
 } from '@cardinal/common'
-import { executeTransaction } from '@cardinal/staking'
+import { executeTransaction, parseError } from '@cardinal/staking'
 import {
   RewardDistributorData,
   RewardDistributorKind,
@@ -10,13 +10,18 @@ import {
 import { Wallet } from '@metaplex/js'
 import { BN } from '@project-serum/anchor'
 import { useWallet } from '@solana/wallet-adapter-react'
-import { Keypair, PublicKey, Transaction } from '@solana/web3.js'
+import {
+  Keypair,
+  PublicKey,
+  SendTransactionError,
+  Transaction,
+} from '@solana/web3.js'
 import { LoadingSpinner } from 'common/LoadingSpinner'
 import { notify } from 'common/Notification'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 import { TailSpin } from 'react-loader-spinner'
 import * as splToken from '@solana/spl-token'
-import { useEffect, useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 import Select from 'react-select'
 import { getMintDecimalAmountFromNaturalV2 } from 'common/units'
 import { FormFieldTitleInput } from 'common/FormFieldInput'
@@ -175,8 +180,10 @@ export function StakePoolForm({
           userAta = await checkMint.getAccountInfo(mintAta)
         } catch (e) {
           notify({
-            message:
-              "Failed to get user's associated token address for given mint",
+            message: parseError(
+              e,
+              "Failed to get user's associated token address for given mint"
+            ),
             type: 'error',
           })
         }

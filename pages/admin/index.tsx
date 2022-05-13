@@ -1,4 +1,8 @@
-import { createStakePool, executeTransaction } from '@cardinal/staking'
+import {
+  createStakePool,
+  executeTransaction,
+  parseError,
+} from '@cardinal/staking'
 import { withInitRewardDistributor } from '@cardinal/staking/dist/cjs/programs/rewardDistributor/transaction'
 import { StakePoolData } from '@cardinal/staking/dist/cjs/programs/stakePool'
 import { getStakePool } from '@cardinal/staking/dist/cjs/programs/stakePool/accounts'
@@ -6,7 +10,7 @@ import { AccountData } from '@cardinal/token-manager'
 import { Wallet } from '@metaplex/js'
 import { BN } from '@project-serum/anchor'
 import { useWallet } from '@solana/wallet-adapter-react'
-import { PublicKey } from '@solana/web3.js'
+import { PublicKey, SendTransactionError } from '@solana/web3.js'
 import { Header } from 'common/Header'
 import { notify } from 'common/Notification'
 import Head from 'next/head'
@@ -147,7 +151,10 @@ function Admin() {
       })
       // const stakePoolData = await getStakePool(connection, stakePoolPK)
     } catch (e) {
-      notify({ message: `Error creating stake pool: ${e}`, type: 'error' })
+      notify({
+        message: parseError(e, 'Error updating stake pool'),
+        type: 'error',
+      })
     }
   }
 
