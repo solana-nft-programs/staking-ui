@@ -1,17 +1,26 @@
-import { darken } from 'polished'
 import { useWallet } from '@solana/wallet-adapter-react'
 import {
   useWalletModal,
   WalletMultiButton,
 } from '@solana/wallet-adapter-react-ui'
-import { AddressImage, DisplayAddress } from '@cardinal/namespaces-components'
 
 import { useRouter } from 'next/router'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
-import { shortPubKey } from './utils'
-import { HiUserCircle } from 'react-icons/hi'
 import { Airdrop } from './Airdrop'
 import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
+import { styled } from '@mui/system'
+import { AccountConnect } from '@cardinal/namespaces-components'
+import { Wallet } from '@saberhq/solana-contrib'
+
+export const StyledWalletButton = styled(WalletMultiButton)`
+  color: rgb(55, 65, 81, 1);
+  &:hover {
+    background: none !important;
+  }
+  .wallet-adapter-button {
+    padding: 0px;
+  }
+`
 
 export const Header = () => {
   const router = useRouter()
@@ -28,7 +37,7 @@ export const Header = () => {
           href={
             stakePoolMetadata?.websiteUrl ||
             `/${
-              ctx.environment.label !== 'mainnet'
+              ctx.environment.label !== 'mainnet-beta'
                 ? `?cluster=${ctx.environment.label}`
                 : ''
             }`
@@ -41,12 +50,12 @@ export const Header = () => {
             `${stakePoolMetadata?.displayName || 'Cardinal'} Staking UI`
           )}
         </a>
-        {ctx.environment.label !== 'mainnet' && (
+        {ctx.environment.label !== 'mainnet-beta' && (
           <div className="cursor-pointer rounded-md bg-[#9945ff] p-1 text-[10px] italic text-white">
             {ctx.environment.label}
           </div>
         )}
-        {ctx.environment.label !== 'mainnet' ? (
+        {ctx.environment.label !== 'mainnet-beta' ? (
           <div className="mt-0.5">
             <Airdrop />
           </div>
@@ -59,7 +68,7 @@ export const Header = () => {
           onClick={() =>
             router.push(
               `/${
-                ctx.environment.label !== 'mainnet'
+                ctx.environment.label !== 'mainnet-beta'
                   ? `?cluster=${ctx.environment.label}`
                   : ''
               }`
@@ -72,7 +81,7 @@ export const Header = () => {
           onClick={() =>
             router.push(
               `/admin${
-                ctx.environment.label !== 'mainnet'
+                ctx.environment.label !== 'mainnet-beta'
                   ? `?cluster=${ctx.environment.label}`
                   : ''
               }`
@@ -81,55 +90,17 @@ export const Header = () => {
         >
           <p className="my-auto mr-10 hover:cursor-pointer">Admin</p>
         </div>
-        {wallet.connected ? (
-          <div
-            className="flex cursor-pointer gap-2"
-            onClick={() => setVisible(true)}
-          >
-            <AddressImage
-              connection={ctx.connection}
-              address={wallet.publicKey || undefined}
-              height="40px"
-              width="40px"
-              dark={true}
-              placeholder={
-                <div
-                  style={{
-                    color: 'white',
-                    display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    gap: '8px',
-                    cursor: 'pointer',
-                    marginRight: '5px',
-                  }}
-                >
-                  <div style={{ height: '40px', width: '40px' }}>
-                    <HiUserCircle style={{ height: '100%', width: '100%' }} />
-                  </div>
-                </div>
-              }
-            />
-            <div>
-              <div className="text-white ">
-                <DisplayAddress
-                  style={{ pointerEvents: 'none' }}
-                  connection={ctx.connection}
-                  address={wallet.publicKey || undefined}
-                  height="12px"
-                  width="100px"
-                  dark={true}
-                />
-              </div>
-              <div style={{ color: 'gray' }}>
-                {wallet?.publicKey ? shortPubKey(wallet?.publicKey) : ''}
-              </div>
-            </div>
-          </div>
+        {wallet.connected && wallet.publicKey ? (
+          <AccountConnect
+            dark
+            connection={ctx.connection}
+            environment={ctx.environment.label}
+            handleDisconnect={() => wallet.disconnect()}
+            wallet={wallet as Wallet}
+          />
         ) : (
-          <WalletMultiButton
+          <StyledWalletButton
             style={{
-              color: 'rgba(255,255,255,0.8)',
               fontSize: '14px',
               zIndex: 10,
               height: '38px',

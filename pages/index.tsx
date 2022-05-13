@@ -102,7 +102,7 @@ function Home() {
                         stakePool.stakePoolMetadata?.name ||
                         stakePool.stakePoolData.pubkey.toString()
                       }${
-                        environment.label !== 'mainnet'
+                        environment.label !== 'mainnet-beta'
                           ? `?cluster=${environment.label}`
                           : ''
                       }`
@@ -155,7 +155,7 @@ function Home() {
                           stakePool.stakePoolMetadata?.name ||
                           stakePool.stakePoolData.pubkey.toString()
                         }${
-                          environment.label !== 'mainnet'
+                          environment.label !== 'mainnet-beta'
                             ? `?cluster=${environment.label}`
                             : ''
                         }`

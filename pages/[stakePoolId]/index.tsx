@@ -290,7 +290,7 @@ function Home() {
         )}
         {(maxStaked || rewardDistibutorData.data) && (
           <div
-            className="mx-5 mb-4 flex flex-col items-center gap-4 rounded-md bg-white bg-opacity-5 p-10 text-gray-200 md:max-h-[100px] md:flex-row md:justify-between"
+            className="mx-5 mb-4 flex items-center gap-4 rounded-md bg-white bg-opacity-5 p-10 text-gray-200 md:max-h-[100px] md:flex-row md:justify-between"
             style={{
               border: stakePoolMetadata?.colors?.accent
                 ? `2px solid ${stakePoolMetadata?.colors?.accent}`
@@ -444,7 +444,7 @@ function Home() {
             <div className="my-3 flex-auto overflow-auto">
               <div className="relative my-auto mb-4 h-[60vh] overflow-y-auto overflow-x-hidden rounded-md bg-white bg-opacity-5 p-5">
                 {!userTokenAccounts.loaded ? (
-                  <div className="grid grid-cols-1 gap-1 md:grid-cols-2 md:gap-4 lg:grid-cols-3">
+                  <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
                     <div className="h-[200px] animate-pulse rounded-lg bg-white bg-opacity-5 p-10"></div>
                     <div className="h-[200px] animate-pulse rounded-lg bg-white bg-opacity-5 p-10"></div>
                     <div className="h-[200px] animate-pulse rounded-lg bg-white bg-opacity-5 p-10"></div>
@@ -456,7 +456,7 @@ function Home() {
                 ) : (
                   <div
                     className={
-                      'grid grid-cols-2 gap-1 md:gap-4 lg:grid-cols-2 xl:grid-cols-3'
+                      'grid grid-cols-2 gap-4 lg:grid-cols-2 xl:grid-cols-3'
                     }
                   >
                     {(filteredTokens || []).map((tk) => (
@@ -695,7 +695,7 @@ function Home() {
             <div className="my-3 flex-auto overflow-auto">
               <div className="relative my-auto mb-4 h-[60vh] overflow-y-auto overflow-x-hidden rounded-md bg-white bg-opacity-5 p-5">
                 {!stakedTokenDatas.loaded ? (
-                  <div className="grid grid-cols-1 gap-1 md:grid-cols-2 md:gap-4 lg:grid-cols-3">
+                  <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
                     <div className="h-[200px] animate-pulse rounded-lg bg-white bg-opacity-5 p-10"></div>
                     <div className="h-[200px] animate-pulse rounded-lg bg-white bg-opacity-5 p-10"></div>
                     <div className="h-[200px] animate-pulse rounded-lg bg-white bg-opacity-5 p-10"></div>
@@ -703,7 +703,7 @@ function Home() {
                 ) : stakedTokenDatas.data?.length === 0 ? (
                   <p className="text-gray-400">No tokens currently staked.</p>
                 ) : (
-                  <div className="grid grid-cols-2 gap-1 md:grid-cols-2 md:gap-4 lg:grid-cols-3">
+                  <div className="grid grid-cols-2 gap-4 md:grid-cols-2 lg:grid-cols-3">
                     {stakedTokenDatas.data &&
                       stakedTokenDatas.data.map((tk) => (
                         <div

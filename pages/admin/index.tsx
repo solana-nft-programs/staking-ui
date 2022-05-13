@@ -210,7 +210,7 @@ function Admin() {
                             stakePool.stakePoolMetadata?.name ||
                             stakePool.stakePoolData.pubkey.toString()
                           }${
-                            environment.label !== 'mainnet'
+                            environment.label !== 'mainnet-beta'
                               ? `?cluster=${environment.label}`
                               : ''
                           }`,

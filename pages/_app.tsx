@@ -1,5 +1,6 @@
-import '../styles/globals.css'
+import './styles.css'
 import 'antd/dist/antd.dark.css'
+import '@cardinal/namespaces-components/dist/esm/styles.css'
 import type { AppProps } from 'next/app'
 import { WalletProvider } from '@solana/wallet-adapter-react'
 import { getWalletAdapters } from '@solana/wallet-adapter-wallets'
@@ -23,7 +24,7 @@ const App = ({
 }: AppProps & { cluster: string }) => (
   <UTCNowProvider>
     <EnvironmentProvider defaultCluster={cluster}>
-      <WalletProvider wallets={getWalletAdapters()} autoConnect>
+      <WalletProvider wallets={getWalletAdapters()}>
         <WalletIdentityProvider>
           <WalletModalProvider>
             <TokenListProvider>

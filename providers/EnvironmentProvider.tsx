@@ -1,13 +1,13 @@
-import { Connection } from '@solana/web3.js'
+import { Cluster, Connection } from '@solana/web3.js'
 import { firstParam } from 'common/utils'
 import { NextPageContext } from 'next'
 import { useRouter } from 'next/router'
 import React, { useContext, useMemo, useState } from 'react'
 
 export interface Environment {
-  label: string
-  value: string
-  override?: string
+  label: Cluster
+  primary: string
+  secondary?: string
 }
 
 export interface EnvironmentContextValues {
@@ -18,22 +18,18 @@ export interface EnvironmentContextValues {
 
 export const ENVIRONMENTS: Environment[] = [
   {
-    label: 'mainnet',
-    value:
+    label: 'mainnet-beta',
+    primary:
       'https://solana-api.syndica.io/access-token/bkBr4li7aGVa3euVG0q4iSI6uuMiEo2jYQD35r8ytGZrksM7pdJi2a57pmlYRqCw',
-    override: 'https://ssc-dao.genesysgo.net',
+    secondary: 'https://ssc-dao.genesysgo.net',
   },
   {
     label: 'testnet',
-    value: 'https://api.testnet.solana.com',
+    primary: 'https://api.testnet.solana.com',
   },
   {
     label: 'devnet',
-    value: 'https://api.devnet.solana.com',
-  },
-  {
-    label: 'localnet',
-    value: 'http://127.0.0.1:8899',
+    primary: 'https://api.devnet.solana.com',
   },
 ]
 
@@ -79,7 +75,7 @@ export function EnvironmentProvider({
   }, [cluster])
 
   const connection = useMemo(
-    () => new Connection(environment.value, { commitment: 'recent' }),
+    () => new Connection(environment.primary, { commitment: 'recent' }),
     [environment]
   )
 
