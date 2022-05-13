@@ -48,7 +48,6 @@ export async function airdropNFT(
   const masterEditionMetadataId = await Metadata.getPDA(
     masterEditionMint.publicKey
   )
-  console.log(metadata.uri, )
   const metadataTx = new CreateMetadataV2(
     { feePayer: wallet.publicKey },
     {
