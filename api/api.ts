@@ -14,12 +14,12 @@ import {
 } from '@metaplex-foundation/mpl-token-metadata'
 import * as anchor from '@project-serum/anchor'
 import * as spl from '@solana/spl-token'
-import type { Connection } from '@solana/web3.js'
+import * as web3 from '@solana/web3.js'
 import { PublicKey } from '@solana/web3.js'
 import { StakeEntryTokenData, TokenData } from './types'
 
 export async function getTokenAccountsWithData(
-  connection: Connection,
+  connection: web3.Connection,
   addressId: string,
   stakePoolId: PublicKey | undefined
 ): Promise<TokenData[]> {
@@ -243,7 +243,7 @@ export async function getTokenAccountsWithData(
 }
 
 export async function getStakeEntryDatas(
-  connection: Connection,
+  connection: web3.Connection,
   stakePoolId: PublicKey,
   userId: PublicKey
 ): Promise<StakeEntryTokenData[]> {

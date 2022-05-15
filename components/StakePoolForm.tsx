@@ -10,12 +10,7 @@ import {
 import { Wallet } from '@metaplex/js'
 import { BN } from '@project-serum/anchor'
 import { useWallet } from '@solana/wallet-adapter-react'
-import {
-  Keypair,
-  PublicKey,
-  SendTransactionError,
-  Transaction,
-} from '@solana/web3.js'
+import { Keypair, PublicKey, Transaction } from '@solana/web3.js'
 import { LoadingSpinner } from 'common/LoadingSpinner'
 import { notify } from 'common/Notification'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
@@ -65,6 +60,8 @@ const creationFormSchema = Yup.object({
     )
     .required(),
   requiresAuthorization: Yup.boolean(),
+  cooldownPeriodSeconds: Yup.number().optional().min(0),
+  minStakeSeconds: Yup.number().optional().min(0),
   rewardDistributorKind: Yup.number().optional().min(0).max(2),
   rewardMintAddress: Yup.string().test(
     'is-public-key',
@@ -109,6 +106,8 @@ export function StakePoolForm({
       pk.toString()
     ),
     requiresAuthorization: stakePoolData?.parsed.requiresAuthorization ?? false,
+    cooldownPeriodSeconds: stakePoolData?.parsed.cooldownSeconds ?? 0,
+    minStakeSeconds: stakePoolData?.parsed.minStakeSeconds ?? 0,
     rewardDistributorKind: rewardDistributorData?.parsed.kind,
     rewardMintAddress: rewardDistributorData?.parsed.rewardMint
       ? rewardDistributorData?.parsed.rewardMint.toString()
@@ -186,6 +185,7 @@ export function StakePoolForm({
             ),
             type: 'error',
           })
+          return
         }
         setMintInfo(mintInfo)
         if (userAta) {
@@ -409,6 +409,40 @@ export function StakePoolForm({
           </span>
         </div>
       </div>
+      <div className="-mx-3 flex flex-wrap">
+        <div className="mb-6 mt-4 w-full px-3 md:mb-0">
+          <FormFieldTitleInput
+            title={'Cooldown Period Seconds'}
+            description={'Period of time required prior to unstaking'}
+          />
+          <input
+            className="mb-3 block w-full appearance-none rounded border border-gray-500 bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800 focus:outline-none"
+            type="text"
+            placeholder={'0'}
+            name="cooldownPeriodSeconds"
+            value={values.cooldownPeriodSeconds}
+            onChange={handleChange}
+          />
+        </div>
+      </div>
+      <div className="-mx-3 flex flex-wrap">
+        <div className="mb-6 mt-4 w-full px-3 md:mb-0">
+          <FormFieldTitleInput
+            title={'Minimum Stake Seconds'}
+            description={
+              'Period of time to keep token staked before unstake is allowed'
+            }
+          />
+          <input
+            className="mb-3 block w-full appearance-none rounded border border-gray-500 bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800 focus:outline-none"
+            type="text"
+            placeholder={'0'}
+            name="minStakeSeconds"
+            value={values.minStakeSeconds}
+            onChange={handleChange}
+          />
+        </div>
+      </div>
       <div>
         <div className="-mx-3 mt-5 flex flex-wrap rounded-md bg-white bg-opacity-5 pb-2">
           <div className="mb-6 mt-4 w-full px-3 md:mb-0">
@@ -628,11 +662,6 @@ export function StakePoolForm({
       <button
         disabled={Boolean(values.rewardDistributorKind && submitDisabled)}
         type="button"
-        className={
-          submitDisabled && values.rewardDistributorKind
-            ? 'mt-4 inline-block rounded-md bg-blue-700 px-4 py-2 opacity-50'
-            : 'mt-4 inline-block rounded-md bg-blue-700 px-4 py-2'
-        }
         onClick={async () => {
           try {
             setLoading(true)
@@ -642,10 +671,16 @@ export function StakePoolForm({
           }
         }}
       >
-        <div className="flex">
+        <div
+          className={
+            submitDisabled && values.rewardDistributorKind
+              ? 'mt-4 inline-block rounded-md bg-blue-700 px-4 py-2 opacity-50'
+              : 'mt-4 inline-block rounded-md bg-blue-700 px-4 py-2'
+          }
+        >
           {loading && (
-            <div className="mr-2">
-              <TailSpin color="#fff" height={20} width={20} />
+            <div className="mr-2 inline-block">
+              <TailSpin color="#fff" height={15} width={15} />
             </div>
           )}
           {type.charAt(0).toUpperCase() + type.slice(1)} Pool
