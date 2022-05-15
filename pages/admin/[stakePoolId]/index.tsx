@@ -190,6 +190,8 @@ function AdminStakePool() {
         requiresCreators: creatorPublicKeys,
         requiresAuthorization: values.requiresAuthorization,
         overlayText: values.overlayText,
+        cooldownSeconds: values.cooldownPeriodSeconds,
+        minStakeSeconds: values.minStakeSeconds,
       }
 
       const [transaction] = await withUpdateStakePool(
@@ -347,6 +349,18 @@ function AdminStakePool() {
                           '[None]'}
                       </label>
                     </span>
+                    <span className="mt-3 flex w-full flex-wrap md:mb-0">
+                      <label className="inline-block text-sm font-bold uppercase tracking-wide text-gray-200">
+                        Cooldown Period Seconds:{' '}
+                        {stakePool.data?.parsed.cooldownSeconds || '[None]'}
+                      </label>
+                    </span>
+                    <span className="mt-3 flex w-full flex-wrap md:mb-0">
+                      <label className="inline-block text-sm font-bold uppercase tracking-wide text-gray-200">
+                        Minimum Stake Seconds:{' '}
+                        {stakePool.data?.parsed.minStakeSeconds || '[None]'}
+                      </label>
+                    </span>
                   </>
                 ) : (
                   <div className="relative flex h-8 w-full items-center justify-center">
@@ -419,16 +433,14 @@ function AdminStakePool() {
                     />
                   </div>
                 )}
-                <button
-                  type="button"
-                  className={
-                    'mt-4 inline-block rounded-md bg-blue-700 px-4 py-2'
-                  }
-                  onClick={() => handleMutliplier()}
-                >
-                  <div className="flex">
+                <button type="button" onClick={() => handleMutliplier()}>
+                  <div
+                    className={
+                      'mt-4 inline-block rounded-md bg-blue-700 px-4 py-2'
+                    }
+                  >
                     {loadingHandleMultipliers && (
-                      <div className="mr-2">
+                      <div className="mr-2 inline-block">
                         <TailSpin color="#fff" height={15} width={15} />
                       </div>
                     )}

@@ -97,6 +97,7 @@ function Admin() {
           creatorPublicKeys.length > 0 ? creatorPublicKeys : undefined,
         requiresAuthorization: values.requiresAuthorization,
         overlayText: values.overlayText || undefined,
+        cooldownSeconds: values.cooldownPeriodSeconds || 0,
       }
       const [transaction, stakePoolPK] = await createStakePool(
         connection,

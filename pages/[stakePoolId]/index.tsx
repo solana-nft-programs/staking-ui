@@ -45,6 +45,7 @@ import { useRewardEntries } from 'hooks/useRewardEntries'
 import { Switch } from '@headlessui/react'
 import { FaInfoCircle } from 'react-icons/fa'
 import { MouseoverTooltip } from 'common/Tooltip'
+import { useUTCNow } from 'providers/UTCNowProvider'
 
 function Home() {
   const { connection, environment } = useEnvironmentCtx()
@@ -72,6 +73,7 @@ function Home() {
   const { data: filteredTokens } = useAllowedTokenDatas(showFungibleTokens)
   const { data: stakePoolMetadata } = useStakePoolMetadata()
   const rewardDistributorTokenAccountData = useRewardDistributorTokenAccount()
+  const { UTCNow } = useUTCNow()
 
   async function handleClaimRewards() {
     if (stakedSelected.length > 4) {
@@ -134,17 +136,32 @@ function Home() {
         if (!token || !token.stakeEntry) {
           throw new Error('No stake entry for token')
         }
-        console.log('Unstaking...')
         // unstake
         const transaction = await unstake(connection, wallet as Wallet, {
           stakePoolId: stakePool?.pubkey,
           originalMintId: token.stakeEntry.parsed.originalMint,
         })
         await executeTransaction(connection, wallet as Wallet, transaction, {})
-        notify({
-          message: `Successfully unstaked ${step + 1}/${stakedSelected.length}`,
-          type: 'success',
-        })
+        if (
+          !stakePool.parsed.cooldownSeconds ||
+          stakePool.parsed.cooldownSeconds === 0 ||
+          !token.stakeEntry?.parsed.cooldownStartSeconds
+        ) {
+          console.log('hereee')
+          notify({
+            message: `Cooldown period initiated ${step + 1}/${
+              stakedSelected.length
+            }`,
+            type: 'success',
+          })
+        } else {
+          notify({
+            message: `Successfully unstaked ${step + 1}/${
+              stakedSelected.length
+            }`,
+            type: 'success',
+          })
+        }
         console.log('Successfully unstaked')
         userTokenAccounts
           .refreshTokenAccounts(true)
@@ -152,6 +169,7 @@ function Home() {
         stakedTokenDatas.refresh(true).then(() => stakedTokenDatas.refresh())
         stakePoolEntries.refresh().then(() => stakePoolEntries.refresh())
       } catch (e) {
+        console.log(parseError(e, 'Transaction failed'))
         notify({
           message: parseError(e, 'Transaction failed'),
           type: 'error',
@@ -679,18 +697,28 @@ function Home() {
                 : '',
             }}
           >
-            <div className="mt-2 flex flex-row">
-              <p className="mr-3 text-lg">
-                View Staked Tokens{' '}
-                {stakedTokenDatas.loaded &&
-                  stakedTokenDatas.data &&
-                  `(${stakedTokenDatas.data.length})`}
-              </p>
-              <div className="inline-block">
-                {stakedTokenDatas.refreshing && stakedTokenDatas.loaded && (
-                  <LoadingSpinner height="25px" />
-                )}
+            <div className="flex flex-row justify-between">
+              <div className="mt-2 flex flex-row">
+                <p className="mr-3 text-lg">
+                  View Staked Tokens{' '}
+                  {stakedTokenDatas.loaded &&
+                    stakedTokenDatas.data &&
+                    `(${stakedTokenDatas.data.length})`}
+                </p>
+                <div className="inline-block">
+                  {stakedTokenDatas.refreshing && stakedTokenDatas.loaded && (
+                    <LoadingSpinner height="25px" />
+                  )}
+                </div>
               </div>
+              {stakePool?.parsed.cooldownSeconds &&
+                stakePool?.parsed.cooldownSeconds !== 0 && (
+                  <div className="mt-2 flex flex-col">
+                    <p className="mr-3 text-lg">
+                      Cooldown Period: {stakePool?.parsed.cooldownSeconds} secs
+                    </p>
+                  </div>
+                )}
             </div>
             <div className="my-3 flex-auto overflow-auto">
               <div className="relative my-auto mb-4 h-[60vh] overflow-y-auto overflow-x-hidden rounded-md bg-white bg-opacity-5 p-5">
@@ -732,7 +760,7 @@ function Home() {
                             <div className="relative">
                               <div>
                                 <img
-                                  className="rounded-lg"
+                                  className="mx-auto mt-4 mb-2 rounded-xl bg-white bg-opacity-5 object-contain md:h-40 md:w-40 2xl:h-48 2xl:w-48"
                                   src={
                                     tk.metadata?.data.image ||
                                     tk.tokenListData?.logoURI
@@ -813,6 +841,29 @@ function Home() {
                                           tk.stakeEntry?.pubkey.toString() || ''
                                         ]?.nextRewardsIn.toNumber() || 0
                                       )}{' '}
+                                    </div>
+                                  )}
+                                {tk.stakeEntry?.parsed.cooldownStartSeconds &&
+                                  stakePool?.parsed.cooldownSeconds && (
+                                    <div
+                                      className="mt-1 flex items-center justify-center text-xs"
+                                      style={{
+                                        color: 'white',
+                                        background:
+                                          stakePoolMetadata?.colors?.primary,
+                                      }}
+                                    >
+                                      {tk.stakeEntry?.parsed.cooldownStartSeconds.toNumber() +
+                                        stakePool.parsed.cooldownSeconds -
+                                        UTCNow >
+                                      0
+                                        ? 'Cooldown left: ' +
+                                          secondstoDuration(
+                                            tk.stakeEntry?.parsed.cooldownStartSeconds.toNumber() +
+                                              stakePool.parsed.cooldownSeconds -
+                                              UTCNow
+                                          )
+                                        : 'Cooldown finished!'}
                                     </div>
                                   )}
                               </div>
