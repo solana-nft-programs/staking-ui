@@ -52,7 +52,7 @@ function Home() {
   const userTokenAccounts = useUserTokenData()
   const { data: stakePool, loaded: stakePoolLoaded } = useStakePoolData()
   const stakedTokenDatas = useStakedTokenDatas()
-  const rewardDistibutorData = useRewardDistributorData()
+  const rewardDistributorData = useRewardDistributorData()
   const rewardMintInfo = useRewardMintInfo()
   const stakePoolEntries = useStakePoolEntries()
   const maxStaked = useStakePoolMaxStaked()
@@ -112,7 +112,7 @@ function Home() {
       }
     }
 
-    rewardDistibutorData.refresh()
+    rewardDistributorData.refresh()
     rewardDistributorTokenAccountData.refresh()
     setLoadingClaimRewards(false)
   }
@@ -248,8 +248,15 @@ function Home() {
         stakedTokenDatas.refresh(true).then(() => stakedTokenDatas.refresh())
         stakePoolEntries.refresh().then(() => stakePoolEntries.refresh())
       } catch (e) {
+        const errorMessage = parseError(
+          e,
+          `Transaction failed: ${e ? (e as Error).toString() : ''}`
+        )
         notify({
-          message: parseError(e, 'Transaction failed'),
+          message:
+            errorMessage && errorMessage.length > 0
+              ? errorMessage
+              : `Transaction failed: ${e ? (e as Error).toString() : ''}`,
           type: 'error',
         })
         break
@@ -288,7 +295,7 @@ function Home() {
             Stake pool not found
           </div>
         )}
-        {(maxStaked || rewardDistibutorData.data) && (
+        {(maxStaked || rewardDistributorData.data) && (
           <div
             className="mx-5 mb-4 flex items-center gap-4 rounded-md bg-white bg-opacity-5 p-10 text-gray-200 md:max-h-[100px] md:flex-row md:justify-between"
             style={{
@@ -321,7 +328,7 @@ function Home() {
                 <div className="absolute w-full animate-pulse items-center justify-center rounded-lg bg-white bg-opacity-10 p-5"></div>
               </div>
             )}
-            {rewardDistibutorData.data && rewardMintInfo.data ? (
+            {rewardDistributorData.data && rewardMintInfo.data ? (
               <>
                 <div className="inline-block text-lg">
                   <span>Rewards Rate</span>:{' '}
@@ -330,20 +337,20 @@ function Home() {
                       (Number(
                         getMintDecimalAmountFromNatural(
                           rewardMintInfo.data.mintInfo,
-                          new BN(rewardDistibutorData.data.parsed.rewardAmount)
+                          new BN(rewardDistributorData.data.parsed.rewardAmount)
                         )
                       ) /
-                        rewardDistibutorData.data.parsed.rewardDurationSeconds.toNumber()) *
+                        rewardDistributorData.data.parsed.rewardDurationSeconds.toNumber()) *
                       86400 *
-                      (rewardDistibutorData.data.parsed.defaultMultiplier.toNumber() /
+                      (rewardDistributorData.data.parsed.defaultMultiplier.toNumber() /
                         10 **
-                          rewardDistibutorData.data.parsed.multiplierDecimals)
+                          rewardDistributorData.data.parsed.multiplierDecimals)
                     ).toPrecision(4)}{' '}
                     <a
                       className="text-white underline"
                       target="_blank"
                       href={pubKeyUrl(
-                        rewardDistibutorData.data.parsed.rewardMint,
+                        rewardDistributorData.data.parsed.rewardMint,
                         environment.label
                       )}
                     >
@@ -373,11 +380,11 @@ function Home() {
                         <a
                           target={'_blank'}
                           href={pubKeyUrl(
-                            rewardDistibutorData.data.pubkey,
+                            rewardDistributorData.data.pubkey,
                             environment.label
                           )}
                         >
-                          {shortPubKey(rewardDistibutorData.data.pubkey)}
+                          {shortPubKey(rewardDistributorData.data.pubkey)}
                         </a>{' '}
                         {rewardDistributorTokenAccountData.data
                           ? formatMintNaturalAmountAsDecimal(
@@ -538,17 +545,38 @@ function Home() {
                                 id={tk?.tokenAccount?.pubkey.toBase58()}
                                 name={tk?.tokenAccount?.pubkey.toBase58()}
                                 checked={isUnstakedTokenSelected(tk)}
+                                value={
+                                  isUnstakedTokenSelected(tk)
+                                    ? tk.amountToStake || 0
+                                    : 0
+                                }
                                 onChange={(e) => {
                                   const amount = Number(e.target.value)
                                   if (
                                     tk.tokenAccount?.account.data.parsed.info
                                       .tokenAmount.amount > 1
                                   ) {
+                                    let newUnstakedSelected =
+                                      unstakedSelected.filter(
+                                        (data) =>
+                                          data.tokenAccount?.account.data.parsed.info.mint.toString() !==
+                                          tk.tokenAccount?.account.data.parsed.info.mint.toString()
+                                      )
                                     if (e.target.value.length > 0 && !amount) {
                                       notify({
                                         message: 'Please enter a valid amount',
                                         type: 'error',
                                       })
+                                    } else {
+                                      tk.amountToStake = amount
+                                      newUnstakedSelected = [
+                                        ...newUnstakedSelected,
+                                        tk,
+                                      ]
+                                    }
+                                    setUnstakedSelected(newUnstakedSelected)
+                                  } else {
+                                    if (isUnstakedTokenSelected(tk)) {
                                       setUnstakedSelected(
                                         unstakedSelected.filter(
                                           (data) =>
@@ -556,30 +584,12 @@ function Home() {
                                             tk.tokenAccount?.account.data.parsed.info.mint.toString()
                                         )
                                       )
-                                      return
+                                    } else {
+                                      setUnstakedSelected([
+                                        ...unstakedSelected,
+                                        tk,
+                                      ])
                                     }
-                                    tk.amountToStake = amount
-                                  }
-
-                                  if (isUnstakedTokenSelected(tk)) {
-                                    setUnstakedSelected(
-                                      unstakedSelected.filter(
-                                        (data) =>
-                                          data.tokenAccount?.account.data.parsed.info.mint.toString() !==
-                                          tk.tokenAccount?.account.data.parsed.info.mint.toString()
-                                      )
-                                    )
-                                  } else {
-                                    if (
-                                      tk.tokenAccount?.account.data.parsed.info
-                                        .tokenAmount.amount > 1
-                                    ) {
-                                      tk.amountToStake = amount
-                                    }
-                                    setUnstakedSelected([
-                                      ...unstakedSelected,
-                                      tk,
-                                    ])
                                   }
                                 }}
                               />
@@ -785,10 +795,10 @@ function Home() {
                                           stakePoolMetadata?.colors?.primary,
                                       }}
                                     >
-                                      {rewardDistibutorData.data?.parsed
+                                      {rewardDistributorData.data?.parsed
                                         .multiplierDecimals !== undefined &&
                                         formatAmountAsDecimal(
-                                          rewardDistibutorData.data?.parsed
+                                          rewardDistributorData.data?.parsed
                                             .multiplierDecimals,
                                           rewardEntries.data.find((entry) =>
                                             entry.parsed.stakeEntry.equals(
@@ -804,7 +814,7 @@ function Home() {
                                   rewards.data.rewardMap[
                                     tk.stakeEntry?.pubkey.toString() || ''
                                   ] &&
-                                  rewardDistibutorData.data?.parsed.rewardDurationSeconds.gte(
+                                  rewardDistributorData.data?.parsed.rewardDurationSeconds.gte(
                                     new BN(60)
                                   ) && (
                                     <div className="mt-1 flex items-center justify-center text-xs">
@@ -883,7 +893,7 @@ function Home() {
                 </span>
                 <span className="my-auto">Unstake Tokens</span>
               </button>
-              {rewardDistibutorData.data &&
+              {rewardDistributorData.data &&
               rewards.data?.claimableRewards.gt(new BN(0)) ? (
                 <button
                   onClick={() => {

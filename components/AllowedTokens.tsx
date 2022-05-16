@@ -1,11 +1,7 @@
 import { AccountData } from '@cardinal/common'
-import {
-  StakeAuthorizationData,
-  StakePoolData,
-} from '@cardinal/staking/dist/cjs/programs/stakePool'
-import { getStakeAuthorizationsForPool } from '@cardinal/staking/dist/cjs/programs/stakePool/accounts'
+import { StakePoolData } from '@cardinal/staking/dist/cjs/programs/stakePool'
+import { useStakeAuthorizationsForPool } from 'hooks/useStakeAuthorizationsForPool'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
-import { useMemo, useState } from 'react'
 import { ShortPubKeyUrl } from '../common/Pubkeys'
 
 export const AllowedTokens = ({
@@ -13,24 +9,8 @@ export const AllowedTokens = ({
 }: {
   stakePool: AccountData<StakePoolData> | undefined
 }) => {
-  const { connection, environment } = useEnvironmentCtx()
-  const [stakeAuths, setStakeAuths] = useState<
-    AccountData<StakeAuthorizationData>[]
-  >([])
-
-  useMemo(() => {
-    if (stakePool) {
-      const setData = async () => {
-        let data = await getStakeAuthorizationsForPool(
-          connection,
-          stakePool?.pubkey
-        )
-        setStakeAuths(data)
-      }
-      setData().catch(console.error)
-    }
-  }, [stakePool?.pubkey.toString()])
-
+  const { environment } = useEnvironmentCtx()
+  const stakeAuthorizations = useStakeAuthorizationsForPool()
   return (
     <div className="my-4 flex w-full flex-row justify-start">
       <div className="flex flex-col">
@@ -59,11 +39,13 @@ export const AllowedTokens = ({
       </div>
       <div className="ml-5 flex flex-col">
         <span className="mb-2">White Listed Mints:</span>
-        {stakeAuths.length === 0 ? (
+        {!stakeAuthorizations.loaded ? (
+          <span className="h-4 w-full animate-pulse rounded-md bg-white bg-opacity-5"></span>
+        ) : stakeAuthorizations.data?.length === 0 ? (
           <span className="text-xs text-gray-500">No whitelisted mints</span>
         ) : (
           <span className="flex flex-col">
-            {stakeAuths.map((a) => (
+            {stakeAuthorizations.data?.map((a) => (
               <ShortPubKeyUrl
                 pubkey={a.parsed.mint}
                 cluster={environment.label}
