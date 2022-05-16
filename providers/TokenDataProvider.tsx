@@ -12,7 +12,6 @@ export interface UserTokenDataValues {
   tokenDatas: TokenData[]
   refreshTokenAccounts: (reload?: boolean) => Promise<void>
   setTokenDatas: (newEnvironment: TokenData[]) => void
-  setStakePoolId: (stakePoolId: PublicKey) => void
   loaded: boolean
   refreshing: boolean
   error: string | undefined
@@ -23,7 +22,6 @@ const UserTokenData: React.Context<UserTokenDataValues> =
     tokenDatas: [],
     refreshTokenAccounts: async () => {},
     setTokenDatas: () => {},
-    setStakePoolId: () => {},
     loaded: false,
     refreshing: true,
     error: undefined,
@@ -32,7 +30,6 @@ const UserTokenData: React.Context<UserTokenDataValues> =
 export function TokenAccountsProvider({ children }: { children: ReactChild }) {
   const { connection } = useEnvironmentCtx()
   const walletId = useWalletId()
-  const [stakePoolId, setStakePoolId] = useState<PublicKey>()
   const [error, setError] = useState<string>()
   const [tokenDatas, setTokenDatas] = useState<TokenData[]>([])
   const [refreshing, setRefreshing] = useState<boolean>(false)
@@ -56,8 +53,7 @@ export function TokenAccountsProvider({ children }: { children: ReactChild }) {
         console.log('Fetching user token datas')
         const tokenDatas = await getTokenAccountsWithData(
           connection,
-          walletId?.toString(),
-          stakePoolId
+          walletId?.toString()
         )
         const hydratedTokenDatas = tokenDatas.reduce((acc, tokenData) => {
           let tokenListData: TokenListData | undefined
@@ -92,13 +88,7 @@ export function TokenAccountsProvider({ children }: { children: ReactChild }) {
         setRefreshing(false)
       }
     },
-    [
-      connection,
-      setError,
-      walletId?.toString(),
-      stakePoolId?.toString(),
-      setRefreshing,
-    ]
+    [connection, setError, walletId?.toString(), setRefreshing]
   )
 
   useEffect(() => {
@@ -119,7 +109,6 @@ export function TokenAccountsProvider({ children }: { children: ReactChild }) {
         loaded,
         refreshTokenAccounts,
         setTokenDatas,
-        setStakePoolId,
         refreshing,
         error,
       }}

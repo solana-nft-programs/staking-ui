@@ -21,7 +21,7 @@ import { StakeEntryTokenData, TokenData } from './types'
 export async function getTokenAccountsWithData(
   connection: web3.Connection,
   addressId: string,
-  stakePoolId: PublicKey | undefined
+  stakePoolId?: PublicKey
 ): Promise<TokenData[]> {
   const allTokenAccounts = await connection.getParsedTokenAccountsByOwner(
     new PublicKey(addressId),
