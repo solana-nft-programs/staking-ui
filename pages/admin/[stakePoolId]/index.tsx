@@ -1,13 +1,11 @@
 import { tryGetAccount } from '@cardinal/common'
-import { executeTransaction, parseError } from '@cardinal/staking'
+import { executeTransaction } from '@cardinal/staking'
 import { getRewardDistributor } from '@cardinal/staking/dist/cjs/programs/rewardDistributor/accounts'
 import { findRewardDistributorId } from '@cardinal/staking/dist/cjs/programs/rewardDistributor/pda'
 import {
-  withInitRewardDistributor,
   withUpdateRewardDistributor,
   withUpdateRewardEntry,
 } from '@cardinal/staking/dist/cjs/programs/rewardDistributor/transaction'
-import * as splToken from '@solana/spl-token'
 import {
   withAuthorizeStakeEntry,
   withUpdateStakePool,
@@ -32,6 +30,7 @@ import { tryPublicKey } from 'common/utils'
 import { findStakeEntryIdFromMint } from '@cardinal/staking/dist/cjs/programs/stakePool/utils'
 import * as Yup from 'yup'
 import { useFormik } from 'formik'
+import { handleError } from 'api/api'
 
 const publicKeyValidationTest = (value: string | undefined): boolean => {
   return tryPublicKey(value) ? true : false
@@ -197,7 +196,7 @@ function AdminStakePool() {
         })
       }
     } catch (e) {
-      const parsedError = parseError(e, 'Error setting multiplier')
+      const parsedError = handleError(e, 'Error setting multiplier')
       notify({
         message: parsedError || String(e),
         type: 'error',
@@ -250,7 +249,7 @@ function AdminStakePool() {
       }
     } catch (e) {
       notify({
-        message: parseError(e, 'Error authorizing mint'),
+        message: handleError(e, 'Error authorizing mint'),
         type: 'error',
       })
     } finally {
@@ -326,7 +325,7 @@ function AdminStakePool() {
       await setTimeout(() => stakePool.refresh(true), 1000)
     } catch (e) {
       notify({
-        message: parseError(e, 'Error updating stake pool'),
+        message: handleError(e, 'Error updating stake pool'),
         type: 'error',
       })
     }

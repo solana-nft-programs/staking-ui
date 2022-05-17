@@ -320,7 +320,10 @@ export async function getStakeEntryDatas(
   }))
 }
 
-export function handleError(e: any): string {
+export function handleError(
+  e: any,
+  fallBackMessage: string = 'Transaction failed'
+): string {
   const hex = (e as web3.SendTransactionError).message.split(' ').at(-1)
   if (hex) {
     const dec = parseInt(hex, 16)
@@ -335,8 +338,8 @@ export function handleError(e: any): string {
     } else if (rewardDistributorErr) {
       return rewardDistributorErr.msg
     } else {
-      return parseError(e, 'Transaction failed')
+      return parseError(e, fallBackMessage)
     }
   }
-  return 'Transaction failed'
+  return fallBackMessage
 }

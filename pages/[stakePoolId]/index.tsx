@@ -4,7 +4,6 @@ import {
   unstake,
   claimRewards,
   executeTransaction,
-  parseError,
 } from '@cardinal/staking'
 import { ReceiptType } from '@cardinal/staking/dist/cjs/programs/stakePool'
 import { useWallet } from '@solana/wallet-adapter-react'
@@ -107,7 +106,7 @@ function Home() {
         console.log('Successfully claimed rewards')
       } catch (e) {
         notify({
-          message: parseError(e, 'Transaction failed'),
+          message: handleError(e, 'Transaction failed'),
           type: 'error',
         })
       } finally {
@@ -264,7 +263,7 @@ function Home() {
         stakedTokenDatas.refresh(true).then(() => stakedTokenDatas.refresh())
         stakePoolEntries.refresh().then(() => stakePoolEntries.refresh())
       } catch (e) {
-        const errorMessage = parseError(
+        const errorMessage = handleError(
           e,
           `Transaction failed: ${e ? (e as Error).toString() : ''}`
         )
