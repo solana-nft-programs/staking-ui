@@ -368,50 +368,68 @@ function AdminStakePool() {
                     <div className="absolute w-full animate-pulse items-center justify-center rounded-lg bg-white bg-opacity-10 p-5"></div>
                   </div>
                 )}
-                <div className="mt-10">
-                  <label
-                    className="mb-2 block text-xs font-bold uppercase tracking-wide text-gray-200"
-                    htmlFor="require-authorization"
-                  >
-                    Set multiplier for given mints
-                  </label>
-                  <p className="mb-2 text-sm italic text-gray-300">
-                    Set the stake multiplier for given mints (separated by
-                    commas).
-                    <br />
-                    For a 1x multiplier, enter value 100, for a 2x multiplier
-                    enter value 200 ...
-                  </p>
-                  <span className="flex flex-row">
-                    <input
-                      className="mb-3 w-1/6 appearance-none flex-col rounded border border-gray-500 bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800 focus:outline-none"
-                      type="text"
-                      placeholder={'100'}
-                      value={multiplier}
-                      onChange={(e) => {
-                        const value = Number(e.target.value)
-                        if (!value && e.target.value.length != 0) {
-                          notify({
-                            message: `Invalid multiplier value`,
-                            type: 'error',
-                          })
+                {rewardDistributor.data && (
+                  <div className="mt-10">
+                    <label
+                      className="mb-2 block text-xs font-bold uppercase tracking-wide text-gray-200"
+                      htmlFor="require-authorization"
+                    >
+                      Set multiplier for given mints
+                    </label>
+                    <p className="mb-2 text-sm italic text-gray-300">
+                      Set the stake multiplier for given mints (separated by
+                      commas).
+                      <br />
+                      This multiplier will be shifted by{' '}
+                      {rewardDistributor.data.parsed.multiplierDecimals}{' '}
+                      decimals as specified by the reward distributor multiplier
+                      decimals...
+                    </p>
+                    <span className="flex flex-row">
+                      <input
+                        className="mb-3 w-1/6 appearance-none flex-col rounded border border-gray-500 bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800 focus:outline-none"
+                        type="text"
+                        placeholder={'100'}
+                        value={multiplier}
+                        onChange={(e) => {
+                          const value = Number(e.target.value)
+                          if (!value && e.target.value.length != 0) {
+                            notify({
+                              message: `Invalid multiplier value`,
+                              type: 'error',
+                            })
+                          }
+                          setMultiplier(e.target.value)
+                        }}
+                      />
+                      <input
+                        className="mb-3 ml-5 w-5/6 appearance-none flex-col rounded border border-gray-500 bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800 focus:outline-none"
+                        type="text"
+                        placeholder={'Cmwy..., A3fD..., 7Y1v...'}
+                        value={multiplierMints}
+                        onChange={(e) => {
+                          setMultiplierMints(e.target.value)
+                        }}
+                      />
+                    </span>
+                    <button type="button" onClick={() => handleMutliplier()}>
+                      <div
+                        className={
+                          'mt-3 inline-block rounded-md bg-blue-700 px-4 py-2'
                         }
-                        setMultiplier(e.target.value)
-                      }}
-                    />
-                    <input
-                      className="mb-3 ml-5 w-5/6 appearance-none flex-col rounded border border-gray-500 bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800 focus:outline-none"
-                      type="text"
-                      placeholder={'Cmwy..., A3fD..., 7Y1v...'}
-                      value={multiplierMints}
-                      onChange={(e) => {
-                        setMultiplierMints(e.target.value)
-                      }}
-                    />
-                  </span>
-                </div>
-                {stakePool.data?.parsed.requiresAuthorization && (
-                  <div className="mt-5">
+                      >
+                        {loadingHandleMultipliers && (
+                          <div className="mr-2 inline-block">
+                            <TailSpin color="#fff" height={15} width={15} />
+                          </div>
+                        )}
+                        Set Multipliers
+                      </div>
+                    </button>
+                  </div>
+                )}
+                {!stakePool.data?.parsed.requiresAuthorization && (
+                  <div className="mt-10">
                     <label
                       className="mb-2 block text-xs font-bold uppercase tracking-wide text-gray-200"
                       htmlFor="require-authorization"
@@ -431,39 +449,24 @@ function AdminStakePool() {
                         setMintsToAuthorize(e.target.value)
                       }}
                     />
-                  </div>
-                )}
-                <button type="button" onClick={() => handleMutliplier()}>
-                  <div
-                    className={
-                      'mt-4 inline-block rounded-md bg-blue-700 px-4 py-2'
-                    }
-                  >
-                    {loadingHandleMultipliers && (
-                      <div className="mr-2 inline-block">
-                        <TailSpin color="#fff" height={15} width={15} />
+                    <button
+                      type="button"
+                      onClick={() => handleAuthorizeMints()}
+                    >
+                      <div
+                        className={
+                          'mt-3 inline-block rounded-md bg-blue-700 px-4 py-2'
+                        }
+                      >
+                        {loadingHandleAuthorizeMints && (
+                          <div className="mr-2">
+                            <TailSpin color="#fff" height={15} width={15} />
+                          </div>
+                        )}
+                        Authorize Mints
                       </div>
-                    )}
-                    Set Multipliers
+                    </button>
                   </div>
-                </button>
-                {stakePool.data?.parsed.requiresAuthorization && (
-                  <button
-                    type="button"
-                    className={
-                      'ml-5 mt-4 inline-block rounded-md bg-blue-700 px-4 py-2'
-                    }
-                    onClick={() => handleAuthorizeMints()}
-                  >
-                    <div className="flex">
-                      {loadingHandleAuthorizeMints && (
-                        <div className="mr-2">
-                          <TailSpin color="#fff" height={15} width={15} />
-                        </div>
-                      )}
-                      Authorize Mints
-                    </div>
-                  </button>
                 )}
               </div>
             </div>

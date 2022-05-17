@@ -169,7 +169,6 @@ function Home() {
         stakedTokenDatas.refresh(true).then(() => stakedTokenDatas.refresh())
         stakePoolEntries.refresh().then(() => stakePoolEntries.refresh())
       } catch (e) {
-        console.log(parseError(e, 'Transaction failed'))
         notify({
           message: parseError(e, 'Transaction failed'),
           type: 'error',

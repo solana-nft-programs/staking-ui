@@ -152,8 +152,10 @@ function Admin() {
       })
       // const stakePoolData = await getStakePool(connection, stakePoolPK)
     } catch (e) {
+      console.log(e)
       notify({
-        message: parseError(e, 'Error updating stake pool'),
+        message: 'Error creating stake pool',
+        description: parseError(e, `${e ? (e as Error).toString() : ''}`),
         type: 'error',
       })
     }
