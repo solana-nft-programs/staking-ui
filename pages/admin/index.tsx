@@ -106,6 +106,9 @@ function Admin() {
       )
 
       if (values.rewardDistributorKind) {
+        if (Number(values.rewardDurationSeconds) < 1) {
+          throw 'RewardDurationSeconds needs to greater or equal to 1'
+        }
         const rewardDistributorKindParams = {
           stakePoolId: stakePoolPK,
           rewardMintId: new PublicKey(values.rewardMintAddress!.trim())!,
@@ -153,7 +156,7 @@ function Admin() {
       // const stakePoolData = await getStakePool(connection, stakePoolPK)
     } catch (e) {
       notify({
-        message: parseError(e, 'Error updating stake pool'),
+        message: parseError(e, 'Error creating stake pool'),
         type: 'error',
       })
     }

@@ -25,7 +25,7 @@
   "dependencies": {
     "@cardinal/common": "^1.0.10",
     "@cardinal/namespaces-components": "^3.0.15",
-    "@cardinal/staking": "^1.5.2",
+    "@cardinal/staking": "^1.5.4",
     "@emotion/styled": "^11.8.1",
     "@headlessui/react": "^1.6.1",
     "@metaplex/js": "^4.12.0",

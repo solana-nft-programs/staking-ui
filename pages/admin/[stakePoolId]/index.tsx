@@ -4,6 +4,7 @@ import { getRewardDistributor } from '@cardinal/staking/dist/cjs/programs/reward
 import { findRewardDistributorId } from '@cardinal/staking/dist/cjs/programs/rewardDistributor/pda'
 import {
   withInitRewardDistributor,
+  withUpdateRewardDistributor,
   withUpdateRewardEntry,
 } from '@cardinal/staking/dist/cjs/programs/rewardDistributor/transaction'
 import * as splToken from '@solana/spl-token'
@@ -29,6 +30,30 @@ import { CreationForm, StakePoolForm } from 'components/StakePoolForm'
 import { useRewardDistributorData } from 'hooks/useRewardDistributorData'
 import { tryPublicKey } from 'common/utils'
 import { findStakeEntryIdFromMint } from '@cardinal/staking/dist/cjs/programs/stakePool/utils'
+import * as Yup from 'yup'
+import { useFormik } from 'formik'
+
+const publicKeyValidationTest = (value: string | undefined): boolean => {
+  return tryPublicKey(value) ? true : false
+}
+
+const creationFormSchema = Yup.object({
+  multipliers: Yup.array().of(
+    Yup.string().test(
+      'is-public-key',
+      'Invalid collection address',
+      publicKeyValidationTest
+    )
+  ),
+  multiplierMints: Yup.array().of(
+    Yup.string().test(
+      'is-public-key',
+      'Invalid collection address',
+      publicKeyValidationTest
+    )
+  ),
+})
+export type MultipliersForm = Yup.InferType<typeof creationFormSchema>
 
 function AdminStakePool() {
   const wallet = useWallet()
@@ -36,35 +61,74 @@ function AdminStakePool() {
   const stakePool = useStakePoolData()
   const rewardDistributor = useRewardDistributorData()
   const [mintsToAuthorize, setMintsToAuthorize] = useState<string>('')
-  const [multiplierMints, setMultiplierMints] = useState<string>('')
-  const [multiplier, setMultiplier] = useState<string>('100')
+  const [defaultMultiplier, setDefaultMultiplier] = useState<string>('0')
+  const [multiplierDecimals, setMultiplierDecimals] = useState<string>('0')
   const [loadingHandleAuthorizeMints, setLoadingHandleAuthorizeMints] =
     useState<boolean>(false)
   const [loadingHandleMultipliers, setLoadingHandleMultipliers] =
     useState<boolean>(false)
 
+  const initialValues: MultipliersForm = {
+    multipliers: [''],
+    multiplierMints: [''],
+  }
+  const formState = useFormik({
+    initialValues,
+    onSubmit: (values) => {},
+    validationSchema: creationFormSchema,
+  })
+  const { values, errors, setFieldValue, handleChange } = formState
+
   const handleMutliplier = async () => {
     setLoadingHandleMultipliers(true)
+    if (!wallet?.connected) {
+      throw 'Wallet not connected'
+    }
     try {
-      if (!wallet?.connected) {
-        throw 'Wallet not connected'
-      }
       if (!stakePool.data?.pubkey) {
         throw 'Stake pool pubkey not found'
       }
-      const pubKeysToSetMultiplier =
-        multiplierMints.length > 0
-          ? multiplierMints
-              .split(',')
-              .map((address) => new PublicKey(address.trim()))
-          : []
+
+      if (!values.multiplierMints) {
+        throw 'Invalid multiplier mints'
+      }
+      if (!values.multipliers) {
+        throw 'Invalid multipliers'
+      }
+
+      if (values.multipliers.length !== values.multiplierMints.length) {
+        notify({
+          message: `Error: Multiplier and mints aren't 1:1`,
+          type: 'error',
+        })
+        return
+      }
+
+      if (values.multiplierMints.toString() === [''].toString())
+        values.multiplierMints = []
+      if (values.multipliers.toString() === [''].toString())
+        values.multipliers = []
+      let pubKeysToSetMultiplier = []
+      for (let i = 0; i < values.multiplierMints.length; i++) {
+        if (values.multiplierMints[i] !== '' && values.multipliers[i] !== '') {
+          pubKeysToSetMultiplier.push(new PublicKey(values.multiplierMints[i]!))
+        } else {
+          notify({
+            message: `Error: Invalid multiplier mint "${values.multiplierMints[
+              i
+            ]!}" or multiplier "${values.multipliers[i]!}"`,
+          })
+          return
+        }
+      }
 
       if (pubKeysToSetMultiplier.length === 0) {
-        notify({ message: `Error: No mints inserted` })
+        notify({ message: `Info: No mints inserted` })
       }
-      if (multiplier.length === 0) {
-        notify({ message: `Error: No multiplier inserted` })
+      if (values.multipliers.length === 0) {
+        notify({ message: `Info: No multiplier inserted` })
       }
+
       const [rewardDistributorId] = await findRewardDistributorId(
         stakePool.data.pubkey
       )
@@ -74,6 +138,34 @@ function AdminStakePool() {
       if (!rewardDistributor) {
         throw 'Reward Distributor for pool not found'
       }
+
+      if (
+        rewardDistributor.parsed.defaultMultiplier.toString() !==
+          defaultMultiplier &&
+        rewardDistributor.parsed.multiplierDecimals.toString() !==
+          multiplierDecimals
+      ) {
+        const tx = await withUpdateRewardDistributor(
+          new Transaction(),
+          connection,
+          wallet as Wallet,
+          {
+            stakePoolId: stakePool.data.pubkey,
+            defaultMultiplier: new BN(defaultMultiplier),
+            multiplierDecimals: Number(multiplierDecimals),
+          }
+        )
+        console.log(tx)
+        await executeTransaction(connection, wallet as Wallet, tx, {
+          silent: false,
+          signers: [],
+        })
+        notify({
+          message: `Successfully updated defaultMultiplier and multiplierDecimals`,
+          type: 'success',
+        })
+      }
+
       for (let i = 0; i < pubKeysToSetMultiplier.length; i++) {
         let mint = pubKeysToSetMultiplier[i]!
         const [stakeEntryId] = await findStakeEntryIdFromMint(
@@ -90,7 +182,7 @@ function AdminStakePool() {
             stakePoolId: stakePool.data.pubkey,
             rewardDistributorId: rewardDistributor.pubkey,
             stakeEntryId: stakeEntryId,
-            multiplier: new BN(multiplier),
+            multiplier: new BN(values.multipliers[i]!),
           }
         )
         await executeTransaction(connection, wallet as Wallet, transaction, {
@@ -105,8 +197,9 @@ function AdminStakePool() {
         })
       }
     } catch (e) {
+      const parsedError = parseError(e, 'Error setting multiplier')
       notify({
-        message: parseError(e, 'Error setting multiplier'),
+        message: parsedError || String(e),
         type: 'error',
       })
     } finally {
@@ -207,39 +300,6 @@ function AdminStakePool() {
       const rewardDistributor = await tryGetAccount(() =>
         getRewardDistributor(connection, rewardDistributorId)
       )
-      if (!rewardDistributor && values.rewardDistributorKind) {
-        const rewardDistributorKindParams = {
-          stakePoolId: stakePool.data.pubkey,
-          rewardMintId: new PublicKey(values.rewardMintAddress!.trim())!,
-          rewardAmount: values.rewardAmount
-            ? new BN(
-                parseMintNaturalAmountFromDecimal(
-                  values.rewardAmount,
-                  rewardMintInfo?.decimals || 1
-                )
-              )
-            : undefined,
-          rewardDurationSeconds: values.rewardDurationSeconds
-            ? new BN(values.rewardDurationSeconds)
-            : undefined,
-          kind: values.rewardDistributorKind,
-          supply: values.rewardMintSupply
-            ? new BN(
-                parseMintNaturalAmountFromDecimal(
-                  values.rewardMintSupply,
-                  rewardMintInfo?.decimals || 1
-                )
-              )
-            : undefined,
-        }
-
-        await withInitRewardDistributor(
-          transaction,
-          connection,
-          wallet as Wallet,
-          rewardDistributorKindParams
-        )
-      }
 
       await executeTransaction(connection, wallet as Wallet, transaction, {
         silent: false,
@@ -361,6 +421,24 @@ function AdminStakePool() {
                         {stakePool.data?.parsed.minStakeSeconds || '[None]'}
                       </label>
                     </span>
+                    {rewardDistributor.data && (
+                      <>
+                        <span className="mt-3 flex w-full flex-wrap md:mb-0">
+                          <label className="inline-block text-sm font-bold uppercase tracking-wide text-gray-200">
+                            Default Multiplier:{' '}
+                            {rewardDistributor.data.parsed.defaultMultiplier.toNumber() ||
+                              '[None]'}
+                          </label>
+                        </span>
+                        <span className="mt-3 flex w-full flex-wrap md:mb-0">
+                          <label className="inline-block text-sm font-bold uppercase tracking-wide text-gray-200">
+                            Multiplier Decimals:{' '}
+                            {rewardDistributor.data.parsed.multiplierDecimals ||
+                              '[None]'}
+                          </label>
+                        </span>
+                      </>
+                    )}
                   </>
                 ) : (
                   <div className="relative flex h-8 w-full items-center justify-center">
@@ -368,48 +446,182 @@ function AdminStakePool() {
                     <div className="absolute w-full animate-pulse items-center justify-center rounded-lg bg-white bg-opacity-10 p-5"></div>
                   </div>
                 )}
-                <div className="mt-10">
-                  <label
-                    className="mb-2 block text-xs font-bold uppercase tracking-wide text-gray-200"
-                    htmlFor="require-authorization"
-                  >
-                    Set multiplier for given mints
-                  </label>
-                  <p className="mb-2 text-sm italic text-gray-300">
-                    Set the stake multiplier for given mints (separated by
-                    commas).
-                    <br />
-                    For a 1x multiplier, enter value 100, for a 2x multiplier
-                    enter value 200 ...
-                  </p>
-                  <span className="flex flex-row">
-                    <input
-                      className="mb-3 w-1/6 appearance-none flex-col rounded border border-gray-500 bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800 focus:outline-none"
-                      type="text"
-                      placeholder={'100'}
-                      value={multiplier}
-                      onChange={(e) => {
-                        const value = Number(e.target.value)
-                        if (!value && e.target.value.length != 0) {
-                          notify({
-                            message: `Invalid multiplier value`,
-                            type: 'error',
-                          })
-                        }
-                        setMultiplier(e.target.value)
-                      }}
-                    />
-                    <input
-                      className="mb-3 ml-5 w-5/6 appearance-none flex-col rounded border border-gray-500 bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800 focus:outline-none"
-                      type="text"
-                      placeholder={'Cmwy..., A3fD..., 7Y1v...'}
-                      value={multiplierMints}
-                      onChange={(e) => {
-                        setMultiplierMints(e.target.value)
-                      }}
-                    />
-                  </span>
-                </div>
+                {rewardDistributor.data && (
+                  <div className="mt-10">
+                    <label
+                      className="mb-2 block text-xs font-bold uppercase tracking-wide text-gray-200"
+                      htmlFor="require-authorization"
+                    >
+                      Set multiplier for given mints
+                    </label>
+                    <p className="text-sm italic text-gray-300">
+                      Set the stake multiplier for given mints.
+                      <br />
+                      For a 1x multiplier, enter value{' '}
+                      {10 ** rewardDistributor.data.parsed.multiplierDecimals},
+                      for a 2x multiplier enter value{' '}
+                      {2 *
+                        10 **
+                          rewardDistributor.data.parsed.multiplierDecimals}{' '}
+                      ...
+                    </p>
+                    <p className="text-sm italic text-gray-300">
+                      For decimal multipliers, work with the reward
+                      distributor's <b>multiplierDecimals</b>. If you set
+                      multiplierDecimals = 1, then for 1.5x multiplier, enter
+                      value 15 so that value/10**multiplierDecimals = 15/10^1 =
+                      1.5
+                    </p>
+                    <p className="text-sm italic text-gray-300">
+                      <b>Note</b> that for 1.5x, you could set
+                      multiplierDecimals = 2 and enter value 150, or
+                      multiplierDecimals = 3 and enter value 1500 ...
+                    </p>
+                    <span className="my-5 flex flex-row gap-5">
+                      <>
+                        <p>Multiplier Decimals:</p>
+                        <input
+                          className="w-1/5 appearance-none flex-col rounded border border-gray-500 bg-gray-700 py-1 px-3 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800 focus:outline-none"
+                          type="text"
+                          placeholder={'0'}
+                          defaultValue={
+                            rewardDistributor.data.parsed.multiplierDecimals
+                          }
+                          onChange={(e) => {
+                            const value = Number(e.target.value)
+                            if (
+                              !value &&
+                              e.target.value.length != 0 &&
+                              value !== 0
+                            ) {
+                              notify({
+                                message: `Invalid multiplier decimals`,
+                                type: 'error',
+                              })
+                            }
+                            setMultiplierDecimals(e.target.value)
+                          }}
+                        />
+                      </>
+                      <>
+                        <p>Default Multiplier:</p>
+                        <input
+                          className="w-1/5 appearance-none flex-col rounded border border-gray-500 bg-gray-700 py-1 px-3 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800 focus:outline-none"
+                          type="text"
+                          placeholder={'1'}
+                          defaultValue={rewardDistributor.data.parsed.defaultMultiplier.toNumber()}
+                          onChange={(e) => {
+                            const value = Number(e.target.value)
+                            if (
+                              !value &&
+                              e.target.value.length != 0 &&
+                              value !== 0
+                            ) {
+                              notify({
+                                message: `Invalid default multiplier`,
+                                type: 'error',
+                              })
+                            }
+                            setDefaultMultiplier(e.target.value)
+                          }}
+                        />
+                      </>
+                    </span>
+                    <span className="flex flex-row gap-5">
+                      <input
+                        className="mb-3 w-1/6 appearance-none flex-col rounded border border-gray-500 bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800 focus:outline-none"
+                        type="text"
+                        placeholder={'0'}
+                        onChange={(e) => {
+                          setFieldValue('multipliers[0]', e.target.value)
+                        }}
+                      />
+                      <div
+                        className={`mb-3 flex w-full appearance-none justify-between rounded border border-gray-500 bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800`}
+                      >
+                        <input
+                          className={`mr-5 w-full bg-transparent focus:outline-none`}
+                          type="text"
+                          autoComplete="off"
+                          onChange={(e) => {
+                            setFieldValue('multiplierMints[0]', e.target.value)
+                          }}
+                          placeholder={'CmAy...A3fD'}
+                          name="requireCollections"
+                        />
+                        <div
+                          className="cursor-pointer text-xs text-gray-400"
+                          onClick={() => {
+                            setFieldValue(`multiplierMints`, [
+                              '',
+                              ...values.multiplierMints!,
+                            ])
+                            setFieldValue(`multipliers`, [
+                              '',
+                              ...values.multipliers!,
+                            ])
+                          }}
+                        >
+                          Add
+                        </div>
+                      </div>
+                    </span>
+                    {values.multiplierMints!.map(
+                      (v, i) =>
+                        i > 0 && (
+                          <span className="flex flex-row gap-5">
+                            <input
+                              className="mb-3 w-1/6 appearance-none flex-col rounded border border-gray-500 bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800 focus:outline-none"
+                              type="text"
+                              placeholder={'0'}
+                              onChange={(e) => {
+                                setFieldValue(
+                                  `multipliers[${i}]`,
+                                  e.target.value
+                                )
+                              }}
+                            />
+                            <div
+                              className={`mb-3 flex w-full appearance-none justify-between rounded border border-gray-500 bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800`}
+                            >
+                              <input
+                                className={`mr-5 w-full bg-transparent focus:outline-none`}
+                                type="text"
+                                autoComplete="off"
+                                onChange={(e) => {
+                                  setFieldValue(
+                                    `multiplierMints[${i}]`,
+                                    e.target.value
+                                  )
+                                }}
+                                placeholder={'CmAy...A3fD'}
+                                name="requireCollections"
+                              />
+                              <div
+                                className="cursor-pointer text-xs text-gray-400"
+                                onClick={() => {
+                                  setFieldValue(
+                                    `multiplierMints`,
+                                    values.multiplierMints!.filter(
+                                      (_, ix) => ix !== i
+                                    )
+                                  )
+                                  setFieldValue(
+                                    `multipliers`,
+                                    values.multipliers!.filter(
+                                      (_, ix) => ix !== i
+                                    )
+                                  )
+                                }}
+                              >
+                                Remove
+                              </div>
+                            </div>
+                          </span>
+                        )
+                    )}
+                  </div>
+                )}
                 {stakePool.data?.parsed.requiresAuthorization && (
                   <div className="mt-5">
                     <label
@@ -433,20 +645,22 @@ function AdminStakePool() {
                     />
                   </div>
                 )}
-                <button type="button" onClick={() => handleMutliplier()}>
-                  <div
-                    className={
-                      'mt-4 inline-block rounded-md bg-blue-700 px-4 py-2'
-                    }
-                  >
-                    {loadingHandleMultipliers && (
-                      <div className="mr-2 inline-block">
-                        <TailSpin color="#fff" height={15} width={15} />
-                      </div>
-                    )}
-                    Set Multipliers
-                  </div>
-                </button>
+                {rewardDistributor.data && (
+                  <button type="button" onClick={() => handleMutliplier()}>
+                    <div
+                      className={
+                        'mt-4 inline-block rounded-md bg-blue-700 px-4 py-2'
+                      }
+                    >
+                      {loadingHandleMultipliers && (
+                        <div className="mr-2 inline-block">
+                          <TailSpin color="#fff" height={15} width={15} />
+                        </div>
+                      )}
+                      Set Multipliers
+                    </div>
+                  </button>
+                )}
                 {stakePool.data?.parsed.requiresAuthorization && (
                   <button
                     type="button"
