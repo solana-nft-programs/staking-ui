@@ -2,7 +2,6 @@ import {
   AccountData,
   withFindOrInitAssociatedTokenAccount,
 } from '@cardinal/common'
-import { executeTransaction } from '@cardinal/staking'
 import {
   RewardDistributorData,
   RewardDistributorKind,
@@ -21,7 +20,7 @@ import Select from 'react-select'
 import { getMintDecimalAmountFromNaturalV2 } from 'common/units'
 import { FormFieldTitleInput } from 'common/FormFieldInput'
 import * as Yup from 'yup'
-import { tryPublicKey } from 'common/utils'
+import { executeTransaction, tryPublicKey } from 'common/utils'
 import { useFormik } from 'formik'
 import { StakePoolData } from '@cardinal/staking/dist/cjs/programs/stakePool'
 import { handleError } from 'api/api'
@@ -457,7 +456,6 @@ export function StakePoolForm({
               styles={customStyles}
               className={`mb-3 ${type === 'update' ? 'opacity-40' : ''}`}
               isSearchable={false}
-              isDisabled={type === 'update'}
               onChange={(option) =>
                 setFieldValue(
                   'rewardDistributorKind',
