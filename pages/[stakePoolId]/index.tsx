@@ -3,11 +3,10 @@ import {
   stake,
   unstake,
   claimRewards,
-  executeTransaction,
 } from '@cardinal/staking'
 import { ReceiptType } from '@cardinal/staking/dist/cjs/programs/stakePool'
 import { useWallet } from '@solana/wallet-adapter-react'
-import { PublicKey } from '@solana/web3.js'
+import { PublicKey, SendTransactionError } from '@solana/web3.js'
 import { TokenData } from 'api/types'
 import { Header } from 'common/Header'
 import Head from 'next/head'
@@ -17,7 +16,7 @@ import { Wallet } from '@metaplex/js'
 import { useUserTokenData } from 'providers/TokenDataProvider'
 import { LoadingSpinner } from 'common/LoadingSpinner'
 import { notify } from 'common/Notification'
-import { pubKeyUrl, secondstoDuration } from 'common/utils'
+import { executeTransaction, pubKeyUrl, secondstoDuration } from 'common/utils'
 import {
   formatAmountAsDecimal,
   formatMintNaturalAmountAsDecimal,
@@ -268,10 +267,7 @@ function Home() {
           `Transaction failed: ${e ? (e as Error).toString() : ''}`
         )
         notify({
-          message:
-            errorMessage && errorMessage.length > 0
-              ? errorMessage
-              : `Transaction failed: ${e ? (e as Error).toString() : ''}`,
+          message: errorMessage,
           type: 'error',
         })
         break

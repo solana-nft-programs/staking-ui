@@ -457,7 +457,6 @@ export function StakePoolForm({
               styles={customStyles}
               className={`mb-3 ${type === 'update' ? 'opacity-40' : ''}`}
               isSearchable={false}
-              isDisabled={type === 'update'}
               onChange={(option) =>
                 setFieldValue(
                   'rewardDistributorKind',
