@@ -1,16 +1,9 @@
-import {
-  createStakePool,
-  executeTransaction,
-  parseError,
-} from '@cardinal/staking'
+import { createStakePool, executeTransaction } from '@cardinal/staking'
 import { withInitRewardDistributor } from '@cardinal/staking/dist/cjs/programs/rewardDistributor/transaction'
-import { StakePoolData } from '@cardinal/staking/dist/cjs/programs/stakePool'
-import { getStakePool } from '@cardinal/staking/dist/cjs/programs/stakePool/accounts'
-import { AccountData } from '@cardinal/token-manager'
 import { Wallet } from '@metaplex/js'
 import { BN } from '@project-serum/anchor'
 import { useWallet } from '@solana/wallet-adapter-react'
-import { PublicKey, SendTransactionError } from '@solana/web3.js'
+import { PublicKey } from '@solana/web3.js'
 import { Header } from 'common/Header'
 import { notify } from 'common/Notification'
 import Head from 'next/head'
@@ -26,6 +19,7 @@ import { useStakePoolsMetadatas } from 'hooks/useStakePoolsMetadata'
 import { Footer } from 'common/Footer'
 import { tryPublicKey } from 'common/utils'
 import { CreationForm, StakePoolForm } from 'components/StakePoolForm'
+import { handleError } from 'api/api'
 
 function Admin() {
   const { connection, environment } = useEnvironmentCtx()
@@ -157,8 +151,7 @@ function Admin() {
     } catch (e) {
       console.log(e)
       notify({
-        message: 'Error creating stake pool',
-        description: parseError(e, `${e ? (e as Error).toString() : ''}`),
+        message: handleError(e, 'Error creating stake pool'),
         type: 'error',
       })
     }

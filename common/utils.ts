@@ -1,3 +1,4 @@
+import { Wallet } from '@metaplex/js'
 import * as web3 from '@solana/web3.js'
 
 export function getExpirationString(expiration: number, UTCSecondsNow: number) {
@@ -126,4 +127,41 @@ export const tryPublicKey = (
   } catch (e) {
     return null
   }
+}
+
+export const executeTransaction = async (
+  connection: web3.Connection,
+  wallet: Wallet,
+  transaction: web3.Transaction,
+  config: {
+    silent?: boolean
+    signers?: web3.Signer[]
+    confirmOptions?: web3.ConfirmOptions
+    callback?: (success: boolean) => void
+  }
+): Promise<string> => {
+  let txid = ''
+  try {
+    transaction.feePayer = wallet.publicKey
+    transaction.recentBlockhash = (
+      await connection.getRecentBlockhash('max')
+    ).blockhash
+    await wallet.signTransaction(transaction)
+    if (config.signers && config.signers.length > 0) {
+      transaction.partialSign(...config.signers)
+    }
+    txid = await web3.sendAndConfirmRawTransaction(
+      connection,
+      transaction.serialize(),
+      config.confirmOptions
+    )
+    config.callback && config.callback(true)
+    console.log('Successful tx', txid)
+  } catch (e: unknown) {
+    config.callback && config.callback(false)
+    if (!config.silent) {
+      throw e
+    }
+  }
+  return txid
 }

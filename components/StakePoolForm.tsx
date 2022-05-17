@@ -2,7 +2,7 @@ import {
   AccountData,
   withFindOrInitAssociatedTokenAccount,
 } from '@cardinal/common'
-import { executeTransaction, parseError } from '@cardinal/staking'
+import { executeTransaction } from '@cardinal/staking'
 import {
   RewardDistributorData,
   RewardDistributorKind,
@@ -24,6 +24,7 @@ import * as Yup from 'yup'
 import { tryPublicKey } from 'common/utils'
 import { useFormik } from 'formik'
 import { StakePoolData } from '@cardinal/staking/dist/cjs/programs/stakePool'
+import { handleError } from 'api/api'
 
 const publicKeyValidationTest = (value: string | undefined): boolean => {
   return tryPublicKey(value) ? true : false
@@ -179,7 +180,7 @@ export function StakePoolForm({
           userAta = await checkMint.getAccountInfo(mintAta)
         } catch (e) {
           notify({
-            message: parseError(
+            message: handleError(
               e,
               "Failed to get user's associated token address for given mint"
             ),
@@ -456,7 +457,6 @@ export function StakePoolForm({
               styles={customStyles}
               className={`mb-3 ${type === 'update' ? 'opacity-40' : ''}`}
               isSearchable={false}
-              isDisabled={type === 'update'}
               onChange={(option) =>
                 setFieldValue(
                   'rewardDistributorKind',

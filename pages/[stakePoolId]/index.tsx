@@ -3,12 +3,10 @@ import {
   stake,
   unstake,
   claimRewards,
-  executeTransaction,
-  parseError,
 } from '@cardinal/staking'
 import { ReceiptType } from '@cardinal/staking/dist/cjs/programs/stakePool'
 import { useWallet } from '@solana/wallet-adapter-react'
-import { PublicKey } from '@solana/web3.js'
+import { PublicKey, SendTransactionError } from '@solana/web3.js'
 import { TokenData } from 'api/types'
 import { Header } from 'common/Header'
 import Head from 'next/head'
@@ -18,7 +16,7 @@ import { Wallet } from '@metaplex/js'
 import { useUserTokenData } from 'providers/TokenDataProvider'
 import { LoadingSpinner } from 'common/LoadingSpinner'
 import { notify } from 'common/Notification'
-import { pubKeyUrl, secondstoDuration } from 'common/utils'
+import { executeTransaction, pubKeyUrl, secondstoDuration } from 'common/utils'
 import {
   formatAmountAsDecimal,
   formatMintNaturalAmountAsDecimal,
@@ -46,6 +44,7 @@ import { Switch } from '@headlessui/react'
 import { FaInfoCircle } from 'react-icons/fa'
 import { MouseoverTooltip } from 'common/Tooltip'
 import { useUTCNow } from 'providers/UTCNowProvider'
+import { handleError } from 'api/api'
 
 function Home() {
   const { connection, environment } = useEnvironmentCtx()
@@ -106,7 +105,7 @@ function Home() {
         console.log('Successfully claimed rewards')
       } catch (e) {
         notify({
-          message: parseError(e, 'Transaction failed'),
+          message: handleError(e, 'Transaction failed'),
           type: 'error',
         })
       } finally {
@@ -143,11 +142,9 @@ function Home() {
         })
         await executeTransaction(connection, wallet as Wallet, transaction, {})
         if (
-          !stakePool.parsed.cooldownSeconds ||
-          stakePool.parsed.cooldownSeconds === 0 ||
+          stakePool.parsed.cooldownSeconds &&
           !token.stakeEntry?.parsed.cooldownStartSeconds
         ) {
-          console.log('hereee')
           notify({
             message: `Cooldown period initiated ${step + 1}/${
               stakedSelected.length
@@ -170,7 +167,7 @@ function Home() {
         stakePoolEntries.refresh().then(() => stakePoolEntries.refresh())
       } catch (e) {
         notify({
-          message: parseError(e, 'Transaction failed'),
+          message: handleError(e),
           type: 'error',
         })
         break
@@ -265,15 +262,12 @@ function Home() {
         stakedTokenDatas.refresh(true).then(() => stakedTokenDatas.refresh())
         stakePoolEntries.refresh().then(() => stakePoolEntries.refresh())
       } catch (e) {
-        const errorMessage = parseError(
+        const errorMessage = handleError(
           e,
           `Transaction failed: ${e ? (e as Error).toString() : ''}`
         )
         notify({
-          message:
-            errorMessage && errorMessage.length > 0
-              ? errorMessage
-              : `Transaction failed: ${e ? (e as Error).toString() : ''}`,
+          message: errorMessage,
           type: 'error',
         })
         break
