@@ -258,14 +258,25 @@ function AdminStakePool() {
     }
   }
 
-  const handleUpdate = async (
-    values: CreationForm,
-    rewardMintInfo?: splToken.MintInfo
-  ) => {
+  const handleUpdate = async (values: CreationForm) => {
+    if (!wallet?.connected) {
+      notify({
+        message: 'Wallet not connected',
+        type: 'error',
+      })
+      return
+    }
+    if (
+      wallet.publicKey?.toString() !==
+      stakePool.data?.parsed.authority.toString()
+    ) {
+      notify({
+        message: 'You are not the pool authority.',
+        type: 'error',
+      })
+      return
+    }
     try {
-      if (!wallet?.connected) {
-        throw 'Wallet not connected'
-      }
       if (!stakePool.data?.pubkey) {
         throw 'Stake pool pubkey not found'
       }

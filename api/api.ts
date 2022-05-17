@@ -1,5 +1,7 @@
 import { getBatchedMultipleAccounts as getBatchedMultipleAccounts } from '@cardinal/common'
-import { stakePool } from '@cardinal/staking'
+import { parseError, stakePool } from '@cardinal/staking'
+import { REWARD_DISTRIBUTOR_IDL } from '@cardinal/staking/dist/cjs/programs/rewardDistributor'
+import { STAKE_POOL_IDL } from '@cardinal/staking/dist/cjs/programs/stakePool'
 import { getStakeEntriesForUser } from '@cardinal/staking/dist/cjs/programs/stakePool/accounts'
 import { findStakeAuthorizationId } from '@cardinal/staking/dist/cjs/programs/stakePool/pda'
 import { findStakeEntryIdFromMint } from '@cardinal/staking/dist/cjs/programs/stakePool/utils'
@@ -316,4 +318,25 @@ export async function getStakeEntryDatas(
         : undefined
     ),
   }))
+}
+
+export function handleError(e: any): string {
+  const hex = (e as web3.SendTransactionError).message.split(' ').at(-1)
+  if (hex) {
+    const dec = parseInt(hex, 16)
+    const stakePoolErr = STAKE_POOL_IDL.errors.find((err) => err.code === dec)
+    const rewardDistributorErr = REWARD_DISTRIBUTOR_IDL.errors.find(
+      (err) => err.code === dec
+    )
+    if (stakePoolErr && rewardDistributorErr) {
+      return stakePoolErr.msg + ' or ' + rewardDistributorErr.msg
+    } else if (stakePoolErr) {
+      return stakePoolErr.msg
+    } else if (rewardDistributorErr) {
+      return rewardDistributorErr.msg
+    } else {
+      return parseError(e, 'Transaction failed')
+    }
+  }
+  return 'Transaction failed'
 }
