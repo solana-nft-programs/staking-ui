@@ -78,10 +78,9 @@ export const useAllowedTokenDatas = (showFungibleTokens: boolean) => {
           ) {
             isAllowed = true
           }
-          return isAllowed
         }
+        return isAllowed
       })
-
       return filteredTokens
     },
     [stakePool, showFungibleTokens, tokenDatas],

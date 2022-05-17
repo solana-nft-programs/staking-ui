@@ -706,7 +706,7 @@ function Home() {
                 : '',
             }}
           >
-            <div className="flex flex-row justify-between">
+            <div className="mb-5 flex flex-row justify-between">
               <div className="mt-2 flex flex-row">
                 <p className="mr-3 text-lg">
                   View Staked Tokens{' '}
@@ -960,29 +960,33 @@ function Home() {
               </div>
             </div>
             <div className="mt-2 flex flex-row-reverse">
-              <button
-                onClick={() => {
-                  if (stakedSelected.length === 0) {
-                    notify({
-                      message: `No tokens selected`,
-                      type: 'error',
-                    })
-                  }
-                  handleUnstake()
-                }}
-                style={{
-                  background:
-                    stakePoolMetadata?.colors?.secondary ||
-                    defaultSecondaryColor,
-                  color: stakePoolMetadata?.colors?.fontColor,
-                }}
-                className="my-auto flex rounded-md px-4 py-2 hover:scale-[1.03]"
+              <MouseoverTooltip
+                title={'Unstake will automatically claim reward for you.'}
               >
-                <span className="mr-1 inline-block">
-                  {loadingUnstake ? <LoadingSpinner height="25px" /> : ''}
-                </span>
-                <span className="my-auto">Unstake Tokens</span>
-              </button>
+                <button
+                  onClick={() => {
+                    if (stakedSelected.length === 0) {
+                      notify({
+                        message: `No tokens selected`,
+                        type: 'error',
+                      })
+                    }
+                    handleUnstake()
+                  }}
+                  style={{
+                    background:
+                      stakePoolMetadata?.colors?.secondary ||
+                      defaultSecondaryColor,
+                    color: stakePoolMetadata?.colors?.fontColor,
+                  }}
+                  className="my-auto flex rounded-md px-4 py-2 hover:scale-[1.03]"
+                >
+                  <span className="mr-1 inline-block">
+                    {loadingUnstake ? <LoadingSpinner height="25px" /> : ''}
+                  </span>
+                  <span className="my-auto">Unstake Tokens</span>
+                </button>
+              </MouseoverTooltip>
               {rewardDistributorData.data &&
               rewards.data?.claimableRewards.gt(new BN(0)) ? (
                 <button
