@@ -18,9 +18,9 @@ import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 import { useUserTokenData } from 'providers/TokenDataProvider'
 import { AsyncButton } from './Button'
 
-import { executeTransaction } from '@cardinal/staking'
 import { StakePoolMetadata } from 'api/mapping'
 import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
+import { executeTransaction } from './utils'
 
 export type AirdropMetadata = { name: string; symbol: string; uri: string }
 

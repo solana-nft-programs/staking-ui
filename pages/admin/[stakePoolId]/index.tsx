@@ -3,6 +3,8 @@ import { executeTransaction } from '@cardinal/staking'
 import { getRewardDistributor } from '@cardinal/staking/dist/cjs/programs/rewardDistributor/accounts'
 import { findRewardDistributorId } from '@cardinal/staking/dist/cjs/programs/rewardDistributor/pda'
 import {
+  withCloseRewardDistributor,
+  withInitRewardDistributor,
   withUpdateRewardDistributor,
   withUpdateRewardEntry,
 } from '@cardinal/staking/dist/cjs/programs/rewardDistributor/transaction'
@@ -23,7 +25,6 @@ import Head from 'next/head'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 import { useState } from 'react'
 import { TailSpin } from 'react-loader-spinner'
-import { parseMintNaturalAmountFromDecimal } from 'common/units'
 import { CreationForm, StakePoolForm } from 'components/StakePoolForm'
 import { useRewardDistributorData } from 'hooks/useRewardDistributorData'
 import { tryPublicKey } from 'common/utils'
@@ -31,6 +32,9 @@ import { findStakeEntryIdFromMint } from '@cardinal/staking/dist/cjs/programs/st
 import * as Yup from 'yup'
 import { useFormik } from 'formik'
 import { handleError } from 'api/api'
+import { RewardDistributorKind } from '@cardinal/staking/dist/cjs/programs/rewardDistributor'
+import { parseMintNaturalAmountFromDecimal } from 'common/units'
+import { useRewardMintInfo } from 'hooks/useRewardMintInfo'
 
 const publicKeyValidationTest = (value: string | undefined): boolean => {
   return tryPublicKey(value) ? true : false
@@ -66,6 +70,7 @@ function AdminStakePool() {
     useState<boolean>(false)
   const [loadingHandleMultipliers, setLoadingHandleMultipliers] =
     useState<boolean>(false)
+  const rewardMintInfo = useRewardMintInfo()
 
   const initialValues: MultipliersForm = {
     multipliers: [''],
@@ -280,6 +285,82 @@ function AdminStakePool() {
         throw 'Stake pool pubkey not found'
       }
 
+      if (
+        values.rewardDistributorKind !== rewardDistributor.data?.parsed.kind
+      ) {
+        if (values.rewardDistributorKind === 0) {
+          const [rewardDistributorId] = await findRewardDistributorId(
+            stakePool.data.pubkey
+          )
+          const rewardDistributorData = await tryGetAccount(() =>
+            getRewardDistributor(connection, rewardDistributorId)
+          )
+          if (rewardDistributorData) {
+            const transaction = await withCloseRewardDistributor(
+              new Transaction(),
+              connection,
+              wallet as Wallet,
+              {
+                stakePoolId: stakePool.data.pubkey,
+              }
+            )
+            await executeTransaction(
+              connection,
+              wallet as Wallet,
+              transaction,
+              {
+                silent: false,
+                signers: [],
+              }
+            )
+
+            notify({
+              message: 'Successfully removed reward distributor for pool',
+              type: 'success',
+            })
+          }
+        } else {
+          const rewardDistributorKindParams = {
+            stakePoolId: stakePool.data.pubkey,
+            rewardMintId: new PublicKey(values.rewardMintAddress!.trim())!,
+            rewardAmount: values.rewardAmount
+              ? new BN(
+                  parseMintNaturalAmountFromDecimal(
+                    values.rewardAmount,
+                    rewardMintInfo.data?.mintInfo?.decimals || 1
+                  ).toString()
+                )
+              : undefined,
+            rewardDurationSeconds: values.rewardDurationSeconds
+              ? new BN(values.rewardDurationSeconds)
+              : undefined,
+            kind: values.rewardDistributorKind,
+            supply: values.rewardMintSupply
+              ? new BN(
+                  parseMintNaturalAmountFromDecimal(
+                    values.rewardMintSupply,
+                    rewardMintInfo.data?.mintInfo?.decimals || 1
+                  ).toString()
+                )
+              : undefined,
+          }
+          const [transaction] = await withInitRewardDistributor(
+            new Transaction(),
+            connection,
+            wallet as Wallet,
+            rewardDistributorKindParams
+          )
+          await executeTransaction(connection, wallet as Wallet, transaction, {
+            silent: false,
+            signers: [],
+          })
+          notify({
+            message: 'Successfully created reward distributor for pool',
+            type: 'success',
+          })
+        }
+      }
+
       const collectionPublicKeys = values.requireCollections
         .map((c) => tryPublicKey(c))
         .filter((c) => c) as PublicKey[]
@@ -302,13 +383,6 @@ function AdminStakePool() {
         connection,
         wallet as Wallet,
         stakePoolParams
-      )
-
-      const [rewardDistributorId] = await findRewardDistributorId(
-        stakePool.data.pubkey
-      )
-      const rewardDistributor = await tryGetAccount(() =>
-        getRewardDistributor(connection, rewardDistributorId)
       )
 
       await executeTransaction(connection, wallet as Wallet, transaction, {
