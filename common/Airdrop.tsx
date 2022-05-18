@@ -32,7 +32,6 @@ export async function airdropNFT(
 ): Promise<string> {
   const transaction = new Transaction()
   const randInt = Math.round(Math.random() * (airdropMetadatas.length - 1))
-  const creators = stakePool?.filters?.find((f) => f.type === 'creators')
   const metadata: AirdropMetadata | undefined = airdropMetadatas[randInt]
   if (!metadata) throw new Error('No configured airdrops found')
 

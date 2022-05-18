@@ -340,7 +340,6 @@ export function handleError(
     let stakePoolProgram = false
     let rewardDistributorProgram = false
     const logs = (e as web3.SendTransactionError).logs
-    console.log('heyyy', logs)
     if (logs) {
       stakePoolProgram = logs[0]!.includes(STAKE_POOL_ADDRESS.toString())
       rewardDistributorProgram = logs[0]!.includes(
