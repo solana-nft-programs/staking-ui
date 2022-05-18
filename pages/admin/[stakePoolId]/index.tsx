@@ -35,6 +35,7 @@ import { handleError } from 'api/api'
 import { RewardDistributorKind } from '@cardinal/staking/dist/cjs/programs/rewardDistributor'
 import { parseMintNaturalAmountFromDecimal } from 'common/units'
 import { useRewardMintInfo } from 'hooks/useRewardMintInfo'
+import { FormFieldTitleInput } from 'common/FormFieldInput'
 
 const publicKeyValidationTest = (value: string | undefined): boolean => {
   return tryPublicKey(value) ? true : false
@@ -562,10 +563,15 @@ function AdminStakePool() {
                       multiplierDecimals = 3 and enter value 1500 ...
                     </p>
                     <span className="my-5 flex flex-row gap-5">
-                      <>
-                        <p>Multiplier Decimals:</p>
+                      <div className="mb-6 mt-4 w-1/2 md:mb-0">
+                        <FormFieldTitleInput
+                          title={'Multiplier Decimals'}
+                          description={
+                            'Amount of token to be paid to the staked NFT'
+                          }
+                        />
                         <input
-                          className="w-1/5 appearance-none flex-col rounded border border-gray-500 bg-gray-700 py-1 px-3 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800 focus:outline-none"
+                          className={`mb-3 block w-full appearance-none rounded border border-gray-500 bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800 focus:outline-none`}
                           type="text"
                           placeholder={'0'}
                           defaultValue={
@@ -586,11 +592,16 @@ function AdminStakePool() {
                             setMultiplierDecimals(e.target.value)
                           }}
                         />
-                      </>
-                      <>
-                        <p>Default Multiplier:</p>
+                      </div>
+                      <div className="mb-6 mt-4 w-1/2 md:mb-0">
+                        <FormFieldTitleInput
+                          title={'Default Multiplier'}
+                          description={
+                            'Amount of token to be paid to the staked NFT'
+                          }
+                        />{' '}
                         <input
-                          className="w-1/5 appearance-none flex-col rounded border border-gray-500 bg-gray-700 py-1 px-3 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800 focus:outline-none"
+                          className={`mb-3 block w-full appearance-none rounded border border-gray-500 bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800 focus:outline-none`}
                           type="text"
                           placeholder={'1'}
                           defaultValue={rewardDistributor.data.parsed.defaultMultiplier.toNumber()}
@@ -609,7 +620,7 @@ function AdminStakePool() {
                             setDefaultMultiplier(e.target.value)
                           }}
                         />
-                      </>
+                      </div>
                     </span>
                     <span className="flex flex-row gap-5">
                       <input
@@ -704,6 +715,20 @@ function AdminStakePool() {
                           </span>
                         )
                     )}
+                    <button type="button" onClick={() => handleMutliplier()}>
+                      <div
+                        className={
+                          'mt-4 inline-block cursor-pointer rounded-md bg-blue-700 px-4 py-2'
+                        }
+                      >
+                        {loadingHandleMultipliers && (
+                          <div className="mr-2 inline-block">
+                            <TailSpin color="#fff" height={15} width={15} />
+                          </div>
+                        )}
+                        Set Multipliers
+                      </div>
+                    </button>
                   </div>
                 )}
                 {stakePool.data?.parsed.requiresAuthorization && (
@@ -727,41 +752,22 @@ function AdminStakePool() {
                         setMintsToAuthorize(e.target.value)
                       }}
                     />
-                  </div>
-                )}
-                {rewardDistributor.data && (
-                  <button type="button" onClick={() => handleMutliplier()}>
                     <div
                       className={
-                        'mt-4 inline-block rounded-md bg-blue-700 px-4 py-2'
+                        'mt-4 inline-block cursor-pointer rounded-md bg-blue-700 px-4 py-2'
                       }
+                      onClick={() => handleAuthorizeMints()}
                     >
-                      {loadingHandleMultipliers && (
-                        <div className="mr-2 inline-block">
-                          <TailSpin color="#fff" height={15} width={15} />
-                        </div>
-                      )}
-                      Set Multipliers
+                      <div className="flex">
+                        {loadingHandleAuthorizeMints && (
+                          <div className="mr-2">
+                            <TailSpin color="#fff" height={15} width={15} />
+                          </div>
+                        )}
+                        Authorize Mints
+                      </div>
                     </div>
-                  </button>
-                )}
-                {stakePool.data?.parsed.requiresAuthorization && (
-                  <button
-                    type="button"
-                    className={
-                      'ml-5 mt-4 inline-block rounded-md bg-blue-700 px-4 py-2'
-                    }
-                    onClick={() => handleAuthorizeMints()}
-                  >
-                    <div className="flex">
-                      {loadingHandleAuthorizeMints && (
-                        <div className="mr-2">
-                          <TailSpin color="#fff" height={15} width={15} />
-                        </div>
-                      )}
-                      Authorize Mints
-                    </div>
-                  </button>
+                  </div>
                 )}
               </div>
             </div>
