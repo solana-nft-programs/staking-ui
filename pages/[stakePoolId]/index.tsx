@@ -714,27 +714,29 @@ function Home() {
                   )}
                 </div>
               </div>
-              {stakePool?.parsed.cooldownSeconds &&
-              stakePool?.parsed.cooldownSeconds !== 0 ? (
-                <div className="mt-2 flex flex-col">
-                  <p className="mr-3 text-lg">
-                    Cooldown Period: {stakePool?.parsed.cooldownSeconds} secs
-                  </p>
-                </div>
-              ) : (
-                ''
-              )}
-              {stakePool?.parsed.minStakeSeconds &&
-              stakePool?.parsed.minStakeSeconds !== 0 ? (
-                <div className="mt-2 flex flex-col">
-                  <p className="mr-3 text-lg">
-                    Minimum Stake Seconds: {stakePool?.parsed.minStakeSeconds}{' '}
-                    secs
-                  </p>
-                </div>
-              ) : (
-                ''
-              )}
+              <div className="flex flex-col justify-evenly">
+                {stakePool?.parsed.cooldownSeconds &&
+                stakePool?.parsed.cooldownSeconds !== 0 ? (
+                  <div className="flex flex-col">
+                    <p className="mr-3 text-sm">
+                      Cooldown Period: {stakePool?.parsed.cooldownSeconds} secs
+                    </p>
+                  </div>
+                ) : (
+                  ''
+                )}
+                {stakePool?.parsed.minStakeSeconds &&
+                stakePool?.parsed.minStakeSeconds !== 0 ? (
+                  <div className="flex flex-col">
+                    <p className="mr-3 text-sm">
+                      Minimum Stake Seconds: {stakePool?.parsed.minStakeSeconds}{' '}
+                      secs
+                    </p>
+                  </div>
+                ) : (
+                  ''
+                )}
+              </div>
             </div>
             <div className="my-3 flex-auto overflow-auto">
               <div className="relative my-auto mb-4 h-[60vh] overflow-y-auto overflow-x-hidden rounded-md bg-white bg-opacity-5 p-5">
