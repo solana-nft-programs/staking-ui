@@ -454,30 +454,55 @@ export function StakePoolForm({
             />
             <Select
               styles={customStyles}
-              className={`mb-3 ${type === 'update' ? 'opacity-40' : ''}`}
+              className={`mb-3`}
               isSearchable={false}
               onChange={(option) =>
                 setFieldValue(
                   'rewardDistributorKind',
-                  option?.value
-                    ? parseInt(option?.value) || undefined
-                    : undefined
+                  option?.value ? parseInt(option?.value) : undefined
                 )
               }
               value={{
                 value: values.rewardDistributorKind?.toString() ?? '0',
                 label: values.rewardDistributorKind
-                  ? RewardDistributorKind[values.rewardDistributorKind]
+                  ? RewardDistributorKind[values.rewardDistributorKind] ===
+                    'Mint'
+                    ? 'Mint'
+                    : 'Transfer'
                   : 'None',
               }}
-              options={[
-                { value: '0', label: 'None' },
-                { value: '1', label: 'Mint' },
-                { value: '2', label: 'Transfer' },
-              ]}
-            />
+              options={
+                type === 'update' && rewardDistributorData
+                  ? [
+                      { value: '0', label: 'None' },
+                      {
+                        value:
+                          RewardDistributorKind[
+                            rewardDistributorData?.parsed.kind
+                          ] === 'Mint'
+                            ? '1'
+                            : '2',
+                        label:
+                          RewardDistributorKind[
+                            rewardDistributorData?.parsed.kind
+                          ] === 'Mint'
+                            ? 'Mint'
+                            : 'Transfer',
+                      },
+                    ]
+                  : [
+                      { value: '0', label: 'None' },
+                      { value: '1', label: 'Mint' },
+                      { value: '2', label: 'Transfer' },
+                    ]
+              }
+          />
           </div>
-          {values.rewardDistributorKind && (
+          {values.rewardDistributorKind ||
+          (type !== 'update' &&
+            values.rewardDistributorKind !==
+              rewardDistributorData?.parsed.kind &&
+            values.rewardDistributorKind !== 0) ? (
             <>
               <div className="relative mb-6 mt-4 w-full px-3 md:mb-0">
                 {processingMintAddress ? (
@@ -498,11 +523,8 @@ export function StakePoolForm({
                       ? 'border-red-500'
                       : 'border-gray-500'
                   }
-                  ${
-                    type === 'update' ? 'opacity-40' : ''
-                  } mb-3 block w-full appearance-none rounded border border-gray-500 bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800 focus:outline-none`}
+                  'mb-3 block w-full appearance-none rounded border border-gray-500 bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800 focus:outline-none`}
                   type="text"
-                  disabled={type === 'update'}
                   placeholder={'Enter Mint Address First: So1111..11112'}
                   value={values.rewardMintAddress}
                   onChange={(e) => {
@@ -524,12 +546,10 @@ export function StakePoolForm({
                         errors.rewardAmount
                           ? 'border-red-500'
                           : 'border-gray-500'
-                      } ${
-                        type === 'update' ? 'opacity-40' : ''
                       } mb-3 block w-full appearance-none rounded border border-gray-500 bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800 focus:outline-none`}
                       type="text"
                       placeholder={'10'}
-                      disabled={submitDisabled || type === 'update'}
+                      disabled={submitDisabled}
                       value={values.rewardAmount}
                       onChange={(e) => {
                         const amount = Number(e.target.value)
@@ -555,13 +575,11 @@ export function StakePoolForm({
                         errors.rewardDurationSeconds
                           ? 'border-red-500'
                           : 'border-gray-500'
-                      } ${
-                        type === 'update' ? 'opacity-40' : ''
                       } mb-3 block w-full appearance-none rounded border border-gray-500 bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800 focus:outline-none`}
                       type="text"
                       placeholder={'60'}
                       value={values.rewardDurationSeconds}
-                      disabled={submitDisabled || type === 'update'}
+                      disabled={submitDisabled}
                       onChange={(e) => {
                         const seconds = Number(e.target.value)
                         if (!seconds && e.target.value.length !== 0) {
@@ -598,13 +616,11 @@ export function StakePoolForm({
                         errors.rewardMintSupply
                           ? 'border-red-500'
                           : 'border-gray-500'
-                      } ${
-                        type === 'update' ? 'opacity-40' : ''
                       } mb-3 flex appearance-none justify-between rounded border border-gray-500 bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800`}
                     >
                       <input
                         className={`mr-5 w-full bg-transparent focus:outline-none`}
-                        disabled={submitDisabled || type === 'update'}
+                        disabled={submitDisabled}
                         type="text"
                         placeholder={'1000000'}
                         value={
@@ -655,11 +671,15 @@ export function StakePoolForm({
                 </>
               )}
             </>
+          ) : (
+            ''
           )}
         </div>
       </div>
       <button
-        disabled={Boolean(values.rewardDistributorKind && submitDisabled)}
+        disabled={Boolean(
+          values.rewardDistributorKind && submitDisabled && type !== 'update'
+        )}
         type="button"
         onClick={async () => {
           try {
@@ -672,7 +692,7 @@ export function StakePoolForm({
       >
         <div
           className={
-            submitDisabled && values.rewardDistributorKind
+            submitDisabled && values.rewardDistributorKind && type !== 'update'
               ? 'mt-4 inline-block rounded-md bg-blue-700 px-4 py-2 opacity-50'
               : 'mt-4 inline-block rounded-md bg-blue-700 px-4 py-2'
           }
