@@ -50,11 +50,36 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     stakePoolAddress: new PublicKey(
       '3BZCupFU6X3wYJwgTsKS2vTs4VeMrhSZgx4P2TfzExtP'
     ),
-    websiteUrl: 'https://blockasset.co/',
+    websiteUrl: 'https://hub.blockasset.co/nft-staking-v2',
     receiptType: ReceiptType.Original,
     imageUrl:
       'https://blockasset.co/static/logo-e51ac9985ba7aef4ac8c1b1ae1c00511.png',
     maxStaked: 11791,
+    colors: {
+      primary: '#000000',
+      secondary: '#4da1de',
+      accent: '#1fcfb11c',
+      fontColor: '#FFFFFF',
+    },
+    airdrops: [
+      {
+        name: 'Blockasset Legends',
+        symbol: 'LEGENDS',
+        uri: 'https://arweave.net/Q5y8_OehSOYCkGiX-hV1H6qiczoDaVdk4Eyi4lhhdQE',
+      },
+    ],
+  },
+  {
+    name: 'blockasset-smesh-bros',
+    displayName: 'Blockasset Smesh Bros',
+    stakePoolAddress: new PublicKey(
+      'Bce4Aq4YheBo5hENeoMhjywdvMhEMc8sUh21S87Qv4q6'
+    ),
+    websiteUrl: 'https://hub.blockasset.co/smesh-staking',
+    receiptType: ReceiptType.Original,
+    imageUrl:
+      'https://blockasset.co/static/logo-e51ac9985ba7aef4ac8c1b1ae1c00511.png',
+    maxStaked: 4000,
     colors: {
       primary: '#000000',
       secondary: '#4da1de',
