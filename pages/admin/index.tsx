@@ -126,6 +126,12 @@ function Admin() {
                 ).toString()
               )
             : undefined,
+          multiplerDecimals: values.multiplierDecimals
+            ? parseInt(values.multiplierDecimals)
+            : undefined,
+          defaultMultiplier: values.defaultMultiplier
+            ? new BN(values.defaultMultiplier)
+            : undefined,
         }
 
         await withInitRewardDistributor(

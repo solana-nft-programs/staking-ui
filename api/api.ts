@@ -351,7 +351,7 @@ export function handleError(
     } else if (rewardDistributorProgram && rewardDistributorErr) {
       return 'Reward Distributor Error: ' + rewardDistributorErr.msg
     } else {
-      return parseError(e, fallBackMessage)
+      return parseError(e, fallBackMessage) || fallBackMessage
     }
   }
   return fallBackMessage

@@ -24,6 +24,7 @@ import { executeTransaction, tryPublicKey } from 'common/utils'
 import { useFormik } from 'formik'
 import { StakePoolData } from '@cardinal/staking/dist/cjs/programs/stakePool'
 import { handleError } from 'api/api'
+import { FormInput } from 'common/FormInput'
 
 const publicKeyValidationTest = (value: string | undefined): boolean => {
   return tryPublicKey(value) ? true : false
@@ -77,6 +78,10 @@ const creationFormSchema = Yup.object({
   rewardMintSupply: Yup.string()
     .optional()
     .test('is-valid-bn', 'Invalid reward amount', bnValidationTest),
+  multiplierDecimals: Yup.string().optional(),
+  defaultMultiplier: Yup.string()
+    .optional()
+    .test('is-valid-bn', 'Invalid reward amount', bnValidationTest),
 })
 
 export type CreationForm = Yup.InferType<typeof creationFormSchema>
@@ -121,6 +126,12 @@ export function StakePoolForm({
     rewardMintSupply: rewardDistributorData?.parsed.maxSupply
       ? rewardDistributorData?.parsed.maxSupply.toString()
       : undefined,
+    multiplierDecimals: rewardDistributorData?.parsed.multiplierDecimals
+      ? rewardDistributorData?.parsed.multiplierDecimals.toString()
+      : undefined,
+    defaultMultiplier: rewardDistributorData?.parsed.defaultMultiplier
+      ? rewardDistributorData?.parsed.defaultMultiplier.toString()
+      : undefined,
   }
   const formState = useFormik({
     initialValues,
@@ -138,13 +149,6 @@ export function StakePoolForm({
 
   useMemo(async () => {
     if (values.rewardMintAddress) {
-      if (!wallet?.connected) {
-        notify({
-          message: `Wallet not connected`,
-          type: 'error',
-        })
-        return
-      }
       setSubmitDisabled(true)
       setProcessingMintAddress(true)
       try {
@@ -159,6 +163,12 @@ export function StakePoolForm({
 
         let userAta: splToken.AccountInfo | undefined = undefined
         try {
+          if (!wallet?.connected) {
+            notify({
+              message: `Wallet not connected`,
+              type: 'error',
+            })
+          }
           const transaction = new Transaction()
           const mintAta = await withFindOrInitAssociatedTokenAccount(
             transaction,
@@ -185,7 +195,6 @@ export function StakePoolForm({
             ),
             type: 'error',
           })
-          return
         }
         setMintInfo(mintInfo)
         if (userAta) {
@@ -212,7 +221,7 @@ export function StakePoolForm({
         setProcessingMintAddress(false)
       }
     }
-  }, [values.rewardMintAddress?.toString()])
+  }, [values.rewardMintAddress?.toString(), wallet.publicKey?.toString()])
 
   return (
     <form className="w-full max-w-lg">
@@ -413,7 +422,9 @@ export function StakePoolForm({
         <div className="mb-6 mt-4 w-full px-3 md:mb-0">
           <FormFieldTitleInput
             title={'Cooldown Period Seconds'}
-            description={'Period of time required prior to unstaking'}
+            description={
+              'Number of seconds to "cool down" (unstaked, but still in the pool) once user unstakes a mint'
+            }
           />
           <input
             className="mb-3 block w-full appearance-none rounded border border-gray-500 bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800 focus:outline-none"
@@ -430,7 +441,7 @@ export function StakePoolForm({
           <FormFieldTitleInput
             title={'Minimum Stake Seconds'}
             description={
-              'Period of time to keep token staked before unstake is allowed'
+              'Number of seconds a mint has to stay in the pool once staked before being able to be unstaked'
             }
           />
           <input
@@ -496,7 +507,7 @@ export function StakePoolForm({
                       { value: '2', label: 'Transfer' },
                     ]
               }
-          />
+            />
           </div>
           {values.rewardDistributorKind ||
           (type !== 'update' &&
@@ -517,13 +528,13 @@ export function StakePoolForm({
                   description={'The mint address of the reward token'}
                 />
 
-                <input
-                  className={`${
-                    values.rewardMintAddress !== '' && errors.rewardMintAddress
-                      ? 'border-red-500'
-                      : 'border-gray-500'
+                <FormInput
+                  disabled={type === 'update'}
+                  error={
+                    values.rewardMintAddress !== '' &&
+                    Boolean(errors.rewardMintAddress)
                   }
-                  'mb-3 block w-full appearance-none rounded border border-gray-500 bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800 focus:outline-none`}
+                  className={`mb-3 block w-full appearance-none rounded border border-gray-500 bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800 focus:outline-none`}
                   type="text"
                   placeholder={'Enter Mint Address First: So1111..11112'}
                   value={values.rewardMintAddress}
@@ -541,15 +552,16 @@ export function StakePoolForm({
                         'Amount of token to be paid to the staked NFT'
                       }
                     />
-                    <input
+                    <FormInput
+                      error={Boolean(errors.rewardAmount)}
                       className={`${
                         errors.rewardAmount
                           ? 'border-red-500'
                           : 'border-gray-500'
                       } mb-3 block w-full appearance-none rounded border border-gray-500 bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800 focus:outline-none`}
+                      disabled={submitDisabled || type === 'update'}
                       type="text"
                       placeholder={'10'}
-                      disabled={submitDisabled}
                       value={values.rewardAmount}
                       onChange={(e) => {
                         const amount = Number(e.target.value)
@@ -570,16 +582,16 @@ export function StakePoolForm({
                         'Staked duration needed to receive reward amount'
                       }
                     />
-                    <input
+                    <FormInput
                       className={`${
                         errors.rewardDurationSeconds
                           ? 'border-red-500'
                           : 'border-gray-500'
                       } mb-3 block w-full appearance-none rounded border border-gray-500 bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800 focus:outline-none`}
                       type="text"
+                      disabled={submitDisabled || type === 'update'}
                       placeholder={'60'}
                       value={values.rewardDurationSeconds}
-                      disabled={submitDisabled}
                       onChange={(e) => {
                         const seconds = Number(e.target.value)
                         if (!seconds && e.target.value.length !== 0) {
@@ -616,11 +628,13 @@ export function StakePoolForm({
                         errors.rewardMintSupply
                           ? 'border-red-500'
                           : 'border-gray-500'
+                      } ${
+                        submitDisabled || type === 'update' ? 'opacity-30' : ''
                       } mb-3 flex appearance-none justify-between rounded border border-gray-500 bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800`}
                     >
                       <input
                         className={`mr-5 w-full bg-transparent focus:outline-none`}
-                        disabled={submitDisabled}
+                        disabled={submitDisabled || type === 'update'}
                         type="text"
                         placeholder={'1000000'}
                         value={
@@ -635,7 +649,6 @@ export function StakePoolForm({
                           const supply = Number(
                             e.target.value.replaceAll(',', '')
                           )
-                          console.log(supply)
                           if (!supply && e.target.value.length != 0) {
                             notify({
                               message: `Invalid reward mint supply`,
@@ -668,6 +681,66 @@ export function StakePoolForm({
                       </div>
                     </div>
                   </div>
+                  <div className="mb-6 mt-4 w-1/2 px-3 md:mb-0">
+                    <FormFieldTitleInput
+                      title={'Multiplier Decimals'}
+                      description={
+                        'Amount of token to be paid to the staked NFT'
+                      }
+                    />
+                    <FormInput
+                      className={`mb-3 block w-full appearance-none rounded border border-gray-500 bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800 focus:outline-none`}
+                      type="text"
+                      placeholder={'0'}
+                      disabled={type === 'update'}
+                      value={values.multiplierDecimals}
+                      onChange={(e) => {
+                        const supply = Number(
+                          e.target.value.replaceAll(',', '')
+                        )
+                        if (!supply && e.target.value.length != 0) {
+                          notify({
+                            message: `Invalid multiplier decimals`,
+                            type: 'error',
+                          })
+                        }
+                        setFieldValue(
+                          'multiplierDecimals',
+                          e.target.value.toString()
+                        )
+                      }}
+                    />
+                  </div>
+                  <div className="mb-6 mt-4 w-1/2 px-3 md:mb-0">
+                    <FormFieldTitleInput
+                      title={'Default Multiplier'}
+                      description={
+                        'Amount of token to be paid to the staked NFT'
+                      }
+                    />{' '}
+                    <FormInput
+                      className={`mb-3 block w-full appearance-none rounded border border-gray-500 bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800 focus:outline-none`}
+                      type="text"
+                      placeholder={'1'}
+                      disabled={type === 'update'}
+                      value={values.defaultMultiplier}
+                      onChange={(e) => {
+                        const supply = Number(
+                          e.target.value.replaceAll(',', '')
+                        )
+                        if (!supply && e.target.value.length != 0) {
+                          notify({
+                            message: `Invalid default multiplier`,
+                            type: 'error',
+                          })
+                        }
+                        setFieldValue(
+                          'defaultMultiplier',
+                          e.target.value.toString()
+                        )
+                      }}
+                    />
+                  </div>
                 </>
               )}
             </>
@@ -691,11 +764,11 @@ export function StakePoolForm({
         }}
       >
         <div
-          className={
+          className={`mt-4 inline-block rounded-md bg-blue-700 px-4 py-2 ${
             submitDisabled && values.rewardDistributorKind && type !== 'update'
-              ? 'mt-4 inline-block rounded-md bg-blue-700 px-4 py-2 opacity-50'
-              : 'mt-4 inline-block rounded-md bg-blue-700 px-4 py-2'
-          }
+              ? 'opacity-50'
+              : ''
+          }`}
         >
           {loading && (
             <div className="mr-2 inline-block">

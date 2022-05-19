@@ -65,8 +65,6 @@ function AdminStakePool() {
   const stakePool = useStakePoolData()
   const rewardDistributor = useRewardDistributorData()
   const [mintsToAuthorize, setMintsToAuthorize] = useState<string>('')
-  const [defaultMultiplier, setDefaultMultiplier] = useState<string>('0')
-  const [multiplierDecimals, setMultiplierDecimals] = useState<string>('0')
   const [loadingHandleAuthorizeMints, setLoadingHandleAuthorizeMints] =
     useState<boolean>(false)
   const [loadingHandleMultipliers, setLoadingHandleMultipliers] =
@@ -142,33 +140,6 @@ function AdminStakePool() {
       )
       if (!rewardDistributor) {
         throw 'Reward Distributor for pool not found'
-      }
-
-      if (
-        rewardDistributor.parsed.defaultMultiplier.toString() !==
-          defaultMultiplier &&
-        rewardDistributor.parsed.multiplierDecimals.toString() !==
-          multiplierDecimals
-      ) {
-        const tx = await withUpdateRewardDistributor(
-          new Transaction(),
-          connection,
-          wallet as Wallet,
-          {
-            stakePoolId: stakePool.data.pubkey,
-            defaultMultiplier: new BN(defaultMultiplier),
-            multiplierDecimals: Number(multiplierDecimals),
-          }
-        )
-        console.log(tx)
-        await executeTransaction(connection, wallet as Wallet, tx, {
-          silent: false,
-          signers: [],
-        })
-        notify({
-          message: `Successfully updated defaultMultiplier and multiplierDecimals`,
-          type: 'success',
-        })
       }
 
       for (let i = 0; i < pubKeysToSetMultiplier.length; i++) {
@@ -360,6 +331,33 @@ function AdminStakePool() {
             type: 'success',
           })
         }
+      } else {
+        // if (
+        //   rewardDistributor.parsed.defaultMultiplier.toString() !==
+        //     defaultMultiplier &&
+        //   rewardDistributor.parsed.multiplierDecimals.toString() !==
+        //     multiplierDecimals
+        // ) {
+        //   const tx = await withUpdateRewardDistributor(
+        //     new Transaction(),
+        //     connection,
+        //     wallet as Wallet,
+        //     {
+        //       stakePoolId: stakePool.data.pubkey,
+        //       defaultMultiplier: new BN(defaultMultiplier),
+        //       multiplierDecimals: Number(multiplierDecimals),
+        //     }
+        //   )
+        //   console.log(tx)
+        //   await executeTransaction(connection, wallet as Wallet, tx, {
+        //     silent: false,
+        //     signers: [],
+        //   })
+        //   notify({
+        //     message: `Successfully updated defaultMultiplier and multiplierDecimals`,
+        //     type: 'success',
+        //   })
+        // }
       }
 
       const collectionPublicKeys = values.requireCollections
@@ -576,71 +574,23 @@ function AdminStakePool() {
                       value 15 so that value/10**multiplierDecimals = 15/10^1 =
                       1.5
                     </p>
-                    <p className="text-sm italic text-gray-300">
-                      <b>Note</b> that for 1.5x, you could set
+                    <p className="mt-2 text-sm italic text-gray-300">
+                      <b>NOTE</b> that for 1.5x, you could set
                       multiplierDecimals = 2 and enter value 150, or
                       multiplierDecimals = 3 and enter value 1500 ...
                     </p>
-                    <span className="my-5 flex flex-row gap-5">
-                      <div className="mb-6 mt-4 w-1/2 md:mb-0">
-                        <FormFieldTitleInput
-                          title={'Multiplier Decimals'}
-                          description={
-                            'Amount of token to be paid to the staked NFT'
-                          }
-                        />
-                        <input
-                          className={`mb-3 block w-full appearance-none rounded border border-gray-500 bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800 focus:outline-none`}
-                          type="text"
-                          placeholder={'0'}
-                          defaultValue={
-                            rewardDistributor.data.parsed.multiplierDecimals
-                          }
-                          onChange={(e) => {
-                            const value = Number(e.target.value)
-                            if (
-                              !value &&
-                              e.target.value.length != 0 &&
-                              value !== 0
-                            ) {
-                              notify({
-                                message: `Invalid multiplier decimals`,
-                                type: 'error',
-                              })
-                            }
-                            setMultiplierDecimals(e.target.value)
-                          }}
-                        />
-                      </div>
-                      <div className="mb-6 mt-4 w-1/2 md:mb-0">
-                        <FormFieldTitleInput
-                          title={'Default Multiplier'}
-                          description={
-                            'Amount of token to be paid to the staked NFT'
-                          }
-                        />{' '}
-                        <input
-                          className={`mb-3 block w-full appearance-none rounded border border-gray-500 bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800 focus:outline-none`}
-                          type="text"
-                          placeholder={'1'}
-                          defaultValue={rewardDistributor.data.parsed.defaultMultiplier.toNumber()}
-                          onChange={(e) => {
-                            const value = Number(e.target.value)
-                            if (
-                              !value &&
-                              e.target.value.length != 0 &&
-                              value !== 0
-                            ) {
-                              notify({
-                                message: `Invalid default multiplier`,
-                                type: 'error',
-                              })
-                            }
-                            setDefaultMultiplier(e.target.value)
-                          }}
-                        />
-                      </div>
-                    </span>
+                    <p className="mt-2 mb-5 text-sm italic text-gray-300">
+                      <b>WARNING</b> Do not set more than a few at at time. If
+                      needed take a look at the scripts in{' '}
+                      <a
+                        href="https://github.com/cardinal-labs/cardinal-staking/tree/main/tools"
+                        className="text-blue-500"
+                        target="_blank"
+                      >
+                        tools
+                      </a>{' '}
+                      to set many at a time.
+                    </p>
                     <span className="flex flex-row gap-5">
                       <input
                         className="mb-3 w-1/6 appearance-none flex-col rounded border border-gray-500 bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800 focus:outline-none"
@@ -761,6 +711,18 @@ function AdminStakePool() {
                     <p className="mb-2 text-sm italic text-gray-300">
                       Allow any specific mints access to the stake pool
                       (separated by commas)
+                    </p>
+                    <p className="mb-5 text-sm italic text-gray-300">
+                      <b>WARNING</b> Do not set more than a few at at time. If
+                      needed take a look at the scripts in{' '}
+                      <a
+                        href="https://github.com/cardinal-labs/cardinal-staking/tree/main/tools"
+                        className="text-blue-500"
+                        target="_blank"
+                      >
+                        tools
+                      </a>{' '}
+                      to set many at a time.
                     </p>
                     <input
                       className="mb-3 block w-full appearance-none rounded border border-gray-500 bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800 focus:outline-none"
