@@ -1,11 +1,10 @@
 import { tryGetAccount } from '@cardinal/common'
-import { executeTransaction } from '@cardinal/staking'
+import { executeTransaction, handleError } from '@cardinal/staking'
 import { getRewardDistributor } from '@cardinal/staking/dist/cjs/programs/rewardDistributor/accounts'
 import { findRewardDistributorId } from '@cardinal/staking/dist/cjs/programs/rewardDistributor/pda'
 import {
   withCloseRewardDistributor,
   withInitRewardDistributor,
-  withUpdateRewardDistributor,
   withUpdateRewardEntry,
 } from '@cardinal/staking/dist/cjs/programs/rewardDistributor/transaction'
 import {
@@ -31,11 +30,9 @@ import { tryPublicKey } from 'common/utils'
 import { findStakeEntryIdFromMint } from '@cardinal/staking/dist/cjs/programs/stakePool/utils'
 import * as Yup from 'yup'
 import { useFormik } from 'formik'
-import { handleError } from 'api/api'
 import { getMintDecimalAmountFromNatural } from 'common/units'
 import { parseMintNaturalAmountFromDecimal } from 'common/units'
 import { useRewardMintInfo } from 'hooks/useRewardMintInfo'
-import { FormFieldTitleInput } from 'common/FormFieldInput'
 
 const publicKeyValidationTest = (value: string | undefined): boolean => {
   return tryPublicKey(value) ? true : false

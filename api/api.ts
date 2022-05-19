@@ -1,13 +1,5 @@
 import { getBatchedMultipleAccounts as getBatchedMultipleAccounts } from '@cardinal/common'
-import { parseError, stakePool } from '@cardinal/staking'
-import {
-  REWARD_DISTRIBUTOR_ADDRESS,
-  REWARD_DISTRIBUTOR_IDL,
-} from '@cardinal/staking/dist/cjs/programs/rewardDistributor'
-import {
-  STAKE_POOL_ADDRESS,
-  STAKE_POOL_IDL,
-} from '@cardinal/staking/dist/cjs/programs/stakePool'
+import { stakePool } from '@cardinal/staking'
 import { getStakeEntriesForUser } from '@cardinal/staking/dist/cjs/programs/stakePool/accounts'
 import { findStakeAuthorizationId } from '@cardinal/staking/dist/cjs/programs/stakePool/pda'
 import { findStakeEntryIdFromMint } from '@cardinal/staking/dist/cjs/programs/stakePool/utils'
@@ -324,35 +316,4 @@ export async function getStakeEntryDatas(
         : undefined
     ),
   }))
-}
-
-export function handleError(
-  e: any,
-  fallBackMessage: string = 'Transaction failed'
-): string {
-  const hex = (e as web3.SendTransactionError).message.split(' ').at(-1)
-  if (hex) {
-    const dec = parseInt(hex, 16)
-    const stakePoolErr = STAKE_POOL_IDL.errors.find((err) => err.code === dec)
-    const rewardDistributorErr = REWARD_DISTRIBUTOR_IDL.errors.find(
-      (err) => err.code === dec
-    )
-    let stakePoolProgram = false
-    let rewardDistributorProgram = false
-    const logs = (e as web3.SendTransactionError).logs
-    if (logs) {
-      stakePoolProgram = logs[0]!.includes(STAKE_POOL_ADDRESS.toString())
-      rewardDistributorProgram = logs[0]!.includes(
-        REWARD_DISTRIBUTOR_ADDRESS.toString()
-      )
-    }
-    if (stakePoolProgram && stakePoolErr) {
-      return 'Stake Pool Error: ' + stakePoolErr.msg
-    } else if (rewardDistributorProgram && rewardDistributorErr) {
-      return 'Reward Distributor Error: ' + rewardDistributorErr.msg
-    } else {
-      return parseError(e, fallBackMessage) || fallBackMessage
-    }
-  }
-  return fallBackMessage
 }

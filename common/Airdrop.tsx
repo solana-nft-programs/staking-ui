@@ -20,7 +20,7 @@ import { AsyncButton } from './Button'
 
 import { StakePoolMetadata } from 'api/mapping'
 import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
-import { executeTransaction } from './utils'
+import { executeTransaction } from '@cardinal/staking'
 
 export type AirdropMetadata = { name: string; symbol: string; uri: string }
 

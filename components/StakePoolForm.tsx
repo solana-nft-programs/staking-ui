@@ -20,11 +20,11 @@ import Select from 'react-select'
 import { getMintDecimalAmountFromNaturalV2 } from 'common/units'
 import { FormFieldTitleInput } from 'common/FormFieldInput'
 import * as Yup from 'yup'
-import { executeTransaction, tryPublicKey } from 'common/utils'
+import { tryPublicKey } from 'common/utils'
 import { useFormik } from 'formik'
 import { StakePoolData } from '@cardinal/staking/dist/cjs/programs/stakePool'
-import { handleError } from 'api/api'
 import { FormInput } from 'common/FormInput'
+import { executeTransaction, handleError } from '@cardinal/staking'
 
 const publicKeyValidationTest = (value: string | undefined): boolean => {
   return tryPublicKey(value) ? true : false
@@ -35,6 +35,18 @@ const bnValidationTest = (value: string | undefined): boolean => {
   try {
     new BN(value)
     return true
+  } catch (e) {
+    const num = Number(value)
+    if (0 < num && num < 1) return true
+    return false
+  }
+}
+
+const nonDecimalValidationTest = (value: string | undefined): boolean => {
+  if (value === undefined) return false
+  try {
+    if (Number(value) >= 1) return true
+    return false
   } catch (e) {
     return false
   }
@@ -74,7 +86,12 @@ const creationFormSchema = Yup.object({
     .test('is-valid-bn', 'Invalid reward amount', bnValidationTest),
   rewardDurationSeconds: Yup.string()
     .optional()
-    .test('is-valid-bn', 'Invalid reward amount', bnValidationTest),
+    .test('is-valid-bn', 'Invalid reward durations seconds', bnValidationTest)
+    .test(
+      'non-decimal',
+      'Invalid reward durations seconds (has to be non-decimal)',
+      nonDecimalValidationTest
+    ),
   rewardMintSupply: Yup.string()
     .optional()
     .test('is-valid-bn', 'Invalid reward amount', bnValidationTest),
@@ -149,6 +166,12 @@ export function StakePoolForm({
 
   useMemo(async () => {
     if (values.rewardMintAddress) {
+      if (!wallet?.connected) {
+        notify({
+          message: `Wallet not connected`,
+          type: 'error',
+        })
+      }
       setSubmitDisabled(true)
       setProcessingMintAddress(true)
       try {
@@ -160,15 +183,17 @@ export function StakePoolForm({
           Keypair.generate() // unused
         )
         let mintInfo = await checkMint.getMintInfo()
+        setMintInfo(mintInfo)
+        if (
+          type === 'update' &&
+          values.rewardMintAddress?.toString() ===
+            rewardDistributorData?.parsed.rewardMint.toString()
+        ) {
+          return
+        }
 
         let userAta: splToken.AccountInfo | undefined = undefined
         try {
-          if (!wallet?.connected) {
-            notify({
-              message: `Wallet not connected`,
-              type: 'error',
-            })
-          }
           const transaction = new Transaction()
           const mintAta = await withFindOrInitAssociatedTokenAccount(
             transaction,
@@ -196,7 +221,6 @@ export function StakePoolForm({
             type: 'error',
           })
         }
-        setMintInfo(mintInfo)
         if (userAta) {
           const decimalAmount = getMintDecimalAmountFromNaturalV2(
             mintInfo.decimals,
@@ -221,7 +245,7 @@ export function StakePoolForm({
         setProcessingMintAddress(false)
       }
     }
-  }, [values.rewardMintAddress?.toString(), wallet.publicKey?.toString()])
+  }, [values.rewardMintAddress?.toString()])
 
   return (
     <form className="w-full max-w-lg">
@@ -529,7 +553,9 @@ export function StakePoolForm({
                 />
 
                 <FormInput
-                  disabled={type === 'update'}
+                  disabled={
+                    type === 'update' && rewardDistributorData !== undefined
+                  }
                   error={
                     values.rewardMintAddress !== '' &&
                     Boolean(errors.rewardMintAddress)
@@ -559,7 +585,11 @@ export function StakePoolForm({
                           ? 'border-red-500'
                           : 'border-gray-500'
                       } mb-3 block w-full appearance-none rounded border border-gray-500 bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800 focus:outline-none`}
-                      disabled={submitDisabled || type === 'update'}
+                      disabled={
+                        submitDisabled ||
+                        (type === 'update' &&
+                          rewardDistributorData !== undefined)
+                      }
                       type="text"
                       placeholder={'10'}
                       value={values.rewardAmount}
@@ -589,7 +619,11 @@ export function StakePoolForm({
                           : 'border-gray-500'
                       } mb-3 block w-full appearance-none rounded border border-gray-500 bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800 focus:outline-none`}
                       type="text"
-                      disabled={submitDisabled || type === 'update'}
+                      disabled={
+                        submitDisabled ||
+                        (type === 'update' &&
+                          rewardDistributorData !== undefined)
+                      }
                       placeholder={'60'}
                       value={values.rewardDurationSeconds}
                       onChange={(e) => {
@@ -629,12 +663,20 @@ export function StakePoolForm({
                           ? 'border-red-500'
                           : 'border-gray-500'
                       } ${
-                        submitDisabled || type === 'update' ? 'opacity-30' : ''
+                        submitDisabled ||
+                        (type === 'update' &&
+                          rewardDistributorData !== undefined)
+                          ? 'opacity-30'
+                          : ''
                       } mb-3 flex appearance-none justify-between rounded border border-gray-500 bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800`}
                     >
                       <input
                         className={`mr-5 w-full bg-transparent focus:outline-none`}
-                        disabled={submitDisabled || type === 'update'}
+                        disabled={
+                          submitDisabled ||
+                          (type === 'update' &&
+                            rewardDistributorData !== undefined)
+                        }
                         type="text"
                         placeholder={'1000000'}
                         value={
@@ -685,14 +727,16 @@ export function StakePoolForm({
                     <FormFieldTitleInput
                       title={'Multiplier Decimals'}
                       description={
-                        'Amount of token to be paid to the staked NFT'
+                        'Decimals of the reward distributor to achieve decimal multipliers.'
                       }
                     />
                     <FormInput
                       className={`mb-3 block w-full appearance-none rounded border border-gray-500 bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800 focus:outline-none`}
                       type="text"
                       placeholder={'0'}
-                      disabled={type === 'update'}
+                      disabled={
+                        type === 'update' && rewardDistributorData !== undefined
+                      }
                       value={values.multiplierDecimals}
                       onChange={(e) => {
                         const supply = Number(
@@ -715,14 +759,16 @@ export function StakePoolForm({
                     <FormFieldTitleInput
                       title={'Default Multiplier'}
                       description={
-                        'Amount of token to be paid to the staked NFT'
+                        'Default multiplier to be used to achieve decimal multipliers.'
                       }
                     />{' '}
                     <FormInput
                       className={`mb-3 block w-full appearance-none rounded border border-gray-500 bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800 focus:outline-none`}
                       type="text"
                       placeholder={'1'}
-                      disabled={type === 'update'}
+                      disabled={
+                        type === 'update' && rewardDistributorData !== undefined
+                      }
                       value={values.defaultMultiplier}
                       onChange={(e) => {
                         const supply = Number(
