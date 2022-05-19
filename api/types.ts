@@ -27,8 +27,7 @@ export type TokenData = {
   stakeEntry?: AccountData<StakeEntryData> | null
   stakeAuthorization?: AccountData<StakeAuthorizationData> | null
   recipientTokenAccount?: spl.AccountInfo | null
-  amountToStake?: number | null
-  amountToUnStake?: number | null
+  amountToStake?: string | null
 }
 
 export type StakeEntryTokenData = {

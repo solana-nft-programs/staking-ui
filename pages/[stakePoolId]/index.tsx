@@ -3,6 +3,7 @@ import {
   stake,
   unstake,
   claimRewards,
+  executeTransaction,
 } from '@cardinal/staking'
 import { ReceiptType } from '@cardinal/staking/dist/cjs/programs/stakePool'
 import { useWallet } from '@solana/wallet-adapter-react'
@@ -16,13 +17,14 @@ import { Wallet } from '@metaplex/js'
 import { useUserTokenData } from 'providers/TokenDataProvider'
 import { LoadingSpinner } from 'common/LoadingSpinner'
 import { notify } from 'common/Notification'
-import { executeTransaction, pubKeyUrl, secondstoDuration } from 'common/utils'
+import { pubKeyUrl, secondstoDuration } from 'common/utils'
 import {
   formatAmountAsDecimal,
   formatMintNaturalAmountAsDecimal,
   getMintDecimalAmountFromNatural,
   getMintDecimalAmountFromNaturalV2,
   getMintNaturalAmountFromDecimal,
+  parseMintNaturalAmountFromDecimal,
 } from 'common/units'
 import { BN } from '@project-serum/anchor'
 import { useStakedTokenDatas } from 'hooks/useStakedTokenDatas'
@@ -104,6 +106,7 @@ function Home() {
         notify({ message: `Successfully claimed rewards`, type: 'success' })
         console.log('Successfully claimed rewards')
       } catch (e) {
+        console.log(e)
         notify({
           message: handleError(e, 'Transaction failed'),
           type: 'error',
@@ -166,6 +169,7 @@ function Home() {
         stakedTokenDatas.refresh(true).then(() => stakedTokenDatas.refresh())
         stakePoolEntries.refresh().then(() => stakePoolEntries.refresh())
       } catch (e) {
+        console.log(e)
         notify({
           message: handleError(e),
           type: 'error',
@@ -242,15 +246,19 @@ function Home() {
           amount: token?.amountToStake
             ? new BN(
                 token?.amountToStake && token.tokenListData
-                  ? getMintNaturalAmountFromDecimal(
+                  ? parseMintNaturalAmountFromDecimal(
                       token?.amountToStake,
                       token.tokenListData?.decimals
-                    )
+                    ).toString()
                   : 1
               )
             : undefined,
         })
-        await executeTransaction(connection, wallet as Wallet, transaction, {})
+        await executeTransaction(connection, wallet as Wallet, transaction, {
+          confirmOptions: {
+            skipPreflight: true,
+          },
+        })
         notify({
           message: `Successfully staked ${step + 1}/${unstakedSelected.length}`,
           type: 'success',
@@ -517,15 +525,8 @@ function Home() {
                                     }
                                   />
                                 </div>
-                                {tk.tokenListData ? (
-                                  <div className="absolute bottom-2 left-2">
-                                    {tk.tokenListData.name}
-                                  </div>
-                                ) : (
-                                  ''
-                                )}
                                 {tk.tokenListData && (
-                                  <div className="absolute bottom-2 right-2">
+                                  <div className="absolute bottom-2 left-2">
                                     {Number(
                                       (
                                         tk.tokenAccount?.account.data.parsed
@@ -579,13 +580,18 @@ function Home() {
                                           data.tokenAccount?.account.data.parsed.info.mint.toString() !==
                                           tk.tokenAccount?.account.data.parsed.info.mint.toString()
                                       )
-                                    if (e.target.value.length > 0 && !amount) {
+                                    if (
+                                      !amount &&
+                                      e.target.value.length != 0 &&
+                                      amount !== 0
+                                    ) {
                                       notify({
                                         message: 'Please enter a valid amount',
                                         type: 'error',
                                       })
                                     } else {
-                                      tk.amountToStake = amount
+                                      tk.amountToStake =
+                                        e.target.value.toString()
                                       newUnstakedSelected = [
                                         ...newUnstakedSelected,
                                         tk,
@@ -755,65 +761,98 @@ function Home() {
                 ) : stakedTokenDatas.data?.length === 0 ? (
                   <p className="text-gray-400">No tokens currently staked.</p>
                 ) : (
-                  <div className="grid grid-cols-2 gap-4 md:grid-cols-2 lg:grid-cols-3">
+                  <div
+                    className={
+                      'grid grid-cols-2 gap-4 lg:grid-cols-2 xl:grid-cols-3'
+                    }
+                  >
                     {stakedTokenDatas.data &&
                       stakedTokenDatas.data.map((tk) => (
-                        <div
-                          className="relative"
-                          key={tk?.stakeEntry?.pubkey.toBase58()}
-                        >
-                          {(loadingUnstake || loadingClaimRewards) &&
-                            isStakedTokenSelected(tk) && (
-                              <div>
-                                <div className="absolute top-0 left-0 z-10 flex h-full w-full justify-center rounded-lg bg-black bg-opacity-80  align-middle">
-                                  <div className="mx-auto flex items-center justify-center">
-                                    <span className="mr-2">
-                                      <LoadingSpinner height="25px" />
-                                    </span>
-                                    {loadingUnstake
-                                      ? 'Unstaking token...'
-                                      : 'Claim rewards...'}
+                        <div key={tk?.stakeEntry?.pubkey.toBase58()}>
+                          <div className="relative w-44 md:w-auto 2xl:w-48">
+                            <label
+                              htmlFor={tk?.stakeEntry?.pubkey.toBase58()}
+                              className="relative"
+                            >
+                              <div className="relative">
+                                <div>
+                                  <div className="relative">
+                                    {(loadingUnstake || loadingClaimRewards) &&
+                                      isStakedTokenSelected(tk) && (
+                                        <div>
+                                          <div className="absolute top-0 left-0 z-10 flex h-full w-full justify-center rounded-lg bg-black bg-opacity-80  align-middle">
+                                            <div className="mx-auto flex items-center justify-center">
+                                              <span className="mr-2">
+                                                <LoadingSpinner height="25px" />
+                                              </span>
+                                              {loadingUnstake
+                                                ? 'Unstaking token...'
+                                                : 'Claim rewards...'}
+                                            </div>
+                                          </div>
+                                        </div>
+                                      )}
+                                    <img
+                                      className="mx-auto mt-4 mb-2 rounded-xl bg-white bg-opacity-5 object-contain md:h-40 md:w-40 2xl:h-48 2xl:w-48"
+                                      src={
+                                        tk.metadata?.data.image ||
+                                        tk.tokenListData?.logoURI
+                                      }
+                                      alt={
+                                        tk.metadata?.data.name ||
+                                        tk.tokenListData?.name
+                                      }
+                                    />
                                   </div>
+                                  {tk.tokenListData && (
+                                    <div className="absolute bottom-2 left-2">
+                                      {Number(
+                                        getMintDecimalAmountFromNaturalV2(
+                                          tk.tokenListData!.decimals,
+                                          new BN(
+                                            tk.stakeEntry!.parsed.amount.toNumber()
+                                          )
+                                        ).toFixed(2)
+                                      )}{' '}
+                                      {tk.tokenListData.symbol}
+                                    </div>
+                                  )}
                                 </div>
-                              </div>
-                            )}
-                          <label
-                            htmlFor={tk?.stakeEntry?.pubkey.toBase58()}
-                            className="relative"
-                          >
-                            <div className="relative">
-                              <div>
-                                <img
-                                  className="mx-auto mt-4 mb-2 rounded-xl bg-white bg-opacity-5 object-contain md:h-40 md:w-40 2xl:h-48 2xl:w-48"
-                                  src={
-                                    tk.metadata?.data.image ||
-                                    tk.tokenListData?.logoURI
+
+                                <input
+                                  disabled={loadingStake || loadingUnstake}
+                                  placeholder={
+                                    tk.stakeEntry!.parsed.amount.toNumber() > 1
+                                      ? Number(
+                                          getMintDecimalAmountFromNaturalV2(
+                                            tk.tokenListData!.decimals,
+                                            new BN(
+                                              tk.stakeEntry!.parsed.amount.toNumber()
+                                            )
+                                          ).toFixed(2)
+                                        ).toString()
+                                      : ''
                                   }
-                                  alt={
-                                    tk.metadata?.data.name ||
-                                    tk.tokenListData?.name
-                                  }
-                                />
-                                {tk.tokenListData ? (
-                                  <div className="absolute bottom-2 left-2">
-                                    {tk.tokenListData.name}
-                                  </div>
-                                ) : (
-                                  ''
-                                )}
-                                {tk.tokenListData && (
-                                  <div className="absolute bottom-2 right-2">
-                                    {Number(
-                                      getMintDecimalAmountFromNaturalV2(
-                                        tk.tokenListData!.decimals,
-                                        new BN(
-                                          tk.stakeEntry!.parsed.amount.toNumber()
+                                  autoComplete="off"
+                                  type="checkbox"
+                                  className={`absolute top-2 right-2 h-4 w-4 rounded-sm font-medium text-black focus:outline-none`}
+                                  id={tk?.stakeEntry?.pubkey.toBase58()}
+                                  name={tk?.stakeEntry?.pubkey.toBase58()}
+                                  checked={isStakedTokenSelected(tk)}
+                                  onChange={() => {
+                                    if (isStakedTokenSelected(tk)) {
+                                      setStakedSelected(
+                                        stakedSelected.filter(
+                                          (data) =>
+                                            data.stakeEntry?.pubkey.toString() !==
+                                            tk.stakeEntry?.pubkey.toString()
                                         )
-                                      ).toFixed(2)
-                                    )}{' '}
-                                    {tk.tokenListData.symbol}
-                                  </div>
-                                )}
+                                      )
+                                    } else {
+                                      setStakedSelected([...stakedSelected, tk])
+                                    }
+                                  }}
+                                />
                                 {tk.stakeEntry?.pubkey &&
                                   rewardEntries.data &&
                                   rewardEntries.data.find((entry) =>
@@ -852,109 +891,74 @@ function Home() {
                                       x
                                     </div>
                                   )}
-                                {rewards.data &&
-                                  rewards.data.rewardMap[
-                                    tk.stakeEntry?.pubkey.toString() || ''
-                                  ] &&
-                                  rewardDistributorData.data?.parsed.rewardDurationSeconds.gte(
-                                    new BN(60)
-                                  ) && (
-                                    <div className="mt-1 flex items-center justify-center text-xs">
-                                      {secondstoDuration(
-                                        rewards.data.rewardMap[
-                                          tk.stakeEntry?.pubkey.toString() || ''
-                                        ]?.nextRewardsIn.toNumber() || 0
-                                      )}{' '}
-                                    </div>
-                                  )}
-                                {tk.stakeEntry?.parsed.cooldownStartSeconds &&
-                                stakePool?.parsed.cooldownSeconds ? (
-                                  <div
-                                    className="mt-1 flex items-center justify-center text-xs"
-                                    style={{
-                                      color: 'white',
-                                      background:
-                                        stakePoolMetadata?.colors?.primary,
-                                    }}
-                                  >
-                                    {tk.stakeEntry?.parsed.cooldownStartSeconds.toNumber() +
-                                      stakePool.parsed.cooldownSeconds -
-                                      UTCNow >
-                                    0
-                                      ? 'Cooldown left: ' +
-                                        secondstoDuration(
-                                          tk.stakeEntry?.parsed.cooldownStartSeconds.toNumber() +
-                                            stakePool.parsed.cooldownSeconds -
-                                            UTCNow
-                                        )
-                                      : 'Cooldown finished!'}
-                                  </div>
-                                ) : (
-                                  ''
-                                )}
-                                {stakePool?.parsed.minStakeSeconds &&
-                                tk.stakeEntry?.parsed.lastStakedAt ? (
-                                  <div
-                                    className="mt-1 flex items-center justify-center text-xs"
-                                    style={{
-                                      color: 'white',
-                                      background:
-                                        stakePoolMetadata?.colors?.primary,
-                                    }}
-                                  >
-                                    {tk.stakeEntry?.parsed.lastStakedAt.toNumber() +
-                                      stakePool.parsed.minStakeSeconds -
-                                      UTCNow >
-                                    0
-                                      ? 'Able to unstake in: ' +
-                                        secondstoDuration(
-                                          tk.stakeEntry?.parsed.lastStakedAt.toNumber() +
-                                            stakePool.parsed.minStakeSeconds -
-                                            UTCNow
-                                        )
-                                      : 'Min Staked Time Satisfied!'}
-                                  </div>
-                                ) : (
-                                  ''
-                                )}
                               </div>
-
-                              <input
-                                disabled={loadingStake || loadingUnstake}
-                                placeholder={
-                                  tk.stakeEntry!.parsed.amount.toNumber() > 1
-                                    ? Number(
-                                        getMintDecimalAmountFromNaturalV2(
-                                          tk.tokenListData!.decimals,
-                                          new BN(
-                                            tk.stakeEntry!.parsed.amount.toNumber()
-                                          )
-                                        ).toFixed(2)
-                                      ).toString()
-                                    : ''
-                                }
-                                autoComplete="off"
-                                type="checkbox"
-                                className={`absolute top-2 right-2 h-4 w-4 rounded-sm font-medium text-black focus:outline-none`}
-                                id={tk?.stakeEntry?.pubkey.toBase58()}
-                                name={tk?.stakeEntry?.pubkey.toBase58()}
-                                checked={isStakedTokenSelected(tk)}
-                                onChange={() => {
-                                  if (isStakedTokenSelected(tk)) {
-                                    setStakedSelected(
-                                      stakedSelected.filter(
-                                        (data) =>
-                                          data.stakeEntry?.pubkey.toString() !==
-                                          tk.stakeEntry?.pubkey.toString()
+                              {rewards.data &&
+                                rewards.data.rewardMap[
+                                  tk.stakeEntry?.pubkey.toString() || ''
+                                ] &&
+                                rewardDistributorData.data?.parsed.rewardDurationSeconds.gte(
+                                  new BN(60)
+                                ) && (
+                                  <div className="mt-1 flex items-center justify-center text-xs">
+                                    {secondstoDuration(
+                                      rewards.data.rewardMap[
+                                        tk.stakeEntry?.pubkey.toString() || ''
+                                      ]?.nextRewardsIn.toNumber() || 0
+                                    )}{' '}
+                                  </div>
+                                )}
+                              {tk.stakeEntry?.parsed.cooldownStartSeconds &&
+                              stakePool?.parsed.cooldownSeconds ? (
+                                <div
+                                  className="mt-1 flex items-center justify-center text-xs"
+                                  style={{
+                                    color: 'white',
+                                    background:
+                                      stakePoolMetadata?.colors?.primary,
+                                  }}
+                                >
+                                  {tk.stakeEntry?.parsed.cooldownStartSeconds.toNumber() +
+                                    stakePool.parsed.cooldownSeconds -
+                                    UTCNow >
+                                  0
+                                    ? 'Cooldown left: ' +
+                                      secondstoDuration(
+                                        tk.stakeEntry?.parsed.cooldownStartSeconds.toNumber() +
+                                          stakePool.parsed.cooldownSeconds -
+                                          UTCNow
                                       )
-                                    )
-                                  } else {
-                                    setStakedSelected([...stakedSelected, tk])
-                                  }
-                                }}
-                              />
-                            </div>
-                          </label>
+                                    : 'Cooldown finished!'}
+                                </div>
+                              ) : (
+                                ''
+                              )}
+                              {stakePool?.parsed.minStakeSeconds &&
+                              tk.stakeEntry?.parsed.lastStakedAt ? (
+                                <div
+                                  className="mt-1 flex items-center justify-center text-xs"
+                                  style={{
+                                    color: 'white',
+                                    background:
+                                      stakePoolMetadata?.colors?.primary,
+                                  }}
+                                >
+                                  {tk.stakeEntry?.parsed.lastStakedAt.toNumber() +
+                                    stakePool.parsed.minStakeSeconds -
+                                    UTCNow >
+                                  0
+                                    ? 'Able to unstake in: ' +
+                                      secondstoDuration(
+                                        tk.stakeEntry?.parsed.lastStakedAt.toNumber() +
+                                          stakePool.parsed.minStakeSeconds -
+                                          UTCNow
+                                      )
+                                    : 'Min Staked Time Satisfied!'}
+                                </div>
+                              ) : (
+                                ''
+                              )}
+                            </label>
+                          </div>
                         </div>
                       ))}
                   </div>

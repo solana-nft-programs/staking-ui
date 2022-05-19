@@ -35,7 +35,6 @@ import { handleError } from 'api/api'
 import { getMintDecimalAmountFromNatural } from 'common/units'
 import { parseMintNaturalAmountFromDecimal } from 'common/units'
 import { useRewardMintInfo } from 'hooks/useRewardMintInfo'
-import { FormFieldTitleInput } from 'common/FormFieldInput'
 
 const publicKeyValidationTest = (value: string | undefined): boolean => {
   return tryPublicKey(value) ? true : false
