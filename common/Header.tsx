@@ -11,6 +11,7 @@ import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
 import { styled } from '@mui/system'
 import { AccountConnect } from '@cardinal/namespaces-components'
 import { Wallet } from '@saberhq/solana-contrib'
+import { useStakePoolId } from 'hooks/useStakePoolId'
 
 export const StyledWalletButton = styled(WalletMultiButton)`
   color: rgb(55, 65, 81, 1);
@@ -26,7 +27,7 @@ export const Header = () => {
   const router = useRouter()
   const ctx = useEnvironmentCtx()
   const wallet = useWallet()
-  const { setVisible } = useWalletModal()
+  const stakePoolId = useStakePoolId()
   const { data: stakePoolMetadata } = useStakePoolMetadata()
 
   return (
@@ -64,32 +65,42 @@ export const Header = () => {
         )}
       </div>
       <div className="relative my-auto flex items-center align-middle">
-        <div
-          onClick={() =>
-            router.push(
-              `/${
-                ctx.environment.label !== 'mainnet-beta'
-                  ? `?cluster=${ctx.environment.label}`
-                  : ''
-              }`
-            )
-          }
-        >
-          <p className="my-auto mr-10 hover:cursor-pointer">Stake</p>
-        </div>
-        <div
-          onClick={() =>
-            router.push(
-              `/admin${
-                ctx.environment.label !== 'mainnet-beta'
-                  ? `?cluster=${ctx.environment.label}`
-                  : ''
-              }`
-            )
-          }
-        >
-          <p className="my-auto mr-10 hover:cursor-pointer">Admin</p>
-        </div>
+        {stakePoolId && stakePoolMetadata ? (
+          stakePoolMetadata.links?.map((link) => (
+            <a key={link.value} href={link.value}>
+              <p className="my-auto mr-10 hover:cursor-pointer">{link.text}</p>
+            </a>
+          ))
+        ) : (
+          <>
+            <div
+              onClick={() =>
+                router.push(
+                  `/${
+                    ctx.environment.label !== 'mainnet-beta'
+                      ? `?cluster=${ctx.environment.label}`
+                      : ''
+                  }`
+                )
+              }
+            >
+              <p className="my-auto mr-10 hover:cursor-pointer">Stake</p>
+            </div>
+            <div
+              onClick={() =>
+                router.push(
+                  `/admin${
+                    ctx.environment.label !== 'mainnet-beta'
+                      ? `?cluster=${ctx.environment.label}`
+                      : ''
+                  }`
+                )
+              }
+            >
+              <p className="my-auto mr-10 hover:cursor-pointer">Admin</p>
+            </div>
+          </>
+        )}
         {wallet.connected && wallet.publicKey ? (
           <AccountConnect
             dark

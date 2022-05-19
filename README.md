@@ -106,6 +106,8 @@ export type StakePoolMetadata = {
   websiteUrl?: string
   // Max staked is used to compute percentage of total staked
   maxStaked?: number
+  // Links to show at the top right of the page
+  links?: { text: string; value: string }[]
   // On devnet when you click the airdrop button on this page it will clone NFTs with this metadata and airdrop to the user
   airdrops?: AirdropMetadata[]
 }
