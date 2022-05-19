@@ -123,4 +123,19 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       fontColor: '#FFFFFF',
     },
   },
+  {
+    name: 'friendly-frogs',
+    displayName: 'Friendly Frogs',
+    stakePoolAddress: new PublicKey(
+      'AHighyKxRsD6oo6SebbW6nQfuJ1GQBSmU2BnVFbtcFmz'
+    ),
+    websiteUrl: 'https://ffsc.io/',
+    receiptType: ReceiptType.Original,
+    maxStaked: 2121,
+    imageUrl: 'https://arweave.net/MYKL6LSm8JFdqqfARCDqpmFBUlfkRplneVgIkBqyZE4',
+    colors: {
+      primary: 'rgb(224,224,179)',
+      secondary: 'rgba(119, 119, 119, 0.133)',
+    },
+  },
 ]
