@@ -301,10 +301,16 @@ function Home() {
 
       <Header />
       <div className={`container mx-auto w-full`}>
-        {!stakePool && stakePoolLoaded && (
-          <div className="mb-5 w-full text-center text-lg font-semibold">
+        {!stakePool && stakePoolLoaded ? (
+          <div className="mx-5 mb-5 rounded-md border-[1px] border-yellow-500 bg-yellow-500 bg-opacity-40 p-4 text-center text-lg font-semibold">
             Stake pool not found
           </div>
+        ) : (
+          !wallet.connected && (
+            <div className="mx-5 mb-5 rounded-md border-[1px] border-yellow-500 bg-yellow-500 bg-opacity-40 p-4 text-center text-lg font-semibold">
+              Connect wallet to continue
+            </div>
+          )
         )}
         {(maxStaked || rewardDistributorData.data) && (
           <div
