@@ -32,7 +32,7 @@ import { findStakeEntryIdFromMint } from '@cardinal/staking/dist/cjs/programs/st
 import * as Yup from 'yup'
 import { useFormik } from 'formik'
 import { handleError } from 'api/api'
-import { RewardDistributorKind } from '@cardinal/staking/dist/cjs/programs/rewardDistributor'
+import { getMintDecimalAmountFromNatural } from 'common/units'
 import { parseMintNaturalAmountFromDecimal } from 'common/units'
 import { useRewardMintInfo } from 'hooks/useRewardMintInfo'
 import { FormFieldTitleInput } from 'common/FormFieldInput'
@@ -508,6 +508,25 @@ function AdminStakePool() {
                     </span>
                     {rewardDistributor.data && (
                       <>
+                        <span className="mt-3 flex w-full flex-wrap md:mb-0">
+                          <label className="inline-block text-sm font-bold uppercase tracking-wide text-gray-200">
+                            Reward Duration Seconds:{' '}
+                            {rewardDistributor.data.parsed.rewardDurationSeconds.toNumber() ||
+                              '[None]'}
+                          </label>
+                        </span>
+                        <span className="mt-3 flex w-full flex-wrap md:mb-0">
+                          <label className="inline-block text-sm font-bold uppercase tracking-wide text-gray-200">
+                            Reward Amount:{' '}
+                            {rewardDistributor.data.parsed.rewardAmount &&
+                            rewardMintInfo.data
+                              ? getMintDecimalAmountFromNatural(
+                                  rewardMintInfo.data?.mintInfo,
+                                  rewardDistributor.data.parsed.rewardAmount
+                                ).toNumber()
+                              : '[None]'}
+                          </label>
+                        </span>
                         <span className="mt-3 flex w-full flex-wrap md:mb-0">
                           <label className="inline-block text-sm font-bold uppercase tracking-wide text-gray-200">
                             Default Multiplier:{' '}
