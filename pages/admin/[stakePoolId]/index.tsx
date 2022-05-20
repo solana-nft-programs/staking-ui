@@ -1,7 +1,13 @@
 import { tryGetAccount } from '@cardinal/common'
 import { executeTransaction, handleError } from '@cardinal/staking'
-import { getRewardDistributor } from '@cardinal/staking/dist/cjs/programs/rewardDistributor/accounts'
-import { findRewardDistributorId } from '@cardinal/staking/dist/cjs/programs/rewardDistributor/pda'
+import {
+  getRewardDistributor,
+  getRewardEntry,
+} from '@cardinal/staking/dist/cjs/programs/rewardDistributor/accounts'
+import {
+  findRewardDistributorId,
+  findRewardEntryId,
+} from '@cardinal/staking/dist/cjs/programs/rewardDistributor/pda'
 import {
   withCloseRewardDistributor,
   withInitRewardDistributor,
@@ -14,7 +20,7 @@ import {
 import { Wallet } from '@metaplex/js'
 import { BN } from '@project-serum/anchor'
 import { useWallet } from '@solana/wallet-adapter-react'
-import { PublicKey, SendTransactionError, Transaction } from '@solana/web3.js'
+import { PublicKey, Transaction } from '@solana/web3.js'
 import { Footer } from 'common/Footer'
 import { Header } from 'common/Header'
 import { notify } from 'common/Notification'
@@ -62,6 +68,9 @@ function AdminStakePool() {
   const stakePool = useStakePoolData()
   const rewardDistributor = useRewardDistributorData()
   const [mintsToAuthorize, setMintsToAuthorize] = useState<string>('')
+  const [loadingLookupMultiplier, setLoadingLookupMultiplier] =
+    useState<boolean>(false)
+  const [multiplierFound, setMultiplierFound] = useState<string>('')
   const [loadingHandleAuthorizeMints, setLoadingHandleAuthorizeMints] =
     useState<boolean>(false)
   const [loadingHandleMultipliers, setLoadingHandleMultipliers] =
@@ -170,7 +179,7 @@ function AdminStakePool() {
         })
       }
     } catch (e) {
-      const parsedError = handleError(e, 'Error setting multiplier')
+      const parsedError = handleError(e, `Error setting multiplier: ${e}`)
       notify({
         message: parsedError || String(e),
         type: 'error',
@@ -223,7 +232,7 @@ function AdminStakePool() {
       }
     } catch (e) {
       notify({
-        message: handleError(e, 'Error authorizing mint'),
+        message: handleError(e, `Error authorizing mint: ${e}`),
         type: 'error',
       })
     } finally {
@@ -395,9 +404,55 @@ function AdminStakePool() {
       await setTimeout(() => stakePool.refresh(true), 1000)
     } catch (e) {
       notify({
-        message: handleError(e, 'Error updating stake pool'),
+        message: handleError(e, `Error updating stake pool: ${e}`),
         type: 'error',
       })
+    }
+  }
+
+  const handleLookupMultiplier = async (mintToLookup: string) => {
+    setLoadingLookupMultiplier(true)
+    try {
+      if (!wallet?.connected) {
+        throw 'Wallet not connected'
+      }
+      if (!stakePool.data) {
+        throw 'Stake pool not found'
+      }
+      if (!rewardDistributor.data) {
+        throw 'Reward Distributor not found'
+      }
+      const mintId = new PublicKey(mintToLookup)
+      let stakeEntryId: PublicKey
+      try {
+        ;[stakeEntryId] = await findStakeEntryIdFromMint(
+          connection,
+          wallet.publicKey!,
+          stakePool.data!.pubkey,
+          mintId
+        )
+      } catch (e) {
+        throw 'Invalid mint ID or no reward entry for mint'
+      }
+      const [rewardEntryId] = await findRewardEntryId(
+        rewardDistributor.data.pubkey,
+        stakeEntryId
+      )
+      const rewardEntryData = await getRewardEntry(connection, rewardEntryId)
+      setMultiplierFound(
+        (
+          rewardEntryData.parsed.multiplier.toNumber() /
+          10 ** rewardDistributor.data.parsed.multiplierDecimals
+        ).toString()
+      )
+    } catch (e) {
+      setMultiplierFound('')
+      notify({
+        message: `${e}`,
+        type: 'error',
+      })
+    } finally {
+      setLoadingLookupMultiplier(false)
     }
   }
   return (
@@ -547,6 +602,36 @@ function AdminStakePool() {
                 )}
                 {rewardDistributor.data && (
                   <div className="mt-10">
+                    <div className="mb-5">
+                      <label
+                        className="mb-2 block text-xs font-bold uppercase tracking-wide text-gray-200"
+                        htmlFor="require-authorization"
+                      >
+                        Look up reward multiplier for mint
+                      </label>
+                      <input
+                        className="mb-3 w-3/5 appearance-none flex-col rounded border border-gray-500 bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800 focus:outline-none"
+                        type="text"
+                        placeholder={'Enter Mint ID'}
+                        onChange={(e) => {
+                          if (e.target.value.length !== 0) {
+                            handleLookupMultiplier(e.target.value)
+                          } else {
+                            setMultiplierFound('')
+                          }
+                        }}
+                      />
+                      <span className="ml-10 inline-block">
+                        {loadingLookupMultiplier && (
+                          <TailSpin color="#fff" height={20} width={20} />
+                        )}
+                        {multiplierFound && (
+                          <span className="text-md border px-4 py-2 font-semibold">
+                            {multiplierFound}x
+                          </span>
+                        )}
+                      </span>
+                    </div>
                     <label
                       className="mb-2 block text-xs font-bold uppercase tracking-wide text-gray-200"
                       htmlFor="require-authorization"

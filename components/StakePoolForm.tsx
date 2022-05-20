@@ -216,7 +216,7 @@ export function StakePoolForm({
           notify({
             message: handleError(
               e,
-              "Failed to get user's associated token address for given mint"
+              `Failed to get user's associated token address for given mint: ${e}`
             ),
             type: 'error',
           })

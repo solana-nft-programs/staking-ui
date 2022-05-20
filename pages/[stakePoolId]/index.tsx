@@ -107,7 +107,7 @@ function Home() {
       } catch (e) {
         console.log(e)
         notify({
-          message: handleError(e, 'Transaction failed'),
+          message: handleError(e, `Transaction failed: ${e}`),
           type: 'error',
         })
       } finally {
@@ -885,7 +885,8 @@ function Home() {
                                               tk.stakeEntry?.pubkey!
                                             )
                                           )?.parsed.multiplier!,
-                                          6
+                                          rewardDistributorData.data.parsed
+                                            .multiplierDecimals
                                         ).toString()}
                                       x
                                     </div>

@@ -160,7 +160,7 @@ function Admin() {
     } catch (e) {
       console.log(e)
       notify({
-        message: handleError(e, 'Error creating stake pool'),
+        message: handleError(e, `Error creating stake pool: ${e}`),
         type: 'error',
       })
     }
