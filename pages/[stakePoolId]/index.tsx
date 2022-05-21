@@ -233,25 +233,27 @@ function Home() {
           console.log('Successfully created stake entry and stake mint')
         }
 
-        console.log('Staking...')
+        console.log(`Staking ${token.amountToStake} tokens...`)
+
+        const amount = token?.amountToStake
+          ? new BN(
+              token?.amountToStake && token.tokenListData
+                ? parseMintNaturalAmountFromDecimal(
+                    token?.amountToStake,
+                    token.tokenListData?.decimals
+                  ).toString()
+                : 1
+            )
+          : undefined
         // stake
         const transaction = await stake(connection, wallet as Wallet, {
           stakePoolId: stakePool?.pubkey,
-          receiptType: receiptType,
+          receiptType: amount && amount.eq(new BN(1)) ? receiptType : undefined,
           originalMintId: new PublicKey(
             token.tokenAccount.account.data.parsed.info.mint
           ),
           userOriginalMintTokenAccountId: token.tokenAccount?.pubkey,
-          amount: token?.amountToStake
-            ? new BN(
-                token?.amountToStake && token.tokenListData
-                  ? parseMintNaturalAmountFromDecimal(
-                      token?.amountToStake,
-                      token.tokenListData?.decimals
-                    ).toString()
-                  : 1
-              )
-            : undefined,
+          amount: amount,
         })
         await executeTransaction(connection, wallet as Wallet, transaction, {
           confirmOptions: {
@@ -626,7 +628,7 @@ function Home() {
             </div>
 
             <div className="mt-2 flex items-center justify-between">
-              {!stakePoolMetadata?.receiptType ? (
+              {!stakePoolMetadata?.receiptType && !showFungibleTokens ? (
                 <MouseoverTooltip
                   title={
                     receiptType === ReceiptType.Original

@@ -1,5 +1,4 @@
-import { Wallet } from '@metaplex/js'
-import * as web3 from '@solana/web3.js'
+import { PublicKey } from '@solana/web3.js'
 
 export function getExpirationString(expiration: number, UTCSecondsNow: number) {
   let day = (expiration - UTCSecondsNow) / 60 / 60 / 24
@@ -19,9 +18,7 @@ export function getExpirationString(expiration: number, UTCSecondsNow: number) {
   )}m ${floorOrCeil(second)}s`
 }
 
-export function shortPubKey(
-  pubkey: web3.PublicKey | string | null | undefined
-) {
+export function shortPubKey(pubkey: PublicKey | string | null | undefined) {
   if (!pubkey) return ''
   return `${pubkey?.toString().substring(0, 4)}..${pubkey
     ?.toString()
@@ -29,7 +26,7 @@ export function shortPubKey(
 }
 
 export function pubKeyUrl(
-  pubkey: web3.PublicKey | null | undefined,
+  pubkey: PublicKey | null | undefined,
   cluster: string
 ) {
   if (!pubkey) return 'https://explorer.solana.com'
@@ -118,12 +115,12 @@ export const getMintsDetails = async () =>
     .then((data) => data['tokens'])
 
 export const tryPublicKey = (
-  publicKeyString: web3.PublicKey | string | string[] | undefined | null
-): web3.PublicKey | null => {
-  if (publicKeyString instanceof web3.PublicKey) return publicKeyString
+  publicKeyString: PublicKey | string | string[] | undefined | null
+): PublicKey | null => {
+  if (publicKeyString instanceof PublicKey) return publicKeyString
   if (!publicKeyString) return null
   try {
-    return new web3.PublicKey(publicKeyString)
+    return new PublicKey(publicKeyString)
   } catch (e) {
     return null
   }
