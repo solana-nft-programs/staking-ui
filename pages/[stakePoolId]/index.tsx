@@ -248,7 +248,10 @@ function Home() {
         // stake
         const transaction = await stake(connection, wallet as Wallet, {
           stakePoolId: stakePool?.pubkey,
-          receiptType: amount && amount.eq(new BN(1)) ? receiptType : undefined,
+          receiptType:
+            !amount || (amount && amount.eq(new BN(1)))
+              ? receiptType
+              : undefined,
           originalMintId: new PublicKey(
             token.tokenAccount.account.data.parsed.info.mint
           ),
