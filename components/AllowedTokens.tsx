@@ -20,7 +20,11 @@ export const AllowedTokens = ({
         ) : (
           <span className="flex flex-col">
             {stakePool?.parsed.requiresCreators.map((c) => (
-              <ShortPubKeyUrl pubkey={c} cluster={environment.label} />
+              <ShortPubKeyUrl
+                key={c.toString()}
+                pubkey={c}
+                cluster={environment.label}
+              />
             ))}
           </span>
         )}
@@ -32,7 +36,11 @@ export const AllowedTokens = ({
         ) : (
           <span className="flex flex-col">
             {stakePool?.parsed.requiresCollections.map((c) => (
-              <ShortPubKeyUrl pubkey={c} cluster={environment.label} />
+              <ShortPubKeyUrl
+                key={c.toString()}
+                pubkey={c}
+                cluster={environment.label}
+              />
             ))}
           </span>
         )}
@@ -47,6 +55,7 @@ export const AllowedTokens = ({
           <span className="flex flex-col">
             {stakeAuthorizations.data?.map((a) => (
               <ShortPubKeyUrl
+                key={a.parsed.mint.toString()}
                 pubkey={a.parsed.mint}
                 cluster={environment.label}
               />

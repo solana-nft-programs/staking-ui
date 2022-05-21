@@ -867,7 +867,14 @@ function Home() {
                                         tk.stakeEntry?.pubkey!
                                       )
                                     )
-                                    ?.parsed.multiplier.eq(new BN(0)) && (
+                                    ?.parsed.multiplier.eq(new BN(0)) &&
+                                  !rewardEntries.data
+                                    .find((entry) =>
+                                      entry.parsed.stakeEntry.equals(
+                                        tk.stakeEntry?.pubkey!
+                                      )
+                                    )
+                                    ?.parsed.multiplier.eq(new BN(1)) && (
                                     <div
                                       className="absolute top-1 left-1 flex items-center justify-center rounded-full bg-[#9945ff] px-1 py-1 text-[8px]"
                                       style={{
@@ -923,7 +930,7 @@ function Home() {
                                     stakePool.parsed.cooldownSeconds -
                                     UTCNow >
                                   0
-                                    ? 'Cooldown left: ' +
+                                    ? 'Cooldown: ' +
                                       secondstoDuration(
                                         tk.stakeEntry?.parsed.cooldownStartSeconds.toNumber() +
                                           stakePool.parsed.cooldownSeconds -
@@ -1014,7 +1021,7 @@ function Home() {
                       defaultSecondaryColor,
                     color: stakePoolMetadata?.colors?.fontColor,
                   }}
-                  className={`my-auto mr-5 flex rounded-md px-4 py-2`}
+                  className="my-auto mr-5 flex rounded-md px-4 py-2 hover:scale-[1.03]"
                 >
                   <span className="mr-1 inline-block">
                     {loadingClaimRewards && <LoadingSpinner height="20px" />}
