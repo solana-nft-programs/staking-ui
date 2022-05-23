@@ -165,4 +165,21 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       secondary: 'rgba(119, 119, 119, 0.133)',
     },
   },
+  {
+    name: 'gemmy',
+    displayName: 'Gemmy',
+    stakePoolAddress: new PublicKey(
+      'GFT4PQfgB1ySCr826GhdstzTMndwvoqkBJuZsG7Uxrw1'
+    ),
+    websiteUrl: 'https://gemmy.club/',
+    receiptType: ReceiptType.Original,
+    maxStaked: 5000,
+    imageUrl: 'https://arweave.net/sjCF_O89hlwQkMts0XHxoLSXGqVdZfy7PlymRvh_FgY',
+    colors: {
+      primary: '#7D89D8',
+      secondary: '##131418',
+      accent: '#1fcfb11c',
+      fontColor: '#FFFFFF',
+    },
+  },
 ]
