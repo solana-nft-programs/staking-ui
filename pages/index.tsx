@@ -54,7 +54,14 @@ function Home() {
             },
             [[] as StakePool[], [] as StakePool[]]
           )
-        setStakePools([stakePoolsWithMetadata, stakePoolsWithoutMetadata])
+        setStakePools([
+          stakePoolsWithMetadata.sort((a, b) =>
+            a
+              .stakePoolMetadata!.name.toString()
+              .localeCompare(b.stakePoolMetadata!.name.toString())
+          ),
+          stakePoolsWithoutMetadata,
+        ])
       } catch (e) {
         notify({
           message: `${e}`,
