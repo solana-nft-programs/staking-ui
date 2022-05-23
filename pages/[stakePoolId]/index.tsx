@@ -429,9 +429,13 @@ function Home() {
                 </div>
               </>
             ) : (
-              <div className="relative flex w-full items-center justify-center">
-                <span className="text-gray-500">Loading rewards...</span>
-                <div className="absolute w-full animate-pulse items-center justify-center rounded-lg bg-white bg-opacity-10 p-5"></div>
+              <div className="relative flex w-3/4 items-center justify-center">
+                {!rewardDistributorData.loaded && !rewardMintInfo.loaded && (
+                  <>
+                    <span className="text-gray-500">Loading rewards...</span>
+                    <div className="absolute w-full animate-pulse items-center justify-center rounded-lg bg-white bg-opacity-10 p-5"></div>
+                  </>
+                )}
               </div>
             )}
           </div>
