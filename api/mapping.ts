@@ -166,4 +166,14 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       fontColor: 'rgb(7, 7, 4)',
     },
   },
+  {
+    name: 'seanies',
+    displayName: 'Seanies',
+    stakePoolAddress: new PublicKey(
+      'EWfauqUC6PQTzXGR4h4LT1KMqd28W8Vjk5XLPfkLFeSA'
+    ),
+    websiteUrl: 'https://seanies.art/',
+    receiptType: ReceiptType.Original,
+    imageUrl: 'https://raw.githubusercontent.com/dickmasterson/seanies/master/sean-logo.png',
+  },
 ]
