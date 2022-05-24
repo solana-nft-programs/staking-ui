@@ -1,14 +1,11 @@
 import { useWallet } from '@solana/wallet-adapter-react'
-import {
-  useWalletModal,
-  WalletMultiButton,
-} from '@solana/wallet-adapter-react-ui'
+import { WalletMultiButton } from '@solana/wallet-adapter-react-ui'
 
 import { useRouter } from 'next/router'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 import { Airdrop } from './Airdrop'
 import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
-import { styled } from '@mui/system'
+import { maxWidth, styled } from '@mui/system'
 import { AccountConnect } from '@cardinal/namespaces-components'
 import { Wallet } from '@saberhq/solana-contrib'
 import { useStakePoolId } from 'hooks/useStakePoolId'
@@ -20,6 +17,11 @@ export const StyledWalletButton = styled(WalletMultiButton)`
   }
   .wallet-adapter-button {
     padding: 0px;
+  }
+`
+export const TitleText = styled('div')`
+  @media (max-width: 550px) {
+    font-size: 14px;
   }
 `
 
@@ -48,7 +50,9 @@ export const Header = () => {
           {stakePoolMetadata?.imageUrl ? (
             <img className="h-[35px]" src={stakePoolMetadata?.imageUrl} />
           ) : (
-            `${stakePoolMetadata?.displayName || 'Cardinal'} Staking UI`
+            <TitleText>
+              {stakePoolMetadata?.displayName || 'Cardinal'} Staking UI
+            </TitleText>
           )}
         </a>
         {ctx.environment.label !== 'mainnet-beta' && (
