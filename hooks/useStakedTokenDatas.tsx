@@ -1,24 +1,25 @@
 import { useDataHook } from './useDataHook'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 import { useStakePoolId } from './useStakePoolId'
-import { useWalletId } from './useWalletId'
 import { getStakeEntryDatas } from 'api/api'
 import { useTokenList } from 'providers/TokenListProvider'
 import { StakeEntryTokenData } from 'api/types'
+import { useWalletIds } from './useWalletIds'
 
 export const useStakedTokenDatas = () => {
   const stakePoolId = useStakePoolId()
-  const walletId = useWalletId()
+  const walletIds = useWalletIds()
   const { tokenList } = useTokenList()
   const { connection } = useEnvironmentCtx()
   return useDataHook<StakeEntryTokenData[] | undefined>(
     async () => {
-      if (!stakePoolId || !walletId) return
-      const tokenDatas = await getStakeEntryDatas(
-        connection,
-        stakePoolId,
-        walletId
+      if (!stakePoolId || !walletIds || walletIds.length <= 0) return
+      const stakeEntryDataGroups = await Promise.all(
+        walletIds.map((walletId) =>
+          getStakeEntryDatas(connection, stakePoolId, walletId)
+        )
       )
+      const tokenDatas = stakeEntryDataGroups.flat()
       const hydratedTokenDatas = tokenDatas.reduce((acc, tokenData) => {
         let tokenListData
         try {
@@ -43,7 +44,7 @@ export const useStakedTokenDatas = () => {
       }, [] as StakeEntryTokenData[])
       return hydratedTokenDatas
     },
-    [stakePoolId?.toString(), walletId?.toString(), tokenList],
+    [stakePoolId?.toString(), walletIds.join(','), tokenList],
     { name: 'stakedTokenDatas', refreshInterval: 10000 }
   )
 }
