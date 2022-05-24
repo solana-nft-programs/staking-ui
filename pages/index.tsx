@@ -89,7 +89,7 @@ function Home() {
           style={{ minHeight: 'calc(100vh - 460px)' }}
         >
           <div className="mt-10 mb-5 text-lg font-bold">Stake Pools</div>
-          <div className="grid grid-cols-4 gap-5">
+          <div className="grid grid-cols-1 gap-5 md:grid-cols-4">
             {!stakePoolsLoaded ? (
               <>
                 <Placeholder />
@@ -152,7 +152,7 @@ function Home() {
               <div className="mt-10 mb-5 text-lg font-bold">
                 Unrecognized Pools
               </div>
-              <div className="grid grid-cols-4 gap-5">
+              <div className="grid grid-cols-1 gap-5 md:grid-cols-4">
                 {stakePools[1].map((stakePool) => (
                   <div
                     className="flex h-[300px] cursor-pointer flex-col rounded-lg bg-white bg-opacity-5 p-10 transition-all duration-100 hover:scale-[1.01]"
