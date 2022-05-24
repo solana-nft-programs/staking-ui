@@ -39,7 +39,7 @@ import { useAllowedTokenDatas } from 'hooks/useAllowedTokenDatas'
 import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
 import { defaultSecondaryColor } from 'api/mapping'
 import { Footer } from 'common/Footer'
-import { shortPubKey } from '@cardinal/namespaces-components'
+import { DisplayAddress, shortPubKey } from '@cardinal/namespaces-components'
 import { useRewardDistributorTokenAccount } from 'hooks/useRewardDistributorTokenAccount'
 import { useRewardEntries } from 'hooks/useRewardEntries'
 import { Switch } from '@headlessui/react'
@@ -800,6 +800,23 @@ function Home() {
                                           </div>
                                         </div>
                                       )}
+                                    {tk.stakeEntry?.parsed.lastStaker.toString() !==
+                                      wallet.publicKey?.toString() && (
+                                      <div>
+                                        <div className="absolute top-0 left-0 z-10 flex h-full w-full justify-center rounded-lg bg-black bg-opacity-80  align-middle">
+                                          <div className="mx-auto flex flex-col items-center justify-center">
+                                            <div>Owned by</div>
+                                            <DisplayAddress
+                                              dark
+                                              connection={connection}
+                                              address={
+                                                tk.stakeEntry?.parsed.lastStaker
+                                              }
+                                            />
+                                          </div>
+                                        </div>
+                                      </div>
+                                    )}
                                     <img
                                       className="mx-auto mt-4 mb-2 rounded-xl bg-white bg-opacity-5 object-contain md:h-40 md:w-40 2xl:h-48 2xl:w-48"
                                       src={
@@ -848,6 +865,12 @@ function Home() {
                                   name={tk?.stakeEntry?.pubkey.toBase58()}
                                   checked={isStakedTokenSelected(tk)}
                                   onChange={() => {
+                                    if (
+                                      tk.stakeEntry?.parsed.lastStaker.toString() !==
+                                      wallet.publicKey?.toString()
+                                    ) {
+                                      return
+                                    }
                                     if (isStakedTokenSelected(tk)) {
                                       setStakedSelected(
                                         stakedSelected.filter(
