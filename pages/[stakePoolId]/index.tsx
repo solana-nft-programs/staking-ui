@@ -326,7 +326,7 @@ function Home() {
         )}
         {(maxStaked || rewardDistributorData.data) && (
           <div
-            className="mx-5 mb-4 flex items-center gap-4 rounded-md bg-white bg-opacity-5 p-10 text-gray-200 md:max-h-[100px] md:flex-row md:justify-between"
+            className="mx-5 mb-4 flex flex-wrap items-center gap-4 rounded-md bg-white bg-opacity-5 px-10 py-6 text-gray-200 md:flex-row md:justify-between"
             style={{
               border: stakePoolMetadata?.colors?.accent
                 ? `2px solid ${stakePoolMetadata?.colors?.accent}`
