@@ -107,6 +107,12 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     imageUrl:
       'https://www.metaopsvault.com/img/staking_hub_header_logo.0b7bc420.png',
     maxStaked: 5555,
+    links: [
+      {
+        text: "Founder's Passes",
+        value: '/meta-ops-founders-vault',
+      },
+    ],
     colors: {
       primary: '#000000',
       secondary: '#4da1de',
@@ -125,6 +131,12 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     imageUrl:
       'https://www.metaopsvault.com/img/staking_hub_header_logo.0b7bc420.png',
     maxStaked: 2000,
+    links: [
+      {
+        text: 'PFP Vault',
+        value: '/meta-ops',
+      },
+    ],
     colors: {
       primary: '#000000',
       secondary: '#4da1de',
@@ -191,6 +203,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     ),
     websiteUrl: 'https://seanies.art/',
     receiptType: ReceiptType.Original,
-    imageUrl: 'https://raw.githubusercontent.com/dickmasterson/seanies/master/sean-logo.png',
+    imageUrl:
+      'https://raw.githubusercontent.com/dickmasterson/seanies/master/sean-logo.png',
   },
 ]
