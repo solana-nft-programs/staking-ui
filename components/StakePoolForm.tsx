@@ -699,7 +699,7 @@ export function StakePoolForm({
                           }
                           setFieldValue(
                             'rewardMintSupply',
-                            e.target.value.toString()
+                            e.target.value.replaceAll(',', '')
                           )
                         }}
                       />
