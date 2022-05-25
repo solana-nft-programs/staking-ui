@@ -652,9 +652,9 @@ export function StakePoolForm({
                       }
                       description={
                         values.rewardDistributorKind ===
-                        RewardDistributorKind.Treasury
+                        RewardDistributorKind.Mint
                           ? 'Max number of tokens to mint (max: mint supply).'
-                          : 'How many tokens to transfer to the stake pool for future distribution (max: your asscociated token account balance).'
+                          : 'How many tokens to transfer to the stake pool for future distribution (max: your asscociated token account balance). This can also be 0 and tokens can be transferred in directly via a wallet ui.'
                       }
                     />
                     <div
