@@ -1,4 +1,4 @@
-import type { BN } from '@project-serum/anchor'
+import { BN } from '@project-serum/anchor'
 import type { MintInfo } from '@solana/spl-token'
 import { BigNumber } from 'bignumber.js'
 
@@ -89,4 +89,17 @@ export function formatAmountAsDecimal(
       .shiftedBy(-decimals)
       .toFixed(decimalPlaces ?? 0)
   ).toString()
+}
+
+export function tryFmtMintAmount(
+  stringAmount: string | undefined,
+  decimals: number,
+  defaultValue: string
+): string {
+  if (!stringAmount) return defaultValue
+  try {
+    return new BigNumber(stringAmount).shiftedBy(-decimals).toFormat()
+  } catch (e) {
+    return defaultValue
+  }
 }

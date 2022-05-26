@@ -302,12 +302,7 @@ function AdminStakePool() {
             stakePoolId: stakePool.data.pubkey,
             rewardMintId: new PublicKey(values.rewardMintAddress!.trim())!,
             rewardAmount: values.rewardAmount
-              ? new BN(
-                  parseMintNaturalAmountFromDecimal(
-                    values.rewardAmount,
-                    rewardMintInfo.data?.mintInfo?.decimals || 1
-                  ).toString()
-                )
+              ? new BN(values.rewardAmount)
               : undefined,
             rewardDurationSeconds: values.rewardDurationSeconds
               ? new BN(values.rewardDurationSeconds)
@@ -317,7 +312,7 @@ function AdminStakePool() {
               ? new BN(
                   parseMintNaturalAmountFromDecimal(
                     values.rewardMintSupply,
-                    rewardMintInfo.data?.mintInfo?.decimals || 1
+                    rewardMintInfo.data!.mintInfo.decimals
                   ).toString()
                 )
               : undefined,

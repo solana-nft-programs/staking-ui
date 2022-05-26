@@ -240,7 +240,7 @@ function Home() {
               token?.amountToStake && token.tokenListData
                 ? parseMintNaturalAmountFromDecimal(
                     token?.amountToStake,
-                    token.tokenListData?.decimals
+                    token.tokenListData.decimals
                   ).toString()
                 : 1
             )
