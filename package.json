@@ -25,6 +25,7 @@
   "dependencies": {
     "@cardinal/common": "^1.0.10",
     "@cardinal/namespaces-components": "^3.0.15",
+    "@cardinal/scanner": "^0.1.1",
     "@cardinal/staking": "^1.5.11",
     "@emotion/styled": "^11.8.1",
     "@headlessui/react": "^1.6.1",
@@ -35,6 +36,7 @@
     "@react-spring/web": "^9.4.5",
     "@saberhq/anchor-contrib": "^1.12.58",
     "@saberhq/solana-contrib": "^1.13.2",
+    "@solana/qr-code-styling": "^1.6.0-beta.0",
     "@solana/wallet-adapter-base": "^0.9.5",
     "@solana/wallet-adapter-react": "^0.15.4",
     "@solana/wallet-adapter-react-ui": "^0.9.6",

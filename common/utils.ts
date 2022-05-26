@@ -125,3 +125,13 @@ export const tryPublicKey = (
     return null
   }
 }
+
+export function getLink(path: string, withParams = true) {
+  return `${window.location.origin}${path}${
+    withParams
+      ? path.includes('?') && window.location.search
+        ? `${window.location.search.replace('?', '&')}`
+        : window.location.search ?? ''
+      : ''
+  }`
+}
