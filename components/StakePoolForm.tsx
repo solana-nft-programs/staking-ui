@@ -17,10 +17,6 @@ import { TailSpin } from 'react-loader-spinner'
 import * as splToken from '@solana/spl-token'
 import { useMemo, useState } from 'react'
 import Select from 'react-select'
-import {
-  getMintDecimalAmountFromNaturalV2,
-  tryFmtMintAmount,
-} from 'common/units'
 import { FormFieldTitleInput } from 'common/FormFieldInput'
 import * as Yup from 'yup'
 import { tryPublicKey } from 'common/utils'
@@ -28,6 +24,7 @@ import { useFormik } from 'formik'
 import { StakePoolData } from '@cardinal/staking/dist/cjs/programs/stakePool'
 import { FormInput } from 'common/FormInput'
 import { executeTransaction, handleError } from '@cardinal/staking'
+import { tryFormatAmountAsInput, tryParseInputAsAmount } from 'common/units'
 
 const publicKeyValidationTest = (value: string | undefined): boolean => {
   return tryPublicKey(value) ? true : false
@@ -41,16 +38,6 @@ const bnValidationTest = (value: string | undefined): boolean => {
   } catch (e) {
     const num = Number(value)
     if (0 < num && num < 1) return true
-    return false
-  }
-}
-
-const nonDecimalValidationTest = (value: string | undefined): boolean => {
-  if (value === undefined) return false
-  try {
-    if (Number(value) >= 1) return true
-    return false
-  } catch (e) {
     return false
   }
 }
@@ -89,19 +76,14 @@ const creationFormSchema = Yup.object({
     .test('is-valid-bn', 'Invalid reward amount', bnValidationTest),
   rewardDurationSeconds: Yup.string()
     .optional()
-    .test('is-valid-bn', 'Invalid reward durations seconds', bnValidationTest)
-    .test(
-      'non-decimal',
-      'Invalid reward durations seconds (has to be non-decimal)',
-      nonDecimalValidationTest
-    ),
+    .test('is-valid-bn', 'Invalid reward durations seconds', bnValidationTest),
   rewardMintSupply: Yup.string()
     .optional()
-    .test('is-valid-bn', 'Invalid reward amount', bnValidationTest),
+    .test('is-valid-bn', 'Invalid reward mint supply', bnValidationTest),
   multiplierDecimals: Yup.string().optional(),
   defaultMultiplier: Yup.string()
     .optional()
-    .test('is-valid-bn', 'Invalid reward amount', bnValidationTest),
+    .test('is-valid-bn', 'Invalid default multiplier', bnValidationTest),
 })
 
 export type CreationForm = Yup.InferType<typeof creationFormSchema>
@@ -164,7 +146,7 @@ export function StakePoolForm({
   const [processingMintAddress, setProcessingMintAddress] =
     useState<boolean>(false)
   const [mintInfo, setMintInfo] = useState<splToken.MintInfo>()
-  const [maxMintSupply, setMaxMintSupply] = useState<number>(0)
+  const [userRewardAmount, setUserRewardAmount] = useState<string>()
   const [loading, setLoading] = useState<boolean>(false)
 
   useMemo(async () => {
@@ -225,11 +207,7 @@ export function StakePoolForm({
           })
         }
         if (userAta) {
-          const decimalAmount = getMintDecimalAmountFromNaturalV2(
-            mintInfo.decimals,
-            new BN(userAta.amount)
-          )
-          setMaxMintSupply(Number(decimalAmount.toFixed(3)))
+          setUserRewardAmount(userAta.amount.toString())
         }
         setSubmitDisabled(false)
         setProcessingMintAddress(false)
@@ -577,11 +555,7 @@ export function StakePoolForm({
                   <div className="mb-6 mt-4 w-1/2 px-3 md:mb-0">
                     <FormFieldTitleInput
                       title={'Reward Amount'}
-                      description={`Amount of token to be distributed per duration staked. NOTE Formatted amount (${tryFmtMintAmount(
-                        values.rewardAmount,
-                        mintInfo.decimals,
-                        '??'
-                      )})`}
+                      description={`Amount of tokens to be distributed per duration staked. Accumulates per natural amount of staked tokens.`}
                     />
                     <FormInput
                       error={Boolean(errors.rewardAmount)}
@@ -597,7 +571,11 @@ export function StakePoolForm({
                       }
                       type="text"
                       placeholder={'10'}
-                      value={values.rewardAmount}
+                      value={tryFormatAmountAsInput(
+                        values.rewardAmount,
+                        mintInfo.decimals,
+                        values.rewardAmount ?? ''
+                      )}
                       onChange={(e) => {
                         const amount = Number(e.target.value)
                         if (!amount && e.target.value.length != 0) {
@@ -606,7 +584,14 @@ export function StakePoolForm({
                             type: 'error',
                           })
                         }
-                        setFieldValue('rewardAmount', e.target.value.toString())
+                        setFieldValue(
+                          'rewardAmount',
+                          tryParseInputAsAmount(
+                            e.target.value,
+                            mintInfo.decimals,
+                            values.rewardAmount ?? ''
+                          )
+                        )
                       }}
                     />
                   </div>
@@ -614,7 +599,7 @@ export function StakePoolForm({
                     <FormFieldTitleInput
                       title={'Reward Duration Seconds'}
                       description={
-                        'Staked duration in seconds required to receive reward amount specified. This is paid per token staked'
+                        'Duration in seconds to stake a single natural amount of token to receive the reward amount.'
                       }
                     />
                     <FormInput
@@ -684,18 +669,13 @@ export function StakePoolForm({
                         }
                         type="text"
                         placeholder={'1000000'}
-                        value={
-                          values.rewardMintSupply
-                            ? values.rewardMintSupply
-                                .toString()
-                                .replaceAll(',', '')
-                                .replace(/\B(?=(\d{3})+(?!\d))/g, ',')
-                            : undefined
-                        }
+                        value={tryFormatAmountAsInput(
+                          values.rewardMintSupply,
+                          mintInfo.decimals,
+                          values.rewardMintSupply ?? ''
+                        )}
                         onChange={(e) => {
-                          const supply = Number(
-                            e.target.value.replaceAll(',', '')
-                          )
+                          const supply = Number(e.target.value)
                           if (!supply && e.target.value.length != 0) {
                             notify({
                               message: `Invalid reward mint supply`,
@@ -704,7 +684,11 @@ export function StakePoolForm({
                           }
                           setFieldValue(
                             'rewardMintSupply',
-                            e.target.value.replaceAll(',', '')
+                            tryParseInputAsAmount(
+                              e.target.value,
+                              mintInfo.decimals,
+                              values.rewardMintSupply ?? ''
+                            )
                           )
                         }}
                       />
@@ -717,10 +701,10 @@ export function StakePoolForm({
                           ) {
                             setFieldValue(
                               'rewardMintSupply',
-                              mintInfo.supply.toNumber()
+                              mintInfo.supply.toString()
                             )
                           } else {
-                            setFieldValue('rewardMintSupply', maxMintSupply)
+                            setFieldValue('rewardMintSupply', userRewardAmount)
                           }
                         }}
                       >

@@ -37,7 +37,6 @@ import { findStakeEntryIdFromMint } from '@cardinal/staking/dist/cjs/programs/st
 import * as Yup from 'yup'
 import { useFormik } from 'formik'
 import { getMintDecimalAmountFromNatural } from 'common/units'
-import { parseMintNaturalAmountFromDecimal } from 'common/units'
 import { useRewardMintInfo } from 'hooks/useRewardMintInfo'
 
 const publicKeyValidationTest = (value: string | undefined): boolean => {
@@ -309,12 +308,7 @@ function AdminStakePool() {
               : undefined,
             kind: values.rewardDistributorKind,
             supply: values.rewardMintSupply
-              ? new BN(
-                  parseMintNaturalAmountFromDecimal(
-                    values.rewardMintSupply,
-                    rewardMintInfo.data!.mintInfo.decimals
-                  ).toString()
-                )
+              ? new BN(values.rewardMintSupply)
               : undefined,
           }
           const [transaction] = await withInitRewardDistributor(

@@ -14,7 +14,6 @@ import Head from 'next/head'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 import * as splToken from '@solana/spl-token'
 import { useState } from 'react'
-import { parseMintNaturalAmountFromDecimal } from 'common/units'
 import { Placeholder, StakePool } from 'pages'
 import { pubKeyUrl, shortPubKey } from 'common/utils'
 import { FaQuestion } from 'react-icons/fa'
@@ -117,12 +116,7 @@ function Admin() {
             : undefined,
           kind: values.rewardDistributorKind,
           supply: values.rewardMintSupply
-            ? new BN(
-                parseMintNaturalAmountFromDecimal(
-                  values.rewardMintSupply,
-                  rewardMintInfo!.decimals
-                ).toString()
-              )
+            ? new BN(values.rewardMintSupply)
             : undefined,
           multiplerDecimals: values.multiplierDecimals
             ? parseInt(values.multiplierDecimals)

@@ -91,14 +91,39 @@ export function formatAmountAsDecimal(
   ).toString()
 }
 
-export function tryFmtMintAmount(
+export function tryFormatAmountAsInput(
   stringAmount: string | undefined,
   decimals: number,
   defaultValue: string
 ): string {
   if (!stringAmount) return defaultValue
   try {
-    return new BigNumber(stringAmount).shiftedBy(-decimals).toFormat()
+    return new BigNumber(stringAmount.replace(',', ''))
+      .shiftedBy(-decimals)
+      .toFormat({
+        groupSeparator: '',
+        decimalSeparator: '.',
+      })
+      .concat(stringAmount.endsWith('.') ? '.' : '')
+  } catch (e) {
+    return defaultValue
+  }
+}
+
+export function tryParseInputAsAmount(
+  stringDecimal: string | undefined,
+  decimals: number,
+  defaultValue: string
+): string {
+  if (!stringDecimal) return '0'
+  try {
+    if (new BigNumber(stringDecimal.replace(',', '')).isFinite()) {
+      return new BigNumber(stringDecimal.replace(',', ''))
+        .shiftedBy(decimals)
+        .toFixed(0, BigNumber.ROUND_FLOOR)
+        .concat(stringDecimal.endsWith('.') ? '.' : '')
+    }
+    return defaultValue
   } catch (e) {
     return defaultValue
   }
