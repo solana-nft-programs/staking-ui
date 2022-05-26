@@ -1,4 +1,4 @@
-import type { ConfirmedSignatureInfo, PublicKey } from '@solana/web3.js'
+import { ConfirmedSignatureInfo, PublicKey } from '@solana/web3.js'
 import { Connection } from '@solana/web3.js'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 

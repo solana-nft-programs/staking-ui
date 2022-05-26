@@ -1,6 +1,11 @@
 import { utils } from '@project-serum/anchor'
 import QRCodeStyling from '@solana/qr-code-styling'
-import { Keypair } from '@solana/web3.js'
+import { useWallet } from '@solana/wallet-adapter-react'
+import {
+  Keypair,
+  sendAndConfirmRawTransaction,
+  Transaction,
+} from '@solana/web3.js'
 import { AnimatedCheckmark } from 'common/AnimatedCheckmark'
 import { Header } from 'common/Header'
 import { StyledBackground } from 'common/StyledBackground'
@@ -8,6 +13,7 @@ import { getLink } from 'common/utils'
 import { useRecentSignatures } from 'hooks/useRecentSignatures'
 import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
 import { transparentize } from 'polished'
+import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 import React, { useEffect, useMemo, useRef, useState } from 'react'
 
 function Scanner() {
@@ -16,6 +22,41 @@ function Scanner() {
   const [keypair, setKeypair] = useState<Keypair>(Keypair.generate())
   const [showSuccess, setShowSuccess] = useState(false)
   const recentSignatures = useRecentSignatures(keypair.publicKey)
+  const { connection } = useEnvironmentCtx()
+  const wallet = useWallet()
+  const handleScan = async () => {
+    try {
+      if (wallet) {
+        const response = await fetch(
+          'http://localhost:3000/api/scan?collection=blockasset&keypair=5uf87isZ31aEadmL7sBcm5NMzfPr4KZukN56TrkhcEuveTXzdpp7YYoqWqFoYKKprchFS3vV6KLWt7MvsB9VKW15',
+          {
+            method: 'POST',
+            headers: {
+              ['content-type']: 'application/json',
+            },
+            body: JSON.stringify({
+              account: 'DNVVBNkdyv6tMentHdjVz5cpYmjQYcquLfYkz1fApT7Q',
+            }),
+          }
+        )
+        const json = await response.json()
+        const { transaction } = json
+        console.log(transaction, json)
+        const buffer = Buffer.from(decodeURIComponent(transaction), 'base64')
+        const tx = Transaction.from(buffer)
+        await wallet.signTransaction!(tx)
+        console.log(tx.instructions[0]!.keys.map((k) => k.pubkey.toString()))
+        const txid = await sendAndConfirmRawTransaction(
+          connection,
+          tx.serialize(),
+          { commitment: 'singleGossip', skipPreflight: true }
+        )
+        console.log(`Scanned with ${txid}`)
+      }
+    } catch (e) {
+      console.log('Failed to scan: ', e)
+    }
+  }
 
   const generateQrCode = async () => {
     console.log(
@@ -96,7 +137,7 @@ function Scanner() {
         className="relative mx-auto flex w-[93%] max-w-[450px] flex-col items-center text-white"
       >
         <div className="relative flex w-full flex-row items-center justify-center px-5">
-          <div className="py-3 text-gray-500">
+          <div className="py-3 text-gray-500" onClick={handleScan}>
             {keypair?.publicKey.toString()}
           </div>
           {recentSignatures.refreshing && (
