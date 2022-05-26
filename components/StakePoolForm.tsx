@@ -17,7 +17,10 @@ import { TailSpin } from 'react-loader-spinner'
 import * as splToken from '@solana/spl-token'
 import { useMemo, useState } from 'react'
 import Select from 'react-select'
-import { getMintDecimalAmountFromNaturalV2 } from 'common/units'
+import {
+  getMintDecimalAmountFromNaturalV2,
+  tryFmtMintAmount,
+} from 'common/units'
 import { FormFieldTitleInput } from 'common/FormFieldInput'
 import * as Yup from 'yup'
 import { tryPublicKey } from 'common/utils'
@@ -574,9 +577,11 @@ export function StakePoolForm({
                   <div className="mb-6 mt-4 w-1/2 px-3 md:mb-0">
                     <FormFieldTitleInput
                       title={'Reward Amount'}
-                      description={
-                        'Amount of token to be paid to the staked NFT'
-                      }
+                      description={`Amount of token to be distributed per duration staked. NOTE Formatted amount (${tryFmtMintAmount(
+                        values.rewardAmount,
+                        mintInfo.decimals,
+                        '??'
+                      )})`}
                     />
                     <FormInput
                       error={Boolean(errors.rewardAmount)}
@@ -609,7 +614,7 @@ export function StakePoolForm({
                     <FormFieldTitleInput
                       title={'Reward Duration Seconds'}
                       description={
-                        'Staked duration needed to receive reward amount'
+                        'Staked duration in seconds required to receive reward amount specified. This is paid per token staked'
                       }
                     />
                     <FormInput
