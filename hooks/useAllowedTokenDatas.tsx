@@ -13,14 +13,18 @@ import {
 export const allowedTokensForPool = (
   tokenDatas: TokenData[],
   stakePool: AccountData<StakePoolData>,
-  stakeAuthorizations?: AccountData<StakeAuthorizationData>[]
+  stakeAuthorizations?: AccountData<StakeAuthorizationData>[],
+  allowFrozen?: boolean
 ) =>
   tokenDatas.filter((token) => {
     let isAllowed = true
     const creatorAddresses = stakePool.parsed.requiresCreators
     const collectionAddresses = stakePool.parsed.requiresCollections
     const requiresAuthorization = stakePool.parsed.requiresAuthorization
-    if (token.tokenAccount?.account.data.parsed.info.state === 'frozen') {
+    if (
+      !allowFrozen &&
+      token.tokenAccount?.account.data.parsed.info.state === 'frozen'
+    ) {
       return false
     }
 
