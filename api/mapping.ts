@@ -12,6 +12,8 @@ export type StakePoolMetadata = {
   stakePoolAddress: PublicKey
   // Default receipt type. Setting this will remove the option for the user to choose which receipt type to use
   receiptType?: ReceiptType
+  // Optional config to hide this pool from the main page
+  hidden?: boolean
   // Colors object to style the stake page
   colors?: {
     primary: string
@@ -205,5 +207,21 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     receiptType: ReceiptType.Original,
     imageUrl:
       'https://raw.githubusercontent.com/dickmasterson/seanies/master/sean-logo.png',
+  },
+  {
+    name: 'whales',
+    displayName: 'Catalina Whales',
+    stakePoolAddress: new PublicKey(
+      'BrR1W8bNBfJZGqzsSvMQ8tUJL9tm963E6qR7R99YReiD'
+    ),
+    hidden: true,
+    receiptType: ReceiptType.Original,
+    imageUrl: '/logos/whales.jpg',
+    colors: {
+      primary: '#2472d1',
+      secondary: '#eee',
+      accent: '#999',
+      fontColor: '#000',
+    },
   },
 ]

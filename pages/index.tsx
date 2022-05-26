@@ -100,49 +100,52 @@ function Home() {
                 <Placeholder />
               </>
             ) : stakePools[0].length > 0 ? (
-              stakePools[0].map((stakePool) => (
-                <div
-                  className="flex h-[300px] cursor-pointer flex-col rounded-lg bg-white bg-opacity-5 p-10 transition-all duration-100 hover:scale-[1.01]"
-                  onClick={() =>
-                    router.push(
-                      `/${
-                        stakePool.stakePoolMetadata?.name ||
-                        stakePool.stakePoolData.pubkey.toString()
-                      }${
-                        environment.label !== 'mainnet-beta'
-                          ? `?cluster=${environment.label}`
-                          : ''
-                      }`
-                    )
-                  }
-                >
-                  <div className="text-center font-bold">
-                    {stakePool.stakePoolMetadata?.displayName}
-                  </div>
-                  <div className="text-gray text-center">
-                    <a
-                      className="text-xs text-gray-500"
-                      target="_blank"
-                      rel="noreferrer"
-                      href={pubKeyUrl(
-                        stakePool.stakePoolData.pubkey,
-                        environment.label
-                      )}
+              stakePools[0].map(
+                (stakePool) =>
+                  !stakePool.stakePoolMetadata?.hidden && (
+                    <div
+                      className="flex h-[300px] cursor-pointer flex-col rounded-lg bg-white bg-opacity-5 p-10 transition-all duration-100 hover:scale-[1.01]"
+                      onClick={() =>
+                        router.push(
+                          `/${
+                            stakePool.stakePoolMetadata?.name ||
+                            stakePool.stakePoolData.pubkey.toString()
+                          }${
+                            environment.label !== 'mainnet-beta'
+                              ? `?cluster=${environment.label}`
+                              : ''
+                          }`
+                        )
+                      }
                     >
-                      {shortPubKey(stakePool.stakePoolData.pubkey)}
-                    </a>
-                  </div>
-                  <div className="flex flex-grow items-center justify-center">
-                    {stakePool.stakePoolMetadata?.imageUrl && (
-                      <img
-                        className="max-h-[150px] rounded-md"
-                        src={stakePool.stakePoolMetadata.imageUrl}
-                        alt={stakePool.stakePoolMetadata.name}
-                      />
-                    )}
-                  </div>
-                </div>
-              ))
+                      <div className="text-center font-bold">
+                        {stakePool.stakePoolMetadata?.displayName}
+                      </div>
+                      <div className="text-gray text-center">
+                        <a
+                          className="text-xs text-gray-500"
+                          target="_blank"
+                          rel="noreferrer"
+                          href={pubKeyUrl(
+                            stakePool.stakePoolData.pubkey,
+                            environment.label
+                          )}
+                        >
+                          {shortPubKey(stakePool.stakePoolData.pubkey)}
+                        </a>
+                      </div>
+                      <div className="flex flex-grow items-center justify-center">
+                        {stakePool.stakePoolMetadata?.imageUrl && (
+                          <img
+                            className="max-h-[150px] rounded-md"
+                            src={stakePool.stakePoolMetadata.imageUrl}
+                            alt={stakePool.stakePoolMetadata.name}
+                          />
+                        )}
+                      </div>
+                    </div>
+                  )
+              )
             ) : (
               'No pools found...'
             )}

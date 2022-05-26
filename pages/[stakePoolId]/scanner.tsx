@@ -137,7 +137,11 @@ function Scanner() {
         className="relative mx-auto flex w-[93%] max-w-[450px] flex-col items-center text-white"
       >
         <div className="relative flex w-full flex-row items-center justify-center px-5">
-          <div className="py-3 text-gray-500" onClick={handleScan}>
+          <div
+            className="py-3"
+            style={{ color: config.colors?.accent }}
+            onClick={handleScan}
+          >
             {keypair?.publicKey.toString()}
           </div>
           {recentSignatures.refreshing && (
@@ -172,7 +176,7 @@ function Scanner() {
             className="scale-[.7] md:scale-100"
           />
         </div>
-        <div className="py-3 text-gray-500">
+        <div className="py-3" style={{ color: config.colors?.accent }}>
           Ensure you hold a {config?.name} NFT in your mobile wallet
         </div>
       </div>
