@@ -84,6 +84,8 @@ function Scanner() {
     }
   }, [recentSignature])
 
+  if (!QRCode || !config) return <></>
+
   return (
     <>
       <Header />
@@ -93,51 +95,45 @@ function Scanner() {
         }}
         className="relative mx-auto flex w-[93%] max-w-[450px] flex-col items-center text-white"
       >
-        {!QRCode || !config ? (
-          <></>
-        ) : (
-          <>
-            <div className="relative flex w-full flex-row items-center justify-center px-5">
-              <div className="py-3 text-gray-500">
-                {keypair?.publicKey.toString()}
-              </div>
-              {recentSignatures.refreshing && (
-                <div
-                  className="absolute right-0 top-3 h-[10px] w-[10px] animate-ping rounded-full"
-                  style={{ background: config?.colors?.secondary }}
-                ></div>
-              )}
-            </div>
-            <div className="relative flex h-[350px] w-[350px] items-center justify-center rounded-2xl text-[170px] md:h-[500px] md:w-[500px]">
-              {showSuccess && (
-                <div
-                  className="absolute z-10 flex h-full w-full items-center justify-center rounded-2xl"
-                  style={{
-                    color: config?.colors?.secondary,
-                    fontSize: '170px',
-                    boxShadow: `0 0 80px 50px ${transparentize(
-                      0.8,
-                      config?.colors?.secondary || ''
-                    )}`,
-                  }}
-                >
-                  <AnimatedCheckmark
-                    color={config?.colors?.primary || ''}
-                    className="h-[200px] w-[200px]"
-                  />
-                </div>
-              )}
-              <div
-                ref={ref}
-                style={{ opacity: showSuccess ? 0.3 : 1, transition: '1s all' }}
-                className="scale-[.7] md:scale-100"
+        <div className="relative flex w-full flex-row items-center justify-center px-5">
+          <div className="py-3 text-gray-500">
+            {keypair?.publicKey.toString()}
+          </div>
+          {recentSignatures.refreshing && (
+            <div
+              className="absolute right-0 top-3 h-[10px] w-[10px] animate-ping rounded-full"
+              style={{ background: config?.colors?.secondary }}
+            ></div>
+          )}
+        </div>
+        <div className="relative flex h-[350px] w-[350px] items-center justify-center rounded-2xl text-[170px] md:h-[500px] md:w-[500px]">
+          {showSuccess && (
+            <div
+              className="absolute z-10 flex h-full w-full items-center justify-center rounded-2xl"
+              style={{
+                color: config?.colors?.secondary,
+                fontSize: '170px',
+                boxShadow: `0 0 80px 50px ${transparentize(
+                  0.8,
+                  config?.colors?.secondary || ''
+                )}`,
+              }}
+            >
+              <AnimatedCheckmark
+                color={config?.colors?.primary || ''}
+                className="h-[200px] w-[200px]"
               />
             </div>
-            <div className="py-3 text-gray-500">
-              Ensure you hold a {config?.name} NFT in your mobile wallet
-            </div>
-          </>
-        )}
+          )}
+          <div
+            ref={ref}
+            style={{ opacity: showSuccess ? 0.3 : 1, transition: '1s all' }}
+            className="scale-[.7] md:scale-100"
+          />
+        </div>
+        <div className="py-3 text-gray-500">
+          Ensure you hold a {config?.name} NFT in your mobile wallet
+        </div>
       </div>
       <StyledBackground colors={config?.colors} />
     </>

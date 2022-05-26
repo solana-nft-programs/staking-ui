@@ -1,16 +1,17 @@
-import { AccountData } from '@cardinal/common'
+import { AccountData, getBatchedMultipleAccounts } from '@cardinal/common'
 import { scan } from '@cardinal/scanner/dist/cjs/programs/cardinalScanner'
 import { StakePoolData } from '@cardinal/staking/dist/cjs/programs/stakePool'
 import { getStakePool } from '@cardinal/staking/dist/cjs/programs/stakePool/accounts'
 import { utils } from '@project-serum/anchor'
-import { Connection, Keypair, Transaction } from '@solana/web3.js'
-import { getTokenAccountsWithData } from 'api/api'
+import { Connection, Keypair, PublicKey, Transaction } from '@solana/web3.js'
+import * as metaplex from '@metaplex-foundation/mpl-token-metadata'
 import { stakePoolMetadatas } from 'api/mapping'
 import { TokenData } from 'api/types'
 import { firstParam, tryPublicKey } from 'common/utils'
 import { allowedTokensForPool } from 'hooks/useAllowedTokenDatas'
 import type { NextApiHandler } from 'next'
 import { ENVIRONMENTS } from 'providers/EnvironmentProvider'
+import * as spl from '@solana/spl-token'
 
 interface GetResponse {
   label: string
@@ -37,6 +38,56 @@ interface PostResponse {
   error?: string
 }
 
+export async function getTokenAccounts(
+  connection: Connection,
+  addressId: string
+): Promise<TokenData[]> {
+  const allTokenAccounts = await connection.getParsedTokenAccountsByOwner(
+    new PublicKey(addressId),
+    { programId: spl.TOKEN_PROGRAM_ID }
+  )
+  const tokenAccounts = allTokenAccounts.value
+    .filter(
+      (tokenAccount) =>
+        tokenAccount.account.data.parsed.info.tokenAmount.uiAmount > 0
+    )
+    .sort((a, b) => a.pubkey.toBase58().localeCompare(b.pubkey.toBase58()))
+
+  // lookup metaplex data
+  const metaplexIds = await Promise.all(
+    tokenAccounts.map(
+      async (tokenAccount) =>
+        (
+          await metaplex.MetadataProgram.findMetadataAccount(
+            new PublicKey(tokenAccount.account.data.parsed.info.mint)
+          )
+        )[0]
+    )
+  )
+
+  const metaplexAccountInfos = await getBatchedMultipleAccounts(
+    connection,
+    metaplexIds
+  )
+  const metaplexData = metaplexAccountInfos.reduce((acc, accountInfo, i) => {
+    try {
+      acc[tokenAccounts[i]!.pubkey.toString()] = {
+        pubkey: metaplexIds[i]!,
+        ...accountInfo,
+        data: metaplex.MetadataData.deserialize(
+          accountInfo?.data as Buffer
+        ) as metaplex.MetadataData,
+      }
+    } catch (e) {}
+    return acc
+  }, {} as { [tokenAccountId: string]: { pubkey: PublicKey; data: metaplex.MetadataData } })
+
+  return tokenAccounts.map((tokenAccount, i) => ({
+    tokenAccount,
+    metaplexData: metaplexData[tokenAccount.pubkey.toString()],
+  }))
+}
+
 const post: NextApiHandler<PostResponse> = async (req, res) => {
   const {
     cluster: clusterParam,
@@ -45,7 +96,7 @@ const post: NextApiHandler<PostResponse> = async (req, res) => {
   } = req.query
   const { account } = req.body
   const foundEnvironment = ENVIRONMENTS.find(
-    (e) => e.label === (firstParam(clusterParam) || 'mainnet')
+    (e) => e.label === (firstParam(clusterParam) || 'mainnet-beta')
   )
   if (!foundEnvironment)
     return res.status(400).json({ error: 'Invalid cluster' })
@@ -65,16 +116,13 @@ const post: NextApiHandler<PostResponse> = async (req, res) => {
   let stakePool: AccountData<StakePoolData>
   try {
     stakePool = await getStakePool(connection, config.stakePoolAddress)
-    tokenDatas = await getTokenAccountsWithData(
-      connection,
-      accountId.toString()
-    )
+    tokenDatas = await getTokenAccounts(connection, accountId.toString())
   } catch (e) {
     console.log('Failed to get toke accounts: ', e)
     return res.status(500).json({ error: 'Failed to get token accounts' })
   }
-  tokenDatas = allowedTokensForPool(tokenDatas, stakePool)
-  const foundToken = tokenDatas.find((tk) => !tk)
+  tokenDatas = allowedTokensForPool(tokenDatas, stakePool, [], true)
+  const foundToken = tokenDatas.find((tk) => tk)
 
   if (!foundToken) {
     return res.status(404).json({
