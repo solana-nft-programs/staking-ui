@@ -335,7 +335,15 @@ function Home() {
             style={{ color: stakePoolMetadata?.colors?.fontColor }}
           >
             <div className="text-md font-semibold text-yellow-500">
-              Warning Solana clock is {Math.floor(clockDrift / 60)} minutes{' '}
+              Warning{' '}
+              <a
+                target="_blank"
+                href="https://status.solana.com/"
+                className="text-blue-400"
+              >
+                Solana
+              </a>{' '}
+              clock is {Math.floor(clockDrift / 60)} minutes{' '}
               {clockDrift > 0 ? 'behind' : 'ahead'}
             </div>
             <div className="text-xs opacity-80">
