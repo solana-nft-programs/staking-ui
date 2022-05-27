@@ -41,7 +41,8 @@ export const useRewards = () => {
         stakeEntries,
         rewardEntries,
         rewardDistributorData,
-        rewardDistributorTokenAccount.amount
+        rewardDistributorTokenAccount.amount,
+        UTCNow
       )
     },
     [

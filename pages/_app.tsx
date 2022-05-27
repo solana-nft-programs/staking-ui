@@ -22,8 +22,8 @@ const App = ({
   pageProps,
   cluster,
 }: AppProps & { cluster: string }) => (
-  <UTCNowProvider>
-    <EnvironmentProvider defaultCluster={cluster}>
+  <EnvironmentProvider defaultCluster={cluster}>
+    <UTCNowProvider>
       <WalletProvider autoConnect wallets={getWalletAdapters()}>
         <WalletIdentityProvider>
           <WalletModalProvider>
@@ -37,8 +37,8 @@ const App = ({
           </WalletModalProvider>
         </WalletIdentityProvider>
       </WalletProvider>
-    </EnvironmentProvider>
-  </UTCNowProvider>
+    </UTCNowProvider>
+  </EnvironmentProvider>
 )
 
 App.getInitialProps = getInitialProps

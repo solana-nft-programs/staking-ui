@@ -46,10 +46,12 @@ import { Switch } from '@headlessui/react'
 import { FaInfoCircle } from 'react-icons/fa'
 import { MouseoverTooltip } from 'common/Tooltip'
 import { useUTCNow } from 'providers/UTCNowProvider'
+import { useWalletModal } from '@solana/wallet-adapter-react-ui'
 
 function Home() {
   const { connection, environment } = useEnvironmentCtx()
   const wallet = useWallet()
+  const walletModal = useWalletModal()
   const userTokenAccounts = useUserTokenData()
   const { data: stakePool, loaded: stakePoolLoaded } = useStakePoolData()
   const stakedTokenDatas = useStakedTokenDatas()
@@ -73,7 +75,7 @@ function Home() {
   const { data: filteredTokens } = useAllowedTokenDatas(showFungibleTokens)
   const { data: stakePoolMetadata } = useStakePoolMetadata()
   const rewardDistributorTokenAccountData = useRewardDistributorTokenAccount()
-  const { UTCNow } = useUTCNow()
+  const { UTCNow, clockDrift } = useUTCNow()
 
   async function handleClaimRewards() {
     if (stakedSelected.length > 4) {
@@ -319,10 +321,27 @@ function Home() {
           </div>
         ) : (
           !wallet.connected && (
-            <div className="mx-5 mb-5 rounded-md border-[1px] border-yellow-500 bg-yellow-500 bg-opacity-40 p-4 text-center text-lg font-semibold">
+            <div
+              className="mx-5 mb-5 cursor-pointer rounded-md border-[1px] border-yellow-500 bg-yellow-500 bg-opacity-40 p-4 text-center text-lg font-semibold"
+              onClick={() => walletModal.setVisible(true)}
+            >
               Connect wallet to continue
             </div>
           )
+        )}
+        {wallet.connected && clockDrift && (
+          <div
+            className="mx-5 mb-5 rounded-md p-1 text-center"
+            style={{ color: stakePoolMetadata?.colors?.fontColor }}
+          >
+            <div className="text-md font-semibold text-yellow-500">
+              Warning Solana clock is {Math.floor(clockDrift / 60)} minutes{' '}
+              {clockDrift > 0 ? 'behind' : 'ahead'}
+            </div>
+            <div className="text-xs opacity-80">
+              Staking rewards are aligned to solana clock
+            </div>
+          </div>
         )}
         {(maxStaked || rewardDistributorData.data) && (
           <div
