@@ -83,7 +83,7 @@ export const useAllowedTokenDatas = (showFungibleTokens: boolean) => {
         stakePool,
         stakeAuthorizations
       ).filter(
-        (tokenData) => showFungibleTokens !== Boolean(tokenData.tokenListData)
+        (tokenData) => showFungibleTokens === Boolean(tokenData.tokenListData)
       )
     },
     [stakePool, showFungibleTokens, tokenDatas],
