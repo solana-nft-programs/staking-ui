@@ -347,7 +347,7 @@ function Home() {
               {clockDrift > 0 ? 'behind' : 'ahead'}
             </div>
             <div className="text-xs opacity-80">
-              Staking rewards are aligned to solana clock
+              Staking rewards shown are aligned to solana clock
             </div>
           </div>
         )}

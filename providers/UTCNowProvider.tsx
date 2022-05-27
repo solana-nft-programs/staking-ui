@@ -28,28 +28,29 @@ export function UTCNowProvider({ children }: { children: ReactChild }) {
   const [UTCNow, setUTCNow] = useState(Date.now() / 1000)
   const [clockDrift, setClockDrift] = useState<number | undefined>(undefined)
 
-  useMemo(() => {
+  useEffect(() => {
     const interval = setInterval(
       (function fetchInterval(): () => void {
-        setUTCNow(Date.now() / 1000)
-        // setUTCNow(UTCNow + 1)
+        setUTCNow((oldUTCNow) => oldUTCNow + 1)
         return fetchInterval
       })(),
       1000
     )
     return () => clearInterval(interval)
-  }, [Math.floor(Date.now() / 1000)])
+  }, [])
 
   useMemo(async () => {
-    const solanaClock = await getSolanaClock(connection)
-    if (
-      solanaClock &&
-      Math.abs(Date.now() / 1000 - solanaClock) >
-        CLOCK_DRIFT_WARNING_THRESHOLD_SECONDS
-    ) {
-      setClockDrift(Date.now() / 1000 - solanaClock)
-      setUTCNow(solanaClock)
-    }
+    try {
+      const solanaClock = await getSolanaClock(connection)
+      if (
+        solanaClock &&
+        Math.abs(Date.now() / 1000 - solanaClock) >
+          CLOCK_DRIFT_WARNING_THRESHOLD_SECONDS
+      ) {
+        setClockDrift(Date.now() / 1000 - solanaClock)
+        setUTCNow(solanaClock)
+      }
+    } catch (e) {}
   }, [environment])
 
   return (
