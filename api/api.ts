@@ -270,10 +270,10 @@ export async function getStakeEntryDatas(
 
   const metaplexIds = metadataTuples.map(([metaplexId]) => metaplexId)
 
-  const metaplexAccountInfos = await getBatchedMultipleAccounts(
-    connection,
-    metaplexIds
-  )
+  const metaplexAccountInfos =
+    metaplexIds.length > 0
+      ? await getBatchedMultipleAccounts(connection, metaplexIds)
+      : []
 
   const metaplexData = metaplexAccountInfos.map((accountInfo, i) => {
     let md
