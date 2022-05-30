@@ -40,7 +40,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     name: 'cardinal',
     displayName: 'Cardinal',
     stakePoolAddress: new PublicKey(
-      '4bsRsyCSSMgFSNJAi5wvh4UX9vMZDf1MwUrHUszfmLbb'
+      '2s3qXuGyMNedXS61Vi9XsRx7HuryyyZUYGyMtCrKUXva'
     ),
     imageUrl: '/logo-colored.png',
     colors: {

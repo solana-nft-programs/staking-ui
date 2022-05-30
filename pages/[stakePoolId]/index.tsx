@@ -8,7 +8,7 @@ import {
 } from '@cardinal/staking'
 import { ReceiptType } from '@cardinal/staking/dist/cjs/programs/stakePool'
 import { useWallet } from '@solana/wallet-adapter-react'
-import { PublicKey, SendTransactionError } from '@solana/web3.js'
+import { PublicKey, SendTransactionError, Transaction } from '@solana/web3.js'
 import { TokenData } from 'api/types'
 import { Header } from 'common/Header'
 import Head from 'next/head'
@@ -47,6 +47,7 @@ import { FaInfoCircle } from 'react-icons/fa'
 import { MouseoverTooltip } from 'common/Tooltip'
 import { useUTCNow } from 'providers/UTCNowProvider'
 import { useWalletModal } from '@solana/wallet-adapter-react-ui'
+import { executeAllTransactions } from 'api/utils'
 
 function Home() {
   const { connection, environment } = useEnvironmentCtx()
@@ -91,6 +92,7 @@ function Home() {
       return
     }
 
+    const txs: Transaction[] = []
     for (let step = 0; step < stakedSelected.length; step++) {
       try {
         let token = stakedSelected[step]
@@ -103,18 +105,26 @@ function Home() {
           stakePoolId: stakePool.pubkey,
           stakeEntryId: token.stakeEntry.pubkey,
         })
-        await executeTransaction(connection, wallet as Wallet, transaction, {})
-        notify({ message: `Successfully claimed rewards`, type: 'success' })
-        console.log('Successfully claimed rewards')
+        txs.push(transaction)
       } catch (e) {
         console.log(e)
         notify({
           message: handleError(e, `Transaction failed: ${e}`),
           type: 'error',
         })
-      } finally {
-        break
       }
+    }
+
+    try {
+      await executeAllTransactions(connection, wallet as Wallet, txs, {})
+      notify({ message: `Successfully claimed rewards`, type: 'success' })
+      console.log('Successfully claimed rewards')
+    } catch (e) {
+      console.log(e)
+      notify({
+        message: handleError(e, `Transaction failed: ${e}`),
+        type: 'error',
+      })
     }
 
     rewardDistributorData.refresh()
