@@ -224,4 +224,21 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       fontColor: '#000',
     },
   },
+  {
+    name: 'stoned-farms',
+    displayName: 'Stoned Farms',
+    stakePoolAddress: new PublicKey(
+      'BdqcbcwaX5YpQPDLh9m9u89QH46WXcnQB5r7vK3h54U4'
+    ),
+    websiteUrl: 'https://stonedfarms.io/',
+    receiptType: ReceiptType.Original,
+    maxStaked: 2500,
+    imageUrl: 'https://smvkptoniao6opm5dr3gwgm45tyk3hk5dhz4vrsjqyviqqlkwu.arweave.net/k_yqnzc1AHec9nRx2axmc7PCtnV0Z88rGSYYqiEFqtU',
+    colors: {
+      primary: '#344E41',
+      secondary: '#131418',
+      accent: '#1fcfb11c',
+      fontColor: '#FFFFFF',
+    },
+  },
 ]
