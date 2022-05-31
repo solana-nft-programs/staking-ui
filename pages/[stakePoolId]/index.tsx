@@ -47,6 +47,7 @@ import { MouseoverTooltip } from 'common/Tooltip'
 import { useUTCNow } from 'providers/UTCNowProvider'
 import { useWalletModal } from '@solana/wallet-adapter-react-ui'
 import { executeAllTransactions } from 'api/utils'
+import { queryClient } from 'pages/_app'
 
 function Home() {
   const { connection, environment } = useEnvironmentCtx()
@@ -344,10 +345,10 @@ function Home() {
       )
     } catch (e) {}
 
+    await stakedTokenDatas.remove()
     userTokenAccounts
       .refreshTokenAccounts(true)
       .then(() => userTokenAccounts.refreshTokenAccounts())
-    stakedTokenDatas.refetch().then(() => stakedTokenDatas.refetch())
     stakePoolEntries.refresh().then(() => stakePoolEntries.refresh())
 
     setStakedSelected([])

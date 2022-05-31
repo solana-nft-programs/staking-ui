@@ -14,9 +14,13 @@ import { TokenAccountsProvider } from 'providers/TokenDataProvider'
 import { TokenListProvider } from 'providers/TokenListProvider'
 import { UTCNowProvider } from 'providers/UTCNowProvider'
 import { QueryClient, QueryClientProvider } from 'react-query'
-// import { ReactQueryDevtools } from 'react-query/devtools'
+import { ReactQueryDevtools } from 'react-query/devtools'
 
 require('@solana/wallet-adapter-react-ui/styles.css')
+
+export const queryClient = new QueryClient()
+
+export const DEBUG = false
 
 const App = ({
   Component,
@@ -30,10 +34,10 @@ const App = ({
           <WalletModalProvider>
             <TokenListProvider>
               <TokenAccountsProvider>
-                <QueryClientProvider client={new QueryClient()}>
+                <QueryClientProvider client={queryClient}>
                   <>
                     <Component {...pageProps} />
-                    {/* <ReactQueryDevtools initialIsOpen={false} /> */}
+                    {DEBUG && <ReactQueryDevtools initialIsOpen={false} />}
                   </>
                 </QueryClientProvider>
               </TokenAccountsProvider>
