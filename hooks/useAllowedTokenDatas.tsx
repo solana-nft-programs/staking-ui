@@ -215,7 +215,7 @@ export const useAllowedTokenDatas = (showFungibleTokens: boolean) => {
       }))
     },
     {
-      refetchInterval: 10000,
+      refetchInterval: 30000,
       enabled: !!stakePoolId && !!walletId,
     }
   )

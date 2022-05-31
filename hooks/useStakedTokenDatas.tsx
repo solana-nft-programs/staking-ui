@@ -138,6 +138,6 @@ export const useStakedTokenDatas = () => {
       }, [] as StakeEntryTokenData[])
       return hydratedTokenDatas
     },
-    { refetchInterval: 10000 }
+    { refetchInterval: 30000, enabled: !!stakePoolId && walletIds.length > 0 }
   )
 }
