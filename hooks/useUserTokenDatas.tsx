@@ -5,7 +5,7 @@ import * as spl from '@solana/spl-token'
 import * as metaplex from '@metaplex-foundation/mpl-token-metadata'
 import { AccountInfo, ParsedAccountData, PublicKey } from '@solana/web3.js'
 import { getBatchedMultipleAccounts } from '@cardinal/common'
-import { TokenListData, useTokenList } from 'providers/TokenListProvider'
+import { TokenListData, useTokenList } from './useTokenList'
 
 export type UserTokenData = {
   tokenAccount?: {
@@ -19,9 +19,9 @@ export type UserTokenData = {
 export const useUserTokenDatas = () => {
   const { connection } = useEnvironmentCtx()
   const walletId = useWalletId()
-  const { tokenList } = useTokenList()
+  const { data: tokenList } = useTokenList()
   return useQuery<UserTokenData[]>(
-    ['useUserTokenDatas', walletId?.toString(), tokenList.length],
+    ['useUserTokenDatas', walletId?.toString(), tokenList?.length],
     async () => {
       const allTokenAccounts = await connection.getParsedTokenAccountsByOwner(
         walletId!,
@@ -73,7 +73,7 @@ export const useUserTokenDatas = () => {
       return tokenAccounts.map((tokenAccount, i) => ({
         tokenAccount,
         metaplexData: metaplexData[tokenAccount.pubkey.toString()],
-        tokenListData: tokenList.find(
+        tokenListData: tokenList?.find(
           (t) =>
             t.address === tokenAccount?.account.data.parsed.info.mint.toString()
         ),

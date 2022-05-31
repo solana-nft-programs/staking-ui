@@ -2,12 +2,12 @@ import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 import { useRewardDistributorData } from './useRewardDistributorData'
 import * as splToken from '@solana/spl-token'
 import { Keypair } from '@solana/web3.js'
-import { TokenListData, useTokenList } from 'providers/TokenListProvider'
 import { useQuery } from 'react-query'
+import { TokenListData, useTokenList } from './useTokenList'
 
 export const useRewardMintInfo = () => {
   const { connection } = useEnvironmentCtx()
-  const { tokenList } = useTokenList()
+  const { data: tokenList } = useTokenList()
   const { data: rewardDistibutorData } = useRewardDistributorData()
   return useQuery<
     | { mintInfo: splToken.MintInfo; tokenListData: TokenListData | undefined }
@@ -16,11 +16,11 @@ export const useRewardMintInfo = () => {
     [
       'useRewardMintInfo',
       rewardDistibutorData?.pubkey?.toString(),
-      tokenList.length,
+      tokenList?.length,
     ],
     async () => {
       if (!rewardDistibutorData) return
-      const tokenListData = tokenList.find(
+      const tokenListData = tokenList?.find(
         (tk) =>
           tk.address === rewardDistibutorData?.parsed.rewardMint.toString()
       )

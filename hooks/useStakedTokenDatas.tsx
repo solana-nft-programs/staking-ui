@@ -1,13 +1,13 @@
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 import { useStakePoolId } from './useStakePoolId'
 import { getStakeEntryDatas } from 'api/api'
-import { TokenListData, useTokenList } from 'providers/TokenListProvider'
 import { useWalletIds } from './useWalletIds'
 import { useQuery } from 'react-query'
 import { PublicKey } from '@solana/web3.js'
 import { AccountData } from '@cardinal/stake-pool'
 import * as metaplex from '@metaplex-foundation/mpl-token-metadata'
 import { StakeEntryData } from '@cardinal/staking/dist/cjs/programs/stakePool'
+import { TokenListData, useTokenList } from './useTokenList'
 
 export type StakeEntryTokenData = {
   tokenListData?: TokenListData
@@ -25,14 +25,14 @@ export type StakeEntryTokenData = {
 export const useStakedTokenDatas = () => {
   const stakePoolId = useStakePoolId()
   const walletIds = useWalletIds()
-  const { tokenList } = useTokenList()
+  const { data: tokenList } = useTokenList()
   const { connection } = useEnvironmentCtx()
   return useQuery<StakeEntryTokenData[] | undefined>(
     [
       'stakedTokenDatas',
       stakePoolId?.toString(),
       walletIds.join(','),
-      tokenList.length,
+      tokenList?.length,
     ],
     async () => {
       if (!stakePoolId || !walletIds || walletIds.length <= 0) return
@@ -45,7 +45,7 @@ export const useStakedTokenDatas = () => {
       const hydratedTokenDatas = tokenDatas.reduce((acc, tokenData) => {
         let tokenListData
         try {
-          tokenListData = tokenList.find(
+          tokenListData = tokenList?.find(
             (t) =>
               t.address === tokenData.stakeEntry?.parsed.originalMint.toString()
           )

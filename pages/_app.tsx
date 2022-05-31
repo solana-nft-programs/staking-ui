@@ -10,7 +10,6 @@ import {
   getInitialProps,
 } from 'providers/EnvironmentProvider'
 import { WalletIdentityProvider } from '@cardinal/namespaces-components'
-import { TokenListProvider } from 'providers/TokenListProvider'
 import { UTCNowProvider } from 'providers/UTCNowProvider'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import { ReactQueryDevtools } from 'react-query/devtools'
@@ -31,14 +30,12 @@ const App = ({
       <WalletProvider autoConnect wallets={getWalletAdapters()}>
         <WalletIdentityProvider>
           <WalletModalProvider>
-            <TokenListProvider>
-              <QueryClientProvider client={queryClient}>
-                <>
-                  <Component {...pageProps} />
-                  {DEBUG && <ReactQueryDevtools initialIsOpen={false} />}
-                </>
-              </QueryClientProvider>
-            </TokenListProvider>
+            <QueryClientProvider client={queryClient}>
+              <>
+                <Component {...pageProps} />
+                {DEBUG && <ReactQueryDevtools initialIsOpen={false} />}
+              </>
+            </QueryClientProvider>
           </WalletModalProvider>
         </WalletIdentityProvider>
       </WalletProvider>

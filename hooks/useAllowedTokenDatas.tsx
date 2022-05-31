@@ -15,7 +15,7 @@ import { AccountInfo, ParsedAccountData, PublicKey } from '@solana/web3.js'
 import { getStakeEntries } from '@cardinal/staking/dist/cjs/programs/stakePool/accounts'
 import { useQuery } from 'react-query'
 import { useWalletId } from './useWalletId'
-import { TokenListData, useTokenList } from 'providers/TokenListProvider'
+import { TokenListData, useTokenList } from './useTokenList'
 
 export type AllowedTokenData = BaseTokenData & {
   metadata?: any
@@ -96,11 +96,11 @@ export const useAllowedTokenDatas = (showFungibleTokens: boolean) => {
   const stakePoolId = useStakePoolId()
   const walletId = useWalletId()
   const { connection } = useEnvironmentCtx()
-  const { tokenList } = useTokenList()
+  const { data: tokenList } = useTokenList()
   const { data: stakePool } = useStakePoolData()
   const { data: stakeAuthorizations } = useStakeAuthorizationsForPool()
   return useQuery<AllowedTokenData[] | undefined>(
-    ['allowedTokenDatas', stakePoolId, showFungibleTokens, tokenList.length],
+    ['allowedTokenDatas', stakePoolId, showFungibleTokens, tokenList?.length],
     async () => {
       if (!stakePoolId || !stakePool || !walletId) return
 
@@ -154,7 +154,7 @@ export const useAllowedTokenDatas = (showFungibleTokens: boolean) => {
       const baseTokenDatas = tokenAccounts.map((tokenAccount, i) => ({
         tokenAccount,
         metaplexData: metaplexData[tokenAccount.pubkey.toString()],
-        tokenListData: tokenList.find(
+        tokenListData: tokenList?.find(
           (t) =>
             t.address === tokenAccount?.account.data.parsed.info.mint.toString()
         ),
