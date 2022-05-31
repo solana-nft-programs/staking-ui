@@ -474,8 +474,8 @@ function Home() {
                   </span>
                 </div>
                 <div className="flex min-w-[200px] flex-col text-lg">
-                  {!rewardMintInfo.isFetched ? (
-                    <div className="relative flex h-8 w-full items-center justify-center">
+                  {!rewardMintInfo.isFetched || !rewards.data ? (
+                    <div className="relative flex h-10 w-full items-center justify-center">
                       <span className="text-gray-500"></span>
                       <div className="absolute w-full animate-pulse items-center justify-center rounded-lg bg-white bg-opacity-10 p-5"></div>
                     </div>

@@ -181,7 +181,10 @@ export const useAllowedTokenDatas = (showFungibleTokens: boolean) => {
             )[0]
         )
       )
-      const stakeEntries = await getStakeEntries(connection, stakeEntryIds)
+      const stakeEntries =
+        stakeEntryIds.length > 0
+          ? await getStakeEntries(connection, stakeEntryIds)
+          : []
 
       const metadata = await Promise.all(
         allowedTokens.map(async (allowedToken) => {
