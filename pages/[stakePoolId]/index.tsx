@@ -409,7 +409,7 @@ function Home() {
             </div>
           )
         )}
-        {(maxStaked || rewardDistributorData.data) && (
+        {(maxStaked || rewardDistributorData) && (
           <div
             className="mx-5 mb-4 flex flex-wrap items-center gap-4 rounded-md bg-white bg-opacity-5 px-10 py-6 text-gray-200 md:flex-row md:justify-between"
             style={{
@@ -517,7 +517,9 @@ function Home() {
               </>
             ) : (
               <div className="relative flex flex-grow items-center justify-center">
-                {!rewardDistributorData.isFetched && !rewardMintInfo.isFetched && (
+                {!(
+                  rewardDistributorData.isFetched && rewardMintInfo.isFetched
+                ) && (
                   <>
                     <span className="text-gray-500">Loading rewards...</span>
                     <div className="absolute w-full animate-pulse items-center justify-center rounded-lg bg-white bg-opacity-10 p-5"></div>
