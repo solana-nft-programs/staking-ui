@@ -1,10 +1,26 @@
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 import { useStakePoolId } from './useStakePoolId'
 import { getStakeEntryDatas } from 'api/api'
-import { useTokenList } from 'providers/TokenListProvider'
-import { StakeEntryTokenData } from 'api/types'
+import { TokenListData, useTokenList } from 'providers/TokenListProvider'
 import { useWalletIds } from './useWalletIds'
 import { useQuery } from 'react-query'
+import { PublicKey } from '@solana/web3.js'
+import { AccountData } from '@cardinal/stake-pool'
+import * as metaplex from '@metaplex-foundation/mpl-token-metadata'
+import { StakeEntryData } from '@cardinal/staking/dist/cjs/programs/stakePool'
+
+export type StakeEntryTokenData = {
+  tokenListData?: TokenListData
+  metaplexData?: { pubkey: PublicKey; data: metaplex.MetadataData } | null
+  metadata?:
+    | {
+        pubkey: PublicKey
+        data: any
+      }
+    | undefined
+    | null
+  stakeEntry: AccountData<StakeEntryData> | null | undefined
+}
 
 export const useStakedTokenDatas = () => {
   const stakePoolId = useStakePoolId()

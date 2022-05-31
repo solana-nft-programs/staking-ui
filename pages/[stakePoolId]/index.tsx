@@ -3,7 +3,6 @@ import {
   stake,
   unstake,
   claimRewards,
-  handleError,
 } from '@cardinal/staking'
 import { ReceiptType } from '@cardinal/staking/dist/cjs/programs/stakePool'
 import { useWallet } from '@solana/wallet-adapter-react'
@@ -14,7 +13,6 @@ import Head from 'next/head'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 import { useState } from 'react'
 import { Wallet } from '@metaplex/js'
-import { useUserTokenData } from 'providers/TokenDataProvider'
 import { LoadingSpinner } from 'common/LoadingSpinner'
 import { notify } from 'common/Notification'
 import { pubKeyUrl, secondstoDuration } from 'common/utils'
@@ -26,7 +24,10 @@ import {
   parseMintNaturalAmountFromDecimal,
 } from 'common/units'
 import { BN } from '@project-serum/anchor'
-import { useStakedTokenDatas } from 'hooks/useStakedTokenDatas'
+import {
+  StakeEntryTokenData,
+  useStakedTokenDatas,
+} from 'hooks/useStakedTokenDatas'
 import { useRewardDistributorData } from 'hooks/useRewardDistributorData'
 import { useRewards } from 'hooks/useRewards'
 import { useRewardMintInfo } from 'hooks/useRewardMintInfo'
@@ -34,7 +35,10 @@ import { AllowedTokens } from 'components/AllowedTokens'
 import { useStakePoolEntries } from 'hooks/useStakePoolEntries'
 import { useStakePoolData } from 'hooks/useStakePoolData'
 import { useStakePoolMaxStaked } from 'hooks/useStakePoolMaxStaked'
-import { useAllowedTokenDatas } from 'hooks/useAllowedTokenDatas'
+import {
+  AllowedTokenData,
+  useAllowedTokenDatas,
+} from 'hooks/useAllowedTokenDatas'
 import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
 import { defaultSecondaryColor } from 'api/mapping'
 import { Footer } from 'common/Footer'
@@ -47,13 +51,11 @@ import { MouseoverTooltip } from 'common/Tooltip'
 import { useUTCNow } from 'providers/UTCNowProvider'
 import { useWalletModal } from '@solana/wallet-adapter-react-ui'
 import { executeAllTransactions } from 'api/utils'
-import { queryClient } from 'pages/_app'
 
 function Home() {
   const { connection, environment } = useEnvironmentCtx()
   const wallet = useWallet()
   const walletModal = useWalletModal()
-  const userTokenAccounts = useUserTokenData()
   const { data: stakePool, isFetched: stakePoolLoaded } = useStakePoolData()
   const stakedTokenDatas = useStakedTokenDatas()
   const rewardDistributorData = useRewardDistributorData()
@@ -63,8 +65,12 @@ function Home() {
   const rewardEntries = useRewardEntries()
   const rewards = useRewards()
 
-  const [unstakedSelected, setUnstakedSelected] = useState<TokenData[]>([])
-  const [stakedSelected, setStakedSelected] = useState<TokenData[]>([])
+  const [unstakedSelected, setUnstakedSelected] = useState<AllowedTokenData[]>(
+    []
+  )
+  const [stakedSelected, setStakedSelected] = useState<StakeEntryTokenData[]>(
+    []
+  )
   const [loadingStake, setLoadingStake] = useState(false)
   const [loadingUnstake, setLoadingUnstake] = useState(false)
   const [receiptType, setReceiptType] = useState<ReceiptType>(
@@ -73,7 +79,7 @@ function Home() {
   const [loadingClaimRewards, setLoadingClaimRewards] = useState(false)
   const [showFungibleTokens, setShowFungibleTokens] = useState(false)
   const [showAllowedTokens, setShowAllowedTokens] = useState<boolean>()
-  const { data: filteredTokens } = useAllowedTokenDatas(showFungibleTokens)
+  const allowedTokenDatas = useAllowedTokenDatas(showFungibleTokens)
   const { data: stakePoolMetadata } = useStakePoolMetadata()
   const rewardDistributorTokenAccountData = useRewardDistributorTokenAccount()
   const { UTCNow } = useUTCNow()
@@ -154,7 +160,7 @@ function Home() {
             !token.stakeEntry?.parsed.cooldownStartSeconds
           ) {
             notify({
-              message: `Cooldown period will be initiated for ${token.metadata.name}`,
+              message: `Cooldown period will be initiated for ${token.metaplexData?.data.data.name}`,
               type: 'info',
             })
           }
@@ -187,9 +193,8 @@ function Home() {
       )
     } catch (e) {}
 
-    userTokenAccounts
-      .refreshTokenAccounts(true)
-      .then(() => userTokenAccounts.refreshTokenAccounts())
+    await stakedTokenDatas.remove()
+    await allowedTokenDatas.remove()
     stakedTokenDatas.refetch().then(() => stakedTokenDatas.refetch())
     stakePoolEntries.refresh().then(() => stakePoolEntries.refresh())
     setStakedSelected([])
@@ -346,9 +351,7 @@ function Home() {
     } catch (e) {}
 
     await stakedTokenDatas.remove()
-    userTokenAccounts
-      .refreshTokenAccounts(true)
-      .then(() => userTokenAccounts.refreshTokenAccounts())
+    await allowedTokenDatas.remove()
     stakePoolEntries.refresh().then(() => stakePoolEntries.refresh())
 
     setStakedSelected([])
@@ -524,9 +527,10 @@ function Home() {
                   Select Your Tokens
                 </p>
                 <div className="inline-block">
-                  {userTokenAccounts.refreshing && userTokenAccounts.loaded && (
-                    <LoadingSpinner height="25px" />
-                  )}
+                  {allowedTokenDatas.isRefetching &&
+                    allowedTokenDatas.isFetched && (
+                      <LoadingSpinner height="25px" />
+                    )}
                 </div>
               </div>
 
@@ -552,13 +556,13 @@ function Home() {
             )}
             <div className="my-3 flex-auto overflow-auto">
               <div className="relative my-auto mb-4 h-[60vh] overflow-y-auto overflow-x-hidden rounded-md bg-white bg-opacity-5 p-5">
-                {!userTokenAccounts.loaded ? (
+                {!allowedTokenDatas.isFetched ? (
                   <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
                     <div className="h-[200px] animate-pulse rounded-lg bg-white bg-opacity-5 p-10"></div>
                     <div className="h-[200px] animate-pulse rounded-lg bg-white bg-opacity-5 p-10"></div>
                     <div className="h-[200px] animate-pulse rounded-lg bg-white bg-opacity-5 p-10"></div>
                   </div>
-                ) : (filteredTokens || []).length == 0 ? (
+                ) : (allowedTokenDatas.data || []).length == 0 ? (
                   <p className="text-gray-400">
                     No allowed tokens found in wallet.
                   </p>
@@ -568,7 +572,7 @@ function Home() {
                       'grid grid-cols-2 gap-4 lg:grid-cols-2 xl:grid-cols-3'
                     }
                   >
-                    {(filteredTokens || []).map((tk) => (
+                    {(allowedTokenDatas.data || []).map((tk) => (
                       <div key={tk.tokenAccount?.pubkey.toString()}>
                         <div className="relative w-44 md:w-auto 2xl:w-48">
                           <label
