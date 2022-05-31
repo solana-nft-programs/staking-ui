@@ -455,7 +455,7 @@ function AdminStakePool() {
       <Header />
       <div className="container mx-auto w-full bg-[#1a1b20]">
         <div className="my-2 h-full min-h-[55vh] rounded-md bg-white bg-opacity-5 p-10 text-gray-200">
-          {!stakePool.isFetched || !rewardDistributor.loaded ? (
+          {!stakePool.isFetched || !rewardDistributor.isFetched ? (
             <div className="h-[40vh] w-full animate-pulse rounded-md bg-white bg-opacity-10"></div>
           ) : stakePool.data ? (
             <div className="grid h-full grid-cols-2 gap-4 ">

@@ -133,8 +133,8 @@ function Home() {
       )
     } catch (e) {}
 
-    rewardDistributorData.refresh()
-    rewardDistributorTokenAccountData.refresh()
+    rewardDistributorData.remove()
+    rewardDistributorTokenAccountData.remove()
     setLoadingClaimRewards(false)
   }
 
@@ -502,7 +502,7 @@ function Home() {
               </>
             ) : (
               <div className="relative flex w-3/4 items-center justify-center">
-                {!rewardDistributorData.loaded && !rewardMintInfo.loaded && (
+                {!rewardDistributorData.isFetched && !rewardMintInfo.isFetched && (
                   <>
                     <span className="text-gray-500">Loading rewards...</span>
                     <div className="absolute w-full animate-pulse items-center justify-center rounded-lg bg-white bg-opacity-10 p-5"></div>
