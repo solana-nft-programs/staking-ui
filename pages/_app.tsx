@@ -18,7 +18,7 @@ require('@solana/wallet-adapter-react-ui/styles.css')
 
 export const queryClient = new QueryClient()
 
-export const DEBUG = true
+export const DEBUG = false
 
 const App = ({
   Component,
