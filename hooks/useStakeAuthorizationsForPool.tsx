@@ -6,13 +6,13 @@ import { useStakePoolId } from './useStakePoolId'
 import { useQuery } from 'react-query'
 
 export const useStakeAuthorizationsForPool = () => {
-  const { connection } = useEnvironmentCtx()
+  const { secondaryConnection } = useEnvironmentCtx()
   const stakePoolId = useStakePoolId()
   return useQuery<AccountData<StakeAuthorizationData>[] | undefined>(
     ['useStakeAuthorizationsForPool', stakePoolId?.toString()],
     async () => {
       if (stakePoolId) {
-        return getStakeAuthorizationsForPool(connection, stakePoolId)
+        return getStakeAuthorizationsForPool(secondaryConnection, stakePoolId)
       }
     },
     { enabled: !!stakePoolId }

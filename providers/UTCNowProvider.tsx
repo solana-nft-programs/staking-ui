@@ -24,7 +24,7 @@ const getSolanaClock = async (
 }
 
 export function UTCNowProvider({ children }: { children: ReactChild }) {
-  const { connection, environment } = useEnvironmentCtx()
+  const { secondaryConnection, environment } = useEnvironmentCtx()
   const [UTCNow, setUTCNow] = useState(Date.now() / 1000)
   const [clockDrift, setClockDrift] = useState<number | undefined>(undefined)
 
@@ -41,7 +41,7 @@ export function UTCNowProvider({ children }: { children: ReactChild }) {
 
   useMemo(async () => {
     try {
-      const solanaClock = await getSolanaClock(connection)
+      const solanaClock = await getSolanaClock(secondaryConnection)
       if (
         solanaClock &&
         Math.abs(Date.now() / 1000 - solanaClock) >

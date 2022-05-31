@@ -10,7 +10,7 @@ import { useQuery } from 'react-query'
 export const useRewardEntries = () => {
   const { data: rewardDistibutorData } = useRewardDistributorData()
   const { data: stakedTokenDatas } = useStakedTokenDatas()
-  const { connection } = useEnvironmentCtx()
+  const { secondaryConnection } = useEnvironmentCtx()
   return useQuery<AccountData<RewardEntryData>[] | undefined>(
     [
       'useRewardEntries',
@@ -36,9 +36,9 @@ export const useRewardEntries = () => {
         )
       )
 
-      return (await getRewardEntries(connection, rewardEntryIds)).filter(
-        (rewardEntry) => rewardEntry.parsed
-      )
+      return (
+        await getRewardEntries(secondaryConnection, rewardEntryIds)
+      ).filter((rewardEntry) => rewardEntry.parsed)
     }
   )
 }

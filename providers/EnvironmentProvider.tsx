@@ -14,6 +14,7 @@ export interface EnvironmentContextValues {
   environment: Environment
   setEnvironment: (newEnvironment: Environment) => void
   connection: Connection
+  secondaryConnection: Connection
 }
 
 export const ENVIRONMENTS: Environment[] = [
@@ -79,12 +80,21 @@ export function EnvironmentProvider({
     [environment]
   )
 
+  const secondaryConnection = useMemo(
+    () =>
+      new Connection(environment.secondary ?? environment.primary, {
+        commitment: 'recent',
+      }),
+    [environment]
+  )
+
   return (
     <EnvironmentContext.Provider
       value={{
         environment,
         setEnvironment,
         connection,
+        secondaryConnection,
       }}
     >
       {children}

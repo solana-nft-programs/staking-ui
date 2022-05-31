@@ -7,7 +7,7 @@ import { useQuery } from 'react-query'
 
 export const useRewardDistributorTokenAccount = () => {
   const rewardDistibutorData = useRewardDistributorData()
-  const { connection } = useEnvironmentCtx()
+  const { secondaryConnection } = useEnvironmentCtx()
   return useQuery<splToken.AccountInfo | undefined>(
     [
       'useRewardDistributorTokenAccount',
@@ -21,7 +21,7 @@ export const useRewardDistributorTokenAccount = () => {
         true
       )
       const rewardMint = new splToken.Token(
-        connection,
+        secondaryConnection,
         rewardDistibutorData.data.parsed.rewardMint,
         splToken.TOKEN_PROGRAM_ID,
         Keypair.generate() // not used

@@ -141,7 +141,7 @@ export const Header = () => {
           {wallet.connected && wallet.publicKey ? (
             <AccountConnect
               dark
-              connection={ctx.connection}
+              connection={ctx.secondaryConnection}
               environment={ctx.environment.label}
               handleDisconnect={() => wallet.disconnect()}
               wallet={wallet as Wallet}

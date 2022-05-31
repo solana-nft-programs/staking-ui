@@ -98,7 +98,7 @@ export const useStakedTokenDatas = () => {
   const stakePoolId = useStakePoolId()
   const walletIds = useWalletIds()
   const { data: tokenList } = useTokenList()
-  const { connection } = useEnvironmentCtx()
+  const { secondaryConnection } = useEnvironmentCtx()
   return useQuery<StakeEntryTokenData[] | undefined>(
     [
       'stakedTokenDatas',
@@ -110,7 +110,7 @@ export const useStakedTokenDatas = () => {
       if (!stakePoolId || !walletIds || walletIds.length <= 0) return
       const stakeEntryDataGroups = await Promise.all(
         walletIds.map((walletId) =>
-          getStakeEntryDatas(connection, stakePoolId, walletId)
+          getStakeEntryDatas(secondaryConnection, stakePoolId, walletId)
         )
       )
       const tokenDatas = stakeEntryDataGroups.flat()

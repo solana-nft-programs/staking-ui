@@ -6,14 +6,14 @@ import { useQuery } from 'react-query'
 import { getStakePoolsByAuthority } from '@cardinal/staking/dist/cjs/programs/stakePool/accounts'
 
 export const useStakePoolsByAuthority = () => {
-  const { connection } = useEnvironmentCtx()
+  const { secondaryConnection } = useEnvironmentCtx()
   const walletId = useWalletId()
 
   return useQuery<AccountData<StakePoolData>[] | undefined>(
     ['useStakePoolsByAuthority', walletId?.toString()],
     async () => {
       if (!walletId) return
-      return getStakePoolsByAuthority(connection, walletId)
+      return getStakePoolsByAuthority(secondaryConnection, walletId)
     },
     {
       enabled: !!walletId,

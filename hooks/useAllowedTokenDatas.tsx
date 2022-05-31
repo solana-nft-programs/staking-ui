@@ -95,7 +95,7 @@ export const allowedTokensForPool = (
 export const useAllowedTokenDatas = (showFungibleTokens: boolean) => {
   const stakePoolId = useStakePoolId()
   const walletId = useWalletId()
-  const { connection } = useEnvironmentCtx()
+  const { secondaryConnection } = useEnvironmentCtx()
   const { data: tokenList } = useTokenList()
   const { data: stakePool } = useStakePoolData()
   const { data: stakeAuthorizations } = useStakeAuthorizationsForPool()
@@ -104,10 +104,10 @@ export const useAllowedTokenDatas = (showFungibleTokens: boolean) => {
     async () => {
       if (!stakePoolId || !stakePool || !walletId) return
 
-      const allTokenAccounts = await connection.getParsedTokenAccountsByOwner(
-        walletId!,
-        { programId: spl.TOKEN_PROGRAM_ID }
-      )
+      const allTokenAccounts =
+        await secondaryConnection.getParsedTokenAccountsByOwner(walletId!, {
+          programId: spl.TOKEN_PROGRAM_ID,
+        })
 
       const tokenAccounts = allTokenAccounts.value
         .filter(
@@ -127,7 +127,7 @@ export const useAllowedTokenDatas = (showFungibleTokens: boolean) => {
         )
       )
       const metaplexAccountInfos = await getBatchedMultipleAccounts(
-        connection,
+        secondaryConnection,
         metaplexIds
       )
       const metaplexData = metaplexAccountInfos.reduce(
@@ -171,7 +171,7 @@ export const useAllowedTokenDatas = (showFungibleTokens: boolean) => {
           async (allowedToken) =>
             (
               await findStakeEntryIdFromMint(
-                connection,
+                secondaryConnection,
                 walletId!,
                 stakePoolId,
                 new PublicKey(
@@ -183,7 +183,7 @@ export const useAllowedTokenDatas = (showFungibleTokens: boolean) => {
       )
       const stakeEntries =
         stakeEntryIds.length > 0
-          ? await getStakeEntries(connection, stakeEntryIds)
+          ? await getStakeEntries(secondaryConnection, stakeEntryIds)
           : []
 
       const metadata = await Promise.all(

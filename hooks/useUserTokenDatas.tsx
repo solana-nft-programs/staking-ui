@@ -17,16 +17,16 @@ export type UserTokenData = {
 }
 
 export const useUserTokenDatas = () => {
-  const { connection } = useEnvironmentCtx()
+  const { secondaryConnection } = useEnvironmentCtx()
   const walletId = useWalletId()
   const { data: tokenList } = useTokenList()
   return useQuery<UserTokenData[]>(
     ['useUserTokenDatas', walletId?.toString(), tokenList?.length],
     async () => {
-      const allTokenAccounts = await connection.getParsedTokenAccountsByOwner(
-        walletId!,
-        { programId: spl.TOKEN_PROGRAM_ID }
-      )
+      const allTokenAccounts =
+        await secondaryConnection.getParsedTokenAccountsByOwner(walletId!, {
+          programId: spl.TOKEN_PROGRAM_ID,
+        })
 
       const tokenAccounts = allTokenAccounts.value
         .filter(
@@ -46,7 +46,7 @@ export const useUserTokenDatas = () => {
         )
       )
       const metaplexAccountInfos = await getBatchedMultipleAccounts(
-        connection,
+        secondaryConnection,
         metaplexIds
       )
       const metaplexData = metaplexAccountInfos.reduce(

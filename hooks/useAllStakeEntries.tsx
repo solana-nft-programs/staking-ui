@@ -6,12 +6,12 @@ import { useQuery } from 'react-query'
 import { useStakePoolId } from './useStakePoolId'
 
 export const useAllStakeEntries = () => {
-  const { connection } = useEnvironmentCtx()
+  const { secondaryConnection } = useEnvironmentCtx()
   const stakePoolId = useStakePoolId()
   return useQuery<AccountData<StakeEntryData>[] | undefined>(
     ['useAllStakeEntries', stakePoolId?.toString()],
     async () => {
-      return getAllStakeEntries(connection)
+      return getAllStakeEntries(secondaryConnection)
     }
   )
 }

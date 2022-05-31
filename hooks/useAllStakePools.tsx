@@ -12,7 +12,7 @@ export type StakePool = {
 }
 
 export const useAllStakePools = () => {
-  const { connection } = useEnvironmentCtx()
+  const { secondaryConnection } = useEnvironmentCtx()
   const stakePoolId = useStakePoolId()
   return useQuery<
     | {
@@ -21,7 +21,7 @@ export const useAllStakePools = () => {
       }
     | undefined
   >(['useAllStakePools', stakePoolId?.toString()], async () => {
-    const allStakePoolDatas = await getAllStakePools(connection)
+    const allStakePoolDatas = await getAllStakePools(secondaryConnection)
     const [stakePoolsWithMetadata, stakePoolsWithoutMetadata] =
       allStakePoolDatas.reduce(
         (acc, stakePoolData) => {

@@ -8,13 +8,16 @@ import { useQuery } from 'react-query'
 
 export const useRewardDistributorData = () => {
   const stakePoolId = useStakePoolId()
-  const { connection } = useEnvironmentCtx()
+  const { secondaryConnection } = useEnvironmentCtx()
   return useQuery<AccountData<RewardDistributorData> | undefined>(
     ['useRewardDistributorData', stakePoolId?.toString()],
     async () => {
       if (!stakePoolId) return
       const [rewardDistributorId] = await findRewardDistributorId(stakePoolId)
-      return await getRewardDistributor(connection, rewardDistributorId)
+      return await getRewardDistributor(
+        secondaryConnection,
+        rewardDistributorId
+      )
     },
     { enabled: !!stakePoolId }
   )
