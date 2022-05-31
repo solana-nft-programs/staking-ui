@@ -75,7 +75,7 @@ function Home() {
   const { data: filteredTokens } = useAllowedTokenDatas(showFungibleTokens)
   const { data: stakePoolMetadata } = useStakePoolMetadata()
   const rewardDistributorTokenAccountData = useRewardDistributorTokenAccount()
-  const { UTCNow, clockDrift } = useUTCNow()
+  const { UTCNow } = useUTCNow()
 
   async function handleClaimRewards() {
     if (stakedSelected.length > 4) {
@@ -392,28 +392,6 @@ function Home() {
               Connect wallet to continue
             </div>
           )
-        )}
-        {wallet.connected && clockDrift && (
-          <div
-            className="mx-5 mb-5 rounded-md p-1 text-center"
-            style={{ color: stakePoolMetadata?.colors?.fontColor }}
-          >
-            <div className="text-md font-semibold text-yellow-500">
-              Warning{' '}
-              <a
-                target="_blank"
-                href="https://status.solana.com/"
-                className="text-blue-400"
-              >
-                Solana
-              </a>{' '}
-              clock is {Math.floor(clockDrift / 60)} minutes{' '}
-              {clockDrift > 0 ? 'behind' : 'ahead'}
-            </div>
-            <div className="text-xs opacity-80">
-              Staking rewards shown are aligned to solana clock
-            </div>
-          </div>
         )}
         {(maxStaked || rewardDistributorData.data) && (
           <div
