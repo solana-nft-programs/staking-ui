@@ -219,16 +219,13 @@ function Home() {
           token.tokenAccount?.account.data.parsed.info.tokenAmount.amount > 1 &&
           !token.amountToStake
         ) {
-          notify({ message: `Invalid amount chosen for token`, type: 'error' })
-          return
+          throw new Error('Invalid amount chosen for token')
         }
 
         if (token.stakeEntry && token.stakeEntry.parsed.amount.toNumber() > 0) {
-          notify({
-            message: `'Fungible tokens already staked in the pool. Staked tokens need to be unstaked and then restaked together with the new tokens.'`,
-            type: 'error',
-          })
-          return
+          throw new Error(
+            'Fungible tokens already staked in the pool. Staked tokens need to be unstaked and then restaked together with the new tokens.'
+          )
         }
 
         if (receiptType === ReceiptType.Receipt) {
@@ -241,20 +238,18 @@ function Home() {
               ),
             })
           if (initTx.instructions.length > 0) {
-            if (initTx.instructions.length > 0) {
-              initTxs.push({
-                tx: initTx,
-                signers: stakeMintKeypair ? [stakeMintKeypair] : [],
-              })
-            }
+            initTxs.push({
+              tx: initTx,
+              signers: stakeMintKeypair ? [stakeMintKeypair] : [],
+            })
           }
         }
       } catch (e) {
         notify({
-          message: handleError(
-            e,
-            `Transaction failed: ${e ? (e as Error).toString() : ''}`
-          ),
+          message: `Failed to unstake token ${unstakedSelected[
+            step
+          ]?.stakeEntry?.pubkey.toString()}`,
+          description: `${e}`,
           type: 'error',
         })
       }
@@ -274,9 +269,7 @@ function Home() {
             },
           }
         )
-      } catch (e) {
-        console.log('Failed to init', e)
-      }
+      } catch (e) {}
     }
 
     const txs: (Transaction | null)[] = await Promise.all(
@@ -291,22 +284,16 @@ function Home() {
               1 &&
             !token.amountToStake
           ) {
-            notify({
-              message: `Invalid amount chosen for token`,
-              type: 'error',
-            })
-            return null
+            throw new Error('Invalid amount chosen for token')
           }
 
           if (
             token.stakeEntry &&
             token.stakeEntry.parsed.amount.toNumber() > 0
           ) {
-            notify({
-              message: `'Fungible tokens already staked in the pool. Staked tokens need to be unstaked and then restaked together with the new tokens.'`,
-              type: 'error',
-            })
-            return null
+            throw new Error(
+              'Fungible tokens already staked in the pool. Staked tokens need to be unstaked and then restaked together with the new tokens.'
+            )
           }
 
           const amount = token?.amountToStake
@@ -334,8 +321,8 @@ function Home() {
           })
         } catch (e) {
           notify({
-            message: `${e}`,
-            description: `Failed to unstake token ${token?.stakeEntry?.pubkey.toString()}`,
+            message: `Failed to unstake token ${token?.stakeEntry?.pubkey.toString()}`,
+            description: `${e}`,
             type: 'error',
           })
           return null
@@ -356,9 +343,7 @@ function Home() {
           },
         }
       )
-    } catch (e) {
-      console.log('Failed to stake', e)
-    }
+    } catch (e) {}
 
     userTokenAccounts
       .refreshTokenAccounts(true)
