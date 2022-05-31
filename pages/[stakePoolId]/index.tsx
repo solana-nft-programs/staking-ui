@@ -3,12 +3,11 @@ import {
   stake,
   unstake,
   claimRewards,
-  executeTransaction,
   handleError,
 } from '@cardinal/staking'
 import { ReceiptType } from '@cardinal/staking/dist/cjs/programs/stakePool'
 import { useWallet } from '@solana/wallet-adapter-react'
-import { PublicKey, SendTransactionError } from '@solana/web3.js'
+import { PublicKey, Signer, Transaction } from '@solana/web3.js'
 import { TokenData } from 'api/types'
 import { Header } from 'common/Header'
 import Head from 'next/head'
@@ -47,6 +46,7 @@ import { FaInfoCircle } from 'react-icons/fa'
 import { MouseoverTooltip } from 'common/Tooltip'
 import { useUTCNow } from 'providers/UTCNowProvider'
 import { useWalletModal } from '@solana/wallet-adapter-react-ui'
+import { executeAllTransactions } from 'api/utils'
 
 function Home() {
   const { connection, environment } = useEnvironmentCtx()
@@ -91,31 +91,40 @@ function Home() {
       return
     }
 
-    for (let step = 0; step < stakedSelected.length; step++) {
-      try {
-        let token = stakedSelected[step]
-        if (!token || !token.stakeEntry) {
-          throw new Error('No stake entry for token')
+    const txs: (Transaction | null)[] = await Promise.all(
+      stakedSelected.map(async (token) => {
+        try {
+          if (!token || !token.stakeEntry) {
+            throw new Error('No stake entry for token')
+          }
+          return claimRewards(connection, wallet as Wallet, {
+            stakePoolId: stakePool.pubkey,
+            stakeEntryId: token.stakeEntry.pubkey,
+          })
+        } catch (e) {
+          notify({
+            message: `${e}`,
+            description: `Failed to claim rewards for token ${token?.stakeEntry?.pubkey.toString()}`,
+            type: 'error',
+          })
+          return null
         }
-        console.log('Claiming rewards...')
+      })
+    )
 
-        const transaction = await claimRewards(connection, wallet as Wallet, {
-          stakePoolId: stakePool.pubkey,
-          stakeEntryId: token.stakeEntry.pubkey,
-        })
-        await executeTransaction(connection, wallet as Wallet, transaction, {})
-        notify({ message: `Successfully claimed rewards`, type: 'success' })
-        console.log('Successfully claimed rewards')
-      } catch (e) {
-        console.log(e)
-        notify({
-          message: handleError(e, `Transaction failed: ${e}`),
-          type: 'error',
-        })
-      } finally {
-        break
-      }
-    }
+    try {
+      await executeAllTransactions(
+        connection,
+        wallet as Wallet,
+        txs.filter((tx): tx is Transaction => tx !== null),
+        {
+          notificationConfig: {
+            message: 'Successfully claimed rewards',
+            description: 'These rewards are now available in your wallet',
+          },
+        }
+      )
+    } catch (e) {}
 
     rewardDistributorData.refresh()
     rewardDistributorTokenAccountData.refresh()
@@ -133,52 +142,55 @@ function Home() {
     }
     setLoadingUnstake(true)
 
-    for (let step = 0; step < stakedSelected.length; step++) {
-      try {
-        let token = stakedSelected[step]
-        if (!token || !token.stakeEntry) {
-          throw new Error('No stake entry for token')
-        }
-        // unstake
-        const transaction = await unstake(connection, wallet as Wallet, {
-          stakePoolId: stakePool?.pubkey,
-          originalMintId: token.stakeEntry.parsed.originalMint,
-        })
-        await executeTransaction(connection, wallet as Wallet, transaction, {})
-        if (
-          stakePool.parsed.cooldownSeconds &&
-          !token.stakeEntry?.parsed.cooldownStartSeconds
-        ) {
-          notify({
-            message: `Cooldown period initiated ${step + 1}/${
-              stakedSelected.length
-            }`,
-            type: 'success',
+    const txs: (Transaction | null)[] = await Promise.all(
+      stakedSelected.map(async (token) => {
+        try {
+          if (!token || !token.stakeEntry) {
+            throw new Error('No stake entry for token')
+          }
+          if (
+            stakePool.parsed.cooldownSeconds &&
+            !token.stakeEntry?.parsed.cooldownStartSeconds
+          ) {
+            notify({
+              message: `Cooldown period will be initiated for ${token.metadata.name}`,
+              type: 'info',
+            })
+          }
+          return unstake(connection, wallet as Wallet, {
+            stakePoolId: stakePool?.pubkey,
+            originalMintId: token.stakeEntry.parsed.originalMint,
           })
-        } else {
+        } catch (e) {
           notify({
-            message: `Successfully unstaked ${step + 1}/${
-              stakedSelected.length
-            }`,
-            type: 'success',
+            message: `${e}`,
+            description: `Failed to unstake token ${token?.stakeEntry?.pubkey.toString()}`,
+            type: 'error',
           })
+          return null
         }
-        console.log('Successfully unstaked')
-        userTokenAccounts
-          .refreshTokenAccounts(true)
-          .then(() => userTokenAccounts.refreshTokenAccounts())
-        stakedTokenDatas.refresh(true).then(() => stakedTokenDatas.refresh())
-        stakePoolEntries.refresh().then(() => stakePoolEntries.refresh())
-      } catch (e) {
-        console.log(e)
-        notify({
-          message: handleError(e),
-          type: 'error',
-        })
-        break
-      }
-    }
+      })
+    )
 
+    try {
+      await executeAllTransactions(
+        connection,
+        wallet as Wallet,
+        txs.filter((tx): tx is Transaction => tx !== null),
+        {
+          notificationConfig: {
+            message: 'Successfully unstaked',
+            description: 'These tokens are now available in your wallet',
+          },
+        }
+      )
+    } catch (e) {}
+
+    userTokenAccounts
+      .refreshTokenAccounts(true)
+      .then(() => userTokenAccounts.refreshTokenAccounts())
+    stakedTokenDatas.refresh(true).then(() => stakedTokenDatas.refresh())
+    stakePoolEntries.refresh().then(() => stakePoolEntries.refresh())
     setStakedSelected([])
     setUnstakedSelected([])
     setLoadingUnstake(false)
@@ -195,6 +207,7 @@ function Home() {
     }
     setLoadingStake(true)
 
+    const initTxs: { tx: Transaction; signers: Signer[] }[] = []
     for (let step = 0; step < unstakedSelected.length; step++) {
       try {
         let token = unstakedSelected[step]
@@ -206,16 +219,13 @@ function Home() {
           token.tokenAccount?.account.data.parsed.info.tokenAmount.amount > 1 &&
           !token.amountToStake
         ) {
-          notify({ message: `Invalid amount chosen for token`, type: 'error' })
-          return
+          throw new Error('Invalid amount chosen for token')
         }
 
         if (token.stakeEntry && token.stakeEntry.parsed.amount.toNumber() > 0) {
-          notify({
-            message: `'Fungible tokens already staked in the pool. Staked tokens need to be unstaked and then restaked together with the new tokens.'`,
-            type: 'error',
-          })
-          return
+          throw new Error(
+            'Fungible tokens already staked in the pool. Staked tokens need to be unstaked and then restaked together with the new tokens.'
+          )
         }
 
         if (receiptType === ReceiptType.Receipt) {
@@ -228,65 +238,119 @@ function Home() {
               ),
             })
           if (initTx.instructions.length > 0) {
-            await executeTransaction(connection, wallet as Wallet, initTx, {
+            initTxs.push({
+              tx: initTx,
               signers: stakeMintKeypair ? [stakeMintKeypair] : [],
             })
           }
-          console.log('Successfully created stake entry and stake mint')
         }
-
-        console.log(`Staking ${token.amountToStake} tokens...`)
-
-        const amount = token?.amountToStake
-          ? new BN(
-              token?.amountToStake && token.tokenListData
-                ? parseMintNaturalAmountFromDecimal(
-                    token?.amountToStake,
-                    token.tokenListData.decimals
-                  ).toString()
-                : 1
-            )
-          : undefined
-        // stake
-        const transaction = await stake(connection, wallet as Wallet, {
-          stakePoolId: stakePool?.pubkey,
-          receiptType:
-            !amount || (amount && amount.eq(new BN(1)))
-              ? receiptType
-              : undefined,
-          originalMintId: new PublicKey(
-            token.tokenAccount.account.data.parsed.info.mint
-          ),
-          userOriginalMintTokenAccountId: token.tokenAccount?.pubkey,
-          amount: amount,
-        })
-        await executeTransaction(connection, wallet as Wallet, transaction, {
-          confirmOptions: {
-            skipPreflight: true,
-          },
-        })
-        notify({
-          message: `Successfully staked ${step + 1}/${unstakedSelected.length}`,
-          type: 'success',
-        })
-        console.log('Successfully staked')
-        userTokenAccounts
-          .refreshTokenAccounts(true)
-          .then(() => userTokenAccounts.refreshTokenAccounts())
-        stakedTokenDatas.refresh(true).then(() => stakedTokenDatas.refresh())
-        stakePoolEntries.refresh().then(() => stakePoolEntries.refresh())
       } catch (e) {
-        const errorMessage = handleError(
-          e,
-          `Transaction failed: ${e ? (e as Error).toString() : ''}`
-        )
         notify({
-          message: errorMessage,
+          message: `Failed to unstake token ${unstakedSelected[
+            step
+          ]?.stakeEntry?.pubkey.toString()}`,
+          description: `${e}`,
           type: 'error',
         })
-        break
       }
     }
+
+    if (initTxs.length > 0) {
+      try {
+        await executeAllTransactions(
+          connection,
+          wallet as Wallet,
+          initTxs.map(({ tx }) => tx),
+          {
+            signers: initTxs.map(({ signers }) => signers),
+            notificationConfig: {
+              message: `Successfully staked`,
+              description: 'Stake progress will now dynamically update',
+            },
+          }
+        )
+      } catch (e) {}
+    }
+
+    const txs: (Transaction | null)[] = await Promise.all(
+      unstakedSelected.map(async (token) => {
+        try {
+          if (!token || !token.tokenAccount) {
+            throw new Error('Token account not set')
+          }
+
+          if (
+            token.tokenAccount?.account.data.parsed.info.tokenAmount.amount >
+              1 &&
+            !token.amountToStake
+          ) {
+            throw new Error('Invalid amount chosen for token')
+          }
+
+          if (
+            token.stakeEntry &&
+            token.stakeEntry.parsed.amount.toNumber() > 0
+          ) {
+            throw new Error(
+              'Fungible tokens already staked in the pool. Staked tokens need to be unstaked and then restaked together with the new tokens.'
+            )
+          }
+
+          const amount = token?.amountToStake
+            ? new BN(
+                token?.amountToStake && token.tokenListData
+                  ? parseMintNaturalAmountFromDecimal(
+                      token?.amountToStake,
+                      token.tokenListData.decimals
+                    ).toString()
+                  : 1
+              )
+            : undefined
+          // stake
+          return stake(connection, wallet as Wallet, {
+            stakePoolId: stakePool?.pubkey,
+            receiptType:
+              !amount || (amount && amount.eq(new BN(1)))
+                ? receiptType
+                : undefined,
+            originalMintId: new PublicKey(
+              token.tokenAccount.account.data.parsed.info.mint
+            ),
+            userOriginalMintTokenAccountId: token.tokenAccount?.pubkey,
+            amount: amount,
+          })
+        } catch (e) {
+          notify({
+            message: `Failed to unstake token ${token?.stakeEntry?.pubkey.toString()}`,
+            description: `${e}`,
+            type: 'error',
+          })
+          return null
+        }
+      })
+    )
+
+    try {
+      await executeAllTransactions(
+        connection,
+        wallet as Wallet,
+        txs.filter((tx): tx is Transaction => tx !== null),
+        {
+          notificationConfig: {
+            message: `Successfully staked`,
+            description: 'Stake progress will now dynamically update',
+            individualSuccesses: true,
+          },
+        }
+      )
+    } catch (e) {}
+
+    userTokenAccounts
+      .refreshTokenAccounts(true)
+      .then(() => userTokenAccounts.refreshTokenAccounts())
+    stakedTokenDatas.refresh(true).then(() => stakedTokenDatas.refresh())
+    stakePoolEntries.refresh().then(() => stakePoolEntries.refresh())
+
     setStakedSelected([])
     setUnstakedSelected([])
     setLoadingStake(false)
