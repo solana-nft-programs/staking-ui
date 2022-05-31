@@ -11,7 +11,6 @@ import {
 } from 'providers/EnvironmentProvider'
 import { WalletIdentityProvider } from '@cardinal/namespaces-components'
 import { TokenAccountsProvider } from 'providers/TokenDataProvider'
-import { StakedTokenDataProvider } from 'providers/StakedTokenDataProvider'
 import { TokenListProvider } from 'providers/TokenListProvider'
 import { UTCNowProvider } from 'providers/UTCNowProvider'
 
@@ -29,9 +28,7 @@ const App = ({
           <WalletModalProvider>
             <TokenListProvider>
               <TokenAccountsProvider>
-                <StakedTokenDataProvider>
-                  <Component {...pageProps} />
-                </StakedTokenDataProvider>
+                <Component {...pageProps} />
               </TokenAccountsProvider>
             </TokenListProvider>
           </WalletModalProvider>
