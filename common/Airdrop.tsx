@@ -15,12 +15,12 @@ import { Keypair, LAMPORTS_PER_SOL, Transaction } from '@solana/web3.js'
 import { notify } from 'common/Notification'
 import { asWallet } from './Wallets'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
-import { useUserTokenData } from 'providers/TokenDataProvider'
 import { AsyncButton } from './Button'
 
 import { StakePoolMetadata } from 'api/mapping'
 import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
 import { executeTransaction } from '@cardinal/staking'
+import { useAllowedTokenDatas } from 'hooks/useAllowedTokenDatas'
 
 export type AirdropMetadata = { name: string; symbol: string; uri: string }
 
@@ -109,7 +109,7 @@ export async function airdropNFT(
 export const Airdrop = () => {
   const { connection } = useEnvironmentCtx()
   const wallet = useWallet()
-  const { refreshTokenAccounts } = useUserTokenData()
+  const allowedTokenDatas = useAllowedTokenDatas(true)
   const { data: stakePoolMetadata } = useStakePoolMetadata()
 
   return (
@@ -127,7 +127,7 @@ export const Airdrop = () => {
             stakePoolMetadata
           )
           notify({ message: 'Aidrop successfull', type: 'success' })
-          await refreshTokenAccounts()
+          await allowedTokenDatas.remove()
         } catch (e) {
           notify({ message: `Airdrop failed: ${e}`, type: 'error' })
         }
@@ -141,7 +141,7 @@ export const Airdrop = () => {
 export const AirdropSol = () => {
   const { connection } = useEnvironmentCtx()
   const wallet = useWallet()
-  const { refreshTokenAccounts } = useUserTokenData()
+  const allowedTokenDatas = useAllowedTokenDatas(true)
 
   return (
     <AsyncButton
@@ -153,7 +153,7 @@ export const AirdropSol = () => {
         try {
           await connection.requestAirdrop(wallet.publicKey!, LAMPORTS_PER_SOL)
           notify({ message: 'Airdropped 1 sol successfully' })
-          await refreshTokenAccounts()
+          await allowedTokenDatas.remove()
         } catch (e) {
           notify({ message: `Airdrop failed: ${e}`, type: 'error' })
         }

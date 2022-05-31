@@ -1,15 +1,15 @@
 import { ConfirmedSignatureInfo, PublicKey } from '@solana/web3.js'
 import { Connection } from '@solana/web3.js'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
-
-import { useDataHook } from './useDataHook'
+import { useQuery } from 'react-query'
 
 export const useRecentSignatures = (address: PublicKey | undefined) => {
   const { environment } = useEnvironmentCtx()
   const connection = new Connection(environment.primary, {
     commitment: 'confirmed',
   })
-  return useDataHook<ConfirmedSignatureInfo[] | undefined>(
+  return useQuery<ConfirmedSignatureInfo[] | undefined>(
+    ['useRecentSignatures', address?.toString()],
     async () => {
       if (!address) return
       return connection.getSignaturesForAddress(
@@ -18,7 +18,6 @@ export const useRecentSignatures = (address: PublicKey | undefined) => {
         'confirmed'
       )
     },
-    [address?.toString()],
-    { name: 'useRecentSignatures', refreshInterval: 3000 }
+    { refetchInterval: 3000 }
   )
 }

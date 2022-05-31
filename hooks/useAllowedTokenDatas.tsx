@@ -1,17 +1,39 @@
-import { useDataHook } from './useDataHook'
 import { useStakePoolId } from './useStakePoolId'
-import { useUserTokenData } from 'providers/TokenDataProvider'
 import { useStakePoolData } from './useStakePoolData'
-import { TokenData } from 'api/types'
 import { useStakeAuthorizationsForPool } from './useStakeAuthorizationsForPool'
-import { AccountData } from '@cardinal/common'
+import { AccountData, getBatchedMultipleAccounts } from '@cardinal/common'
 import {
   StakeAuthorizationData,
+  StakeEntryData,
   StakePoolData,
 } from '@cardinal/staking/dist/cjs/programs/stakePool'
+import * as spl from '@solana/spl-token'
+import * as metaplex from '@metaplex-foundation/mpl-token-metadata'
+import { findStakeEntryIdFromMint } from '@cardinal/staking/dist/cjs/programs/stakePool/utils'
+import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
+import { AccountInfo, ParsedAccountData, PublicKey } from '@solana/web3.js'
+import { getStakeEntries } from '@cardinal/staking/dist/cjs/programs/stakePool/accounts'
+import { useQuery } from 'react-query'
+import { useWalletId } from './useWalletId'
+import { TokenListData, useTokenList } from './useTokenList'
+
+export type AllowedTokenData = BaseTokenData & {
+  metadata?: any
+  stakeEntry?: AccountData<StakeEntryData>
+  amountToStake?: string
+}
+
+export type BaseTokenData = {
+  tokenAccount?: {
+    pubkey: PublicKey
+    account: AccountInfo<ParsedAccountData>
+  }
+  metaplexData?: { pubkey: PublicKey; data: metaplex.MetadataData } | null
+  tokenListData?: TokenListData
+}
 
 export const allowedTokensForPool = (
-  tokenDatas: TokenData[],
+  tokenDatas: BaseTokenData[],
   stakePool: AccountData<StakePoolData>,
   stakeAuthorizations?: AccountData<StakeAuthorizationData>[],
   allowFrozen?: boolean
@@ -72,21 +94,126 @@ export const allowedTokensForPool = (
 
 export const useAllowedTokenDatas = (showFungibleTokens: boolean) => {
   const stakePoolId = useStakePoolId()
+  const walletId = useWalletId()
+  const { connection } = useEnvironmentCtx()
+  const { data: tokenList } = useTokenList()
   const { data: stakePool } = useStakePoolData()
   const { data: stakeAuthorizations } = useStakeAuthorizationsForPool()
-  const { tokenDatas } = useUserTokenData()
-  return useDataHook<TokenData[] | undefined>(
+  return useQuery<AllowedTokenData[] | undefined>(
+    ['allowedTokenDatas', stakePoolId, showFungibleTokens, tokenList?.length],
     async () => {
-      if (!stakePoolId || !stakePool) return
-      return allowedTokensForPool(
-        tokenDatas,
+      if (!stakePoolId || !stakePool || !walletId) return
+
+      const allTokenAccounts = await connection.getParsedTokenAccountsByOwner(
+        walletId!,
+        { programId: spl.TOKEN_PROGRAM_ID }
+      )
+
+      const tokenAccounts = allTokenAccounts.value
+        .filter(
+          (tokenAccount) =>
+            tokenAccount.account.data.parsed.info.tokenAmount.uiAmount > 0
+        )
+        .sort((a, b) => a.pubkey.toBase58().localeCompare(b.pubkey.toBase58()))
+
+      const metaplexIds = await Promise.all(
+        tokenAccounts.map(
+          async (tokenAccount) =>
+            (
+              await metaplex.MetadataProgram.findMetadataAccount(
+                new PublicKey(tokenAccount.account.data.parsed.info.mint)
+              )
+            )[0]
+        )
+      )
+      const metaplexAccountInfos = await getBatchedMultipleAccounts(
+        connection,
+        metaplexIds
+      )
+      const metaplexData = metaplexAccountInfos.reduce(
+        (acc, accountInfo, i) => {
+          try {
+            acc[tokenAccounts[i]!.pubkey.toString()] = {
+              pubkey: metaplexIds[i]!,
+              ...accountInfo,
+              data: metaplex.MetadataData.deserialize(
+                accountInfo?.data as Buffer
+              ) as metaplex.MetadataData,
+            }
+          } catch (e) {}
+          return acc
+        },
+        {} as {
+          [tokenAccountId: string]: {
+            pubkey: PublicKey
+            data: metaplex.MetadataData
+          }
+        }
+      )
+
+      const baseTokenDatas = tokenAccounts.map((tokenAccount, i) => ({
+        tokenAccount,
+        metaplexData: metaplexData[tokenAccount.pubkey.toString()],
+        tokenListData: tokenList?.find(
+          (t) =>
+            t.address === tokenAccount?.account.data.parsed.info.mint.toString()
+        ),
+      }))
+
+      const allowedTokens = allowedTokensForPool(
+        baseTokenDatas,
         stakePool,
         stakeAuthorizations
-      ).filter(
-        (tokenData) => showFungibleTokens === Boolean(tokenData.tokenListData)
+      ).filter((tokenData) => showFungibleTokens === !!tokenData.tokenListData)
+
+      const stakeEntryIds = await Promise.all(
+        allowedTokens.map(
+          async (allowedToken) =>
+            (
+              await findStakeEntryIdFromMint(
+                connection,
+                walletId!,
+                stakePoolId,
+                new PublicKey(
+                  allowedToken.tokenAccount?.account.data.parsed.info.mint
+                )
+              )
+            )[0]
+        )
       )
+      const stakeEntries = await getStakeEntries(connection, stakeEntryIds)
+
+      const metadata = await Promise.all(
+        allowedTokens.map(async (allowedToken) => {
+          try {
+            if (!allowedToken.metaplexData?.data.data.uri) return null
+            const json = await fetch(
+              allowedToken.metaplexData.data.data.uri
+            ).then((r) => r.json())
+            return {
+              pubkey: allowedToken.metaplexData.pubkey,
+              data: json,
+            }
+          } catch (e) {
+            return null
+          }
+        })
+      )
+
+      return allowedTokens.map((allowedToken, i) => ({
+        ...allowedToken,
+        metadata: metadata.find((data) =>
+          data
+            ? data.pubkey.toBase58() ===
+              allowedToken.metaplexData?.pubkey.toBase58()
+            : undefined
+        ),
+        stakeEntryData: stakeEntries[i],
+      }))
     },
-    [stakePool, showFungibleTokens, tokenDatas],
-    { name: 'allowedTokenDatas' }
+    {
+      refetchInterval: 10000,
+      enabled: !!stakePoolId && !!walletId,
+    }
   )
 }

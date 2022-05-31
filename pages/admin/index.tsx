@@ -189,7 +189,7 @@ function Admin() {
           <div>
             <div className="mb-5 text-lg font-bold">Your pools</div>
             <div className="grid grid-cols-3 gap-5">
-              {!stakePools.loaded && !stakePoolsMetadata.loaded ? (
+              {!stakePools.isFetched && !stakePoolsMetadata.isFetched ? (
                 <>
                   <Placeholder />
                   <Placeholder />

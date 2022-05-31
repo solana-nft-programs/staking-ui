@@ -1,20 +1,20 @@
 import { AccountData } from '@cardinal/common'
 import { StakeEntryData } from '@cardinal/staking/dist/cjs/programs/stakePool'
 import { getActiveStakeEntriesForPool } from '@cardinal/staking/dist/cjs/programs/stakePool/accounts'
-import { useDataHook } from './useDataHook'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
-import { useStakePoolData } from './useStakePoolData'
+import { useQuery } from 'react-query'
+import { useStakePoolId } from './useStakePoolId'
 
 export const useStakePoolEntries = () => {
   const { connection } = useEnvironmentCtx()
-  const stakePool = useStakePoolData()
-  return useDataHook<AccountData<StakeEntryData>[] | undefined>(
+  const stakePoolId = useStakePoolId()
+  return useQuery<AccountData<StakeEntryData>[] | undefined>(
+    ['useStakePoolEntries', stakePoolId?.toString()],
     async () => {
-      if (stakePool?.data?.pubkey) {
-        return getActiveStakeEntriesForPool(connection, stakePool.data.pubkey)
+      if (stakePoolId) {
+        return getActiveStakeEntriesForPool(connection, stakePoolId)
       }
     },
-    [stakePool?.data?.pubkey.toString()],
-    { name: 'useStakePoolEntries' }
+    { enabled: !!stakePoolId }
   )
 }

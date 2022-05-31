@@ -3,18 +3,15 @@ import {
   stake,
   unstake,
   claimRewards,
-  handleError,
 } from '@cardinal/staking'
 import { ReceiptType } from '@cardinal/staking/dist/cjs/programs/stakePool'
 import { useWallet } from '@solana/wallet-adapter-react'
 import { PublicKey, Signer, Transaction } from '@solana/web3.js'
-import { TokenData } from 'api/types'
 import { Header } from 'common/Header'
 import Head from 'next/head'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 import { useState } from 'react'
 import { Wallet } from '@metaplex/js'
-import { useUserTokenData } from 'providers/TokenDataProvider'
 import { LoadingSpinner } from 'common/LoadingSpinner'
 import { notify } from 'common/Notification'
 import { pubKeyUrl, secondstoDuration } from 'common/utils'
@@ -26,7 +23,10 @@ import {
   parseMintNaturalAmountFromDecimal,
 } from 'common/units'
 import { BN } from '@project-serum/anchor'
-import { useStakedTokenDatas } from 'hooks/useStakedTokenDatas'
+import {
+  StakeEntryTokenData,
+  useStakedTokenDatas,
+} from 'hooks/useStakedTokenDatas'
 import { useRewardDistributorData } from 'hooks/useRewardDistributorData'
 import { useRewards } from 'hooks/useRewards'
 import { useRewardMintInfo } from 'hooks/useRewardMintInfo'
@@ -34,7 +34,10 @@ import { AllowedTokens } from 'components/AllowedTokens'
 import { useStakePoolEntries } from 'hooks/useStakePoolEntries'
 import { useStakePoolData } from 'hooks/useStakePoolData'
 import { useStakePoolMaxStaked } from 'hooks/useStakePoolMaxStaked'
-import { useAllowedTokenDatas } from 'hooks/useAllowedTokenDatas'
+import {
+  AllowedTokenData,
+  useAllowedTokenDatas,
+} from 'hooks/useAllowedTokenDatas'
 import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
 import { defaultSecondaryColor } from 'api/mapping'
 import { Footer } from 'common/Footer'
@@ -52,8 +55,7 @@ function Home() {
   const { connection, environment } = useEnvironmentCtx()
   const wallet = useWallet()
   const walletModal = useWalletModal()
-  const userTokenAccounts = useUserTokenData()
-  const { data: stakePool, loaded: stakePoolLoaded } = useStakePoolData()
+  const { data: stakePool, isFetched: stakePoolLoaded } = useStakePoolData()
   const stakedTokenDatas = useStakedTokenDatas()
   const rewardDistributorData = useRewardDistributorData()
   const rewardMintInfo = useRewardMintInfo()
@@ -62,8 +64,12 @@ function Home() {
   const rewardEntries = useRewardEntries()
   const rewards = useRewards()
 
-  const [unstakedSelected, setUnstakedSelected] = useState<TokenData[]>([])
-  const [stakedSelected, setStakedSelected] = useState<TokenData[]>([])
+  const [unstakedSelected, setUnstakedSelected] = useState<AllowedTokenData[]>(
+    []
+  )
+  const [stakedSelected, setStakedSelected] = useState<StakeEntryTokenData[]>(
+    []
+  )
   const [loadingStake, setLoadingStake] = useState(false)
   const [loadingUnstake, setLoadingUnstake] = useState(false)
   const [receiptType, setReceiptType] = useState<ReceiptType>(
@@ -72,7 +78,7 @@ function Home() {
   const [loadingClaimRewards, setLoadingClaimRewards] = useState(false)
   const [showFungibleTokens, setShowFungibleTokens] = useState(false)
   const [showAllowedTokens, setShowAllowedTokens] = useState<boolean>()
-  const { data: filteredTokens } = useAllowedTokenDatas(showFungibleTokens)
+  const allowedTokenDatas = useAllowedTokenDatas(showFungibleTokens)
   const { data: stakePoolMetadata } = useStakePoolMetadata()
   const rewardDistributorTokenAccountData = useRewardDistributorTokenAccount()
   const { UTCNow } = useUTCNow()
@@ -126,8 +132,8 @@ function Home() {
       )
     } catch (e) {}
 
-    rewardDistributorData.refresh()
-    rewardDistributorTokenAccountData.refresh()
+    rewardDistributorData.remove()
+    rewardDistributorTokenAccountData.remove()
     setLoadingClaimRewards(false)
   }
 
@@ -153,7 +159,7 @@ function Home() {
             !token.stakeEntry?.parsed.cooldownStartSeconds
           ) {
             notify({
-              message: `Cooldown period will be initiated for ${token.metadata.name}`,
+              message: `Cooldown period will be initiated for ${token.metaplexData?.data.data.name}`,
               type: 'info',
             })
           }
@@ -186,11 +192,17 @@ function Home() {
       )
     } catch (e) {}
 
-    userTokenAccounts
-      .refreshTokenAccounts(true)
-      .then(() => userTokenAccounts.refreshTokenAccounts())
-    stakedTokenDatas.refresh(true).then(() => stakedTokenDatas.refresh())
-    stakePoolEntries.refresh().then(() => stakePoolEntries.refresh())
+    await Promise.all([
+      stakedTokenDatas.remove(),
+      allowedTokenDatas.remove(),
+      stakePoolEntries.remove(),
+    ]).then(() =>
+      setTimeout(() => {
+        stakedTokenDatas.refetch()
+        allowedTokenDatas.refetch()
+        stakePoolEntries.refetch()
+      }, 2000)
+    )
     setStakedSelected([])
     setUnstakedSelected([])
     setLoadingUnstake(false)
@@ -344,24 +356,29 @@ function Home() {
       )
     } catch (e) {}
 
-    userTokenAccounts
-      .refreshTokenAccounts(true)
-      .then(() => userTokenAccounts.refreshTokenAccounts())
-    stakedTokenDatas.refresh(true).then(() => stakedTokenDatas.refresh())
-    stakePoolEntries.refresh().then(() => stakePoolEntries.refresh())
-
+    await Promise.all([
+      stakedTokenDatas.remove(),
+      allowedTokenDatas.remove(),
+      stakePoolEntries.remove(),
+    ]).then(() =>
+      setTimeout(() => {
+        stakedTokenDatas.refetch()
+        allowedTokenDatas.refetch()
+        stakePoolEntries.refetch()
+      }, 2000)
+    )
     setStakedSelected([])
     setUnstakedSelected([])
     setLoadingStake(false)
   }
 
-  const isUnstakedTokenSelected = (tk: TokenData) =>
+  const isUnstakedTokenSelected = (tk: AllowedTokenData) =>
     unstakedSelected.some(
       (utk) =>
         utk.tokenAccount?.account.data.parsed.info.mint.toString() ===
         tk.tokenAccount?.account.data.parsed.info.mint.toString()
     )
-  const isStakedTokenSelected = (tk: TokenData) =>
+  const isStakedTokenSelected = (tk: StakeEntryTokenData) =>
     stakedSelected.some(
       (stk) =>
         stk.stakeEntry?.parsed.originalMint.toString() ===
@@ -420,7 +437,7 @@ function Home() {
                 )}
               </>
             ) : (
-              <div className="relative flex h-8 w-full items-center justify-center">
+              <div className="relative flex h-8 flex-grow items-center justify-center">
                 <span className="text-gray-500">Loading pool info...</span>
                 <div className="absolute w-full animate-pulse items-center justify-center rounded-lg bg-white bg-opacity-10 p-5"></div>
               </div>
@@ -457,48 +474,50 @@ function Home() {
                   </span>
                 </div>
                 <div className="flex min-w-[200px] flex-col text-lg">
-                  {!rewardMintInfo || !rewards.data ? (
+                  {!rewardMintInfo.isFetched ? (
                     <div className="relative flex h-8 w-full items-center justify-center">
                       <span className="text-gray-500"></span>
                       <div className="absolute w-full animate-pulse items-center justify-center rounded-lg bg-white bg-opacity-10 p-5"></div>
                     </div>
                   ) : (
-                    <>
-                      <div>
-                        Earnings:{' '}
-                        {formatMintNaturalAmountAsDecimal(
-                          rewardMintInfo.data.mintInfo,
-                          rewards.data.claimableRewards,
-                          6
-                        )}{' '}
-                        {rewardMintInfo.data.tokenListData?.name ?? '???'}
-                      </div>
-                      <div className="text-xs text-gray-500">
-                        <a
-                          target={'_blank'}
-                          href={pubKeyUrl(
-                            rewardDistributorData.data.pubkey,
-                            environment.label
-                          )}
-                        >
-                          {shortPubKey(rewardDistributorData.data.pubkey)}
-                        </a>{' '}
-                        {rewardDistributorTokenAccountData.data
-                          ? formatMintNaturalAmountAsDecimal(
-                              rewardMintInfo.data.mintInfo,
-                              rewardDistributorTokenAccountData.data.amount,
-                              6
-                            )
-                          : ''}{' '}
-                        Left
-                      </div>
-                    </>
+                    rewards.data && (
+                      <>
+                        <div>
+                          Earnings:{' '}
+                          {formatMintNaturalAmountAsDecimal(
+                            rewardMintInfo.data.mintInfo,
+                            rewards.data?.claimableRewards,
+                            6
+                          )}{' '}
+                          {rewardMintInfo.data.tokenListData?.name ?? '???'}
+                        </div>
+                        <div className="text-xs text-gray-500">
+                          <a
+                            target={'_blank'}
+                            href={pubKeyUrl(
+                              rewardDistributorData.data.pubkey,
+                              environment.label
+                            )}
+                          >
+                            {shortPubKey(rewardDistributorData.data.pubkey)}
+                          </a>{' '}
+                          {rewardDistributorTokenAccountData.data
+                            ? formatMintNaturalAmountAsDecimal(
+                                rewardMintInfo.data.mintInfo,
+                                rewardDistributorTokenAccountData.data.amount,
+                                6
+                              )
+                            : ''}{' '}
+                          Left
+                        </div>
+                      </>
+                    )
                   )}
                 </div>
               </>
             ) : (
-              <div className="relative flex w-3/4 items-center justify-center">
-                {!rewardDistributorData.loaded && !rewardMintInfo.loaded && (
+              <div className="relative flex flex-grow items-center justify-center">
+                {!rewardDistributorData.isFetched && !rewardMintInfo.isFetched && (
                   <>
                     <span className="text-gray-500">Loading rewards...</span>
                     <div className="absolute w-full animate-pulse items-center justify-center rounded-lg bg-white bg-opacity-10 p-5"></div>
@@ -523,9 +542,10 @@ function Home() {
                   Select Your Tokens
                 </p>
                 <div className="inline-block">
-                  {userTokenAccounts.refreshing && userTokenAccounts.loaded && (
-                    <LoadingSpinner height="25px" />
-                  )}
+                  {allowedTokenDatas.isRefetching &&
+                    allowedTokenDatas.isFetched && (
+                      <LoadingSpinner height="25px" />
+                    )}
                 </div>
               </div>
 
@@ -551,13 +571,13 @@ function Home() {
             )}
             <div className="my-3 flex-auto overflow-auto">
               <div className="relative my-auto mb-4 h-[60vh] overflow-y-auto overflow-x-hidden rounded-md bg-white bg-opacity-5 p-5">
-                {!userTokenAccounts.loaded ? (
+                {!allowedTokenDatas.isFetched ? (
                   <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
                     <div className="h-[200px] animate-pulse rounded-lg bg-white bg-opacity-5 p-10"></div>
                     <div className="h-[200px] animate-pulse rounded-lg bg-white bg-opacity-5 p-10"></div>
                     <div className="h-[200px] animate-pulse rounded-lg bg-white bg-opacity-5 p-10"></div>
                   </div>
-                ) : (filteredTokens || []).length == 0 ? (
+                ) : (allowedTokenDatas.data || []).length == 0 ? (
                   <p className="text-gray-400">
                     No allowed tokens found in wallet.
                   </p>
@@ -567,7 +587,7 @@ function Home() {
                       'grid grid-cols-2 gap-4 lg:grid-cols-2 xl:grid-cols-3'
                     }
                   >
-                    {(filteredTokens || []).map((tk) => (
+                    {(allowedTokenDatas.data || []).map((tk) => (
                       <div key={tk.tokenAccount?.pubkey.toString()}>
                         <div className="relative w-44 md:w-auto 2xl:w-48">
                           <label
@@ -792,14 +812,15 @@ function Home() {
               <div className="mt-2 flex flex-row">
                 <p className="mr-3 text-lg">
                   View Staked Tokens{' '}
-                  {stakedTokenDatas.loaded &&
+                  {stakedTokenDatas.isFetched &&
                     stakedTokenDatas.data &&
                     `(${stakedTokenDatas.data.length})`}
                 </p>
                 <div className="inline-block">
-                  {stakedTokenDatas.refreshing && stakedTokenDatas.loaded && (
-                    <LoadingSpinner height="25px" />
-                  )}
+                  {stakedTokenDatas.isRefetching &&
+                    stakedTokenDatas.isFetched && (
+                      <LoadingSpinner height="25px" />
+                    )}
                 </div>
               </div>
               <div className="flex flex-col justify-evenly">
@@ -828,7 +849,7 @@ function Home() {
             </div>
             <div className="my-3 flex-auto overflow-auto">
               <div className="relative my-auto mb-4 h-[60vh] overflow-y-auto overflow-x-hidden rounded-md bg-white bg-opacity-5 p-5">
-                {!stakedTokenDatas.loaded ? (
+                {!stakedTokenDatas.isFetched ? (
                   <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
                     <div className="h-[200px] animate-pulse rounded-lg bg-white bg-opacity-5 p-10"></div>
                     <div className="h-[200px] animate-pulse rounded-lg bg-white bg-opacity-5 p-10"></div>

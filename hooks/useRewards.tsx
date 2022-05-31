@@ -1,4 +1,3 @@
-import { useDataHook } from './useDataHook'
 import { useRewardDistributorData } from './useRewardDistributorData'
 import { useStakedTokenDatas } from './useStakedTokenDatas'
 import { BN } from '@project-serum/anchor'
@@ -6,6 +5,7 @@ import { useRewardDistributorTokenAccount } from './useRewardDistributorTokenAcc
 import { useUTCNow } from 'providers/UTCNowProvider'
 import { useRewardEntries } from './useRewardEntries'
 import { getRewardMap } from '@cardinal/staking'
+import { useQuery } from 'react-query'
 
 export const useRewards = () => {
   const { data: rewardDistributorData } = useRewardDistributorData()
@@ -15,19 +15,30 @@ export const useRewards = () => {
   const { data: rewardEntries } = useRewardEntries()
   const { UTCNow } = useUTCNow()
 
-  return useDataHook<{
-    rewardMap: {
-      [stakeEntryId: string]: { claimableRewards: BN; nextRewardsIn: BN }
-    }
-    claimableRewards: BN
-  }>(
-    async () => {
+  return useQuery<
+    | {
+        rewardMap: {
+          [stakeEntryId: string]: { claimableRewards: BN; nextRewardsIn: BN }
+        }
+        claimableRewards: BN
+      }
+    | undefined
+  >(
+    [
+      'useRewards',
+      rewardDistributorData?.pubkey?.toString(),
+      rewardEntries,
+      stakedTokenDatas,
+      UTCNow,
+    ],
+    () => {
       if (
         !(
           stakedTokenDatas &&
           rewardEntries &&
           rewardDistributorTokenAccount &&
-          rewardDistributorData
+          rewardDistributorData &&
+          rewardEntries.length > 0
         )
       ) {
         return
@@ -45,12 +56,14 @@ export const useRewards = () => {
         UTCNow
       )
     },
-    [
-      rewardDistributorData?.pubkey?.toString(),
-      rewardEntries,
-      stakedTokenDatas,
-      UTCNow,
-    ],
-    { name: 'rewardMap' }
+    {
+      keepPreviousData: true,
+      enabled:
+        !!stakedTokenDatas &&
+        !!rewardEntries &&
+        !!rewardDistributorTokenAccount &&
+        !!rewardDistributorData &&
+        rewardEntries.length > 0,
+    }
   )
 }
