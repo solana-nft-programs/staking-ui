@@ -13,6 +13,8 @@ import { WalletIdentityProvider } from '@cardinal/namespaces-components'
 import { TokenAccountsProvider } from 'providers/TokenDataProvider'
 import { TokenListProvider } from 'providers/TokenListProvider'
 import { UTCNowProvider } from 'providers/UTCNowProvider'
+import { QueryClient, QueryClientProvider } from 'react-query'
+// import { ReactQueryDevtools } from 'react-query/devtools'
 
 require('@solana/wallet-adapter-react-ui/styles.css')
 
@@ -28,7 +30,12 @@ const App = ({
           <WalletModalProvider>
             <TokenListProvider>
               <TokenAccountsProvider>
-                <Component {...pageProps} />
+                <QueryClientProvider client={new QueryClient()}>
+                  <>
+                    <Component {...pageProps} />
+                    {/* <ReactQueryDevtools initialIsOpen={false} /> */}
+                  </>
+                </QueryClientProvider>
               </TokenAccountsProvider>
             </TokenListProvider>
           </WalletModalProvider>

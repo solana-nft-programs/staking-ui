@@ -53,7 +53,7 @@ function Home() {
   const wallet = useWallet()
   const walletModal = useWalletModal()
   const userTokenAccounts = useUserTokenData()
-  const { data: stakePool, loaded: stakePoolLoaded } = useStakePoolData()
+  const { data: stakePool, isFetched: stakePoolLoaded } = useStakePoolData()
   const stakedTokenDatas = useStakedTokenDatas()
   const rewardDistributorData = useRewardDistributorData()
   const rewardMintInfo = useRewardMintInfo()
@@ -189,7 +189,7 @@ function Home() {
     userTokenAccounts
       .refreshTokenAccounts(true)
       .then(() => userTokenAccounts.refreshTokenAccounts())
-    stakedTokenDatas.refresh(true).then(() => stakedTokenDatas.refresh())
+    stakedTokenDatas.refetch().then(() => stakedTokenDatas.refetch())
     stakePoolEntries.refresh().then(() => stakePoolEntries.refresh())
     setStakedSelected([])
     setUnstakedSelected([])
@@ -347,7 +347,7 @@ function Home() {
     userTokenAccounts
       .refreshTokenAccounts(true)
       .then(() => userTokenAccounts.refreshTokenAccounts())
-    stakedTokenDatas.refresh(true).then(() => stakedTokenDatas.refresh())
+    stakedTokenDatas.refetch().then(() => stakedTokenDatas.refetch())
     stakePoolEntries.refresh().then(() => stakePoolEntries.refresh())
 
     setStakedSelected([])
@@ -792,14 +792,15 @@ function Home() {
               <div className="mt-2 flex flex-row">
                 <p className="mr-3 text-lg">
                   View Staked Tokens{' '}
-                  {stakedTokenDatas.loaded &&
+                  {stakedTokenDatas.isFetched &&
                     stakedTokenDatas.data &&
                     `(${stakedTokenDatas.data.length})`}
                 </p>
                 <div className="inline-block">
-                  {stakedTokenDatas.refreshing && stakedTokenDatas.loaded && (
-                    <LoadingSpinner height="25px" />
-                  )}
+                  {stakedTokenDatas.isRefetching &&
+                    stakedTokenDatas.isFetched && (
+                      <LoadingSpinner height="25px" />
+                    )}
                 </div>
               </div>
               <div className="flex flex-col justify-evenly">
@@ -828,7 +829,7 @@ function Home() {
             </div>
             <div className="my-3 flex-auto overflow-auto">
               <div className="relative my-auto mb-4 h-[60vh] overflow-y-auto overflow-x-hidden rounded-md bg-white bg-opacity-5 p-5">
-                {!stakedTokenDatas.loaded ? (
+                {!stakedTokenDatas.isFetched ? (
                   <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
                     <div className="h-[200px] animate-pulse rounded-lg bg-white bg-opacity-5 p-10"></div>
                     <div className="h-[200px] animate-pulse rounded-lg bg-white bg-opacity-5 p-10"></div>

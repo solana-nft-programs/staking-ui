@@ -1,17 +1,23 @@
-import { useDataHook } from './useDataHook'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 import { useStakePoolId } from './useStakePoolId'
 import { getStakeEntryDatas } from 'api/api'
 import { useTokenList } from 'providers/TokenListProvider'
 import { StakeEntryTokenData } from 'api/types'
 import { useWalletIds } from './useWalletIds'
+import { useQuery } from 'react-query'
 
 export const useStakedTokenDatas = () => {
   const stakePoolId = useStakePoolId()
   const walletIds = useWalletIds()
   const { tokenList } = useTokenList()
   const { connection } = useEnvironmentCtx()
-  return useDataHook<StakeEntryTokenData[] | undefined>(
+  return useQuery<StakeEntryTokenData[] | undefined>(
+    [
+      'stakedTokenDatas',
+      stakePoolId?.toString(),
+      walletIds.join(','),
+      tokenList.length,
+    ],
     async () => {
       if (!stakePoolId || !walletIds || walletIds.length <= 0) return
       const stakeEntryDataGroups = await Promise.all(
@@ -44,7 +50,6 @@ export const useStakedTokenDatas = () => {
       }, [] as StakeEntryTokenData[])
       return hydratedTokenDatas
     },
-    [stakePoolId?.toString(), walletIds.join(','), tokenList],
-    { name: 'stakedTokenDatas', refreshInterval: 10000 }
+    { refetchInterval: 10000 }
   )
 }

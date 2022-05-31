@@ -390,7 +390,7 @@ function AdminStakePool() {
         type: 'success',
       })
 
-      await setTimeout(() => stakePool.refresh(true), 1000)
+      await setTimeout(() => stakePool.refetch(), 1000)
     } catch (e) {
       notify({
         message: handleError(e, `Error updating stake pool: ${e}`),
@@ -455,7 +455,7 @@ function AdminStakePool() {
       <Header />
       <div className="container mx-auto w-full bg-[#1a1b20]">
         <div className="my-2 h-full min-h-[55vh] rounded-md bg-white bg-opacity-5 p-10 text-gray-200">
-          {!stakePool.loaded || !rewardDistributor.loaded ? (
+          {!stakePool.isFetched || !rewardDistributor.loaded ? (
             <div className="h-[40vh] w-full animate-pulse rounded-md bg-white bg-opacity-10"></div>
           ) : stakePool.data ? (
             <div className="grid h-full grid-cols-2 gap-4 ">
@@ -478,7 +478,7 @@ function AdminStakePool() {
                 <p className="mt-1 mb-5 text-sm">
                   The parameters currently in place for the stake pool
                 </p>
-                {stakePool.loaded ? (
+                {stakePool.isFetched ? (
                   <>
                     <span className="flex w-full flex-wrap md:mb-0">
                       <label className="inline-block text-sm font-bold uppercase tracking-wide text-gray-200">
