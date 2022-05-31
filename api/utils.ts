@@ -32,13 +32,19 @@ export const executeAllTransactions = async (
       if (config.signers && config.signers.length > 0) {
         tx.partialSign(...config.signers)
       }
-      txid = await sendAndConfirmRawTransaction(
-        connection,
-        tx.serialize(),
-        config.confirmOptions
+    }
+    const txIds = await Promise.all(
+      transactions.map((tx) =>
+        sendAndConfirmRawTransaction(
+          connection,
+          tx.serialize(),
+          config.confirmOptions
+        )
       )
-      config.callback && config.callback(true)
-      console.log('Successful tx', txid)
+    )
+    config.callback && config.callback(true)
+    for (let txId of txIds) {
+      console.log('Successful tx', txId)
     }
   } catch (e: unknown) {
     console.log('Failed transaction: ', (e as SendTransactionError).logs, e)
