@@ -2,11 +2,13 @@ import { StakePoolMetadata, stakePoolMetadatas } from 'api/mapping'
 import { PublicKey } from '@solana/web3.js'
 import { useQuery } from 'react-query'
 
-export const useStakePoolsMetadatas = (mintIds: PublicKey[] | undefined) => {
+export const useStakePoolsMetadatas = (
+  stakePoolIds: PublicKey[] | undefined
+) => {
   return useQuery<{ [mintId: string]: StakePoolMetadata }>(
-    ['useStakePoolsMetadatas', mintIds?.toString()],
+    ['useStakePoolsMetadatas', stakePoolIds?.toString()],
     async () =>
-      (mintIds || []).reduce((acc, mintId) => {
+      (stakePoolIds || []).reduce((acc, mintId) => {
         const stakePoolMetadata = stakePoolMetadatas.find(
           (md) => md.stakePoolAddress.toString() === mintId.toString()
         )

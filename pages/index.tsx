@@ -1,15 +1,10 @@
-import { AccountData } from '@cardinal/common'
-import { StakePoolData } from '@cardinal/staking/dist/cjs/programs/stakePool'
-import { getAllStakePools } from '@cardinal/staking/dist/cjs/programs/stakePool/accounts'
-import { StakePoolMetadata, stakePoolMetadatas } from 'api/mapping'
 import { Footer } from 'common/Footer'
 import { Header } from 'common/Header'
-import { notify } from 'common/Notification'
 import { pubKeyUrl, shortPubKey } from 'common/utils'
+import { useAllStakePools } from 'hooks/useAllStakePools'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
-import { useEffect, useState } from 'react'
 import { FaQuestion } from 'react-icons/fa'
 
 export function Placeholder() {
@@ -18,61 +13,10 @@ export function Placeholder() {
   )
 }
 
-export type StakePool = {
-  stakePoolMetadata?: StakePoolMetadata
-  stakePoolData: AccountData<StakePoolData>
-}
-
 function Home() {
-  const { connection, environment } = useEnvironmentCtx()
-  const [stakePools, setStakePools] = useState<[StakePool[], StakePool[]]>([
-    [],
-    [],
-  ])
-  const [stakePoolsLoaded, setStakePoolsLoaded] = useState(false)
+  const { environment } = useEnvironmentCtx()
+  const allStakePools = useAllStakePools()
   const router = useRouter()
-
-  useEffect(() => {
-    const setData = async () => {
-      try {
-        const allStakePoolDatas = await getAllStakePools(connection)
-        const [stakePoolsWithMetadata, stakePoolsWithoutMetadata] =
-          allStakePoolDatas.reduce(
-            (acc, stakePoolData) => {
-              const stakePoolMetadata = stakePoolMetadatas.find(
-                (md) =>
-                  md.stakePoolAddress.toString() ===
-                  stakePoolData.pubkey.toString()
-              )
-              if (stakePoolMetadata) {
-                return [
-                  [...acc[0], { stakePoolMetadata, stakePoolData }],
-                  acc[1],
-                ]
-              }
-              return [acc[0], [...acc[1], { stakePoolData }]]
-            },
-            [[] as StakePool[], [] as StakePool[]]
-          )
-        setStakePools([
-          stakePoolsWithMetadata.sort((a, b) =>
-            a
-              .stakePoolMetadata!.name.toString()
-              .localeCompare(b.stakePoolMetadata!.name.toString())
-          ),
-          stakePoolsWithoutMetadata,
-        ])
-      } catch (e) {
-        notify({
-          message: `${e}`,
-          type: 'error',
-        })
-      } finally {
-        setStakePoolsLoaded(true)
-      }
-    }
-    setData().catch(console.error)
-  }, [])
 
   return (
     <div>
@@ -90,7 +34,7 @@ function Home() {
         >
           <div className="mt-10 mb-5 text-lg font-bold">Stake Pools</div>
           <div className="grid grid-cols-1 gap-5 md:grid-cols-4">
-            {!stakePoolsLoaded ? (
+            {!allStakePools.isFetched ? (
               <>
                 <Placeholder />
                 <Placeholder />
@@ -99,8 +43,9 @@ function Home() {
                 <Placeholder />
                 <Placeholder />
               </>
-            ) : stakePools[0].length > 0 ? (
-              stakePools[0].map(
+            ) : allStakePools.data &&
+              allStakePools.data?.stakePoolsWithMetadata.length > 0 ? (
+              allStakePools.data?.stakePoolsWithMetadata.map(
                 (stakePool) =>
                   !stakePool.stakePoolMetadata?.hidden && (
                     <div
@@ -150,65 +95,68 @@ function Home() {
               'No pools found...'
             )}
           </div>
-          {stakePools[1].length > 0 && (
-            <>
-              <div className="mt-10 mb-5 text-lg font-bold">
-                Unrecognized Pools
-              </div>
-              <div className="grid grid-cols-1 gap-5 md:grid-cols-4">
-                {stakePools[1].map((stakePool) => (
-                  <div
-                    className="flex h-[300px] cursor-pointer flex-col rounded-lg bg-white bg-opacity-5 p-10 transition-all duration-100 hover:scale-[1.01]"
-                    onClick={() =>
-                      router.push(
-                        `/${
-                          stakePool.stakePoolMetadata?.name ||
-                          stakePool.stakePoolData.pubkey.toString()
-                        }${
-                          environment.label !== 'mainnet-beta'
-                            ? `?cluster=${environment.label}`
-                            : ''
-                        }`
-                      )
-                    }
-                  >
-                    <div className="text-center font-bold text-white">
-                      <a
-                        className="text-white"
-                        target="_blank"
-                        rel="noreferrer"
-                        href={pubKeyUrl(
-                          stakePool.stakePoolData.pubkey,
-                          environment.label
-                        )}
+          {allStakePools.data &&
+            allStakePools.data.stakePoolsWithoutMetadata.length > 0 && (
+              <>
+                <div className="mt-10 mb-5 text-lg font-bold">
+                  Unrecognized Pools
+                </div>
+                <div className="grid grid-cols-1 gap-5 md:grid-cols-4">
+                  {allStakePools.data.stakePoolsWithoutMetadata.map(
+                    (stakePool) => (
+                      <div
+                        className="flex h-[300px] cursor-pointer flex-col rounded-lg bg-white bg-opacity-5 p-10 transition-all duration-100 hover:scale-[1.01]"
+                        onClick={() =>
+                          router.push(
+                            `/${
+                              stakePool.stakePoolMetadata?.name ||
+                              stakePool.stakePoolData.pubkey.toString()
+                            }${
+                              environment.label !== 'mainnet-beta'
+                                ? `?cluster=${environment.label}`
+                                : ''
+                            }`
+                          )
+                        }
                       >
-                        {shortPubKey(stakePool.stakePoolData.pubkey)}
-                      </a>
-                    </div>
-                    <div className="text-gray text-center">
-                      <a
-                        className="text-xs text-gray-500"
-                        target="_blank"
-                        rel="noreferrer"
-                        href={pubKeyUrl(
-                          stakePool.stakePoolData.pubkey,
-                          environment.label
-                        )}
-                      >
-                        {shortPubKey(stakePool.stakePoolData.pubkey)}
-                      </a>
-                    </div>
-                    <div className="flex flex-grow items-center justify-center">
-                      <div className="flex h-[150px] w-[150px] items-center justify-center rounded-full bg-white bg-opacity-5 text-5xl text-white text-opacity-40">
-                        {/* {shortPubKey(stakePool.stakePoolData.pubkey)} */}
-                        <FaQuestion />
+                        <div className="text-center font-bold text-white">
+                          <a
+                            className="text-white"
+                            target="_blank"
+                            rel="noreferrer"
+                            href={pubKeyUrl(
+                              stakePool.stakePoolData.pubkey,
+                              environment.label
+                            )}
+                          >
+                            {shortPubKey(stakePool.stakePoolData.pubkey)}
+                          </a>
+                        </div>
+                        <div className="text-gray text-center">
+                          <a
+                            className="text-xs text-gray-500"
+                            target="_blank"
+                            rel="noreferrer"
+                            href={pubKeyUrl(
+                              stakePool.stakePoolData.pubkey,
+                              environment.label
+                            )}
+                          >
+                            {shortPubKey(stakePool.stakePoolData.pubkey)}
+                          </a>
+                        </div>
+                        <div className="flex flex-grow items-center justify-center">
+                          <div className="flex h-[150px] w-[150px] items-center justify-center rounded-full bg-white bg-opacity-5 text-5xl text-white text-opacity-40">
+                            {/* {shortPubKey(stakePool.stakePoolData.pubkey)} */}
+                            <FaQuestion />
+                          </div>
+                        </div>
                       </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </>
-          )}
+                    )
+                  )}
+                </div>
+              </>
+            )}
         </div>
         <Footer />
       </div>
