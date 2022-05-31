@@ -18,34 +18,40 @@ export const executeAllTransactions = async (
     confirmOptions?: ConfirmOptions
     callback?: (success: boolean) => void
   }
-): Promise<string> => {
-  let txid = ''
-  try {
-    for (let tx of transactions) {
-      tx.feePayer = wallet.publicKey
-      tx.recentBlockhash = (
+) => {
+  await Promise.all(
+    transactions.map(async (transaction) => {
+      transaction.feePayer = wallet.publicKey
+      transaction.recentBlockhash = (
         await connection.getRecentBlockhash('max')
       ).blockhash
-    }
-    await wallet.signAllTransactions(transactions)
-    for (let tx of transactions) {
-      if (config.signers && config.signers.length > 0) {
-        tx.partialSign(...config.signers)
+    })
+  )
+
+  await wallet.signAllTransactions(transactions)
+
+  const txIds = await Promise.all(
+    transactions.map(async (transaction) => {
+      try {
+        if (config.signers && config.signers.length > 0) {
+          transaction.partialSign(...config.signers)
+        }
+        const promise = sendAndConfirmRawTransaction(
+          connection,
+          transaction.serialize(),
+          config.confirmOptions
+        )
+        config.callback && config.callback(true)
+        return promise
+      } catch (e: unknown) {
+        console.log('Failed transaction: ', (e as SendTransactionError).logs, e)
+        config.callback && config.callback(false)
+        if (!config.silent) {
+          throw e
+        }
       }
-      txid = await sendAndConfirmRawTransaction(
-        connection,
-        tx.serialize(),
-        config.confirmOptions
-      )
-      config.callback && config.callback(true)
-      console.log('Successful tx', txid)
-    }
-  } catch (e: unknown) {
-    console.log('Failed transaction: ', (e as SendTransactionError).logs, e)
-    config.callback && config.callback(false)
-    if (!config.silent) {
-      throw e
-    }
-  }
-  return txid
+    })
+  )
+  console.log('Successful transactions', txIds)
+  return txIds
 }
