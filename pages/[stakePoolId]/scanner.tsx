@@ -144,7 +144,7 @@ function Scanner() {
           >
             {keypair?.publicKey.toString()}
           </div>
-          {recentSignatures.refreshing && (
+          {recentSignatures.isRefetching && (
             <div
               className="absolute right-0 top-3 h-[10px] w-[10px] animate-ping rounded-full"
               style={{ background: config?.colors?.secondary }}

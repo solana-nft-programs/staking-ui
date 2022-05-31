@@ -47,7 +47,7 @@ export const AllowedTokens = ({
       </div>
       <div className="ml-5 flex flex-col">
         <span className="mb-2">White Listed Mints:</span>
-        {!stakeAuthorizations.loaded ? (
+        {!stakeAuthorizations.isFetched ? (
           <span className="h-4 w-full animate-pulse rounded-md bg-white bg-opacity-5"></span>
         ) : stakeAuthorizations.data?.length === 0 ? (
           <span className="text-xs text-gray-500">No whitelisted mints</span>

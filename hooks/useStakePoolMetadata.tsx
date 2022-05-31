@@ -1,17 +1,16 @@
 import { StakePoolMetadata, stakePoolMetadatas } from 'api/mapping'
-import { useDataHook } from './useDataHook'
+import { useQuery } from 'react-query'
 import { useStakePoolId } from './useStakePoolId'
 
 export const useStakePoolMetadata = () => {
   const stakePoolId = useStakePoolId()
-  return useDataHook<StakePoolMetadata | undefined>(
+  return useQuery<StakePoolMetadata | undefined>(
+    ['useStakePoolMetadata', stakePoolId?.toString()],
     async () => {
       if (!stakePoolId) return
       return stakePoolMetadatas.find(
         (p) => p.stakePoolAddress.toString() === stakePoolId.toString()
       )
-    },
-    [stakePoolId?.toString()],
-    { name: 'stakePoolMetadata' }
+    }
   )
 }

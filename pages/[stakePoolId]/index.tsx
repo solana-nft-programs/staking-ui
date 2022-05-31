@@ -193,10 +193,17 @@ function Home() {
       )
     } catch (e) {}
 
-    await stakedTokenDatas.remove()
-    await allowedTokenDatas.remove()
-    stakedTokenDatas.refetch().then(() => stakedTokenDatas.refetch())
-    stakePoolEntries.refresh().then(() => stakePoolEntries.refresh())
+    await Promise.all([
+      stakedTokenDatas.remove(),
+      allowedTokenDatas.remove(),
+      stakePoolEntries.remove(),
+    ]).then(() =>
+      setTimeout(() => {
+        stakedTokenDatas.refetch()
+        allowedTokenDatas.refetch()
+        stakePoolEntries.refetch()
+      }, 2000)
+    )
     setStakedSelected([])
     setUnstakedSelected([])
     setLoadingUnstake(false)
@@ -350,10 +357,17 @@ function Home() {
       )
     } catch (e) {}
 
-    await stakedTokenDatas.remove()
-    await allowedTokenDatas.remove()
-    stakePoolEntries.refresh().then(() => stakePoolEntries.refresh())
-
+    await Promise.all([
+      stakedTokenDatas.remove(),
+      allowedTokenDatas.remove(),
+      stakePoolEntries.remove(),
+    ]).then(() =>
+      setTimeout(() => {
+        stakedTokenDatas.refetch()
+        allowedTokenDatas.refetch()
+        stakePoolEntries.refetch()
+      }, 2000)
+    )
     setStakedSelected([])
     setUnstakedSelected([])
     setLoadingStake(false)
@@ -461,42 +475,44 @@ function Home() {
                   </span>
                 </div>
                 <div className="flex min-w-[200px] flex-col text-lg">
-                  {!rewardMintInfo || !rewards.data ? (
+                  {!rewardMintInfo.isFetched ? (
                     <div className="relative flex h-8 w-full items-center justify-center">
                       <span className="text-gray-500"></span>
                       <div className="absolute w-full animate-pulse items-center justify-center rounded-lg bg-white bg-opacity-10 p-5"></div>
                     </div>
                   ) : (
-                    <>
-                      <div>
-                        Earnings:{' '}
-                        {formatMintNaturalAmountAsDecimal(
-                          rewardMintInfo.data.mintInfo,
-                          rewards.data.claimableRewards,
-                          6
-                        )}{' '}
-                        {rewardMintInfo.data.tokenListData?.name ?? '???'}
-                      </div>
-                      <div className="text-xs text-gray-500">
-                        <a
-                          target={'_blank'}
-                          href={pubKeyUrl(
-                            rewardDistributorData.data.pubkey,
-                            environment.label
-                          )}
-                        >
-                          {shortPubKey(rewardDistributorData.data.pubkey)}
-                        </a>{' '}
-                        {rewardDistributorTokenAccountData.data
-                          ? formatMintNaturalAmountAsDecimal(
-                              rewardMintInfo.data.mintInfo,
-                              rewardDistributorTokenAccountData.data.amount,
-                              6
-                            )
-                          : ''}{' '}
-                        Left
-                      </div>
-                    </>
+                    rewards.data && (
+                      <>
+                        <div>
+                          Earnings:{' '}
+                          {formatMintNaturalAmountAsDecimal(
+                            rewardMintInfo.data.mintInfo,
+                            rewards.data?.claimableRewards,
+                            6
+                          )}{' '}
+                          {rewardMintInfo.data.tokenListData?.name ?? '???'}
+                        </div>
+                        <div className="text-xs text-gray-500">
+                          <a
+                            target={'_blank'}
+                            href={pubKeyUrl(
+                              rewardDistributorData.data.pubkey,
+                              environment.label
+                            )}
+                          >
+                            {shortPubKey(rewardDistributorData.data.pubkey)}
+                          </a>{' '}
+                          {rewardDistributorTokenAccountData.data
+                            ? formatMintNaturalAmountAsDecimal(
+                                rewardMintInfo.data.mintInfo,
+                                rewardDistributorTokenAccountData.data.amount,
+                                6
+                              )
+                            : ''}{' '}
+                          Left
+                        </div>
+                      </>
+                    )
                   )}
                 </div>
               </>
