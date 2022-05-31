@@ -41,7 +41,7 @@ export const useRewards = () => {
           rewardEntries.length > 0
         )
       ) {
-        return
+        return { rewardMap: {}, claimableRewards: new BN(0) }
       }
 
       const stakeEntries = stakedTokenDatas
@@ -62,8 +62,7 @@ export const useRewards = () => {
         !!stakedTokenDatas &&
         !!rewardEntries &&
         !!rewardDistributorTokenAccount &&
-        !!rewardDistributorData &&
-        rewardEntries.length > 0,
+        !!rewardDistributorData,
     }
   )
 }
