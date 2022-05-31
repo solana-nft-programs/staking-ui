@@ -3,10 +3,16 @@ import { scan } from '@cardinal/scanner/dist/cjs/programs/cardinalScanner'
 import { StakePoolData } from '@cardinal/staking/dist/cjs/programs/stakePool'
 import { getStakePool } from '@cardinal/staking/dist/cjs/programs/stakePool/accounts'
 import { utils } from '@project-serum/anchor'
-import { Connection, Keypair, PublicKey, Transaction } from '@solana/web3.js'
+import {
+  AccountInfo,
+  Connection,
+  Keypair,
+  ParsedAccountData,
+  PublicKey,
+  Transaction,
+} from '@solana/web3.js'
 import * as metaplex from '@metaplex-foundation/mpl-token-metadata'
 import { stakePoolMetadatas } from 'api/mapping'
-import { TokenData } from 'api/types'
 import { firstParam, tryPublicKey } from 'common/utils'
 import { allowedTokensForPool } from 'hooks/useAllowedTokenDatas'
 import type { NextApiHandler } from 'next'
@@ -38,10 +44,18 @@ interface PostResponse {
   error?: string
 }
 
+export type BaseTokenData = {
+  tokenAccount?: {
+    pubkey: PublicKey
+    account: AccountInfo<ParsedAccountData>
+  }
+  metaplexData?: { pubkey: PublicKey; data: metaplex.MetadataData } | null
+}
+
 export async function getTokenAccounts(
   connection: Connection,
   addressId: string
-): Promise<TokenData[]> {
+): Promise<BaseTokenData[]> {
   const allTokenAccounts = await connection.getParsedTokenAccountsByOwner(
     new PublicKey(addressId),
     { programId: spl.TOKEN_PROGRAM_ID }
@@ -82,7 +96,7 @@ export async function getTokenAccounts(
     return acc
   }, {} as { [tokenAccountId: string]: { pubkey: PublicKey; data: metaplex.MetadataData } })
 
-  return tokenAccounts.map((tokenAccount, i) => ({
+  return tokenAccounts.map((tokenAccount) => ({
     tokenAccount,
     metaplexData: metaplexData[tokenAccount.pubkey.toString()],
   }))
@@ -112,7 +126,7 @@ const post: NextApiHandler<PostResponse> = async (req, res) => {
     (p) => p.name === firstParam(collectionParam)
   )!
 
-  let tokenDatas: TokenData[] = []
+  let tokenDatas: BaseTokenData[] = []
   let stakePool: AccountData<StakePoolData>
   try {
     stakePool = await getStakePool(connection, config.stakePoolAddress)

@@ -7,7 +7,6 @@ import {
 import { ReceiptType } from '@cardinal/staking/dist/cjs/programs/stakePool'
 import { useWallet } from '@solana/wallet-adapter-react'
 import { PublicKey, Signer, Transaction } from '@solana/web3.js'
-import { TokenData } from 'api/types'
 import { Header } from 'common/Header'
 import Head from 'next/head'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
@@ -373,13 +372,13 @@ function Home() {
     setLoadingStake(false)
   }
 
-  const isUnstakedTokenSelected = (tk: TokenData) =>
+  const isUnstakedTokenSelected = (tk: AllowedTokenData) =>
     unstakedSelected.some(
       (utk) =>
         utk.tokenAccount?.account.data.parsed.info.mint.toString() ===
         tk.tokenAccount?.account.data.parsed.info.mint.toString()
     )
-  const isStakedTokenSelected = (tk: TokenData) =>
+  const isStakedTokenSelected = (tk: StakeEntryTokenData) =>
     stakedSelected.some(
       (stk) =>
         stk.stakeEntry?.parsed.originalMint.toString() ===

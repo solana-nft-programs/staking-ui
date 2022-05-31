@@ -1,9 +1,9 @@
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 import { useWalletId } from './useWalletId'
-import { getStakePoolsByAuthority } from 'api/stakeApi'
 import { AccountData } from '@cardinal/common'
 import { StakePoolData } from '@cardinal/staking/dist/cjs/programs/stakePool'
 import { useQuery } from 'react-query'
+import { getStakePoolsByAuthority } from '@cardinal/staking/dist/cjs/programs/stakePool/accounts'
 
 export const useStakePoolsByAuthority = () => {
   const { connection } = useEnvironmentCtx()
