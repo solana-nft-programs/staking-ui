@@ -339,7 +339,6 @@ function Home() {
           notificationConfig: {
             message: `Successfully staked`,
             description: 'Stake progress will now dynamically update',
-            individualSuccesses: true,
           },
         }
       )
