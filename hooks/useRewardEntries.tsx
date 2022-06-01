@@ -20,7 +20,7 @@ export const useRewardEntries = () => {
     async () => {
       const rewardDistibutorId = rewardDistibutorData?.pubkey
       if (!rewardDistibutorData || !stakedTokenDatas || !rewardDistibutorId) {
-        return
+        return []
       }
       const stakeEntryIds = stakedTokenDatas
         .filter((tk) => tk && tk.stakeEntry)
