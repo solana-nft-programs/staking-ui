@@ -50,6 +50,7 @@ import { MouseoverTooltip } from 'common/Tooltip'
 import { useUTCNow } from 'providers/UTCNowProvider'
 import { useWalletModal } from '@solana/wallet-adapter-react-ui'
 import { executeAllTransactions } from 'api/utils'
+import { RewardDistributorKind } from '@cardinal/staking/dist/cjs/programs/rewardDistributor'
 
 function Home() {
   const { connection, environment } = useEnvironmentCtx()
@@ -501,13 +502,20 @@ function Home() {
                           >
                             {shortPubKey(rewardDistributorData.data.pubkey)}
                           </a>{' '}
-                          {rewardDistributorTokenAccountData.data
+                          {rewardDistributorData.data.parsed.kind ===
+                          RewardDistributorKind.Mint
                             ? formatMintNaturalAmountAsDecimal(
                                 rewardMintInfo.data.mintInfo,
-                                rewardDistributorTokenAccountData.data.amount,
+                                rewardMintInfo.data.mintInfo.supply,
                                 6
                               )
-                            : ''}{' '}
+                            : rewardDistributorTokenAccountData.data
+                            ? formatMintNaturalAmountAsDecimal(
+                                rewardMintInfo.data.mintInfo,
+                                rewardDistributorTokenAccountData.data?.amount,
+                                6
+                              )
+                            : '??'}{' '}
                           Left
                         </div>
                       </>

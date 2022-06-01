@@ -6,6 +6,8 @@ import { useUTCNow } from 'providers/UTCNowProvider'
 import { useRewardEntries } from './useRewardEntries'
 import { getRewardMap } from '@cardinal/staking'
 import { useQuery } from 'react-query'
+import { useRewardMintInfo } from './useRewardMintInfo'
+import { RewardDistributorKind } from '@cardinal/staking/dist/cjs/programs/rewardDistributor'
 
 export const useRewards = () => {
   const { data: rewardDistributorData } = useRewardDistributorData()
@@ -13,6 +15,7 @@ export const useRewards = () => {
     useRewardDistributorTokenAccount()
   const { data: stakedTokenDatas } = useStakedTokenDatas()
   const { data: rewardEntries } = useRewardEntries()
+  const { data: rewardMintInfo } = useRewardMintInfo()
   const { UTCNow } = useUTCNow()
 
   return useQuery<
@@ -36,9 +39,11 @@ export const useRewards = () => {
         !(
           stakedTokenDatas &&
           rewardEntries &&
-          rewardDistributorTokenAccount &&
           rewardDistributorData &&
-          rewardEntries.length > 0
+          rewardMintInfo &&
+          rewardEntries.length > 0 &&
+          (rewardDistributorData?.parsed.kind === RewardDistributorKind.Mint ||
+            !!rewardDistributorTokenAccount)
         )
       ) {
         return { rewardMap: {}, claimableRewards: new BN(0) }
@@ -52,7 +57,9 @@ export const useRewards = () => {
         stakeEntries,
         rewardEntries,
         rewardDistributorData,
-        rewardDistributorTokenAccount.amount,
+        rewardDistributorData.parsed.kind === RewardDistributorKind.Mint
+          ? rewardMintInfo?.mintInfo.supply
+          : rewardDistributorTokenAccount!.amount,
         UTCNow
       )
     },
@@ -61,8 +68,9 @@ export const useRewards = () => {
       enabled:
         !!stakedTokenDatas &&
         !!rewardEntries &&
-        !!rewardDistributorTokenAccount &&
-        !!rewardDistributorData,
+        !!rewardDistributorData &&
+        (rewardDistributorData?.parsed.kind === RewardDistributorKind.Mint ||
+          !!rewardDistributorTokenAccount),
     }
   )
 }
