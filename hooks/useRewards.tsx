@@ -41,7 +41,7 @@ export const useRewards = () => {
           rewardEntries &&
           rewardDistributorData &&
           rewardMintInfo &&
-          rewardEntries.length > 0 &&
+          // rewardEntries.length > 0 &&
           (rewardDistributorData?.parsed.kind === RewardDistributorKind.Mint ||
             !!rewardDistributorTokenAccount)
         )
