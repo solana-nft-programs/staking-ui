@@ -14,6 +14,8 @@ export type StakePoolMetadata = {
   receiptType?: ReceiptType
   // Optional config to hide this pool from the main page
   hidden?: boolean
+  // Optional config to disable finding this pool
+  notFound?: boolean
   // Colors object to style the stake page
   colors?: {
     primary: string
@@ -241,5 +243,14 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       accent: '#1fcfb11c',
       fontColor: '#FFFFFF',
     },
+  },
+  {
+    name: '',
+    displayName: '',
+    stakePoolAddress: new PublicKey(
+      '4B3sqjzhE8ceUaVgyKmMKaHcXojAVM43wfnfNzKmqoPd'
+    ),
+    hidden: true,
+    notFound: true,
   },
 ]

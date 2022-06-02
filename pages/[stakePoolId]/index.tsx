@@ -396,7 +396,7 @@ function Home() {
 
       <Header />
       <div className={`container mx-auto w-full`}>
-        {!stakePool && stakePoolLoaded ? (
+        {(!stakePool && stakePoolLoaded) || stakePoolMetadata?.notFound ? (
           <div className="mx-5 mb-5 rounded-md border-[1px] border-yellow-500 bg-yellow-500 bg-opacity-40 p-4 text-center text-lg font-semibold">
             Stake pool not found
           </div>
@@ -410,7 +410,7 @@ function Home() {
             </div>
           )
         )}
-        {(maxStaked || rewardDistributorData) && (
+        {(maxStaked || rewardDistributorData) && !stakePoolMetadata?.notFound && (
           <div
             className="mx-5 mb-4 flex flex-wrap items-center gap-4 rounded-md bg-white bg-opacity-5 px-10 py-6 text-gray-200 md:flex-row md:justify-between"
             style={{
@@ -597,7 +597,11 @@ function Home() {
                       'grid grid-cols-2 gap-4 lg:grid-cols-2 xl:grid-cols-3'
                     }
                   >
-                    {(allowedTokenDatas.data || []).map((tk) => (
+                    {(
+                      (!stakePoolMetadata?.notFound &&
+                        allowedTokenDatas.data) ||
+                      []
+                    ).map((tk) => (
                       <div key={tk.tokenAccount?.pubkey.toString()}>
                         <div className="relative w-44 md:w-auto 2xl:w-48">
                           <label
@@ -873,7 +877,8 @@ function Home() {
                       'grid grid-cols-2 gap-4 lg:grid-cols-2 xl:grid-cols-3'
                     }
                   >
-                    {stakedTokenDatas.data &&
+                    {!stakePoolMetadata?.notFound &&
+                      stakedTokenDatas.data &&
                       stakedTokenDatas.data.map((tk) => (
                         <div key={tk?.stakeEntry?.pubkey.toBase58()}>
                           <div className="relative w-44 md:w-auto 2xl:w-48">
