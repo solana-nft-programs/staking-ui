@@ -20,8 +20,7 @@ export interface EnvironmentContextValues {
 export const ENVIRONMENTS: Environment[] = [
   {
     label: 'mainnet-beta',
-    primary:
-      'https://solana-api.syndica.io/access-token/01CltXj5NpCg7N0tWQnh9DNMy3ll8iAeyRn7WvclFb5PQbGWjCZc3ZqBpW4QL9QT',
+    primary: process.env.MAINNET_PRIMARY || 'https://ssc-dao.genesysgo.net',
     secondary: 'https://ssc-dao.genesysgo.net',
   },
   {
