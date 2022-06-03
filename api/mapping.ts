@@ -245,12 +245,20 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     },
   },
   {
-    name: '',
-    displayName: '',
+    name: 'honeyland',
+    displayName: 'Honeyland',
     stakePoolAddress: new PublicKey(
-      '4B3sqjzhE8ceUaVgyKmMKaHcXojAVM43wfnfNzKmqoPd'
+      '8YMcgMZFCFNmGzBNh2458T5CX5Q4SJX3H9zojJQT8G6N'
     ),
-    hidden: true,
-    notFound: true,
+    websiteUrl: 'https://honey.land/',
+    receiptType: ReceiptType.Receipt,
+    maxStaked: 2500,
+    imageUrl: 'https://honey.land/images/logo.png',
+    colors: {
+      primary: '#4c0f00',
+      secondary: '#aa6f03',
+      accent: '#aa6f03',
+      fontColor: '#FFFFFF',
+    },
   },
 ]
