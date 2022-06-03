@@ -35,9 +35,6 @@ export const useRewardMintInfo = () => {
         mintInfo,
         tokenListData,
       }
-    },
-    {
-      enabled: !!rewardDistibutorData,
     }
   )
 }
