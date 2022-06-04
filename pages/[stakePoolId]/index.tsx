@@ -403,7 +403,12 @@ function Home() {
         ) : (
           !wallet.connected && (
             <div
-              className="mx-5 mb-5 cursor-pointer rounded-md border-[1px] border-yellow-500 bg-yellow-500 bg-opacity-40 p-4 text-center text-lg font-semibold"
+              className={`mx-5 mb-5 cursor-pointer rounded-md border-[1px]  p-4 text-center text-lg font-semibold ${
+                stakePoolMetadata?.colors?.accent &&
+                stakePoolMetadata?.colors.fontColor
+                  ? `border-[${stakePoolMetadata?.colors?.accent}] bg-[${stakePoolMetadata?.colors?.secondary}] bg-opacity-100 text-[${stakePoolMetadata?.colors?.fontColor}] text-opacity-50`
+                  : 'border-yellow-500 bg-yellow-500 bg-opacity-40'
+              }`}
               onClick={() => walletModal.setVisible(true)}
             >
               Connect wallet to continue
@@ -412,7 +417,15 @@ function Home() {
         )}
         {(maxStaked || rewardDistributorData) && !stakePoolMetadata?.notFound && (
           <div
-            className="mx-5 mb-4 flex flex-wrap items-center gap-4 rounded-md bg-white bg-opacity-5 px-10 py-6 text-gray-200 md:flex-row md:justify-between"
+            className={`mx-5 mb-4 flex flex-wrap items-center gap-4 rounded-md px-10 py-6  md:flex-row md:justify-between ${
+              stakePoolMetadata?.colors?.fontColor
+                ? `text-[${stakePoolMetadata?.colors?.fontColor}]`
+                : 'text-gray-200'
+            } ${
+              stakePoolMetadata?.colors?.backgroundSecondary
+                ? `bg-[${stakePoolMetadata?.colors?.backgroundSecondary}]`
+                : 'bg-white bg-opacity-5'
+            }`}
             style={{
               border: stakePoolMetadata?.colors?.accent
                 ? `2px solid ${stakePoolMetadata?.colors?.accent}`
@@ -439,7 +452,15 @@ function Home() {
               </>
             ) : (
               <div className="relative flex h-8 flex-grow items-center justify-center">
-                <span className="text-gray-500">Loading pool info...</span>
+                <span
+                  className={`${
+                    stakePoolMetadata?.colors?.fontColor
+                      ? `text-[${stakePoolMetadata?.colors?.fontColor}]`
+                      : 'text-gray-500'
+                  }`}
+                >
+                  Loading pool info...
+                </span>
                 <div className="absolute w-full animate-pulse items-center justify-center rounded-lg bg-white bg-opacity-10 p-5"></div>
               </div>
             )}
@@ -529,7 +550,15 @@ function Home() {
                   rewardDistributorData.isFetched && rewardMintInfo.isFetched
                 ) && (
                   <>
-                    <span className="text-gray-500">Loading rewards...</span>
+                    <span
+                      className={`${
+                        stakePoolMetadata?.colors?.fontColor
+                          ? `text-[${stakePoolMetadata?.colors?.fontColor}]`
+                          : 'text-gray-500'
+                      }`}
+                    >
+                      Loading rewards...
+                    </span>
                     <div className="absolute w-full animate-pulse items-center justify-center rounded-lg bg-white bg-opacity-10 p-5"></div>
                   </>
                 )}
@@ -539,7 +568,15 @@ function Home() {
         )}
         <div className="my-2 mx-5 grid grid-cols-1 gap-4 md:grid-cols-2">
           <div
-            className={`flex-col rounded-md bg-white bg-opacity-5 p-10 text-gray-200`}
+            className={`rounded-m flex-col p-10 ${
+              stakePoolMetadata?.colors?.fontColor
+                ? `text-[${stakePoolMetadata?.colors?.fontColor}]`
+                : 'text-gray-200'
+            } ${
+              stakePoolMetadata?.colors?.backgroundSecondary
+                ? `bg-[${stakePoolMetadata?.colors?.backgroundSecondary}]`
+                : 'bg-white bg-opacity-5'
+            }`}
             style={{
               border: stakePoolMetadata?.colors?.accent
                 ? `2px solid ${stakePoolMetadata?.colors?.accent}`
@@ -588,7 +625,13 @@ function Home() {
                     <div className="h-[200px] animate-pulse rounded-lg bg-white bg-opacity-5 p-10"></div>
                   </div>
                 ) : (allowedTokenDatas.data || []).length == 0 ? (
-                  <p className="text-gray-400">
+                  <p
+                    className={`text-[${
+                      stakePoolMetadata?.colors?.fontColor
+                        ? `text-[${stakePoolMetadata?.colors?.fontColor}]`
+                        : 'text-gray-400'
+                    }]`}
+                  >
                     No allowed tokens found in wallet.
                   </p>
                 ) : (
@@ -815,7 +858,15 @@ function Home() {
             </div>
           </div>
           <div
-            className="rounded-md bg-white bg-opacity-5 p-10 text-gray-200"
+            className={`rounded-m p-10 ${
+              stakePoolMetadata?.colors?.fontColor
+                ? `text-[${stakePoolMetadata?.colors?.fontColor}]`
+                : 'text-gray-200'
+            } ${
+              stakePoolMetadata?.colors?.backgroundSecondary
+                ? `bg-[${stakePoolMetadata?.colors?.backgroundSecondary}]`
+                : 'bg-white bg-opacity-5'
+            }`}
             style={{
               border: stakePoolMetadata?.colors?.accent
                 ? `2px solid ${stakePoolMetadata?.colors?.accent}`
@@ -870,7 +921,15 @@ function Home() {
                     <div className="h-[200px] animate-pulse rounded-lg bg-white bg-opacity-5 p-10"></div>
                   </div>
                 ) : stakedTokenDatas.data?.length === 0 ? (
-                  <p className="text-gray-400">No tokens currently staked.</p>
+                  <p
+                    className={`text-[${
+                      stakePoolMetadata?.colors?.fontColor
+                        ? `text-[${stakePoolMetadata?.colors?.fontColor}]`
+                        : 'text-gray-400'
+                    }]`}
+                  >
+                    No tokens currently staked.
+                  </p>
                 ) : (
                   <div
                     className={
