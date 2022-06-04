@@ -16,6 +16,8 @@ export type StakePoolMetadata = {
   hidden?: boolean
   // Optional config to disable finding this pool
   notFound?: boolean
+  // Optional config to link redirect to page when you click on this pool
+  redirect?: string
   // Colors object to style the stake page
   colors?: {
     primary: string
@@ -269,12 +271,12 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     ),
     websiteUrl: 'https://stake.presidentialpeanuts.com/',
     receiptType: ReceiptType.Original,
-    imageUrl:
-      'https://i.ibb.co/mtbNN9x/Iype-WV3-H-400x400.jpg',
+    imageUrl: 'https://i.ibb.co/mtbNN9x/Iype-WV3-H-400x400.jpg',
     maxStaked: 999,
+    redirect: 'https://stake.presidentialpeanuts.com/',
     colors: {
       primary: 'rgb(54,21,38,0.9)',
-      secondary: 'rgb(157,120,138, 0.6)'
+      secondary: 'rgb(157,120,138, 0.6)',
     },
     notFound: true,
   },

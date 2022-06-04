@@ -51,8 +51,10 @@ import { useUTCNow } from 'providers/UTCNowProvider'
 import { useWalletModal } from '@solana/wallet-adapter-react-ui'
 import { executeAllTransactions } from 'api/utils'
 import { RewardDistributorKind } from '@cardinal/staking/dist/cjs/programs/rewardDistributor'
+import { useRouter } from 'next/router'
 
 function Home() {
+  const router = useRouter()
   const { connection, environment } = useEnvironmentCtx()
   const wallet = useWallet()
   const walletModal = useWalletModal()
@@ -83,6 +85,11 @@ function Home() {
   const { data: stakePoolMetadata } = useStakePoolMetadata()
   const rewardDistributorTokenAccountData = useRewardDistributorTokenAccount()
   const { UTCNow } = useUTCNow()
+
+  if (stakePoolMetadata?.redirect) {
+    router.push(stakePoolMetadata?.redirect)
+    return
+  }
 
   async function handleClaimRewards() {
     if (stakedSelected.length > 4) {
