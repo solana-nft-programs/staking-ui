@@ -261,4 +261,21 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       fontColor: '#FFFFFF',
     },
   },
+  {
+    name: 'presidential-peanuts',
+    displayName: 'Presidential Peanuts',
+    stakePoolAddress: new PublicKey(
+      '4B3sqjzhE8ceUaVgyKmMKaHcXojAVM43wfnfNzKmqoPd'
+    ),
+    websiteUrl: 'https://stake.presidentialpeanuts.com/',
+    receiptType: ReceiptType.Original,
+    imageUrl:
+      'https://i.ibb.co/mtbNN9x/Iype-WV3-H-400x400.jpg',
+    maxStaked: 999,
+    colors: {
+      primary: 'rgb(54,21,38,0.9)',
+      secondary: 'rgb(157,120,138, 0.6)'
+    },
+    notFound: true,
+  },
 ]
