@@ -59,10 +59,15 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       '3BZCupFU6X3wYJwgTsKS2vTs4VeMrhSZgx4P2TfzExtP'
     ),
     websiteUrl: 'https://hub.blockasset.co/nft-staking-v2',
-    receiptType: ReceiptType.Original,
     imageUrl:
       'https://blockasset.co/static/logo-e51ac9985ba7aef4ac8c1b1ae1c00511.png',
     maxStaked: 11791,
+    links: [
+      {
+        text: 'View',
+        value: 'https://hub.blockasset.co/nft-staking-v2',
+      },
+    ],
     colors: {
       primary: '#000000',
       secondary: '#4da1de',
@@ -88,6 +93,12 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     imageUrl:
       'https://blockasset.co/static/logo-e51ac9985ba7aef4ac8c1b1ae1c00511.png',
     maxStaked: 4000,
+    links: [
+      {
+        text: 'View',
+        value: 'https://hub.blockasset.co/smesh-staking',
+      },
+    ],
     colors: {
       primary: '#000000',
       secondary: '#4da1de',
@@ -101,6 +112,29 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
         uri: 'https://arweave.net/Q5y8_OehSOYCkGiX-hV1H6qiczoDaVdk4Eyi4lhhdQE',
       },
     ],
+  },
+  {
+    name: 'block-token',
+    displayName: 'Blockasset Token Staking',
+    stakePoolAddress: new PublicKey(
+      'jhksrHQqRKBEFuker9buKw4zDDrmENGTTKnUn2QzsUD'
+    ),
+    websiteUrl: 'https://hub.blockasset.co/token-staking-v2',
+    imageUrl:
+      'https://blockasset.co/static/logo-e51ac9985ba7aef4ac8c1b1ae1c00511.png',
+    links: [
+      {
+        text: 'View',
+        value: 'https://hub.blockasset.co/token-staking-v2',
+      },
+    ],
+    colors: {
+      primary: '#000000',
+      secondary: '#4da1de',
+      accent: '#1fcfb11c',
+      fontColor: '#FFFFFF',
+    },
+    airdrops: [],
   },
   {
     name: 'meta-ops',
