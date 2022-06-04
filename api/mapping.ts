@@ -267,10 +267,12 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     displayName: 'Rogue Sharks',
     stakePoolAddress: new PublicKey(
       '5VNgqi1mZBD2vx5CRWoUvaq4yeySygDuXUf6G97LmqtP'
-    ),
+    ), // update with actual pool
     websiteUrl: 'https://www.roguesharks.org/',
     receiptType: ReceiptType.Receipt,
-    maxStaked: Infinity,
+    maxStaked: Infinity, // update with collection size
+    hidden: true,
+    // update with downloaded image
     imageUrl:
       'https://assets-global.website-files.com/6139adf6df04f11e7a03ebc7/6266ef514415f148c9b955b5_6263ae10fc31701b7cd44288_RSC-LOGO-_Hero-Horizontal-Stack%20copy%202-p-500.png',
     colors: {
