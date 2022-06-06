@@ -52,6 +52,7 @@ import { useWalletModal } from '@solana/wallet-adapter-react-ui'
 import { executeAllTransactions } from 'api/utils'
 import { RewardDistributorKind } from '@cardinal/staking/dist/cjs/programs/rewardDistributor'
 import { useRouter } from 'next/router'
+import { lighten } from '@mui/material'
 
 function Home() {
   const router = useRouter()
@@ -404,13 +405,33 @@ function Home() {
       <Header />
       <div className={`container mx-auto w-full`}>
         {(!stakePool && stakePoolLoaded) || stakePoolMetadata?.notFound ? (
-          <div className="mx-5 mb-5 rounded-md border-[1px] border-yellow-500 bg-yellow-500 bg-opacity-40 p-4 text-center text-lg font-semibold">
+          <div
+            className="mx-5 mb-5 rounded-md border-[1px] bg-opacity-40 p-4 text-center text-lg font-semibold"
+            style={{
+              background:
+                stakePoolMetadata?.colors?.secondary || defaultSecondaryColor,
+              color: stakePoolMetadata?.colors?.fontColor,
+              borderColor: lighten(
+                stakePoolMetadata?.colors?.secondary || defaultSecondaryColor,
+                0.5
+              ),
+            }}
+          >
             Stake pool not found
           </div>
         ) : (
           !wallet.connected && (
             <div
-              className="mx-5 mb-5 cursor-pointer rounded-md border-[1px] border-yellow-500 bg-yellow-500 bg-opacity-40 p-4 text-center text-lg font-semibold"
+              className="mx-5 mb-5 cursor-pointer rounded-md border-[1px] bg-opacity-40 p-4 text-center text-lg font-semibold"
+              style={{
+                background:
+                  stakePoolMetadata?.colors?.secondary || defaultSecondaryColor,
+                color: stakePoolMetadata?.colors?.fontColor,
+                borderColor: lighten(
+                  stakePoolMetadata?.colors?.secondary || defaultSecondaryColor,
+                  0.5
+                ),
+              }}
               onClick={() => walletModal.setVisible(true)}
             >
               Connect wallet to continue

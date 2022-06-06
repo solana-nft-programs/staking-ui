@@ -14,9 +14,6 @@ export const useStakePoolData = () => {
     async () => {
       if (!stakePoolId) return
       return getStakePool(secondaryConnection, stakePoolId)
-    },
-    {
-      enabled: !!stakePoolId,
     }
   )
 }
