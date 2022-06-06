@@ -314,4 +314,23 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     },
     notFound: true,
   },
+  {
+    name: 'plane-x',
+    displayName: 'PLANE-X',
+    stakePoolAddress: new PublicKey(
+      '5oaTiYTSuz5HwcFSFyZ3FXGMaAtV8UgKvAUFTdi8gS7y'
+    ),
+    websiteUrl: 'https://plane-x.io/',
+    receiptType: ReceiptType.Original,
+    maxStaked: 3333,
+    imageUrl: 'https://arweave.net/HpdUi39S2ixPus6cU74LeoXaKwWcxezIUTQkvVV9XKs',
+    redirect: 'https://staking.plane-x.io/',
+    colors: {
+      primary: '#000000',
+      secondary: '#803499',
+      accent: '#803499',
+      fontColor: '#FFFFFF',
+    },
+    notFound: true,
+  },
 ]
