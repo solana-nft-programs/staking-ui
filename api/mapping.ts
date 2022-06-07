@@ -288,7 +288,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     ),
     websiteUrl: 'https://honey.land/',
     receiptType: ReceiptType.Receipt,
-    maxStaked: 2500,
+    maxStaked: 5525,
     imageUrl: 'https://honey.land/images/logo.png',
     colors: {
       primary: '#4c0f00',
