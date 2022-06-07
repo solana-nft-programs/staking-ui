@@ -16,6 +16,8 @@ export type StakePoolMetadata = {
   hidden?: boolean
   // Optional config to disable finding this pool
   notFound?: boolean
+  // Optional config to link redirect to page when you click on this pool
+  redirect?: string
   // Colors object to style the stake page
   colors?: {
     primary: string
@@ -58,10 +60,15 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       '3BZCupFU6X3wYJwgTsKS2vTs4VeMrhSZgx4P2TfzExtP'
     ),
     websiteUrl: 'https://hub.blockasset.co/nft-staking-v2',
-    receiptType: ReceiptType.Original,
     imageUrl:
       'https://blockasset.co/static/logo-e51ac9985ba7aef4ac8c1b1ae1c00511.png',
     maxStaked: 11791,
+    links: [
+      {
+        text: 'View',
+        value: 'https://hub.blockasset.co/nft-staking-v2',
+      },
+    ],
     colors: {
       primary: '#000000',
       secondary: '#4da1de',
@@ -87,6 +94,12 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     imageUrl:
       'https://blockasset.co/static/logo-e51ac9985ba7aef4ac8c1b1ae1c00511.png',
     maxStaked: 4000,
+    links: [
+      {
+        text: 'View',
+        value: 'https://hub.blockasset.co/smesh-staking',
+      },
+    ],
     colors: {
       primary: '#000000',
       secondary: '#4da1de',
@@ -100,6 +113,29 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
         uri: 'https://arweave.net/Q5y8_OehSOYCkGiX-hV1H6qiczoDaVdk4Eyi4lhhdQE',
       },
     ],
+  },
+  {
+    name: 'block-token',
+    displayName: 'Blockasset Token Staking',
+    stakePoolAddress: new PublicKey(
+      'jhksrHQqRKBEFuker9buKw4zDDrmENGTTKnUn2QzsUD'
+    ),
+    websiteUrl: 'https://hub.blockasset.co/token-staking-v2',
+    imageUrl:
+      'https://blockasset.co/static/logo-e51ac9985ba7aef4ac8c1b1ae1c00511.png',
+    links: [
+      {
+        text: 'View',
+        value: 'https://hub.blockasset.co/token-staking-v2',
+      },
+    ],
+    colors: {
+      primary: '#000000',
+      secondary: '#4da1de',
+      accent: '#1fcfb11c',
+      fontColor: '#FFFFFF',
+    },
+    airdrops: [],
   },
   {
     name: 'meta-ops',
@@ -253,7 +289,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     ),
     websiteUrl: 'https://honey.land/',
     receiptType: ReceiptType.Receipt,
-    maxStaked: 2500,
+    maxStaked: 5525,
     imageUrl: 'https://honey.land/images/logo.png',
     colors: {
       primary: '#4c0f00',
@@ -261,6 +297,42 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       accent: '#aa6f03',
       fontColor: '#FFFFFF',
     },
+  },
+  {
+    name: 'presidential-peanuts',
+    displayName: 'Presidential Peanuts',
+    stakePoolAddress: new PublicKey(
+      '4B3sqjzhE8ceUaVgyKmMKaHcXojAVM43wfnfNzKmqoPd'
+    ),
+    websiteUrl: 'https://stake.presidentialpeanuts.com/',
+    receiptType: ReceiptType.Original,
+    imageUrl: 'https://i.ibb.co/mtbNN9x/Iype-WV3-H-400x400.jpg',
+    maxStaked: 999,
+    redirect: 'https://stake.presidentialpeanuts.com/',
+    colors: {
+      primary: 'rgb(54,21,38,0.9)',
+      secondary: 'rgb(157,120,138, 0.6)',
+    },
+    notFound: true,
+  },
+  {
+    name: 'plane-x',
+    displayName: 'PLANE-X',
+    stakePoolAddress: new PublicKey(
+      '5oaTiYTSuz5HwcFSFyZ3FXGMaAtV8UgKvAUFTdi8gS7y'
+    ),
+    websiteUrl: 'https://plane-x.io/',
+    receiptType: ReceiptType.Original,
+    maxStaked: 3333,
+    imageUrl: 'https://arweave.net/HpdUi39S2ixPus6cU74LeoXaKwWcxezIUTQkvVV9XKs',
+    redirect: 'https://staking.plane-x.io/',
+    colors: {
+      primary: '#000000',
+      secondary: '#803499',
+      accent: '#803499',
+      fontColor: '#FFFFFF',
+    },
+    notFound: true,
   },
   {
     name: 'rogue-sharks',

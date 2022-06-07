@@ -52,14 +52,15 @@ function Home() {
                       className="flex h-[300px] cursor-pointer flex-col rounded-lg bg-white bg-opacity-5 p-10 transition-all duration-100 hover:scale-[1.01]"
                       onClick={() =>
                         router.push(
-                          `/${
-                            stakePool.stakePoolMetadata?.name ||
-                            stakePool.stakePoolData.pubkey.toString()
-                          }${
-                            environment.label !== 'mainnet-beta'
-                              ? `?cluster=${environment.label}`
-                              : ''
-                          }`
+                          stakePool.stakePoolMetadata?.redirect ??
+                            `/${
+                              stakePool.stakePoolMetadata?.name ||
+                              stakePool.stakePoolData.pubkey.toString()
+                            }${
+                              environment.label !== 'mainnet-beta'
+                                ? `?cluster=${environment.label}`
+                                : ''
+                            }`
                         )
                       }
                     >
