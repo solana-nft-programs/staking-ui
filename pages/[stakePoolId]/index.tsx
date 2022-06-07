@@ -53,6 +53,7 @@ import { executeAllTransactions } from 'api/utils'
 import { RewardDistributorKind } from '@cardinal/staking/dist/cjs/programs/rewardDistributor'
 import { useRouter } from 'next/router'
 import { lighten } from '@mui/material'
+import { QuickActions } from 'common/QuickActions'
 
 function Home() {
   const router = useRouter()
@@ -651,6 +652,7 @@ function Home() {
                                       </div>
                                     </div>
                                   )}
+                                  <QuickActions tokenData={tk} />
                                   <img
                                     className="mx-auto mt-4 mb-2 rounded-xl bg-white bg-opacity-5 object-contain md:h-40 md:w-40 2xl:h-48 2xl:w-48"
                                     src={
@@ -697,7 +699,7 @@ function Home() {
                                     .tokenAmount.amount > 1
                                     ? `w-20 py-3 px-2 text-right`
                                     : 'w-4'
-                                } top-2 right-2 rounded-sm font-medium text-black focus:outline-none`}
+                                } top-2 left-2 rounded-sm font-medium text-black focus:outline-none`}
                                 id={tk?.tokenAccount?.pubkey.toBase58()}
                                 name={tk?.tokenAccount?.pubkey.toBase58()}
                                 checked={isUnstakedTokenSelected(tk)}
@@ -949,6 +951,7 @@ function Home() {
                                         </div>
                                       </div>
                                     )}
+                                    <QuickActions tokenData={tk} />
                                     <img
                                       className="mx-auto mt-4 mb-2 rounded-xl bg-white bg-opacity-5 object-contain md:h-40 md:w-40 2xl:h-48 2xl:w-48"
                                       src={
@@ -992,7 +995,7 @@ function Home() {
                                   }
                                   autoComplete="off"
                                   type="checkbox"
-                                  className={`absolute top-2 right-2 h-4 w-4 rounded-sm font-medium text-black focus:outline-none`}
+                                  className={`absolute top-2 left-2 h-4 w-4 rounded-sm font-medium text-black focus:outline-none`}
                                   id={tk?.stakeEntry?.pubkey.toBase58()}
                                   name={tk?.stakeEntry?.pubkey.toBase58()}
                                   checked={isStakedTokenSelected(tk)}
@@ -1038,7 +1041,7 @@ function Home() {
                                     )
                                     ?.parsed.multiplier.eq(new BN(1)) && (
                                     <div
-                                      className="absolute top-1 left-1 flex items-center justify-center rounded-full bg-[#9945ff] px-1 py-1 text-[8px]"
+                                      className="absolute bottom-1 right-1 flex items-center justify-center rounded-full bg-[#9945ff] px-2 text-[10px]"
                                       style={{
                                         color:
                                           stakePoolMetadata?.colors?.secondary,
