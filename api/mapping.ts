@@ -355,4 +355,22 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       backgroundSecondary: '#f4f5f7',
     },
   },
+  {
+    name: 'stake',
+    displayName: 'Cannaverse',
+    stakePoolAddress: new PublicKey(
+      '5DoGTq3ciQ1aDFUuTFLhFLdiXuPjnWmjhTSWdzLpZkgY'
+    ),
+    websiteUrl: 'https://cannaverse.gg/',
+    receiptType: ReceiptType.Original,
+    maxStaked: 1700,
+    imageUrl:
+      'https://cannaverse.gg/wp-content/uploads/2022/05/cannaverse-white-logo-full-1-e1652295225261.png',
+    colors: {
+      primary: '#211F20',
+      secondary: '#FFFFFF',
+      accent: '#000',
+      fontColor: '#FFFFFF',
+    },
+  },
 ]
