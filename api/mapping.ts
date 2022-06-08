@@ -65,8 +65,16 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     maxStaked: 11791,
     links: [
       {
-        text: 'View',
+        text: 'NFT Staking',
         value: 'https://hub.blockasset.co/nft-staking-v2',
+      },
+      {
+        text: 'Smesh Bros',
+        value: 'https://hub.blockasset.co/smesh-staking',
+      },
+      {
+        text: 'Block Token',
+        value: 'https://hub.blockasset.co/token-staking-v2',
       },
     ],
     colors: {
@@ -96,8 +104,16 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     maxStaked: 4000,
     links: [
       {
-        text: 'View',
+        text: 'NFT Staking',
+        value: 'https://hub.blockasset.co/nft-staking-v2',
+      },
+      {
+        text: 'Smesh Bros',
         value: 'https://hub.blockasset.co/smesh-staking',
+      },
+      {
+        text: 'Block Token',
+        value: 'https://hub.blockasset.co/token-staking-v2',
       },
     ],
     colors: {
@@ -125,7 +141,15 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       'https://blockasset.co/static/logo-e51ac9985ba7aef4ac8c1b1ae1c00511.png',
     links: [
       {
-        text: 'View',
+        text: 'NFT Staking',
+        value: 'https://hub.blockasset.co/nft-staking-v2',
+      },
+      {
+        text: 'Smesh Bros',
+        value: 'https://hub.blockasset.co/smesh-staking',
+      },
+      {
+        text: 'Block Token',
         value: 'https://hub.blockasset.co/token-staking-v2',
       },
     ],
