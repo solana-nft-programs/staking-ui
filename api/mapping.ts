@@ -73,7 +73,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
         value: 'https://hub.blockasset.co/smesh-staking',
       },
       {
-        text: 'Block Token',
+        text: 'Bolck Token',
         value: 'https://hub.blockasset.co/token-staking-v2',
       },
     ],
@@ -112,7 +112,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
         value: 'https://hub.blockasset.co/smesh-staking',
       },
       {
-        text: 'Block Token',
+        text: 'Bolck Token',
         value: 'https://hub.blockasset.co/token-staking-v2',
       },
     ],
@@ -149,7 +149,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
         value: 'https://hub.blockasset.co/smesh-staking',
       },
       {
-        text: 'Block Token',
+        text: 'Bolck Token',
         value: 'https://hub.blockasset.co/token-staking-v2',
       },
     ],
@@ -321,6 +321,12 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       accent: '#aa6f03',
       fontColor: '#FFFFFF',
     },
+    links: [
+      {
+        text: 'View',
+        value: 'https://incubate.honey.land/',
+      },
+    ],
   },
   {
     name: 'presidential-peanuts',
