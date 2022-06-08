@@ -5,7 +5,7 @@ import {
 import { lighten } from 'polished'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 import { Popover, PopoverItem } from './Popover'
-import { pubKeyUrl } from './utils'
+import { metadataUrl, pubKeyUrl } from './utils'
 import { FiExternalLink } from 'react-icons/fi'
 import { LoadingSpinner } from './LoadingSpinner'
 import { FaEllipsisH } from 'react-icons/fa'
