@@ -35,6 +35,16 @@ export function pubKeyUrl(
   }`
 }
 
+export function metadataUrl(
+  pubkey: PublicKey | null | undefined,
+  cluster: string
+) {
+  if (!pubkey) return 'https://www.magiceden.io/item-details/'
+  return `https://www.magiceden.io/item-details/${pubkey.toString()}${
+    cluster === 'devnet' ? '?cluster=devnet' : ''
+  }`
+}
+
 export function shortDateString(utc_seconds: number) {
   return `${new Date(utc_seconds * 1000).toLocaleDateString([], {
     month: '2-digit',

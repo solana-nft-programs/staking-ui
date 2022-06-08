@@ -5,7 +5,7 @@ import {
 import { lighten } from 'polished'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 import { Popover, PopoverItem } from './Popover'
-import { pubKeyUrl } from './utils'
+import { metadataUrl, pubKeyUrl } from './utils'
 import { FiExternalLink } from 'react-icons/fi'
 import { LoadingSpinner } from './LoadingSpinner'
 import { FaEllipsisH } from 'react-icons/fa'
@@ -13,7 +13,7 @@ import { Dispatch, SetStateAction, useState } from 'react'
 import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
 import { getColorByBgColor } from './Button'
 import { ReceiptType } from '@cardinal/staking/dist/cjs/programs/stakePool'
-import { AiFillLock, AiFillUnlock } from 'react-icons/ai'
+import { AiFillLock, AiFillUnlock, AiOutlineDatabase } from 'react-icons/ai'
 import { RiMoneyDollarCircleFill } from 'react-icons/ri'
 import { PublicKey } from '@solana/web3.js'
 import {
@@ -113,6 +113,31 @@ export const QuickActions = ({
               <FiExternalLink />
             </a>
           </PopoverItem>
+          {ctx.environment.label !== 'devnet' && (
+            <PopoverItem>
+              <a
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '10px',
+                  color: 'white',
+                }}
+                className="justify-between"
+                href={metadataUrl(
+                  unstakedTokenData?.tokenAccount
+                    ? unstakedTokenData.tokenAccount.account.data.parsed.info
+                        .mint
+                    : stakedTokenData!.stakeEntry?.parsed.originalMint,
+                  ctx.environment.label
+                )}
+                target="_blank"
+                rel="noreferrer"
+              >
+                Metadata
+                <AiOutlineDatabase />
+              </a>
+            </PopoverItem>
+          )}
           {!showFungibleTokens && (
             <PopoverItem>
               <div
