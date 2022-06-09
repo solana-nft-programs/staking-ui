@@ -752,7 +752,7 @@ function Home() {
                   </div>
                 ) : (allowedTokenDatas.data || []).length == 0 ? (
                   <p
-                    className={`text-[${
+                    className={`font-normal text-[${
                       stakePoolMetadata?.colors?.fontColor
                         ? `text-[${stakePoolMetadata?.colors?.fontColor}]`
                         : 'text-gray-400'
@@ -1055,7 +1055,7 @@ function Home() {
                   </div>
                 ) : stakedTokenDatas.data?.length === 0 ? (
                   <p
-                    className={`text-[${
+                    className={`font-normal text-[${
                       stakePoolMetadata?.colors?.fontColor
                         ? ''
                         : 'text-gray-400'
