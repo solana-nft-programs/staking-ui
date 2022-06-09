@@ -10,7 +10,7 @@ import { PublicKey, Signer, Transaction } from '@solana/web3.js'
 import { Header } from 'common/Header'
 import Head from 'next/head'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Wallet } from '@metaplex/js'
 import { LoadingSpinner } from 'common/LoadingSpinner'
 import { notify } from 'common/Notification'
@@ -39,7 +39,7 @@ import {
   useAllowedTokenDatas,
 } from 'hooks/useAllowedTokenDatas'
 import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
-import { defaultSecondaryColor } from 'api/mapping'
+import { defaultSecondaryColor, TokenStandard } from 'api/mapping'
 import { Footer } from 'common/Footer'
 import { DisplayAddress, shortPubKey } from '@cardinal/namespaces-components'
 import { useRewardDistributorTokenAccount } from 'hooks/useRewardDistributorTokenAccount'
@@ -82,8 +82,8 @@ function Home() {
     ReceiptType.Original
   )
   const [loadingClaimRewards, setLoadingClaimRewards] = useState(false)
-  const [showFungibleTokens, setShowFungibleTokens] = useState(false)
   const [showAllowedTokens, setShowAllowedTokens] = useState<boolean>()
+  const [showFungibleTokens, setShowFungibleTokens] = useState(false)
   const allowedTokenDatas = useAllowedTokenDatas(showFungibleTokens)
   const { data: stakePoolMetadata } = useStakePoolMetadata()
   const rewardDistributorTokenAccountData = useRewardDistributorTokenAccount()
@@ -93,6 +93,13 @@ function Home() {
     router.push(stakePoolMetadata?.redirect)
     return
   }
+
+  useEffect(() => {
+    stakePoolMetadata?.tokenStandard &&
+      setShowFungibleTokens(
+        stakePoolMetadata?.tokenStandard === TokenStandard.Fungible
+      )
+  }, [stakePoolMetadata?.name])
 
   async function handleClaimRewards() {
     if (stakedSelected.length > 4) {
@@ -464,6 +471,7 @@ function Home() {
       <div
         className={`container mx-auto w-full`}
         style={{
+          ...stakePoolMetadata?.styles,
           color:
             stakePoolMetadata?.colors?.fontColor ??
             contrastColorMode(
@@ -693,22 +701,25 @@ function Home() {
                     )}
                 </div>
               </div>
-
               <div className="flex flex-row">
-                <button
-                  onClick={() => setShowAllowedTokens(!showAllowedTokens)}
-                  className="text-md mr-5 inline-block rounded-md bg-white bg-opacity-5 px-4 py-1 hover:bg-opacity-10 focus:outline-none"
-                >
-                  {showAllowedTokens ? 'Hide' : 'Show'} Allowed Tokens
-                </button>
-                <button
-                  onClick={() => {
-                    setShowFungibleTokens(!showFungibleTokens)
-                  }}
-                  className="text-md inline-block rounded-md bg-white bg-opacity-5 px-4 py-1 hover:bg-opacity-10"
-                >
-                  {showFungibleTokens ? 'Show NFTs' : 'Show FTs'}
-                </button>
+                {!stakePoolMetadata?.hideAllowedTokens && (
+                  <button
+                    onClick={() => setShowAllowedTokens(!showAllowedTokens)}
+                    className="text-md mr-5 inline-block rounded-md bg-white bg-opacity-5 px-4 py-1 hover:bg-opacity-10 focus:outline-none"
+                  >
+                    {showAllowedTokens ? 'Hide' : 'Show'} Allowed Tokens
+                  </button>
+                )}
+                {!stakePoolMetadata?.tokenStandard && (
+                  <button
+                    onClick={() => {
+                      setShowFungibleTokens(!showFungibleTokens)
+                    }}
+                    className="text-md inline-block rounded-md bg-white bg-opacity-5 px-4 py-1 hover:bg-opacity-10"
+                  >
+                    {showFungibleTokens ? 'Show NFTs' : 'Show FTs'}
+                  </button>
+                )}
               </div>
             </div>
             {showAllowedTokens && (

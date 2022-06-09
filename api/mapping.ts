@@ -1,6 +1,14 @@
 import { AirdropMetadata } from './../common/Airdrop'
 import { PublicKey } from '@solana/web3.js'
 import { ReceiptType } from '@cardinal/staking/dist/cjs/programs/stakePool'
+import { CSSProperties } from 'react'
+
+export enum TokenStandard {
+  // Fungible, can have more than 1
+  Fungible = 1,
+  // Non fungible are all unique
+  NonFungible = 2,
+}
 
 export type StakePoolMetadata = {
   // Name of this stake pool used as an id. Should be in lower-case kebab-case since it is used in the URL as /{name}
@@ -12,12 +20,18 @@ export type StakePoolMetadata = {
   stakePoolAddress: PublicKey
   // Default receipt type. Setting this will remove the option for the user to choose which receipt type to use
   receiptType?: ReceiptType
+  // Default empty. Setting this will tell the UI to only show tokens of that standard. Supports fungible or non-fungible
+  tokenStandard?: TokenStandard
   // Optional config to hide this pool from the main page
   hidden?: boolean
   // Optional config to disable finding this pool
   notFound?: boolean
   // Optional config to link redirect to page when you click on this pool
   redirect?: string
+  // Hide allowed tokens style
+  hideAllowedTokens?: boolean
+  // styles to apply to the whole stake pool
+  styles?: CSSProperties
   // Colors object to style the stake page
   colors?: {
     primary: string
@@ -375,6 +389,12 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     maxStaked: Infinity, // update with collection size
     hidden: true,
     imageUrl: '/logos/rogue-sharks.svg',
+    tokenStandard: TokenStandard.NonFungible,
+    hideAllowedTokens: true,
+    styles: {
+      fontFamily: 'Industry, sans-serif',
+      fontWeight: 500,
+    },
     colors: {
       primary: '#ffffff',
       secondary: '#cff3f9',
