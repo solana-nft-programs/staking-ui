@@ -1,6 +1,6 @@
 import { AccountData } from '@cardinal/common'
 import { StakePoolData } from '@cardinal/staking/dist/cjs/programs/stakePool'
-import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
+import { useEnvironmentCtx } from '../providers/EnvironmentProvider'
 import { useStakePoolId } from './useStakePoolId'
 import { getStakePool } from '@cardinal/staking/dist/cjs/programs/stakePool/accounts'
 import { useQuery } from 'react-query'

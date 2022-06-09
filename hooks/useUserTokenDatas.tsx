@@ -1,4 +1,4 @@
-import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
+import { useEnvironmentCtx } from '../providers/EnvironmentProvider'
 import { useQuery } from 'react-query'
 import { useWalletId } from './useWalletId'
 import * as spl from '@solana/spl-token'

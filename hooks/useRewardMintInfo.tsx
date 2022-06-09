@@ -1,4 +1,4 @@
-import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
+import { useEnvironmentCtx } from '../providers/EnvironmentProvider'
 import { useRewardDistributorData } from './useRewardDistributorData'
 import * as splToken from '@solana/spl-token'
 import { Keypair } from '@solana/web3.js'

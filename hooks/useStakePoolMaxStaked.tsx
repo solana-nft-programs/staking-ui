@@ -1,5 +1,5 @@
 import { useStakePoolId } from './useStakePoolId'
-import { stakePoolMetadatas } from 'api/mapping'
+import { stakePoolMetadatas } from '../api/mapping'
 
 export const useStakePoolMaxStaked = () => {
   const stakePoolId = useStakePoolId()

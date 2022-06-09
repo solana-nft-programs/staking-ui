@@ -1,4 +1,4 @@
-import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
+import { useEnvironmentCtx } from '../providers/EnvironmentProvider'
 import { useStakePoolId } from './useStakePoolId'
 import { useWalletIds } from './useWalletIds'
 import { useQuery } from 'react-query'

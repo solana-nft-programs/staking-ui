@@ -1,0 +1,1 @@
+{"version":3,"file":"layouts.d.ts","sourceRoot":"","sources":["../../../src/computeBudget/layouts.ts"],"names":[],"mappings":"AAAA,OAAO,KAAK,YAAY,MAAM,uBAAuB,CAAC;AAEtD,eAAO,MAAM,kBAAkB;iBAChB,MAAM;WACZ,MAAM;mBACE,MAAM;EAKrB,CAAC;AAEH,eAAO,MAAM,sBAAsB;iBACpB,MAAM;WACZ,MAAM;EACgD,CAAC"}

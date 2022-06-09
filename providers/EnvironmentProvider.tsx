@@ -1,5 +1,5 @@
 import { Cluster, Connection } from '@solana/web3.js'
-import { firstParam } from 'common/utils'
+import { firstParam } from '../common/utils'
 import { NextPageContext } from 'next'
 import { useRouter } from 'next/router'
 import React, { useContext, useMemo, useState } from 'react'

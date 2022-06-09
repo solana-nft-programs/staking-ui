@@ -1,4 +1,4 @@
-import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
+import { useEnvironmentCtx } from '../providers/EnvironmentProvider'
 import { useWalletId } from './useWalletId'
 import { AccountData } from '@cardinal/common'
 import {

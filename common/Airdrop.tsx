@@ -12,15 +12,15 @@ import type { Wallet } from '@saberhq/solana-contrib'
 import { useWallet } from '@solana/wallet-adapter-react'
 import type { Connection } from '@solana/web3.js'
 import { Keypair, LAMPORTS_PER_SOL, Transaction } from '@solana/web3.js'
-import { notify } from 'common/Notification'
+import { notify } from '../common/Notification'
 import { asWallet } from './Wallets'
-import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
+import { useEnvironmentCtx } from '../providers/EnvironmentProvider'
 import { AsyncButton } from './Button'
 
-import { StakePoolMetadata } from 'api/mapping'
-import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
+import { StakePoolMetadata } from '../api/mapping'
+import { useStakePoolMetadata } from '../hooks/useStakePoolMetadata'
 import { executeTransaction } from '@cardinal/staking'
-import { useAllowedTokenDatas } from 'hooks/useAllowedTokenDatas'
+import { useAllowedTokenDatas } from '../hooks/useAllowedTokenDatas'
 
 export type AirdropMetadata = { name: string; symbol: string; uri: string }
 

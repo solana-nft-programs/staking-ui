@@ -1,5 +1,5 @@
 import { tryPublicKey } from '@cardinal/namespaces-components'
-import { stakePoolMetadatas } from 'api/mapping'
+import { stakePoolMetadatas } from '../api/mapping'
 import { useRouter } from 'next/router'
 
 export const useStakePoolId = () => {

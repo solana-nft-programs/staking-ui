@@ -1,4 +1,4 @@
-import { StakePoolMetadata, stakePoolMetadatas } from 'api/mapping'
+import { StakePoolMetadata, stakePoolMetadatas } from '../api/mapping'
 import { useQuery } from 'react-query'
 import { useStakePoolId } from './useStakePoolId'
 

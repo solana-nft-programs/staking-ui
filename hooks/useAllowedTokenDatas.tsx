@@ -10,7 +10,7 @@ import {
 import * as spl from '@solana/spl-token'
 import * as metaplex from '@metaplex-foundation/mpl-token-metadata'
 import { findStakeEntryIdFromMint } from '@cardinal/staking/dist/cjs/programs/stakePool/utils'
-import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
+import { useEnvironmentCtx } from '../providers/EnvironmentProvider'
 import { AccountInfo, ParsedAccountData, PublicKey } from '@solana/web3.js'
 import { getStakeEntries } from '@cardinal/staking/dist/cjs/programs/stakePool/accounts'
 import { useQuery } from 'react-query'

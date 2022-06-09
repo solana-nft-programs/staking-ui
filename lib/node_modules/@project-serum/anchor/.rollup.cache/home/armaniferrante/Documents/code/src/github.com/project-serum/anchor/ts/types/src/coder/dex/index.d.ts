@@ -1,0 +1,14 @@
+import { Idl } from "../../idl.js";
+import { Coder } from "../index.js";
+import { DexInstructionCoder } from "./instruction.js";
+import { DexStateCoder } from "./state.js";
+import { DexAccountsCoder } from "./accounts.js";
+import { DexEventsCoder } from "./events.js";
+export declare class DexCoder implements Coder {
+    readonly instruction: DexInstructionCoder;
+    readonly accounts: DexAccountsCoder;
+    readonly state: DexStateCoder;
+    readonly events: DexEventsCoder;
+    constructor(idl: Idl);
+}
+//# sourceMappingURL=index.d.ts.map

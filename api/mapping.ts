@@ -362,7 +362,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     name: 'rogue-sharks',
     displayName: 'Rogue Sharks',
     stakePoolAddress: new PublicKey(
-      '5VNgqi1mZBD2vx5CRWoUvaq4yeySygDuXUf6G97LmqtP'
+      '8eqFBjdYYN4f2ibFQ1SADBbGrQKPcfDuYQn32t3NuEoW'
     ), // update with actual pool
     websiteUrl: 'https://www.roguesharks.org/',
     receiptType: ReceiptType.Receipt,

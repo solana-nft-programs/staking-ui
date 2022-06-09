@@ -1,4 +1,4 @@
-import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
+import { useEnvironmentCtx } from '../providers/EnvironmentProvider'
 import { AccountData } from '@cardinal/common'
 import { useRewardDistributorData } from './useRewardDistributorData'
 import { findRewardEntryId } from '@cardinal/staking/dist/cjs/programs/rewardDistributor/pda'
