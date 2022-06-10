@@ -87,7 +87,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
         value: 'https://hub.blockasset.co/smesh-staking',
       },
       {
-        text: 'Bolck Token',
+        text: 'Block Token',
         value: 'https://hub.blockasset.co/token-staking-v2',
       },
     ],
@@ -126,7 +126,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
         value: 'https://hub.blockasset.co/smesh-staking',
       },
       {
-        text: 'Bolck Token',
+        text: 'Block Token',
         value: 'https://hub.blockasset.co/token-staking-v2',
       },
     ],
@@ -163,7 +163,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
         value: 'https://hub.blockasset.co/smesh-staking',
       },
       {
-        text: 'Bolck Token',
+        text: 'Block Token',
         value: 'https://hub.blockasset.co/token-staking-v2',
       },
     ],
@@ -402,7 +402,6 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       fontColor: '#000',
       backgroundSecondary: '#f4f5f7',
     },
-    notFound: true,
   },
   {
     name: 'glc',

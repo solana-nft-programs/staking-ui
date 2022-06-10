@@ -36,7 +36,7 @@ export const Header = () => {
   const stakePoolId = useStakePoolId()
   const { data: stakePoolMetadata } = useStakePoolMetadata()
   const stats = useStats()
-  const { UTCNow, clockDrift } = useUTCNow()
+  const { clockDrift } = useUTCNow()
 
   return (
     <div>
