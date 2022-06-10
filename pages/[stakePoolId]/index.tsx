@@ -10,11 +10,11 @@ import { PublicKey, Signer, Transaction } from '@solana/web3.js'
 import { Header } from 'common/Header'
 import Head from 'next/head'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Wallet } from '@metaplex/js'
 import { LoadingSpinner } from 'common/LoadingSpinner'
 import { notify } from 'common/Notification'
-import { pubKeyUrl, secondstoDuration } from 'common/utils'
+import { contrastColorMode, pubKeyUrl, secondstoDuration } from 'common/utils'
 import {
   formatAmountAsDecimal,
   formatMintNaturalAmountAsDecimal,
@@ -39,7 +39,7 @@ import {
   useAllowedTokenDatas,
 } from 'hooks/useAllowedTokenDatas'
 import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
-import { defaultSecondaryColor } from 'api/mapping'
+import { defaultSecondaryColor, TokenStandard } from 'api/mapping'
 import { Footer } from 'common/Footer'
 import { DisplayAddress, shortPubKey } from '@cardinal/namespaces-components'
 import { useRewardDistributorTokenAccount } from 'hooks/useRewardDistributorTokenAccount'
@@ -52,8 +52,9 @@ import { useWalletModal } from '@solana/wallet-adapter-react-ui'
 import { executeAllTransactions } from 'api/utils'
 import { RewardDistributorKind } from '@cardinal/staking/dist/cjs/programs/rewardDistributor'
 import { useRouter } from 'next/router'
-import { lighten } from '@mui/material'
+import { lighten, darken } from '@mui/material'
 import { QuickActions } from 'common/QuickActions'
+import * as splToken from '@solana/spl-token'
 
 function Home() {
   const router = useRouter()
@@ -78,12 +79,13 @@ function Home() {
   const [loadingStake, setLoadingStake] = useState(false)
   const [loadingUnstake, setLoadingUnstake] = useState(false)
   const [singleTokenAction, setSingleTokenAction] = useState('')
+  const [totalStaked, setTotalStaked] = useState('')
   const [receiptType, setReceiptType] = useState<ReceiptType>(
     ReceiptType.Original
   )
   const [loadingClaimRewards, setLoadingClaimRewards] = useState(false)
-  const [showFungibleTokens, setShowFungibleTokens] = useState(false)
   const [showAllowedTokens, setShowAllowedTokens] = useState<boolean>()
+  const [showFungibleTokens, setShowFungibleTokens] = useState(false)
   const allowedTokenDatas = useAllowedTokenDatas(showFungibleTokens)
   const { data: stakePoolMetadata } = useStakePoolMetadata()
   const rewardDistributorTokenAccountData = useRewardDistributorTokenAccount()
@@ -93,6 +95,13 @@ function Home() {
     router.push(stakePoolMetadata?.redirect)
     return
   }
+
+  useEffect(() => {
+    stakePoolMetadata?.tokenStandard &&
+      setShowFungibleTokens(
+        stakePoolMetadata?.tokenStandard === TokenStandard.Fungible
+      )
+  }, [stakePoolMetadata?.name])
 
   async function handleClaimRewards() {
     if (stakedSelected.length > 4) {
@@ -452,6 +461,60 @@ function Home() {
         tk.stakeEntry?.parsed.originalMint.toString()
     )
 
+  const totalStakedTokens = async () => {
+    let total = 0
+    if (!stakePoolEntries.data) {
+      setTotalStaked('0')
+      return
+    }
+    const mintToDecimals: { mint: string; decimals: number }[] = []
+    for (const entry of stakePoolEntries.data) {
+      try {
+        if (entry.parsed.amount.toNumber() > 1) {
+          let decimals = 0
+          const match = mintToDecimals.find(
+            (m) => m.mint === entry.parsed.originalMint.toString()
+          )
+          if (match) {
+            decimals = match.decimals
+          } else {
+            const mint = new splToken.Token(
+              connection,
+              entry.parsed.originalMint,
+              splToken.TOKEN_PROGRAM_ID,
+              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+              // @ts-ignore
+              null
+            )
+            const mintInfo = await mint.getMintInfo()
+            decimals = mintInfo.decimals
+            mintToDecimals.push({
+              mint: entry.parsed.originalMint.toString(),
+              decimals: decimals,
+            })
+          }
+          total += entry.parsed.amount.toNumber() / 10 ** decimals
+        } else {
+          total += 1
+        }
+      } catch (e) {
+        console.log('Error calculating total staked tokens', e)
+      }
+    }
+    setTotalStaked(Math.ceil(total).toString())
+  }
+
+  useEffect(() => {
+    const fetchData = async () => {
+      await totalStakedTokens()
+    }
+    fetchData().catch(console.error)
+  }, [stakePoolEntries.isFetched])
+
+  if (!stakePoolMetadata) {
+    return
+  }
+
   return (
     <div style={{ background: stakePoolMetadata?.colors?.primary }}>
       <Head>
@@ -461,7 +524,17 @@ function Home() {
       </Head>
 
       <Header />
-      <div className={`container mx-auto w-full`}>
+      <div
+        className={`container mx-auto w-full`}
+        style={{
+          ...stakePoolMetadata?.styles,
+          color:
+            stakePoolMetadata?.colors?.fontColor ??
+            contrastColorMode(
+              stakePoolMetadata?.colors?.primary || '#000000'
+            )[0],
+        }}
+      >
         {(!stakePool && stakePoolLoaded) || stakePoolMetadata?.notFound ? (
           <div
             className="mx-5 mb-5 rounded-md border-[1px] bg-opacity-40 p-4 text-center text-lg font-semibold"
@@ -483,9 +556,19 @@ function Home() {
               className={`mx-5 mb-5 cursor-pointer rounded-md border-[1px]  p-4 text-center text-lg font-semibold ${
                 stakePoolMetadata?.colors?.accent &&
                 stakePoolMetadata?.colors.fontColor
-                  ? `border-[${stakePoolMetadata?.colors?.accent}] bg-[${stakePoolMetadata?.colors?.secondary}] bg-opacity-100 text-[${stakePoolMetadata?.colors?.fontColor}] text-opacity-50`
+                  ? ''
                   : 'border-yellow-500 bg-yellow-500 bg-opacity-40'
               }`}
+              style={
+                stakePoolMetadata?.colors?.accent &&
+                stakePoolMetadata?.colors.fontColor
+                  ? {
+                      background: stakePoolMetadata?.colors?.secondary,
+                      borderColor: stakePoolMetadata?.colors?.accent,
+                      color: stakePoolMetadata?.colors?.fontColor,
+                    }
+                  : {}
+              }
               onClick={() => walletModal.setVisible(true)}
             >
               Connect wallet to continue
@@ -504,6 +587,7 @@ function Home() {
                 : 'bg-white bg-opacity-5'
             }`}
             style={{
+              background: stakePoolMetadata?.colors?.backgroundSecondary,
               border: stakePoolMetadata?.colors?.accent
                 ? `2px solid ${stakePoolMetadata?.colors?.accent}`
                 : '',
@@ -512,7 +596,7 @@ function Home() {
             {stakePoolEntries.data ? (
               <>
                 <div className="inline-block text-lg">
-                  Total Staked: {stakePoolEntries.data?.length}
+                  Total Staked: {Number(totalStaked).toLocaleString()}
                 </div>
                 {maxStaked > 0 && (
                   <div className="inline-block text-lg">
@@ -645,7 +729,7 @@ function Home() {
         )}
         <div className="my-2 mx-5 grid grid-cols-1 gap-4 md:grid-cols-2">
           <div
-            className={`rounded-m flex-col p-10 ${
+            className={`flex-col rounded-md p-10 ${
               stakePoolMetadata?.colors?.fontColor
                 ? `text-[${stakePoolMetadata?.colors?.fontColor}]`
                 : 'text-gray-200'
@@ -655,6 +739,7 @@ function Home() {
                 : 'bg-white bg-opacity-5'
             }`}
             style={{
+              background: stakePoolMetadata?.colors?.backgroundSecondary,
               border: stakePoolMetadata?.colors?.accent
                 ? `2px solid ${stakePoolMetadata?.colors?.accent}`
                 : '',
@@ -672,29 +757,49 @@ function Home() {
                     )}
                 </div>
               </div>
-
               <div className="flex flex-row">
-                <button
-                  onClick={() => setShowAllowedTokens(!showAllowedTokens)}
-                  className="text-md mr-5 inline-block rounded-md bg-white bg-opacity-5 px-4 py-1 hover:bg-opacity-10 focus:outline-none"
-                >
-                  {showAllowedTokens ? 'Hide' : 'Show'} Allowed Tokens
-                </button>
-                <button
-                  onClick={() => {
-                    setShowFungibleTokens(!showFungibleTokens)
-                  }}
-                  className="text-md inline-block rounded-md bg-white bg-opacity-5 px-4 py-1 hover:bg-opacity-10"
-                >
-                  {showFungibleTokens ? 'Show NFTs' : 'Show FTs'}
-                </button>
+                {!stakePoolMetadata?.hideAllowedTokens && (
+                  <button
+                    onClick={() => setShowAllowedTokens(!showAllowedTokens)}
+                    className="text-md mr-5 inline-block rounded-md bg-white bg-opacity-5 px-4 py-1 hover:bg-opacity-10 focus:outline-none"
+                  >
+                    {showAllowedTokens ? 'Hide' : 'Show'} Allowed Tokens
+                  </button>
+                )}
+                {!stakePoolMetadata?.tokenStandard && (
+                  <button
+                    onClick={() => {
+                      setShowFungibleTokens(!showFungibleTokens)
+                    }}
+                    className="text-md inline-block rounded-md bg-white bg-opacity-5 px-4 py-1 hover:bg-opacity-10"
+                  >
+                    {showFungibleTokens ? 'Show NFTs' : 'Show FTs'}
+                  </button>
+                )}
               </div>
             </div>
             {showAllowedTokens && (
               <AllowedTokens stakePool={stakePool}></AllowedTokens>
             )}
             <div className="my-3 flex-auto overflow-auto">
-              <div className="relative my-auto mb-4 h-[60vh] overflow-y-auto overflow-x-hidden rounded-md bg-white bg-opacity-5 p-5">
+              <div
+                className="relative my-auto mb-4 h-[60vh] overflow-y-auto overflow-x-hidden rounded-md bg-white bg-opacity-5 p-5"
+                style={{
+                  background:
+                    stakePoolMetadata?.colors?.backgroundSecondary &&
+                    (contrastColorMode(
+                      stakePoolMetadata?.colors?.primary ?? '#000000'
+                    )[1]
+                      ? lighten(
+                          stakePoolMetadata?.colors?.backgroundSecondary,
+                          0.05
+                        )
+                      : darken(
+                          stakePoolMetadata?.colors?.backgroundSecondary,
+                          0.05
+                        )),
+                }}
+              >
                 {!allowedTokenDatas.isFetched ? (
                   <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
                     <div className="h-[200px] animate-pulse rounded-lg bg-white bg-opacity-5 p-10"></div>
@@ -703,7 +808,7 @@ function Home() {
                   </div>
                 ) : (allowedTokenDatas.data || []).length == 0 ? (
                   <p
-                    className={`text-[${
+                    className={`font-normal text-[${
                       stakePoolMetadata?.colors?.fontColor
                         ? `text-[${stakePoolMetadata?.colors?.fontColor}]`
                         : 'text-gray-400'
@@ -930,16 +1035,11 @@ function Home() {
             </div>
           </div>
           <div
-            className={`rounded-m p-10 ${
-              stakePoolMetadata?.colors?.fontColor
-                ? `text-[${stakePoolMetadata?.colors?.fontColor}]`
-                : 'text-gray-200'
-            } ${
-              stakePoolMetadata?.colors?.backgroundSecondary
-                ? `bg-[${stakePoolMetadata?.colors?.backgroundSecondary}]`
-                : 'bg-white bg-opacity-5'
-            }`}
+            className={`rounded-md p-10 ${
+              stakePoolMetadata?.colors?.fontColor ? '' : 'text-gray-200'
+            } bg-white bg-opacity-5`}
             style={{
+              background: stakePoolMetadata?.colors?.backgroundSecondary,
               border: stakePoolMetadata?.colors?.accent
                 ? `2px solid ${stakePoolMetadata?.colors?.accent}`
                 : '',
@@ -985,7 +1085,24 @@ function Home() {
               </div>
             </div>
             <div className="my-3 flex-auto overflow-auto">
-              <div className="relative my-auto mb-4 h-[60vh] overflow-y-auto overflow-x-hidden rounded-md bg-white bg-opacity-5 p-5">
+              <div
+                className="relative my-auto mb-4 h-[60vh] overflow-y-auto overflow-x-hidden rounded-md bg-white bg-opacity-5 p-5"
+                style={{
+                  background:
+                    stakePoolMetadata?.colors?.backgroundSecondary &&
+                    (contrastColorMode(
+                      stakePoolMetadata?.colors?.primary ?? '#000000'
+                    )[1]
+                      ? lighten(
+                          stakePoolMetadata?.colors?.backgroundSecondary,
+                          0.05
+                        )
+                      : darken(
+                          stakePoolMetadata?.colors?.backgroundSecondary,
+                          0.05
+                        )),
+                }}
+              >
                 {!stakedTokenDatas.isFetched ? (
                   <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
                     <div className="h-[200px] animate-pulse rounded-lg bg-white bg-opacity-5 p-10"></div>
@@ -994,9 +1111,9 @@ function Home() {
                   </div>
                 ) : stakedTokenDatas.data?.length === 0 ? (
                   <p
-                    className={`text-[${
+                    className={`font-normal text-[${
                       stakePoolMetadata?.colors?.fontColor
-                        ? `text-[${stakePoolMetadata?.colors?.fontColor}]`
+                        ? ''
                         : 'text-gray-400'
                     }]`}
                   >

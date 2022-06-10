@@ -6,11 +6,13 @@ import { useRouter } from 'next/router'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 import { Airdrop } from './Airdrop'
 import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
-import { maxWidth, styled } from '@mui/system'
+import { styled } from '@mui/system'
 import { AccountConnect } from '@cardinal/namespaces-components'
 import { Wallet } from '@saberhq/solana-contrib'
 import { useStakePoolId } from 'hooks/useStakePoolId'
 import { useUTCNow } from 'providers/UTCNowProvider'
+import { useStats } from 'hooks/useStats'
+import { contrastColorMode } from './utils'
 
 export const StyledWalletButton = styled(WalletMultiButton)`
   color: rgb(55, 65, 81, 1);
@@ -33,7 +35,8 @@ export const Header = () => {
   const wallet = useWallet()
   const stakePoolId = useStakePoolId()
   const { data: stakePoolMetadata } = useStakePoolMetadata()
-  const { UTCNow, clockDrift } = useUTCNow()
+  const stats = useStats()
+  const { clockDrift } = useUTCNow()
 
   return (
     <div>
@@ -99,6 +102,22 @@ export const Header = () => {
             ''
           )}
         </div>
+        {stats.isFetched && stats.data && (
+          <div className="relative my-auto flex items-center align-middle text-lg">
+            {Object.keys(stats.data).map((name, i) => {
+              return (
+                <div key={i} className="mr-10 flex gap-2">
+                  <span>{name}:</span>
+                  <span>
+                    {Number(
+                      stats.data![name]!.data.parsed.value
+                    ).toLocaleString()}
+                  </span>
+                </div>
+              )
+            })}
+          </div>
+        )}
         <div className="relative my-auto flex items-center align-middle">
           {stakePoolId && stakePoolMetadata ? (
             stakePoolMetadata.links?.map((link) => (
@@ -140,7 +159,11 @@ export const Header = () => {
           )}
           {wallet.connected && wallet.publicKey ? (
             <AccountConnect
-              dark
+              dark={
+                stakePoolMetadata?.colors?.backgroundSecondary
+                  ? contrastColorMode(stakePoolMetadata?.colors?.primary)[1]
+                  : true
+              }
               connection={ctx.secondaryConnection}
               environment={ctx.environment.label}
               handleDisconnect={() => wallet.disconnect()}

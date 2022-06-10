@@ -1,6 +1,14 @@
 import { AirdropMetadata } from './../common/Airdrop'
 import { PublicKey } from '@solana/web3.js'
 import { ReceiptType } from '@cardinal/staking/dist/cjs/programs/stakePool'
+import { CSSProperties } from 'react'
+
+export enum TokenStandard {
+  // Fungible, can have more than 1
+  Fungible = 1,
+  // Non fungible are all unique
+  NonFungible = 2,
+}
 
 export type StakePoolMetadata = {
   // Name of this stake pool used as an id. Should be in lower-case kebab-case since it is used in the URL as /{name}
@@ -12,12 +20,18 @@ export type StakePoolMetadata = {
   stakePoolAddress: PublicKey
   // Default receipt type. Setting this will remove the option for the user to choose which receipt type to use
   receiptType?: ReceiptType
+  // Default empty. Setting this will tell the UI to only show tokens of that standard. Supports fungible or non-fungible
+  tokenStandard?: TokenStandard
   // Optional config to hide this pool from the main page
   hidden?: boolean
   // Optional config to disable finding this pool
   notFound?: boolean
   // Optional config to link redirect to page when you click on this pool
   redirect?: string
+  // Hide allowed tokens style
+  hideAllowedTokens?: boolean
+  // styles to apply to the whole stake pool
+  styles?: CSSProperties
   // Colors object to style the stake page
   colors?: {
     primary: string
@@ -65,8 +79,16 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     maxStaked: 11791,
     links: [
       {
-        text: 'View',
+        text: 'NFT Staking',
         value: 'https://hub.blockasset.co/nft-staking-v2',
+      },
+      {
+        text: 'Smesh Bros',
+        value: 'https://hub.blockasset.co/smesh-staking',
+      },
+      {
+        text: 'Block Token',
+        value: 'https://hub.blockasset.co/token-staking-v2',
       },
     ],
     colors: {
@@ -96,8 +118,16 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     maxStaked: 4000,
     links: [
       {
-        text: 'View',
+        text: 'NFT Staking',
+        value: 'https://hub.blockasset.co/nft-staking-v2',
+      },
+      {
+        text: 'Smesh Bros',
         value: 'https://hub.blockasset.co/smesh-staking',
+      },
+      {
+        text: 'Block Token',
+        value: 'https://hub.blockasset.co/token-staking-v2',
       },
     ],
     colors: {
@@ -125,7 +155,15 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       'https://blockasset.co/static/logo-e51ac9985ba7aef4ac8c1b1ae1c00511.png',
     links: [
       {
-        text: 'View',
+        text: 'NFT Staking',
+        value: 'https://hub.blockasset.co/nft-staking-v2',
+      },
+      {
+        text: 'Smesh Bros',
+        value: 'https://hub.blockasset.co/smesh-staking',
+      },
+      {
+        text: 'Block Token',
         value: 'https://hub.blockasset.co/token-staking-v2',
       },
     ],
@@ -297,6 +335,12 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       accent: '#aa6f03',
       fontColor: '#FFFFFF',
     },
+    links: [
+      {
+        text: 'View',
+        value: 'https://incubate.honey.land/',
+      },
+    ],
   },
   {
     name: 'presidential-peanuts',
@@ -338,19 +382,23 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     name: 'rogue-sharks',
     displayName: 'Rogue Sharks',
     stakePoolAddress: new PublicKey(
-      '5VNgqi1mZBD2vx5CRWoUvaq4yeySygDuXUf6G97LmqtP'
-    ), // update with actual pool
+      '8eqFBjdYYN4f2ibFQ1SADBbGrQKPcfDuYQn32t3NuEoW'
+    ),
     websiteUrl: 'https://www.roguesharks.org/',
     receiptType: ReceiptType.Receipt,
     maxStaked: Infinity, // update with collection size
     hidden: true,
-    // update with downloaded image
-    imageUrl:
-      'https://assets-global.website-files.com/6139adf6df04f11e7a03ebc7/6266ef514415f148c9b955b5_6263ae10fc31701b7cd44288_RSC-LOGO-_Hero-Horizontal-Stack%20copy%202-p-500.png',
+    imageUrl: '/logos/rogue-sharks.svg',
+    tokenStandard: TokenStandard.NonFungible,
+    hideAllowedTokens: true,
+    styles: {
+      fontFamily: 'Industry, sans-serif',
+      fontWeight: 500,
+    },
     colors: {
-      primary: '#fff',
+      primary: '#ffffff',
       secondary: '#cff3f9',
-      accent: '#000',
+      accent: '#ffffff',
       fontColor: '#000',
       backgroundSecondary: '#f4f5f7',
     },
@@ -370,6 +418,23 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       primary: '#211F20',
       secondary: '#FFFFFF',
       accent: '#000',
+    }
+  },
+  {
+    name: 'glc',
+    displayName: 'Ghostlife Club',
+    stakePoolAddress: new PublicKey(
+      'G5YtkSQPsQKnTASbHF5XSfAsFqhTYH8Ajo4yFfCuPpLM'
+    ),
+    websiteUrl: 'https://ghostlifeclub.com',
+    receiptType: ReceiptType.Original,
+    maxStaked: 4444,
+    imageUrl:
+      'https://ghostlifeclub.mypinata.cloud/ipfs/QmV3XFK6SYvxdKD6YGHFq1ZtLYc3Gtw2X9mhSk8yXcZokT',
+    colors: {
+      primary: '#3A3B3C',
+      secondary: '#810541',
+      accent: '##00FFFF',
       fontColor: '#FFFFFF',
     },
   },

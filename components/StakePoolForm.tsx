@@ -723,9 +723,6 @@ export function StakePoolForm({
                       className={`mb-3 block w-full appearance-none rounded border border-gray-500 bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800 focus:outline-none`}
                       type="text"
                       placeholder={'0'}
-                      disabled={
-                        type === 'update' && rewardDistributorData !== undefined
-                      }
                       value={values.multiplierDecimals}
                       onChange={(e) => {
                         const supply = Number(
@@ -755,9 +752,6 @@ export function StakePoolForm({
                       className={`mb-3 block w-full appearance-none rounded border border-gray-500 bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800 focus:outline-none`}
                       type="text"
                       placeholder={'1'}
-                      disabled={
-                        type === 'update' && rewardDistributorData !== undefined
-                      }
                       value={values.defaultMultiplier}
                       onChange={(e) => {
                         const supply = Number(
