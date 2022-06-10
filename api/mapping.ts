@@ -402,5 +402,24 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       fontColor: '#000',
       backgroundSecondary: '#f4f5f7',
     },
+    notFound: true,
+  },
+  {
+    name: 'glc',
+    displayName: 'Ghostlife Club',
+    stakePoolAddress: new PublicKey(
+      'G5YtkSQPsQKnTASbHF5XSfAsFqhTYH8Ajo4yFfCuPpLM'
+    ),
+    websiteUrl: 'https://ghostlifeclub.com',
+    receiptType: ReceiptType.Original,
+    maxStaked: 4444,
+    imageUrl: 'https://ghostlifeclub.mypinata.cloud/ipfs/QmV3XFK6SYvxdKD6YGHFq1ZtLYc3Gtw2X9mhSk8yXcZokT',
+    redirect: '',
+    colors: {
+      primary: '#3A3B3C',
+      secondary: '#810541',
+      accent: '##00FFFF',
+      fontColor: '#FFFFFF',
+    },
   },
 ]
