@@ -847,11 +847,11 @@ function Home() {
                               }}
                             >
                               {loadingStake &&
-                                isUnstakedTokenSelected(tk) &&
-                                singleTokenAction ===
-                                  tk.tokenAccount?.account.data.parsed.info.mint.toString() && (
+                                (isUnstakedTokenSelected(tk) ||
+                                  singleTokenAction ===
+                                    tk.tokenAccount?.account.data.parsed.info.mint.toString()) && (
                                   <div>
-                                    <div className="absolute top-0 left-0 z-10 flex h-full w-full justify-center rounded-xl bg-black bg-opacity-80  align-middle">
+                                    <div className="absolute top-0 left-0 z-10 flex h-full w-full justify-center rounded-xl bg-black bg-opacity-80 align-middle text-white">
                                       <div className="my-auto flex">
                                         <span className="mr-2">
                                           <LoadingSpinner height="25px" />
@@ -1148,9 +1148,9 @@ function Home() {
                                 }}
                               >
                                 {(loadingUnstake || loadingClaimRewards) &&
-                                  isStakedTokenSelected(tk) &&
-                                  singleTokenAction ===
-                                    tk.stakeEntry?.parsed.originalMint.toString() && (
+                                  (isStakedTokenSelected(tk) ||
+                                    singleTokenAction ===
+                                      tk.stakeEntry?.parsed.originalMint.toString()) && (
                                     <div>
                                       <div className="absolute top-0 left-0 z-10 flex h-full w-full justify-center rounded-lg bg-black bg-opacity-80  align-middle">
                                         <div className="mx-auto flex items-center justify-center">
