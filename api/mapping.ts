@@ -438,4 +438,22 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       fontColor: '#FFFFFF',
     },
   },
+  {
+    name: '00RR0R',
+    displayName: '00RR0R C01NS',
+    stakePoolAddress: new PublicKey(
+      '4RMzeQMV8Dnbb3p3EH8UoF6GaK1PSU3FbJUQi1zbiSR3'
+    ),
+    websiteUrl: 'https://00RR0R.com/',
+    receiptType: ReceiptType.Original,
+    imageUrl:
+      'https://www.00rr0r.com/logo-stake.png',
+    maxStaked: 4999,
+    colors: {
+      primary: '#000000',
+      secondary: '#4da1de',
+      accent: '#1fcfb11c',
+      fontColor: '#FFFFFF',
+    },
+  },
 ]
