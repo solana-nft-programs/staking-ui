@@ -595,7 +595,10 @@ function Home() {
             {stakePoolEntries.data ? (
               <>
                 <div className="inline-block text-lg">
-                  Total Staked: {Number(totalStaked).toLocaleString()}
+                  Total Staked: {Number(totalStaked).toLocaleString()}{' '}
+                  {stakePoolMetadata.maxStaked
+                    ? `/ ${stakePoolMetadata.maxStaked}`
+                    : ''}
                 </div>
                 {maxStaked > 0 && (
                   <div className="inline-block text-lg">
@@ -679,15 +682,6 @@ function Home() {
                           {rewardMintInfo.data.tokenListData?.name ?? '???'}
                         </div>
                         <div className="text-xs text-gray-500">
-                          <a
-                            target={'_blank'}
-                            href={pubKeyUrl(
-                              rewardDistributorData.data.pubkey,
-                              environment.label
-                            )}
-                          >
-                            {shortPubKey(rewardDistributorData.data.pubkey)}
-                          </a>{' '}
                           {rewardDistributorData.data.parsed.kind ===
                           RewardDistributorKind.Mint
                             ? formatMintNaturalAmountAsDecimal(
@@ -702,7 +696,7 @@ function Home() {
                                 6
                               )
                             : '??'}{' '}
-                          Left
+                          Left In Treasury
                         </div>
                       </>
                     )
@@ -757,7 +751,14 @@ function Home() {
                 <div className="inline-block">
                   {allowedTokenDatas.isRefetching &&
                     allowedTokenDatas.isFetched && (
-                      <LoadingSpinner height="25px" />
+                      <LoadingSpinner
+                        fill={
+                          stakePoolMetadata?.colors?.fontColor
+                            ? stakePoolMetadata?.colors?.fontColor
+                            : '#FFF'
+                        }
+                        height="25px"
+                      />
                     )}
                 </div>
               </div>
@@ -854,7 +855,7 @@ function Home() {
                                     <div className="absolute top-0 left-0 z-10 flex h-full w-full justify-center rounded-xl bg-black bg-opacity-80 align-middle text-white">
                                       <div className="my-auto flex">
                                         <span className="mr-2">
-                                          <LoadingSpinner height="25px" />
+                                          <LoadingSpinner height="20px" />
                                         </span>
                                         Staking token...
                                       </div>
@@ -1029,7 +1030,16 @@ function Home() {
                   className="my-auto flex rounded-md px-4 py-2 hover:scale-[1.03]"
                 >
                   <span className="mr-1 inline-block">
-                    {loadingStake && <LoadingSpinner height="25px" />}
+                    {loadingStake && (
+                      <LoadingSpinner
+                        fill={
+                          stakePoolMetadata?.colors?.fontColor
+                            ? stakePoolMetadata?.colors?.fontColor
+                            : '#FFF'
+                        }
+                        height="25px"
+                      />
+                    )}
                   </span>
                   <span className="my-auto">
                     Stake Tokens ({unstakedSelected.length})
@@ -1060,7 +1070,14 @@ function Home() {
                 <div className="inline-block">
                   {stakedTokenDatas.isRefetching &&
                     stakedTokenDatas.isFetched && (
-                      <LoadingSpinner height="25px" />
+                      <LoadingSpinner
+                        fill={
+                          stakePoolMetadata?.colors?.fontColor
+                            ? stakePoolMetadata?.colors?.fontColor
+                            : '#FFF'
+                        }
+                        height="25px"
+                      />
                     )}
                 </div>
               </div>
@@ -1152,10 +1169,10 @@ function Home() {
                                     singleTokenAction ===
                                       tk.stakeEntry?.parsed.originalMint.toString()) && (
                                     <div>
-                                      <div className="absolute top-0 left-0 z-10 flex h-full w-full justify-center rounded-lg bg-black bg-opacity-80  align-middle">
+                                      <div className="absolute top-0 left-0 z-10 flex h-full w-full justify-center rounded-lg bg-black bg-opacity-80 align-middle text-white">
                                         <div className="mx-auto flex items-center justify-center">
                                           <span className="mr-2">
-                                            <LoadingSpinner height="25px" />
+                                            <LoadingSpinner height="20px" />
                                           </span>
                                           {loadingUnstake
                                             ? 'Unstaking token...'
@@ -1167,7 +1184,7 @@ function Home() {
                                 {tk.stakeEntry?.parsed.lastStaker.toString() !==
                                   wallet.publicKey?.toString() && (
                                   <div>
-                                    <div className="absolute top-0 left-0 z-10 flex h-full w-full justify-center rounded-lg bg-black bg-opacity-80  align-middle">
+                                    <div className="absolute top-0 left-0 z-10 flex h-full w-full justify-center rounded-lg bg-black bg-opacity-80  align-middle text-white">
                                       <div className="mx-auto flex flex-col items-center justify-center">
                                         <div>Owned by</div>
                                         <DisplayAddress
@@ -1258,7 +1275,7 @@ function Home() {
                                       className="absolute bottom-1 right-1 flex items-center justify-center rounded-full bg-[#9945ff] px-2 text-[10px]"
                                       style={{
                                         color:
-                                          stakePoolMetadata?.colors?.secondary,
+                                          stakePoolMetadata?.colors?.fontColor,
                                         background:
                                           stakePoolMetadata?.colors?.primary,
                                       }}
@@ -1377,7 +1394,18 @@ function Home() {
                   className="my-auto flex rounded-md px-4 py-2 hover:scale-[1.03]"
                 >
                   <span className="mr-1 inline-block">
-                    {loadingUnstake ? <LoadingSpinner height="25px" /> : ''}
+                    {loadingUnstake ? (
+                      <LoadingSpinner
+                        fill={
+                          stakePoolMetadata?.colors?.fontColor
+                            ? stakePoolMetadata?.colors?.fontColor
+                            : '#FFF'
+                        }
+                        height="25px"
+                      />
+                    ) : (
+                      ''
+                    )}
                   </span>
                   <span className="my-auto">
                     Unstake Tokens ({stakedSelected.length})
@@ -1407,7 +1435,16 @@ function Home() {
                   className="my-auto mr-5 flex rounded-md px-4 py-2 hover:scale-[1.03]"
                 >
                   <span className="mr-1 inline-block">
-                    {loadingClaimRewards && <LoadingSpinner height="20px" />}
+                    {loadingClaimRewards && (
+                      <LoadingSpinner
+                        fill={
+                          stakePoolMetadata?.colors?.fontColor
+                            ? stakePoolMetadata?.colors?.fontColor
+                            : '#FFF'
+                        }
+                        height="25px"
+                      />
+                    )}
                   </span>
                   <span className="my-auto">
                     Claim Rewards ({stakedSelected.length})

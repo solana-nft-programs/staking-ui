@@ -386,7 +386,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     ),
     websiteUrl: 'https://www.roguesharks.org/',
     receiptType: ReceiptType.Receipt,
-    maxStaked: Infinity, // update with collection size
+    maxStaked: 4991, // update with collection size
     hidden: true,
     imageUrl: '/logos/rogue-sharks.svg',
     tokenStandard: TokenStandard.NonFungible,

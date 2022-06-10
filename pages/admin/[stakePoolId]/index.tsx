@@ -33,12 +33,13 @@ import { useState } from 'react'
 import { TailSpin } from 'react-loader-spinner'
 import { CreationForm, StakePoolForm } from 'components/StakePoolForm'
 import { useRewardDistributorData } from 'hooks/useRewardDistributorData'
-import { tryPublicKey } from 'common/utils'
+import { pubKeyUrl, shortPubKey, tryPublicKey } from 'common/utils'
 import { findStakeEntryIdFromMint } from '@cardinal/staking/dist/cjs/programs/stakePool/utils'
 import * as Yup from 'yup'
 import { useFormik } from 'formik'
 import { getMintDecimalAmountFromNatural } from 'common/units'
 import { useRewardMintInfo } from 'hooks/useRewardMintInfo'
+import { Tooltip } from '@mui/material'
 
 const publicKeyValidationTest = (value: string | undefined): boolean => {
   return tryPublicKey(value) ? true : false
@@ -510,7 +511,7 @@ function AdminStakePool() {
                       <label className="inline-block text-sm font-bold uppercase tracking-wide text-gray-200">
                         Creator Addresses:
                       </label>
-                      <label className="inline-block pl-2">
+                      <label className="inline-block pl-2 text-white">
                         {stakePool.data?.parsed.requiresCreators &&
                         stakePool.data?.parsed.requiresCreators.length !== 0
                           ? stakePool.data?.parsed.requiresCreators.map(
@@ -518,7 +519,7 @@ function AdminStakePool() {
                                 <ShortPubKeyUrl
                                   pubkey={creator}
                                   cluster={environment.label}
-                                  className="pr-2 text-sm text-white"
+                                  className="pr-2 text-sm font-bold underline underline-offset-2"
                                 />
                               )
                             )
@@ -546,6 +547,26 @@ function AdminStakePool() {
                     </span>
                     {rewardDistributor.data && (
                       <>
+                        <span className="mt-3 flex w-full flex-wrap md:mb-0">
+                          <Tooltip
+                            title={'Use to add more funds to reward ditributor'}
+                            placement="right"
+                          >
+                            <label className="inline-block text-sm font-bold uppercase tracking-wide text-gray-200">
+                              Reward Distributor Token Account:{' '}
+                              <a
+                                target={'_blank'}
+                                className="underline underline-offset-2"
+                                href={pubKeyUrl(
+                                  rewardDistributor.data.pubkey,
+                                  environment.label
+                                )}
+                              >
+                                {shortPubKey(rewardDistributor.data.pubkey)}
+                              </a>{' '}
+                            </label>
+                          </Tooltip>
+                        </span>
                         <span className="mt-3 flex w-full flex-wrap md:mb-0">
                           <label className="inline-block text-sm font-bold uppercase tracking-wide text-gray-200">
                             Reward Duration Seconds:{' '}

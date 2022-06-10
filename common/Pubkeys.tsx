@@ -12,7 +12,7 @@ export function ShortPubKeyUrl({
 }) {
   return (
     <a
-      className={`text-xs text-gray-500 ${className}`}
+      className={`text-xs ${className}`}
       target="_blank"
       rel="noreferrer"
       href={pubKeyUrl(pubkey, cluster)}

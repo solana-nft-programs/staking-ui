@@ -462,7 +462,16 @@ export const QuickActions = ({
         }
       >
         {loading ? (
-          <LoadingSpinner height="15px" />
+          <div>
+            <LoadingSpinner
+              fill={
+                stakePoolMetadata?.colors?.fontColor
+                  ? stakePoolMetadata?.colors?.fontColor
+                  : '#FFF'
+              }
+              height="15px"
+            />
+          </div>
         ) : (
           <div
             style={{

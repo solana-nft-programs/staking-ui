@@ -97,10 +97,12 @@ export const AsyncButton = ({
   children,
   handleClick,
   className,
+  color,
   ...buttonProps
 }: {
   children: JSX.Element | JSX.Element[] | string
   className?: string
+  color?: string
   handleClick: () => void
 } & ButtonProps) => {
   const [loading, setLoading] = useState(false)
@@ -118,7 +120,11 @@ export const AsyncButton = ({
         }
       }}
     >
-      {loading ? <LoadingSpinner height="25px" /> : children}
+      {loading ? (
+        <LoadingSpinner fill={color ? color : '#FFF'} height="15px" />
+      ) : (
+        children
+      )}
     </Button>
   )
 }
