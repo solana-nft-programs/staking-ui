@@ -67,7 +67,7 @@ export const Header = () => {
           </div>
         </div>
       )}
-      <div className={`flex h-20 justify-between px-10 text-white`}>
+      <div className={`flex h-20 justify-between px-5 text-white`}>
         <div className="flex items-center gap-3">
           <a
             target="_blank"

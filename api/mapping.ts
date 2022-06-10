@@ -413,8 +413,8 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     websiteUrl: 'https://ghostlifeclub.com',
     receiptType: ReceiptType.Original,
     maxStaked: 4444,
-    imageUrl: 'https://ghostlifeclub.mypinata.cloud/ipfs/QmV3XFK6SYvxdKD6YGHFq1ZtLYc3Gtw2X9mhSk8yXcZokT',
-    redirect: '',
+    imageUrl:
+      'https://ghostlifeclub.mypinata.cloud/ipfs/QmV3XFK6SYvxdKD6YGHFq1ZtLYc3Gtw2X9mhSk8yXcZokT',
     colors: {
       primary: '#3A3B3C',
       secondary: '#810541',
