@@ -97,7 +97,9 @@ export const QuickActions = ({
                 display: 'flex',
                 alignItems: 'center',
                 gap: '10px',
-                color: 'white',
+                color: stakePoolMetadata?.colors?.fontColor
+                  ? `text-[${stakePoolMetadata?.colors?.fontColor}]`
+                  : 'white',
               }}
               className="justify-between"
               href={pubKeyUrl(
@@ -120,7 +122,9 @@ export const QuickActions = ({
                   display: 'flex',
                   alignItems: 'center',
                   gap: '10px',
-                  color: 'white',
+                  color: stakePoolMetadata?.colors?.fontColor
+                    ? `text-[${stakePoolMetadata?.colors?.fontColor}]`
+                    : 'white',
                 }}
                 className="justify-between"
                 href={metadataUrl(
@@ -457,7 +461,19 @@ export const QuickActions = ({
             : unstakedTokenData?.stakeEntry?.parsed.originalMint.toString()
         }
       >
-        {loading ? <LoadingSpinner height="15px" /> : <FaEllipsisH />}
+        {loading ? (
+          <LoadingSpinner height="15px" />
+        ) : (
+          <div
+            style={{
+              color: stakePoolMetadata?.colors?.fontColor
+                ? stakePoolMetadata?.colors?.fontColor
+                : 'white',
+            }}
+          >
+            <FaEllipsisH />
+          </div>
+        )}
       </div>
     </Popover>
   )

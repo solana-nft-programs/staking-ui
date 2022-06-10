@@ -416,9 +416,9 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       'https://cannaverse.gg/wp-content/uploads/2022/05/cannaverse-white-logo-full-1-e1652295225261.png',
     colors: {
       primary: '#211F20',
-      secondary: '#FFFFFF',
+      secondary: '#211F20',
       accent: '#000',
-    }
+    },
   },
   {
     name: 'glc',

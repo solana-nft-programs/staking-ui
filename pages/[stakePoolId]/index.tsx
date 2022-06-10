@@ -643,7 +643,12 @@ function Home() {
                           rewardDistributorData.data.parsed.multiplierDecimals)
                     ).toPrecision(4)}{' '}
                     <a
-                      className="text-white underline"
+                      className="underline"
+                      style={{
+                        color: stakePoolMetadata?.colors?.fontColor
+                          ? stakePoolMetadata?.colors?.fontColor
+                          : 'white',
+                      }}
                       target="_blank"
                       href={pubKeyUrl(
                         rewardDistributorData.data.parsed.rewardMint,
