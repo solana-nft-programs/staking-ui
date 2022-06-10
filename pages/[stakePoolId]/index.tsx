@@ -459,6 +459,10 @@ function Home() {
         tk.stakeEntry?.parsed.originalMint.toString()
     )
 
+  if (!stakePoolMetadata) {
+    return
+  }
+
   return (
     <div style={{ background: stakePoolMetadata?.colors?.primary }}>
       <Head>
