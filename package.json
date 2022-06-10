@@ -27,6 +27,7 @@
     "@cardinal/namespaces-components": "^3.0.15",
     "@cardinal/scanner": "^0.1.1",
     "@cardinal/staking": "^1.5.16",
+    "@cardinal/stats": "^1.0.3",
     "@emotion/styled": "^11.8.1",
     "@headlessui/react": "^1.6.1",
     "@metaplex/js": "^4.12.0",

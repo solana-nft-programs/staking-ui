@@ -54,6 +54,7 @@ import { RewardDistributorKind } from '@cardinal/staking/dist/cjs/programs/rewar
 import { useRouter } from 'next/router'
 import { lighten } from '@mui/material'
 import { QuickActions } from 'common/QuickActions'
+import * as splToken from '@solana/spl-token'
 
 function Home() {
   const router = useRouter()
@@ -78,6 +79,7 @@ function Home() {
   const [loadingStake, setLoadingStake] = useState(false)
   const [loadingUnstake, setLoadingUnstake] = useState(false)
   const [singleTokenAction, setSingleTokenAction] = useState('')
+  const [totalStaked, setTotalStaked] = useState('')
   const [receiptType, setReceiptType] = useState<ReceiptType>(
     ReceiptType.Original
   )
@@ -452,6 +454,50 @@ function Home() {
         tk.stakeEntry?.parsed.originalMint.toString()
     )
 
+  const totalStakedTokens = async () => {
+    let total = 0
+    if (!stakePoolEntries.data) {
+      setTotalStaked('0')
+      return
+    }
+    const mintToDecimals: { mint: string; decimals: number }[] = []
+    for (const entry of stakePoolEntries.data) {
+      try {
+        if (entry.parsed.amount.toNumber() > 1) {
+          let decimals = 0
+          const match = mintToDecimals.find(
+            (m) => m.mint === entry.parsed.originalMint.toString()
+          )
+          if (match) {
+            decimals = match.decimals
+          } else {
+            const mint = new splToken.Token(
+              connection,
+              entry.parsed.originalMint,
+              splToken.TOKEN_PROGRAM_ID,
+              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+              // @ts-ignore
+              null
+            )
+            const mintInfo = await mint.getMintInfo()
+            decimals = mintInfo.decimals
+            mintToDecimals.push({
+              mint: entry.parsed.originalMint.toString(),
+              decimals: decimals,
+            })
+          }
+          total += entry.parsed.amount.toNumber() / 10 ** decimals
+        } else {
+          total += 1
+        }
+      } catch (e) {
+        console.log('Error calculating total staked tokens', e)
+      }
+    }
+    setTotalStaked(Math.ceil(total).toString())
+  }
+  totalStakedTokens()
+
   return (
     <div style={{ background: stakePoolMetadata?.colors?.primary }}>
       <Head>
@@ -512,7 +558,7 @@ function Home() {
             {stakePoolEntries.data ? (
               <>
                 <div className="inline-block text-lg">
-                  Total Staked: {stakePoolEntries.data?.length}
+                  Total Staked: {Number(totalStaked).toLocaleString()}
                 </div>
                 {maxStaked > 0 && (
                   <div className="inline-block text-lg">
