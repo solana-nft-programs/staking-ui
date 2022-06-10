@@ -2,6 +2,7 @@ import { Footer } from 'common/Footer'
 import { Header } from 'common/Header'
 import { pubKeyUrl, shortPubKey } from 'common/utils'
 import { useAllStakePools } from 'hooks/useAllStakePools'
+import { useStats } from 'hooks/useStats'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
@@ -17,6 +18,7 @@ function Home() {
   const { environment } = useEnvironmentCtx()
   const allStakePools = useAllStakePools()
   const router = useRouter()
+  const stats = useStats()
 
   return (
     <div>
@@ -28,6 +30,24 @@ function Home() {
 
       <div>
         <Header />
+        {stats.isFetched && stats.data && (
+          <div className="md:text-md flex w-full items-center justify-center gap-10 rounded-md text-center text-xs sm:text-sm lg:text-lg">
+            {/* <div className="text-xs font-semibold"> */}
+            {Object.keys(stats.data).map((name, i) => {
+              return (
+                <div key={i} className="flex gap-2">
+                  <span>{name}:</span>
+                  <span>
+                    {Number(
+                      stats.data![name]!.data.parsed.value
+                    ).toLocaleString()}
+                  </span>
+                </div>
+              )
+            })}
+            {/* </div> */}
+          </div>
+        )}
         <div
           className="container mx-auto w-full px-5"
           style={{ minHeight: 'calc(100vh - 460px)' }}

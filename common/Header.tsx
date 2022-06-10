@@ -35,7 +35,6 @@ export const Header = () => {
   const wallet = useWallet()
   const stakePoolId = useStakePoolId()
   const { data: stakePoolMetadata } = useStakePoolMetadata()
-  const stats = useStats()
   const { clockDrift } = useUTCNow()
 
   return (
@@ -102,22 +101,6 @@ export const Header = () => {
             ''
           )}
         </div>
-        {stats.isFetched && stats.data && (
-          <div className="relative my-auto flex items-center align-middle text-lg">
-            {Object.keys(stats.data).map((name, i) => {
-              return (
-                <div key={i} className="mr-10 flex gap-2">
-                  <span>{name}:</span>
-                  <span>
-                    {Number(
-                      stats.data![name]!.data.parsed.value
-                    ).toLocaleString()}
-                  </span>
-                </div>
-              )
-            })}
-          </div>
-        )}
         <div className="relative my-auto flex items-center align-middle">
           {stakePoolId && stakePoolMetadata ? (
             stakePoolMetadata.links?.map((link) => (
