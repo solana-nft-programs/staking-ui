@@ -12,6 +12,7 @@ import { Wallet } from '@saberhq/solana-contrib'
 import { useStakePoolId } from 'hooks/useStakePoolId'
 import { useUTCNow } from 'providers/UTCNowProvider'
 import { useStats } from 'hooks/useStats'
+import { contrastColorMode } from './utils'
 
 export const StyledWalletButton = styled(WalletMultiButton)`
   color: rgb(55, 65, 81, 1);
@@ -66,7 +67,7 @@ export const Header = () => {
           </div>
         </div>
       )}
-      <div className={`flex h-20 justify-between px-5 text-white`}>
+      <div className={`flex h-20 justify-between px-10 text-white`}>
         <div className="flex items-center gap-3">
           <a
             target="_blank"
@@ -158,7 +159,11 @@ export const Header = () => {
           )}
           {wallet.connected && wallet.publicKey ? (
             <AccountConnect
-              dark
+              dark={
+                stakePoolMetadata?.colors?.backgroundSecondary
+                  ? contrastColorMode(stakePoolMetadata?.colors?.primary)[1]
+                  : true
+              }
               connection={ctx.secondaryConnection}
               environment={ctx.environment.label}
               handleDisconnect={() => wallet.disconnect()}

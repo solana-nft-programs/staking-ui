@@ -404,7 +404,7 @@ export const QuickActions = ({
                         {}
                       )
                       notify({
-                        message: 'Successfully staked token',
+                        message: 'Successfully unstaked token',
                         type: 'success',
                       })
                     } catch (e) {}

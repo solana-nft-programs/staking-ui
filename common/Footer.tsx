@@ -1,5 +1,6 @@
 import { darken, lighten } from 'polished'
 import { FaDiscord, FaGithub, FaMedium, FaTwitter } from 'react-icons/fa'
+import { contrastColorMode, hexColor } from './utils'
 
 const SOCIALS = {
   discord: { icon: <FaDiscord />, link: 'https://discord.gg/byq6uNTugq' },
@@ -26,13 +27,27 @@ export const Footer = ({
         <div className="flex items-center">
           <img
             className="inline-block h-[28px]"
-            src="/cardinal-crosshair.svg"
+            src={
+              contrastColorMode(bgColor)[1]
+                ? '/cardinal-crosshair.svg'
+                : '/cardinal-crosshair-dark.svg'
+            }
           />
-          <span className="ml-3 text-2xl font-semibold">Cardinal</span>
+          <span
+            className="ml-3 text-2xl font-semibold"
+            style={{ color: lighten(0.4, contrastColorMode(bgColor)[0]) }}
+          >
+            Cardinal
+          </span>
         </div>
         <div className="flex gap-10 self-end text-center md:gap-20">
           <span className="flex flex-col items-start gap-1">
-            <div className="mb-2 text-lg font-semibold">App</div>
+            <div
+              className="mb-2 text-lg font-semibold"
+              style={{ color: lighten(0.4, contrastColorMode(bgColor)[0]) }}
+            >
+              App
+            </div>
             <a href="/" className="text-gray-400">
               Pools
             </a>
@@ -41,7 +56,12 @@ export const Footer = ({
             </a>
           </span>
           <span className="flex flex-col items-start gap-1">
-            <div className="mb-2 text-lg font-semibold">Resources</div>
+            <div
+              className="mb-2 text-lg font-semibold"
+              style={{ color: lighten(0.4, contrastColorMode(bgColor)[0]) }}
+            >
+              Resources
+            </div>
             <a href="https://docs.cardinal.so/" className="text-gray-400">
               Documentation
             </a>

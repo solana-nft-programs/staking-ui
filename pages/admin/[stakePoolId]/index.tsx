@@ -11,6 +11,7 @@ import {
 import {
   withCloseRewardDistributor,
   withInitRewardDistributor,
+  withUpdateRewardDistributor,
   withUpdateRewardEntry,
 } from '@cardinal/staking/dist/cjs/programs/rewardDistributor/transaction'
 import {
@@ -326,33 +327,31 @@ function AdminStakePool() {
             type: 'success',
           })
         }
-      } else {
-        // if (
-        //   rewardDistributor.parsed.defaultMultiplier.toString() !==
-        //     defaultMultiplier &&
-        //   rewardDistributor.parsed.multiplierDecimals.toString() !==
-        //     multiplierDecimals
-        // ) {
-        //   const tx = await withUpdateRewardDistributor(
-        //     new Transaction(),
-        //     connection,
-        //     wallet as Wallet,
-        //     {
-        //       stakePoolId: stakePool.data.pubkey,
-        //       defaultMultiplier: new BN(defaultMultiplier),
-        //       multiplierDecimals: Number(multiplierDecimals),
-        //     }
-        //   )
-        //   console.log(tx)
-        //   await executeTransaction(connection, wallet as Wallet, tx, {
-        //     silent: false,
-        //     signers: [],
-        //   })
-        //   notify({
-        //     message: `Successfully updated defaultMultiplier and multiplierDecimals`,
-        //     type: 'success',
-        //   })
-        // }
+      } else if (
+        rewardDistributor.data?.parsed.defaultMultiplier.toString() !==
+          values.defaultMultiplier?.toString() &&
+        rewardDistributor.data?.parsed.multiplierDecimals.toString() !==
+          values.multiplierDecimals?.toString()
+      ) {
+        const tx = await withUpdateRewardDistributor(
+          new Transaction(),
+          connection,
+          wallet as Wallet,
+          {
+            stakePoolId: stakePool.data.pubkey,
+            defaultMultiplier: new BN(values.defaultMultiplier!),
+            multiplierDecimals: Number(values.multiplierDecimals),
+          }
+        )
+        console.log(tx)
+        await executeTransaction(connection, wallet as Wallet, tx, {
+          silent: false,
+          signers: [],
+        })
+        notify({
+          message: `Successfully updated defaultMultiplier and multiplierDecimals`,
+          type: 'success',
+        })
       }
 
       const collectionPublicKeys = values.requireCollections
