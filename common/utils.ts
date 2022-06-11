@@ -74,7 +74,7 @@ export function secondstoDuration(durationSeconds: number) {
   const days = Math.floor((durationSeconds % 604800) / 86400)
   const hours = Math.floor((durationSeconds % 86400) / 3600)
   const minutes = Math.floor((durationSeconds % 3600) / 60)
-  const seconds = durationSeconds % 60
+  const seconds = Math.ceil(durationSeconds % 60)
   let duration = ''
   const optionalVals = [`${years}Y`, `${months}M`, `${weeks}w`, `${days}d`]
   const vals = [`${hours}h`, `${minutes}m`, `${seconds}s`]
