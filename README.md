@@ -9,7 +9,7 @@ For questions or technical help, join our **[Discord](https://discord.gg/stX2FAY
 ---
 
 <div style="text-align: center; width: 100%;">
-  <img style="height: 450px" src="./images/staking.gif" />
+  <img style="height: 450px" src="./images/staking.png" />
 </div>
 
 ### Installation

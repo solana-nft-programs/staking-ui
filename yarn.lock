@@ -286,19 +286,19 @@
     ts-mocha "^8.0.0"
     typescript "^4.5.5"
 
-"@cardinal/staking@^1.5.16":
-  version "1.5.16"
-  resolved "https://registry.yarnpkg.com/@cardinal/staking/-/staking-1.5.16.tgz#312f0cc4b63ddb7e247ddc905212d511640e0659"
-  integrity sha512-FX9hCrgWMFRxJCJtrTzeslZhbkBB8/3nUvBbRiz9e/tffqUgfSekJdefBTrPQkdi1TI1OElm7q7x2bnwI7ibCQ==
+"@cardinal/staking@^1.5.18":
+  version "1.5.18"
+  resolved "https://registry.yarnpkg.com/@cardinal/staking/-/staking-1.5.18.tgz#cc6cbc34bfa001f7bd0b17dec92e4660471a372a"
+  integrity sha512-ptrx30jcjyrCGCR+JbutnY3ilyCaQDjyyyXZbiJHNDG3hBvFfwjdM2ElsSomEpmCjAFEunal/KFlXpgVHABx3Q==
   dependencies:
     "@cardinal/common" "^1.0.10"
     "@cardinal/token-manager" "^1.2.0"
     "@metaplex-foundation/mpl-token-metadata" "^1.2.5"
 
-"@cardinal/staking@^1.5.18":
-  version "1.5.18"
-  resolved "https://registry.yarnpkg.com/@cardinal/staking/-/staking-1.5.18.tgz#cc6cbc34bfa001f7bd0b17dec92e4660471a372a"
-  integrity sha512-ptrx30jcjyrCGCR+JbutnY3ilyCaQDjyyyXZbiJHNDG3hBvFfwjdM2ElsSomEpmCjAFEunal/KFlXpgVHABx3Q==
+"@cardinal/staking@^1.5.19":
+  version "1.5.19"
+  resolved "https://registry.yarnpkg.com/@cardinal/staking/-/staking-1.5.19.tgz#0e5b43e34c342c0b4b6be9a538a3d526033a8b46"
+  integrity sha512-2kTmBkb3M1LkdRwPaQufCXIeYbtniCkaGnTYMo4qXsnttaXToGlDIiFRIW6sBsxYG6RRBfs8j4tLdYWQla/CqQ==
   dependencies:
     "@cardinal/common" "^1.0.10"
     "@cardinal/token-manager" "^1.2.0"

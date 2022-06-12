@@ -642,23 +642,22 @@ function Home() {
                               (
                                 stakeData.stakeEntry?.parsed.amount || new BN(1)
                               ).mul(
-                                rewardEntries.data
-                                  ?.find(
+                                (
+                                  rewardEntries.data?.find(
                                     (entryData) =>
                                       entryData.parsed.stakeEntry.toString() ===
                                       stakeData.stakeEntry?.pubkey.toString()
-                                  )
-                                  ?.parsed.multiplier.div(
-                                    new BN(10).pow(
-                                      new BN(
-                                        rewardDistributorData.data?.parsed
-                                          .multiplierDecimals || 0
-                                      )
+                                  )?.parsed.multiplier ||
+                                  rewardDistributorData.data!.parsed
+                                    .defaultMultiplier
+                                ).div(
+                                  new BN(10).pow(
+                                    new BN(
+                                      rewardDistributorData.data?.parsed
+                                        .multiplierDecimals || 0
                                     )
-                                  ) ||
-                                  rewardDistributorData.data?.parsed
-                                    .defaultMultiplier ||
-                                  new BN(1)
+                                  )
+                                ) || new BN(1)
                               )
                             ) || []
                           )
