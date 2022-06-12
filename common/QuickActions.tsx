@@ -156,19 +156,36 @@ export const QuickActions = ({
               </div>
             </PopoverItem>
           )}
-          {unstakedTokenData?.tokenAccount && !showFungibleTokens && (
+          {unstakedTokenData?.tokenAccount && (
             <PopoverItem>
               <div
                 className="flex cursor-pointer items-center justify-between gap-2"
                 onClick={async () => {
-                  if (!wallet) {
-                    notify({ message: `Wallet not connected`, type: 'error' })
+                  try {
+                    if (!wallet) {
+                      throw new Error(`Wallet not connected`)
+                    }
+
+                    if (!stakePool) {
+                      throw new Error(`Wallet not connected`)
+                    }
+
+                    if (!unstakedTokenData || !unstakedTokenData.tokenAccount) {
+                      throw new Error('Token account not set')
+                    }
+
+                    if (
+                      unstakedTokenData.tokenAccount?.account.data.parsed.info
+                        .tokenAmount.amount > 1 &&
+                      !unstakedTokenData.amountToStake
+                    ) {
+                      throw new Error('Invalid amount chosen for token')
+                    }
+                  } catch (e) {
+                    notify({ message: `${e}`, type: 'error' })
                     return
                   }
-                  if (!stakePool) {
-                    notify({ message: `Wallet not connected`, type: 'error' })
-                    return
-                  }
+
                   setLoading(true)
                   setSingleTokenAction(
                     unstakedTokenData?.tokenAccount?.account.data.parsed.info.mint.toString()

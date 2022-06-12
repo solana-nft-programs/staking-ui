@@ -254,12 +254,6 @@ function Home() {
           throw new Error('Invalid amount chosen for token')
         }
 
-        if (token.stakeEntry && token.stakeEntry.parsed.amount.toNumber() > 0) {
-          throw new Error(
-            'Fungible tokens already staked in the pool. Staked tokens need to be unstaked and then restaked together with the new tokens.'
-          )
-        }
-
         if (receiptType === ReceiptType.Receipt) {
           console.log('Creating stake entry and stake mint...')
           const [initTx, , stakeMintKeypair] =
@@ -401,7 +395,7 @@ function Home() {
           data.tokenAccount?.account.data.parsed.info.mint.toString() !==
           tk.tokenAccount?.account.data.parsed.info.mint.toString()
       )
-      if (!amount && targetValue != '0' && amount !== 0) {
+      if (targetValue && targetValue?.length > 0 && !amount) {
         notify({
           message: 'Please enter a valid amount',
           type: 'error',
@@ -410,8 +404,15 @@ function Home() {
         tk.amountToStake = targetValue.toString()
         newUnstakedSelected = [...newUnstakedSelected, tk]
         setUnstakedSelected(newUnstakedSelected)
-        console.log(targetValue)
+        return
       }
+      setUnstakedSelected(
+        unstakedSelected.filter(
+          (data) =>
+            data.tokenAccount?.account.data.parsed.info.mint.toString() !==
+            tk.tokenAccount?.account.data.parsed.info.mint.toString()
+        )
+      )
     } else {
       if (isUnstakedTokenSelected(tk)) {
         setUnstakedSelected(
@@ -597,7 +598,7 @@ function Home() {
                 <div className="inline-block text-lg">
                   Total Staked: {Number(totalStaked).toLocaleString()}{' '}
                   {stakePoolMetadata?.maxStaked
-                    ? `/ ${stakePoolMetadata?.maxStaked}`
+                    ? `/ ${stakePoolMetadata?.maxStaked.toLocaleString()}`
                     : ''}
                 </div>
                 {maxStaked > 0 && (
@@ -636,7 +637,33 @@ function Home() {
                       (Number(
                         getMintDecimalAmountFromNatural(
                           rewardMintInfo.data.mintInfo,
-                          new BN(rewardDistributorData.data.parsed.rewardAmount)
+                          (
+                            stakedTokenDatas.data?.map((stakeData) =>
+                              (
+                                stakeData.stakeEntry?.parsed.amount || new BN(1)
+                              ).mul(
+                                rewardEntries.data
+                                  ?.find(
+                                    (entryData) =>
+                                      entryData.parsed.stakeEntry.toString() ===
+                                      stakeData.stakeEntry?.pubkey.toString()
+                                  )
+                                  ?.parsed.multiplier.div(
+                                    new BN(10).pow(
+                                      new BN(
+                                        rewardDistributorData.data?.parsed
+                                          .multiplierDecimals || 0
+                                      )
+                                    )
+                                  ) ||
+                                  rewardDistributorData.data?.parsed
+                                    .defaultMultiplier ||
+                                  new BN(1)
+                              )
+                            ) || []
+                          )
+                            .reduce((pre, curr) => pre.add(curr), new BN(0))
+                            .mul(rewardDistributorData.data.parsed.rewardAmount)
                         )
                       ) /
                         rewardDistributorData.data.parsed.rewardDurationSeconds.toNumber()) *
@@ -876,7 +903,7 @@ function Home() {
                                 selectStakedToken={selectStakedToken}
                               />
                               <img
-                                className="mx-auto mt-4 mb-2 rounded-xl bg-white bg-opacity-5 object-contain md:h-40 md:w-40 2xl:h-48 2xl:w-48"
+                                className="mx-auto mt-4 rounded-t-xl bg-white bg-opacity-5 object-contain md:h-40 md:w-40 2xl:h-48 2xl:w-48"
                                 src={
                                   tk.metadata?.data.image ||
                                   tk.tokenListData?.logoURI
@@ -886,18 +913,60 @@ function Home() {
                                   tk.tokenListData?.name
                                 }
                               />
-                              {tk.tokenListData && (
-                                <div className="absolute bottom-2 left-2">
-                                  {Number(
-                                    (
-                                      tk.tokenAccount?.account.data.parsed.info
-                                        .tokenAmount.amount /
-                                      10 ** tk.tokenListData.decimals
-                                    ).toFixed(2)
-                                  )}{' '}
-                                  {tk.tokenListData.symbol}
+                              <div
+                                className={`flex-col rounded-b-xl p-2 ${
+                                  stakePoolMetadata?.colors?.fontColor
+                                    ? `text-[${stakePoolMetadata?.colors?.fontColor}]`
+                                    : 'text-gray-200'
+                                } ${
+                                  stakePoolMetadata?.colors?.backgroundSecondary
+                                    ? `bg-[${stakePoolMetadata?.colors?.backgroundSecondary}]`
+                                    : 'bg-white bg-opacity-10'
+                                }`}
+                                style={{
+                                  background:
+                                    stakePoolMetadata?.colors
+                                      ?.backgroundSecondary,
+                                }}
+                              >
+                                <div className="truncate font-semibold">
+                                  {tk.metadata?.data.name ||
+                                    tk.tokenListData?.symbol}
                                 </div>
-                              )}
+                                {showFungibleTokens && rewardMintInfo.data && (
+                                  <div className="mt-2">
+                                    <div className="truncate font-semibold">
+                                      <div className="flex w-full flex-row justify-between text-xs font-semibold">
+                                        <span>Available:</span>
+                                        <span className="px-1">
+                                          {formatAmountAsDecimal(
+                                            rewardMintInfo.data?.mintInfo
+                                              .decimals,
+                                            tk.tokenAccount?.account.data.parsed
+                                              .info.tokenAmount.amount,
+                                            rewardMintInfo.data?.mintInfo
+                                              .decimals
+                                          )}
+                                        </span>
+                                      </div>
+                                    </div>
+                                    <div className="flex w-full flex-row justify-between text-xs font-semibold">
+                                      <span>Amount:</span>
+                                      <input
+                                        className="flex w-3/4 rounded-md bg-transparent px-1 text-right text-xs font-medium focus:outline-none"
+                                        type="text"
+                                        placeholder={'Enter Amount'}
+                                        onChange={(e) => {
+                                          selectUnstakedToken(
+                                            tk,
+                                            e.target.value
+                                          )
+                                        }}
+                                      />
+                                    </div>
+                                  </div>
+                                )}
+                              </div>
                             </div>
                             {isUnstakedTokenSelected(tk) && (
                               <div
@@ -909,41 +978,6 @@ function Home() {
                                     stakePoolMetadata?.colors?.primary,
                                   borderRadius: '50%',
                                   display: 'inline-block',
-                                }}
-                              />
-                            )}
-                            {showFungibleTokens && (
-                              <input
-                                disabled={loadingStake || loadingUnstake}
-                                placeholder={
-                                  tk.tokenAccount?.account.data.parsed.info
-                                    .tokenAmount.amount > 1
-                                    ? '1'
-                                    : ''
-                                }
-                                autoComplete="off"
-                                type={
-                                  tk.tokenAccount?.account.data.parsed.info
-                                    .tokenAmount.amount > 1
-                                    ? 'text'
-                                    : 'checkbox'
-                                }
-                                className={`absolute h-4 ${
-                                  tk.tokenAccount?.account.data.parsed.info
-                                    .tokenAmount.amount > 1
-                                    ? `w-20 py-3 px-2 text-right`
-                                    : 'w-4'
-                                } top-2 left-2 rounded-sm font-medium text-black focus:outline-none`}
-                                id={tk?.tokenAccount?.pubkey.toBase58()}
-                                name={tk?.tokenAccount?.pubkey.toBase58()}
-                                checked={isUnstakedTokenSelected(tk)}
-                                value={
-                                  isUnstakedTokenSelected(tk)
-                                    ? tk.amountToStake || 0
-                                    : ''
-                                }
-                                onChange={(e) => {
-                                  selectUnstakedToken(tk, e.target.value)
                                 }}
                               />
                             )}
@@ -1214,7 +1248,7 @@ function Home() {
                                   selectStakedToken={selectStakedToken}
                                 />
                                 <img
-                                  className="mx-auto mt-4 mb-2 rounded-xl bg-white bg-opacity-5 object-contain md:h-40 md:w-40 2xl:h-48 2xl:w-48"
+                                  className="mx-auto mt-4 rounded-t-xl bg-white bg-opacity-5 object-contain md:h-40 md:w-40 2xl:h-48 2xl:w-48"
                                   src={
                                     tk.metadata?.data.image ||
                                     tk.tokenListData?.logoURI
@@ -1224,7 +1258,207 @@ function Home() {
                                     tk.tokenListData?.name
                                   }
                                 />
-                                {tk.tokenListData && (
+                                <div
+                                  className={`flex-col rounded-b-xl p-2 ${
+                                    stakePoolMetadata?.colors?.fontColor
+                                      ? `text-[${stakePoolMetadata?.colors?.fontColor}]`
+                                      : 'text-gray-200'
+                                  } ${
+                                    stakePoolMetadata?.colors
+                                      ?.backgroundSecondary
+                                      ? `bg-[${stakePoolMetadata?.colors?.backgroundSecondary}]`
+                                      : 'bg-white bg-opacity-10'
+                                  }`}
+                                  style={{
+                                    background:
+                                      stakePoolMetadata?.colors
+                                        ?.backgroundSecondary,
+                                  }}
+                                >
+                                  <div className="truncate font-semibold">
+                                    {tk.metadata?.data.name ||
+                                      tk.tokenListData?.symbol}
+                                  </div>
+                                  <div className="mt-2">
+                                    {tk.stakeEntry &&
+                                      tk.stakeEntry.parsed.amount.toNumber() >
+                                        1 &&
+                                      rewardMintInfo.data && (
+                                        <div className="flex w-full flex-row justify-between text-xs font-semibold">
+                                          <span>Amount:</span>
+                                          <span>
+                                            {formatAmountAsDecimal(
+                                              rewardMintInfo.data?.mintInfo
+                                                .decimals,
+                                              tk.stakeEntry &&
+                                                tk.stakeEntry.parsed.amount,
+                                              rewardMintInfo.data?.mintInfo
+                                                .decimals
+                                            )}
+                                          </span>
+                                        </div>
+                                      )}
+                                    {tk.stakeEntry?.pubkey && (
+                                      <div className="flex w-full flex-row justify-between text-xs font-semibold">
+                                        <span>Boost:</span>
+                                        <span>
+                                          {rewardDistributorData.data?.parsed
+                                            .multiplierDecimals !== undefined &&
+                                            formatAmountAsDecimal(
+                                              rewardDistributorData.data?.parsed
+                                                .multiplierDecimals || 0,
+                                              rewardEntries.data
+                                                ? rewardEntries.data.find(
+                                                    (entry) =>
+                                                      entry.parsed.stakeEntry.equals(
+                                                        tk.stakeEntry?.pubkey!
+                                                      )
+                                                  )?.parsed.multiplier ||
+                                                    rewardDistributorData.data
+                                                      .parsed.defaultMultiplier
+                                                : rewardDistributorData.data
+                                                    .parsed.defaultMultiplier,
+                                              rewardDistributorData.data.parsed
+                                                .multiplierDecimals
+                                            ).toString()}
+                                          x
+                                        </span>
+                                      </div>
+                                    )}
+                                    {rewardDistributorData.data && (
+                                      <>
+                                        {tk.stakeEntry && rewardMintInfo.data && (
+                                          <div className="flex w-full flex-row justify-between text-xs font-semibold">
+                                            <span>Daily:</span>
+                                            <span>
+                                              {(
+                                                (Number(
+                                                  getMintDecimalAmountFromNatural(
+                                                    rewardMintInfo.data
+                                                      .mintInfo,
+                                                    rewardEntries.data
+                                                      ? rewardDistributorData.data.parsed.rewardAmount
+                                                          .mul(
+                                                            rewardEntries.data.find(
+                                                              (entry) =>
+                                                                entry.parsed.stakeEntry.equals(
+                                                                  tk.stakeEntry
+                                                                    ?.pubkey!
+                                                                )
+                                                            )?.parsed
+                                                              .multiplier ||
+                                                              rewardDistributorData
+                                                                .data.parsed
+                                                                .defaultMultiplier
+                                                          )
+                                                          .div(
+                                                            new BN(10).pow(
+                                                              new BN(
+                                                                rewardDistributorData.data.parsed.multiplierDecimals
+                                                              )
+                                                            )
+                                                          )
+                                                      : rewardDistributorData
+                                                          .data.parsed
+                                                          .rewardAmount
+                                                  )
+                                                ) /
+                                                  rewardDistributorData.data.parsed.rewardDurationSeconds.toNumber()) *
+                                                86400 *
+                                                (rewardDistributorData.data.parsed.defaultMultiplier.toNumber() /
+                                                  10 **
+                                                    rewardDistributorData.data
+                                                      .parsed
+                                                      .multiplierDecimals)
+                                              ).toPrecision(
+                                                rewardDistributorData.data
+                                                  .parsed.multiplierDecimals ||
+                                                  4
+                                              )}
+                                            </span>
+                                          </div>
+                                        )}
+                                        {tk.stakeEntry && rewardMintInfo.data && (
+                                          <div className="flex w-full flex-row justify-between text-xs font-semibold">
+                                            <span>Claim:</span>
+                                            <span>
+                                              {formatMintNaturalAmountAsDecimal(
+                                                rewardMintInfo.data.mintInfo,
+                                                rewards.data?.rewardMap[
+                                                  tk.stakeEntry.pubkey.toString()
+                                                ]?.claimableRewards ||
+                                                  new BN(0),
+                                                rewardMintInfo.data.mintInfo
+                                                  .decimals
+                                              ).toLocaleString()}
+                                            </span>
+                                          </div>
+                                        )}
+                                        {rewards.data &&
+                                          rewards.data.rewardMap[
+                                            tk.stakeEntry?.pubkey.toString() ||
+                                              ''
+                                          ] &&
+                                          rewardDistributorData.data?.parsed.rewardDurationSeconds.gte(
+                                            new BN(60)
+                                          ) && (
+                                            <div className="flex w-full flex-row justify-between text-xs font-semibold">
+                                              <span>Next rewards:</span>
+                                              <span>
+                                                {secondstoDuration(
+                                                  rewards.data.rewardMap[
+                                                    tk.stakeEntry?.pubkey.toString() ||
+                                                      ''
+                                                  ]?.nextRewardsIn.toNumber() ||
+                                                    0
+                                                )}
+                                              </span>
+                                            </div>
+                                          )}
+                                      </>
+                                    )}
+                                    {tk.stakeEntry?.parsed
+                                      .cooldownStartSeconds &&
+                                    stakePool?.parsed.cooldownSeconds ? (
+                                      <div className="flex w-full flex-row justify-between text-xs font-semibold">
+                                        <span>Cooldown:</span>
+                                        {tk.stakeEntry?.parsed.cooldownStartSeconds.toNumber() +
+                                          stakePool.parsed.cooldownSeconds -
+                                          UTCNow >
+                                        0
+                                          ? secondstoDuration(
+                                              tk.stakeEntry?.parsed.cooldownStartSeconds.toNumber() +
+                                                stakePool.parsed
+                                                  .cooldownSeconds -
+                                                UTCNow
+                                            )
+                                          : 'Finished!'}
+                                      </div>
+                                    ) : (
+                                      ''
+                                    )}
+                                    {stakePool?.parsed.minStakeSeconds &&
+                                    tk.stakeEntry?.parsed.lastStakedAt ? (
+                                      <div className="flex w-full flex-row justify-between text-xs font-semibold">
+                                        <span>Min Time:</span>
+                                        {tk.stakeEntry?.parsed.lastStakedAt.toNumber() +
+                                          stakePool.parsed.minStakeSeconds -
+                                          UTCNow >
+                                        0
+                                          ? secondstoDuration(
+                                              tk.stakeEntry?.parsed.lastStakedAt.toNumber() +
+                                                stakePool.parsed
+                                                  .minStakeSeconds -
+                                                UTCNow
+                                            )
+                                          : 'Satisfied'}
+                                      </div>
+                                    ) : (
+                                      ''
+                                    )}
+                                  </div>
+                                </div>
+                                {/* {tk.tokenListData && (
                                   <div className="absolute bottom-2 left-2">
                                     {Number(
                                       getMintDecimalAmountFromNaturalV2(
@@ -1236,7 +1470,7 @@ function Home() {
                                     )}{' '}
                                     {tk.tokenListData.symbol}
                                   </div>
-                                )}
+                                )} */}
                                 {isStakedTokenSelected(tk) && (
                                   <div
                                     className={`absolute top-2 left-2`}
@@ -1250,118 +1484,7 @@ function Home() {
                                     }}
                                   />
                                 )}
-                                {tk.stakeEntry?.pubkey &&
-                                  rewardEntries.data &&
-                                  rewardEntries.data.find((entry) =>
-                                    entry.parsed.stakeEntry.equals(
-                                      tk.stakeEntry?.pubkey!
-                                    )
-                                  )?.parsed.multiplier &&
-                                  !rewardEntries.data
-                                    .find((entry) =>
-                                      entry.parsed.stakeEntry.equals(
-                                        tk.stakeEntry?.pubkey!
-                                      )
-                                    )
-                                    ?.parsed.multiplier.eq(new BN(0)) &&
-                                  !rewardEntries.data
-                                    .find((entry) =>
-                                      entry.parsed.stakeEntry.equals(
-                                        tk.stakeEntry?.pubkey!
-                                      )
-                                    )
-                                    ?.parsed.multiplier.eq(new BN(1)) && (
-                                    <div
-                                      className="absolute bottom-1 right-1 flex items-center justify-center rounded-full bg-[#9945ff] px-2 text-[10px]"
-                                      style={{
-                                        color:
-                                          stakePoolMetadata?.colors?.fontColor,
-                                        background:
-                                          stakePoolMetadata?.colors?.primary,
-                                      }}
-                                    >
-                                      {rewardDistributorData.data?.parsed
-                                        .multiplierDecimals !== undefined &&
-                                        formatAmountAsDecimal(
-                                          rewardDistributorData.data?.parsed
-                                            .multiplierDecimals,
-                                          rewardEntries.data.find((entry) =>
-                                            entry.parsed.stakeEntry.equals(
-                                              tk.stakeEntry?.pubkey!
-                                            )
-                                          )?.parsed.multiplier!,
-                                          rewardDistributorData.data.parsed
-                                            .multiplierDecimals
-                                        ).toString()}
-                                      x
-                                    </div>
-                                  )}
                               </div>
-                              {rewards.data &&
-                                rewards.data.rewardMap[
-                                  tk.stakeEntry?.pubkey.toString() || ''
-                                ] &&
-                                rewardDistributorData.data?.parsed.rewardDurationSeconds.gte(
-                                  new BN(60)
-                                ) && (
-                                  <div className="mt-1 flex items-center justify-center text-xs">
-                                    {secondstoDuration(
-                                      rewards.data.rewardMap[
-                                        tk.stakeEntry?.pubkey.toString() || ''
-                                      ]?.nextRewardsIn.toNumber() || 0
-                                    )}{' '}
-                                  </div>
-                                )}
-                              {tk.stakeEntry?.parsed.cooldownStartSeconds &&
-                              stakePool?.parsed.cooldownSeconds ? (
-                                <div
-                                  className="mt-1 flex items-center justify-center text-xs"
-                                  style={{
-                                    color: 'white',
-                                    background:
-                                      stakePoolMetadata?.colors?.primary,
-                                  }}
-                                >
-                                  {tk.stakeEntry?.parsed.cooldownStartSeconds.toNumber() +
-                                    stakePool.parsed.cooldownSeconds -
-                                    UTCNow >
-                                  0
-                                    ? 'Cooldown: ' +
-                                      secondstoDuration(
-                                        tk.stakeEntry?.parsed.cooldownStartSeconds.toNumber() +
-                                          stakePool.parsed.cooldownSeconds -
-                                          UTCNow
-                                      )
-                                    : 'Cooldown finished!'}
-                                </div>
-                              ) : (
-                                ''
-                              )}
-                              {stakePool?.parsed.minStakeSeconds &&
-                              tk.stakeEntry?.parsed.lastStakedAt ? (
-                                <div
-                                  className="mt-1 flex items-center justify-center text-xs"
-                                  style={{
-                                    color: 'white',
-                                    background:
-                                      stakePoolMetadata?.colors?.primary,
-                                  }}
-                                >
-                                  {tk.stakeEntry?.parsed.lastStakedAt.toNumber() +
-                                    stakePool.parsed.minStakeSeconds -
-                                    UTCNow >
-                                  0
-                                    ? 'Able to unstake in: ' +
-                                      secondstoDuration(
-                                        tk.stakeEntry?.parsed.lastStakedAt.toNumber() +
-                                          stakePool.parsed.minStakeSeconds -
-                                          UTCNow
-                                      )
-                                    : 'Min Staked Time Satisfied!'}
-                                </div>
-                              ) : (
-                                ''
-                              )}
                             </label>
                           </div>
                         </div>
