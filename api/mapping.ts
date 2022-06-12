@@ -446,8 +446,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     ),
     websiteUrl: 'https://00RR0R.com/',
     receiptType: ReceiptType.Original,
-    imageUrl:
-      'https://www.00rr0r.com/logo-stake.png',
+    imageUrl: 'https://www.00rr0r.com/logo-stake.png',
     maxStaked: 4999,
     colors: {
       primary: '#000000',
@@ -455,5 +454,17 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       accent: '#1fcfb11c',
       fontColor: '#FFFFFF',
     },
+  },
+  {
+    name: 'Sussy Sol Cats',
+    displayName: 'Sussy Sol Cats',
+    stakePoolAddress: new PublicKey(
+      'EJCu7UwEsnRTTuz2qjsSksxwCZmk66aRXLGgeq7hvQUt'
+    ),
+    websiteUrl: 'https://thesussycats.netlify.app/',
+    receiptType: ReceiptType.Original,
+    imageUrl:
+      'https://github.com/Zcrayzzen/asset/blob/main/New_Project_22.png?raw=true',
+    maxStaked: 1111,
   },
 ]
