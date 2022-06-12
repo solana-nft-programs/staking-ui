@@ -512,7 +512,7 @@ function Home() {
     fetchData().catch(console.error)
   }, [stakePoolEntries.isFetched])
 
-  if (!stakePoolMetadata) {
+  if (!stakePoolLoaded) {
     return
   }
 
@@ -597,8 +597,8 @@ function Home() {
               <>
                 <div className="inline-block text-lg">
                   Total Staked: {Number(totalStaked).toLocaleString()}{' '}
-                  {stakePoolMetadata.maxStaked
-                    ? `/ ${stakePoolMetadata.maxStaked.toLocaleString()}`
+                  {stakePoolMetadata?.maxStaked
+                    ? `/ ${stakePoolMetadata?.maxStaked.toLocaleString()}`
                     : ''}
                 </div>
                 {maxStaked > 0 && (
