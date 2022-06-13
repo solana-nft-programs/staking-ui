@@ -180,7 +180,7 @@ function Home() {
             !stakePool.parsed.minStakeSeconds
           ) {
             notify({
-              message: `Cooldown period will be initiated for ${token.metaplexData?.data.data.name} unless there is a minimum stake period`,
+              message: `Cooldown period will be initiated for ${token.metaplexData?.data.data.name} unless minimum stake period unsatisfied`,
               type: 'info',
             })
           }

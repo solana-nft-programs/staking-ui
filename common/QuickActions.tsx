@@ -20,6 +20,7 @@ import {
   claimRewards,
   createStakeEntryAndStakeMint,
   executeTransaction,
+  handleError,
   stake,
   unstake,
 } from '@cardinal/staking'
@@ -407,7 +408,7 @@ export const QuickActions = ({
                       !stakedTokenData.stakeEntry?.parsed.cooldownStartSeconds
                     ) {
                       notify({
-                        message: `Cooldown period will be initiated for ${stakedTokenData.metaplexData?.data.data.name}`,
+                        message: `Cooldown period will be initiated for ${stakedTokenData.metaplexData?.data.data.name} unless minimum stake period unsatisfied`,
                         type: 'info',
                       })
                     }
@@ -428,7 +429,14 @@ export const QuickActions = ({
                         message: 'Successfully unstaked token',
                         type: 'success',
                       })
-                    } catch (e) {}
+                    } catch (e) {
+                      notify({
+                        message: `${'Failed to unstake token'}`,
+                        description: handleError(e, `Transaction failed: ${e}`),
+                        txid: '',
+                        type: 'error',
+                      })
+                    }
 
                     await Promise.all([
                       stakedTokenDatas.remove(),
