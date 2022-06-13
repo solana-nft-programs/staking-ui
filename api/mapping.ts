@@ -404,7 +404,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     },
   },
   {
-    name: 'stake',
+    name: 'cannaverse',
     displayName: 'Cannaverse',
     stakePoolAddress: new PublicKey(
       '5DoGTq3ciQ1aDFUuTFLhFLdiXuPjnWmjhTSWdzLpZkgY'
