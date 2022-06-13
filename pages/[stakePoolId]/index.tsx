@@ -176,10 +176,11 @@ function Home() {
           }
           if (
             stakePool.parsed.cooldownSeconds &&
-            !token.stakeEntry?.parsed.cooldownStartSeconds
+            !token.stakeEntry?.parsed.cooldownStartSeconds &&
+            !stakePool.parsed.minStakeSeconds
           ) {
             notify({
-              message: `Cooldown period will be initiated for ${token.metaplexData?.data.data.name}`,
+              message: `Cooldown period will be initiated for ${token.metaplexData?.data.data.name} unless there is a minimum stake period`,
               type: 'info',
             })
           }
