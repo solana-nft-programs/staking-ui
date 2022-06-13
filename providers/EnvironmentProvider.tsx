@@ -41,7 +41,8 @@ export const getInitialProps = async ({
 }: {
   ctx: NextPageContext
 }): Promise<{ cluster: string }> => {
-  const cluster = (ctx.req?.headers.host || ctx.query.host)?.includes('dev')
+  const host = ctx.req?.headers.host || ctx.query.host
+  const cluster = host?.includes('dev')
     ? 'devnet'
     : (ctx.query.project || ctx.query.host)?.includes('test')
     ? 'testnet'

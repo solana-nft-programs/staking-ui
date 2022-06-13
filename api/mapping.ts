@@ -26,6 +26,8 @@ export type StakePoolMetadata = {
   hidden?: boolean
   // Optional config to disable finding this pool
   notFound?: boolean
+  // Optional hostname to remap
+  hostname?: string
   // Optional config to link redirect to page when you click on this pool
   redirect?: string
   // Hide allowed tokens style
@@ -386,6 +388,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     ),
     websiteUrl: 'https://www.roguesharks.org/',
     receiptType: ReceiptType.Receipt,
+    hostname: 'stake.roguesharks',
     maxStaked: 4991, // update with collection size
     hidden: true,
     imageUrl: '/logos/rogue-sharks.svg',
