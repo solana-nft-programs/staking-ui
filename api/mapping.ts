@@ -314,10 +314,14 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     maxStaked: 2500,
     imageUrl:
       'https://smvkptoniao6opm5dr3gwgm45tyk3hk5dhz4vrsjqyviqqlkwu.arweave.net/k_yqnzc1AHec9nRx2axmc7PCtnV0Z88rGSYYqiEFqtU',
-    colors: {
-      primary: '#344E41',
-      secondary: '#131418',
-      accent: '#1fcfb11c',
+    styles: {
+        fontFamily: 'fot-udmincho-pr6n, serif',
+        fontWeight: 500,
+      },
+      colors: {
+      primary: '#1a2721',
+      secondary: '#48524d',
+      accent: '#FFFFFF',
       fontColor: '#FFFFFF',
     },
   },
