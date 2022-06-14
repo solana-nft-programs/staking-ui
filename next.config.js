@@ -13,7 +13,7 @@ const nextConfig = {
         has: [
           {
             type: 'host',
-            value: 'stake.roguesharks.com',
+            value: 'stake.roguesharks.org',
           },
         ],
       },
