@@ -474,4 +474,22 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       'https://github.com/Zcrayzzen/asset/blob/main/New_Project_22.png?raw=true',
     maxStaked: 1111,
   },
+  {
+    name: 'Orbit',
+    displayName: 'Orbit Staking',
+    stakePoolAddress: new PublicKey(
+      '4TMt9ehagkdFgZJBnyBRBTNfXUD8xLX18JyPVeGDpaKb'
+    ),
+    websiteUrl: 'https://unfrgtn.space/',
+    receiptType: ReceiptType.Original,
+    imageUrl:
+      'https://cdn.discordapp.com/attachments/475411995273854976/987098707449241600/logo_2.png',
+    maxStaked: 2121,
+    colors: {
+      primary: '#000000',
+      secondary: '#4da1de',
+      accent: '#1fcfb11c',
+      fontColor: '#FFFFFF',
+    },
+  },
 ]
