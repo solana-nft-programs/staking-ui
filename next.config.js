@@ -15,6 +15,10 @@ const nextConfig = {
             type: 'host',
             value: 'stake.roguesharks.org',
           },
+          {
+            type: 'host',
+            value: 'stake.unfrgtn.space'
+          },
         ],
       },
     ]

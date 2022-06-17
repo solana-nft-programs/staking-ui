@@ -477,6 +477,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
   {
     name: 'Orbit',
     displayName: 'Orbit Staking',
+    hostname:'stake.unfrgtn.space',
     stakePoolAddress: new PublicKey(
       '4TMt9ehagkdFgZJBnyBRBTNfXUD8xLX18JyPVeGDpaKb'
     ),
