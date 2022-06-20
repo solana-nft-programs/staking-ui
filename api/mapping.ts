@@ -315,10 +315,10 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     imageUrl:
       'https://smvkptoniao6opm5dr3gwgm45tyk3hk5dhz4vrsjqyviqqlkwu.arweave.net/k_yqnzc1AHec9nRx2axmc7PCtnV0Z88rGSYYqiEFqtU',
     styles: {
-        fontFamily: 'fot-udmincho-pr6n, serif',
-        fontWeight: 500,
-      },
-      colors: {
+      fontFamily: 'fot-udmincho-pr6n, serif',
+      fontWeight: 500,
+    },
+    colors: {
       primary: '#1a2721',
       secondary: '#48524d',
       accent: '#FFFFFF',
@@ -394,7 +394,6 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     receiptType: ReceiptType.Receipt,
     hostname: 'stake.roguesharks',
     maxStaked: 4991, // update with collection size
-    hidden: true,
     imageUrl: '/logos/rogue-sharks.svg',
     tokenStandard: TokenStandard.NonFungible,
     hideAllowedTokens: true,
@@ -477,7 +476,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
   {
     name: 'Orbit',
     displayName: 'Orbit Staking',
-    hostname:'stake.unfrgtn.space',
+    hostname: 'stake.unfrgtn.space',
     stakePoolAddress: new PublicKey(
       '4TMt9ehagkdFgZJBnyBRBTNfXUD8xLX18JyPVeGDpaKb'
     ),
