@@ -58,6 +58,18 @@ export const defaultSecondaryColor = 'rgba(29, 78, 216, 255)'
 
 export const stakePoolMetadatas: StakePoolMetadata[] = [
   {
+    name: 'Matrica Labs',
+    displayName: 'Matrica Labs',
+    stakePoolAddress: new PublicKey(
+      '5gzLf8EBnNRdaaPdGWYZnG1GTbqHC7cmujEzkHJLtDFD'
+    ),
+    imageUrl: 'https://pbs.twimg.com/profile_images/1442646213883535360/nX5X4u3w_400x400.jpg',
+    colors: {
+      primary: 'rgb(54,21,38,0.9)',
+      secondary: 'rgb(157,120,138, 0.6)',
+    },
+  },
+  {
     name: 'cardinal',
     displayName: 'Cardinal',
     stakePoolAddress: new PublicKey(

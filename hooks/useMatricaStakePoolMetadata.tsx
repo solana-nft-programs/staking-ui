@@ -2,10 +2,10 @@ import { StakePoolMetadata, stakePoolMetadatas } from 'api/mapping'
 import { useQuery } from 'react-query'
 import { useStakePoolId } from './useStakePoolId'
 
-export const useStakePoolMetadata = () => {
+export const useMatricaStakePoolMetadata = () => {
   const stakePoolId = useStakePoolId()
   return useQuery<StakePoolMetadata | undefined>(
-    ['useStakePoolMetadata', stakePoolId?.toString()],
+    ['useMatricaStakePoolMetadata', stakePoolId?.toString()],
     async () => {
       if (!stakePoolId) return;
 
@@ -13,15 +13,7 @@ export const useStakePoolMetadata = () => {
         return res.json();
       });
 
-      // f = {
-      //   ...f,
-      //   colors: {
-      //     primary: 'rgb(100,21,38,0.9)',
-      //     secondary: 'rgb(157,120,138, 0.6)',
-      //   },
-      // }
-
-      // console.log(f);
+      console.log(f);
 
       return f;
     }
