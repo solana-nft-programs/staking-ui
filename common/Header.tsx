@@ -83,8 +83,14 @@ export const Header = () => {
             {stakePoolMetadata?.imageUrl ? (
               <img className="h-[35px]" src={stakePoolMetadata?.imageUrl} />
             ) : (
-              <TitleText>
-                {stakePoolMetadata?.displayName || 'Cardinal'} Staking UI
+              <TitleText className="flex items-center justify-center gap-2">
+                {stakePoolMetadata?.displayName || (
+                  <img
+                    className="inline-block w-4"
+                    src={'/cardinal-crosshair.svg'}
+                  />
+                )}{' '}
+                Staking
               </TitleText>
             )}
           </a>
@@ -112,19 +118,6 @@ export const Header = () => {
             ))
           ) : (
             <>
-              <div
-                onClick={() =>
-                  router.push(
-                    `/${
-                      ctx.environment.label !== 'mainnet-beta'
-                        ? `?cluster=${ctx.environment.label}`
-                        : ''
-                    }`
-                  )
-                }
-              >
-                <p className="my-auto mr-10 hover:cursor-pointer">Stake</p>
-              </div>
               <div
                 onClick={() =>
                   router.push(

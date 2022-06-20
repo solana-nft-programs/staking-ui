@@ -29,15 +29,13 @@ function Home() {
       </Head>
 
       <div>
-        <Header />
         {stats.isFetched && stats.data && (
-          <div className="md:text-md flex w-full items-center justify-center gap-10 rounded-md text-center text-xs sm:text-sm lg:text-lg">
-            {/* <div className="text-xs font-semibold"> */}
+          <div className="md:text-md flex w-full items-center justify-center gap-10 rounded-md bg-white bg-opacity-5 px-4 py-2 text-center text-xs sm:text-sm lg:text-lg">
             {Object.keys(stats.data).map((name, i) => {
               return (
-                <div key={i} className="flex gap-2">
-                  <span>{name}:</span>
-                  <span>
+                <div key={i} className="flex gap-1 text-xs">
+                  <span className="font-semibold">{name}:</span>
+                  <span className="text-green-500">
                     {Number(
                       stats.data![name]!.data.parsed.value
                     ).toLocaleString()}
@@ -45,9 +43,10 @@ function Home() {
                 </div>
               )
             })}
-            {/* </div> */}
           </div>
         )}
+        <Header />
+
         <div
           className="container mx-auto w-full px-5"
           style={{ minHeight: 'calc(100vh - 460px)' }}

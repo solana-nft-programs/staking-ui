@@ -51,6 +51,6 @@ const statsNameMapping = [
   },
   {
     key: 'total-active-stake-entries',
-    displayName: 'Total Staked Stake Entries',
+    displayName: 'Total Staked Entries',
   },
 ]
