@@ -91,10 +91,6 @@ function Home() {
   const rewardDistributorTokenAccountData = useRewardDistributorTokenAccount()
   const { UTCNow } = useUTCNow()
 
-  // if (isError) {
-  //   notify({ message: 'This staking pool was not found!', type: 'error'});
-  // }
-
   if (stakePoolMetadata?.redirect) {
     router.push(stakePoolMetadata?.redirect)
     return
