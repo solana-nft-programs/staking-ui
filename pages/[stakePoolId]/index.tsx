@@ -91,6 +91,10 @@ function Home() {
   const rewardDistributorTokenAccountData = useRewardDistributorTokenAccount()
   const { UTCNow } = useUTCNow()
 
+  // if (isError) {
+  //   notify({ message: 'This staking pool was not found!', type: 'error'});
+  // }
+
   if (stakePoolMetadata?.redirect) {
     router.push(stakePoolMetadata?.redirect)
     return
@@ -991,7 +995,8 @@ function Home() {
             </div>
 
             <div className="mt-2 flex items-center justify-between">
-              {!stakePoolMetadata?.receiptType && !showFungibleTokens ? (
+              {/* {!stakePoolMetadata?.receiptType && !showFungibleTokens ? ( */}
+              {false ? (
                 <MouseoverTooltip
                   title={
                     receiptType === ReceiptType.Original
