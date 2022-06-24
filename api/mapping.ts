@@ -492,4 +492,21 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       fontColor: '#FFFFFF',
     },
   },
+  {
+    name: 'The Frontier',
+    displayName: 'The Frontier',
+    stakePoolAddress: new PublicKey(
+      'DQkaEQUH2Qwr3BfUZnCarnWoTM4mBrhDqxGNL2M5yJ2F'
+    ),
+    receiptType: ReceiptType.Original,
+    imageUrl:
+      'https://raw.githack.com/solanafrontier/logos/main/TheFrontier_logo.png',
+    maxStaked: 5000,
+    colors: {
+      primary: '#000000',
+      secondary: '#1D6152',
+      accent: '#FFF6D3',
+      fontColor: '#FFFFFF',
+    },
+  },
 ]
