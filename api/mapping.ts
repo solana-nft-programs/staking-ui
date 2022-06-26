@@ -34,8 +34,6 @@ export type StakePoolMetadata = {
   hideAllowedTokens?: boolean
   // styles to apply to the whole stake pool
   styles?: CSSProperties
-  // secondary styles to apply to the whole stake pool
-  secondaryStyles?: CSSProperties
   // Colors object to style the stake page
   colors?: {
     primary: string
@@ -55,13 +53,6 @@ export type StakePoolMetadata = {
   links?: { text: string; value: string }[]
   // On devnet when you click the airdrop button on this page it will clone NFTs with this metadata and airdrop to the user
   airdrops?: AirdropMetadata[]
-  // Pool background banner image
-  backgroundBannerUrl?: string
-  descriptionSections?: {
-    text: string
-    bkgColor: string
-    borderColor: string
-  }[]
 }
 
 export const defaultSecondaryColor = 'rgba(29, 78, 216, 255)'
@@ -503,6 +494,23 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     },
   },
   {
+    name: 'The Frontier',
+    displayName: 'The Frontier',
+    stakePoolAddress: new PublicKey(
+      'DQkaEQUH2Qwr3BfUZnCarnWoTM4mBrhDqxGNL2M5yJ2F'
+    ),
+    receiptType: ReceiptType.Original,
+    imageUrl:
+      'https://raw.githack.com/solanafrontier/logos/main/TheFrontier_logo.png',
+    maxStaked: 5000,
+    colors: {
+      primary: '#000000',
+      secondary: '#1D6152',
+      accent: '#FFF6D3',
+      fontColor: '#FFFFFF',
+    },
+  },
+  {
     name: 'skatex-founders',
     displayName: 'SkateX Founders',
     stakePoolAddress: new PublicKey(
@@ -512,7 +520,6 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     receiptType: ReceiptType.Original,
     imageUrl: '/logos/skatex-logo.png',
     maxStaked: 2228,
-    secondaryStyles: {},
     styles: {
       fontFamily: 'Industry, sans-serif',
       fontWeight: 500,
@@ -522,7 +529,6 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       secondary: '#c7bdcb',
       fontColor: '#ffffff',
       fontColorSecondary: '#000000',
-      // backgroundSecondary: '#8EFADB',
     },
   },
   {
@@ -535,7 +541,6 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     receiptType: ReceiptType.Original,
     imageUrl: '/logos/skatex-logo.png',
     maxStaked: 2222,
-    secondaryStyles: {},
     styles: {
       fontFamily: 'Industry, sans-serif',
       fontWeight: 500,
@@ -545,7 +550,6 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       secondary: '#c7bdcb',
       fontColor: '#ffffff',
       fontColorSecondary: '#000000',
-      // backgroundSecondary: '#8EFADB',
     },
   },
   {
@@ -557,8 +561,6 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     websiteUrl: 'https://www.skatex.io/',
     receiptType: ReceiptType.Original,
     imageUrl: '/logos/skatex-logo.png',
-    maxStaked: 2222,
-    secondaryStyles: {},
     styles: {
       fontFamily: 'Industry, sans-serif',
       fontWeight: 500,
@@ -568,7 +570,6 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       secondary: '#c7bdcb',
       fontColor: '#ffffff',
       fontColorSecondary: '#000000',
-      // backgroundSecondary: '#8EFADB',
     },
   },
 ]
