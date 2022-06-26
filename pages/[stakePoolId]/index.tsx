@@ -521,7 +521,7 @@ function Home() {
     <div
       style={{
         background: stakePoolMetadata?.colors?.primary,
-        backgroundImage: stakePoolMetadata?.backgroundBannerUrl,
+        backgroundImage: stakePoolMetadata?.backgroundBannerImageUrl,
       }}
     >
       <Head>
@@ -581,18 +581,6 @@ function Home() {
             </div>
           )
         )}
-        {stakePoolMetadata?.descriptionSections &&
-          stakePoolMetadata?.descriptionSections.map((section) => (
-            <div
-              className={`text-md mx-5 mb-5 cursor-pointer rounded-md border-[1px] py-4 px-20 text-center font-semibold`}
-              style={{
-                background: section.bkgColor,
-                borderColor: section.borderColor,
-              }}
-            >
-              {section.text}
-            </div>
-          ))}
         {(maxStaked || rewardDistributorData) && !stakePoolMetadata?.notFound && (
           <div
             className={`mx-5 mb-4 flex flex-wrap items-center gap-4 rounded-md px-10 py-6  md:flex-row md:justify-between ${

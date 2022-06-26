@@ -45,6 +45,8 @@ export type StakePoolMetadata = {
   }
   // Image url to be used as the icon in the pool selector and the header
   imageUrl?: string
+  // Background banner image for pool
+  backgroundBannerImageUrl?: string
   // Website url if specified will be navigated to when the image in the header is clicked
   websiteUrl?: string
   // Max staked is used to compute percentage of total staked
@@ -516,6 +518,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     stakePoolAddress: new PublicKey(
       '5cYt8tVpVc1ECPohiUhKgBVUnRAHv9mEpE3WJzSpRaSh'
     ),
+    hidden: true,
     websiteUrl: 'https://www.skatex.io/',
     receiptType: ReceiptType.Original,
     imageUrl: '/logos/skatex-logo.png',
@@ -537,6 +540,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     stakePoolAddress: new PublicKey(
       'FcVePnNEFFt1SdbTT1dHWWsRft8DAeCF3TRPBZFyLGpZ'
     ),
+    hidden: true,
     websiteUrl: 'https://www.skatex.io/',
     receiptType: ReceiptType.Original,
     imageUrl: '/logos/skatex-logo.png',
@@ -558,6 +562,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     stakePoolAddress: new PublicKey(
       'CUwNn2VrgQ3R7znBXoTzUyYR1WoSAMHXw38GZNKmY4u3'
     ),
+    hidden: true,
     websiteUrl: 'https://www.skatex.io/',
     receiptType: ReceiptType.Original,
     imageUrl: '/logos/skatex-logo.png',
