@@ -577,4 +577,14 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       fontColorSecondary: '#000000',
     },
   },
+  {
+    name: 'sla',
+    displayName: 'Secret Llama Agency',
+    stakePoolAddress: new PublicKey(
+      'DFXwKJK2UCEVhujYPDmLmPUBKgEK58cKaUJzC3UGhysf'
+    ),
+    websiteUrl: 'https://www.secretllamaagency.com/',
+    receiptType: ReceiptType.Original,
+    imageUrl: 'https://www.secretllamaagency.com/images/Logo-7-p-500.png',
+  },
 ]

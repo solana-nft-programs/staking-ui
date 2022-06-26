@@ -81,7 +81,15 @@ export const Header = () => {
             className="flex cursor-pointer text-xl font-semibold text-white hover:text-gray-400"
           >
             {stakePoolMetadata?.imageUrl ? (
-              <img className="h-[35px]" src={stakePoolMetadata?.imageUrl} />
+              <div className="flex flex-row">
+                <img
+                  className="flex h-[35px] flex-col"
+                  src={stakePoolMetadata?.imageUrl}
+                />
+                <span className="ml-5 mt-1 flex flex-col">
+                  {stakePoolMetadata?.displayName} Staking
+                </span>
+              </div>
             ) : (
               <TitleText className="flex items-center justify-center gap-2">
                 {stakePoolMetadata?.displayName || (
