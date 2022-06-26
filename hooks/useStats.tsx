@@ -21,6 +21,7 @@ export const useStats = () => {
       const statsNames = [
         'total-active-staked-tokens',
         'total-active-stake-entries',
+        'total-stake-pools',
       ]
       const statsData = await Promise.all(
         statsNames.map((name) => getStatsEntry(secondaryConnection, name))
@@ -52,5 +53,9 @@ const statsNameMapping = [
   {
     key: 'total-active-stake-entries',
     displayName: 'Total Staked Entries',
+  },
+  {
+    key: 'total-stake-pools',
+    displayName: 'Total Stake Pools',
   },
 ]
