@@ -40,10 +40,13 @@ export type StakePoolMetadata = {
     secondary: string
     accent?: string
     fontColor?: string
+    fontColorSecondary?: string
     backgroundSecondary?: string
   }
   // Image url to be used as the icon in the pool selector and the header
   imageUrl?: string
+  // Background banner image for pool
+  backgroundBannerImageUrl?: string
   // Website url if specified will be navigated to when the image in the header is clicked
   websiteUrl?: string
   // Max staked is used to compute percentage of total staked
@@ -507,6 +510,71 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       secondary: '#1D6152',
       accent: '#FFF6D3',
       fontColor: '#FFFFFF',
+    },
+  },
+  {
+    name: 'skatex-founders',
+    displayName: 'SkateX Founders',
+    stakePoolAddress: new PublicKey(
+      '5cYt8tVpVc1ECPohiUhKgBVUnRAHv9mEpE3WJzSpRaSh'
+    ),
+    hidden: true,
+    websiteUrl: 'https://www.skatex.io/',
+    receiptType: ReceiptType.Original,
+    imageUrl: '/logos/skatex-logo.png',
+    maxStaked: 2228,
+    styles: {
+      fontFamily: 'Industry, sans-serif',
+      fontWeight: 500,
+    },
+    colors: {
+      primary: '#211227',
+      secondary: '#c7bdcb',
+      fontColor: '#ffffff',
+      fontColorSecondary: '#000000',
+    },
+  },
+  {
+    name: 'skatex-c2c',
+    displayName: 'SkateX Coast2Coast',
+    stakePoolAddress: new PublicKey(
+      'FcVePnNEFFt1SdbTT1dHWWsRft8DAeCF3TRPBZFyLGpZ'
+    ),
+    hidden: true,
+    websiteUrl: 'https://www.skatex.io/',
+    receiptType: ReceiptType.Original,
+    imageUrl: '/logos/skatex-logo.png',
+    maxStaked: 2222,
+    styles: {
+      fontFamily: 'Industry, sans-serif',
+      fontWeight: 500,
+    },
+    colors: {
+      primary: '#211227',
+      secondary: '#c7bdcb',
+      fontColor: '#ffffff',
+      fontColorSecondary: '#000000',
+    },
+  },
+  {
+    name: 'skatex-combo',
+    displayName: 'SkateX Collection Combo',
+    stakePoolAddress: new PublicKey(
+      'CUwNn2VrgQ3R7znBXoTzUyYR1WoSAMHXw38GZNKmY4u3'
+    ),
+    hidden: true,
+    websiteUrl: 'https://www.skatex.io/',
+    receiptType: ReceiptType.Original,
+    imageUrl: '/logos/skatex-logo.png',
+    styles: {
+      fontFamily: 'Industry, sans-serif',
+      fontWeight: 500,
+    },
+    colors: {
+      primary: '#211227',
+      secondary: '#c7bdcb',
+      fontColor: '#ffffff',
+      fontColorSecondary: '#000000',
     },
   },
 ]

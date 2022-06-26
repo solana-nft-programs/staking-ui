@@ -312,12 +312,28 @@ function AdminStakePool() {
             supply: values.rewardMintSupply
               ? new BN(values.rewardMintSupply)
               : undefined,
+            defaultMultiplier: values.defaultMultiplier
+              ? new BN(values.defaultMultiplier)
+              : undefined,
+            multiplierDecimals: values.multiplierDecimals
+              ? Number(values.multiplierDecimals)
+              : undefined,
           }
           const [transaction] = await withInitRewardDistributor(
             new Transaction(),
             connection,
             wallet as Wallet,
             rewardDistributorKindParams
+          )
+          await withUpdateRewardDistributor(
+            transaction,
+            connection,
+            wallet as Wallet,
+            {
+              stakePoolId: stakePool.data.pubkey,
+              defaultMultiplier: new BN(values.defaultMultiplier || 100),
+              multiplierDecimals: Number(values.multiplierDecimals || 0),
+            }
           )
           await executeTransaction(connection, wallet as Wallet, transaction, {
             silent: false,
@@ -330,7 +346,7 @@ function AdminStakePool() {
         }
       } else if (
         rewardDistributor.data?.parsed.defaultMultiplier.toString() !==
-          values.defaultMultiplier?.toString() &&
+          values.defaultMultiplier?.toString() ||
         rewardDistributor.data?.parsed.multiplierDecimals.toString() !==
           values.multiplierDecimals?.toString()
       ) {
@@ -344,7 +360,6 @@ function AdminStakePool() {
             multiplierDecimals: Number(values.multiplierDecimals),
           }
         )
-        console.log(tx)
         await executeTransaction(connection, wallet as Wallet, tx, {
           silent: false,
           signers: [],
