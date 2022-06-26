@@ -34,12 +34,15 @@ export type StakePoolMetadata = {
   hideAllowedTokens?: boolean
   // styles to apply to the whole stake pool
   styles?: CSSProperties
+  // secondary styles to apply to the whole stake pool
+  secondaryStyles?: CSSProperties
   // Colors object to style the stake page
   colors?: {
     primary: string
     secondary: string
     accent?: string
     fontColor?: string
+    fontColorSecondary?: string
     backgroundSecondary?: string
   }
   // Image url to be used as the icon in the pool selector and the header
@@ -52,6 +55,13 @@ export type StakePoolMetadata = {
   links?: { text: string; value: string }[]
   // On devnet when you click the airdrop button on this page it will clone NFTs with this metadata and airdrop to the user
   airdrops?: AirdropMetadata[]
+  // Pool background banner image
+  backgroundBannerUrl?: string
+  descriptionSections?: {
+    text: string
+    bkgColor: string
+    borderColor: string
+  }[]
 }
 
 export const defaultSecondaryColor = 'rgba(29, 78, 216, 255)'
@@ -490,6 +500,75 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       secondary: '#4da1de',
       accent: '#1fcfb11c',
       fontColor: '#FFFFFF',
+    },
+  },
+  {
+    name: 'skatex-founders',
+    displayName: 'SkateX Founders',
+    stakePoolAddress: new PublicKey(
+      '5cYt8tVpVc1ECPohiUhKgBVUnRAHv9mEpE3WJzSpRaSh'
+    ),
+    websiteUrl: 'https://www.skatex.io/',
+    receiptType: ReceiptType.Original,
+    imageUrl: '/logos/skatex-logo.png',
+    maxStaked: 2228,
+    secondaryStyles: {},
+    styles: {
+      fontFamily: 'Industry, sans-serif',
+      fontWeight: 500,
+    },
+    colors: {
+      primary: '#211227',
+      secondary: '#c7bdcb',
+      fontColor: '#ffffff',
+      fontColorSecondary: '#000000',
+      // backgroundSecondary: '#8EFADB',
+    },
+  },
+  {
+    name: 'skatex-c2c',
+    displayName: 'SkateX Coast2Coast',
+    stakePoolAddress: new PublicKey(
+      'FcVePnNEFFt1SdbTT1dHWWsRft8DAeCF3TRPBZFyLGpZ'
+    ),
+    websiteUrl: 'https://www.skatex.io/',
+    receiptType: ReceiptType.Original,
+    imageUrl: '/logos/skatex-logo.png',
+    maxStaked: 2222,
+    secondaryStyles: {},
+    styles: {
+      fontFamily: 'Industry, sans-serif',
+      fontWeight: 500,
+    },
+    colors: {
+      primary: '#211227',
+      secondary: '#c7bdcb',
+      fontColor: '#ffffff',
+      fontColorSecondary: '#000000',
+      // backgroundSecondary: '#8EFADB',
+    },
+  },
+  {
+    name: 'skatex-combo',
+    displayName: 'SkateX Collection Combo',
+    stakePoolAddress: new PublicKey(
+      'CUwNn2VrgQ3R7znBXoTzUyYR1WoSAMHXw38GZNKmY4u3'
+    ),
+    websiteUrl: 'https://www.skatex.io/',
+    receiptType: ReceiptType.Original,
+    imageUrl: '/logos/skatex-logo.png',
+    maxStaked: 2222,
+    secondaryStyles: {},
+    styles: {
+      fontFamily: 'Industry, sans-serif',
+      fontWeight: 500,
+    },
+    colors: {
+      primary: '#211227',
+      secondary: '#c7bdcb',
+      fontColor: '#ffffff',
+      fontColorSecondary: '#000000',
+      // backgroundSecondary: '#8EFADB',
     },
   },
 ]
