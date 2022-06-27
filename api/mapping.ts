@@ -151,7 +151,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
   },
   {
     name: 'block-token',
-    displayName: 'Blockasset Token Staking',
+    displayName: 'Blockasset Token',
     stakePoolAddress: new PublicKey(
       'jhksrHQqRKBEFuker9buKw4zDDrmENGTTKnUn2QzsUD'
     ),
@@ -478,7 +478,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
   },
   {
     name: 'Orbit',
-    displayName: 'Orbit Staking',
+    displayName: 'Orbit',
     hostname: 'stake.unfrgtn.space',
     stakePoolAddress: new PublicKey(
       '4TMt9ehagkdFgZJBnyBRBTNfXUD8xLX18JyPVeGDpaKb'

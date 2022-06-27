@@ -30,12 +30,12 @@ function Home() {
 
       <div>
         {stats.isFetched && stats.data && (
-          <div className="md:text-md flex w-full items-center justify-center gap-10 rounded-md bg-white bg-opacity-5 px-4 py-2 text-center text-xs sm:text-sm lg:text-lg">
+          <div className="flex flex-wrap justify-center md:flex-nowrap lg:flex lg:flex-row">
             {Object.keys(stats.data).map((name, i) => {
               return (
-                <div key={i} className="flex gap-1 text-xs">
+                <div key={i} className="mx-5 gap-1 pt-2 text-xs">
                   <span className="font-semibold">{name}:</span>
-                  <span className="text-green-500">
+                  <span className="ml-2 text-green-500">
                     {Number(
                       stats.data![name]!.data.parsed.value
                     ).toLocaleString()}

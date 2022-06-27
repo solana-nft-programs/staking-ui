@@ -11,7 +11,6 @@ import { AccountConnect } from '@cardinal/namespaces-components'
 import { Wallet } from '@saberhq/solana-contrib'
 import { useStakePoolId } from 'hooks/useStakePoolId'
 import { useUTCNow } from 'providers/UTCNowProvider'
-import { useStats } from 'hooks/useStats'
 import { contrastColorMode } from './utils'
 
 export const StyledWalletButton = styled(WalletMultiButton)`
