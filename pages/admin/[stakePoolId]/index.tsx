@@ -331,8 +331,18 @@ function AdminStakePool() {
             wallet as Wallet,
             {
               stakePoolId: stakePool.data.pubkey,
-              defaultMultiplier: new BN(values.defaultMultiplier || 100),
-              multiplierDecimals: Number(values.multiplierDecimals || 0),
+              defaultMultiplier: values.defaultMultiplier
+                ? new BN(values.defaultMultiplier)
+                : undefined,
+              multiplierDecimals: values.multiplierDecimals
+                ? Number(values.multiplierDecimals)
+                : undefined,
+              rewardAmount: values.rewardAmount
+                ? new BN(values.rewardAmount)
+                : undefined,
+              rewardDurationSeconds: values.rewardDurationSeconds
+                ? new BN(values.rewardDurationSeconds)
+                : undefined,
             }
           )
           await executeTransaction(connection, wallet as Wallet, transaction, {
