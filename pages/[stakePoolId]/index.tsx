@@ -19,7 +19,6 @@ import {
   formatAmountAsDecimal,
   formatMintNaturalAmountAsDecimal,
   getMintDecimalAmountFromNatural,
-  getMintDecimalAmountFromNaturalV2,
   parseMintNaturalAmountFromDecimal,
 } from 'common/units'
 import { BN } from '@project-serum/anchor'
@@ -41,7 +40,7 @@ import {
 import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
 import { defaultSecondaryColor, TokenStandard } from 'api/mapping'
 import { Footer } from 'common/Footer'
-import { DisplayAddress, shortPubKey } from '@cardinal/namespaces-components'
+import { DisplayAddress } from '@cardinal/namespaces-components'
 import { useRewardDistributorTokenAccount } from 'hooks/useRewardDistributorTokenAccount'
 import { useRewardEntries } from 'hooks/useRewardEntries'
 import { Switch } from '@headlessui/react'

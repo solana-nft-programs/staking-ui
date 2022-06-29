@@ -587,4 +587,20 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     receiptType: ReceiptType.Original,
     imageUrl: 'https://www.secretllamaagency.com/images/Logo-7-p-500.png',
   },
+  {
+    name: 'reverb',
+    displayName: 'Reverb',
+    stakePoolAddress: new PublicKey(
+      'J2kvKqkTMbXdbWS3eGmJFv35tKTrzy7wxkJmCzEJ7KAG'
+    ),
+    hidden: true,
+    websiteUrl: 'https://pinclub.io/',
+    receiptType: ReceiptType.Original,
+    imageUrl: '/logos/reverb.png',
+    colors: {
+      primary: '#394b5a',
+      secondary: '#6e989d',
+      fontColor: '#ffffff',
+    },
+  },
 ]
