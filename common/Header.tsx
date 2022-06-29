@@ -85,9 +85,9 @@ export const Header = () => {
                   className="flex h-[35px] flex-col"
                   src={stakePoolMetadata?.imageUrl}
                 />
-                <span className="ml-5 mt-1 flex flex-col">
+                {/* <span className="ml-5 mt-1 flex flex-col">
                   {stakePoolMetadata?.displayName} Staking
-                </span>
+                </span> */}
               </div>
             ) : (
               <TitleText className="flex items-center justify-center gap-2">
