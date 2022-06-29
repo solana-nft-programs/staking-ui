@@ -522,7 +522,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     websiteUrl: 'https://www.skatex.io/',
     receiptType: ReceiptType.Original,
     imageUrl: '/logos/skatex-logo.png',
-    maxStaked: 2228,
+    maxStaked: 1080,
     styles: {
       fontFamily: 'Industry, sans-serif',
       fontWeight: 500,
