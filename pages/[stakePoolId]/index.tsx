@@ -858,7 +858,7 @@ function Home() {
                 ) : (
                   <div
                     className={
-                      'grid grid-cols-2 gap-4 lg:grid-cols-2 xl:grid-cols-3'
+                      'grid grid-cols-1 gap-4 lg:grid-cols-2 xl:grid-cols-3'
                     }
                   >
                     {(
@@ -866,7 +866,10 @@ function Home() {
                         allowedTokenDatas.data) ||
                       []
                     ).map((tk) => (
-                      <div key={tk.tokenAccount?.pubkey.toString()}>
+                      <div
+                        key={tk.tokenAccount?.pubkey.toString()}
+                        className="mx-auto"
+                      >
                         <div className="relative w-44 md:w-auto 2xl:w-48">
                           <label
                             htmlFor={tk?.tokenAccount?.pubkey.toBase58()}
@@ -1186,13 +1189,16 @@ function Home() {
                 ) : (
                   <div
                     className={
-                      'grid grid-cols-2 gap-4 lg:grid-cols-2 xl:grid-cols-3'
+                      'grid grid-cols-1 gap-4 lg:grid-cols-2 xl:grid-cols-3'
                     }
                   >
                     {!stakePoolMetadata?.notFound &&
                       stakedTokenDatas.data &&
                       stakedTokenDatas.data.map((tk) => (
-                        <div key={tk?.stakeEntry?.pubkey.toBase58()}>
+                        <div
+                          key={tk?.stakeEntry?.pubkey.toBase58()}
+                          className="mx-auto"
+                        >
                           <div className="relative w-44 md:w-auto 2xl:w-48">
                             <label
                               htmlFor={tk?.stakeEntry?.pubkey.toBase58()}
