@@ -40,7 +40,6 @@ import { useFormik } from 'formik'
 import { getMintDecimalAmountFromNatural } from 'common/units'
 import { useRewardMintInfo } from 'hooks/useRewardMintInfo'
 import { Tooltip } from '@mui/material'
-import { executeAllTransactions } from 'api/utils'
 
 const publicKeyValidationTest = (value: string | undefined): boolean => {
   return tryPublicKey(value) ? true : false
@@ -264,7 +263,6 @@ function AdminStakePool() {
       if (!stakePool.data?.pubkey) {
         throw 'Stake pool pubkey not found'
       }
-      const transactions: Transaction[] = []
 
       if (
         values.rewardDistributorKind !== rewardDistributor.data?.parsed.kind
@@ -285,10 +283,19 @@ function AdminStakePool() {
                 stakePoolId: stakePool.data.pubkey,
               }
             )
-            transactions.push(transaction)
+            await executeTransaction(
+              connection,
+              wallet as Wallet,
+              transaction,
+              {
+                silent: false,
+                signers: [],
+              }
+            )
+
             notify({
-              message: 'Removing reward distributor for pool',
-              type: 'info',
+              message: 'Successfully removed reward distributor for pool',
+              type: 'success',
             })
           }
         } else {
@@ -338,10 +345,13 @@ function AdminStakePool() {
                 : undefined,
             }
           )
-          transactions.push(transaction)
+          await executeTransaction(connection, wallet as Wallet, transaction, {
+            silent: false,
+            signers: [],
+          })
           notify({
-            message: 'Creating reward distributor for pool',
-            type: 'info',
+            message: 'Successfully created reward distributor for pool',
+            type: 'success',
           })
         }
       } else if (
@@ -360,10 +370,13 @@ function AdminStakePool() {
             multiplierDecimals: Number(values.multiplierDecimals),
           }
         )
-        transactions.push(tx)
+        await executeTransaction(connection, wallet as Wallet, tx, {
+          silent: false,
+          signers: [],
+        })
         notify({
-          message: `Updating defaultMultiplier and multiplierDecimals`,
-          type: 'info',
+          message: `Successfully updated defaultMultiplier and multiplierDecimals`,
+          type: 'success',
         })
       }
 
@@ -374,15 +387,6 @@ function AdminStakePool() {
         .map((c) => tryPublicKey(c))
         .filter((c) => c) as PublicKey[]
 
-      // format date
-      let dateInNum: number | undefined = new Date(
-        values.endDate?.toString() || ''
-      ).getTime()
-      if (dateInNum < Date.now()) {
-        dateInNum = undefined
-      }
-      console.log('dateInNum', dateInNum)
-
       const stakePoolParams = {
         stakePoolId: stakePool.data.pubkey,
         requiresCollections: collectionPublicKeys,
@@ -391,26 +395,17 @@ function AdminStakePool() {
         overlayText: values.overlayText,
         cooldownSeconds: values.cooldownPeriodSeconds,
         minStakeSeconds: values.minStakeSeconds,
-        endDate:
-          dateInNum !== NaN && dateInNum !== undefined
-            ? new BN(dateInNum / 1000)
-            : undefined,
       }
 
-      console.log(
-        dateInNum !== NaN && dateInNum !== undefined
-          ? new BN(dateInNum / 1000)
-          : undefined
-      )
       const [transaction] = await withUpdateStakePool(
         new Transaction(),
         connection,
         wallet as Wallet,
         stakePoolParams
       )
-      transactions.push(transaction)
 
-      await executeAllTransactions(connection, wallet as Wallet, transactions, {
+      await executeTransaction(connection, wallet as Wallet, transaction, {
+        silent: false,
         signers: [],
       })
       notify({
@@ -573,16 +568,6 @@ function AdminStakePool() {
                       <label className="inline-block text-sm font-bold uppercase tracking-wide text-gray-200">
                         Minimum Stake Seconds:{' '}
                         {stakePool.data?.parsed.minStakeSeconds || '[None]'}
-                      </label>
-                    </span>
-                    <span className="mt-3 flex w-full flex-wrap md:mb-0">
-                      <label className="inline-block text-sm font-bold uppercase tracking-wide text-gray-200">
-                        End Date: {stakePool.data?.parsed.endDate.toNumber()}
-                        {stakePool.data?.parsed.endDate
-                          ? new Date(
-                              stakePool.data?.parsed.endDate?.toNumber() * 1000
-                            ).toDateString()
-                          : '[None]'}
                       </label>
                     </span>
                     {rewardDistributor.data && (

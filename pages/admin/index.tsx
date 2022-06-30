@@ -87,13 +87,6 @@ function Admin() {
         .map((c) => tryPublicKey(c))
         .filter((c) => c) as PublicKey[]
 
-      // format date
-      let dateInNum: number | undefined = new Date(
-        values.endDate?.toString() || ''
-      ).getTime()
-      if (dateInNum < Date.now()) {
-        dateInNum = undefined
-      }
       const stakePoolParams = {
         requiresCollections:
           collectionPublicKeys.length > 0 ? collectionPublicKeys : undefined,
@@ -102,7 +95,6 @@ function Admin() {
         requiresAuthorization: values.requiresAuthorization,
         overlayText: values.overlayText || undefined,
         cooldownSeconds: values.cooldownPeriodSeconds || 0,
-        endDate: dateInNum ? new BN(dateInNum / 1000) : undefined,
       }
       const [transaction, stakePoolPK] = await createStakePool(
         connection,
