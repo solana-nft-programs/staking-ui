@@ -577,7 +577,7 @@ function AdminStakePool() {
                     </span>
                     <span className="mt-3 flex w-full flex-wrap md:mb-0">
                       <label className="inline-block text-sm font-bold uppercase tracking-wide text-gray-200">
-                        End Date: {stakePool.data?.parsed.endDate.toNumber()}
+                        End Date:{' '}
                         {stakePool.data?.parsed.endDate
                           ? new Date(
                               stakePool.data?.parsed.endDate?.toNumber() * 1000
