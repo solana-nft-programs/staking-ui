@@ -264,6 +264,7 @@ function AdminStakePool() {
         throw 'Stake pool pubkey not found'
       }
 
+      const transaction = new Transaction()
       if (
         values.rewardDistributorKind !== rewardDistributor.data?.parsed.kind
       ) {
@@ -275,27 +276,17 @@ function AdminStakePool() {
             getRewardDistributor(connection, rewardDistributorId)
           )
           if (rewardDistributorData) {
-            const transaction = await withCloseRewardDistributor(
-              new Transaction(),
+            await withCloseRewardDistributor(
+              transaction,
               connection,
               wallet as Wallet,
               {
                 stakePoolId: stakePool.data.pubkey,
               }
             )
-            await executeTransaction(
-              connection,
-              wallet as Wallet,
-              transaction,
-              {
-                silent: false,
-                signers: [],
-              }
-            )
-
             notify({
-              message: 'Successfully removed reward distributor for pool',
-              type: 'success',
+              message: 'Closing reward distributor for pool',
+              type: 'info',
             })
           }
         } else {
@@ -319,64 +310,37 @@ function AdminStakePool() {
               ? Number(values.multiplierDecimals)
               : undefined,
           }
-          const [transaction] = await withInitRewardDistributor(
+          await withInitRewardDistributor(
             new Transaction(),
             connection,
             wallet as Wallet,
             rewardDistributorKindParams
           )
-          await withUpdateRewardDistributor(
-            transaction,
-            connection,
-            wallet as Wallet,
-            {
-              stakePoolId: stakePool.data.pubkey,
-              defaultMultiplier: values.defaultMultiplier
-                ? new BN(values.defaultMultiplier)
-                : undefined,
-              multiplierDecimals: values.multiplierDecimals
-                ? Number(values.multiplierDecimals)
-                : undefined,
-              rewardAmount: values.rewardAmount
-                ? new BN(values.rewardAmount)
-                : undefined,
-              rewardDurationSeconds: values.rewardDurationSeconds
-                ? new BN(values.rewardDurationSeconds)
-                : undefined,
-            }
-          )
-          await executeTransaction(connection, wallet as Wallet, transaction, {
-            silent: false,
-            signers: [],
-          })
           notify({
-            message: 'Successfully created reward distributor for pool',
-            type: 'success',
+            message: 'Initializing reward distributor for pool',
+            type: 'info',
           })
         }
-      } else if (
-        rewardDistributor.data?.parsed.defaultMultiplier.toString() !==
-          values.defaultMultiplier?.toString() ||
-        rewardDistributor.data?.parsed.multiplierDecimals.toString() !==
-          values.multiplierDecimals?.toString()
-      ) {
-        const tx = await withUpdateRewardDistributor(
-          new Transaction(),
+      } else {
+        await withUpdateRewardDistributor(
+          transaction,
           connection,
           wallet as Wallet,
           {
             stakePoolId: stakePool.data.pubkey,
             defaultMultiplier: new BN(values.defaultMultiplier!),
             multiplierDecimals: Number(values.multiplierDecimals),
+            rewardAmount: values.rewardAmount
+              ? new BN(values.rewardAmount)
+              : undefined,
+            rewardDurationSeconds: values.rewardDurationSeconds
+              ? new BN(values.rewardDurationSeconds)
+              : undefined,
           }
         )
-        await executeTransaction(connection, wallet as Wallet, tx, {
-          silent: false,
-          signers: [],
-        })
         notify({
-          message: `Successfully updated defaultMultiplier and multiplierDecimals`,
-          type: 'success',
+          message: 'Updating reward distributor for pool',
+          type: 'info',
         })
       }
 
@@ -397,12 +361,16 @@ function AdminStakePool() {
         minStakeSeconds: values.minStakeSeconds,
       }
 
-      const [transaction] = await withUpdateStakePool(
-        new Transaction(),
+      await withUpdateStakePool(
+        transaction,
         connection,
         wallet as Wallet,
         stakePoolParams
       )
+      notify({
+        message: 'Updating stake pool',
+        type: 'info',
+      })
 
       await executeTransaction(connection, wallet as Wallet, transaction, {
         silent: false,
@@ -410,12 +378,15 @@ function AdminStakePool() {
       })
       notify({
         message:
-          'Successfully updated stake pool with ID: ' +
+          'Successfully updated stake pool and reward distributor with ID: ' +
           stakePool.data.pubkey.toString(),
         type: 'success',
       })
 
-      await setTimeout(() => stakePool.refetch(), 1000)
+      await setTimeout(() => {
+        stakePool.refetch()
+        rewardDistributor.refetch()
+      }, 1000)
     } catch (e) {
       notify({
         message: handleError(e, `Error updating stake pool: ${e}`),
