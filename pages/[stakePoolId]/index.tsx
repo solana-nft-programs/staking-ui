@@ -1232,7 +1232,7 @@ function Home() {
                                 {tk.stakeEntry?.parsed.lastStaker.toString() !==
                                   wallet.publicKey?.toString() && (
                                   <div>
-                                    <div className="absolute top-0 left-0 z-10 flex h-full w-full justify-center rounded-lg bg-black bg-opacity-80  align-middle text-white">
+                                    <div className="absolute top-0 left-0 z-10 flex h-full w-full justify-center rounded-xl bg-black bg-opacity-80  align-middle text-white">
                                       <div className="mx-auto flex flex-col items-center justify-center">
                                         <div>Owned by</div>
                                         <DisplayAddress
@@ -1345,49 +1345,57 @@ function Home() {
                                           <div className="flex w-full flex-row justify-between text-xs font-semibold">
                                             <span>Daily:</span>
                                             <span>
-                                              {(
-                                                (Number(
-                                                  getMintDecimalAmountFromNatural(
-                                                    rewardMintInfo.data
-                                                      .mintInfo,
-                                                    rewardEntries.data
-                                                      ? rewardDistributorData.data.parsed.rewardAmount
-                                                          .mul(
-                                                            rewardEntries.data.find(
-                                                              (entry) =>
-                                                                entry.parsed.stakeEntry.equals(
-                                                                  tk.stakeEntry
-                                                                    ?.pubkey!
-                                                                )
-                                                            )?.parsed
-                                                              .multiplier ||
-                                                              rewardDistributorData
-                                                                .data.parsed
-                                                                .defaultMultiplier
-                                                          )
-                                                          .div(
-                                                            new BN(10).pow(
-                                                              new BN(
-                                                                rewardDistributorData.data.parsed.multiplierDecimals
-                                                              )
+                                              {formatAmountAsDecimal(
+                                                rewardMintInfo.data.mintInfo
+                                                  .decimals,
+                                                (rewardEntries.data
+                                                  ? rewardDistributorData.data.parsed.rewardAmount
+                                                      .mul(
+                                                        rewardEntries.data.find(
+                                                          (entry) =>
+                                                            entry.parsed.stakeEntry.equals(
+                                                              tk.stakeEntry
+                                                                ?.pubkey!
                                                             )
+                                                        )?.parsed.multiplier ||
+                                                          rewardDistributorData
+                                                            .data.parsed
+                                                            .defaultMultiplier
+                                                      )
+                                                      .div(
+                                                        new BN(10).pow(
+                                                          new BN(
+                                                            rewardDistributorData.data.parsed.multiplierDecimals
                                                           )
-                                                      : rewardDistributorData
-                                                          .data.parsed
-                                                          .rewardAmount
-                                                  )
-                                                ) /
-                                                  rewardDistributorData.data.parsed.rewardDurationSeconds.toNumber()) *
-                                                86400 *
-                                                (rewardDistributorData.data.parsed.defaultMultiplier.toNumber() /
-                                                  10 **
+                                                        )
+                                                      )
+                                                  : rewardDistributorData.data
+                                                      .parsed.rewardAmount
+                                                )
+                                                  .div(
                                                     rewardDistributorData.data
                                                       .parsed
-                                                      .multiplierDecimals)
-                                              ).toPrecision(
-                                                rewardDistributorData.data
-                                                  .parsed.multiplierDecimals ||
-                                                  4
+                                                      .rewardDurationSeconds
+                                                  )
+                                                  .mul(new BN(86400))
+                                                  .mul(
+                                                    rewardDistributorData.data
+                                                      .parsed.defaultMultiplier
+                                                  )
+                                                  .div(
+                                                    new BN(
+                                                      10 **
+                                                        rewardDistributorData
+                                                          .data.parsed
+                                                          .multiplierDecimals
+                                                    )
+                                                  ),
+                                                // max of 5 decimals
+                                                Math.min(
+                                                  rewardMintInfo.data.mintInfo
+                                                    .decimals,
+                                                  5
+                                                )
                                               )}
                                             </span>
                                           </div>
@@ -1402,8 +1410,12 @@ function Home() {
                                                   tk.stakeEntry.pubkey.toString()
                                                 ]?.claimableRewards ||
                                                   new BN(0),
-                                                rewardMintInfo.data.mintInfo
-                                                  .decimals
+                                                // max of 5 decimals
+                                                Math.min(
+                                                  rewardMintInfo.data.mintInfo
+                                                    .decimals,
+                                                  5
+                                                )
                                               ).toLocaleString()}
                                             </span>
                                           </div>
