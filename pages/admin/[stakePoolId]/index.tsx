@@ -321,7 +321,7 @@ function AdminStakePool() {
             type: 'info',
           })
         }
-      } else {
+      } else if (rewardDistributor.data) {
         await withUpdateRewardDistributor(
           transaction,
           connection,
