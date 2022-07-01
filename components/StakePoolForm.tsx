@@ -119,7 +119,9 @@ export function StakePoolForm({
     cooldownPeriodSeconds: stakePoolData?.parsed.cooldownSeconds ?? 0,
     minStakeSeconds: stakePoolData?.parsed.minStakeSeconds ?? 0,
     endDate: stakePoolData?.parsed.endDate
-      ? stakePoolData?.parsed.endDate.toString()
+      ? new Date(stakePoolData?.parsed.endDate.toNumber() * 1000)
+          .toISOString()
+          .split('T')[0]
       : undefined,
     rewardDistributorKind: rewardDistributorData?.parsed.kind,
     rewardMintAddress: rewardDistributorData?.parsed.rewardMint

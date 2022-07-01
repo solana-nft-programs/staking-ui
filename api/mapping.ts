@@ -590,6 +590,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     stakePoolAddress: new PublicKey(
       'J2kvKqkTMbXdbWS3eGmJFv35tKTrzy7wxkJmCzEJ7KAG'
     ),
+    maxStaked: 1100,
     websiteUrl: 'https://pinclub.io/',
     receiptType: ReceiptType.Original,
     imageUrl: '/logos/reverb.png',

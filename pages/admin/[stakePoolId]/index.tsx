@@ -19,7 +19,7 @@ import {
   withUpdateStakePool,
 } from '@cardinal/staking/dist/cjs/programs/stakePool/transaction'
 import { Wallet } from '@metaplex/js'
-import { BN } from '@project-serum/anchor'
+import { BN, web3 } from '@project-serum/anchor'
 import { useWallet } from '@solana/wallet-adapter-react'
 import { PublicKey, Transaction } from '@solana/web3.js'
 import { Footer } from 'common/Footer'
@@ -265,8 +265,6 @@ function AdminStakePool() {
         throw 'Stake pool pubkey not found'
       }
       const transactions: Transaction[] = []
-
-      const transaction = new Transaction()
       if (
         values.rewardDistributorKind !== rewardDistributor.data?.parsed.kind
       ) {
@@ -278,15 +276,15 @@ function AdminStakePool() {
             getRewardDistributor(connection, rewardDistributorId)
           )
           if (rewardDistributorData) {
-            await withCloseRewardDistributor(
-              transaction,
+            const tx = await withCloseRewardDistributor(
+              new web3.Transaction(),
               connection,
               wallet as Wallet,
               {
                 stakePoolId: stakePool.data.pubkey,
               }
             )
-            transactions.push(transaction)
+            transactions.push(tx)
             notify({
               message: 'Removing reward distributor for pool',
               type: 'info',
@@ -313,12 +311,13 @@ function AdminStakePool() {
               ? Number(values.multiplierDecimals)
               : undefined,
           }
-          await withInitRewardDistributor(
+          const [tx] = await withInitRewardDistributor(
             new Transaction(),
             connection,
             wallet as Wallet,
             rewardDistributorKindParams
           )
+          transactions.push(tx)
           notify({
             message: 'Initializing reward distributor for pool',
             type: 'info',
@@ -331,8 +330,12 @@ function AdminStakePool() {
           wallet as Wallet,
           {
             stakePoolId: stakePool.data.pubkey,
-            defaultMultiplier: new BN(values.defaultMultiplier!),
-            multiplierDecimals: Number(values.multiplierDecimals),
+            defaultMultiplier: values.defaultMultiplier
+              ? new BN(values.defaultMultiplier)
+              : undefined,
+            multiplierDecimals: values.multiplierDecimals
+              ? Number(values.multiplierDecimals)
+              : undefined,
             rewardAmount: values.rewardAmount
               ? new BN(values.rewardAmount)
               : undefined,
@@ -362,7 +365,6 @@ function AdminStakePool() {
       if (dateInNum < Date.now()) {
         dateInNum = undefined
       }
-      console.log('dateInNum', dateInNum)
 
       const stakePoolParams = {
         stakePoolId: stakePool.data.pubkey,
@@ -372,19 +374,16 @@ function AdminStakePool() {
         overlayText: values.overlayText,
         cooldownSeconds: values.cooldownPeriodSeconds,
         minStakeSeconds: values.minStakeSeconds,
-        endDate:
-          dateInNum !== NaN && dateInNum !== undefined
-            ? new BN(dateInNum / 1000)
-            : undefined,
+        endDate: dateInNum ? new BN(dateInNum / 1000) : undefined,
       }
 
-      await withUpdateStakePool(
-        transaction,
+      const [tx] = await withUpdateStakePool(
+        new web3.Transaction(),
         connection,
         wallet as Wallet,
         stakePoolParams
       )
-      transactions.push(transaction)
+      transactions.push(tx)
 
       await executeAllTransactions(connection, wallet as Wallet, transactions, {
         signers: [],
@@ -556,7 +555,7 @@ function AdminStakePool() {
                     </span>
                     <span className="mt-3 flex w-full flex-wrap md:mb-0">
                       <label className="inline-block text-sm font-bold uppercase tracking-wide text-gray-200">
-                        End Date:
+                        End Date:{' '}
                         {stakePool.data?.parsed.endDate
                           ? new Date(
                               stakePool.data?.parsed.endDate?.toNumber() * 1000

@@ -167,6 +167,7 @@ function Home() {
     }
     setLoadingUnstake(true)
 
+    let coolDown = false
     const txs: (Transaction | null)[] = await Promise.all(
       stakedSelected.map(async (token) => {
         try {
@@ -182,6 +183,7 @@ function Home() {
               message: `Cooldown period will be initiated for ${token.metaplexData?.data.data.name} unless minimum stake period unsatisfied`,
               type: 'info',
             })
+            coolDown = true
           }
           return unstake(connection, wallet as Wallet, {
             stakePoolId: stakePool?.pubkey,
@@ -205,7 +207,9 @@ function Home() {
         txs.filter((tx): tx is Transaction => tx !== null),
         {
           notificationConfig: {
-            message: 'Successfully unstaked',
+            message: `Successfully ${
+              coolDown ? 'initiated cooldown' : 'unstaked'
+            }`,
             description: 'These tokens are now available in your wallet',
           },
         }
@@ -1126,12 +1130,26 @@ function Home() {
                     )}
                 </div>
               </div>
-              <div className="flex flex-col justify-evenly">
+              <div className="flex flex-col items-end justify-evenly">
+                {stakePool?.parsed.endDate &&
+                stakePool?.parsed.endDate.toNumber() !== 0 ? (
+                  <div className="flex flex-col">
+                    <p className="mr-3 text-sm">
+                      End Date:{' '}
+                      {new Date(
+                        stakePool.parsed.endDate?.toNumber() * 1000
+                      ).toDateString()}{' '}
+                    </p>
+                  </div>
+                ) : (
+                  ''
+                )}
                 {stakePool?.parsed.cooldownSeconds &&
                 stakePool?.parsed.cooldownSeconds !== 0 ? (
                   <div className="flex flex-col">
                     <p className="mr-3 text-sm">
-                      Cooldown Period: {stakePool?.parsed.cooldownSeconds} secs
+                      Cooldown Period:{' '}
+                      {secondstoDuration(stakePool?.parsed.cooldownSeconds)}{' '}
                     </p>
                   </div>
                 ) : (
@@ -1141,8 +1159,8 @@ function Home() {
                 stakePool?.parsed.minStakeSeconds !== 0 ? (
                   <div className="flex flex-col">
                     <p className="mr-3 text-sm">
-                      Minimum Stake Seconds: {stakePool?.parsed.minStakeSeconds}{' '}
-                      secs
+                      Minimum Stake Seconds:{' '}
+                      {secondstoDuration(stakePool?.parsed.minStakeSeconds)}{' '}
                     </p>
                   </div>
                 ) : (
