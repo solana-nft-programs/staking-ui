@@ -24,7 +24,7 @@
   },
   "dependencies": {
     "@cardinal/common": "^1.0.10",
-    "@cardinal/namespaces-components": "^3.0.15",
+    "@cardinal/namespaces-components": "^4.0.3",
     "@cardinal/scanner": "^0.1.1",
     "@cardinal/staking": "1.5.31",
     "@cardinal/stats": "^1.0.3",
