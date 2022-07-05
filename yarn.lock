@@ -188,7 +188,7 @@
     ts-mocha "^9.0.2"
     typescript "^4.5.5"
 
-"@cardinal/certificates@^2.0.0":
+"@cardinal/certificates@^2.0.0", "@cardinal/certificates@^2.0.1":
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/@cardinal/certificates/-/certificates-2.0.1.tgz#6b76366ad11e64abfc3e0a7478560dd9c55d1c2c"
   integrity sha512-q6Ke5cq/vj3oNwj0sh94FldXGSuUcTtu0L+c+yrEMqD8hgZJHemN/kGDeA7aU4PNJJLRtWoU80d7d0CxO9z/jg==
@@ -249,14 +249,14 @@
     tiny-invariant "^1.2.0"
     tslib "^2.3.1"
 
-"@cardinal/namespaces-components@^4.0.3":
-  version "4.0.3"
-  resolved "https://registry.yarnpkg.com/@cardinal/namespaces-components/-/namespaces-components-4.0.3.tgz#9fa7e395118087b7627ebad097751261fe4422ac"
-  integrity sha512-zInpHFfRW6nNlY6NPYi/1W679YHqq1a2k+EbLey9ONEf6yXYTIEyjIelOzsgFUSjd6UKpN9LzEoUtzKGit++aA==
+"@cardinal/namespaces-components@^4.0.5":
+  version "4.0.5"
+  resolved "https://registry.yarnpkg.com/@cardinal/namespaces-components/-/namespaces-components-4.0.5.tgz#39e5c84a4ed091e7e5af87f35769e3bc0ce46f25"
+  integrity sha512-3ripZ58swNcVKOcsyBumpw7Qwc/r0b1FnG/YAH7ue1hJQJV7FVF/FUcD1Lc+PSYXXleDpY9jJWnMVYikCJtk/A==
   dependencies:
-    "@cardinal/certificates" "^2.0.0"
+    "@cardinal/certificates" "^2.0.1"
     "@cardinal/common" "^2.0.4"
-    "@cardinal/namespaces" "^4.1.11"
+    "@cardinal/namespaces" "^4.1.23"
     "@emotion/react" "^11.7.1"
     "@emotion/styled" "^11.6.0"
     "@headlessui/react" "^1.6.1"
@@ -280,10 +280,10 @@
     typescript "^4.1.2"
     webpack-merge "^5.8.0"
 
-"@cardinal/namespaces@^4.1.11":
-  version "4.1.22"
-  resolved "https://registry.yarnpkg.com/@cardinal/namespaces/-/namespaces-4.1.22.tgz#b257eef2dcb61da3d4176312ddc2aeca472d9f60"
-  integrity sha512-HxxOrMh+jgh/edOKWdv+3KAQN2CkckiqIiPxCA2ipWOwJdwTC3OMedm/qdDsmNAd2KxVCvV5IjimGMqf21pvVA==
+"@cardinal/namespaces@^4.1.23":
+  version "4.1.23"
+  resolved "https://registry.yarnpkg.com/@cardinal/namespaces/-/namespaces-4.1.23.tgz#ac7e8b563ef1295e9ddf777fc82c8672d1bf6392"
+  integrity sha512-jo3LsGkpZReLd0XdvqdMZBVbraxgHp/4QADO16I7XaPpwvRR8DU/JryNV/dNVhODZHhMnuKenAGK1q2MIYer3w==
   dependencies:
     "@cardinal/certificates" "^2.0.0"
     "@cardinal/common" "^2.0.1"
