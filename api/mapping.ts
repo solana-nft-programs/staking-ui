@@ -263,6 +263,22 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     },
   },
   {
+    name: 'monsta-scientist ',
+    displayName: 'Monsta Scientist ',
+    stakePoolAddress: new PublicKey(
+      '4hYMymEkyvBvY5ipLjiedvZu7Dp7oTshAsXcFVJZ9Bhv'
+    ),
+    websiteUrl: 'https://www.monstascientist.io/',
+    receiptType: ReceiptType.Original,
+    maxStaked: 4444,
+    imageUrl: 'https://raw.githubusercontent.com/monstadao/logo/main/monsta-scientist.jpg',
+    colors: {
+      primary: '#211F20',
+      secondary: '#211F20',
+      accent: '#000',
+    },
+  },
+  {
     name: 'gemmy',
     displayName: 'Gemmy',
     stakePoolAddress: new PublicKey(
