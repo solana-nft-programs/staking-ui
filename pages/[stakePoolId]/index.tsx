@@ -100,6 +100,8 @@ function Home() {
       setShowFungibleTokens(
         stakePoolMetadata?.tokenStandard === TokenStandard.Fungible
       )
+    stakePoolMetadata?.receiptType &&
+      setReceiptType(stakePoolMetadata?.receiptType)
   }, [stakePoolMetadata?.name])
 
   async function handleClaimRewards() {
