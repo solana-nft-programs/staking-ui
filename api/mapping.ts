@@ -279,6 +279,22 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     },
   },
   {
+    name: 'monsta-potion',
+    displayName: 'Monsta Potion',
+    stakePoolAddress: new PublicKey(
+      'FXuwtxvrL8BsTmW9ZBpYHyntKYciBRz9KX9z19iQjn8h'
+    ),
+    websiteUrl: 'https://www.monstascientist.io/',
+    receiptType: ReceiptType.Original,
+    maxStaked: 150,
+    imageUrl: 'https://c4cbdhxzucki34e4lofteofqngjip3dznomj22ui4en5kukyhi.arweave.net/FwQRnvmglI3wnFuLMjiwaZK_H7HlrmJ1qiOEb1VFYOs?ext=png',
+    colors: {
+      primary: '#211F20',
+      secondary: '#211F20',
+      accent: '#000',
+    },
+  },
+  {
     name: 'gemmy',
     displayName: 'Gemmy',
     stakePoolAddress: new PublicKey(
