@@ -600,4 +600,24 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       fontColor: '#ffffff',
     },
   },
+  {
+    name: 'faceless-souls',
+    displayName: 'Faceless Souls',
+    stakePoolAddress: new PublicKey(
+      'H3GrgtE1HhSgpjm9XQNegHQeXdnhC2iLuaNuMy9bmcja'
+    ),
+    websiteUrl: 'https://stake.cardinal.so/faceless-souls',
+    receiptType: ReceiptType.Original,
+    imageUrl:
+      'https://p4e5f2irximos56xgqy7o57rowpbovspcht4ao6o5vxoevg4geoq.arweave.net/fwnS6RG6GOl31zQx93fxdZ4XVk8R58A7zu1u4lTcMR0',
+    maxStaked: 4444,
+    tokenStandard: TokenStandard.NonFungible,
+    hideAllowedTokens: true,
+    colors: {
+      primary: '#2d0c65',
+      secondary: '#ed69fa',
+      accent: '#f7f6fe',
+      fontColor: '#FFFFFF',
+    },
+  },
 ]
