@@ -639,7 +639,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       'H3GrgtE1HhSgpjm9XQNegHQeXdnhC2iLuaNuMy9bmcja'
     ),
     websiteUrl: 'https://stake.cardinal.so/faceless-souls',
-    receiptType: ReceiptType.Original,
+    receiptType: ReceiptType.Receipt,
     imageUrl:
       'https://p4e5f2irximos56xgqy7o57rowpbovspcht4ao6o5vxoevg4geoq.arweave.net/fwnS6RG6GOl31zQx93fxdZ4XVk8R58A7zu1u4lTcMR0',
     maxStaked: 4444,
