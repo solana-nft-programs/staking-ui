@@ -263,8 +263,8 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     },
   },
   {
-    name: 'monsta-scientist ',
-    displayName: 'Monsta Scientist ',
+    name: 'monsta-scientist',
+    displayName: 'Monsta Scientist',
     stakePoolAddress: new PublicKey(
       '4hYMymEkyvBvY5ipLjiedvZu7Dp7oTshAsXcFVJZ9Bhv'
     ),
