@@ -652,4 +652,27 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       fontColor: '#FFFFFF',
     },
   },
+  {
+    name: 'the-pilgrims',
+    displayName: 'The Pilgrims',
+    stakePoolAddress: new PublicKey(
+      'FmFr9KurNcUpwHiKgbwVf9Q8Dvy7e6k5XHNdtHrvoaBJ'
+    ),
+    websiteUrl: 'https://thepilgrims.xyz',
+    receiptType: ReceiptType.Original,
+    imageUrl:
+      'https://pq3boxq5w7tjxfmtl2hra72jkpmbswwmi66d3dz464isnsoqoq.arweave.net/fDYXXh235puVk16PEH9JU9gZWsxHvD2PP-PcRJsnQdA',
+    maxStaked: 2000,
+    tokenStandard: TokenStandard.NonFungible,
+    hideAllowedTokens: true,
+    styles: {
+      fontFamily: 'Paralucent',
+    },
+    colors: {
+      primary: '#282828',
+      secondary: '#A57F3D',
+      accent: '#f7f6fe',
+      fontColor: '#FFFFFF',
+    },
+  },
 ]
