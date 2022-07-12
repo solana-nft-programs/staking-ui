@@ -54,6 +54,7 @@ import { useRouter } from 'next/router'
 import { lighten, darken } from '@mui/material'
 import { QuickActions } from 'common/QuickActions'
 import * as splToken from '@solana/spl-token'
+import { usePoolAnalytics } from 'hooks/usePoolAnalytics'
 
 function Home() {
   const router = useRouter()
@@ -88,6 +89,7 @@ function Home() {
   const allowedTokenDatas = useAllowedTokenDatas(showFungibleTokens)
   const { data: stakePoolMetadata } = useStakePoolMetadata()
   const rewardDistributorTokenAccountData = useRewardDistributorTokenAccount()
+  const analytics = usePoolAnalytics()
   const { UTCNow } = useUTCNow()
 
   if (stakePoolMetadata?.redirect) {
@@ -105,10 +107,6 @@ function Home() {
   }, [stakePoolMetadata?.name])
 
   async function handleClaimRewards() {
-    if (stakedSelected.length > 4) {
-      notify({ message: `Limit of 4 tokens at a time reached`, type: 'error' })
-      return
-    }
     setLoadingClaimRewards(true)
     if (!wallet) {
       throw new Error('Wallet not connected')
@@ -156,6 +154,7 @@ function Home() {
     rewardDistributorData.remove()
     rewardDistributorTokenAccountData.remove()
     setLoadingClaimRewards(false)
+    setStakedSelected([])
   }
 
   async function handleUnstake() {
@@ -1622,6 +1621,41 @@ function Home() {
                   <span className="my-auto">
                     Claim Rewards ({stakedSelected.length})
                   </span>
+                </button>
+              ) : (
+                ''
+              )}
+              {rewardDistributorData.data &&
+              rewards.data?.claimableRewards.gt(new BN(0)) ? (
+                <button
+                  onClick={() => {
+                    setStakedSelected(stakedTokenDatas.data || [])
+                    handleClaimRewards()
+                  }}
+                  disabled={!rewards.data?.claimableRewards.gt(new BN(0))}
+                  style={{
+                    background:
+                      stakePoolMetadata?.colors?.secondary ||
+                      defaultSecondaryColor,
+                    color:
+                      stakePoolMetadata?.colors?.fontColorSecondary ||
+                      stakePoolMetadata?.colors?.fontColor,
+                  }}
+                  className="my-auto mr-5 flex rounded-md px-4 py-2 hover:scale-[1.03]"
+                >
+                  <span className="mr-1 inline-block">
+                    {loadingClaimRewards && (
+                      <LoadingSpinner
+                        fill={
+                          stakePoolMetadata?.colors?.fontColor
+                            ? stakePoolMetadata?.colors?.fontColor
+                            : '#FFF'
+                        }
+                        height="25px"
+                      />
+                    )}
+                  </span>
+                  <span className="my-auto">Claim All Rewards</span>
                 </button>
               ) : (
                 ''
