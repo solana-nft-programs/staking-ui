@@ -54,7 +54,6 @@ import { useRouter } from 'next/router'
 import { lighten, darken } from '@mui/material'
 import { QuickActions } from 'common/QuickActions'
 import * as splToken from '@solana/spl-token'
-import { usePoolAnalytics } from 'hooks/usePoolAnalytics'
 
 function Home() {
   const router = useRouter()
@@ -89,7 +88,6 @@ function Home() {
   const allowedTokenDatas = useAllowedTokenDatas(showFungibleTokens)
   const { data: stakePoolMetadata } = useStakePoolMetadata()
   const rewardDistributorTokenAccountData = useRewardDistributorTokenAccount()
-  const analytics = usePoolAnalytics()
   const { UTCNow } = useUTCNow()
 
   if (stakePoolMetadata?.redirect) {
@@ -106,7 +104,7 @@ function Home() {
       setReceiptType(stakePoolMetadata?.receiptType)
   }, [stakePoolMetadata?.name])
 
-  async function handleClaimRewards() {
+  async function handleClaimRewards(all?: boolean) {
     setLoadingClaimRewards(true)
     if (!wallet) {
       throw new Error('Wallet not connected')
@@ -117,26 +115,27 @@ function Home() {
     }
 
     const txs: (Transaction | null)[] = await Promise.all(
-      stakedSelected.map(async (token) => {
-        try {
-          if (!token || !token.stakeEntry) {
-            throw new Error('No stake entry for token')
+      (all ? stakedTokenDatas.data || [] : stakedSelected).map(
+        async (token) => {
+          try {
+            if (!token || !token.stakeEntry) {
+              throw new Error('No stake entry for token')
+            }
+            return claimRewards(connection, wallet as Wallet, {
+              stakePoolId: stakePool.pubkey,
+              stakeEntryId: token.stakeEntry.pubkey,
+            })
+          } catch (e) {
+            notify({
+              message: `${e}`,
+              description: `Failed to claim rewards for token ${token?.stakeEntry?.pubkey.toString()}`,
+              type: 'error',
+            })
+            return null
           }
-          return claimRewards(connection, wallet as Wallet, {
-            stakePoolId: stakePool.pubkey,
-            stakeEntryId: token.stakeEntry.pubkey,
-          })
-        } catch (e) {
-          notify({
-            message: `${e}`,
-            description: `Failed to claim rewards for token ${token?.stakeEntry?.pubkey.toString()}`,
-            type: 'error',
-          })
-          return null
         }
-      })
+      )
     )
-
     try {
       await executeAllTransactions(
         connection,
@@ -1626,13 +1625,16 @@ function Home() {
                 ''
               )}
               {rewardDistributorData.data &&
-              rewards.data?.claimableRewards.gt(new BN(0)) ? (
+              rewards.data?.claimableRewards.gt(new BN(0)) &&
+              stakedTokenDatas.data ? (
                 <button
                   onClick={() => {
-                    setStakedSelected(stakedTokenDatas.data || [])
-                    handleClaimRewards()
+                    handleClaimRewards(true)
                   }}
-                  disabled={!rewards.data?.claimableRewards.gt(new BN(0))}
+                  disabled={
+                    !rewards.data?.claimableRewards.gt(new BN(0)) ||
+                    stakedTokenDatas.data?.length === 0
+                  }
                   style={{
                     background:
                       stakePoolMetadata?.colors?.secondary ||

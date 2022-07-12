@@ -271,7 +271,8 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     websiteUrl: 'https://www.monstascientist.io/',
     receiptType: ReceiptType.Original,
     maxStaked: 4444,
-    imageUrl: 'https://raw.githubusercontent.com/monstadao/logo/main/monsta-scientist.jpg',
+    imageUrl:
+      'https://raw.githubusercontent.com/monstadao/logo/main/monsta-scientist.jpg',
     colors: {
       primary: '#211F20',
       secondary: '#211F20',
@@ -287,7 +288,8 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     websiteUrl: 'https://www.monstascientist.io/',
     receiptType: ReceiptType.Original,
     maxStaked: 150,
-    imageUrl: 'https://c4cbdhxzucki34e4lofteofqngjip3dznomj22ui4en5kukyhi.arweave.net/FwQRnvmglI3wnFuLMjiwaZK_H7HlrmJ1qiOEb1VFYOs?ext=png',
+    imageUrl:
+      'https://c4cbdhxzucki34e4lofteofqngjip3dznomj22ui4en5kukyhi.arweave.net/FwQRnvmglI3wnFuLMjiwaZK_H7HlrmJ1qiOEb1VFYOs?ext=png',
     colors: {
       primary: '#211F20',
       secondary: '#211F20',
@@ -426,7 +428,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       '8eqFBjdYYN4f2ibFQ1SADBbGrQKPcfDuYQn32t3NuEoW'
     ),
     websiteUrl: 'https://www.roguesharks.org/',
-    receiptType: ReceiptType.Receipt,
+    receiptType: ReceiptType.Original,
     hostname: 'stake.roguesharks',
     maxStaked: 4991, // update with collection size
     imageUrl: '/logos/rogue-sharks.svg',
