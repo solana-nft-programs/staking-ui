@@ -677,4 +677,21 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       fontColor: '#FFFFFF',
     },
   },
+
+  {
+    name: 'yoyoyetis',
+    displayName: 'Yo Yo Yetis',
+    stakePoolAddress: new PublicKey('ConmspDbxLQsm9rs612vPT2UiTvaKoQrJjGBTx6A3AzK'),
+    websiteUrl: 'https://www.yoyoyetis.com/',
+    receiptType: ReceiptType.Receipt,
+    imageUrl: 'https://media.discordapp.net/attachments/911802368251809883/996651684048687165/skull.png?width=1100&height=1100',
+    maxStaked: 3333,
+    colors: {
+      primary: '#78bbe2',
+      secondary: '#25ade9',
+      accent: '#25ade9',
+      fontColor: '#FFFFFF',
+    },
+  },
+
 ]
