@@ -1,23 +1,5 @@
 import { PublicKey } from '@solana/web3.js'
 
-export function getExpirationString(expiration: number, UTCSecondsNow: number) {
-  let day = (expiration - UTCSecondsNow) / 60 / 60 / 24
-  let hour = ((expiration - UTCSecondsNow) / 60 / 60) % 24
-  let minute = ((expiration - UTCSecondsNow) / 60) % 60
-  let second = (expiration - UTCSecondsNow) % 60
-  const floorOrCeil = (n: number) =>
-    expiration - UTCSecondsNow > 0 ? Math.floor(n) : Math.ceil(n)
-
-  day = day < 0 ? 0 : day
-  hour = hour < 0 ? 0 : hour
-  minute = minute < 0 ? 0 : minute
-  second = second < 0 ? 0 : second
-
-  return `${floorOrCeil(day)}d ${floorOrCeil(hour)}h ${floorOrCeil(
-    minute
-  )}m ${floorOrCeil(second)}s`
-}
-
 export function shortPubKey(pubkey: PublicKey | string | null | undefined) {
   if (!pubkey) return ''
   return `${pubkey?.toString().substring(0, 4)}..${pubkey
@@ -92,17 +74,6 @@ export function secondstoDuration(durationSeconds: number) {
 export const withSleep = async (fn: Function, sleep = 2000) => {
   await new Promise((r) => setTimeout(r, sleep))
   await fn()
-}
-
-/**
- *
- * @param {string} name
- * @returns {string|null}
- */
-export function getQueryParam(url: string, name: string) {
-  if (!url || !name) return null
-  const q = url.match(new RegExp('[?&]' + name + '=([^&#]*)'))
-  return q && q[1]
 }
 
 export const firstParam = (param: string | string[] | undefined): string => {

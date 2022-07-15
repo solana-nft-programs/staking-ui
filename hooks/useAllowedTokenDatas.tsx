@@ -95,7 +95,7 @@ export const allowedTokensForPool = (
 export const useAllowedTokenDatas = (showFungibleTokens: boolean) => {
   const stakePoolId = useStakePoolId()
   const walletId = useWalletId()
-  const { secondaryConnection } = useEnvironmentCtx()
+  const { connection } = useEnvironmentCtx()
   const { data: tokenList } = useTokenList()
   const { data: stakePool } = useStakePoolData()
   const { data: stakeAuthorizations } = useStakeAuthorizationsForPool()
@@ -104,10 +104,12 @@ export const useAllowedTokenDatas = (showFungibleTokens: boolean) => {
     async () => {
       if (!stakePoolId || !stakePool || !walletId) return
 
-      const allTokenAccounts =
-        await secondaryConnection.getParsedTokenAccountsByOwner(walletId!, {
+      const allTokenAccounts = await connection.getParsedTokenAccountsByOwner(
+        walletId!,
+        {
           programId: spl.TOKEN_PROGRAM_ID,
-        })
+        }
+      )
 
       const tokenAccounts = allTokenAccounts.value
         .filter(
@@ -127,7 +129,7 @@ export const useAllowedTokenDatas = (showFungibleTokens: boolean) => {
         )
       )
       const metaplexAccountInfos = await getBatchedMultipleAccounts(
-        secondaryConnection,
+        connection,
         metaplexIds
       )
       const metaplexData = metaplexAccountInfos.reduce(
@@ -171,7 +173,7 @@ export const useAllowedTokenDatas = (showFungibleTokens: boolean) => {
           async (allowedToken) =>
             (
               await findStakeEntryIdFromMint(
-                secondaryConnection,
+                connection,
                 walletId!,
                 stakePoolId,
                 new PublicKey(
@@ -183,7 +185,7 @@ export const useAllowedTokenDatas = (showFungibleTokens: boolean) => {
       )
       const stakeEntries =
         stakeEntryIds.length > 0
-          ? await getStakeEntries(secondaryConnection, stakeEntryIds)
+          ? await getStakeEntries(connection, stakeEntryIds)
           : []
 
       const metadata = await Promise.all(

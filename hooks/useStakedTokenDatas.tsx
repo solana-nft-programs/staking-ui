@@ -128,7 +128,7 @@ export const useStakedTokenDatas = () => {
             ...tokenData,
             tokenListData: tokenListData,
           })
-        } else if (tokenData.metadata) {
+        } else {
           acc.push({
             ...tokenData,
             tokenListData: undefined,

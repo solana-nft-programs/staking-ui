@@ -10,6 +10,13 @@ export enum TokenStandard {
   NonFungible = 2,
 }
 
+export type Analytic = {
+  metadata?: {
+    key: string
+    type: 'staked'
+  }
+}
+
 export type StakePoolMetadata = {
   // Name of this stake pool used as an id. Should be in lower-case kebab-case since it is used in the URL as /{name}
   // https://www.theserverside.com/blog/Coffee-Talk-Java-News-Stories-and-Opinions/Why-you-should-make-kebab-case-a-URL-naming-convention-best-practice
@@ -40,10 +47,13 @@ export type StakePoolMetadata = {
     secondary: string
     accent?: string
     fontColor?: string
+    fontColorSecondary?: string
     backgroundSecondary?: string
   }
   // Image url to be used as the icon in the pool selector and the header
   imageUrl?: string
+  // Background banner image for pool
+  backgroundBannerImageUrl?: string
   // Website url if specified will be navigated to when the image in the header is clicked
   websiteUrl?: string
   // Max staked is used to compute percentage of total staked
@@ -52,6 +62,8 @@ export type StakePoolMetadata = {
   links?: { text: string; value: string }[]
   // On devnet when you click the airdrop button on this page it will clone NFTs with this metadata and airdrop to the user
   airdrops?: AirdropMetadata[]
+  // Analytics to show at the top of stake pool. supports trait based analytics and overall tokens data
+  analytics?: Analytic[]
 }
 
 export const defaultSecondaryColor = 'rgba(29, 78, 216, 255)'
@@ -73,7 +85,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     name: 'cardinal',
     displayName: 'Cardinal',
     stakePoolAddress: new PublicKey(
-      '2s3qXuGyMNedXS61Vi9XsRx7HuryyyZUYGyMtCrKUXva'
+      'AxHiaxZeoDsyjD8Eyj5tQtrajkxYk5xebEK1QNQ1LSE7'
     ),
     imageUrl: '/logo-colored.png',
     colors: {
@@ -160,7 +172,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
   },
   {
     name: 'block-token',
-    displayName: 'Blockasset Token Staking',
+    displayName: 'Blockasset Token',
     stakePoolAddress: new PublicKey(
       'jhksrHQqRKBEFuker9buKw4zDDrmENGTTKnUn2QzsUD'
     ),
@@ -272,6 +284,40 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     },
   },
   {
+    name: 'monsta-scientist',
+    displayName: 'Monsta Scientist',
+    stakePoolAddress: new PublicKey(
+      '4hYMymEkyvBvY5ipLjiedvZu7Dp7oTshAsXcFVJZ9Bhv'
+    ),
+    websiteUrl: 'https://www.monstascientist.io/',
+    receiptType: ReceiptType.Original,
+    maxStaked: 4444,
+    imageUrl:
+      'https://raw.githubusercontent.com/monstadao/logo/main/monsta-scientist.jpg',
+    colors: {
+      primary: '#211F20',
+      secondary: '#211F20',
+      accent: '#000',
+    },
+  },
+  {
+    name: 'monsta-potion',
+    displayName: 'Monsta Potion',
+    stakePoolAddress: new PublicKey(
+      'FXuwtxvrL8BsTmW9ZBpYHyntKYciBRz9KX9z19iQjn8h'
+    ),
+    websiteUrl: 'https://www.monstascientist.io/',
+    receiptType: ReceiptType.Original,
+    maxStaked: 150,
+    imageUrl:
+      'https://c4cbdhxzucki34e4lofteofqngjip3dznomj22ui4en5kukyhi.arweave.net/FwQRnvmglI3wnFuLMjiwaZK_H7HlrmJ1qiOEb1VFYOs?ext=png',
+    colors: {
+      primary: '#211F20',
+      secondary: '#211F20',
+      accent: '#000',
+    },
+  },
+  {
     name: 'gemmy',
     displayName: 'Gemmy',
     stakePoolAddress: new PublicKey(
@@ -327,10 +373,10 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     imageUrl:
       'https://smvkptoniao6opm5dr3gwgm45tyk3hk5dhz4vrsjqyviqqlkwu.arweave.net/k_yqnzc1AHec9nRx2axmc7PCtnV0Z88rGSYYqiEFqtU',
     styles: {
-        fontFamily: 'fot-udmincho-pr6n, serif',
-        fontWeight: 500,
-      },
-      colors: {
+      fontFamily: 'fot-udmincho-pr6n, serif',
+      fontWeight: 500,
+    },
+    colors: {
       primary: '#1a2721',
       secondary: '#48524d',
       accent: '#FFFFFF',
@@ -403,10 +449,9 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       '8eqFBjdYYN4f2ibFQ1SADBbGrQKPcfDuYQn32t3NuEoW'
     ),
     websiteUrl: 'https://www.roguesharks.org/',
-    receiptType: ReceiptType.Receipt,
+    receiptType: ReceiptType.Original,
     hostname: 'stake.roguesharks',
     maxStaked: 4991, // update with collection size
-    hidden: true,
     imageUrl: '/logos/rogue-sharks.svg',
     tokenStandard: TokenStandard.NonFungible,
     hideAllowedTokens: true,
@@ -488,8 +533,8 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
   },
   {
     name: 'Orbit',
-    displayName: 'Orbit Staking',
-    hostname:'stake.unfrgtn.space',
+    displayName: 'Orbit',
+    hostname: 'stake.unfrgtn.space',
     stakePoolAddress: new PublicKey(
       '4TMt9ehagkdFgZJBnyBRBTNfXUD8xLX18JyPVeGDpaKb'
     ),
@@ -502,6 +547,173 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       primary: '#000000',
       secondary: '#4da1de',
       accent: '#1fcfb11c',
+      fontColor: '#FFFFFF',
+    },
+  },
+  {
+    name: 'The Frontier',
+    displayName: 'The Frontier',
+    stakePoolAddress: new PublicKey(
+      'DQkaEQUH2Qwr3BfUZnCarnWoTM4mBrhDqxGNL2M5yJ2F'
+    ),
+    receiptType: ReceiptType.Original,
+    imageUrl:
+      'https://raw.githack.com/solanafrontier/logos/main/TheFrontier_logo.png',
+    maxStaked: 5000,
+    colors: {
+      primary: '#000000',
+      secondary: '#1D6152',
+      accent: '#FFF6D3',
+      fontColor: '#FFFFFF',
+    },
+  },
+  {
+    name: 'skatex-founders',
+    displayName: 'SkateX Founders',
+    stakePoolAddress: new PublicKey(
+      '5cYt8tVpVc1ECPohiUhKgBVUnRAHv9mEpE3WJzSpRaSh'
+    ),
+    websiteUrl: 'https://www.skatex.io/',
+    receiptType: ReceiptType.Original,
+    imageUrl: '/logos/skatex-logo.png',
+    maxStaked: 1080,
+    styles: {
+      fontFamily: 'Industry, sans-serif',
+      fontWeight: 500,
+    },
+    colors: {
+      primary: '#211227',
+      secondary: '#c7bdcb',
+      fontColor: '#ffffff',
+      fontColorSecondary: '#000000',
+    },
+  },
+  {
+    name: 'skatex-c2c',
+    displayName: 'SkateX Coast2Coast',
+    stakePoolAddress: new PublicKey(
+      'FcVePnNEFFt1SdbTT1dHWWsRft8DAeCF3TRPBZFyLGpZ'
+    ),
+    websiteUrl: 'https://www.skatex.io/',
+    receiptType: ReceiptType.Original,
+    imageUrl: '/logos/skatex-logo.png',
+    maxStaked: 2222,
+    styles: {
+      fontFamily: 'Industry, sans-serif',
+      fontWeight: 500,
+    },
+    colors: {
+      primary: '#211227',
+      secondary: '#c7bdcb',
+      fontColor: '#ffffff',
+      fontColorSecondary: '#000000',
+    },
+  },
+  {
+    name: 'skatex-combo',
+    displayName: 'SkateX Collection Combo',
+    stakePoolAddress: new PublicKey(
+      'CUwNn2VrgQ3R7znBXoTzUyYR1WoSAMHXw38GZNKmY4u3'
+    ),
+    websiteUrl: 'https://www.skatex.io/',
+    receiptType: ReceiptType.Original,
+    imageUrl: '/logos/skatex-logo.png',
+    styles: {
+      fontFamily: 'Industry, sans-serif',
+      fontWeight: 500,
+    },
+    colors: {
+      primary: '#211227',
+      secondary: '#c7bdcb',
+      fontColor: '#ffffff',
+      fontColorSecondary: '#000000',
+    },
+  },
+  {
+    name: 'sla',
+    displayName: 'Secret Llama Agency',
+    stakePoolAddress: new PublicKey(
+      'DFXwKJK2UCEVhujYPDmLmPUBKgEK58cKaUJzC3UGhysf'
+    ),
+    websiteUrl: 'https://www.secretllamaagency.com/',
+    receiptType: ReceiptType.Original,
+    imageUrl: 'https://www.secretllamaagency.com/images/Logo-7-p-500.png',
+  },
+  {
+    name: 'reverb',
+    displayName: 'Reverb',
+    stakePoolAddress: new PublicKey(
+      'J2kvKqkTMbXdbWS3eGmJFv35tKTrzy7wxkJmCzEJ7KAG'
+    ),
+    maxStaked: 1100,
+    websiteUrl: 'https://pinclub.io/',
+    receiptType: ReceiptType.Original,
+    imageUrl: '/logos/reverb.png',
+    colors: {
+      primary: '#394b5a',
+      secondary: '#6e989d',
+      fontColor: '#ffffff',
+    },
+  },
+  {
+    name: 'faceless-souls',
+    displayName: 'Faceless Souls',
+    stakePoolAddress: new PublicKey(
+      'H3GrgtE1HhSgpjm9XQNegHQeXdnhC2iLuaNuMy9bmcja'
+    ),
+    websiteUrl: 'https://stake.cardinal.so/faceless-souls',
+    receiptType: ReceiptType.Receipt,
+    imageUrl:
+      'https://p4e5f2irximos56xgqy7o57rowpbovspcht4ao6o5vxoevg4geoq.arweave.net/fwnS6RG6GOl31zQx93fxdZ4XVk8R58A7zu1u4lTcMR0',
+    maxStaked: 4444,
+    tokenStandard: TokenStandard.NonFungible,
+    hideAllowedTokens: true,
+    colors: {
+      primary: '#2d0c65',
+      secondary: '#ed69fa',
+      accent: '#f7f6fe',
+      fontColor: '#FFFFFF',
+    },
+  },
+  {
+    name: 'the-pilgrims',
+    displayName: 'The Pilgrims',
+    stakePoolAddress: new PublicKey(
+      'FmFr9KurNcUpwHiKgbwVf9Q8Dvy7e6k5XHNdtHrvoaBJ'
+    ),
+    websiteUrl: 'https://thepilgrims.xyz',
+    receiptType: ReceiptType.Original,
+    imageUrl:
+      'https://pq3boxq5w7tjxfmtl2hra72jkpmbswwmi66d3dz464isnsoqoq.arweave.net/fDYXXh235puVk16PEH9JU9gZWsxHvD2PP-PcRJsnQdA',
+    maxStaked: 2000,
+    tokenStandard: TokenStandard.NonFungible,
+    hideAllowedTokens: true,
+    styles: {
+      fontFamily: 'Paralucent',
+    },
+    colors: {
+      primary: '#282828',
+      secondary: '#A57F3D',
+      accent: '#f7f6fe',
+      fontColor: '#FFFFFF',
+    },
+  },
+
+  {
+    name: 'yoyoyetis',
+    displayName: 'Yo Yo Yetis',
+    stakePoolAddress: new PublicKey(
+      'ConmspDbxLQsm9rs612vPT2UiTvaKoQrJjGBTx6A3AzK'
+    ),
+    websiteUrl: 'https://www.yoyoyetis.com/',
+    receiptType: ReceiptType.Receipt,
+    imageUrl:
+      'https://media.discordapp.net/attachments/911802368251809883/996651684048687165/skull.png?width=1100&height=1100',
+    maxStaked: 3333,
+    colors: {
+      primary: '#78bbe2',
+      secondary: '#25ade9',
+      accent: '#25ade9',
       fontColor: '#FFFFFF',
     },
   },

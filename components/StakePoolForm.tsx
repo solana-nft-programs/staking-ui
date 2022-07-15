@@ -65,6 +65,9 @@ const creationFormSchema = Yup.object({
   requiresAuthorization: Yup.boolean(),
   cooldownPeriodSeconds: Yup.number().optional().min(0),
   minStakeSeconds: Yup.number().optional().min(0),
+  endDate: Yup.string()
+    .optional()
+    .test('is-valid-bn', 'Invalid endDate', bnValidationTest),
   rewardDistributorKind: Yup.number().optional().min(0).max(2),
   rewardMintAddress: Yup.string().test(
     'is-public-key',
@@ -115,6 +118,11 @@ export function StakePoolForm({
     requiresAuthorization: stakePoolData?.parsed.requiresAuthorization ?? false,
     cooldownPeriodSeconds: stakePoolData?.parsed.cooldownSeconds ?? 0,
     minStakeSeconds: stakePoolData?.parsed.minStakeSeconds ?? 0,
+    endDate: stakePoolData?.parsed.endDate
+      ? new Date(stakePoolData?.parsed.endDate.toNumber() * 1000)
+          .toISOString()
+          .split('T')[0]
+      : undefined,
     rewardDistributorKind: rewardDistributorData?.parsed.kind,
     rewardMintAddress: rewardDistributorData?.parsed.rewardMint
       ? rewardDistributorData?.parsed.rewardMint.toString()
@@ -459,6 +467,24 @@ export function StakePoolForm({
           />
         </div>
       </div>
+      <div className="-mx-3 flex flex-wrap">
+        <div className="mb-6 mt-4 w-full px-3 md:mb-0">
+          <FormFieldTitleInput
+            title={'Pool End Date'}
+            description={
+              'End date for pool when staking is disabled but claiming rewards and unstaking is still enabled'
+            }
+          />
+          <input
+            className="mb-3 block w-full appearance-none rounded border border-gray-500 bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800 focus:outline-none"
+            type="date"
+            placeholder={'None'}
+            name="endDate"
+            value={values.endDate}
+            onChange={handleChange}
+          />
+        </div>
+      </div>
       <div>
         <div className="-mx-3 mt-5 flex flex-wrap rounded-md bg-white bg-opacity-5 pb-2">
           <div className="mb-6 mt-4 w-full px-3 md:mb-0">
@@ -564,11 +590,6 @@ export function StakePoolForm({
                           ? 'border-red-500'
                           : 'border-gray-500'
                       } mb-3 block w-full appearance-none rounded border border-gray-500 bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800 focus:outline-none`}
-                      disabled={
-                        submitDisabled ||
-                        (type === 'update' &&
-                          rewardDistributorData !== undefined)
-                      }
                       type="text"
                       placeholder={'10'}
                       value={tryFormatAmountAsInput(
@@ -609,11 +630,6 @@ export function StakePoolForm({
                           : 'border-gray-500'
                       } mb-3 block w-full appearance-none rounded border border-gray-500 bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800 focus:outline-none`}
                       type="text"
-                      disabled={
-                        submitDisabled ||
-                        (type === 'update' &&
-                          rewardDistributorData !== undefined)
-                      }
                       placeholder={'60'}
                       value={values.rewardDurationSeconds}
                       onChange={(e) => {
