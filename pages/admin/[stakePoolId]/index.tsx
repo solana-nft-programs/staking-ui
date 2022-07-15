@@ -264,7 +264,7 @@ function AdminStakePool() {
       if (!stakePool.data?.pubkey) {
         throw 'Stake pool pubkey not found'
       }
-      const transactions: Transaction[] = []
+      const transaction = new Transaction()
       if (
         values.rewardDistributorKind !== rewardDistributor.data?.parsed.kind
       ) {
@@ -276,15 +276,14 @@ function AdminStakePool() {
             getRewardDistributor(connection, rewardDistributorId)
           )
           if (rewardDistributorData) {
-            const tx = await withCloseRewardDistributor(
-              new web3.Transaction(),
+            await withCloseRewardDistributor(
+              transaction,
               connection,
               wallet as Wallet,
               {
                 stakePoolId: stakePool.data.pubkey,
               }
             )
-            transactions.push(tx)
             notify({
               message: 'Removing reward distributor for pool',
               type: 'info',
@@ -311,20 +310,19 @@ function AdminStakePool() {
               ? Number(values.multiplierDecimals)
               : undefined,
           }
-          const [tx] = await withInitRewardDistributor(
-            new Transaction(),
+          await withInitRewardDistributor(
+            transaction,
             connection,
             wallet as Wallet,
             rewardDistributorKindParams
           )
-          transactions.push(tx)
           notify({
             message: 'Initializing reward distributor for pool',
             type: 'info',
           })
         }
       } else if (rewardDistributor.data) {
-        const tx = await withUpdateRewardDistributor(
+        await withUpdateRewardDistributor(
           new Transaction(),
           connection,
           wallet as Wallet,
@@ -344,7 +342,6 @@ function AdminStakePool() {
               : undefined,
           }
         )
-        transactions.push(tx)
         notify({
           message: `Updating defaultMultiplier and multiplierDecimals`,
           type: 'info',
@@ -377,17 +374,14 @@ function AdminStakePool() {
         endDate: dateInNum ? new BN(dateInNum / 1000) : undefined,
       }
 
-      const [tx] = await withUpdateStakePool(
-        new web3.Transaction(),
+      await withUpdateStakePool(
+        transaction,
         connection,
         wallet as Wallet,
         stakePoolParams
       )
-      transactions.push(tx)
 
-      await executeAllTransactions(connection, wallet as Wallet, transactions, {
-        signers: [],
-      })
+      await executeTransaction(connection, wallet as Wallet, transaction, {})
       notify({
         message:
           'Successfully updated stake pool and reward distributor with ID: ' +
@@ -452,6 +446,7 @@ function AdminStakePool() {
       setLoadingLookupMultiplier(false)
     }
   }
+
   return (
     <div>
       <Head>
@@ -571,7 +566,7 @@ function AdminStakePool() {
                             placement="right"
                           >
                             <label className="inline-block text-sm font-bold uppercase tracking-wide text-gray-200">
-                              Reward Distributor Token Account:{' '}
+                              Reward Distributor:{' '}
                               <a
                                 target={'_blank'}
                                 className="underline underline-offset-2"
