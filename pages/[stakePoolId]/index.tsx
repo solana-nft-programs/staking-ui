@@ -54,6 +54,7 @@ import { useRouter } from 'next/router'
 import { lighten, darken } from '@mui/material'
 import { QuickActions } from 'common/QuickActions'
 import * as splToken from '@solana/spl-token'
+import { usePoolAnalytics } from 'hooks/usePoolAnalytics'
 
 function Home() {
   const router = useRouter()
@@ -89,6 +90,7 @@ function Home() {
   const { data: stakePoolMetadata } = useStakePoolMetadata()
   const rewardDistributorTokenAccountData = useRewardDistributorTokenAccount()
   const { UTCNow } = useUTCNow()
+  const analytics = usePoolAnalytics()
 
   if (stakePoolMetadata?.redirect) {
     router.push(stakePoolMetadata?.redirect)
@@ -760,6 +762,48 @@ function Home() {
                 )}
               </div>
             )}
+          </div>
+        )}
+        {analytics.data && totalStaked && (
+          <div
+            className={`mx-5 mb-4 flex flex-wrap items-center gap-4 rounded-md px-10 py-6  md:flex-row md:justify-between ${
+              stakePoolMetadata?.colors?.fontColor
+                ? `text-[${stakePoolMetadata?.colors?.fontColor}]`
+                : 'text-gray-200'
+            } ${
+              stakePoolMetadata?.colors?.backgroundSecondary
+                ? `bg-[${stakePoolMetadata?.colors?.backgroundSecondary}]`
+                : 'bg-white bg-opacity-5'
+            }`}
+            style={{
+              background: stakePoolMetadata?.colors?.backgroundSecondary,
+              border: stakePoolMetadata?.colors?.accent
+                ? `2px solid ${stakePoolMetadata?.colors?.accent}`
+                : '',
+            }}
+          >
+            <div className="relative flex flex-grow items-center justify-center">
+              {Object.keys(analytics.data).map((key) => {
+                return (
+                  <div className="relative flex flex-grow items-center justify-center text-lg">
+                    <span
+                      className={`${
+                        stakePoolMetadata?.colors?.fontColor
+                          ? `text-[${stakePoolMetadata?.colors?.fontColor}]`
+                          : 'text-gray-500'
+                      }`}
+                    >
+                      {key}:{' '}
+                      {(
+                        (analytics.data![key]! / Number(totalStaked)) *
+                        100
+                      ).toFixed(2)}{' '}
+                      %
+                    </span>
+                  </div>
+                )
+              })}
+            </div>
           </div>
         )}
         <div className="my-2 mx-5 grid grid-cols-1 gap-4 md:grid-cols-2">

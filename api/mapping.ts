@@ -10,6 +10,13 @@ export enum TokenStandard {
   NonFungible = 2,
 }
 
+export type Analytic = {
+  metadata?: {
+    key: string
+    type: 'staked'
+  }
+}
+
 export type StakePoolMetadata = {
   // Name of this stake pool used as an id. Should be in lower-case kebab-case since it is used in the URL as /{name}
   // https://www.theserverside.com/blog/Coffee-Talk-Java-News-Stories-and-Opinions/Why-you-should-make-kebab-case-a-URL-naming-convention-best-practice
@@ -55,6 +62,8 @@ export type StakePoolMetadata = {
   links?: { text: string; value: string }[]
   // On devnet when you click the airdrop button on this page it will clone NFTs with this metadata and airdrop to the user
   airdrops?: AirdropMetadata[]
+  // Analytics to show at the top of stake pool. supports trait based analytics and overall tokens data
+  analytics?: Analytic[]
 }
 
 export const defaultSecondaryColor = 'rgba(29, 78, 216, 255)'
@@ -64,7 +73,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     name: 'cardinal',
     displayName: 'Cardinal',
     stakePoolAddress: new PublicKey(
-      '2s3qXuGyMNedXS61Vi9XsRx7HuryyyZUYGyMtCrKUXva'
+      'AxHiaxZeoDsyjD8Eyj5tQtrajkxYk5xebEK1QNQ1LSE7'
     ),
     imageUrl: '/logo-colored.png',
     colors: {
@@ -681,10 +690,13 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
   {
     name: 'yoyoyetis',
     displayName: 'Yo Yo Yetis',
-    stakePoolAddress: new PublicKey('ConmspDbxLQsm9rs612vPT2UiTvaKoQrJjGBTx6A3AzK'),
+    stakePoolAddress: new PublicKey(
+      'ConmspDbxLQsm9rs612vPT2UiTvaKoQrJjGBTx6A3AzK'
+    ),
     websiteUrl: 'https://www.yoyoyetis.com/',
     receiptType: ReceiptType.Receipt,
-    imageUrl: 'https://media.discordapp.net/attachments/911802368251809883/996651684048687165/skull.png?width=1100&height=1100',
+    imageUrl:
+      'https://media.discordapp.net/attachments/911802368251809883/996651684048687165/skull.png?width=1100&height=1100',
     maxStaked: 3333,
     colors: {
       primary: '#78bbe2',
@@ -693,5 +705,4 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       fontColor: '#FFFFFF',
     },
   },
-
 ]
