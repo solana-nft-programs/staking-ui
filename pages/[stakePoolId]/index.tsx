@@ -1117,39 +1117,6 @@ function Home() {
                 <div></div>
               )}
               <div className="flex gap-5">
-                {allowedTokenDatas.data && (
-                  <MouseoverTooltip title="Attempt to stake all tokens at once">
-                    <button
-                      onClick={() => {
-                        setUnstakedSelected(allowedTokenDatas.data || [])
-                        handleStake(true)
-                      }}
-                      style={{
-                        background:
-                          stakePoolMetadata?.colors?.secondary ||
-                          defaultSecondaryColor,
-                        color:
-                          stakePoolMetadata?.colors?.fontColorSecondary ||
-                          stakePoolMetadata?.colors?.fontColor,
-                      }}
-                      className="my-auto flex cursor-pointer rounded-md px-4 py-2 hover:scale-[1.03]"
-                    >
-                      <span className="mr-1 inline-block">
-                        {loadingStake && (
-                          <LoadingSpinner
-                            fill={
-                              stakePoolMetadata?.colors?.fontColor
-                                ? stakePoolMetadata?.colors?.fontColor
-                                : '#FFF'
-                            }
-                            height="20px"
-                          />
-                        )}
-                      </span>
-                      <span className="my-auto">Stake All</span>
-                    </button>
-                  </MouseoverTooltip>
-                )}
                 <MouseoverTooltip title="Click on tokens to select them">
                   <button
                     onClick={() => {
@@ -1187,6 +1154,37 @@ function Home() {
                     <span className="my-auto">
                       Stake ({unstakedSelected.length})
                     </span>
+                  </button>
+                </MouseoverTooltip>
+                <MouseoverTooltip title="Attempt to stake all tokens at once">
+                  <button
+                    onClick={() => {
+                      setUnstakedSelected(allowedTokenDatas.data || [])
+                      handleStake(true)
+                    }}
+                    style={{
+                      background:
+                        stakePoolMetadata?.colors?.secondary ||
+                        defaultSecondaryColor,
+                      color:
+                        stakePoolMetadata?.colors?.fontColorSecondary ||
+                        stakePoolMetadata?.colors?.fontColor,
+                    }}
+                    className="my-auto flex cursor-pointer rounded-md px-4 py-2 hover:scale-[1.03]"
+                  >
+                    <span className="mr-1 inline-block">
+                      {loadingStake && (
+                        <LoadingSpinner
+                          fill={
+                            stakePoolMetadata?.colors?.fontColor
+                              ? stakePoolMetadata?.colors?.fontColor
+                              : '#FFF'
+                          }
+                          height="20px"
+                        />
+                      )}
+                    </span>
+                    <span className="my-auto">Stake All</span>
                   </button>
                 </MouseoverTooltip>
               </div>
