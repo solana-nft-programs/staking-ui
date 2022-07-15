@@ -12,6 +12,10 @@ For questions or technical help, join our **[Discord](https://discord.gg/stX2FAY
   <img style="height: 450px" src="./images/staking.png" />
 </div>
 
+### Devnet setup
+
+Pool Id : C3ftNgFmotRc7buGgCxqvquDK31riQ8BHJKVa5TdAVha
+
 ### Installation
 
 To get started, clone the repo and run:
