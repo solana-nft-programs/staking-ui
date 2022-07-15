@@ -159,6 +159,7 @@ function Home() {
   }
 
   async function handleUnstake(all?: boolean) {
+    const tokensToUnstake = all ? stakedTokenDatas.data || [] : stakedSelected
     if (!wallet.connected) {
       notify({ message: `Wallet not connected`, type: 'error' })
       return
@@ -167,41 +168,43 @@ function Home() {
       notify({ message: `No stake pool detected`, type: 'error' })
       return
     }
+    if (tokensToUnstake.length <= 0) {
+      notify({ message: `Not tokens selected`, type: 'error' })
+      return
+    }
     setLoadingUnstake(true)
 
     let coolDown = false
     const txs: (Transaction | null)[] = await Promise.all(
-      (all ? stakedTokenDatas.data || [] : stakedSelected).map(
-        async (token) => {
-          try {
-            if (!token || !token.stakeEntry) {
-              throw new Error('No stake entry for token')
-            }
-            if (
-              stakePool.parsed.cooldownSeconds &&
-              !token.stakeEntry?.parsed.cooldownStartSeconds &&
-              !stakePool.parsed.minStakeSeconds
-            ) {
-              notify({
-                message: `Cooldown period will be initiated for ${token.metaplexData?.data.data.name} unless minimum stake period unsatisfied`,
-                type: 'info',
-              })
-              coolDown = true
-            }
-            return unstake(connection, wallet as Wallet, {
-              stakePoolId: stakePool?.pubkey,
-              originalMintId: token.stakeEntry.parsed.originalMint,
-            })
-          } catch (e) {
-            notify({
-              message: `${e}`,
-              description: `Failed to unstake token ${token?.stakeEntry?.pubkey.toString()}`,
-              type: 'error',
-            })
-            return null
+      tokensToUnstake.map(async (token) => {
+        try {
+          if (!token || !token.stakeEntry) {
+            throw new Error('No stake entry for token')
           }
+          if (
+            stakePool.parsed.cooldownSeconds &&
+            !token.stakeEntry?.parsed.cooldownStartSeconds &&
+            !stakePool.parsed.minStakeSeconds
+          ) {
+            notify({
+              message: `Cooldown period will be initiated for ${token.metaplexData?.data.data.name} unless minimum stake period unsatisfied`,
+              type: 'info',
+            })
+            coolDown = true
+          }
+          return unstake(connection, wallet as Wallet, {
+            stakePoolId: stakePool?.pubkey,
+            originalMintId: token.stakeEntry.parsed.originalMint,
+          })
+        } catch (e) {
+          notify({
+            message: `${e}`,
+            description: `Failed to unstake token ${token?.stakeEntry?.pubkey.toString()}`,
+            type: 'error',
+          })
+          return null
         }
-      )
+      })
     )
 
     try {
@@ -237,6 +240,7 @@ function Home() {
   }
 
   async function handleStake(all?: boolean) {
+    const tokensToStake = all ? allowedTokenDatas.data || [] : unstakedSelected
     if (!wallet.connected) {
       notify({ message: `Wallet not connected`, type: 'error' })
       return
@@ -245,10 +249,13 @@ function Home() {
       notify({ message: `Wallet not connected`, type: 'error' })
       return
     }
+    if (tokensToStake.length <= 0) {
+      notify({ message: `Not tokens selected`, type: 'error' })
+      return
+    }
     setLoadingStake(true)
 
     const initTxs: { tx: Transaction; signers: Signer[] }[] = []
-    const tokensToStake = all ? allowedTokenDatas.data || [] : unstakedSelected
     for (let step = 0; step < tokensToStake.length; step++) {
       try {
         let token = tokensToStake[step]
