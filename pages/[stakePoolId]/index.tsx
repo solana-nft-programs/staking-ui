@@ -1117,7 +1117,6 @@ function Home() {
                         setUnstakedSelected(allowedTokenDatas.data || [])
                         handleStake(true)
                       }}
-                      disabled={allowedTokenDatas.data?.length === 0}
                       style={{
                         background:
                           stakePoolMetadata?.colors?.secondary ||
@@ -1686,7 +1685,6 @@ function Home() {
                       setStakedSelected(stakedTokenDatas.data || [])
                       handleUnstake(true)
                     }}
-                    disabled={stakedTokenDatas.data?.length === 0}
                     style={{
                       background:
                         stakePoolMetadata?.colors?.secondary ||
