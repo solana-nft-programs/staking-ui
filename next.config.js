@@ -1,3 +1,14 @@
+const HOST_MAPPINGS = [
+  {
+    name: 'rogue-sharks',
+    hostname: 'stake.roguesharks.org',
+  },
+  {
+    name: 'Orbit',
+    hostname: 'stake.unfrgtn.space',
+  },
+]
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
@@ -6,22 +17,47 @@ const nextConfig = {
     BASE_CLUSTER: process.env.BASE_CLUSTER,
   },
   async rewrites() {
-    return [
-      {
-        source: '/:path(.*)',
-        destination: '/rogue-sharks',
-        has: [
-          {
-            type: 'host',
-            value: 'stake.roguesharks.org',
-          },
-          {
-            type: 'host',
-            value: 'stake.unfrgtn.space'
-          },
-        ],
-      },
-    ]
+    return HOST_MAPPINGS.reduce(
+      (acc, mapping) =>
+        mapping.hostname
+          ? [
+              ...acc,
+              {
+                source: '/:path(.*)',
+                destination: `/${mapping.name}`,
+                has: [
+                  {
+                    type: 'host',
+                    value: mapping.hostname,
+                  },
+                ],
+              },
+            ]
+          : acc,
+      []
+    )
+  },
+  async redirects() {
+    return HOST_MAPPINGS.reduce(
+      (acc, mapping) =>
+        mapping.hostname
+          ? [
+              ...acc,
+              {
+                source: '/',
+                destination: `/${mapping.name}`,
+                permanent: false,
+                has: [
+                  {
+                    type: 'host',
+                    value: mapping.hostname,
+                  },
+                ],
+              },
+            ]
+          : acc,
+      []
+    )
   },
 }
 
