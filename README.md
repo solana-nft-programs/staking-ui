@@ -93,15 +93,33 @@ export type StakePoolMetadata = {
   stakePoolAddress: PublicKey
   // Default receipt type. Setting this will remove the option for the user to choose which receipt type to use
   receiptType?: ReceiptType
+  // Default empty. Setting this will tell the UI to only show tokens of that standard. Supports fungible or non-fungible
+  tokenStandard?: TokenStandard
+  // Optional config to hide this pool from the main page
+  hidden?: boolean
+  // Optional config to disable finding this pool
+  notFound?: boolean
+  // Optional hostname to remap -- SEE NOTE BELOW
+  hostname?: string
+  // Optional config to link redirect to page when you click on this pool
+  redirect?: string
+  // Hide allowed tokens style
+  hideAllowedTokens?: boolean
+  // styles to apply to the whole stake pool
+  styles?: CSSProperties
   // Colors object to style the stake page
   colors?: {
     primary: string
     secondary: string
     accent?: string
     fontColor?: string
+    fontColorSecondary?: string
+    backgroundSecondary?: string
   }
   // Image url to be used as the icon in the pool selector and the header
   imageUrl?: string
+  // Background banner image for pool
+  backgroundBannerImageUrl?: string
   // Website url if specified will be navigated to when the image in the header is clicked
   websiteUrl?: string
   // Max staked is used to compute percentage of total staked
@@ -110,12 +128,23 @@ export type StakePoolMetadata = {
   links?: { text: string; value: string }[]
   // On devnet when you click the airdrop button on this page it will clone NFTs with this metadata and airdrop to the user
   airdrops?: AirdropMetadata[]
+  // Analytics to show at the top of stake pool. supports trait based analytics and overall tokens data
+  analytics?: Analytic[]
 }
 ```
 
 In `api/mapping.ts`, add your own object to the stakePoolMetadatas array. You'll now be able to access your project at http://localhost:3000/[name].
 
 In order to get a custom Cardinal URL, **deploy your pool** on mainnet and then **make a PR** to our `api/mapping.ts` file in this repo with updates containing your pool's metadata.
+
+### Custom hostname
+
+For a custom hostname add the mapping of your hostname to pool name in `next.config.js` and then map your DNS to
+
+Set the following record on your DNS provider to continue:
+
+Type NAME CNAME
+CNAME {your subdomain} cname.vercel-dns.com
 
 ### Deployment and Beyond
 
