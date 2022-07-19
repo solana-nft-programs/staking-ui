@@ -323,7 +323,7 @@ function AdminStakePool() {
         }
       } else if (rewardDistributor.data) {
         await withUpdateRewardDistributor(
-          new Transaction(),
+          transaction,
           connection,
           wallet as Wallet,
           {
@@ -343,7 +343,7 @@ function AdminStakePool() {
           }
         )
         notify({
-          message: `Updating defaultMultiplier and multiplierDecimals`,
+          message: `Updating reward distributor`,
           type: 'info',
         })
       }
