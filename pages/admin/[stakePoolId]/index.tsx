@@ -465,9 +465,8 @@ function AdminStakePool() {
               <div>
                 <p className="text-lg font-bold">Update Staking Pool</p>
                 <p className="mt-1 mb-2 text-sm">
-                  All parameters for staking pool are optional. If a field is
-                  left
-                  <b> empty</b>, it will remain unchanged
+                  All parameters for staking pool are optional and pre-filled
+                  with existing values for ease of use.
                 </p>
                 <StakePoolForm
                   type="update"
@@ -475,6 +474,17 @@ function AdminStakePool() {
                   stakePoolData={stakePool.data}
                   rewardDistributorData={rewardDistributor.data}
                 />
+                <div className="mt-2 italic">
+                  NOTE: Changing <strong>rewardAmount</strong>/
+                  <strong>rewardDurationSeconds</strong> will affect the
+                  distribution for currently staked and not-yet claimed rewards
+                  to this new rate.
+                  <br></br>
+                  Changing <strong>multiplierDecimals</strong> will apply these
+                  decimals to all existing multipliers.<br></br>
+                  Changing <strong>defaultMultiplier</strong> will only apply to
+                  new reward entries being created.
+                </div>
               </div>
               <div>
                 <p className="text-lg font-bold">Current Staking Pool</p>
