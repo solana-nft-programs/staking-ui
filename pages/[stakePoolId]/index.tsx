@@ -1491,11 +1491,7 @@ function Home() {
                                                           .data.parsed
                                                           .rewardAmount
                                                     )
-                                                      .div(
-                                                        rewardDistributorData
-                                                          .data.parsed
-                                                          .rewardDurationSeconds
-                                                      )
+
                                                       .mul(new BN(86400))
                                                       .mul(
                                                         rewardDistributorData
@@ -1509,6 +1505,11 @@ function Home() {
                                                               .data.parsed
                                                               .multiplierDecimals
                                                         )
+                                                      )
+                                                      .div(
+                                                        rewardDistributorData
+                                                          .data.parsed
+                                                          .rewardDurationSeconds
                                                       ),
                                                     // max of 5 decimals
                                                     Math.min(
