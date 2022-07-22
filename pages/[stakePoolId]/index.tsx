@@ -536,7 +536,7 @@ function Home() {
     <div
       style={{
         background: stakePoolMetadata?.colors?.primary,
-        backgroundImage: stakePoolMetadata?.backgroundBannerImageUrl,
+        backgroundImage: `url(${stakePoolMetadata?.backgroundImage})`,
       }}
     >
       <Head>

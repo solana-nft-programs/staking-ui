@@ -52,8 +52,8 @@ export type StakePoolMetadata = {
   }
   // Image url to be used as the icon in the pool selector and the header
   imageUrl?: string
-  // Background banner image for pool
-  backgroundBannerImageUrl?: string
+  // Background image for pool
+  backgroundImage?: string
   // Website url if specified will be navigated to when the image in the header is clicked
   websiteUrl?: string
   // Max staked is used to compute percentage of total staked
