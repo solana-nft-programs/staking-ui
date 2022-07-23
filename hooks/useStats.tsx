@@ -52,7 +52,7 @@ const statsNameMapping = [
   },
   {
     key: 'total-active-stake-entries',
-    displayName: 'Total Staked Entries',
+    displayName: 'Total Staked NFTs',
   },
   {
     key: 'total-stake-pools',
