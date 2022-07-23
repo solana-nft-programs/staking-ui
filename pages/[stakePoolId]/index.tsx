@@ -1427,7 +1427,7 @@ function Home() {
                                       <div className="flex w-full flex-row justify-between text-xs font-semibold">
                                         <span>Boost:</span>
                                         <span>
-                                          {rewardDistributorData.data?.parsed
+                                          {(rewardDistributorData.data?.parsed
                                             .multiplierDecimals !== undefined &&
                                             formatAmountAsDecimal(
                                               rewardDistributorData.data?.parsed
@@ -1445,7 +1445,8 @@ function Home() {
                                                     .parsed.defaultMultiplier,
                                               rewardDistributorData.data.parsed
                                                 .multiplierDecimals
-                                            ).toString()}
+                                            ).toString()) ||
+                                            1}
                                           x
                                         </span>
                                       </div>
