@@ -137,6 +137,9 @@ In `api/mapping.ts`, add your own object to the stakePoolMetadatas array. You'll
 
 In order to get a custom Cardinal URL, **deploy your pool** on mainnet and then **make a PR** to our `api/mapping.ts` file in this repo with updates containing your pool's metadata.
 
+## Stake Pool Fees
+https://www.notion.so/cardinal-labs/Cardinal-Staking-Fees-14e66a64fb2d4615892937c5dbaa91cc
+
 ## Custom hostname
 
 For a custom hostname...
