@@ -47,6 +47,8 @@ export type StakePoolMetadata = {
   imageUrl?: string
   // Background banner image for pool
   backgroundBannerImageUrl?: string
+  // Background image for pool
+  backgroundImage?: string
   // Website url if specified will be navigated to when the image in the header is clicked
   websiteUrl?: string
   // Max staked is used to compute percentage of total staked
@@ -57,7 +59,7 @@ export type StakePoolMetadata = {
   airdrops?: AirdropMetadata[]
 }
 
-export const defaultSecondaryColor = 'rgba(29, 78, 216, 255)'
+export const defaultSecondaryColor = 'white'
 
 export const stakePoolMetadatas: StakePoolMetadata[] = [
   {
@@ -691,6 +693,24 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       secondary: '#25ade9',
       accent: '#25ade9',
       fontColor: '#FFFFFF',
+    },
+  },
+
+  {
+    name: 'liberty-square',
+    displayName: 'Liberty Square',
+    stakePoolAddress: new PublicKey('C3ftNgFmotRc7buGgCxqvquDK31riQ8BHJKVa5TdAVha'),
+    websiteUrl: '', // TODO
+    receiptType: ReceiptType.Receipt,
+    imageUrl: '', // TODO
+    maxStaked: 9999,
+    backgroundImage: '/liberty-square-background.png',
+    colors: {
+      primary: 'black',
+      secondary: 'white',
+      // accent: '#25ade9',
+      fontColor: 'white',
+      fontColorSecondary: 'black',
     },
   },
 

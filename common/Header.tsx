@@ -40,7 +40,7 @@ export const Header = () => {
     <div>
       {clockDrift && (
         <div
-          className="flex w-full items-center justify-center rounded-md py-2 text-center"
+          className="flex w-full items-center justify-center rounded-md text-center"
           style={{
             color: stakePoolMetadata?.colors?.secondary,
             background: lighten(
@@ -65,105 +65,78 @@ export const Header = () => {
           </div>
         </div>
       )}
-      <div className={`flex h-20 justify-between px-5 text-white`}>
-        <div className="flex items-center gap-3">
-          <a
-            target="_blank"
-            href={
-              stakePoolMetadata?.websiteUrl ||
-              `/${
-                ctx.environment.label !== 'mainnet-beta'
-                  ? `?cluster=${ctx.environment.label}`
-                  : ''
-              }`
-            }
-            className="flex cursor-pointer text-xl font-semibold text-white hover:text-gray-400"
-          >
-            {stakePoolMetadata?.imageUrl ? (
-              <div className="flex flex-row">
-                <img
-                  className="flex h-[35px] flex-col"
-                  src={stakePoolMetadata?.imageUrl}
+      <div className={`flex justify-end px-5 text-white`}>
+        <div className="flex flex-col cols-1">
+          <div className="relative my-auto flex gap-3 align-middle">
+            <div className="flex flex-row gap-3 mt-2 h-6">
+              {stakePoolId && stakePoolMetadata ? (
+                stakePoolMetadata.links?.map((link) => (
+                  <a key={link.value} href={link.value}>
+                    <p className="my-auto mr-10 hover:cursor-pointer">
+                      {link.text}
+                    </p>
+                  </a>
+                ))
+              ) : (
+                <>
+                  <div
+                    onClick={() =>
+                      router.push(
+                        `/admin${
+                          ctx.environment.label !== 'mainnet-beta'
+                            ? `?cluster=${ctx.environment.label}`
+                            : ''
+                        }`
+                      )
+                    }
+                  >
+                    <p className="my-auto mr-10 hover:cursor-pointer">Admin</p>
+                  </div>
+                </>
+              )}
+              {ctx.environment.label !== 'mainnet-beta' && (
+                <div className="cursor-pointer rounded-md bg-[#9945ff] p-1 text-[10px] italic text-white">
+                  {ctx.environment.label}
+                </div>
+              )}
+              {ctx.environment.label !== 'mainnet-beta' ? (
+                <Airdrop />
+              ) : (
+                ''
+              )}
+            </div>
+            <div className="flex flex-col cols-1 mt-2 pr-5">
+              {!wallet.connected && (
+              <div className="flex justify-end text-mono uppercase">
+                <p>Connect your wallet to stake</p>
+              </div>
+              )}
+              {wallet.connected && wallet.publicKey ? (
+                <AccountConnect
+                  dark={
+                    stakePoolMetadata?.colors?.backgroundSecondary
+                      ? contrastColorMode(stakePoolMetadata?.colors?.primary)[1]
+                      : true
+                  }
+                  connection={ctx.secondaryConnection}
+                  environment={ctx.environment.label}
+                  handleDisconnect={() => wallet.disconnect()}
+                  wallet={wallet as Wallet}
                 />
-                {/* <span className="ml-5 mt-1 flex flex-col">
-                  {stakePoolMetadata?.displayName} Staking
-                </span> */}
-              </div>
-            ) : (
-              <TitleText className="flex items-center justify-center gap-2">
-                {stakePoolMetadata?.displayName || (
-                  <img
-                    className="inline-block w-4"
-                    src={'/cardinal-crosshair.svg'}
-                  />
-                )}{' '}
-                Staking
-              </TitleText>
-            )}
-          </a>
-          {ctx.environment.label !== 'mainnet-beta' && (
-            <div className="cursor-pointer rounded-md bg-[#9945ff] p-1 text-[10px] italic text-white">
-              {ctx.environment.label}
+              ) : (
+                <StyledWalletButton
+                  style={{
+                    fontSize: '14px',
+                    zIndex: 10,
+                    height: '38px',
+                    border: 'none',
+                    background: 'none',
+                    backgroundColor: 'none',
+                  }}
+                />
+              )}
             </div>
-          )}
-          {ctx.environment.label !== 'mainnet-beta' ? (
-            <div className="mt-0.5">
-              <Airdrop />
-            </div>
-          ) : (
-            ''
-          )}
-        </div>
-        <div className="relative my-auto flex items-center align-middle">
-          {stakePoolId && stakePoolMetadata ? (
-            stakePoolMetadata.links?.map((link) => (
-              <a key={link.value} href={link.value}>
-                <p className="my-auto mr-10 hover:cursor-pointer">
-                  {link.text}
-                </p>
-              </a>
-            ))
-          ) : (
-            <>
-              <div
-                onClick={() =>
-                  router.push(
-                    `/admin${
-                      ctx.environment.label !== 'mainnet-beta'
-                        ? `?cluster=${ctx.environment.label}`
-                        : ''
-                    }`
-                  )
-                }
-              >
-                <p className="my-auto mr-10 hover:cursor-pointer">Admin</p>
-              </div>
-            </>
-          )}
-          {wallet.connected && wallet.publicKey ? (
-            <AccountConnect
-              dark={
-                stakePoolMetadata?.colors?.backgroundSecondary
-                  ? contrastColorMode(stakePoolMetadata?.colors?.primary)[1]
-                  : true
-              }
-              connection={ctx.secondaryConnection}
-              environment={ctx.environment.label}
-              handleDisconnect={() => wallet.disconnect()}
-              wallet={wallet as Wallet}
-            />
-          ) : (
-            <StyledWalletButton
-              style={{
-                fontSize: '14px',
-                zIndex: 10,
-                height: '38px',
-                border: 'none',
-                background: 'none',
-                backgroundColor: 'none',
-              }}
-            />
-          )}
+          </div>
         </div>
       </div>
     </div>
