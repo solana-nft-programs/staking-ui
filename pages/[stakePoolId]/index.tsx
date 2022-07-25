@@ -54,7 +54,6 @@ import { executeAllTransactions } from 'api/utils'
 import { RewardDistributorKind } from '@cardinal/staking/dist/cjs/programs/rewardDistributor'
 import { useRouter } from 'next/router'
 import { lighten, darken } from '@mui/material'
-import { QuickActions } from 'common/QuickActions'
 import * as splToken from '@solana/spl-token'
 
 function Home() {
@@ -525,8 +524,7 @@ function Home() {
   return (
     <div
       style={{
-        background: stakePoolMetadata?.colors?.primary,
-        backgroundImage: `url(${stakePoolMetadata?.backgroundImage}) no-repeat`,
+        background: `url(${stakePoolMetadata?.backgroundImage}) no-repeat`,
         backgroundPosition: "-5rem 0rem",
       }}
     >
@@ -677,21 +675,6 @@ function Home() {
                                     </div>
                                   </div>
                                 )}
-                                <QuickActions
-                                  receiptType={receiptType}
-                                  stakedTokenData={tk}
-                                  showFungibleTokens={showFungibleTokens}
-                                  setStakedSelected={setStakedSelected}
-                                  setUnstakedSelected={setUnstakedSelected}
-                                  setLoadingStake={setLoadingStake}
-                                  setLoadingUnstake={setLoadingUnstake}
-                                  setLoadingClaimRewards={
-                                    setLoadingClaimRewards
-                                  }
-                                  setSingleTokenAction={setSingleTokenAction}
-                                  selectUnstakedToken={selectUnstakedToken}
-                                  selectStakedToken={selectStakedToken}
-                                />
                                 <img
                                   className="mx-auto mt-4 bg-white bg-opacity-5 object-contain md:h-80 md:w-80"
                                   src={
@@ -1132,19 +1115,6 @@ function Home() {
                                     </div>
                                   </div>
                                 )}
-                              <QuickActions
-                                receiptType={receiptType}
-                                unstakedTokenData={tk}
-                                showFungibleTokens={showFungibleTokens}
-                                setStakedSelected={setStakedSelected}
-                                setUnstakedSelected={setUnstakedSelected}
-                                setLoadingStake={setLoadingStake}
-                                setLoadingUnstake={setLoadingUnstake}
-                                setLoadingClaimRewards={setLoadingClaimRewards}
-                                setSingleTokenAction={setSingleTokenAction}
-                                selectUnstakedToken={selectUnstakedToken}
-                                selectStakedToken={selectStakedToken}
-                              />
                               <img
                                 className="mx-auto mt-4 bg-white bg-opacity-5 object-contain md:h-80 md:w-80"
                                 src={

@@ -2,12 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap');
+@font-face {
+  font-family: "Impact Label";
+  src: url('../public/Impact_Label_Reversed-webfont.woff') format('woff');
+}
 
 body {
-  font-family: mono, 'DM Sans', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji',
+  font-family: "Impact Label", mono, 'DM Sans', Roboto, sans-serif, 'Apple Color Emoji',
     'Segoe UI Emoji', 'Segoe UI Symbol';
-  /* background-color: rgb(26, 27, 32) !important; */
 }
 
 button.wallet-adapter-button.css-16x1xow {
@@ -29,3 +31,8 @@ button.wallet-adapter-button:hover.css-16x1xow {
   font-family: monospace !important;
   width: 100% !important;
 } 
+
+.font-mono {
+  font-family: "Impact Label", ui-monospace, monospace !important;
+  font-size: 20px;
+}
