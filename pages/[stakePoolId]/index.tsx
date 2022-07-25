@@ -723,7 +723,7 @@ function Home() {
                                       )}
                                     {tk.stakeEntry?.pubkey && (
                                       <div className="flex w-full flex-row justify-between font-mono uppercase">
-                                        <span>Boost:</span>
+                                        <span>Daily $FLTH:</span>
                                         <span>
                                           {(rewardDistributorData.data?.parsed
                                             .multiplierDecimals !== undefined &&
