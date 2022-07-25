@@ -8,6 +8,7 @@ import {
 } from '@cardinal/staking'
 import { ReceiptType } from '@cardinal/staking/dist/cjs/programs/stakePool'
 import { useWallet } from '@solana/wallet-adapter-react'
+import { WalletMultiButton } from '@solana/wallet-adapter-react-ui'
 import { PublicKey, Signer, Transaction } from '@solana/web3.js'
 import { Header } from 'common/Header'
 import Head from 'next/head'
@@ -40,9 +41,11 @@ import {
   useAllowedTokenDatas,
 } from 'hooks/useAllowedTokenDatas'
 import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
+import { styled } from '@mui/system'
 import { defaultSecondaryColor, TokenStandard } from 'api/mapping'
 import { Footer } from 'common/Footer'
 import { DisplayAddress } from '@cardinal/namespaces-components'
+import { AccountConnect } from '@cardinal/namespaces-components'
 import { useRewardDistributorTokenAccount } from 'hooks/useRewardDistributorTokenAccount'
 import { useRewardEntries } from 'hooks/useRewardEntries'
 import { Switch } from '@headlessui/react'
@@ -90,6 +93,16 @@ function Home() {
   const { data: stakePoolMetadata } = useStakePoolMetadata()
   const rewardDistributorTokenAccountData = useRewardDistributorTokenAccount()
   const { UTCNow } = useUTCNow()
+
+  const StyledWalletButton = styled(WalletMultiButton)`
+    color: rgb(255, 65, 81, 1);
+    &:hover {
+      background: none !important;
+    }
+    .wallet-adapter-button {
+      padding: 0px;
+    }
+`
 
   if (stakePoolMetadata?.redirect) {
     router.push(stakePoolMetadata?.redirect)
@@ -454,6 +467,8 @@ function Home() {
     }
   }
 
+  const { setVisible } = useWalletModal();
+
   const isUnstakedTokenSelected = (tk: AllowedTokenData) =>
     unstakedSelected.some(
       (utk) =>
@@ -523,9 +538,11 @@ function Home() {
 
   return (
     <div
+      className="h-screen bg-no-repeat bg-left-top"
       style={{
-        background: `url(${stakePoolMetadata?.backgroundImage}) no-repeat`,
-        backgroundPosition: "-5rem 0rem",
+        backgroundImage: `url(${stakePoolMetadata?.backgroundImage})`,
+        backgroundPosition: "-3rem 0rem",
+        backgroundSize: "contain",
       }}
     >
       <Head>
@@ -598,22 +615,19 @@ function Home() {
                         )),
                 }}
               >
-                {(!allowedTokenDatas.isFetched && !stakedTokenDatas.isFetched) ? (
-                  <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-                    <div className="h-[200px] animate-pulse bg-white bg-opacity-5 p-10"></div>
-                    <div className="h-[200px] animate-pulse bg-white bg-opacity-5 p-10"></div>
-                    <div className="h-[200px] animate-pulse bg-white bg-opacity-5 p-10"></div>
+                {(!wallet.connected) ? (
+                  <div className="flex justify-center">
+                    <div className="flex flex-col w-1/4 items-center">
+                      <img src="./staking-logo.png" alt="Liberty Square - Logo" />
+                      <div className="flex-row font-mono text-2xl">
+                        <p>Connect wallet to begin</p>
+                      </div>
+                      <button className="flex-row wallet-button mt-6 px-4 py-2 text-2xl"
+                              onClick={() => setVisible(true)}>
+                        Connect wallet
+                      </button>
+                    </div>
                   </div>
-                ) : ((allowedTokenDatas.data || []).length == 0 && stakedTokenDatas.data?.length === 0) ? (
-                  <p
-                    className={`font-normal text-[${
-                      stakePoolMetadata?.colors?.fontColor
-                        ? `text-[${stakePoolMetadata?.colors?.fontColor}]`
-                        : 'text-gray-400'
-                    }]`}
-                  >
-                    No supported tokens found in wallet.
-                  </p>
                 ) : (
                   <div
                     className={

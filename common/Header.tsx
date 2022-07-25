@@ -106,12 +106,7 @@ export const Header = () => {
               )}
             </div>
             <div className="flex flex-col cols-1 mt-2 pr-5">
-              {!wallet.connected && (
-              <div className="flex justify-end text-mono uppercase">
-                <p>Connect your wallet to stake</p>
-              </div>
-              )}
-              {wallet.connected && wallet.publicKey ? (
+              {(wallet.connected && wallet.publicKey) && (
                 <AccountConnect
                   dark={
                     stakePoolMetadata?.colors?.backgroundSecondary
@@ -122,17 +117,6 @@ export const Header = () => {
                   environment={ctx.environment.label}
                   handleDisconnect={() => wallet.disconnect()}
                   wallet={wallet as Wallet}
-                />
-              ) : (
-                <StyledWalletButton
-                  style={{
-                    fontSize: '14px',
-                    zIndex: 10,
-                    height: '38px',
-                    border: 'none',
-                    background: 'none',
-                    backgroundColor: 'none',
-                  }}
                 />
               )}
             </div>

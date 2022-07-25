@@ -12,25 +12,14 @@ body {
     'Segoe UI Emoji', 'Segoe UI Symbol';
 }
 
-button.wallet-adapter-button.css-16x1xow {
-  display: table-cell !important;
-  text-transform: uppercase !important;
-  background-color: white !important;
-  color: black !important;
-  border-radius: 0px !important;
-  font-family: monospace !important;
-  width: 100% !important;
+.wallet-button {
+  display: table-cell;
+  text-transform: uppercase;
+  background-color: white;
+  color: black;
+  border-radius: 0px;
+  font-family: "Impact Label", ui-monospace, monospace;
 }
-
-button.wallet-adapter-button:hover.css-16x1xow {
-  display: table-cell !important;
-  text-transform: uppercase !important;
-  background-color: white !important;
-  color: black !important;
-  border-radius: 0px !important;
-  font-family: monospace !important;
-  width: 100% !important;
-} 
 
 .font-mono {
   font-family: "Impact Label", ui-monospace, monospace !important;
