@@ -16,6 +16,10 @@ For questions or technical help, join our **[Discord](https://discord.gg/stX2FAY
 
 Pool Id : C3ftNgFmotRc7buGgCxqvquDK31riQ8BHJKVa5TdAVha
 
+### Mainnet setup
+
+Pool Id : 7ys9jKmtNT2ARdutN5Jmx9hpNmUULb4o6H8usfrpvgg9
+
 ### Installation
 
 To get started, clone the repo and run:

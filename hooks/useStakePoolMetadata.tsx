@@ -8,9 +8,7 @@ export const useStakePoolMetadata = () => {
     ['useStakePoolMetadata', stakePoolId?.toString()],
     async () => {
       if (!stakePoolId) return
-      return stakePoolMetadatas.find(
-        (p) => p.stakePoolAddress.toString() === stakePoolId.toString()
-      )
+      return stakePoolMetadatas[0]
     }
   )
 }

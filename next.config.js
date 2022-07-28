@@ -3,7 +3,7 @@ const nextConfig = {
   reactStrictMode: true,
   env: {
     MAINNET_PRIMARY: process.env.MAINNET_PRIMARY,
-    BASE_CLUSTER: process.env.BASE_CLUSTER,
+    BASE_CLUSTER: process.env.BASE_CLUSTER
   },
   async rewrites() {
     return [
