@@ -7,6 +7,10 @@ const HOST_MAPPINGS = [
     name: 'Orbit',
     hostname: 'stake.unfrgtn.space',
   },
+  {
+    name: 'degengod',
+    hostname: 'stake.degengod.xyz',
+  },
 ]
 
 /** @type {import('next').NextConfig} */
