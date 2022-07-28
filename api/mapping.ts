@@ -491,6 +491,24 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     },
   },
   {
+    name: 'degengod',
+    displayName: 'Degen God',
+    stakePoolAddress: new PublicKey(
+      'DU293HnmfVLw793DEB4iajgYZS4KnvuvEjbZRpKJtXXm'
+    ),
+    websiteUrl: 'http://www.degengod.xyz/',
+    receiptType: ReceiptType.Original,
+    maxStaked: 1112,
+    imageUrl:
+      'https://raw.githubusercontent.com/DegenGodnft/degen/main/Logo2.png',
+      colors: {
+        primary: '#2d0c65',
+        secondary: '#ed69fa',
+        accent: '#f7f6fe',
+        fontColor: '#FFFFFF',
+      },
+  },
+  {
     name: '00RR0R',
     displayName: '00RR0R C01NS',
     stakePoolAddress: new PublicKey(
