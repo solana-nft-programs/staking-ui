@@ -97,6 +97,9 @@ export function tryFormatAmountAsInput(
   defaultValue: string
 ): string {
   if (!stringAmount) return defaultValue
+  if (stringAmount.substring(0, 3) === '0.0' && Number(stringAmount) === 0) {
+    return stringAmount
+  }
   try {
     return new BigNumber(stringAmount.replace(',', ''))
       .shiftedBy(-decimals)
@@ -116,6 +119,9 @@ export function tryParseInputAsAmount(
   defaultValue: string
 ): string {
   if (!stringDecimal) return '0'
+  if (stringDecimal.substring(0, 3) === '0.0' && Number(stringDecimal) === 0) {
+    return stringDecimal
+  }
   try {
     if (new BigNumber(stringDecimal.replace(',', '')).isFinite()) {
       return new BigNumber(stringDecimal.replace(',', ''))

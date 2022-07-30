@@ -599,7 +599,11 @@ export function StakePoolForm({
                       )}
                       onChange={(e) => {
                         const amount = Number(e.target.value)
-                        if (!amount && e.target.value.length != 0) {
+                        if (
+                          !amount &&
+                          e.target.value.length != 0 &&
+                          amount != 0
+                        ) {
                           notify({
                             message: `Invalid reward amount`,
                             type: 'error',
