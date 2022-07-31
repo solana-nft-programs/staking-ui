@@ -24,7 +24,7 @@ import { useFormik } from 'formik'
 import { StakePoolData } from '@cardinal/staking/dist/cjs/programs/stakePool'
 import { FormInput } from 'common/FormInput'
 import { executeTransaction, handleError } from '@cardinal/staking'
-import { tryFormatAmountAsInput, tryParseInputAsAmount } from 'common/units'
+import { tryFormatInput, tryParseInput } from 'common/units'
 
 const publicKeyValidationTest = (value: string | undefined): boolean => {
   return tryPublicKey(value) ? true : false
@@ -592,26 +592,23 @@ export function StakePoolForm({
                       } mb-3 block w-full appearance-none rounded border border-gray-500 bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800 focus:outline-none`}
                       type="text"
                       placeholder={'10'}
-                      value={tryFormatAmountAsInput(
+                      value={tryFormatInput(
                         values.rewardAmount,
                         mintInfo.decimals,
                         values.rewardAmount ?? ''
                       )}
                       onChange={(e) => {
-                        const amount = Number(e.target.value)
-                        if (
-                          !amount &&
-                          e.target.value.length != 0 &&
-                          amount != 0
-                        ) {
+                        const value = Number(e.target.value)
+                        if (Number.isNaN(value)) {
                           notify({
                             message: `Invalid reward amount`,
                             type: 'error',
                           })
+                          return
                         }
                         setFieldValue(
                           'rewardAmount',
-                          tryParseInputAsAmount(
+                          tryParseInput(
                             e.target.value,
                             mintInfo.decimals,
                             values.rewardAmount ?? ''
@@ -689,25 +686,26 @@ export function StakePoolForm({
                         }
                         type="text"
                         placeholder={'1000000'}
-                        value={tryFormatAmountAsInput(
-                          values.rewardMintSupply,
+                        value={tryFormatInput(
+                          values.rewardAmount,
                           mintInfo.decimals,
-                          values.rewardMintSupply ?? ''
+                          values.rewardAmount ?? ''
                         )}
                         onChange={(e) => {
-                          const supply = Number(e.target.value)
-                          if (!supply && e.target.value.length != 0) {
+                          const value = Number(e.target.value)
+                          if (Number.isNaN(value)) {
                             notify({
-                              message: `Invalid reward mint supply`,
+                              message: `Invalid reward amount`,
                               type: 'error',
                             })
+                            return
                           }
                           setFieldValue(
-                            'rewardMintSupply',
-                            tryParseInputAsAmount(
+                            'rewardAmount',
+                            tryParseInput(
                               e.target.value,
                               mintInfo.decimals,
-                              values.rewardMintSupply ?? ''
+                              values.rewardAmount ?? ''
                             )
                           )
                         }}
