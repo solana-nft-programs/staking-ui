@@ -118,6 +118,29 @@ function Home() {
       setReceiptType(stakePoolMetadata?.receiptType)
   }, [stakePoolMetadata?.name])
 
+  function getRarityType(metadata: any) {
+    console.log('metadata: ', metadata);
+    const rarityAttribute = metadata.attributes.find((attr: any) => {
+      return attr.trait_type === "IAID:"
+    });
+    console.log('rarity metadata: ', rarityAttribute);
+    if (rarityAttribute) {
+      if (rarityAttribute.value === "266666") {
+        return "Common"
+      }
+      if (rarityAttribute.value === "007273") {
+        return "Rare"
+      }
+      if (rarityAttribute.value === "085872") {
+        return "Ultra Rare"
+      }
+      if (rarityAttribute.value === "534363") {
+        return "Legendary"
+      }
+      return "No rarity"
+    }
+  }
+
   async function handleClaimRewards(all?: boolean) {
     setLoadingClaimRewards(true)
     if (!wallet) {
@@ -1154,7 +1177,7 @@ function Home() {
                                 </div>
                                 <div className="mt-2 flex w-full flex-row justify-between font-mono uppercase">
                                   <span>Type:</span>
-                                  <span>{tk.metadata?.data.name || tk.tokenListData?.symbol}</span> {/* TODO: need rarity */}
+                                  <span>{getRarityType(tk.metadata?.data) || tk.tokenListData?.symbol}</span> {/* TODO: need rarity tk.metadata?.data.name */}
                                 </div>
                                 {tk.metadata && (
                                   <div className="mt-2 flex w-full flex-row justify-between gap-2">
