@@ -119,11 +119,9 @@ function Home() {
   }, [stakePoolMetadata?.name])
 
   function getRarityType(metadata: any) {
-    console.log('metadata: ', metadata);
     const rarityAttribute = metadata.attributes.find((attr: any) => {
       return attr.trait_type === "IAID:"
     });
-    console.log('rarity metadata: ', rarityAttribute);
     if (rarityAttribute) {
       if (rarityAttribute.value === "266666") {
         return "Common"
