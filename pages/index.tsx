@@ -1116,9 +1116,9 @@ function Home() {
                     ).map((tk) => (
                       <div
                         key={tk.tokenAccount?.pubkey.toString()}
-                        className="mx-auto"
+                        className=""
                       >
-                        <div className="relative w-80 md:w-auto">
+                        <div className="relative w-80 md:w-auto max-w-full">
                           <label
                             htmlFor={tk?.tokenAccount?.pubkey.toBase58()}
                             className="relative"
