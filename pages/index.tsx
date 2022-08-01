@@ -658,9 +658,9 @@ function Home() {
                       stakedTokenDatas.data.map((tk) => (
                         <div
                           key={tk?.stakeEntry?.pubkey.toBase58()}
-                          className="mx-auto"
+                          className=""
                         >
-                          <div className="relative w-80 md:w-auto">
+                          <div className="relative w-80 md:w-auto max-w-full">
                             <label
                               htmlFor={tk?.stakeEntry?.pubkey.toBase58()}
                               className="relative"
