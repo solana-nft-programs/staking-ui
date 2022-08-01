@@ -720,7 +720,7 @@ function Home() {
                                   }
                                 />
                                 <div
-                                  className={`flex-col p-2 ${stakePoolMetadata?.colors?.fontColor
+                                  className={`flex-col pt-2 pb-2 ${stakePoolMetadata?.colors?.fontColor
                                     ? `text-[${stakePoolMetadata?.colors?.fontColor}]`
                                     : 'text-gray-200'
                                     }`}
@@ -1159,7 +1159,7 @@ function Home() {
                                 }
                               />
                               <div
-                                className={`flex-col p-2 ${stakePoolMetadata?.colors?.fontColor
+                                className={`flex-col pt-2 pb-2 ${stakePoolMetadata?.colors?.fontColor
                                   ? `text-[${stakePoolMetadata?.colors?.fontColor}]`
                                   : 'text-gray-200'
                                   }`}
