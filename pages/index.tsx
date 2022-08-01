@@ -731,9 +731,8 @@ function Home() {
                                   }}
                                 >
                                   <div className="truncate font-mono uppercase">
-                                    {`LS: SINISTER SQUIRREL SYN #1752`}
-                                    {/* {tk.metadata?.data.name ||
-                                      tk.tokenListData?.symbol} */}
+                                    {tk.metadata?.data.name ||
+                                      tk.tokenListData?.symbol}
                                   </div>
                                   <div className="mt-2">
                                     {tk.stakeEntry &&
