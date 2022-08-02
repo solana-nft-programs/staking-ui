@@ -731,7 +731,6 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     ),
     websiteUrl: 'https://citadel.thedictator.xyz',
     receiptType: ReceiptType.Original,
-    hostname: 'stake.thedictator',
     maxStaked: 5000, // update with collection size
     imageUrl: 'https://shdw-drive.genesysgo.net/4B5uhQo61B8JrutW1EXYhedw8uycMWE8JVmw1onbLjTh/Dlogo.svg',
     tokenStandard: TokenStandard.NonFungible,
