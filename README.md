@@ -12,39 +12,15 @@ For questions or technical help, join our **[Discord](https://discord.gg/stX2FAY
   <img style="height: 450px" src="./images/staking.png" />
 </div>
 
-## Installation
-
-To get started, clone the repo and run:
-
-```bash
-yarn install
-```
-
-Next, run the development server:
-
-```bash
-yarn run dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the staking interface running locally.
-
-## Set your Cluster
-
-To access different clusters in the scaffold, set the `cluster` query parameter in the URL:
-
-- Mainnet - http://localhost:3000?cluster=mainnet
-- Devnet - http://localhost:3000?cluster=devnet
-- Testnet - http://localhost:3000?cluster=testnet
-
-The default cluster set is **mainnet**. It's recommended to ensure you have `?cluster=devnet` while testing out functionality.
-
 ## Create a Stake Pool
 
-To create a stake pool, navigate to the admin page located at http://localhost:3000/admin. This page hosts a form to create a stake pool with various configurations.
+To create a stake pool, navigate to the admin page located at https://stake.cardinal.so/admin. This page hosts a form to create a stake pool with various configurations.
 
 **Note:** All configurations in the admin page are optional. Also, filters in the stake pool configuration are **union-based**, if any one of the conditions is met, then the NFT will be allowed to stake in the pool.
 
-After creating your stake pool, you will receive a **`Stake Pool Id`**. View your stake pool at http://localhost:3000/[stakePoolId]
+After creating your stake pool, you will receive a **`Stake Pool Id`**. View your stake pool at https://stake.cardinal.so/[stakePoolId]
+
+Pools by default will have no metadata. View the section titled "Customizing your Stake Pool" to learn about adding images, colors and custom pool name.
 
 **Pool Creation Parameters:**
 
@@ -78,7 +54,11 @@ There are two types of reward distribution (RewardDistributionKind) with Cardina
 1. **Mint** - give mint authority of your reward token to the stake pool so the pool can mint on demand
 2. **Treasury** - transfer reward tokens from your wallet to the stake pool, top-up the stake pool treasury balance whenever needed.
 
-## Accessing your Stake Pool
+## Environments
+
+The program and related UIs are deployed on Solana mainnet-beta and devnet. By default the UI will point to mainnet. You can ovverride this by using `?cluster=devnet` in the URL or navigating to https://dev-stake.cardinal.so. All configuration is scoped to that environment, and no data including pools, reward distributors, tokens, NFTs or sol will be carried over from mainnet to devnet and vice-versa.
+
+## Customizing your Stake Pool
 
 In order to easily access your stake pool, airdrop NFTs on devnet for your specific collection and get a stake.cardinal.so/[projectName] url, you'll need to create a Stake Pool metadata object. NOTE if you specified a verified creator in a devnet pool, airdropped NFTs will not be allowed into that pool because your creator will not be verified.
 
@@ -138,6 +118,7 @@ In `api/mapping.ts`, add your own object to the stakePoolMetadatas array. You'll
 In order to get a custom Cardinal URL, **deploy your pool** on mainnet and then **make a PR** to our `api/mapping.ts` file in this repo with updates containing your pool's metadata.
 
 ## Stake Pool Fees
+
 https://www.notion.so/cardinal-labs/Cardinal-Staking-Fees-14e66a64fb2d4615892937c5dbaa91cc
 
 ## Custom hostname
@@ -147,6 +128,7 @@ For a custom hostname...
 1. Add the mapping of your hostname to pool name in `next.config.js`
 2. Open a PR to this repo with that change
 3. Set the following record on your DNS provider to continue:
+
 ```
 Type NAME CNAME
 CNAME {your subdomain} cname.vercel-dns.com
@@ -157,6 +139,32 @@ CNAME {your subdomain} cname.vercel-dns.com
 Now that you've made and deployed your Cardinal stake pool, you can either stick with Cardinal's UX for the stake pool experience or build your own.
 
 Simply modify `pages/[stakePoolId]/index.tsx` with your own react styling, and host the stake pool on your own domain.
+
+## Development
+
+To get started, clone the repo and run:
+
+```bash
+yarn install
+```
+
+Next, run the development server:
+
+```bash
+yarn run dev
+```
+
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the staking interface running locally.
+
+## Set your Cluster
+
+To access different clusters in the scaffold, set the `cluster` query parameter in the URL:
+
+- Mainnet - http://localhost:3000?cluster=mainnet
+- Devnet - http://localhost:3000?cluster=devnet
+- Testnet - http://localhost:3000?cluster=testnet
+
+The default cluster set is **mainnet**. It's recommended to ensure you have `?cluster=devnet` while testing out functionality.
 
 ## Have questions?
 
