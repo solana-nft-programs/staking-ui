@@ -14,6 +14,10 @@ export type Analytic = {
   metadata?: {
     key: string
     type: 'staked'
+    totals?: {
+      key: string
+      value: number
+    }[]
   }
 }
 
@@ -501,12 +505,12 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     maxStaked: 1112,
     imageUrl:
       'https://raw.githubusercontent.com/DegenGodnft/degen/main/Logo2.png',
-      colors: {
-        primary: '#2d0c65',
-        secondary: '#ed69fa',
-        accent: '#f7f6fe',
-        fontColor: '#FFFFFF',
-      },
+    colors: {
+      primary: '#2d0c65',
+      secondary: '#ed69fa',
+      accent: '#f7f6fe',
+      fontColor: '#FFFFFF',
+    },
   },
   {
     name: '00RR0R',
@@ -704,7 +708,6 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       fontColor: '#FFFFFF',
     },
   },
-
   {
     name: 'yoyoyetis',
     displayName: 'Yo Yo Yetis',
@@ -732,7 +735,8 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     websiteUrl: 'https://citadel.thedictator.xyz',
     receiptType: ReceiptType.Original,
     maxStaked: 5000, // update with collection size
-    imageUrl: 'https://shdw-drive.genesysgo.net/4B5uhQo61B8JrutW1EXYhedw8uycMWE8JVmw1onbLjTh/Dlogo.svg',
+    imageUrl:
+      'https://shdw-drive.genesysgo.net/4B5uhQo61B8JrutW1EXYhedw8uycMWE8JVmw1onbLjTh/Dlogo.svg',
     tokenStandard: TokenStandard.NonFungible,
     hideAllowedTokens: false,
     hidden: true,
@@ -748,6 +752,5 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       fontColorSecondary: '#FFFFFF',
       backgroundSecondary: '#4E4E50',
     },
-
-  }
+  },
 ]

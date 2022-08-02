@@ -74,7 +74,7 @@ export const usePoolAnalytics = () => {
             const data = jsons.map((data) =>
               data.attributes.find(
                 (attr: { trait_type: string; value: string }) =>
-                  attr.trait_type === 'Country'
+                  attr.trait_type === analytic.metadata?.key
               )
             ) as { trait_type: string; value: string }[]
             metadata = metadata.concat(data)
@@ -88,6 +88,16 @@ export const usePoolAnalytics = () => {
                 } else {
                   analyticsData[md.value] = 1
                 }
+              }
+              for (const md of Object.keys(analyticsData)) {
+                analyticsData[md] =
+                  analyticsData[md]! /
+                  (analytic.metadata.totals
+                    ? analytic.metadata.totals?.find((data) => data.key === md)
+                        ?.value ||
+                      stakePoolMetadata.maxStaked ||
+                      1
+                    : stakePoolMetadata.maxStaked || 1)
               }
               return analyticsData
             default:
