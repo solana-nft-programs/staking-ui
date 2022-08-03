@@ -20,8 +20,8 @@ export interface EnvironmentContextValues {
 export const ENVIRONMENTS: Environment[] = [
   {
     label: 'mainnet-beta',
-    primary: process.env.MAINNET_PRIMARY || 'https://ssc-dao.genesysgo.net',
-    secondary: 'https://ssc-dao.genesysgo.net',
+    primary: process.env.MAINNET_PRIMARY || 'https://solape.genesysgo.net',
+    secondary: 'https://solape.genesysgo.net',
   },
   {
     label: 'testnet',
@@ -45,8 +45,8 @@ export const getInitialProps = async ({
   const cluster = host?.includes('dev')
     ? 'devnet'
     : (ctx.query.project || ctx.query.host)?.includes('test')
-    ? 'testnet'
-    : ctx.query.cluster || process.env.BASE_CLUSTER
+      ? 'testnet'
+      : ctx.query.cluster || process.env.BASE_CLUSTER
   return {
     cluster: firstParam(cluster),
   }
@@ -63,8 +63,8 @@ export function EnvironmentProvider({
   const cluster = (query.project || query.host)?.includes('dev')
     ? 'devnet'
     : query.host?.includes('test')
-    ? 'testnet'
-    : query.cluster || defaultCluster || process.env.BASE_CLUSTER
+      ? 'testnet'
+      : query.cluster || defaultCluster || process.env.BASE_CLUSTER
   const foundEnvironment = ENVIRONMENTS.find((e) => e.label === cluster)
   const [environment, setEnvironment] = useState<Environment>(
     foundEnvironment ?? ENVIRONMENTS[0]!
