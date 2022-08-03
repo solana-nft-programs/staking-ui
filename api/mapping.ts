@@ -752,5 +752,29 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       fontColorSecondary: '#FFFFFF',
       backgroundSecondary: '#4E4E50',
     },
+    {
+    name: 'thornode-elite',
+    displayName: 'ThorNode RPCs',
+    stakePoolAddress: new PublicKey(
+      'J79xX6CYxXZzXQSy6g6hkBnnfFs7pRDjqy4nFKjnXvu9'
+    ),
+    websiteUrl: 'https://thornode.io',
+    receiptType: ReceiptType.Original,
+    maxStaked: 33, // update with collection size
+    imageUrl:
+      'https://creator-hub-prod.s3.us-east-2.amazonaws.com/thornode_pfp_1656943062647.gif',
+    tokenStandard: TokenStandard.NonFungible,
+    hideAllowedTokens: false,
+    hidden: true,
+    styles: {
+      fontFamily: 'Industry, sans-serif',
+      fontWeight: 500,
+    },
+    colors: {
+      primary: '#000000',
+      secondary: '#4da1de',
+      accent: '#1fcfb11c',
+      fontColor: '#FFFFFF',
+    },
   },
 ]
