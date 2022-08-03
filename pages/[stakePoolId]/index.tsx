@@ -810,12 +810,7 @@ function Home() {
                             : 'text-gray-500'
                         }`}
                       >
-                        {key}:{' '}
-                        {(
-                          (analytics.data![key]! / Number(totalStaked)) *
-                          100
-                        ).toFixed(2)}{' '}
-                        %
+                        {key}: {(analytics.data![key]! * 100).toFixed(2)} %
                       </span>
                     </div>
                   )

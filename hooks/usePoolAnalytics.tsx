@@ -1,10 +1,7 @@
 import { useStakePoolId } from './useStakePoolId'
 import { useQuery } from 'react-query'
 import { useStakePoolMetadata } from './useStakePoolMetadata'
-import {
-  getActiveStakeEntriesForPool,
-  getAllStakeEntries,
-} from '@cardinal/staking/dist/cjs/programs/stakePool/accounts'
+import { getActiveStakeEntriesForPool } from '@cardinal/staking/dist/cjs/programs/stakePool/accounts'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 import { Metadata, MetadataData } from '@metaplex-foundation/mpl-token-metadata'
 
@@ -21,16 +18,17 @@ export const usePoolAnalytics = () => {
       if (!stakePoolId || !stakePoolMetadata) return analyticsData
       const analytics = stakePoolMetadata.analytics
       if (!analytics) return analyticsData
-      const allStakeEntries = (
-        await getActiveStakeEntriesForPool(connection, stakePoolId)
-      ).slice(0, 20)
+      const allStakeEntries = await getActiveStakeEntriesForPool(
+        connection,
+        stakePoolId
+      )
 
       for (const analytic of analytics) {
         if (analytic.metadata) {
           let metadata: { trait_type: string; value: string }[] = []
           for (
             let counter = 0;
-            counter <= allStakeEntries.length;
+            counter < allStakeEntries.length;
             counter += batchSize
           ) {
             const entries = allStakeEntries.slice(
