@@ -752,7 +752,8 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       fontColorSecondary: '#FFFFFF',
       backgroundSecondary: '#4E4E50',
     },
-    {
+  },
+  {
     name: 'thornode-elite',
     displayName: 'ThorNode RPCs',
     stakePoolAddress: new PublicKey(
