@@ -778,4 +778,27 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       fontColor: '#FFFFFF',
     },
   },
+  {
+    name: 'onespace',
+    displayName: 'ONESPACE',
+    stakePoolAddress: new PublicKey(
+      'FBTqpPynmDdVsYP4eep6pJonwMsFoVhaXcCpah3yYLZY'
+    ),
+    websiteUrl: 'https://1space.me/',
+    receiptType: ReceiptType.Original,
+    hostname: 'stake.1space.me',
+    imageUrl:
+      'https://1space.me/images/os-logo-white.jpeg',
+    maxStaked: 500,
+    styles: {
+      fontFamily: 'Industry, sans-serif',
+      fontWeight: 500,
+    },
+    colors: {
+      primary: '#121429',
+      secondary: '#00b7ff',
+      accent: '#2b3645',
+      fontColor: '#FFFFFF',
+    },
+  },
 ]
