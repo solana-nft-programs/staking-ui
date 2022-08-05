@@ -106,7 +106,7 @@ export type StakePoolMetadata = {
   maxStaked?: number
   // Links to show at the top right of the page
   links?: { text: string; value: string }[]
-  // On devnet when you click the airdrop button on this page it will clone NFTs with this metadata and airdrop to the user
+  // On devnet when you click the airdrop button on this page it will clone NFTs with this metadata and airdrop to the user. These will not contain verified creators
   airdrops?: AirdropMetadata[]
   // Analytics to show at the top of stake pool. supports trait based analytics and overall tokens data
   analytics?: Analytic[]
