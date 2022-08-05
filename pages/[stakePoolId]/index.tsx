@@ -158,8 +158,7 @@ function Home() {
     setStakedSelected([])
   }
 
-  async function handleUnstake(all?: boolean) {
-    const tokensToUnstake = all ? stakedTokenDatas.data || [] : stakedSelected
+  async function handleUnstake() {
     if (!wallet.connected) {
       notify({ message: `Wallet not connected`, type: 'error' })
       return
@@ -168,7 +167,7 @@ function Home() {
       notify({ message: `No stake pool detected`, type: 'error' })
       return
     }
-    if (tokensToUnstake.length <= 0) {
+    if (stakedSelected.length <= 0) {
       notify({ message: `Not tokens selected`, type: 'error' })
       return
     }
@@ -176,7 +175,7 @@ function Home() {
 
     let coolDown = false
     const txs: (Transaction | null)[] = await Promise.all(
-      tokensToUnstake.map(async (token) => {
+      stakedSelected.map(async (token) => {
         try {
           if (!token || !token.stakeEntry) {
             throw new Error('No stake entry for token')
@@ -239,8 +238,7 @@ function Home() {
     setLoadingUnstake(false)
   }
 
-  async function handleStake(all?: boolean) {
-    const tokensToStake = all ? allowedTokenDatas.data || [] : unstakedSelected
+  async function handleStake() {
     if (!wallet.connected) {
       notify({ message: `Wallet not connected`, type: 'error' })
       return
@@ -249,16 +247,16 @@ function Home() {
       notify({ message: `Wallet not connected`, type: 'error' })
       return
     }
-    if (tokensToStake.length <= 0) {
+    if (unstakedSelected.length <= 0) {
       notify({ message: `Not tokens selected`, type: 'error' })
       return
     }
     setLoadingStake(true)
 
     const initTxs: { tx: Transaction; signers: Signer[] }[] = []
-    for (let step = 0; step < tokensToStake.length; step++) {
+    for (let step = 0; step < unstakedSelected.length; step++) {
       try {
-        let token = tokensToStake[step]
+        let token = unstakedSelected[step]
         if (!token || !token.tokenAccount) {
           throw new Error('Token account not set')
         }
@@ -288,7 +286,7 @@ function Home() {
         }
       } catch (e) {
         notify({
-          message: `Failed to stake token ${tokensToStake[
+          message: `Failed to stake token ${unstakedSelected[
             step
           ]?.stakeEntry?.pubkey.toString()}`,
           description: `${e}`,
@@ -315,7 +313,7 @@ function Home() {
     }
 
     const txs: (Transaction | null)[] = await Promise.all(
-      tokensToStake.map(async (token) => {
+      unstakedSelected.map(async (token) => {
         try {
           if (!token || !token.tokenAccount) {
             throw new Error('Token account not set')
@@ -1160,7 +1158,6 @@ function Home() {
                   <button
                     onClick={() => {
                       setUnstakedSelected(allowedTokenDatas.data || [])
-                      handleStake(true)
                     }}
                     style={{
                       background:
@@ -1184,7 +1181,7 @@ function Home() {
                         />
                       )}
                     </span>
-                    <span className="my-auto">Stake All</span>
+                    <span className="my-auto">Select All</span>
                   </button>
                 </MouseoverTooltip>
               </div>
@@ -1690,7 +1687,6 @@ function Home() {
                   <button
                     onClick={() => {
                       setStakedSelected(stakedTokenDatas.data || [])
-                      handleUnstake(true)
                     }}
                     style={{
                       background:
@@ -1714,7 +1710,7 @@ function Home() {
                         />
                       )}
                     </span>
-                    <span className="my-auto">Unstake All</span>
+                    <span className="my-auto">Select All</span>
                   </button>
                 </MouseoverTooltip>
               </div>
