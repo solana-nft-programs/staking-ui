@@ -687,25 +687,25 @@ export function StakePoolForm({
                         type="text"
                         placeholder={'1000000'}
                         value={tryFormatInput(
-                          values.rewardAmount,
+                          values.rewardMintSupply,
                           mintInfo.decimals,
-                          values.rewardAmount ?? ''
+                          values.rewardMintSupply ?? ''
                         )}
                         onChange={(e) => {
                           const value = Number(e.target.value)
                           if (Number.isNaN(value)) {
                             notify({
-                              message: `Invalid reward amount`,
+                              message: `Invalid reward mint supply`,
                               type: 'error',
                             })
                             return
                           }
                           setFieldValue(
-                            'rewardAmount',
+                            'rewardMintSupply',
                             tryParseInput(
                               e.target.value,
                               mintInfo.decimals,
-                              values.rewardAmount ?? ''
+                              values.rewardMintSupply ?? ''
                             )
                           )
                         }}
