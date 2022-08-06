@@ -1756,43 +1756,6 @@ function Home() {
                       </span>
                     </button>
                   )}
-                {rewardDistributorData.data &&
-                  rewards.data?.claimableRewards.gt(new BN(0)) &&
-                  stakedTokenDatas.data && (
-                    <button
-                      onClick={() => {
-                        setStakedSelected(stakedTokenDatas.data || [])
-                        handleClaimRewards(true)
-                      }}
-                      disabled={
-                        !rewards.data?.claimableRewards.gt(new BN(0)) ||
-                        stakedTokenDatas.data?.length === 0
-                      }
-                      style={{
-                        background:
-                          stakePoolMetadata?.colors?.secondary ||
-                          defaultSecondaryColor,
-                        color:
-                          stakePoolMetadata?.colors?.fontColorSecondary ||
-                          stakePoolMetadata?.colors?.fontColor,
-                      }}
-                      className="my-auto flex rounded-md px-4 py-2 hover:scale-[1.03]"
-                    >
-                      <span className="mr-1 inline-block">
-                        {loadingClaimRewards && (
-                          <LoadingSpinner
-                            fill={
-                              stakePoolMetadata?.colors?.fontColor
-                                ? stakePoolMetadata?.colors?.fontColor
-                                : '#FFF'
-                            }
-                            height="20px"
-                          />
-                        )}
-                      </span>
-                      <span className="my-auto">Claim All Rewards</span>
-                    </button>
-                  )}
               </div>
             </div>
           </div>
