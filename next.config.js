@@ -13,6 +13,10 @@ const HOST_MAPPINGS = [
     name: 'degengod',
     hostname: 'stake.degengod.xyz',
   },
+  {
+    name: 'onespace',
+    hostname: 'stake.1space.me',
+  },
 ]
 
 /** @type {import('next').NextConfig} */
