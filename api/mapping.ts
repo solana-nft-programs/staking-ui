@@ -787,8 +787,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     websiteUrl: 'https://stake.thornode.io',
     receiptType: ReceiptType.Original,
     maxStaked: 300, // update with collection size
-    imageUrl:
-      'https://i.ibb.co/fxZqZWR/lossy-compressed-3.gif',
+    imageUrl: 'https://i.ibb.co/fxZqZWR/lossy-compressed-3.gif',
     tokenStandard: TokenStandard.NonFungible,
     hideAllowedTokens: false,
     hidden: false,
@@ -812,8 +811,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     websiteUrl: 'https://1space.me/',
     receiptType: ReceiptType.Original,
     hostname: 'stake.1space.me',
-    imageUrl:
-      'https://1space.me/images/os-logo-white.jpeg',
+    imageUrl: 'https://1space.me/images/os-logo-white.jpeg',
     maxStaked: 400,
     links: [
       {
@@ -834,6 +832,33 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       secondary: '#00b7ff',
       accent: '#2b3645',
       fontColor: '#FFFFFF',
+    },
+  },
+  {
+    name: 'trust-in-pat',
+    displayName: 'Trust in Pat',
+    stakePoolAddress: new PublicKey(
+      '84zubayRdBg8s47QUDLfmHUZekmmBktKptwfagGNHjjL'
+    ),
+    websiteUrl: 'https://trustinpat.com/',
+    receiptType: ReceiptType.Receipt,
+    tokenStandard: TokenStandard.NonFungible,
+    imageUrl:
+      'https://bafybeiamwpitlfgfutcvfeqlc2mhedlo7ansu42i4z7jvsd2nxovz2vbii.ipfs.nftstorage.link/1567.png',
+    maxStaked: 4096,
+    links: [
+      {
+        text: 'Twitter',
+        value: 'https://twitter.com/TrustInPat',
+      },
+      {
+        text: 'Discord',
+        value: 'https://t.co/drNhCgyOwz',
+      },
+    ],
+    colors: {
+      primary: '#000000',
+      secondary: '#888888',
     },
   },
 ]
