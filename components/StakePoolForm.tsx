@@ -30,7 +30,7 @@ const publicKeyValidationTest = (value: string | undefined): boolean => {
   return tryPublicKey(value) ? true : false
 }
 
-const bnValidationTest = (value: string | undefined): boolean => {
+export const bnValidationTest = (value: string | undefined): boolean => {
   if (value === undefined) return false
   try {
     new BN(value)

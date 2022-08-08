@@ -1,4 +1,4 @@
-import { tryGetAccount } from '@cardinal/common'
+import { findAta, tryGetAccount } from '@cardinal/common'
 import { executeTransaction, handleError } from '@cardinal/staking'
 import {
   getRewardDistributor,
@@ -11,9 +11,11 @@ import {
 import {
   withCloseRewardDistributor,
   withInitRewardDistributor,
+  withReclaimFunds,
   withUpdateRewardDistributor,
   withUpdateRewardEntry,
 } from '@cardinal/staking/dist/cjs/programs/rewardDistributor/transaction'
+import * as splToken from '@solana/spl-token'
 import {
   withAuthorizeStakeEntry,
   withUpdateStakePool,
@@ -21,7 +23,7 @@ import {
 import { Wallet } from '@metaplex/js'
 import { BN, web3 } from '@project-serum/anchor'
 import { useWallet } from '@solana/wallet-adapter-react'
-import { PublicKey, Transaction } from '@solana/web3.js'
+import { Keypair, PublicKey, Transaction } from '@solana/web3.js'
 import { Footer } from 'common/Footer'
 import { Header } from 'common/Header'
 import { notify } from 'common/Notification'
@@ -29,18 +31,26 @@ import { ShortPubKeyUrl } from 'common/Pubkeys'
 import { useStakePoolData } from 'hooks/useStakePoolData'
 import Head from 'next/head'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { TailSpin } from 'react-loader-spinner'
-import { CreationForm, StakePoolForm } from 'components/StakePoolForm'
+import {
+  bnValidationTest,
+  CreationForm,
+  StakePoolForm,
+} from 'components/StakePoolForm'
 import { useRewardDistributorData } from 'hooks/useRewardDistributorData'
 import { pubKeyUrl, shortPubKey, tryPublicKey } from 'common/utils'
 import { findStakeEntryIdFromMint } from '@cardinal/staking/dist/cjs/programs/stakePool/utils'
 import * as Yup from 'yup'
 import { useFormik } from 'formik'
-import { getMintDecimalAmountFromNatural } from 'common/units'
+import {
+  getMintDecimalAmountFromNatural,
+  tryFormatInput,
+  tryParseInput,
+} from 'common/units'
 import { useRewardMintInfo } from 'hooks/useRewardMintInfo'
 import { Tooltip } from '@mui/material'
-import { executeAllTransactions } from 'api/utils'
+import { RewardDistributorKind } from '@cardinal/staking/dist/cjs/programs/rewardDistributor'
 
 const publicKeyValidationTest = (value: string | undefined): boolean => {
   return tryPublicKey(value) ? true : false
@@ -61,6 +71,9 @@ const creationFormSchema = Yup.object({
       publicKeyValidationTest
     )
   ),
+  reclaimAmount: Yup.string()
+    .optional()
+    .test('is-valid-bn', 'Invalid reclaim funds amount', bnValidationTest),
 })
 export type MultipliersForm = Yup.InferType<typeof creationFormSchema>
 
@@ -72,23 +85,26 @@ function AdminStakePool() {
   const [mintsToAuthorize, setMintsToAuthorize] = useState<string>('')
   const [loadingLookupMultiplier, setLoadingLookupMultiplier] =
     useState<boolean>(false)
+  const [loadingReclaim, setLoadingReclaim] = useState<boolean>(false)
   const [multiplierFound, setMultiplierFound] = useState<string>('')
   const [loadingHandleAuthorizeMints, setLoadingHandleAuthorizeMints] =
     useState<boolean>(false)
   const [loadingHandleMultipliers, setLoadingHandleMultipliers] =
     useState<boolean>(false)
   const rewardMintInfo = useRewardMintInfo()
+  const [mintInfo, setMintInfo] = useState<splToken.MintInfo>()
 
   const initialValues: MultipliersForm = {
     multipliers: [''],
     multiplierMints: [''],
+    reclaimAmount: '0',
   }
   const formState = useFormik({
     initialValues,
     onSubmit: (values) => {},
     validationSchema: creationFormSchema,
   })
-  const { values, errors, setFieldValue, handleChange } = formState
+  const { values, setFieldValue } = formState
 
   const handleMutliplier = async () => {
     setLoadingHandleMultipliers(true)
@@ -447,6 +463,45 @@ function AdminStakePool() {
     }
   }
 
+  const handleReclaimFunds = async () => {
+    setLoadingReclaim(true)
+    try {
+      if (!wallet?.connected) {
+        throw 'Wallet not connected'
+      }
+      if (!stakePool.data) {
+        throw 'Stake pool not found'
+      }
+      if (!rewardDistributor.data) {
+        throw 'Reward Distributor not found'
+      }
+      const transaction = new Transaction()
+      await withReclaimFunds(transaction, connection, wallet as Wallet, {
+        stakePoolId: stakePool.data.pubkey,
+        amount: new BN(values.reclaimAmount || 0),
+      })
+      const txId = await executeTransaction(
+        connection,
+        wallet as Wallet,
+        transaction,
+        {}
+      )
+      notify({
+        message: `Successfully reclaimed funds from pool. Txid: ${txId}`,
+        type: 'success',
+      })
+    } catch (e) {
+      notify({
+        message: handleError(e, `Error reclaiming funds: ${e}`),
+        type: 'error',
+      })
+    } finally {
+      setLoadingReclaim(false)
+    }
+  }
+
+  useMemo(async () => {}, [values.reclaimAmount?.toString()])
+
   return (
     <div>
       <Head>
@@ -639,6 +694,105 @@ function AdminStakePool() {
                 )}
                 {rewardDistributor.data && (
                   <div className="mt-10">
+                    {rewardDistributor.data.parsed.kind ===
+                      RewardDistributorKind.Treasury && (
+                      <>
+                        <label
+                          className="mb-2 block text-xs font-bold uppercase tracking-wide text-gray-200"
+                          htmlFor="require-authorization"
+                        >
+                          Reclaim Funds
+                        </label>
+                        <div className="mb-5 flex flex-row">
+                          <div
+                            className={`flex w-1/4 appearance-none justify-between rounded border border-gray-500 bg-gray-700 py-2 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800`}
+                          >
+                            <input
+                              className={`mr-5 w-full bg-transparent focus:outline-none`}
+                              type="text"
+                              placeholder={'1000000'}
+                              value={tryFormatInput(
+                                values.reclaimAmount,
+                                mintInfo?.decimals || 0,
+                                '0'
+                              )}
+                              onChange={(e) => {
+                                const value = Number(e.target.value)
+                                if (Number.isNaN(value)) {
+                                  notify({
+                                    message: `Invalid reclaim amount`,
+                                    type: 'error',
+                                  })
+                                  return
+                                }
+                                setFieldValue(
+                                  'reclaimAmount',
+                                  tryParseInput(
+                                    e.target.value,
+                                    mintInfo?.decimals || 0,
+                                    values.reclaimAmount ?? ''
+                                  )
+                                )
+                              }}
+                            />
+                            <div
+                              className="cursor-pointer"
+                              onClick={async () => {
+                                setLoadingReclaim(true)
+                                const mint = new PublicKey(
+                                  rewardDistributor.data!.parsed.rewardMint
+                                )
+                                const checkMint = new splToken.Token(
+                                  connection,
+                                  mint,
+                                  splToken.TOKEN_PROGRAM_ID,
+                                  Keypair.generate() // unused
+                                )
+                                let mintInfo = await checkMint.getMintInfo()
+                                setMintInfo(mintInfo)
+                                const mintAta = await findAta(
+                                  rewardDistributor.data!.parsed.rewardMint,
+                                  rewardDistributor.data!.pubkey,
+                                  true
+                                )
+                                const ata = await checkMint.getAccountInfo(
+                                  mintAta
+                                )
+                                setFieldValue(
+                                  'reclaimAmount',
+                                  ata.amount.toString()
+                                )
+                                setLoadingReclaim(false)
+                              }}
+                            >
+                              Max
+                            </div>
+                          </div>
+                          <button
+                            className="ml-5"
+                            type="button"
+                            onClick={() => handleReclaimFunds()}
+                          >
+                            <div
+                              className={
+                                'inline-block cursor-pointer rounded-md bg-blue-700 px-4 py-2'
+                              }
+                            >
+                              {loadingReclaim && (
+                                <div className="mr-2 inline-block">
+                                  <TailSpin
+                                    color="#fff"
+                                    height={15}
+                                    width={15}
+                                  />
+                                </div>
+                              )}
+                              Reclaim Funds
+                            </div>
+                          </button>
+                        </div>
+                      </>
+                    )}
                     <div className="mb-5">
                       <label
                         className="mb-2 block text-xs font-bold uppercase tracking-wide text-gray-200"
