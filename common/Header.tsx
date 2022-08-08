@@ -65,7 +65,10 @@ export const Header = () => {
           </div>
         </div>
       )}
-      <div className={`flex h-20 justify-between px-5 text-white`}>
+      <div
+        className={`flex h-20 justify-between px-5 text-white`}
+        style={{ color: stakePoolMetadata?.colors?.fontColor }}
+      >
         <div className="flex items-center gap-3">
           <a
             target="_blank"
@@ -77,7 +80,7 @@ export const Header = () => {
                   : ''
               }`
             }
-            className="flex cursor-pointer text-xl font-semibold text-white hover:text-gray-400"
+            className="flex cursor-pointer text-xl font-semibold"
           >
             {stakePoolMetadata?.imageUrl ? (
               <div className="flex flex-row">
@@ -85,9 +88,11 @@ export const Header = () => {
                   className="flex h-[35px] flex-col"
                   src={stakePoolMetadata?.imageUrl}
                 />
-                {/* <span className="ml-5 mt-1 flex flex-col">
-                  {stakePoolMetadata?.displayName} Staking
-                </span> */}
+                {stakePoolMetadata.nameInHeader && (
+                  <span className="ml-5 mt-1 flex flex-col">
+                    {stakePoolMetadata?.displayName}
+                  </span>
+                )}
               </div>
             ) : (
               <TitleText className="flex items-center justify-center gap-2">

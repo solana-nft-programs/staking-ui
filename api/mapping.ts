@@ -27,6 +27,8 @@ export type StakePoolMetadata = {
   name: string
   // Display name to be displayed in the header. Often the same as name but with capital letters and spaces
   displayName: string
+  // Whether or not to show name in header, defaults false
+  nameInHeader?: boolean
   // Publickey for this stake pool
   stakePoolAddress: PublicKey
   // Default receipt type. Setting this will remove the option for the user to choose which receipt type to use
@@ -837,6 +839,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
   {
     name: 'trust-in-pat',
     displayName: 'Trust in Pat',
+    nameInHeader: true,
     stakePoolAddress: new PublicKey(
       '84zubayRdBg8s47QUDLfmHUZekmmBktKptwfagGNHjjL'
     ),
@@ -844,7 +847,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     receiptType: ReceiptType.Receipt,
     tokenStandard: TokenStandard.NonFungible,
     imageUrl:
-      'https://bafybeiamwpitlfgfutcvfeqlc2mhedlo7ansu42i4z7jvsd2nxovz2vbii.ipfs.nftstorage.link/1567.png',
+      'https://lh5.googleusercontent.com/_R3W26ALq68F2Oxc51lDrCNqYXaTOrjFmEk0HxQT0zfEdUydub5wmRhggipdanziIO-CB3Z8K-ydzBogTrhcj2z0bS0iWnyBouPJNm7XAmfJH5UML3n9_7LzQeoNX1pdgw=w1280',
     maxStaked: 4096,
     links: [
       {
@@ -857,8 +860,11 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       },
     ],
     colors: {
-      primary: '#000000',
-      secondary: '#888888',
+      primary: '#ffffff',
+      secondary: '#BBBBBB',
+      accent: '#ffffff',
+      fontColor: '#000',
+      backgroundSecondary: '#f4f5f7',
     },
   },
 ]
