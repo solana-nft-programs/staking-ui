@@ -846,8 +846,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     websiteUrl: 'https://trustinpat.com/',
     receiptType: ReceiptType.Receipt,
     tokenStandard: TokenStandard.NonFungible,
-    imageUrl:
-      'https://lh5.googleusercontent.com/_R3W26ALq68F2Oxc51lDrCNqYXaTOrjFmEk0HxQT0zfEdUydub5wmRhggipdanziIO-CB3Z8K-ydzBogTrhcj2z0bS0iWnyBouPJNm7XAmfJH5UML3n9_7LzQeoNX1pdgw=w1280',
+    imageUrl: '/logos/trust-in-pat.png',
     maxStaked: 4096,
     links: [
       {
