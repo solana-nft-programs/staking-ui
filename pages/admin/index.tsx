@@ -100,6 +100,7 @@ function Admin() {
         requiresCreators:
           creatorPublicKeys.length > 0 ? creatorPublicKeys : undefined,
         requiresAuthorization: values.requiresAuthorization,
+        resetOnStake: values.resetOnStake,
         overlayText: values.overlayText || undefined,
         cooldownSeconds: values.cooldownPeriodSeconds || 0,
         endDate: dateInNum ? new BN(dateInNum / 1000) : undefined,

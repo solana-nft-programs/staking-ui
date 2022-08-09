@@ -63,6 +63,7 @@ const creationFormSchema = Yup.object({
     )
     .required(),
   requiresAuthorization: Yup.boolean(),
+  resetOnStake: Yup.boolean(),
   cooldownPeriodSeconds: Yup.number().optional().min(0),
   minStakeSeconds: Yup.number().optional().min(0),
   endDate: Yup.string()
@@ -116,6 +117,7 @@ export function StakePoolForm({
       pk.toString()
     ),
     requiresAuthorization: stakePoolData?.parsed.requiresAuthorization ?? false,
+    resetOnStake: stakePoolData?.parsed.resetOnStake ?? false,
     cooldownPeriodSeconds: stakePoolData?.parsed.cooldownSeconds ?? 0,
     minStakeSeconds: stakePoolData?.parsed.minStakeSeconds ?? 0,
     endDate: stakePoolData?.parsed.endDate
@@ -483,6 +485,34 @@ export function StakePoolForm({
             value={values.endDate}
             onChange={handleChange}
           />
+        </div>
+      </div>
+      <div className="-mx-3 flex flex-wrap">
+        <div className="mb-6 mt-4 w-full px-3 md:mb-0">
+          <label
+            className="mb-2 block text-xs font-bold uppercase tracking-wide text-gray-200"
+            htmlFor="require-authorization"
+          >
+            Reset on stake
+          </label>
+          <p className="mb-2 text-sm italic text-gray-300">
+            If selected, everytime a user stakes the stake timer will reset
+            rather than accumulate.
+          </p>
+          <input
+            className="mb-3 cursor-pointer"
+            id="reset-on-unstake"
+            type="checkbox"
+            name="resetOnStake"
+            checked={values.resetOnStake}
+            onChange={handleChange}
+          />{' '}
+          <span
+            className="my-auto cursor-pointer text-sm"
+            onClick={() => setFieldValue('resetOnStake', !values.resetOnStake)}
+          >
+            Reset on stake
+          </span>
         </div>
       </div>
       <div>

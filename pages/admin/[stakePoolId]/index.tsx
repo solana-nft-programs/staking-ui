@@ -384,6 +384,7 @@ function AdminStakePool() {
         requiresCollections: collectionPublicKeys,
         requiresCreators: creatorPublicKeys,
         requiresAuthorization: values.requiresAuthorization,
+        resetOnStake: values.resetOnStake,
         overlayText: values.overlayText,
         cooldownSeconds: values.cooldownPeriodSeconds,
         minStakeSeconds: values.minStakeSeconds,
