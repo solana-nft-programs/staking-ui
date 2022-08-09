@@ -1,4 +1,4 @@
-import { AirdropMetadata } from './../common/Airdrop'
+import { AirdropMetadata } from '../common/Airdrop'
 import { PublicKey } from '@solana/web3.js'
 import { ReceiptType } from '@cardinal/staking/dist/cjs/programs/stakePool'
 import { CSSProperties } from 'react'
@@ -86,6 +86,14 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       primary: 'rgb(54,21,38,0.9)',
       secondary: 'rgb(157,120,138, 0.6)',
     },
+  },
+  {
+    name: 'AOM',
+    displayName: 'AOM',
+    stakePoolAddress: new PublicKey(
+      'Hj1xfWP4qYq7N6eJxFRFGqNDiwMFRMo361ay5rFUThbk'
+    ),
+    redirect:"https://frame.artofmob.io",
   },
   {
     name: 'blockasset',
