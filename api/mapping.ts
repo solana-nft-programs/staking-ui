@@ -822,7 +822,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     receiptType: ReceiptType.Original,
     hostname: 'stake.1space.me',
     imageUrl: 'https://1space.me/images/os-logo-white.jpeg',
-    maxStaked: 400,
+    maxStaked: 200,
     links: [
       {
         text: 'ONEHERO NFT',
