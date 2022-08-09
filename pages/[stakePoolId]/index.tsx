@@ -55,6 +55,7 @@ import { lighten, darken } from '@mui/material'
 import { QuickActions } from 'common/QuickActions'
 import * as splToken from '@solana/spl-token'
 import { usePoolAnalytics } from 'hooks/usePoolAnalytics'
+import { useRewardsRate } from 'hooks/useRewardsRate'
 
 function Home() {
   const router = useRouter()
@@ -69,6 +70,7 @@ function Home() {
   const maxStaked = useStakePoolMaxStaked()
   const rewardEntries = useRewardEntries()
   const rewards = useRewards()
+  const rewardsRate = useRewardsRate()
 
   const [unstakedSelected, setUnstakedSelected] = useState<AllowedTokenData[]>(
     []
@@ -652,49 +654,19 @@ function Home() {
                 <div className="absolute w-full animate-pulse items-center justify-center rounded-lg bg-white bg-opacity-10 p-5"></div>
               </div>
             )}
-            {rewardDistributorData.data && rewardMintInfo.data ? (
+            {rewardDistributorData.data &&
+            rewardsRate.data &&
+            rewardMintInfo.data ? (
               <>
                 <div className="inline-block text-lg">
                   <span>Rewards Rate</span>:{' '}
                   <span>
-                    {(
-                      (Number(
-                        getMintDecimalAmountFromNatural(
-                          rewardMintInfo.data.mintInfo,
-                          (
-                            stakedTokenDatas.data?.map((stakeData) =>
-                              (
-                                stakeData.stakeEntry?.parsed.amount || new BN(1)
-                              ).mul(
-                                (
-                                  rewardEntries.data?.find(
-                                    (entryData) =>
-                                      entryData.parsed.stakeEntry.toString() ===
-                                      stakeData.stakeEntry?.pubkey.toString()
-                                  )?.parsed.multiplier ||
-                                  rewardDistributorData.data!.parsed
-                                    .defaultMultiplier
-                                ).div(
-                                  new BN(10).pow(
-                                    new BN(
-                                      rewardDistributorData.data?.parsed
-                                        .multiplierDecimals || 0
-                                    )
-                                  )
-                                ) || new BN(1)
-                              )
-                            ) || []
-                          )
-                            .reduce((pre, curr) => pre.add(curr), new BN(0))
-                            .mul(rewardDistributorData.data.parsed.rewardAmount)
-                        )
-                      ) /
-                        rewardDistributorData.data.parsed.rewardDurationSeconds.toNumber()) *
-                      86400 *
-                      (rewardDistributorData.data.parsed.defaultMultiplier.toNumber() /
-                        10 **
-                          rewardDistributorData.data.parsed.multiplierDecimals)
-                    ).toPrecision(4)}{' '}
+                    {formatAmountAsDecimal(
+                      rewardMintInfo.data.mintInfo.decimals,
+                      rewardsRate.data,
+                      // max of 5 decimals
+                      Math.min(rewardMintInfo.data.mintInfo.decimals, 5)
+                    )}{' '}
                     <a
                       className="underline"
                       style={{
@@ -1169,18 +1141,6 @@ function Home() {
                     }}
                     className="my-auto flex cursor-pointer rounded-md px-4 py-2 hover:scale-[1.03]"
                   >
-                    <span className="mr-1 inline-block">
-                      {loadingStake && (
-                        <LoadingSpinner
-                          fill={
-                            stakePoolMetadata?.colors?.fontColor
-                              ? stakePoolMetadata?.colors?.fontColor
-                              : '#FFF'
-                          }
-                          height="20px"
-                        />
-                      )}
-                    </span>
                     <span className="my-auto">Select All</span>
                   </button>
                 </MouseoverTooltip>
@@ -1698,18 +1658,6 @@ function Home() {
                     }}
                     className="my-auto flex cursor-pointer rounded-md px-4 py-2 hover:scale-[1.03]"
                   >
-                    <span className="mr-1 inline-block">
-                      {loadingUnstake && (
-                        <LoadingSpinner
-                          fill={
-                            stakePoolMetadata?.colors?.fontColor
-                              ? stakePoolMetadata?.colors?.fontColor
-                              : '#FFF'
-                          }
-                          height="20px"
-                        />
-                      )}
-                    </span>
                     <span className="my-auto">Select All</span>
                   </button>
                 </MouseoverTooltip>
