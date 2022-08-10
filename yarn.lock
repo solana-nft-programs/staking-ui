@@ -323,10 +323,10 @@
     "@cardinal/token-manager" "^1.2.0"
     "@metaplex-foundation/mpl-token-metadata" "^1.2.5"
 
-"@cardinal/staking@^1.5.39":
-  version "1.5.39"
-  resolved "https://registry.yarnpkg.com/@cardinal/staking/-/staking-1.5.39.tgz#379e307714d2d535bd3643168163ddca24ad54d2"
-  integrity sha512-mcIwutelHBwmjLCa9tkienIoR+0gbeLY1ChWB88vg4vWHC4CNDNwS2c2k7H3HPNQsC9NZgTzTYQJ6SafcSlk5A==
+"@cardinal/staking@^1.5.40":
+  version "1.5.40"
+  resolved "https://registry.yarnpkg.com/@cardinal/staking/-/staking-1.5.40.tgz#f6d0bb30be957552053bfd80fa711b4f45c5dc3e"
+  integrity sha512-kIMX6XV5yelt9uJIVqNp2vsh1dMOz8xyjZP44iNSCOrSMwtkcpn4wx+tMsgn6dN+jKDSmNLZcZr0zy4ns0Bn4A==
   dependencies:
     "@cardinal/common" "^1.0.10"
     "@cardinal/token-manager" "^1.2.0"
