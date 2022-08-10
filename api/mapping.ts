@@ -93,7 +93,11 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     stakePoolAddress: new PublicKey(
       'Hj1xfWP4qYq7N6eJxFRFGqNDiwMFRMo361ay5rFUThbk'
     ),
-    redirect:"https://frame.artofmob.io",
+    redirect: 'https://frame.artofmob.io',
+    hidden: true,
+    notFound: true,
+    imageUrl:
+      'https://pvajcmufckbozjicyp4aaltlbozv7emcj3sy6srskjm4ilq.arweave.net/fUCRM-oUSguylAsP4AC5r_C7NfkYJ_O5Y_9KMlJZxC4?ext=png',
   },
   {
     name: 'blockasset',
