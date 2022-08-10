@@ -94,7 +94,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       'Hj1xfWP4qYq7N6eJxFRFGqNDiwMFRMo361ay5rFUThbk'
     ),
     redirect: 'https://frame.artofmob.io',
-    hidden: true,
+    hidden: false,
     notFound: true,
     imageUrl:
       'https://pvajcmufckbozjicyp4aaltlbozv7emcj3sy6srskjm4ilq.arweave.net/fUCRM-oUSguylAsP4AC5r_C7NfkYJ_O5Y_9KMlJZxC4?ext=png',
@@ -753,7 +753,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       'https://shdw-drive.genesysgo.net/4B5uhQo61B8JrutW1EXYhedw8uycMWE8JVmw1onbLjTh/Dlogo.svg',
     tokenStandard: TokenStandard.NonFungible,
     hideAllowedTokens: false,
-    hidden: true,
+    hidden: false,
     styles: {
       fontFamily: 'Industry, sans-serif',
       fontWeight: 500,
