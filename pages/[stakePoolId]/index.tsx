@@ -911,7 +911,7 @@ function Home() {
                                 boxShadow: isUnstakedTokenSelected(tk)
                                   ? `0px 0px 20px ${
                                       stakePoolMetadata?.colors?.secondary ||
-                                      'white'
+                                      '#FFFFFF'
                                     }`
                                   : '',
                               }}
@@ -1018,7 +1018,7 @@ function Home() {
                                   width: '10px',
                                   backgroundColor:
                                     stakePoolMetadata?.colors?.primary ||
-                                    'white',
+                                    '#FFFFFF',
                                   borderRadius: '50%',
                                   display: 'inline-block',
                                 }}
@@ -1276,7 +1276,10 @@ function Home() {
                                 onClick={() => selectStakedToken(tk)}
                                 style={{
                                   boxShadow: isStakedTokenSelected(tk)
-                                    ? `0px 0px 20px ${stakePoolMetadata?.colors?.secondary}`
+                                    ? `0px 0px 20px ${
+                                        stakePoolMetadata?.colors?.secondary ||
+                                        '#FFFFFF'
+                                      }`
                                     : '',
                                 }}
                               >
@@ -1585,7 +1588,8 @@ function Home() {
                                       height: '10px',
                                       width: '10px',
                                       backgroundColor:
-                                        stakePoolMetadata?.colors?.primary,
+                                        stakePoolMetadata?.colors?.primary ||
+                                        '#FFFFFF',
                                       borderRadius: '50%',
                                       display: 'inline-block',
                                     }}
