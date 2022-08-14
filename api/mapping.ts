@@ -915,7 +915,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       '9muf4BWmQntjgsU3wx5cxqiZoXqRaCMxyEH7Gx8J1erG'
     ),
     websiteUrl: 'https://cyborgeddon.com/',
-    receiptType: ReceiptType.Receipt,
+    receiptType: ReceiptType.Original,
     tokenStandard: TokenStandard.NonFungible,
     imageUrl: 'https://media1.giphy.com/media/a81pt8QhDpZbMqX97G/giphy.gif',
     maxStaked: 4096,
