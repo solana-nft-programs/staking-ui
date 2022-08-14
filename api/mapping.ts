@@ -883,7 +883,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     displayName: 'KingChipsRoyale',
     nameInHeader: true,
     stakePoolAddress: new PublicKey(
-      'GqZsDULGkAw3KLTsUdYcVWtRNWDXCKXH2XomrrBhKCcU'
+      'Du8zgvZ6dNZ2GmDJ18e6kQNxYeqg8oSTFqsekXyNy533'
     ),
     websiteUrl: 'https://www.kingchips.xyz/',
     receiptType: ReceiptType.Receipt,
