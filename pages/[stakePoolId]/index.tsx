@@ -680,7 +680,9 @@ function Home() {
                         environment.label
                       )}
                     >
-                      {rewardMintInfo.data.tokenListData?.name}
+                      {rewardMintInfo.data.tokenListData?.name ||
+                        rewardMintInfo.data.metaplexMintData?.data.name ||
+                        '???'}
                     </a>{' '}
                     / Day
                   </span>

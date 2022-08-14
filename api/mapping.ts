@@ -907,4 +907,27 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       fontColor: '#FFFFFF',
     },
   },
+  {
+    name: 'cyborgeddon-fueling-station',
+    displayName: 'Borg Fueling Station',
+    nameInHeader: true,
+    stakePoolAddress: new PublicKey(
+      '9muf4BWmQntjgsU3wx5cxqiZoXqRaCMxyEH7Gx8J1erG'
+    ),
+    websiteUrl: 'https://cyborgeddon.com/',
+    receiptType: ReceiptType.Receipt,
+    tokenStandard: TokenStandard.NonFungible,
+    imageUrl: 'https://media1.giphy.com/media/a81pt8QhDpZbMqX97G/giphy.gif',
+    maxStaked: 4096,
+    backgroundImage:
+      'https://firebasestorage.googleapis.com/v0/b/nft-anybodies.appspot.com/o/images%2F5Cyon.gif-1659579607552?alt=media&token=cd90dcf8-5fe2-4b99-a5d1-9dfb94301fee',
+    colors: {
+      primary: '#000000',
+      secondary: '#37b24a',
+      accent: '#37b24a',
+      fontColor: '#37b24a',
+      fontColorSecondary: '#000000',
+      backgroundSecondary: '#000000',
+    },
+  },
 ]
