@@ -305,13 +305,17 @@ function Home() {
           initTxs.map(({ tx }) => tx),
           {
             signers: initTxs.map(({ signers }) => signers),
+            throwIndividualError: true,
             notificationConfig: {
               message: `Successfully staked`,
               description: 'Stake progress will now dynamically update',
             },
           }
         )
-      } catch (e) {}
+      } catch (e) {
+        setLoadingStake(false)
+        return
+      }
     }
 
     const txs: (Transaction | null)[] = await Promise.all(
