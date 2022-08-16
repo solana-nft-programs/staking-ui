@@ -930,4 +930,28 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       backgroundSecondary: '#000000',
     },
   },
+  {
+    name: 'koala-koalition',
+    displayName: 'Koala Koalition Eucalyptus Tree',
+    nameInHeader: true,
+    stakePoolAddress: new PublicKey(
+      'FB4365jze3wkBGKMQqFyJMDryQBzknpZp61niKsjUNW6'
+    ),
+    websiteUrl: 'https://www.koalakoalition.com',
+    receiptType: ReceiptType.Original,
+    tokenStandard: TokenStandard.NonFungible,
+    imageUrl:
+      'https://www.koalakoalition.com/static/media/talking-head.a114ee10.gif',
+    maxStaked: 1111,
+    backgroundImage:
+      'https://www.koalakoalition.com/static/media/hero-bg.4c9c5032.gif',
+    colors: {
+      primary: '#000000',
+      secondary: '#37b24a',
+      accent: '#37b24a',
+      fontColor: '#37b24a',
+      fontColorSecondary: '#000000',
+      backgroundSecondary: '#000000',
+    },
+  },
 ]
