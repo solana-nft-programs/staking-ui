@@ -886,7 +886,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       'Du8zgvZ6dNZ2GmDJ18e6kQNxYeqg8oSTFqsekXyNy533'
     ),
     websiteUrl: 'https://www.kingchips.xyz/',
-    receiptType: ReceiptType.Receipt,
+    receiptType: ReceiptType.Original,
     tokenStandard: TokenStandard.NonFungible,
     imageUrl: 'https://i.ibb.co/wzhXTTZ/400x400logo.png',
     maxStaked: 1109,
