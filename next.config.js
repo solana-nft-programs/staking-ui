@@ -21,6 +21,10 @@ const HOST_MAPPINGS = [
     name: 'plane-x',
     hostname: 'staking.plane-x.io',
   },
+  {
+    name: 'sentries',
+    hostname: 'staking.sentries.io'
+  }
 ]
 
 /** @type {import('next').NextConfig} */

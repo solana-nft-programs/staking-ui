@@ -88,6 +88,27 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     },
   },
   {
+    name: 'my-pool',
+    displayName: 'Sentries NFT Staking',
+    nameInHeader: false,
+    stakePoolAddress: new PublicKey(
+      'FB4365jze3wkBGKMQqFyJMDryQBzknpZp61niKsjUNW6'
+    ),
+    hidden: false,
+    notFound: false,
+    websiteUrl: 'https://sentries.io',
+    receiptType: ReceiptType.Original,
+    tokenStandard: TokenStandard.NonFungible,
+    imageUrl:
+      'https://www.sentries.io/images/Logo.svg',
+    colors: {
+      primary: '#383838',
+      secondary: '#9647FB',
+      accent: '#01CF8E',
+      fontColor: '#FFFFFF',
+    },
+  },
+  {
     name: 'AOM',
     displayName: 'AOM',
     stakePoolAddress: new PublicKey(

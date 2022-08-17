@@ -72,39 +72,15 @@ export const Header = () => {
         <div className="flex items-center gap-3">
           <a
             target="_blank"
-            href={
-              stakePoolMetadata?.websiteUrl ||
-              `/${
-                ctx.environment.label !== 'mainnet-beta'
-                  ? `?cluster=${ctx.environment.label}`
-                  : ''
-              }`
-            }
+            href="https://sentries.io"
             className="flex cursor-pointer text-xl font-semibold"
           >
-            {stakePoolMetadata?.imageUrl ? (
               <div className="flex flex-row">
                 <img
                   className="flex h-[35px] flex-col"
-                  src={stakePoolMetadata?.imageUrl}
+                  src="https://www.sentries.io/images/Logo.svg"
                 />
-                {stakePoolMetadata.nameInHeader && (
-                  <span className="ml-5 mt-1 flex flex-col">
-                    {stakePoolMetadata?.displayName}
-                  </span>
-                )}
               </div>
-            ) : (
-              <TitleText className="flex items-center justify-center gap-2">
-                {stakePoolMetadata?.displayName || (
-                  <img
-                    className="inline-block w-4"
-                    src={'/cardinal-crosshair.svg'}
-                  />
-                )}{' '}
-                Staking
-              </TitleText>
-            )}
           </a>
           {ctx.environment.label !== 'mainnet-beta' && (
             <div className="cursor-pointer rounded-md bg-[#9945ff] p-1 text-[10px] italic text-white">
