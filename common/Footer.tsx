@@ -23,7 +23,9 @@ export const Footer = ({
         background: darken(0.03, bgColor),
       }}
     >
-      
+      <div>
+        
+      </div>
       <div
         className="text-md flex items-center justify-between border-t py-8 text-gray-400"
         style={{ borderColor: lighten(0.2, bgColor) }}
