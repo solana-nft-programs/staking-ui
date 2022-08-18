@@ -106,8 +106,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       '3BZCupFU6X3wYJwgTsKS2vTs4VeMrhSZgx4P2TfzExtP'
     ),
     websiteUrl: 'https://hub.blockasset.co/nft-staking-v2',
-    imageUrl:
-      'https://blockasset.co/static/logo-e51ac9985ba7aef4ac8c1b1ae1c00511.png',
+    imageUrl: '/logos/blockasset.png',
     maxStaked: 11791,
     links: [
       {
@@ -145,8 +144,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     ),
     websiteUrl: 'https://hub.blockasset.co/smesh-staking',
     receiptType: ReceiptType.Original,
-    imageUrl:
-      'https://blockasset.co/static/logo-e51ac9985ba7aef4ac8c1b1ae1c00511.png',
+    imageUrl: '/logos/blockasset.png',
     maxStaked: 4000,
     links: [
       {
@@ -183,8 +181,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       'jhksrHQqRKBEFuker9buKw4zDDrmENGTTKnUn2QzsUD'
     ),
     websiteUrl: 'https://hub.blockasset.co/token-staking-v2',
-    imageUrl:
-      'https://blockasset.co/static/logo-e51ac9985ba7aef4ac8c1b1ae1c00511.png',
+    imageUrl: '/logos/blockasset.png',
     links: [
       {
         text: 'NFT Staking',
