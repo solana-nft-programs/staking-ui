@@ -13,8 +13,67 @@
 @font-face{font-family:industry;src:url(https://use.typekit.net/af/79952e/00000000000000007735a651/30/l?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=i4&v=3) format("woff2"),url(https://use.typekit.net/af/79952e/00000000000000007735a651/30/d?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=i4&v=3) format("woff"),url(https://use.typekit.net/af/79952e/00000000000000007735a651/30/a?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=i4&v=3) format("opentype");font-weight:400;font-style:italic;font-stretch:normal;font-display:auto;}
 
 body {
-  font-family: SFHello, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
-    Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-    'Segoe UI Symbol';
+  font-family: Axiforma, sans-serif !important;
   background-color: rgb(26, 27, 32) !important;
+}
+
+h1 {
+  margin-top: 20px;
+  margin-bottom: 10px;
+  font-family: Ishimura, sans-serif;
+  color: #fff;
+  font-size: 200px;
+  line-height: 160px;
+  font-weight: 700;
+}
+
+h2 {
+  margin-top: 20px;
+  margin-bottom: 10px;
+  font-family: Ishimura, sans-serif;
+  font-size: 5rem;
+  line-height: 5rem;
+  font-weight: 400;
+}
+
+h3 {
+  margin-top: 20px;
+  margin-bottom: 10px;
+  font-family: Ishimura, sans-serif;
+  color: #fff;
+  font-size: 3.5rem;
+  line-height: 3.5rem;
+  font-weight: 400;
+}
+
+h4 {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  font-family: Ishimura, sans-serif;
+  color: hsla(0, 0%, 100%, 0.3);
+  font-size: 3rem;
+  line-height: 3rem;
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: 'Axiforma';
+  src: url('/fonts/Axiforma-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Axiforma';
+  src: url('/fonts/Axiforma-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Ishimura';
+  src: url('/fonts/Ishimura-Regular.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
 }

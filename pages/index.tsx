@@ -94,6 +94,13 @@ function Home() {
   const { UTCNow } = useUTCNow()
   const analytics = usePoolAnalytics()
 
+  // OG content
+  const description = "Stake your Sentry NFT to start earning rewards."
+  const title = "Sentries NFT Staking"
+  const keyword = "Sentries NFTs, Sentries Validators, NFTs"
+  const url = "https://sentries.io"
+  const image = "" 
+
   if (stakePoolMetadata?.redirect) {
     router.push(stakePoolMetadata?.redirect)
     return
@@ -538,6 +545,7 @@ function Home() {
     return
   }
 
+
   return (
     <div
       style={{
@@ -549,6 +557,14 @@ function Home() {
         <title>Sentries NFT Staking</title>
         <meta name="description" content="Stake your Sentry NFT increase your Power." />
         <link rel="icon" href="/favicon.ico" />
+        <meta property="og:type" content="website"/>
+        <meta name="description" content={description}/>
+        <meta property="og:title" content={title}/>
+        <meta name="description" content={description}/>
+        <meta name="keywords" content={keyword}/>
+        <meta property="og:url" content={url}/>
+        <meta property="og:description" content={description}/>
+        <meta property="og:image" content={image}/>
       </Head>
       <Header />
       <div
@@ -812,7 +828,7 @@ function Home() {
             <div className="mt-2 flex w-full flex-row justify-between">
               <div className="flex flex-row">
                 <p className="mb-3 mr-3 inline-block text-lg">
-                  Select Your Tokens
+                  Select Your Sentries
                 </p>
                 <div className="inline-block">
                   {allowedTokenDatas.isRefetching &&
@@ -834,7 +850,7 @@ function Home() {
                     onClick={() => setShowAllowedTokens(!showAllowedTokens)}
                     className="text-md mr-5 inline-block rounded-md bg-white bg-opacity-5 px-4 py-1 hover:bg-opacity-10 focus:outline-none"
                   >
-                    {showAllowedTokens ? 'Hide' : 'Show'} Allowed Tokens
+                    {showAllowedTokens ? 'Hide' : 'Show'} Details
                   </button>
                 )}
                 {!stakePoolMetadata?.tokenStandard && (
@@ -885,7 +901,7 @@ function Home() {
                         : 'text-gray-400'
                     }]`}
                   >
-                    No allowed tokens found in wallet.
+                    No approved NFTs found in your connected wallet.
                   </p>
                 ) : (
                   <div
@@ -929,7 +945,7 @@ function Home() {
                                         <span className="mr-2">
                                           <LoadingSpinner height="20px" />
                                         </span>
-                                        Staking token...
+                                        Staking your Sentries...
                                       </div>
                                     </div>
                                   </div>
@@ -1090,12 +1106,12 @@ function Home() {
                 <div></div>
               )}
               <div className="flex gap-5">
-                <MouseoverTooltip title="Click on tokens to select them">
+                <MouseoverTooltip title="Click on your NFTs to select them">
                   <button
                     onClick={() => {
                       if (unstakedSelected.length === 0) {
                         notify({
-                          message: `No tokens selected`,
+                          message: `No NFTs selected`,
                           type: 'error',
                         })
                       } else {
@@ -1129,7 +1145,7 @@ function Home() {
                     </span>
                   </button>
                 </MouseoverTooltip>
-                <MouseoverTooltip title="Attempt to stake all tokens at once">
+                <MouseoverTooltip title="Attempt to stake all NFTs at once">
                   <button
                     onClick={() => {
                       setUnstakedSelected(allowedTokenDatas.data || [])
@@ -1164,7 +1180,7 @@ function Home() {
             <div className="mb-5 flex flex-row justify-between">
               <div className="mt-2 flex flex-row">
                 <p className="mr-3 text-lg">
-                  View Staked Tokens{' '}
+                  View Staked Sentries{' '}
                   {stakedTokenDatas.isFetched &&
                     stakedTokenDatas.data &&
                     `(${stakedTokenDatas.data.length})`}
@@ -1254,7 +1270,7 @@ function Home() {
                         : 'text-gray-400'
                     }]`}
                   >
-                    No tokens currently staked.
+                    No Sentries currently staked.
                   </p>
                 ) : (
                   <div

@@ -77,7 +77,7 @@ export const Header = () => {
           >
               <div className="flex flex-row">
                 <img
-                  className="flex h-[35px] flex-col"
+                  className="flex h-[55px] flex-col"
                   src="https://www.sentries.io/images/Logo.svg"
                 />
               </div>
