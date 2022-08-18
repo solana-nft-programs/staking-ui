@@ -58,6 +58,8 @@ export type StakePoolMetadata = {
   }
   // Image url to be used as the icon in the pool selector and the header
   imageUrl?: string
+  // Secondary image url to be used next to the icon in the pool selector and the header
+  secondaryImageUrl?: string
   // Background image for pool
   backgroundImage?: string
   // Website url if specified will be navigated to when the image in the header is clicked
@@ -979,14 +981,15 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
   {
     name: 'rebellionbots',
     displayName: 'The Rebellion Bots',
+    hostname: 'https://staking.rebellionbots.io/',
     stakePoolAddress: new PublicKey(
       'AzFdEKtqanvPeQ7chcKNXJHAzcZRLc8GbkSzG8JUrT4W'
     ),
-    hidden: true,
     websiteUrl: 'https://rebellionbots.io/',
     receiptType: ReceiptType.Original,
-    maxStaked: 1600, // update with collection size
-    imageUrl: '/logos/rebellion-bots.png',
+    maxStaked: 801, // update with collection size
+    imageUrl: '/logos/rebellion-bots.jpeg',
+    secondaryImageUrl: '/logos/secondary-rebellion-bots.png',
     tokenStandard: TokenStandard.NonFungible,
     hideAllowedTokens: true,
     styles: {
@@ -994,7 +997,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       fontWeight: 500,
     },
     colors: {
-      primary: '#161616',
+      primary: '#0d0d0d',
       secondary: '#fb40b2',
       accent: '#0d0d0d',
       fontColor: '#fb40b2',
