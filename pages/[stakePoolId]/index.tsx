@@ -1,8 +1,8 @@
 import {
   createStakeEntryAndStakeMint,
-  stake,
   unstake,
   claimRewards,
+  stake,
 } from '@cardinal/staking'
 import { ReceiptType } from '@cardinal/staking/dist/cjs/programs/stakePool'
 import { useWallet } from '@solana/wallet-adapter-react'
@@ -18,10 +18,8 @@ import { contrastColorMode, pubKeyUrl, secondstoDuration } from 'common/utils'
 import {
   formatAmountAsDecimal,
   formatMintNaturalAmountAsDecimal,
-  getMintDecimalAmountFromNatural,
   parseMintNaturalAmountFromDecimal,
 } from 'common/units'
-import { BN } from '@project-serum/anchor'
 import {
   StakeEntryTokenData,
   useStakedTokenDatas,
@@ -56,6 +54,7 @@ import { QuickActions } from 'common/QuickActions'
 import * as splToken from '@solana/spl-token'
 import { usePoolAnalytics } from 'hooks/usePoolAnalytics'
 import { useRewardsRate } from 'hooks/useRewardsRate'
+import { BN } from '@project-serum/anchor'
 
 function Home() {
   const router = useRouter()
@@ -357,7 +356,10 @@ function Home() {
           return stake(connection, wallet as Wallet, {
             stakePoolId: stakePool?.pubkey,
             receiptType:
-              !amount || (amount && amount.eq(new BN(1)))
+              !amount ||
+              (amount &&
+                amount.eq(new BN(1)) &&
+                receiptType === ReceiptType.Receipt)
                 ? receiptType
                 : undefined,
             originalMintId: new PublicKey(
@@ -1044,7 +1046,7 @@ function Home() {
             </div>
 
             <div className="mt-2 flex items-center justify-between gap-5">
-              {!stakePoolMetadata?.receiptType && !showFungibleTokens ? (
+              {!stakePoolMetadata?.receiptType ? (
                 <MouseoverTooltip
                   title={
                     receiptType === ReceiptType.Original
