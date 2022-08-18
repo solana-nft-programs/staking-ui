@@ -107,7 +107,7 @@ function Home() {
                       <div className="flex flex-grow items-center justify-center">
                         {stakePool.stakePoolMetadata?.imageUrl && (
                           <img
-                            className="max-h-[150px] rounded-md"
+                            className="max-h-[150px] rounded-xl"
                             src={stakePool.stakePoolMetadata.imageUrl}
                             alt={stakePool.stakePoolMetadata.name}
                           />
