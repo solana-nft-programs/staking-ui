@@ -67,6 +67,7 @@
     "babel-loader": "^8.2.3",
     "eslint": "^8.11.0",
     "eslint-plugin-react": "^7.29.4",
+    "eslint-plugin-react-hooks": "^4.6.0",
     "postcss": "^8.4.12",
     "prettier": "^2.5.1",
     "prettier-plugin-tailwindcss": "^0.1.1",

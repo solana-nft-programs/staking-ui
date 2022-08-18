@@ -578,6 +578,9 @@ function Home() {
             )[0],
         }}
       >
+        <div>
+          <p className='bigsolanatext' style={{textAlign: "center"}}>Sentries PowerGrid</p>
+        </div>
         {(!stakePool && stakePoolLoaded) || stakePoolMetadata?.notFound ? (
           <div
             className="mx-5 mb-5 rounded-md border-[1px] bg-opacity-40 p-4 text-center text-lg font-semibold"
