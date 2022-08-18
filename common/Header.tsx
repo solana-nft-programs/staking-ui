@@ -28,6 +28,52 @@ export const TitleText = styled('div')`
   }
 `
 
+// Dialect
+import * as anchor from '@project-serum/anchor'
+import { useState, useEffect, useMemo } from 'react'
+import { WalletContextState } from '@solana/wallet-adapter-react'
+
+const DIALECT_PUBLIC_KEY = new anchor.web3.PublicKey(
+  'D1ALECTfeCZt9bAbPWtJk7ntv24vDYGPmyS7swp7DY5h'
+)
+
+import {
+  Backend,
+  Config,
+  defaultVariables,
+  DialectContextProvider,
+  DialectThemeProvider,
+  DialectUiManagementProvider,
+  DialectWalletAdapter,
+  IncomingThemeVariables,
+  NotificationsButton,
+} from '@dialectlabs/react-ui'
+
+const walletToDialectWallet = (
+  wallet: WalletContextState
+): DialectWalletAdapter => ({
+  publicKey: wallet.publicKey!,
+  connected:
+    wallet.connected &&
+    !wallet.connecting &&
+    !wallet.disconnecting &&
+    Boolean(wallet.publicKey),
+  signMessage: wallet.signMessage,
+  signTransaction: wallet.signTransaction,
+  signAllTransactions: wallet.signAllTransactions,
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  //@ts-ignore
+  diffieHellman: wallet.wallet?.adapter?._wallet?.diffieHellman
+    ? async (pubKey) => {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        //@ts-ignore
+        return wallet.wallet?.adapter?._wallet?.diffieHellman(pubKey);
+      }
+    : undefined,
+})
+
+// END DIALECT
+
 export const Header = () => {
   const router = useRouter()
   const ctx = useEnvironmentCtx()
@@ -35,6 +81,25 @@ export const Header = () => {
   const stakePoolId = useStakePoolId()
   const { data: stakePoolMetadata } = useStakePoolMetadata()
   const { clockDrift } = useUTCNow()
+
+    // DIALECT
+  const [dialectWalletAdapter, setDialectWalletAdapter] =
+  useState<DialectWalletAdapter>(() => walletToDialectWallet(wallet));
+
+  useEffect(() => {
+    setDialectWalletAdapter(walletToDialectWallet(wallet));
+  }, [wallet]);
+
+  const dialectConfig = useMemo(
+    (): Config => ({
+      backends: [Backend.DialectCloud],
+      environment: 'production',
+      dialectCloud: {
+        tokenStore: 'local-storage',
+      },
+    }),
+    []
+  )
 
   return (
     <div>
@@ -122,6 +187,7 @@ export const Header = () => {
             </>
           )}
           {wallet.connected && wallet.publicKey ? (
+            <>
             <AccountConnect
               dark={
                 stakePoolMetadata?.colors?.backgroundSecondary
@@ -133,6 +199,32 @@ export const Header = () => {
               handleDisconnect={() => wallet.disconnect()}
               wallet={wallet as Wallet}
             />
+            <DialectContextProvider
+              wallet={dialectWalletAdapter}
+              config={dialectConfig}
+              dapp={DIALECT_PUBLIC_KEY}
+              gate={() =>
+                new Promise((resolve) => setTimeout(() => resolve(true), 3000))
+              }
+            >
+              <DialectThemeProvider>
+                <DialectUiManagementProvider>
+                <NotificationsButton
+                  dialectId="dialect-notifications"
+                  notifications={[
+                    {
+                      name: 'Example notification',
+                      detail:
+                        'This is an example notification that is never sent. More examples coming soon',
+                    },
+                  ]}
+                  pollingInterval={15000}
+                  channels={['web3', 'email', 'sms', 'telegram']}
+                />
+                </DialectUiManagementProvider>
+              </DialectThemeProvider>
+            </DialectContextProvider>
+            </>
           ) : (
             <StyledWalletButton
               style={{

@@ -4,6 +4,7 @@ import {
   unstake,
   claimRewards,
 } from '@cardinal/staking'
+import '@dialectlabs/react-ui/index.css'
 import { ReceiptType } from '@cardinal/staking/dist/cjs/programs/stakePool'
 import { useWallet } from '@solana/wallet-adapter-react'
 import { PublicKey, Signer, Transaction } from '@solana/web3.js'
@@ -56,6 +57,8 @@ import { QuickActions } from 'common/QuickActions'
 import * as splToken from '@solana/spl-token'
 import { usePoolAnalytics } from 'hooks/usePoolAnalytics'
 import { useRewardsRate } from 'hooks/useRewardsRate'
+
+
 
 function Home() {
   const router = useRouter()
@@ -579,7 +582,7 @@ function Home() {
         }}
       >
         <div>
-          <p className='bigsolanatext' style={{textAlign: "center"}}>Sentries PowerGrid</p>
+          <p className='bigsolanatext' style={{textAlign: "center"}}>Sentries Power Grid</p>
         </div>
         {(!stakePool && stakePoolLoaded) || stakePoolMetadata?.notFound ? (
           <div
@@ -904,7 +907,7 @@ function Home() {
                         : 'text-gray-400'
                     }]`}
                   >
-                    No approved NFTs found in your connected wallet.
+                    No Sentries found in your connected wallet.
                   </p>
                 ) : (
                   <div
@@ -1736,6 +1739,7 @@ function Home() {
         </div>
       </div>
       <Footer bgColor={stakePoolMetadata?.colors?.primary} />
+      
     </div>
   )
 }
