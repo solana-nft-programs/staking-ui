@@ -17,6 +17,10 @@ body {
   background-color: rgb(26, 27, 32) !important;
 }
 
+.wallet-adapter-button {
+  color: #FFFFFF !important;
+}
+
 h1 {
   margin-top: 20px;
   margin-bottom: 10px;

@@ -556,7 +556,7 @@ function Home() {
       <Head>
         <title>Sentries NFT Staking</title>
         <meta name="description" content="Stake your Sentry NFT increase your Power." />
-        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" href="/favicon.png" />
         <meta property="og:type" content="website"/>
         <meta name="description" content={description}/>
         <meta property="og:title" content={title}/>
