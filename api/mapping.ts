@@ -723,6 +723,28 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     },
   },
   {
+    name: 'lil-weenees',
+    displayName: 'lil weenees',
+    stakePoolAddress: new PublicKey(
+      'E7nfWVcpiFHXtpWg35ePPPnRtmL5k9s2QamzwBhy8pUd'
+    ),
+    receiptType: ReceiptType.Original,
+    imageUrl:
+      'https://zm3lmtsddpfcnybf2dohyvv3zecbol5voddwqba7ocx66zjdaq3q.arweave.net/yza2TkMbyibgJdDcfFa7yQQXL7Vwx2gEH3Cv72UjBDc',
+    maxStaked: 10,
+    tokenStandard: TokenStandard.NonFungible,
+    hideAllowedTokens: true,
+    styles: {
+      fontFamily: 'Paralucent',
+    },
+    colors: {
+      primary: '#282828',
+      secondary: '#A57F3D',
+      accent: '#f7f6fe',
+      fontColor: '#FFFFFF',
+    },
+  },
+  {
     name: 'yoyoyetis',
     displayName: 'Yo Yo Yetis',
     stakePoolAddress: new PublicKey(
