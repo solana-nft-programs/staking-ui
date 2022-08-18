@@ -954,4 +954,29 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       backgroundSecondary: '#000000',
     },
   },
+  {
+    name: 'rebellionbots',
+    displayName: 'The Rebellion Bots',
+    stakePoolAddress: new PublicKey(
+      'AzFdEKtqanvPeQ7chcKNXJHAzcZRLc8GbkSzG8JUrT4W'
+    ),
+    hidden: true,
+    websiteUrl: 'https://rebellionbots.io/',
+    receiptType: ReceiptType.Original,
+    maxStaked: 1600, // update with collection size
+    imageUrl: '/logos/rebellion-bots.png',
+    tokenStandard: TokenStandard.NonFungible,
+    hideAllowedTokens: true,
+    styles: {
+      fontFamily: 'Industry, sans-serif',
+      fontWeight: 500,
+    },
+    colors: {
+      primary: '#161616',
+      secondary: '#fb40b2',
+      accent: '#0d0d0d',
+      fontColor: '#fb40b2',
+      fontColorSecondary: '#161616',
+    },
+  },
 ]

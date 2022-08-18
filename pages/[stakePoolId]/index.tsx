@@ -597,7 +597,9 @@ function Home() {
                   ? {
                       background: stakePoolMetadata?.colors?.secondary,
                       borderColor: stakePoolMetadata?.colors?.accent,
-                      color: stakePoolMetadata?.colors?.fontColor,
+                      color:
+                        stakePoolMetadata?.colors?.fontColorSecondary ||
+                        stakePoolMetadata?.colors?.fontColor,
                     }
                   : {}
               }
