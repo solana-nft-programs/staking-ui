@@ -14,7 +14,7 @@ For questions or technical help, join our **[Discord](https://discord.gg/stX2FAY
 
 ## Create a Stake Pool
 
-To create a stake pool, navigate to the admin page located at https://stake.cardinal.so/admin. This page has a form to create a stake pool with various configurations.
+To create a stake pool, navigate to the admin page located at https://stake.cardinal.so/admin. This page hosts a form to create a stake pool with various configurations.
 
 **Note:** All configurations in the admin page are optional. Also, filters in the stake pool configuration are **union-based**, if any one of the conditions is met, then the NFT will be allowed to stake in the pool.
 
