@@ -1001,4 +1001,23 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       fontColorSecondary: '#161616',
     },
   },
+  {
+    name: 'sentries',
+    displayName: 'Sentries',
+    stakePoolAddress: new PublicKey(
+      '3WS5GJSUAPXeLBbcPQRocxDYRtWbcX9PXb87J1TzFnmX'
+    ),
+    websiteUrl: 'https://www.sentries.io/',
+    receiptType: ReceiptType.Original,
+    maxStaked: 8000, // update with collection size
+    imageUrl: '/logos/sentries-logo.svg',
+    tokenStandard: TokenStandard.NonFungible,
+    colors: {
+      primary: '#383838',
+      secondary: '#fff',
+      accent: '#0d0d0d',
+      fontColor: '#fff',
+      fontColorSecondary: '#fff',
+    },
+  },
 ]
