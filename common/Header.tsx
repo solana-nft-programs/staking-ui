@@ -34,7 +34,7 @@ import { useState, useEffect, useMemo } from 'react'
 import { WalletContextState } from '@solana/wallet-adapter-react'
 
 const DIALECT_PUBLIC_KEY = new anchor.web3.PublicKey(
-  'D1ALECTfeCZt9bAbPWtJk7ntv24vDYGPmyS7swp7DY5h'
+  '2ZzCZYLqCKoTgC8UVcdS1ehUWx55i4CAVaCXrfNYg6c7'
 )
 
 import {

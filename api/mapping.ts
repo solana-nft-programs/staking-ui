@@ -96,6 +96,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     ),
     hidden: false,
     notFound: false,
+    //redirect: 'https://staking.sentries.io',
     websiteUrl: 'https://sentries.io',
     receiptType: ReceiptType.Original,
     tokenStandard: TokenStandard.NonFungible,
