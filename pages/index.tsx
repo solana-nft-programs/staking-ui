@@ -841,7 +841,7 @@ function Home() {
             }}
             >
           {(sentriesStats.data && 
-              Object.keys(sentriesStats.data).length > 0 ? (
+              Object.keys(sentriesStats.data).length > 0 && !('error' in sentriesStats.data) ? (
                 <div className="relative flex flex-grow items-center justify-center">
                   You current SOL staked with The Lode is {
                   // @ts-ignore
