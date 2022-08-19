@@ -582,13 +582,13 @@ function Home() {
             )[0],
         }}
       >
-        <div className='description-content'>
+        <div className='description-content py-6 px-10 mb-4 mx-5'>
           <h1 className='big solanatext' style={{textAlign: "center"}}>
             The Power Grid
           </h1>
           <h3 style={{textAlign: "center"}}>Stake your Sentry here, and power it up by locking SOL in our validator, The Lode</h3>
         </div>
-        <div className='description'>
+        <div className='description py-6 px-10 mb-4 mx-5'>
           <p>The Power Grid is the rewards pool through which holders earn from the growth of the Sentries business. Stake now to become eligible for enhanced rewards.</p>
           <p>Click <a href="https://www.sentries.io/the-lode" target="_BLANK">here for staking instructions</a>.</p>
         </div> 
