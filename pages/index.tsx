@@ -57,7 +57,7 @@ import { QuickActions } from 'common/QuickActions'
 import * as splToken from '@solana/spl-token'
 import { usePoolAnalytics } from 'hooks/usePoolAnalytics'
 import { useRewardsRate } from 'hooks/useRewardsRate'
-
+import { useSentriesStats } from 'hooks/useSentriesStats'
 
 
 function Home() {
@@ -74,6 +74,8 @@ function Home() {
   const rewardEntries = useRewardEntries()
   const rewards = useRewards()
   const rewardsRate = useRewardsRate()
+
+  const sentriesStats = useSentriesStats()
 
   const [unstakedSelected, setUnstakedSelected] = useState<AllowedTokenData[]>(
     []
@@ -590,7 +592,6 @@ function Home() {
         </div>
         <div className='description py-6 px-10 mb-4 mx-5'>
           <p>The Power Grid is the rewards pool through which holders earn from the growth of the Sentries business. Stake now to become eligible for enhanced rewards.</p>
-          <p>Click <a href="https://www.sentries.io/the-lode" target="_BLANK">here for staking instructions</a>.</p>
         </div> 
         {(!stakePool && stakePoolLoaded) || stakePoolMetadata?.notFound ? (
           <div
@@ -821,7 +822,7 @@ function Home() {
               </div>
             </div>
           )}
-        <div
+          <div
             className={`mx-5 mb-4 flex flex-wrap items-center gap-4 rounded-md px-10 py-6  md:flex-row md:justify-between ${
               stakePoolMetadata?.colors?.fontColor
                 ? `text-[${stakePoolMetadata?.colors?.fontColor}]`
@@ -838,12 +839,38 @@ function Home() {
                 : '',
             }}
             >
-              <>
-                <div className="inline-block text-lg">
-                You current SOL staked with The Lode is X SOL, you need X SOL to power up the remaining Sentries NFTs.
+          {(sentriesStats.data && 
+              Object.keys(sentriesStats.data).length > 0 ? (
+                <div className="relative flex flex-grow items-center justify-center">
+                  You current SOL staked with The Lode is X SOL, you need X SOL to power up the remaining Sentries NFTs.
                 </div>
-              </>
-            </div>
+            ) : (
+              <div className="relative flex flex-grow items-center justify-center">
+                {!(
+                  sentriesStats.isFetched
+                ) ? (
+                  <>
+                    <span
+                      className={`${
+                        stakePoolMetadata?.colors?.fontColor
+                          ? `text-[${stakePoolMetadata?.colors?.fontColor}]`
+                          : 'text-gray-500'
+                      }`}
+                    >
+                      Loading your locked SOL staked in The Lode...
+                    </span>
+                    <div className="absolute w-full animate-pulse items-center justify-center rounded-lg bg-white bg-opacity-10 p-5"></div>
+                  </>
+                ) : (
+                  <div>
+                    Unable to load staking data for your locked stake in The Lode.
+                  </div>
+
+                )}
+                </div>
+            )
+          )}
+        </div>
         <div className="my-2 mx-5 grid grid-cols-1 gap-4 md:grid-cols-2">
           <div
             className={`flex-col rounded-md p-10 ${
