@@ -14,16 +14,16 @@ const HOST_MAPPINGS = [
     hostname: 'stake.degengod.xyz',
   },
   {
-    name: 'onespace',
-    hostname: 'stake.1space.me',
-  },
-  {
     name: 'plane-x',
     hostname: 'staking.plane-x.io',
   },
   {
     name: 'lil-weenees',
     hostname: 'stake.weenee.me',
+  },
+  {
+    name: 'rebellionbots',
+    hostname: 'stake.rebellionbots.io',
   },
 ]
 
