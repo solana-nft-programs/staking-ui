@@ -976,7 +976,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     },
   },
   {
-    name: 'rebellion-bots',
+    name: 'rebellionbots',
     displayName: 'The Rebellion Bots',
     stakePoolAddress: new PublicKey(
       'AzFdEKtqanvPeQ7chcKNXJHAzcZRLc8GbkSzG8JUrT4W'
@@ -985,7 +985,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     websiteUrl: 'https://www.rebellionbots.io',
     receiptType: ReceiptType.Original,
     maxStaked: 801, // update with collection size
-    imageUrl: '/logos/rebellion-bots.png',
+    imageUrl: '/logos/rebellion-bots.jpeg',
     secondaryImageUrl: '/logos/secondary-rebellion-bots.png',
     tokenStandard: TokenStandard.NonFungible,
     hideAllowedTokens: true,

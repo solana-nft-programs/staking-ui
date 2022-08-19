@@ -86,7 +86,7 @@ export const Header = () => {
               <>
                 <div className="flex flex-row">
                   <img
-                    className="flex h-[35px] flex-col"
+                    className="flex h-[35px] flex-col rounded-lg"
                     src={stakePoolMetadata?.imageUrl}
                   />
                   {stakePoolMetadata.nameInHeader && (
