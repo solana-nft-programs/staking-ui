@@ -211,15 +211,9 @@ export const Header = () => {
                 <DialectUiManagementProvider>
                 <NotificationsButton
                   dialectId="dialect-notifications"
-                  notifications={[
-                    {
-                      name: 'Example notification',
-                      detail:
-                        'This is an example notification that is never sent. More examples coming soon',
-                    },
-                  ]}
+                  notifications={[]}
                   pollingInterval={15000}
-                  channels={['web3', 'email', 'sms', 'telegram']}
+                  channels={['web3']}
                 />
                 </DialectUiManagementProvider>
               </DialectThemeProvider>

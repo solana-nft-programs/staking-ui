@@ -88,11 +88,11 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     },
   },
   {
-    name: 'my-pool',
+    name: 'sentries',
     displayName: 'Sentries NFT Staking',
     nameInHeader: false,
     stakePoolAddress: new PublicKey(
-      'FB4365jze3wkBGKMQqFyJMDryQBzknpZp61niKsjUNW6'
+      '3WS5GJSUAPXeLBbcPQRocxDYRtWbcX9PXb87J1TzFnmX'
     ),
     hidden: false,
     notFound: false,

@@ -102,7 +102,8 @@ function Home() {
   const title = "Sentries NFT Staking"
   const keyword = "Sentries NFTs, Sentries Validators, NFTs"
   const url = "https://sentries.io"
-  const image = "" 
+  const image = ""
+  
 
   if (stakePoolMetadata?.redirect) {
     router.push(stakePoolMetadata?.redirect)
@@ -584,6 +585,11 @@ function Home() {
         <div>
           <p className='bigsolanatext' style={{textAlign: "center"}}>Sentries Power Grid</p>
         </div>
+        <div className='description'>
+          <p>Power Up Your Sentry by Staking your NFT AND Staking SOL with The Lode.</p>
+          <p>The Sentries Power Grid is the way for you to increase your returns from revenue sources and participate in Sentries related events and systems. Start staking today to increase the power level. Please note you&apos;ve got to have your Sentries Staked to earn, as well you have to Stake SOL with The Lode to increase the Power Level.</p>
+          <p>Visit this <a href="https://www.sentries.io/the-lode" target="_BLANK">link</a> to get instructions how to stake.</p>
+        </div> 
         {(!stakePool && stakePoolLoaded) || stakePoolMetadata?.notFound ? (
           <div
             className="mx-5 mb-5 rounded-md border-[1px] bg-opacity-40 p-4 text-center text-lg font-semibold"
@@ -645,7 +651,7 @@ function Home() {
             {stakePoolEntries.data ? (
               <>
                 <div className="inline-block text-lg">
-                  Total Staked: {Number(totalStaked).toLocaleString()}{' '}
+                  Total Sentries Staked: {Number(totalStaked).toLocaleString()}{' '}
                   {stakePoolMetadata?.maxStaked
                     ? `/ ${stakePoolMetadata?.maxStaked.toLocaleString()}`
                     : ''}
@@ -813,6 +819,29 @@ function Home() {
               </div>
             </div>
           )}
+        <div
+            className={`mx-5 mb-4 flex flex-wrap items-center gap-4 rounded-md px-10 py-6  md:flex-row md:justify-between ${
+              stakePoolMetadata?.colors?.fontColor
+                ? `text-[${stakePoolMetadata?.colors?.fontColor}]`
+                : 'text-gray-200'
+            } ${
+              stakePoolMetadata?.colors?.backgroundSecondary
+                ? `bg-[${stakePoolMetadata?.colors?.backgroundSecondary}]`
+                : 'bg-white bg-opacity-5'
+            }`}
+            style={{
+              background: stakePoolMetadata?.colors?.backgroundSecondary,
+              border: stakePoolMetadata?.colors?.accent
+                ? `2px solid ${stakePoolMetadata?.colors?.accent}`
+                : '',
+            }}
+            >
+              <>
+                <div className="inline-block text-lg">
+                You current SOL staked with The Lode is X SOL, you need X SOL to power up the remaining Sentries NFTs.
+                </div>
+              </>
+            </div>
         <div className="my-2 mx-5 grid grid-cols-1 gap-4 md:grid-cols-2">
           <div
             className={`flex-col rounded-md p-10 ${
