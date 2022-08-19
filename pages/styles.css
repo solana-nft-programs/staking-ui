@@ -21,12 +21,16 @@ body {
   color: #FFFFFF !important;
 }
 
-.bigsolanatext {
+.big {
+  font-size: 5rem;
+  line-height: 5rem;
+  font-weight: 700;
+}
+
+.solanatext {
   background-image: -webkit-gradient(linear, left top, right top, from(#9647fb), to(#01cf8e));
   background-image: linear-gradient(90deg, #9647fb, #01cf8e);
-  font-size: 2.5rem;
-  line-height: 3.5rem;
-  font-weight: 700;
+  
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -40,6 +44,11 @@ p {
   color:#01cf8e;
 }
 
+.wallet-adapter-modal-title {
+  font-family: inherit;
+  font-size: inherit;
+}
+
 h1 {
   margin-top: 20px;
   margin-bottom: 10px;
@@ -50,29 +59,29 @@ h1 {
   font-weight: 700;
 }
 
-h2 {
+.description-content h2 {
   margin-top: 20px;
   margin-bottom: 10px;
-  font-family: Ishimura, sans-serif;
+  font-family: Axiforma, sans-serif;
   font-size: 5rem;
   line-height: 5rem;
   font-weight: 400;
 }
 
-h3 {
+.description-content h3 {
   margin-top: 20px;
   margin-bottom: 10px;
-  font-family: Ishimura, sans-serif;
+  font-family: Axiforma, sans-serif;
   color: #fff;
-  font-size: 3.5rem;
-  line-height: 3.5rem;
+  font-size: 2rem;
+  line-height: 2rem;
   font-weight: 400;
 }
 
-h4 {
+.description-content h4 {
   margin-top: 10px;
   margin-bottom: 10px;
-  font-family: Ishimura, sans-serif;
+  font-family: Axiforma, sans-serif;
   color: hsla(0, 0%, 100%, 0.3);
   font-size: 3rem;
   line-height: 3rem;

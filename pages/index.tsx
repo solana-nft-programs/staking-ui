@@ -582,13 +582,15 @@ function Home() {
             )[0],
         }}
       >
-        <div>
-          <p className='bigsolanatext' style={{textAlign: "center"}}>Sentries Power Grid</p>
+        <div className='description-content'>
+          <h1 className='big solanatext' style={{textAlign: "center"}}>
+            The Power Grid
+          </h1>
+          <h3 style={{textAlign: "center"}}>Stake your Sentry here, and power it up by locking SOL in our validator, The Lode</h3>
         </div>
         <div className='description'>
-          <p>Power Up Your Sentry by Staking your NFT AND Staking SOL with The Lode.</p>
-          <p>The Sentries Power Grid is the way for you to increase your returns from revenue sources and participate in Sentries related events and systems. Start staking today to increase the power level. Please note you&apos;ve got to have your Sentries Staked to earn, as well you have to Stake SOL with The Lode to increase the Power Level.</p>
-          <p>Visit this <a href="https://www.sentries.io/the-lode" target="_BLANK">link</a> to get instructions how to stake.</p>
+          <p>The Power Grid is the rewards pool through which holders earn from the growth of the Sentries business. Stake now to become eligible for enhanced rewards.</p>
+          <p>Click <a href="https://www.sentries.io/the-lode" target="_BLANK">here for staking instructions</a>.</p>
         </div> 
         {(!stakePool && stakePoolLoaded) || stakePoolMetadata?.notFound ? (
           <div
