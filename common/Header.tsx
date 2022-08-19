@@ -83,32 +83,17 @@ export const Header = () => {
             className="flex cursor-pointer text-xl font-semibold"
           >
             {stakePoolMetadata?.imageUrl ? (
-              <>
-                <div className="flex flex-row">
-                  <img
-                    className="flex h-[35px] flex-col"
-                    src={stakePoolMetadata?.imageUrl}
-                  />
-                  {stakePoolMetadata.nameInHeader && (
-                    <span className="ml-5 mt-1 flex flex-col">
-                      {stakePoolMetadata?.displayName}
-                    </span>
-                  )}
-                </div>
-                {stakePoolMetadata?.secondaryImageUrl && (
-                  <div className="ml-2 flex flex-row">
-                    <img
-                      className="flex h-[35px] flex-col"
-                      src={stakePoolMetadata?.secondaryImageUrl}
-                    />
-                    {stakePoolMetadata.nameInHeader && (
-                      <span className="ml-5 mt-1 flex flex-col">
-                        {stakePoolMetadata?.displayName}
-                      </span>
-                    )}
-                  </div>
+              <div className="flex flex-row">
+                <img
+                  className="flex h-[35px] flex-col"
+                  src={stakePoolMetadata?.imageUrl}
+                />
+                {stakePoolMetadata.nameInHeader && (
+                  <span className="ml-5 mt-1 flex flex-col">
+                    {stakePoolMetadata?.displayName}
+                  </span>
                 )}
-              </>
+              </div>
             ) : (
               <TitleText className="flex items-center justify-center gap-2">
                 {stakePoolMetadata?.displayName || (
