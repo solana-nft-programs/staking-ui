@@ -1,4 +1,5 @@
 import { useQuery } from 'react-query'
+import { useWallet } from '@solana/wallet-adapter-react'
 
 export type SentriesStakingData = {
   nft_count: number
@@ -9,14 +10,23 @@ export type SentriesStakingData = {
 }
 
 export const useSentriesStats = () => {
+  const wallet = useWallet()
+
+  const address = wallet.publicKey?.toString()
   return useQuery<SentriesStakingData[] | undefined>(
-    ['useSentriesStats'],
+    [
+      'useSentriesStats',
+      address
+    ],
     async () => {
       return await fetch(
-        'DOMAIN' // TODO: Changeme
+        `https://api.sentries.io/v1/power/${address}` // TODO: Changeme
       )
         .then((response) => response.json())
-        .then((data) => data['response']) // TODO: Changeme
+        .then((data) => {
+          console.log(data)
+          return data
+        })
     },
     {
       retry: 2,

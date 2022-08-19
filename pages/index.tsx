@@ -75,6 +75,7 @@ function Home() {
   const rewards = useRewards()
   const rewardsRate = useRewardsRate()
 
+  // Sentries Data
   const sentriesStats = useSentriesStats()
 
   const [unstakedSelected, setUnstakedSelected] = useState<AllowedTokenData[]>(
@@ -842,7 +843,7 @@ function Home() {
           {(sentriesStats.data && 
               Object.keys(sentriesStats.data).length > 0 ? (
                 <div className="relative flex flex-grow items-center justify-center">
-                  You current SOL staked with The Lode is X SOL, you need X SOL to power up the remaining Sentries NFTs.
+                  You current SOL staked with The Lode is {sentriesStats.data.total_staked ? sentriesStats.data.total_staked : 0} ◎, you need {sentriesStats.data.max_power_level_sol < 0 ? 0 : sentriesStats.data.max_power_level_sol} ◎ to power up the {sentriesStats.data.nft_count} Sentries NFTs.
                 </div>
             ) : (
               <div className="relative flex flex-grow items-center justify-center">
