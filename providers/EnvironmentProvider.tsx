@@ -2,7 +2,7 @@ import { Cluster, Connection } from '@solana/web3.js'
 import { firstParam } from 'common/utils'
 import { NextPageContext } from 'next'
 import { useRouter } from 'next/router'
-import React, { useContext, useMemo, useState } from 'react'
+import React, { useContext, useEffect, useMemo, useState } from 'react'
 
 export interface Environment {
   label: Cluster
@@ -15,6 +15,7 @@ export interface EnvironmentContextValues {
   setEnvironment: (newEnvironment: Environment) => void
   connection: Connection
   secondaryConnection: Connection
+  customHostname: boolean
 }
 
 export const ENVIRONMENTS: Environment[] = [
@@ -69,6 +70,7 @@ export function EnvironmentProvider({
   const [environment, setEnvironment] = useState<Environment>(
     foundEnvironment ?? ENVIRONMENTS[0]!
   )
+  const [customHostname, setCustomHostname] = useState<boolean>(false)
 
   useMemo(() => {
     const foundEnvironment = ENVIRONMENTS.find((e) => e.label === cluster)
@@ -88,6 +90,10 @@ export function EnvironmentProvider({
     [environment]
   )
 
+  useEffect(() => {
+    setCustomHostname(window && !window.location.hostname.includes('cardinal'))
+  }, [])
+
   return (
     <EnvironmentContext.Provider
       value={{
@@ -95,6 +101,7 @@ export function EnvironmentProvider({
         setEnvironment,
         connection,
         secondaryConnection,
+        customHostname,
       }}
     >
       {children}

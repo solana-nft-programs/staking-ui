@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router'
 import { darken, lighten } from 'polished'
 import { FaDiscord, FaGithub, FaMedium, FaTwitter } from 'react-icons/fa'
 import { contrastColorMode, hexColor } from './utils'

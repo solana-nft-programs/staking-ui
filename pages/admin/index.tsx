@@ -25,7 +25,7 @@ import { CreationForm, StakePoolForm } from 'components/StakePoolForm'
 import { StakePool } from 'hooks/useAllStakePools'
 
 function Admin() {
-  const { connection, environment } = useEnvironmentCtx()
+  const { connection, environment, customHostname } = useEnvironmentCtx()
   const wallet = useWallet()
   const [stakePoolId, setStakePoolId] = useState<PublicKey>()
 
@@ -290,7 +290,7 @@ function Admin() {
           </div>
         </div>
       </div>
-      <Footer />
+      {!customHostname && <Footer />}
     </div>
   )
 }
