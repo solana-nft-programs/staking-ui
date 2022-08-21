@@ -1035,7 +1035,8 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       fontColorSecondary: '#FFF',
       backgroundSecondary: '#000',
     },
-    websiteUrl: 'https://staking.soulless-ai.io',
+    websiteUrl: 'https://stake.soulless-ai.io',
+    receiptType: ReceiptType.Original,
     hidden: false,
     notFound: true,
     imageUrl:
