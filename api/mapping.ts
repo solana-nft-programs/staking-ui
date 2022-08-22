@@ -1043,28 +1043,6 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       'https://uploads-ssl.webflow.com/62e97328e35e46351183d1a9/62fe72a2b0f5f3605fd803f1_Untitled-10.png',
   },
   {
-    name: 'Slayerz',
-    displayName: 'Slayerz',
-    font: 'Bakbak One',
-    stakePoolAddress: new PublicKey(
-      '2f3Sdr7hgf3RnJMxKW8oYgmKRRkD8eaVGeDZyprUstM6'
-    ),
-    colors: {
-      primary: '#000',
-      secondary: '#c33764',
-      accent: '#1d2671',
-      fontColor: '#FFF',
-      fontColorSecondary: '#FFF',
-      backgroundSecondary: '#1b3883',
-    },
-    websiteUrl: 'https://www.dragonslayerz.io/',
-    receiptType: ReceiptType.Original,
-    hidden: false,
-    notFound: true,
-    imageUrl:
-      'https://raw.githubusercontent.com/Don-73/Slyerz/main/logo.png',
-  },
-  {
     name: 'slayerz',
     displayName: 'Slayerz',
     stakePoolAddress: new PublicKey(
