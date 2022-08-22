@@ -1023,10 +1023,12 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
   {
     name: 'Soulless-AI',
     displayName: 'Soulless-AI',
-    font: 'Multivac Interference',
     stakePoolAddress: new PublicKey(
       '4mW9Q1PxiBzs2YqdWBfS51yMcP3A1r2aQsBoSvQUhtjJ'
     ),
+    styles: {
+      fontFamily: 'Multivac Interference',
+    },
     colors: {
       primary: '#000',
       secondary: '#34c674',
