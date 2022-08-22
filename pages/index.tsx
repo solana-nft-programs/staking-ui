@@ -105,7 +105,7 @@ function Home() {
   const title = "Sentries NFT Staking"
   const keyword = "Sentries NFTs, Sentries Validators, NFTs"
   const url = "https://sentries.io"
-  const image = ""
+  const image = "https://sentries.io/images/og_stake_image.png"
   
 
   if (stakePoolMetadata?.redirect) {
@@ -593,7 +593,8 @@ function Home() {
         </div>
         <div className='description py-6 px-10 mb-4 mx-5'>
           <p>The Power Grid is the rewards pool through which holders earn from the growth of the Sentries business. Stake now to become eligible for enhanced rewards.</p>
-        </div> 
+          <p>Click <a href="https://www.sentries.io/stake-with-sentries" target="_BLANK">here for staking with the validator instructions</a>.</p>
+        </div>
         {(!stakePool && stakePoolLoaded) || stakePoolMetadata?.notFound ? (
           <div
             className="mx-5 mb-5 rounded-md border-[1px] bg-opacity-40 p-4 text-center text-lg font-semibold"
@@ -841,23 +842,27 @@ function Home() {
             }}
             >
           {(sentriesStats.data && 
-              Object.keys(sentriesStats.data).length > 0 ? (
+              Object.keys(sentriesStats.data).length > 0 &&
+              !sentriesStats.error ? (
                 <div className="relative flex flex-grow items-center justify-center">
-                  You current SOL staked with The Lode is {
-                  // @ts-ignore
-                  sentriesStats.data.total_staked ? sentriesStats.data.total_staked : 0
-                  } ◎, you need {
-                  // @ts-ignore
-                  sentriesStats.data.max_power_level_sol < 0 ? 0 : sentriesStats.data.max_power_level_sol
-                  } ◎ to power up the {
-                  // @ts-ignore
-                  sentriesStats.data.nft_count
-                  } Sentries NFTs.
+                  <span className='text-lg'
+                    >
+                    You current SOL staked with The Lode is {
+                    // @ts-ignore
+                    sentriesStats.data.total_staked ? sentriesStats.data.total_staked : 0
+                    } ◎<br />You will need {
+                    // @ts-ignore
+                    sentriesStats.data.max_power_level_sol < 0 ? 0 : sentriesStats.data.max_power_level_sol
+                    } ◎ to power up the {
+                    // @ts-ignore
+                    sentriesStats.data.nft_count
+                    } Sentries NFTs
+                  </span>
                 </div>
             ) : (
               <div className="relative flex flex-grow items-center justify-center">
                 {!(
-                  sentriesStats.isFetched
+                  sentriesStats.isFetched && !sentriesStats.error
                 ) ? (
                   <>
                     <span
