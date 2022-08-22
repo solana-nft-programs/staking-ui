@@ -1051,7 +1051,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       '2f3Sdr7hgf3RnJMxKW8oYgmKRRkD8eaVGeDZyprUstM6'
     ),
     websiteUrl: 'https://www.dragonslayerz.io/',
-    receiptType: ReceiptType.Receipt,
+    receiptType: ReceiptType.Original,
     maxStaked: 4332,
     imageUrl:
       'https://raw.githubusercontent.com/Don-73/Slyerz/main/logo.png',
