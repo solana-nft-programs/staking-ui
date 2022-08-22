@@ -1044,4 +1044,22 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     imageUrl:
       'https://uploads-ssl.webflow.com/62e97328e35e46351183d1a9/62fe72a2b0f5f3605fd803f1_Untitled-10.png',
   },
+  {
+    name: 'slayerz',
+    displayName: 'Slayerz',
+    stakePoolAddress: new PublicKey(
+      '2f3Sdr7hgf3RnJMxKW8oYgmKRRkD8eaVGeDZyprUstM6'
+    ),
+    websiteUrl: 'https://www.dragonslayerz.io/',
+    receiptType: ReceiptType.Receipt,
+    maxStaked: 4332,
+    imageUrl:
+      'https://raw.githubusercontent.com/Don-73/Slyerz/main/logo.png',
+    colors: {
+      primary: '#212186',
+      secondary: '#c33764',
+      accent: '#00FFA3',
+      fontColor: '#FFFFFF',
+    },
+  },
 ]
