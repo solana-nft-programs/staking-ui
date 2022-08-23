@@ -1053,13 +1053,33 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     websiteUrl: 'https://www.dragonslayerz.io/',
     receiptType: ReceiptType.Original,
     maxStaked: 4332,
-    imageUrl:
-      'https://raw.githubusercontent.com/Don-73/Slyerz/main/logo.png',
+    imageUrl: 'https://raw.githubusercontent.com/Don-73/Slyerz/main/logo.png',
     colors: {
       primary: '#212186',
       secondary: '#c33764',
       accent: '#00FFA3',
       fontColor: '#FFFFFF',
+    },
+  },
+  {
+    name: 'hoa-referral',
+    displayName: 'Parcl HOA Referral Program',
+    stakePoolAddress: new PublicKey(
+      '3JXoAsm4YZGzC2VGtSBdN8EX36wW8uuoXX9nWFqamUu2'
+    ),
+    hidden: true,
+    websiteUrl: 'https://www.hoa.house/',
+    receiptType: ReceiptType.Original,
+    tokenStandard: TokenStandard.NonFungible,
+    hideAllowedTokens: true,
+    nameInHeader: true,
+    maxStaked: 7777,
+    imageUrl: '/logos/parcl.png',
+    backgroundImage: '/logos/parcl-bg.png',
+    colors: {
+      primary: '#0d1939',
+      secondary: '#10abf0',
+      backgroundSecondary: '#182443',
     },
   },
 ]

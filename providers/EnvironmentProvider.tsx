@@ -91,7 +91,13 @@ export function EnvironmentProvider({
   )
 
   useEffect(() => {
-    setCustomHostname(window && !window.location.hostname.includes('cardinal'))
+    setCustomHostname(
+      window &&
+        !(
+          window.location.hostname.includes('cardinal') ||
+          window.location.hostname.includes('localhost')
+        )
+    )
   }, [])
 
   return (
