@@ -36,6 +36,10 @@ body {
   -webkit-text-fill-color: transparent;
 }
 
+.dt-opacity-40 {
+  color: #383838;
+}
+
 p {
   padding-bottom: 1rem;
 }
