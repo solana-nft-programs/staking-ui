@@ -711,7 +711,7 @@ function Home() {
                           {formatMintNaturalAmountAsDecimal(
                             rewardMintInfo.data.mintInfo,
                             rewards.data?.claimableRewards,
-                            6
+                            Math.min(rewardMintInfo.data.mintInfo.decimals, 6)
                           )}{' '}
                           {rewardMintInfo.data.tokenListData?.name ||
                             rewardMintInfo.data.metaplexMintData?.data.name ||
@@ -723,13 +723,19 @@ function Home() {
                             ? formatMintNaturalAmountAsDecimal(
                                 rewardMintInfo.data.mintInfo,
                                 rewardMintInfo.data.mintInfo.supply,
-                                6
+                                Math.min(
+                                  rewardMintInfo.data.mintInfo.decimals,
+                                  6
+                                )
                               )
                             : rewardDistributorTokenAccountData.data
                             ? formatMintNaturalAmountAsDecimal(
                                 rewardMintInfo.data.mintInfo,
                                 rewardDistributorTokenAccountData.data?.amount,
-                                6
+                                Math.min(
+                                  rewardMintInfo.data.mintInfo.decimals,
+                                  6
+                                )
                               )
                             : '??'}{' '}
                           Left In Treasury
