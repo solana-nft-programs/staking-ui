@@ -358,6 +358,9 @@ function AdminStakePool() {
             rewardDurationSeconds: values.rewardDurationSeconds
               ? new BN(values.rewardDurationSeconds)
               : undefined,
+            maxRewardSecondsReceived: values.maxRewardSecondsReceived
+              ? new BN(values.maxRewardSecondsReceived)
+              : undefined,
           }
         )
         notify({
@@ -683,6 +686,13 @@ function AdminStakePool() {
                                   rewardDistributor.data.parsed.rewardAmount
                                 ).toNumber()
                               : '[None]'}
+                          </label>
+                        </span>
+                        <span className="mt-3 flex w-full flex-wrap md:mb-0">
+                          <label className="inline-block text-sm font-bold uppercase tracking-wide text-gray-200">
+                            Maximum reward seconds:{' '}
+                            {rewardDistributor.data.parsed.maxRewardSecondsReceived?.toNumber() ||
+                              '[None]'}
                           </label>
                         </span>
                         <span className="mt-3 flex w-full flex-wrap md:mb-0">
