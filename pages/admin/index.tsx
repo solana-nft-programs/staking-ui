@@ -134,6 +134,9 @@ function Admin() {
           defaultMultiplier: values.defaultMultiplier
             ? new BN(values.defaultMultiplier)
             : undefined,
+          maxRewardSecondsReceived: values.maxRewardSecondsReceived
+            ? new BN(values.maxRewardSecondsReceived)
+            : undefined,
         }
 
         await withInitRewardDistributor(

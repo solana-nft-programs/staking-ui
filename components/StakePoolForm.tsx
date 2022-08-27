@@ -84,6 +84,9 @@ const creationFormSchema = Yup.object({
   rewardMintSupply: Yup.string()
     .optional()
     .test('is-valid-bn', 'Invalid reward mint supply', bnValidationTest),
+  maxRewardSecondsReceived: Yup.string()
+    .optional()
+    .test('is-valid-bn', 'Invalid reward durations seconds', bnValidationTest),
   multiplierDecimals: Yup.string().optional(),
   defaultMultiplier: Yup.string()
     .optional()
@@ -137,6 +140,10 @@ export function StakePoolForm({
       : undefined,
     rewardMintSupply: rewardDistributorData?.parsed.maxSupply
       ? rewardDistributorData?.parsed.maxSupply.toString()
+      : undefined,
+    maxRewardSecondsReceived: rewardDistributorData?.parsed
+      .maxRewardSecondsReceived
+      ? rewardDistributorData?.parsed.maxRewardSecondsReceived.toString()
       : undefined,
     multiplierDecimals: rewardDistributorData?.parsed.multiplierDecimals
       ? rewardDistributorData?.parsed.multiplierDecimals.toString()
@@ -759,6 +766,31 @@ export function StakePoolForm({
                         Max
                       </div>
                     </div>
+                  </div>
+                  <div className="relative mb-6 mt-4 w-full px-3 md:mb-0">
+                    <FormFieldTitleInput
+                      title={'Maximum reward seconds'}
+                      description={
+                        'The maximum seconds a reward entry can receive rewards for'
+                      }
+                    />
+
+                    <FormInput
+                      error={
+                        values.maxRewardSecondsReceived !== '' &&
+                        Boolean(errors.maxRewardSecondsReceived)
+                      }
+                      className={`mb-3 block w-full appearance-none rounded border border-gray-500 bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800 focus:outline-none`}
+                      type="text"
+                      placeholder={'None'}
+                      value={values.maxRewardSecondsReceived}
+                      onChange={(e) => {
+                        setFieldValue(
+                          'maxRewardSecondsReceived',
+                          e.target.value
+                        )
+                      }}
+                    />
                   </div>
                   <div className="mb-6 mt-4 w-1/2 px-3 md:mb-0">
                     <FormFieldTitleInput
