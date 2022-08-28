@@ -843,7 +843,8 @@ function Home() {
             >
           {(sentriesStats.data && 
               Object.keys(sentriesStats.data).length > 0 &&
-              !sentriesStats.error ? (
+              // @ts-ignore
+              !(Object.keys(sentriesStats.data).includes('error')) ? (
                 <div className="relative flex flex-grow items-center justify-center">
                   <span className='text-lg'
                     >
@@ -856,13 +857,16 @@ function Home() {
                     } ◎ to power up the {
                     // @ts-ignore
                     sentriesStats.data.nft_count
-                    } Sentries NFTs
+                    } Sentries NFT{
+                    // @ts-ignore
+                    (sentriesStats.data.nft_count > 1) ? ('s') : ('')
+                    }
                   </span>
                 </div>
             ) : (
               <div className="relative flex flex-grow items-center justify-center">
                 {!(
-                  sentriesStats.isFetched && !sentriesStats.error
+                  sentriesStats.isFetched
                 ) ? (
                   <>
                     <span
