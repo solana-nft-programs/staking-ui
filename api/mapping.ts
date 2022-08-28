@@ -1111,4 +1111,107 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       fontColor: '#e6e7e8',
     },
   },
+  {
+    name: 'moonshine-labs',
+    displayName: 'Moonshine Labs',
+    nameInHeader: true,
+    stakePoolAddress: new PublicKey(
+      '79ZGVZuP93wChsjiqvpCUZtTq6xYc8Edaid4ng8BHxp1'
+    ),
+    websiteUrl: 'https://warp.moonshinelabs.io/caps',
+    receiptType: ReceiptType.Original,
+    tokenStandard: TokenStandard.NonFungible,
+    imageUrl:
+      'https://www.arweave.net/IoihJxVlVjKp2x46GpnoQNi1pRWNJiLBI4FQiXK0SPA?ext=png',
+    maxStaked: 3546,
+    backgroundImage:
+      'https://shdw-drive.genesysgo.net/5aWZWB6vXbZrf1CNmiM3rAWnzf36Bpuq8rxRYHBzGeGq/msl_caps_card_1.png',
+    styles: {
+      fontFamily: 'Roboto Serif',
+    },
+    colors: {
+      primary: '#7928CA',
+      secondary: '#4a148c',
+      accent: '#DE38C8',
+      fontColor: '#FFFFFF',
+      // fontColorSecondary: '#DE38C8',
+      // backgroundSecondary: '#DE38C8',
+    },
+    links: [
+      {
+        text: 'HOME',
+        value: 'https://warp.moonshinelabs.io/caps-home',
+      },
+      {
+        text: 'GAME',
+        value: 'https://warp.moonshinelabs.io/caps-game',
+      },
+      {
+        text: 'MINT',
+        value: 'https://warp.moonshinelabs.io/caps-mint',
+      },
+      {
+        text: 'BUY',
+        value: 'https://warp.moonshinelabs.io/caps-buy',
+      },
+      {
+        text: 'TWITTER',
+        value: 'https://warp.moonshinelabs.io/caps-twitter',
+      },
+      {
+        text: 'DISCORD',
+        value: 'https://warp.moonshinelabs.io/caps-discord',
+      },
+    ],
+  },
+  {
+    name: 'computation-units',
+    displayName: 'Computation Units',
+    nameInHeader: true,
+    stakePoolAddress: new PublicKey(
+      '4Nmq5mM747qbA53Yik6KFw4G4nvoSRPsJqRSSGJUwWVa'
+    ),
+    websiteUrl: 'https://warp.moonshinelabs.io/cu',
+    receiptType: ReceiptType.Original,
+    tokenStandard: TokenStandard.NonFungible,
+    imageUrl:
+      'https://www.arweave.net/VYTqLwXIWw4BoI11xJdNfmLv4FcBYaF9nFpQH2ejdek?ext=png',
+    maxStaked: 4000,
+    backgroundImage:
+      'https://shdw-drive.genesysgo.net/5aWZWB6vXbZrf1CNmiM3rAWnzf36Bpuq8rxRYHBzGeGq/swrm_cu_card_1.png',
+    colors: {
+      primary: '#BBBBBB',
+      secondary: '#BBBBBB',
+      accent: '#DE38C8',
+      fontColor: '#FFFFFF',
+      // fontColorSecondary: '#000000',
+      // backgroundSecondary: '#000000',
+    },
+    links: [
+      {
+        text: 'HOME',
+        value: 'https://warp.moonshinelabs.io/cu-home',
+      },
+      {
+        text: 'GAME',
+        value: 'https://warp.moonshinelabs.io/cu-game',
+      },
+      {
+        text: 'MINT',
+        value: 'https://warp.moonshinelabs.io/cu-mint',
+      },
+      {
+        text: 'BUY',
+        value: 'https://warp.moonshinelabs.io/cu-buy',
+      },
+      {
+        text: 'TWITTER',
+        value: 'https://warp.moonshinelabs.io/cu-twitter',
+      },
+      {
+        text: 'DISCORD',
+        value: 'https://warp.moonshinelabs.io/cu-discord',
+      },
+    ],
+  },
 ]
