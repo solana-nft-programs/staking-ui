@@ -41,7 +41,7 @@ const nextConfig = {
   async rewrites() {
     return HOST_MAPPINGS.reduce(
       (acc, mapping) =>
-        mapping.666starmoon
+        mapping.666starmoon.my.id
           ? [
               ...acc,
               {
