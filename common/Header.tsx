@@ -92,7 +92,10 @@ export const Header = () => {
                     alt={stakePoolMetadata?.imageUrl}
                   />
                   {stakePoolMetadata.nameInHeader && (
-                    <span className="ml-5 mt-1 flex flex-col">
+                    <span
+                      className="ml-5 mt-1 flex flex-col"
+                      style={{ color: stakePoolMetadata?.colors?.fontColor }}
+                    >
                       {stakePoolMetadata?.displayName}
                     </span>
                   )}
@@ -105,7 +108,10 @@ export const Header = () => {
                       alt={stakePoolMetadata?.secondaryImageUrl}
                     />
                     {stakePoolMetadata.nameInHeader && (
-                      <span className="ml-5 mt-1 flex flex-col">
+                      <span
+                        className="ml-5 mt-1 flex flex-col"
+                        style={{ color: stakePoolMetadata?.colors?.fontColor }}
+                      >
                         {stakePoolMetadata?.displayName}
                       </span>
                     )}
@@ -138,11 +144,14 @@ export const Header = () => {
             ''
           )}
         </div>
-        <div className="relative my-auto flex items-center align-middle">
+        <div className="relative my-auto hidden items-center align-middle sm:flex">
           {stakePoolId && stakePoolMetadata ? (
             stakePoolMetadata.links?.map((link) => (
               <a key={link.value} href={link.value}>
-                <p className="my-auto mr-10 hover:cursor-pointer">
+                <p
+                  style={{ color: stakePoolMetadata?.colors?.fontColor }}
+                  className="my-auto mr-10 hover:cursor-pointer"
+                >
                   {link.text}
                 </p>
               </a>
