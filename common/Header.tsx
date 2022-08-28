@@ -1,16 +1,16 @@
-import { lighten } from 'polished'
+import { AccountConnect } from '@cardinal/namespaces-components'
+import { styled } from '@mui/system'
+import type { Wallet } from '@saberhq/solana-contrib'
 import { useWallet } from '@solana/wallet-adapter-react'
 import { WalletMultiButton } from '@solana/wallet-adapter-react-ui'
-
-import { useRouter } from 'next/router'
-import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
-import { Airdrop } from './Airdrop'
-import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
-import { styled } from '@mui/system'
-import { AccountConnect } from '@cardinal/namespaces-components'
-import { Wallet } from '@saberhq/solana-contrib'
 import { useStakePoolId } from 'hooks/useStakePoolId'
+import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
+import { useRouter } from 'next/router'
+import { lighten } from 'polished'
+import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 import { useUTCNow } from 'providers/UTCNowProvider'
+
+import { Airdrop } from './Airdrop'
 import { contrastColorMode } from './utils'
 
 export const StyledWalletButton = styled(WalletMultiButton)`
@@ -81,6 +81,7 @@ export const Header = () => {
               }`
             }
             className="flex cursor-pointer text-xl font-semibold"
+            rel="noreferrer"
           >
             {stakePoolMetadata?.imageUrl ? (
               <>
@@ -88,6 +89,7 @@ export const Header = () => {
                   <img
                     className="flex h-[35px] flex-col rounded-lg"
                     src={stakePoolMetadata?.imageUrl}
+                    alt={stakePoolMetadata?.imageUrl}
                   />
                   {stakePoolMetadata.nameInHeader && (
                     <span className="ml-5 mt-1 flex flex-col">
@@ -100,6 +102,7 @@ export const Header = () => {
                     <img
                       className="flex h-[35px] flex-col"
                       src={stakePoolMetadata?.secondaryImageUrl}
+                      alt={stakePoolMetadata?.secondaryImageUrl}
                     />
                     {stakePoolMetadata.nameInHeader && (
                       <span className="ml-5 mt-1 flex flex-col">
@@ -113,6 +116,7 @@ export const Header = () => {
               <TitleText className="flex items-center justify-center gap-2">
                 {stakePoolMetadata?.displayName || (
                   <img
+                    alt={'/cardinal-crosshair.svg'}
                     className="inline-block w-4"
                     src={'/cardinal-crosshair.svg'}
                   />
