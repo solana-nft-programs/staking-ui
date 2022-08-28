@@ -1,5 +1,7 @@
+/* eslint-disable jsx-a11y/label-has-associated-control */
 import { findAta, tryGetAccount } from '@cardinal/common'
 import { executeTransaction, handleError } from '@cardinal/staking'
+import { RewardDistributorKind } from '@cardinal/staking/dist/cjs/programs/rewardDistributor'
 import {
   getRewardDistributor,
   getRewardEntry,
@@ -15,43 +17,39 @@ import {
   withUpdateRewardDistributor,
   withUpdateRewardEntry,
 } from '@cardinal/staking/dist/cjs/programs/rewardDistributor/transaction'
-import * as splToken from '@solana/spl-token'
 import {
   withAuthorizeStakeEntry,
   withUpdateStakePool,
 } from '@cardinal/staking/dist/cjs/programs/stakePool/transaction'
-import { Wallet } from '@metaplex/js'
-import { BN, web3 } from '@project-serum/anchor'
+import { findStakeEntryIdFromMint } from '@cardinal/staking/dist/cjs/programs/stakePool/utils'
+import type { Wallet } from '@metaplex/js'
+import { Tooltip } from '@mui/material'
+import { BN } from '@project-serum/anchor'
+import * as splToken from '@solana/spl-token'
 import { useWallet } from '@solana/wallet-adapter-react'
 import { Keypair, PublicKey, Transaction } from '@solana/web3.js'
 import { Footer } from 'common/Footer'
 import { Header } from 'common/Header'
 import { notify } from 'common/Notification'
 import { ShortPubKeyUrl } from 'common/Pubkeys'
-import { useStakePoolData } from 'hooks/useStakePoolData'
-import Head from 'next/head'
-import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
-import { useMemo, useState } from 'react'
-import { TailSpin } from 'react-loader-spinner'
-import {
-  bnValidationTest,
-  CreationForm,
-  StakePoolForm,
-} from 'components/StakePoolForm'
-import { useRewardDistributorData } from 'hooks/useRewardDistributorData'
-import { pubKeyUrl, shortPubKey, tryPublicKey } from 'common/utils'
-import { findStakeEntryIdFromMint } from '@cardinal/staking/dist/cjs/programs/stakePool/utils'
-import * as Yup from 'yup'
-import { useFormik } from 'formik'
 import {
   getMintDecimalAmountFromNatural,
   tryFormatInput,
   tryParseInput,
 } from 'common/units'
+import { pubKeyUrl, shortPubKey, tryPublicKey } from 'common/utils'
+import type { CreationForm } from 'components/StakePoolForm'
+import { bnValidationTest, StakePoolForm } from 'components/StakePoolForm'
+import { useFormik } from 'formik'
+import { useRewardDistributorData } from 'hooks/useRewardDistributorData'
 import { useRewardMintInfo } from 'hooks/useRewardMintInfo'
-import { Tooltip } from '@mui/material'
-import { RewardDistributorKind } from '@cardinal/staking/dist/cjs/programs/rewardDistributor'
+import { useStakePoolData } from 'hooks/useStakePoolData'
 import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
+import Head from 'next/head'
+import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
+import { useMemo, useState } from 'react'
+import { TailSpin } from 'react-loader-spinner'
+import * as Yup from 'yup'
 
 const publicKeyValidationTest = (value: string | undefined): boolean => {
   return tryPublicKey(value) ? true : false
@@ -137,7 +135,7 @@ function AdminStakePool() {
         values.multiplierMints = []
       if (values.multipliers.toString() === [''].toString())
         values.multipliers = []
-      let pubKeysToSetMultiplier = []
+      const pubKeysToSetMultiplier = []
       for (let i = 0; i < values.multiplierMints.length; i++) {
         if (values.multiplierMints[i] !== '' && values.multipliers[i] !== '') {
           pubKeysToSetMultiplier.push(new PublicKey(values.multiplierMints[i]!))
@@ -169,7 +167,7 @@ function AdminStakePool() {
       }
 
       for (let i = 0; i < pubKeysToSetMultiplier.length; i++) {
-        let mint = pubKeysToSetMultiplier[i]!
+        const mint = pubKeysToSetMultiplier[i]!
         const [stakeEntryId] = await findStakeEntryIdFromMint(
           connection,
           wallet.publicKey!,
@@ -229,7 +227,7 @@ function AdminStakePool() {
         notify({ message: `Error: No mints inserted` })
       }
       for (let i = 0; i < authorizePublicKeys.length; i++) {
-        let mint = authorizePublicKeys[i]!
+        const mint = authorizePublicKeys[i]!
         const transaction = await withAuthorizeStakeEntry(
           new Transaction(),
           connection,
@@ -438,12 +436,13 @@ function AdminStakePool() {
       const mintId = new PublicKey(mintToLookup)
       let stakeEntryId: PublicKey
       try {
-        ;[stakeEntryId] = await findStakeEntryIdFromMint(
+        const temp = await findStakeEntryIdFromMint(
           connection,
           wallet.publicKey!,
           stakePool.data!.pubkey,
           mintId
         )
+        stakeEntryId = temp[0]
       } catch (e) {
         throw 'Invalid mint ID or no reward entry for mint'
       }
@@ -590,6 +589,7 @@ function AdminStakePool() {
                           ? stakePool.data?.parsed.requiresCollections.map(
                               (collection) => (
                                 <ShortPubKeyUrl
+                                  key={collection.toString()}
                                   pubkey={collection}
                                   cluster={environment.label}
                                   className="pr-2 text-sm text-white"
@@ -609,6 +609,7 @@ function AdminStakePool() {
                           ? stakePool.data?.parsed.requiresCreators.map(
                               (creator) => (
                                 <ShortPubKeyUrl
+                                  key={creator.toString()}
                                   pubkey={creator}
                                   cluster={environment.label}
                                   className="pr-2 text-sm font-bold underline underline-offset-2"
@@ -663,6 +664,7 @@ function AdminStakePool() {
                                   rewardDistributor.data.pubkey,
                                   environment.label
                                 )}
+                                rel="noreferrer"
                               >
                                 {shortPubKey(rewardDistributor.data.pubkey)}
                               </a>{' '}
@@ -774,7 +776,7 @@ function AdminStakePool() {
                                   splToken.TOKEN_PROGRAM_ID,
                                   Keypair.generate() // unused
                                 )
-                                let mintInfo = await checkMint.getMintInfo()
+                                const mintInfo = await checkMint.getMintInfo()
                                 setMintInfo(mintInfo)
                                 const mintAta = await findAta(
                                   rewardDistributor.data!.parsed.rewardMint,
@@ -867,8 +869,8 @@ function AdminStakePool() {
                       ...
                     </p>
                     <p className="text-sm italic text-gray-300">
-                      For decimal multipliers, work with the reward
-                      distributor's <b>multiplierDecimals</b>. If you set
+                      For decimal multipliers, work with the reward distributor
+                      {"'"}s <b>multiplierDecimals</b>. If you set
                       multiplierDecimals = 1, then for 1.5x multiplier, enter
                       value 15 so that value/10**multiplierDecimals = 15/10^1 =
                       1.5
@@ -885,6 +887,7 @@ function AdminStakePool() {
                         href="https://github.com/cardinal-labs/cardinal-staking/tree/main/tools"
                         className="text-blue-500"
                         target="_blank"
+                        rel="noreferrer"
                       >
                         tools
                       </a>{' '}
@@ -1018,6 +1021,7 @@ function AdminStakePool() {
                         href="https://github.com/cardinal-labs/cardinal-staking/tree/main/tools"
                         className="text-blue-500"
                         target="_blank"
+                        rel="noreferrer"
                       >
                         tools
                       </a>{' '}

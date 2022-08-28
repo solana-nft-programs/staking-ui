@@ -11,7 +11,7 @@ interface GetResponse {
 
 const get: NextApiHandler<GetResponse> = async (req, res) => {
   const { cluster: clusterParam } = req.query
-  let mem: { mintId: string; name: string; floorPrice: number }[] = []
+  const mem: { mintId: string; name: string; floorPrice: number }[] = []
   let tvl = 0
 
   const foundEnvironment = ENVIRONMENTS.find(

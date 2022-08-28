@@ -138,6 +138,7 @@ function Home() {
                   {allStakePools.data.stakePoolsWithoutMetadata.map(
                     (stakePool) => (
                       <div
+                        key={stakePool.stakePoolData.pubkey.toString()}
                         className="flex h-[300px] cursor-pointer flex-col rounded-lg bg-white bg-opacity-5 p-10 transition-all duration-100 hover:scale-[1.01]"
                         onClick={() =>
                           router.push(

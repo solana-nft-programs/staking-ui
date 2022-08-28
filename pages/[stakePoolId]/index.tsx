@@ -1,60 +1,57 @@
+import { DisplayAddress } from '@cardinal/namespaces-components'
 import {
-  createStakeEntryAndStakeMint,
-  unstake,
   claimRewards,
+  createStakeEntryAndStakeMint,
   stake,
+  unstake,
 } from '@cardinal/staking'
+import { RewardDistributorKind } from '@cardinal/staking/dist/cjs/programs/rewardDistributor'
 import { ReceiptType } from '@cardinal/staking/dist/cjs/programs/stakePool'
+import { Switch } from '@headlessui/react'
+import type { Wallet } from '@metaplex/js'
+import { darken, lighten } from '@mui/material'
+import { BN } from '@project-serum/anchor'
+import * as splToken from '@solana/spl-token'
 import { useWallet } from '@solana/wallet-adapter-react'
-import { PublicKey, Signer, Transaction } from '@solana/web3.js'
+import { useWalletModal } from '@solana/wallet-adapter-react-ui'
+import type { Signer, Transaction } from '@solana/web3.js'
+import { PublicKey } from '@solana/web3.js'
+import { defaultSecondaryColor, TokenStandard } from 'api/mapping'
+import { executeAllTransactions } from 'api/utils'
+import { Footer } from 'common/Footer'
 import { Header } from 'common/Header'
-import Head from 'next/head'
-import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
-import { useEffect, useState } from 'react'
-import { Wallet } from '@metaplex/js'
 import { LoadingSpinner } from 'common/LoadingSpinner'
 import { notify } from 'common/Notification'
-import { contrastColorMode, pubKeyUrl, secondstoDuration } from 'common/utils'
+import { QuickActions } from 'common/QuickActions'
+import { MouseoverTooltip } from 'common/Tooltip'
 import {
   formatAmountAsDecimal,
   formatMintNaturalAmountAsDecimal,
   parseMintNaturalAmountFromDecimal,
 } from 'common/units'
-import {
-  StakeEntryTokenData,
-  useStakedTokenDatas,
-} from 'hooks/useStakedTokenDatas'
-import { useRewardDistributorData } from 'hooks/useRewardDistributorData'
-import { useRewards } from 'hooks/useRewards'
-import { useRewardMintInfo } from 'hooks/useRewardMintInfo'
+import { contrastColorMode, pubKeyUrl, secondstoDuration } from 'common/utils'
 import { AllowedTokens } from 'components/AllowedTokens'
-import { useStakePoolEntries } from 'hooks/useStakePoolEntries'
-import { useStakePoolData } from 'hooks/useStakePoolData'
-import { useStakePoolMaxStaked } from 'hooks/useStakePoolMaxStaked'
-import {
-  AllowedTokenData,
-  useAllowedTokenDatas,
-} from 'hooks/useAllowedTokenDatas'
-import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
-import { defaultSecondaryColor, TokenStandard } from 'api/mapping'
-import { Footer } from 'common/Footer'
-import { DisplayAddress } from '@cardinal/namespaces-components'
+import type { AllowedTokenData } from 'hooks/useAllowedTokenDatas'
+import { useAllowedTokenDatas } from 'hooks/useAllowedTokenDatas'
+import { usePoolAnalytics } from 'hooks/usePoolAnalytics'
+import { useRewardDistributorData } from 'hooks/useRewardDistributorData'
 import { useRewardDistributorTokenAccount } from 'hooks/useRewardDistributorTokenAccount'
 import { useRewardEntries } from 'hooks/useRewardEntries'
-import { Switch } from '@headlessui/react'
-import { FaInfoCircle } from 'react-icons/fa'
-import { MouseoverTooltip } from 'common/Tooltip'
-import { useUTCNow } from 'providers/UTCNowProvider'
-import { useWalletModal } from '@solana/wallet-adapter-react-ui'
-import { executeAllTransactions } from 'api/utils'
-import { RewardDistributorKind } from '@cardinal/staking/dist/cjs/programs/rewardDistributor'
-import { useRouter } from 'next/router'
-import { lighten, darken } from '@mui/material'
-import { QuickActions } from 'common/QuickActions'
-import * as splToken from '@solana/spl-token'
-import { usePoolAnalytics } from 'hooks/usePoolAnalytics'
+import { useRewardMintInfo } from 'hooks/useRewardMintInfo'
+import { useRewards } from 'hooks/useRewards'
 import { useRewardsRate } from 'hooks/useRewardsRate'
-import { BN } from '@project-serum/anchor'
+import type { StakeEntryTokenData } from 'hooks/useStakedTokenDatas'
+import { useStakedTokenDatas } from 'hooks/useStakedTokenDatas'
+import { useStakePoolData } from 'hooks/useStakePoolData'
+import { useStakePoolEntries } from 'hooks/useStakePoolEntries'
+import { useStakePoolMaxStaked } from 'hooks/useStakePoolMaxStaked'
+import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
+import Head from 'next/head'
+import { useRouter } from 'next/router'
+import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
+import { useUTCNow } from 'providers/UTCNowProvider'
+import { useEffect, useState } from 'react'
+import { FaInfoCircle } from 'react-icons/fa'
 
 function Home() {
   const router = useRouter()
@@ -98,6 +95,7 @@ function Home() {
     return
   }
 
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   useEffect(() => {
     stakePoolMetadata?.tokenStandard &&
       setShowFungibleTokens(
@@ -258,7 +256,7 @@ function Home() {
     const initTxs: { tx: Transaction; signers: Signer[] }[] = []
     for (let step = 0; step < unstakedSelected.length; step++) {
       try {
-        let token = unstakedSelected[step]
+        const token = unstakedSelected[step]
         if (!token || !token.tokenAccount) {
           throw new Error('Token account not set')
         }
@@ -529,6 +527,7 @@ function Home() {
     setTotalStaked(Math.ceil(total).toString())
   }
 
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   useEffect(() => {
     const fetchData = async () => {
       await totalStakedTokens()
@@ -689,6 +688,7 @@ function Home() {
                         rewardDistributorData.data.parsed.rewardMint,
                         environment.label
                       )}
+                      rel="noreferrer"
                     >
                       {rewardMintInfo.data.tokenListData?.name ||
                         rewardMintInfo.data.metaplexMintData?.data.name ||
@@ -790,7 +790,10 @@ function Home() {
               <div className="relative flex flex-grow items-center justify-center">
                 {Object.keys(analytics.data).map((key) => {
                   return (
-                    <div className="relative flex flex-grow items-center justify-center text-lg">
+                    <div
+                      key={key}
+                      className="relative flex flex-grow items-center justify-center text-lg"
+                    >
                       <span
                         className={`${
                           stakePoolMetadata?.colors?.fontColor
@@ -892,7 +895,7 @@ function Home() {
                     <div className="h-[200px] animate-pulse rounded-lg bg-white bg-opacity-5 p-10"></div>
                     <div className="h-[200px] animate-pulse rounded-lg bg-white bg-opacity-5 p-10"></div>
                   </div>
-                ) : (allowedTokenDatas.data || []).length == 0 ? (
+                ) : (allowedTokenDatas.data || []).length === 0 ? (
                   <p
                     className={`font-normal text-[${
                       stakePoolMetadata?.colors?.fontColor
@@ -1414,7 +1417,8 @@ function Home() {
                                                 ? rewardEntries.data.find(
                                                     (entry) =>
                                                       entry.parsed.stakeEntry.equals(
-                                                        tk.stakeEntry?.pubkey!
+                                                        tk.stakeEntry?.pubkey ||
+                                                          PublicKey.default
                                                       )
                                                   )?.parsed.multiplier ||
                                                     rewardDistributorData.data
@@ -1451,7 +1455,8 @@ function Home() {
                                                               (entry) =>
                                                                 entry.parsed.stakeEntry.equals(
                                                                   tk.stakeEntry
-                                                                    ?.pubkey!
+                                                                    ?.pubkey ||
+                                                                    PublicKey.default
                                                                 )
                                                             )?.parsed
                                                               .multiplier ||
