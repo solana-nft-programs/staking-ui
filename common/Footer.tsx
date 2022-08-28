@@ -1,7 +1,7 @@
-import { useRouter } from 'next/router'
 import { darken, lighten } from 'polished'
 import { FaDiscord, FaGithub, FaMedium, FaTwitter } from 'react-icons/fa'
-import { contrastColorMode, hexColor } from './utils'
+
+import { contrastColorMode } from './utils'
 
 const SOCIALS = {
   discord: { icon: <FaDiscord />, link: 'https://discord.gg/byq6uNTugq' },
@@ -27,6 +27,7 @@ export const Footer = ({
       <div className="flex w-full flex-wrap items-start justify-between gap-10 py-10">
         <div className="flex items-center">
           <img
+            alt={bgColor}
             className="inline-block h-[28px]"
             src={
               contrastColorMode(bgColor)[1]
