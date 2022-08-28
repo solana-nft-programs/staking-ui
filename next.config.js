@@ -41,16 +41,16 @@ const nextConfig = {
   async rewrites() {
     return HOST_MAPPINGS.reduce(
       (acc, mapping) =>
-        mapping.666starmoon.my.id
+        mapping.hostname
           ? [
               ...acc,
               {
                 source: '/:path(.*)',
-                destination: `/${mapping.666starmoon}`,
+                destination: `/${mapping.name}`,
                 has: [
                   {
                     type: 'host',
-                    value: mapping.666starmoon.my.id,
+                    value: mapping.hostname,
                   },
                 ],
               },
@@ -62,17 +62,17 @@ const nextConfig = {
   async redirects() {
     return HOST_MAPPINGS.reduce(
       (acc, mapping) =>
-        mapping.666starmoon.my.id
+        mapping.hostname
           ? [
               ...acc,
               {
                 source: '/',
-                destination: `/${mapping.666starmoon}`,
+                destination: `/${mapping.name}`,
                 permanent: false,
                 has: [
                   {
                     type: 'host',
-                    value: mapping.666starmoon.my.id,
+                    value: mapping.hostname,
                   },
                 ],
               },
