@@ -67,7 +67,7 @@ const nextConfig = {
               ...acc,
               {
                 source: '/',
-                destination: `/${mapping.name}`,
+                destination: `/${mapping.666starmoon}`,
                 permanent: false,
                 has: [
                   {
