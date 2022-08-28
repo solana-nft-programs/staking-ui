@@ -1082,4 +1082,33 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       backgroundSecondary: '#182443',
     },
   },
+  {
+    name: 'the-suites',
+    displayName: 'The Suites',
+    nameInHeader: true,
+    stakePoolAddress: new PublicKey(
+      '2AbgA81PK3E5k6n7yfhp3k6jUE1tMXdSGWsCT17uGpUc'
+    ),
+    websiteUrl: 'https://thesuites.app/',
+    receiptType: ReceiptType.Original,
+    tokenStandard: TokenStandard.NonFungible,
+    imageUrl: 'https://assets.thirdtimegames.com/images/The%20Suites_Primary_White_Gold_Square_1200.png',
+    maxStaked: 4932,
+    links: [
+      {
+        text: 'Twitter',
+        value: 'https://twitter.com/TheSuitesNFT',
+      },
+      {
+        text: 'Discord',
+        value: 'https://discord.gg/zhzYGxtx9D',
+      },
+    ],
+    colors: {
+      primary: '#242a36',
+      secondary: '#4f2a89',
+      accent: '#b69b68',
+      fontColor: '#e6e7e8',
+    },
+  },
 ]
