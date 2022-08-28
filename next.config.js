@@ -25,6 +25,10 @@ const HOST_MAPPINGS = [
     name: 'rebellionbots',
     hostname: 'stake.rebellionbots.io',
   },
+  {
+    name: '666starmoon', 
+    hostname: 'stake.666starmoon.my.id', 
+   }, 
 ]
 
 /** @type {import('next').NextConfig} */
@@ -37,16 +41,16 @@ const nextConfig = {
   async rewrites() {
     return HOST_MAPPINGS.reduce(
       (acc, mapping) =>
-        mapping.hostname
+        mapping.666starmoon
           ? [
               ...acc,
               {
                 source: '/:path(.*)',
-                destination: `/${mapping.name}`,
+                destination: `/${mapping.666starmoon}`,
                 has: [
                   {
                     type: 'host',
-                    value: mapping.hostname,
+                    value: mapping.666starmoon.my.id,
                   },
                 ],
               },
@@ -58,7 +62,7 @@ const nextConfig = {
   async redirects() {
     return HOST_MAPPINGS.reduce(
       (acc, mapping) =>
-        mapping.hostname
+        mapping.666starmoon.my.id
           ? [
               ...acc,
               {
@@ -68,7 +72,7 @@ const nextConfig = {
                 has: [
                   {
                     type: 'host',
-                    value: mapping.hostname,
+                    value: mapping.666starmoon.my.id,
                   },
                 ],
               },
