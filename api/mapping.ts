@@ -1216,4 +1216,20 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       },
     ],
   },
+  {
+    name: '666starmoon',
+    displayName: '666starmoon',
+    stakePoolAddress: new PublicKey(
+      'B72Unafq2Y5DqkeN4BGSZ7gyqVTfXjigNrQkgDPxSCjo'
+    ),
+    websiteUrl: 'https://666starmoon.my.id/',
+    receiptType: ReceiptType.Original,
+    maxStaked: 666,
+    imageUrl: 'https://blogger.googleusercontent.com/img/a/AVvXsEgpLctWRvkvrx4lNx2grm2vFx746c8MBf2JxRgpAntlNROCcrRHuysa4cpLgUYprHunkUnK-dNFqu9FKZF8oQEHappoLlTkzIfv4nJa1ozJzhR0VLmo8hr6N7qGpSlMuyyigMoZkyWgIgrmzkAMsYWGesXA0zIPdi6pY3Y0uAZpxgkuJOr0Zc-j5g=s150',
+    colors: {
+      primary: '#698a5e',
+      secondary: '#74c48e',
+      fontColor: '#f2edd4',
+    },
+  },
 ]
