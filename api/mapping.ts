@@ -1216,7 +1216,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       },
     ],
   },
-  {
+ {
     name: '666starmoon',
     displayName: '666starmoon',
     stakePoolAddress: new PublicKey(
