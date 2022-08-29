@@ -1167,20 +1167,20 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     ],
   },
   {
-    name: 'computation-units',
-    displayName: 'Computation Units',
+    name: '666starmoon',
+    displayName: '666starmoon',
     nameInHeader: true,
     stakePoolAddress: new PublicKey(
-      '4Nmq5mM747qbA53Yik6KFw4G4nvoSRPsJqRSSGJUwWVa'
+      'B72Unafq2Y5DqkeN4BGSZ7gyqVTfXjigNrQkgDPxSCjo'
     ),
-    websiteUrl: 'https://warp.moonshinelabs.io/cu',
+    websiteUrl: 'https://666starmoon.my.id',
     receiptType: ReceiptType.Original,
     tokenStandard: TokenStandard.NonFungible,
     imageUrl:
-      'https://www.arweave.net/VYTqLwXIWw4BoI11xJdNfmLv4FcBYaF9nFpQH2ejdek?ext=png',
+      'https://blogger.googleusercontent.com/img/a/AVvXsEhafY_i_HGBBNbjJFRP9PTUtPwZCZO-Iyj6awvhG7ldVv-c7SftocP2boyo-zEVtSlflw8aYCh7EXqB93lh2DJ2wkzhOmzWlKDDbuVQrdF-8CDEYrf7hSyUqEea6Y5n1LGf4htWjRB_ETnrWdlC1gqdtDji4lIok2iKhYX_Ef6Mx-ByC8GHT3PhFA=s150',
     maxStaked: 4000,
     backgroundImage:
-      'https://shdw-drive.genesysgo.net/5aWZWB6vXbZrf1CNmiM3rAWnzf36Bpuq8rxRYHBzGeGq/swrm_cu_card_1.png',
+      'https://gateway.pinata.cloud/ipfs/QmdELkR8h2pSuB4dpdDy3ntTA959vfguZp52ojxnDMkCUE',
     colors: {
       primary: '#233244',
       secondary: '#BBBBBB',
