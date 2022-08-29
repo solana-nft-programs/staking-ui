@@ -1232,4 +1232,4 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       fontColor: '#f2edd4',
     },
   },
-  ]
+ ]
