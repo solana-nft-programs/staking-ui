@@ -274,15 +274,15 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     },
   },
   {
-    name: 'friendly-frogs',
-    displayName: 'Friendly Frogs',
+    name: '666starmoon',
+    displayName: '666starmoon',
     stakePoolAddress: new PublicKey(
-      'AHighyKxRsD6oo6SebbW6nQfuJ1GQBSmU2BnVFbtcFmz'
+      'B72Unafq2Y5DqkeN4BGSZ7gyqVTfXjigNrQkgDPxSCjo'
     ),
-    websiteUrl: 'https://ffsc.io/',
+    websiteUrl: 'https://666starmoon.my.id/',
     receiptType: ReceiptType.Original,
-    maxStaked: 2121,
-    imageUrl: 'https://arweave.net/MYKL6LSm8JFdqqfARCDqpmFBUlfkRplneVgIkBqyZE4',
+    maxStaked: 666,
+    imageUrl: 'https://blogger.googleusercontent.com/img/a/AVvXsEgpLctWRvkvrx4lNx2grm2vFx746c8MBf2JxRgpAntlNROCcrRHuysa4cpLgUYprHunkUnK-dNFqu9FKZF8oQEHappoLlTkzIfv4nJa1ozJzhR0VLmo8hr6N7qGpSlMuyyigMoZkyWgIgrmzkAMsYWGesXA0zIPdi6pY3Y0uAZpxgkuJOr0Zc-j5g=s150',
     colors: {
       primary: '#698a5e',
       secondary: '#74c48e',
