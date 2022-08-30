@@ -22,7 +22,7 @@ export const ENVIRONMENTS: Environment[] = [
   {
     label: 'mainnet-beta',
     primary: process.env.MAINNET_PRIMARY || 'https://ssc-dao.genesysgo.net',
-    secondary: 'https://ssc-dao.genesysgo.net',
+    secondary: process.env.MAINNET_SECONDARY || 'https://ssc-dao.genesysgo.net',
   },
   {
     label: 'testnet',

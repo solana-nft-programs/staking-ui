@@ -32,6 +32,7 @@ const nextConfig = {
   reactStrictMode: true,
   env: {
     MAINNET_PRIMARY: process.env.MAINNET_PRIMARY,
+    MAINNET_SECONDARY: process.env.MAINNET_SECONDARY,
     BASE_CLUSTER: process.env.BASE_CLUSTER,
   },
   async rewrites() {
