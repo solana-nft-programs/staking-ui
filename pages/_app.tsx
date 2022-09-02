@@ -25,8 +25,6 @@ export const queryClient = new QueryClient({
   },
 })
 
-export const DEBUG = false
-
 const App = ({
   Component,
   pageProps,
@@ -40,7 +38,7 @@ const App = ({
             <QueryClientProvider client={queryClient}>
               <>
                 <Component {...pageProps} />
-                {DEBUG && <ReactQueryDevtools initialIsOpen={false} />}
+                <ReactQueryDevtools initialIsOpen={false} />
               </>
             </QueryClientProvider>
           </WalletModalProvider>

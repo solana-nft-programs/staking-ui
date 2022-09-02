@@ -100,7 +100,14 @@ export const useAllowedTokenDatas = (showFungibleTokens: boolean) => {
   const { data: stakePool } = useStakePoolData()
   const { data: stakeAuthorizations } = useStakeAuthorizationsForPool()
   return useQuery<AllowedTokenData[] | undefined>(
-    ['allowedTokenDatas', stakePoolId, showFungibleTokens, tokenList?.length],
+    [
+      'allowedTokenDatas',
+      stakePoolId?.toString(),
+      stakePool?.pubkey.toString(),
+      walletId?.toString(),
+      showFungibleTokens,
+      tokenList?.length,
+    ],
     async () => {
       if (!stakePoolId || !stakePool || !walletId) return
 
