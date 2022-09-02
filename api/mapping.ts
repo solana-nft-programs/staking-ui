@@ -1022,30 +1022,6 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     },
   },
   {
-    name: 'Soulless-AI',
-    displayName: 'Soulless-AI',
-    stakePoolAddress: new PublicKey(
-      '4mW9Q1PxiBzs2YqdWBfS51yMcP3A1r2aQsBoSvQUhtjJ'
-    ),
-    styles: {
-      fontFamily: 'Multivac Interference',
-    },
-    colors: {
-      primary: '#000',
-      secondary: '#34c674',
-      accent: '#34c674',
-      fontColor: '#FFF',
-      fontColorSecondary: '#FFF',
-      backgroundSecondary: '#000',
-    },
-    websiteUrl: 'https://stake.soulless-ai.io',
-    receiptType: ReceiptType.Original,
-    hidden: false,
-    notFound: true,
-    imageUrl:
-      'https://uploads-ssl.webflow.com/62e97328e35e46351183d1a9/62fe72a2b0f5f3605fd803f1_Untitled-10.png',
-  },
-  {
     name: 'slayerz',
     displayName: 'Slayerz',
     stakePoolAddress: new PublicKey(
