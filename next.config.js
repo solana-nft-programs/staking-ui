@@ -25,6 +25,10 @@ const HOST_MAPPINGS = [
     name: 'rebellionbots',
     hostname: 'stake.rebellionbots.io',
   },
+    {
+    name: 'Sweet-Apocalypse',
+    hostname: 'stake.sweetapocalypse.org',
+  },
 ]
 
 /** @type {import('next').NextConfig} */
