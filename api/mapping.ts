@@ -1231,4 +1231,58 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       fontColor: '#f2edd4',
     },
   },
+  {
+    name: 'Sweet-Apocalypse',
+    displayName: 'Sweet Apocalypse',
+    nameInHeader: true,
+    stakePoolAddress: new PublicKey(
+      'GzmFJFc7rZpULuJMhs8XRRxnEFFCJi4U5YFnUPZsuHPN'
+    ),
+    receiptType: ReceiptType.Original,
+    tokenStandard: TokenStandard.NonFungible,
+    hideAllowedTokens: true,
+    // styles to apply to the whole stake pool
+    styles: {
+      fontFamily: 'Industry, sans-serif',
+      fontWeight: 700,
+      fontSize: '22px',  
+      font: '#000000',
+      color: '#000000',
+  
+    },
+    // Colors object to style the stake page
+    colors: {
+      primary: 'rgb(120 122 108 / 80%)',
+      secondary: '#F9C90C',
+      backgroundSecondary: 'rgb(61 169 211 / 65%)',
+      fontColor: '#ffff',
+      fontColorSecondary: '#000000',
+    },
+    imageUrl:'https://bafkreie5parsjwtmnk7cyixtdoznifdk3hx2kjazzrvecc3mgjrwvr6tfy.ipfs.nftstorage.link/',
+    // Background image for poolq
+    backgroundImage:'https://bafybeifddabmgm3rinrdngbzanttwxp2qfr5ffpu7itgradc4sxplpjvc4.ipfs.nftstorage.link/',
+   
+
+    // Website url if specified will be navigated to when the image in the header is clicked
+    websiteUrl: 'https://www.sweetapocalypse.org/',
+    maxStaked: 6666,
+    links: [
+      {
+        text: 'Twitter',
+        value: 'https://twitter.com/sweetapocaIypse',
+      },
+      {
+        text: 'Discord',
+        value: 'https://discord.gg/sweetapocalypse',
+      },
+      {
+        text: 'Sweet Apocalypse',
+        value: 'https://www.sweetapocalypse.org/',
+      },
+      {
+        text: 'MINT',
+        value: 'https://www.sweetapomint.org/',
+      },
+    ],
+  }
 ]
