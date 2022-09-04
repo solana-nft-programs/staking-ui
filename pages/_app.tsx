@@ -1,5 +1,4 @@
 import './styles.css'
-import 'antd/dist/antd.dark.css'
 import '@cardinal/namespaces-components/dist/esm/styles.css'
 import type { AppProps } from 'next/app'
 import { WalletProvider } from '@solana/wallet-adapter-react'
