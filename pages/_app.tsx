@@ -13,7 +13,8 @@ import { UTCNowProvider } from 'providers/UTCNowProvider'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import { ReactQueryDevtools } from 'react-query/devtools'
 
-require('@solana/wallet-adapter-react-ui/styles.css')
+import '@solana/wallet-adapter-react-ui/styles.css'
+import '../vendor/Header.css'
 
 export const queryClient = new QueryClient({
   defaultOptions: {

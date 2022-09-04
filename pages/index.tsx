@@ -14,7 +14,6 @@ import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 import { useEffect, useState } from 'react'
 import { Wallet } from '@metaplex/js'
 import { LoadingSpinner } from 'common/LoadingSpinner'
-import { notify } from 'common/Notification'
 import { contrastColorMode, pubKeyUrl, secondstoDuration } from 'common/utils'
 import {
   formatAmountAsDecimal,
@@ -58,8 +57,9 @@ import * as splToken from '@solana/spl-token'
 import { usePoolAnalytics } from 'hooks/usePoolAnalytics'
 import { useRewardsRate } from 'hooks/useRewardsRate'
 import { useSentriesStats } from 'hooks/useSentriesStats'
-import { useSolStakeAccount } from 'hooks/useSolStakeAccount'
-import { useEpochInfo } from 'hooks/useEpochInfo'
+import { Button } from 'common/Button'
+import { Notifications } from 'components/Notifications'
+import { useNotifications } from 'hooks/useNotifications'
 
 
 const MAX_EPOCH = new BN(2).pow(new BN(64)).sub(new BN(1))
@@ -79,9 +79,6 @@ function Home() {
   // const rewards = useRewards()
   // const rewardsRate = useRewardsRate()
   const sentriesStats = useSentriesStats()
-  const solStakeAccount = useSolStakeAccount()
-  const epochInfo = useEpochInfo()
-  
 
   const [unstakedSelected, setUnstakedSelected] = useState<AllowedTokenData[]>(
     []
@@ -104,6 +101,7 @@ function Home() {
   const rewardDistributorTokenAccountData = useRewardDistributorTokenAccount()
   const { UTCNow } = useUTCNow()
   const analytics = usePoolAnalytics()
+  const { notify } = useNotifications()
 
   // OG content
   const description = "Stake your Sentry NFT to start earning rewards."
@@ -561,14 +559,9 @@ function Home() {
     return
   }
 
-
   return (
-    <div
-      style={{
-        background: stakePoolMetadata?.colors?.primary,
-        backgroundImage: `url(${stakePoolMetadata?.backgroundImage})`,
-      }}
-    >
+    <>
+    <main className="pt-6 relative">
       <Head>
         <title>Sentries NFT Staking</title>
         <meta name="description" content="Stake your Sentry NFT increase your Power." />
@@ -583,24 +576,26 @@ function Home() {
         <meta property="og:image" content={image}/>
       </Head>
       <Header />
-      <div
-        className={`container mx-auto w-full`}
-        style={{
-          ...stakePoolMetadata?.styles,
-          color:
-            stakePoolMetadata?.colors?.fontColor ??
-            contrastColorMode(
-              stakePoolMetadata?.colors?.primary || '#000000'
-            )[0],
-        }}
-      >
-        <div className='description-content py-6 px-10 mb-4 mx-5'>
-          <h1 className='big solanatext' style={{textAlign: "center"}}>
-            The Power Grid
-          </h1>
-          <h3 style={{textAlign: "center"}}>Stake your Sentry here, and power it up by locking SOL in our validator, The Lode</h3>
+      <div className="w-[420px] h-[420px] fixed top-1/2 -left-[210px] bg-teal-400 rounded-full blur-[300px] z-[-1] opacity-30"></div>
+      <div className="w-[120px] h-[120px] fixed bottom-0 -right-[60px] bg-purple-400 rounded-full blur-[60px] z-[-1] opacity-30"></div>
+      <div className="container mx-auto w-full z-10 z-100">
+        <div className="flex my-8 text-white">
+          <div className="w-1/2">
+            <h1 className="text-4xl font-bold text-white mb-2">
+              The Power Grid
+            </h1>
+            <p className="text-lg w-3/4 text-neutral-300">Stake your Sentry here, and power it up by locking SOL in our validator, The Lode</p>
+          </div>
+          <div className="w-1/2">
+            <Button variant="primary" onClick={() => {
+                notify({
+                message: `No NFTs selected`,
+                type: 'success',
+              })
+            }}>Learn More</Button>
+          </div>
         </div>
-        <div className='description py-6 px-10 mb-4 mx-5'>
+        <div className=' py-6 px-10 mb-4 mx-5'>
           <p>The Power Grid is the rewards pool through which holders earn from the growth of the Sentries business. Stake now to become eligible for enhanced rewards.</p>
           <p>Click <a href="https://www.sentries.io/stake-with-sentries" target="_BLANK">here for staking with the validator instructions</a>.</p>
         </div>
@@ -1452,8 +1447,9 @@ function Home() {
         </div>
       </div>
       <Footer bgColor={stakePoolMetadata?.colors?.primary} />
-      
-    </div>
+    </main>
+    <Notifications />
+    </>
   )
 }
 

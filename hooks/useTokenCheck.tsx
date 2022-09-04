@@ -16,7 +16,7 @@ export const useTokenCheck = () => {
     ],
     async () => {
       return await fetch(
-        `https://api.sentries.io/v1/check/${address}`
+        `https://api.sentries.io/v1/check/${address || ''}`
       )
         .then((response) => response.json())
         .then((data) => {

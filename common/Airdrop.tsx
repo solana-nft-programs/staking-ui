@@ -112,26 +112,28 @@ export const Airdrop = () => {
   const allowedTokenDatas = useAllowedTokenDatas(true)
   const { data: stakePoolMetadata } = useStakePoolMetadata()
 
+  async function handleAirdrop() {
+    if (!wallet.connected) return
+    try {
+      await airdropNFT(
+        connection,
+        asWallet(wallet),
+        stakePoolMetadata?.airdrops || airdrops || [],
+        stakePoolMetadata
+      )
+      notify({ message: 'Aidrop successfull', type: 'success' })
+      await allowedTokenDatas.remove()
+    } catch (e) {
+      notify({ message: `Airdrop failed: ${e}`, type: 'error' })
+    }
+  }
+
   return (
     <AsyncButton
-      bgColor="rgb(29, 155, 240)"
+      className="bg-teal-400 hover:bg-teal-500 focus:outline outline-teal-800 outline-2"
       variant="primary"
       disabled={!wallet.connected}
-      handleClick={async () => {
-        if (!wallet.connected) return
-        try {
-          await airdropNFT(
-            connection,
-            asWallet(wallet),
-            stakePoolMetadata?.airdrops || airdrops || [],
-            stakePoolMetadata
-          )
-          notify({ message: 'Aidrop successfull', type: 'success' })
-          await allowedTokenDatas.remove()
-        } catch (e) {
-          notify({ message: `Airdrop failed: ${e}`, type: 'error' })
-        }
-      }}
+      handleClick={async () => handleAirdrop()}
     >
       Airdrop
     </AsyncButton>
@@ -143,21 +145,23 @@ export const AirdropSol = () => {
   const wallet = useWallet()
   const allowedTokenDatas = useAllowedTokenDatas(true)
 
+  async function handleAirdrop() {
+    if (!wallet.connected) return
+    try {
+      await connection.requestAirdrop(wallet.publicKey!, LAMPORTS_PER_SOL)
+      notify({ message: 'Airdropped 1 sol successfully' })
+      await allowedTokenDatas.remove()
+    } catch (e) {
+      notify({ message: `Airdrop failed: ${e}`, type: 'error' })
+    }
+  }
+
   return (
     <AsyncButton
       bgColor="rgb(29, 155, 240)"
       variant="primary"
       disabled={!wallet.connected}
-      handleClick={async () => {
-        if (!wallet.connected) return
-        try {
-          await connection.requestAirdrop(wallet.publicKey!, LAMPORTS_PER_SOL)
-          notify({ message: 'Airdropped 1 sol successfully' })
-          await allowedTokenDatas.remove()
-        } catch (e) {
-          notify({ message: `Airdrop failed: ${e}`, type: 'error' })
-        }
-      }}
+      handleClick={async () => handleAirdrop()}
     >
       Faucet
     </AsyncButton>
