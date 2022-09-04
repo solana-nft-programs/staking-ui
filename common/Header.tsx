@@ -51,7 +51,7 @@ const walletToDialectWallet = (
     ? async (pubKey) => {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         //@ts-ignore
-        return wallet.wallet?.adapter?._wallet?.diffieHellman(pubKey);
+        return wallet.wallet?.adapter?._wallet?.diffieHellman(pubKey)
       }
     : undefined,
 })
@@ -62,14 +62,14 @@ export const Header = () => {
   const stakePoolId = useStakePoolId()
   const { data: stakePoolMetadata } = useStakePoolMetadata()
   const { clockDrift } = useUTCNow()
-  
+
   const [dialectWalletAdapter, setDialectWalletAdapter] =
-  useState<DialectWalletAdapter>(() => walletToDialectWallet(wallet));
-  
+    useState<DialectWalletAdapter>(() => walletToDialectWallet(wallet))
+
   useEffect(() => {
-    setDialectWalletAdapter(walletToDialectWallet(wallet));
-  }, [wallet]);
-  
+    setDialectWalletAdapter(walletToDialectWallet(wallet))
+  }, [wallet])
+
   const dialectConfig = useMemo(
     (): Config => ({
       backends: [Backend.DialectCloud],
@@ -79,24 +79,24 @@ export const Header = () => {
       },
     }),
     []
-    )
+  )
 
   const envLabel = ctx.environment.label
   const isNotMainnetBeta = envLabel !== EnvironmentType.MainnetBeta
 
   return (
     <>
-      {clockDrift && <ClockdriftWarning clockDrift={clockDrift} /> }
-      <nav className="container mx-auto bg-neutral-800 rounded-xl relative">
+      {clockDrift && <ClockdriftWarning clockDrift={clockDrift} />}
+      <nav className="container relative mx-auto rounded-xl bg-neutral-800">
         <div className="flex h-20 justify-between px-5 text-white">
           <div className="flex items-center gap-3">
             <Logo />
             {isNotMainnetBeta ? (
               <div className="flex items-center gap-2 text-white">
-                <i className="w-3 h-3 bg-purple-400 rounded-full -top-1 animate-pulse"></i>
+                <i className="-top-1 h-3 w-3 animate-pulse rounded-full bg-purple-400"></i>
                 <span>{envLabel}</span>
               </div>
-            ): null}
+            ) : null}
             {isNotMainnetBeta ? <Airdrop /> : null}
           </div>
           <div className="relative my-auto flex items-center align-middle">
@@ -109,8 +109,12 @@ export const Header = () => {
                 </a>
               ))
             ) : (
-              <Link href={`/admin${isNotMainnetBeta ? `?cluster=${envLabel}` : ''}`}>
-                <span className="my-auto mr-10 hover:cursor-pointer">Admin</span>
+              <Link
+                href={`/admin${isNotMainnetBeta ? `?cluster=${envLabel}` : ''}`}
+              >
+                <span className="my-auto mr-10 hover:cursor-pointer">
+                  Admin
+                </span>
               </Link>
             )}
             {wallet.connected && wallet.publicKey ? (
@@ -126,7 +130,7 @@ export const Header = () => {
                   handleDisconnect={() => wallet.disconnect()}
                   wallet={wallet as Wallet}
                   style={{
-                    background: '#262626'
+                    background: '#262626',
                   }}
                 />
                 <DialectContextProvider
@@ -134,26 +138,25 @@ export const Header = () => {
                   config={dialectConfig}
                   dapp={DIALECT_PUBLIC_KEY}
                   gate={() =>
-                    new Promise((resolve) => setTimeout(() => resolve(true), 3000))
+                    new Promise((resolve) =>
+                      setTimeout(() => resolve(true), 3000)
+                    )
                   }
                 >
                   <DialectThemeProvider>
                     <DialectUiManagementProvider>
-                    <NotificationsButton
-                      dialectId="dialect-notifications"
-                      notifications={[]}
-                      pollingInterval={15000}
-                      channels={['web3']}
-                    />
+                      <NotificationsButton
+                        dialectId="dialect-notifications"
+                        notifications={[]}
+                        pollingInterval={15000}
+                        channels={['web3']}
+                      />
                     </DialectUiManagementProvider>
                   </DialectThemeProvider>
                 </DialectContextProvider>
               </>
             ) : (
-              <WalletMultiButton
-                style={{ all: 'unset'}}
-                className="" 
-              />
+              <WalletMultiButton style={{ all: 'unset' }} className="" />
             )}
           </div>
         </div>

@@ -1,5 +1,5 @@
 .wallet-adapter-button {
-  @apply bg-purple-400 ;
+  @apply bg-purple-400;
   @apply cursor-pointer;
   @apply p-3 px-6;
   @apply rounded-md;
@@ -7,7 +7,7 @@
 }
 
 .wallet-adapter-button:not([disabled]):hover {
-  @apply hover:bg-teal-500
+  @apply hover:bg-teal-500;
 }
 
 .wallet-adapter-modal-list .wallet-adapter-button {

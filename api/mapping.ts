@@ -100,13 +100,12 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     websiteUrl: 'https://sentries.io',
     receiptType: ReceiptType.Original,
     tokenStandard: TokenStandard.NonFungible,
-    imageUrl:
-      'https://www.sentries.io/images/Logo.svg',
+    imageUrl: 'https://www.sentries.io/images/Logo.svg',
     colors: {
       primary: '#383838',
       secondary: '#9647FB',
       accent: '#01CF8E',
-      fontColor: '#FFFFFF'
+      fontColor: '#FFFFFF',
     },
   },
   {

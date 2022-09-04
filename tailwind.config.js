@@ -12,25 +12,25 @@ module.exports = {
     extend: {
       colors: {
         purple: {
-          400: '#9945ff'
+          400: '#9945ff',
         },
         teal: {
-          400: '#01cf8e'
-        }
+          400: '#01cf8e',
+        },
       },
       fontFamily: {
         sans: ['Axiforma', ...defaultTheme.fontFamily.sans],
         serif: ['Ishimura', ...defaultTheme.fontFamily.serif],
       },
       animation: {
-        'slide-in': 'slideIn 0.15s ease-in'
+        'slide-in': 'slideIn 0.15s ease-in',
       },
       keyframes: {
         slideIn: {
-          '0%': { transform: 'translateX(100%)'},
-          '100%': { transform: 'translateX(0)'}
-        }
-      }
+          '0%': { transform: 'translateX(100%)' },
+          '100%': { transform: 'translateX(0)' },
+        },
+      },
     },
   },
   plugins: [],

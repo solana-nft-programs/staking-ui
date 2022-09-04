@@ -21,8 +21,8 @@ const HOST_MAPPINGS = [
   },
   {
     name: 'sentries',
-    hostname: 'staking.sentries.io'
-  }
+    hostname: 'staking.sentries.io',
+  },
 ]
 
 /** @type {import('next').NextConfig} */
@@ -76,3 +76,5 @@ const nextConfig = {
     )
   },
 }
+
+module.exports = {}
