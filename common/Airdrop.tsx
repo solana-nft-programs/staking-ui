@@ -12,7 +12,6 @@ import type { Wallet } from '@saberhq/solana-contrib'
 import { useWallet } from '@solana/wallet-adapter-react'
 import type { Connection } from '@solana/web3.js'
 import { Keypair, LAMPORTS_PER_SOL, Transaction } from '@solana/web3.js'
-import { notify } from 'common/Notification'
 import { asWallet } from './Wallets'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 import { AsyncButton } from './Button'
@@ -21,6 +20,7 @@ import { StakePoolMetadata } from 'api/mapping'
 import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
 import { executeTransaction } from '@cardinal/staking'
 import { useAllowedTokenDatas } from 'hooks/useAllowedTokenDatas'
+import { useNotifications } from 'hooks/useNotifications'
 
 export type AirdropMetadata = { name: string; symbol: string; uri: string }
 
@@ -111,6 +111,7 @@ export const Airdrop = () => {
   const wallet = useWallet()
   const allowedTokenDatas = useAllowedTokenDatas(true)
   const { data: stakePoolMetadata } = useStakePoolMetadata()
+  const { notify } = useNotifications()
 
   async function handleAirdrop() {
     if (!wallet.connected) return
@@ -130,7 +131,7 @@ export const Airdrop = () => {
 
   return (
     <AsyncButton
-      className="bg-teal-400 hover:bg-teal-500 focus:outline outline-teal-800 outline-2"
+      className="bg-teal-400 outline-2 outline-teal-800 hover:bg-teal-500 focus:outline"
       variant="primary"
       disabled={!wallet.connected}
       handleClick={async () => handleAirdrop()}
@@ -144,12 +145,13 @@ export const AirdropSol = () => {
   const { connection } = useEnvironmentCtx()
   const wallet = useWallet()
   const allowedTokenDatas = useAllowedTokenDatas(true)
+  const { notify } = useNotifications()
 
   async function handleAirdrop() {
     if (!wallet.connected) return
     try {
       await connection.requestAirdrop(wallet.publicKey!, LAMPORTS_PER_SOL)
-      notify({ message: 'Airdropped 1 sol successfully' })
+      notify({ message: 'Airdropped 1 sol successfully', type: 'success' })
       await allowedTokenDatas.remove()
     } catch (e) {
       notify({ message: `Airdrop failed: ${e}`, type: 'error' })

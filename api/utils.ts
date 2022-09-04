@@ -8,7 +8,6 @@ import {
   Signer,
   Transaction,
 } from '@solana/web3.js'
-import { notify } from 'common/Notification'
 
 export const executeAllTransactions = async (
   connection: Connection,
@@ -52,27 +51,27 @@ export const executeAllTransactions = async (
           tx.serialize(),
           config.confirmOptions
         )
-        config.notificationConfig &&
-          config.notificationConfig.individualSuccesses &&
-          notify({
-            message: `${config.notificationConfig.message} ${index + 1}/${
-              transactions.length
-            }`,
-            description: config.notificationConfig.message,
-            txid,
-          })
+        // config.notificationConfig &&
+        // config.notificationConfig.individualSuccesses &&
+        // notify({
+        //   message: `${config.notificationConfig.message} ${index + 1}/${
+        //     transactions.length
+        //   }`,
+        //   description: config.notificationConfig.message,
+        //   txid,
+        // })
         return txid
       } catch (e) {
         console.log('Failed transaction: ', (e as SendTransactionError).logs, e)
-        config.notificationConfig &&
-          notify({
-            message: `${
-              config.notificationConfig.errorMessage ?? 'Failed transaction'
-            } ${index + 1}/${transactions.length}`,
-            description: handleError(e, `Transaction failed: ${e}`),
-            txid: '',
-            type: 'error',
-          })
+        // config.notificationConfig &&
+        // notify({
+        //   message: `${
+        //     config.notificationConfig.errorMessage ?? 'Failed transaction'
+        //   } ${index + 1}/${transactions.length}`,
+        //   description: handleError(e, `Transaction failed: ${e}`),
+        //   txid: '',
+        //   type: 'error',
+        // })
         if (config.throwIndividualError) throw new Error(`${e}`)
         return null
       }
@@ -80,14 +79,14 @@ export const executeAllTransactions = async (
   )
   console.log('Successful txs', txIds)
   const successfulTxids = txIds.filter((txid) => txid)
-  config.notificationConfig &&
-    successfulTxids.length > 0 &&
-    notify({
-      message: `${config.notificationConfig.message} ${successfulTxids.length}/${transactions.length}`,
-      description: config.notificationConfig.description,
-      // Consider linking all transactions
-      txid: '',
-    })
+  // config.notificationConfig &&
+  //   successfulTxids.length > 0 &&
+  //   notify({
+  //     message: `${config.notificationConfig.message} ${successfulTxids.length}/${transactions.length}`,
+  //     description: config.notificationConfig.description,
+  //     // Consider linking all transactions
+  //     txid: '',
+  //   })
   config.callback && config.callback(true)
   return txIds
 }
