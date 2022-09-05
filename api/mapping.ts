@@ -9,6 +9,8 @@ export enum TokenStandard {
   Fungible = 1,
   // Non fungible are all unique
   NonFungible = 2,
+  // No receipt
+  None = 3,
 }
 
 export type Analytic = {

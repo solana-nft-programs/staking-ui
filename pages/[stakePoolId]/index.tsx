@@ -354,10 +354,11 @@ function Home() {
           return stake(connection, wallet as Wallet, {
             stakePoolId: stakePool?.pubkey,
             receiptType:
-              !amount ||
-              (amount &&
-                amount.eq(new BN(1)) &&
-                receiptType === ReceiptType.Receipt)
+              (!amount ||
+                (amount &&
+                  amount.eq(new BN(1)) &&
+                  receiptType === ReceiptType.Receipt)) &&
+              receiptType !== ReceiptType.None
                 ? receiptType
                 : undefined,
             originalMintId: new PublicKey(
