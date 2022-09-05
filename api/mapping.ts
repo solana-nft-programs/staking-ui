@@ -1167,6 +1167,32 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
         value: 'https://warp.moonshinelabs.io/caps-discord',
       },
     ],
+    analytics: [
+      {
+        metadata: {
+          key: 'Pass Type',
+          type: 'staked',
+          totals: [
+            {
+              key: 'Bronze',
+              value: 2352,
+            },
+            {
+              key: 'Silver',
+              value: 1085,
+            },
+            {
+              key: 'Gold',
+              value: 98,
+            },
+            {
+              key: 'Platinum',
+              value: 7,
+            },
+          ],
+        },
+      },
+    ],
   },
   {
     name: 'computation-units',
