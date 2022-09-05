@@ -14,12 +14,16 @@ const HOST_MAPPINGS = [
     hostname: 'stake.degengod.xyz',
   },
   {
-    name: 'onespace',
-    hostname: 'stake.1space.me',
+    name: 'plane-x',
+    hostname: 'staking.plane-x.io',
   },
   {
-    name: 'Sweet-Apocalypse',
-    hostname: 'stake.sweetapocalypse.org',
+    name: 'lil-weenees',
+    hostname: 'stake.weenee.me',
+  },
+  {
+    name: 'rebellionbots',
+    hostname: 'stake.rebellionbots.io',
   },
 ]
 
@@ -28,6 +32,7 @@ const nextConfig = {
   reactStrictMode: true,
   env: {
     MAINNET_PRIMARY: process.env.MAINNET_PRIMARY,
+    MAINNET_SECONDARY: process.env.MAINNET_SECONDARY,
     BASE_CLUSTER: process.env.BASE_CLUSTER,
   },
   async rewrites() {
@@ -86,3 +91,10 @@ module.exports = withSentryConfig(nextConfig, {
   // For all available options, see:
   // https://github.com/getsentry/sentry-webpack-plugin#options.
 })
+Footer
+© 2022 GitHub, Inc.
+Footer navigation
+Terms
+Privacy
+Security
+Status
