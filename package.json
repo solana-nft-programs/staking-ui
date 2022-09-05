@@ -28,6 +28,8 @@
     "@cardinal/scanner": "^0.1.1",
     "@cardinal/staking": "^1.5.44",
     "@cardinal/stats": "^1.0.3",
+    "@usedispatch/forum": "^0.3.9",
+    "@usedispatch/client": "0.12.0",
     "@dialectlabs/sdk": "^0.6.5",
     "@dialectlabs/react-ui": "^1.0.0-alpha.47",
     "@dialectlabs/react-sdk": "^1.0.0-beta.26",

@@ -21,6 +21,14 @@ body {
   color: #FFFFFF !important;
 }
 
+.topicView svg {
+  max-width: 20px;
+}
+
+.forumView svg {
+  max-width: 20px;
+}
+
 .big {
   font-size: 5rem;
   line-height: 5rem;
