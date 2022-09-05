@@ -9,6 +9,8 @@ export enum TokenStandard {
   Fungible = 1,
   // Non fungible are all unique
   NonFungible = 2,
+  // No receipt
+  None = 3,
 }
 
 export type Analytic = {
@@ -1174,7 +1176,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       '4Nmq5mM747qbA53Yik6KFw4G4nvoSRPsJqRSSGJUwWVa'
     ),
     websiteUrl: 'https://warp.moonshinelabs.io/cu',
-    receiptType: ReceiptType.Original,
+    receiptType: ReceiptType.None,
     tokenStandard: TokenStandard.NonFungible,
     imageUrl:
       'https://www.arweave.net/VYTqLwXIWw4BoI11xJdNfmLv4FcBYaF9nFpQH2ejdek?ext=png',
@@ -1182,7 +1184,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     backgroundImage:
       'https://shdw-drive.genesysgo.net/5aWZWB6vXbZrf1CNmiM3rAWnzf36Bpuq8rxRYHBzGeGq/swrm_cu_card_1.png',
     colors: {
-      primary: '#233244',
+      primary: '#1EC1E1',
       secondary: '#BBBBBB',
       accent: '#DE38C8',
       fontColor: '#FFFFFF',
