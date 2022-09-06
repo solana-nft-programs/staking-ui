@@ -81,6 +81,21 @@ export const defaultSecondaryColor = 'rgba(29, 78, 216, 255)'
 
 export const stakePoolMetadatas: StakePoolMetadata[] = [
   {
+    name: 'yojimbo',
+    displayName: 'Yojimbo',
+    stakePoolAddress: new PublicKey(
+      '3MukZ3YHqLDnkzv5fxwocvX6nLBdHhjfcq1jEooVb5JC'
+    ),
+    websiteUrl: 'https://twitter.com/YojimboDegens',
+    receiptType: ReceiptType.Original,
+    maxStaked: 4397,
+    imageUrl: 'https://arweave.net/_sUvZroKKlVKNAInPAqKER1rYSObhVyCR-Dw3qAOd3Q',
+    colors: {
+      accent: '#d35e48',
+      fontColor: '#FFFFFF',
+    },
+  },
+  {
     name: 'cardinal',
     displayName: 'Cardinal',
     stakePoolAddress: new PublicKey(
