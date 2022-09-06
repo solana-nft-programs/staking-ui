@@ -77,9 +77,16 @@ export const useRewardsRate = () => {
         rewardsRateMap,
         dailyRewards: totalDaily.eq(new BN(0))
           ? rewardDistributorData.parsed.rewardAmount.mul(
-              new BN(86400).div(
-                rewardDistributorData.parsed.rewardDurationSeconds
-              )
+              rewardDistributorData.parsed.maxRewardSecondsReceived
+                ? BN.min(
+                    rewardDistributorData.parsed.maxRewardSecondsReceived,
+                    new BN(86400).div(
+                      rewardDistributorData.parsed.rewardDurationSeconds
+                    )
+                  )
+                : new BN(86400).div(
+                    rewardDistributorData.parsed.rewardDurationSeconds
+                  )
             )
           : totalDaily,
       }

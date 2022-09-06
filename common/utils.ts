@@ -71,7 +71,7 @@ export function secondstoDuration(durationSeconds: number) {
   return duration
 }
 
-export const withSleep = async (fn: Function, sleep = 2000) => {
+export const withSleep = async (fn: () => any, sleep = 2000) => {
   await new Promise((r) => setTimeout(r, sleep))
   await fn()
 }
