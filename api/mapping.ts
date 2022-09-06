@@ -1139,6 +1139,32 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       // fontColorSecondary: '#DE38C8',
       // backgroundSecondary: '#DE38C8',
     },
+    analytics: [
+      {
+        metadata: {
+          key: 'Pass Type',
+          type: 'staked',
+          totals: [
+            {
+              key: 'Bronze',
+              value: 2352,
+            },
+            {
+              key: 'Silver',
+              value: 1085,
+            },
+            {
+              key: 'Gold',
+              value: 98,
+            },
+            {
+              key: 'Platinum',
+              value: 7,
+            },
+          ],
+        },
+      },
+    ],
     links: [
       {
         text: 'HOME',
