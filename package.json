@@ -27,7 +27,7 @@
     "@cardinal/common": "^2.0.4",
     "@cardinal/namespaces-components": "^4.0.5",
     "@cardinal/scanner": "^0.1.1",
-    "@cardinal/staking": "^1.7.0",
+    "@cardinal/staking": "^1.7.3",
     "@cardinal/stats": "^1.0.3",
     "@emotion/styled": "^11.8.1",
     "@headlessui/react": "^1.6.1",
