@@ -7,7 +7,7 @@ import {
 import '@dialectlabs/react-ui/index.css'
 import { ReceiptType } from '@cardinal/staking/dist/cjs/programs/stakePool'
 import { useWallet } from '@solana/wallet-adapter-react'
-import { PublicKey, Signer, Transaction } from '@solana/web3.js'
+import { PublicKey, Signer, Transaction, LAMPORTS_PER_SOL } from '@solana/web3.js'
 import { Header } from 'common/Header'
 import Head from 'next/head'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
@@ -58,25 +58,30 @@ import * as splToken from '@solana/spl-token'
 import { usePoolAnalytics } from 'hooks/usePoolAnalytics'
 import { useRewardsRate } from 'hooks/useRewardsRate'
 import { useSentriesStats } from 'hooks/useSentriesStats'
+import { useSolStakeAccount } from 'hooks/useSolStakeAccount'
+import { useEpochInfo } from 'hooks/useEpochInfo'
 
+
+const MAX_EPOCH = new BN(2).pow(new BN(64)).sub(new BN(1))
 
 function Home() {
   const router = useRouter()
-  const { connection, environment } = useEnvironmentCtx()
+  const { connection } = useEnvironmentCtx()
   const wallet = useWallet()
   const walletModal = useWalletModal()
   const { data: stakePool, isFetched: stakePoolLoaded } = useStakePoolData()
   const stakedTokenDatas = useStakedTokenDatas()
   const rewardDistributorData = useRewardDistributorData()
-  const rewardMintInfo = useRewardMintInfo()
+  // const rewardMintInfo = useRewardMintInfo()
   const stakePoolEntries = useStakePoolEntries()
   const maxStaked = useStakePoolMaxStaked()
   const rewardEntries = useRewardEntries()
-  const rewards = useRewards()
-  const rewardsRate = useRewardsRate()
-
-  // Sentries Data
+  // const rewards = useRewards()
+  // const rewardsRate = useRewardsRate()
   const sentriesStats = useSentriesStats()
+  const solStakeAccount = useSolStakeAccount()
+  const epochInfo = useEpochInfo()
+  
 
   const [unstakedSelected, setUnstakedSelected] = useState<AllowedTokenData[]>(
     []
@@ -111,6 +116,10 @@ function Home() {
   if (stakePoolMetadata?.redirect) {
     router.push(stakePoolMetadata?.redirect)
     return
+  }
+
+  function formatEpoch(epoch: BN) {
+    return epoch.eq(MAX_EPOCH) ? '-' : epoch.toString();
   }
 
   useEffect(() => {
@@ -595,6 +604,88 @@ function Home() {
           <p>The Power Grid is the rewards pool through which holders earn from the growth of the Sentries business. Stake now to become eligible for enhanced rewards.</p>
           <p>Click <a href="https://www.sentries.io/stake-with-sentries" target="_BLANK">here for staking with the validator instructions</a>.</p>
         </div>
+        {/* <div>
+        {(solStakeAccount && solStakeAccount.data) ? (
+          <>
+          Staked:
+          {// @ts-ignore
+            solStakeAccount.data[0].lamports / LAMPORTS_PER_SOL
+          } SOL <br />
+          {// @ts-ignore
+            solStakeAccount.data[0].address.toString()
+          } <br />
+          Epoch Activated:
+          {// @ts-ignore
+          // If current epoch is activated epoch then show as activating..?
+          // Same with deactivating...
+            formatEpoch(solStakeAccount.data[0].stakeAccount.info.stake.delegation.activationEpoch)
+          } <br />
+          {
+            // @ts-ignore
+            // TODO: Calculate APY?
+            solStakeAccount.data[0].inflationRewards.map((reward) => (
+              <>
+              Epoch: {reward.epoch}
+              Reward: {reward.amount / LAMPORTS_PER_SOL}
+              Post Balance: {reward.postBalance / LAMPORTS_PER_SOL}
+              <br />
+              </>
+            ))}
+          </>
+        ) : (
+          <>
+          Error
+          </>
+        )}
+        </div>
+        <div>
+        {(epochInfo && epochInfo.data) ? (
+          <>
+          Current slot:
+          {
+            //@ts-ignore
+            epochInfo.data?.epochInfo.absoluteSlot
+          }<br />
+          Blockheight: 
+          {
+            //@ts-ignore
+            epochInfo.data?.epochInfo.blockHeight
+          }<br />
+          Current epoch:
+          {
+            //@ts-ignore
+            epochInfo.data?.epochInfo.epoch
+          }<br />
+          Slot index:
+          {
+            //@ts-ignore
+            epochInfo.data?.epochInfo.slotIndex
+          }<br />
+          Slots in current epoch:
+          {
+            //@ts-ignore
+            epochInfo.data?.epochInfo.slotsInEpoch
+          }<br />
+          Transaction count:
+          {
+            //@ts-ignore
+            epochInfo.data?.epochInfo.transactionCount
+          }<br />
+          Epoch progress (%):
+          {
+            //@ts-ignore
+            epochInfo.data?.epochProgress * 100
+          }<br />
+          Epoch time remaining (s):
+          {
+            //@ts-ignore
+            epochInfo.data?.epochTimeRemaining
+          }
+          </>
+        ) : (
+          <></>
+        )}
+        </div> */}
         {(!stakePool && stakePoolLoaded) || stakePoolMetadata?.notFound ? (
           <div
             className="mx-5 mb-5 rounded-md border-[1px] bg-opacity-40 p-4 text-center text-lg font-semibold"
