@@ -22,7 +22,7 @@ export const usePoolAnalytics = () => {
       const analytics = stakePoolMetadata.analytics
       if (!analytics) return analyticsData
 
-      const tokensMetadata = await getEntriesyMetadataForPool(
+      const tokensMetadata = await getEntriesMetadataForPool(
         connection,
         stakePoolId
       )
@@ -66,7 +66,7 @@ export const usePoolAnalytics = () => {
   )
 }
 
-const getEntriesyMetadataForPool = async (
+const getEntriesMetadataForPool = async (
   connection: Connection,
   poolId: PublicKey
 ): Promise<
