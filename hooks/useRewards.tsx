@@ -1,13 +1,14 @@
-import { useRewardDistributorData } from './useRewardDistributorData'
-import { useStakedTokenDatas } from './useStakedTokenDatas'
-import { BN } from '@project-serum/anchor'
-import { useRewardDistributorTokenAccount } from './useRewardDistributorTokenAccount'
-import { useUTCNow } from 'providers/UTCNowProvider'
-import { useRewardEntries } from './useRewardEntries'
 import { getRewardMap } from '@cardinal/staking'
-import { useQuery } from 'react-query'
-import { useRewardMintInfo } from './useRewardMintInfo'
 import { RewardDistributorKind } from '@cardinal/staking/dist/cjs/programs/rewardDistributor'
+import { BN } from '@project-serum/anchor'
+import { useUTCNow } from 'providers/UTCNowProvider'
+import { useQuery } from 'react-query'
+
+import { useRewardDistributorData } from './useRewardDistributorData'
+import { useRewardDistributorTokenAccount } from './useRewardDistributorTokenAccount'
+import { useRewardEntries } from './useRewardEntries'
+import { useRewardMintInfo } from './useRewardMintInfo'
+import { useStakedTokenDatas } from './useStakedTokenDatas'
 
 export const useRewards = () => {
   const { data: rewardDistributorData } = useRewardDistributorData()

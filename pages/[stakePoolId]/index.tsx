@@ -673,7 +673,7 @@ function Home() {
                   <span>
                     {formatAmountAsDecimal(
                       rewardMintInfo.data.mintInfo.decimals,
-                      rewardsRate.data,
+                      rewardsRate.data.dailyRewards,
                       // max of 5 decimals
                       Math.min(rewardMintInfo.data.mintInfo.decimals, 5)
                     )}{' '}
@@ -1393,7 +1393,7 @@ function Home() {
                                       rewardMintInfo.data && (
                                         <div className="flex w-full flex-row justify-between text-xs font-semibold">
                                           <span>Amount:</span>
-                                          <span>
+                                          <span className="text-right">
                                             {formatAmountAsDecimal(
                                               rewardMintInfo.data?.mintInfo
                                                 .decimals,
@@ -1408,7 +1408,7 @@ function Home() {
                                     {tk.stakeEntry?.pubkey && (
                                       <div className="flex w-full flex-row justify-between text-xs font-semibold">
                                         <span>Boost:</span>
-                                        <span>
+                                        <span className="text-right">
                                           {(rewardDistributorData.data?.parsed
                                             .multiplierDecimals !== undefined &&
                                             formatAmountAsDecimal(
@@ -1445,58 +1445,15 @@ function Home() {
                                             rewardMintInfo.data && (
                                               <div className="flex w-full flex-row justify-between text-xs font-semibold">
                                                 <span>Daily:</span>
-                                                <span>
+                                                <span className="text-right">
                                                   {formatAmountAsDecimal(
                                                     rewardMintInfo.data.mintInfo
                                                       .decimals,
-                                                    (rewardEntries.data
-                                                      ? rewardDistributorData.data.parsed.rewardAmount
-                                                          .mul(
-                                                            rewardEntries.data.find(
-                                                              (entry) =>
-                                                                entry.parsed.stakeEntry.equals(
-                                                                  tk.stakeEntry
-                                                                    ?.pubkey ||
-                                                                    PublicKey.default
-                                                                )
-                                                            )?.parsed
-                                                              .multiplier ||
-                                                              rewardDistributorData
-                                                                .data.parsed
-                                                                .defaultMultiplier
-                                                          )
-                                                          .div(
-                                                            new BN(10).pow(
-                                                              new BN(
-                                                                rewardDistributorData.data.parsed.multiplierDecimals
-                                                              )
-                                                            )
-                                                          )
-                                                      : rewardDistributorData
-                                                          .data.parsed
-                                                          .rewardAmount
-                                                    )
-
-                                                      .mul(new BN(86400))
-                                                      .mul(
-                                                        rewardDistributorData
-                                                          .data.parsed
-                                                          .defaultMultiplier
-                                                      )
-                                                      .div(
-                                                        new BN(
-                                                          10 **
-                                                            rewardDistributorData
-                                                              .data.parsed
-                                                              .multiplierDecimals
-                                                        )
-                                                      )
-                                                      .div(
-                                                        rewardDistributorData
-                                                          .data.parsed
-                                                          .rewardDurationSeconds
-                                                      ),
-                                                    // max of 5 decimals
+                                                    rewardsRate.data
+                                                      ?.rewardsRateMap[
+                                                      tk.stakeEntry.pubkey.toString()
+                                                    ]?.dailyRewards ||
+                                                      new BN(0), // max of 5 decimals
                                                     Math.min(
                                                       rewardMintInfo.data
                                                         .mintInfo.decimals,
@@ -1510,7 +1467,7 @@ function Home() {
                                             rewardMintInfo.data && (
                                               <div className="flex w-full flex-row justify-between text-xs font-semibold">
                                                 <span>Claim:</span>
-                                                <span>
+                                                <span className="text-right">
                                                   {formatMintNaturalAmountAsDecimal(
                                                     rewardMintInfo.data
                                                       .mintInfo,
@@ -1556,17 +1513,19 @@ function Home() {
                                     stakePool?.parsed.cooldownSeconds ? (
                                       <div className="flex w-full flex-row justify-between text-xs font-semibold">
                                         <span>Cooldown:</span>
-                                        {tk.stakeEntry?.parsed.cooldownStartSeconds.toNumber() +
-                                          stakePool.parsed.cooldownSeconds -
-                                          UTCNow >
-                                        0
-                                          ? secondstoDuration(
-                                              tk.stakeEntry?.parsed.cooldownStartSeconds.toNumber() +
-                                                stakePool.parsed
-                                                  .cooldownSeconds -
-                                                UTCNow
-                                            )
-                                          : 'Finished!'}
+                                        <span className="text-right">
+                                          {tk.stakeEntry?.parsed.cooldownStartSeconds.toNumber() +
+                                            stakePool.parsed.cooldownSeconds -
+                                            UTCNow >
+                                          0
+                                            ? secondstoDuration(
+                                                tk.stakeEntry?.parsed.cooldownStartSeconds.toNumber() +
+                                                  stakePool.parsed
+                                                    .cooldownSeconds -
+                                                  UTCNow
+                                              )
+                                            : 'Finished!'}
+                                        </span>
                                       </div>
                                     ) : (
                                       ''
@@ -1575,17 +1534,19 @@ function Home() {
                                     tk.stakeEntry?.parsed.lastStakedAt ? (
                                       <div className="flex w-full flex-row justify-between text-xs font-semibold">
                                         <span>Min Time:</span>
-                                        {tk.stakeEntry?.parsed.lastStakedAt.toNumber() +
-                                          stakePool.parsed.minStakeSeconds -
-                                          UTCNow >
-                                        0
-                                          ? secondstoDuration(
-                                              tk.stakeEntry?.parsed.lastStakedAt.toNumber() +
-                                                stakePool.parsed
-                                                  .minStakeSeconds -
-                                                UTCNow
-                                            )
-                                          : 'Satisfied'}
+                                        <span className="text-right">
+                                          {tk.stakeEntry?.parsed.lastStakedAt.toNumber() +
+                                            stakePool.parsed.minStakeSeconds -
+                                            UTCNow >
+                                          0
+                                            ? secondstoDuration(
+                                                tk.stakeEntry?.parsed.lastStakedAt.toNumber() +
+                                                  stakePool.parsed
+                                                    .minStakeSeconds -
+                                                  UTCNow
+                                              )
+                                            : 'Satisfied'}
+                                        </span>
                                       </div>
                                     ) : (
                                       ''
