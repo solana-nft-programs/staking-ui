@@ -94,7 +94,8 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
   },
   {
     name: 'yojimbo',
-    displayName: 'Yojimbo',
+    displayName: 'Yojimbo Degens Festival(stake)',
+    nameInHeader: true,
     stakePoolAddress: new PublicKey(
       'HRthLdCtH62b6xBMve7uFy5mq9b9h8gwUMeKJm9wTQPs'
     ),
