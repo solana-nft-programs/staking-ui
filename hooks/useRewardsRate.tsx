@@ -1,69 +1,95 @@
-import { useRewardDistributorData } from './useRewardDistributorData'
+import { calculatePendingRewards } from '@cardinal/staking'
+import { RewardDistributorKind } from '@cardinal/staking/dist/cjs/programs/rewardDistributor'
+import { BN } from '@project-serum/anchor'
 import { useQuery } from 'react-query'
+
+import { useRewardDistributorData } from './useRewardDistributorData'
+import { useRewardDistributorTokenAccount } from './useRewardDistributorTokenAccount'
 import { useRewardEntries } from './useRewardEntries'
 import { useRewardMintInfo } from './useRewardMintInfo'
-import { BN } from '@project-serum/anchor'
 import { useStakedTokenDatas } from './useStakedTokenDatas'
 
 export const useRewardsRate = () => {
   const { data: rewardDistributorData } = useRewardDistributorData()
   const { data: stakedTokenData } = useStakedTokenDatas()
-  const { data: rewardEntriesData } = useRewardEntries()
+  const { data: rewardEntries } = useRewardEntries()
   const { data: rewardMintInfoData } = useRewardMintInfo()
+  const { data: rewardDistributorTokenAccount } =
+    useRewardDistributorTokenAccount()
+  const { data: rewardMintInfo } = useRewardMintInfo()
 
-  return useQuery<BN | undefined>(
+  return useQuery<
+    | {
+        dailyRewards: BN
+        rewardsRateMap: {
+          [stakeEntryId: string]: { dailyRewards: BN }
+        }
+      }
+    | undefined
+  >(
     [
       'useRewardsRate',
       rewardDistributorData?.pubkey?.toString(),
-      rewardEntriesData,
+      stakedTokenData?.map((s) => s.stakeEntry?.pubkey.toString()),
+      rewardEntries?.map((r) => r.pubkey.toString()),
+      rewardMintInfoData?.mintInfo.decimals,
+      rewardDistributorTokenAccount?.address.toString(),
     ],
     async () => {
       const rewardDistibutorId = rewardDistributorData?.pubkey
       if (
         !rewardDistributorData ||
-        !rewardEntriesData ||
+        !rewardEntries ||
         !rewardDistibutorId ||
         !rewardMintInfoData ||
+        !rewardMintInfo ||
         !stakedTokenData
       ) {
-        return new BN(0)
+        return undefined
       }
 
-      let total = 0
-      for (const stakedToken of stakedTokenData) {
-        const amount = (
-          rewardEntriesData
-            ? rewardDistributorData.parsed.rewardAmount
-                .mul(
-                  rewardEntriesData.find((entry) =>
-                    entry.parsed.stakeEntry.equals(
-                      stakedToken.stakeEntry?.pubkey!
-                    )
-                  )?.parsed.multiplier ||
-                    rewardDistributorData.parsed.defaultMultiplier
-                )
-                .div(
-                  new BN(10).pow(
-                    new BN(rewardDistributorData.parsed.multiplierDecimals)
-                  )
-                )
-            : rewardDistributorData.parsed.rewardAmount
-        )
-
-          .mul(new BN(86400))
-          .mul(rewardDistributorData.parsed.defaultMultiplier)
-          .div(new BN(10 ** rewardDistributorData.parsed.multiplierDecimals))
-          .div(rewardDistributorData.parsed.rewardDurationSeconds)
-        total += Number(amount)
-      }
-
-      return total === 0
-        ? rewardDistributorData.parsed.rewardAmount.mul(
-            new BN(86400).div(
-              rewardDistributorData.parsed.rewardDurationSeconds
-            )
+      const rewardsRateMap: {
+        [stakeEntryId: string]: { dailyRewards: BN }
+      } = {}
+      let totalDaily = new BN(0)
+      for (let i = 0; i < stakedTokenData.length; i++) {
+        const stakeEntry = stakedTokenData[i]!.stakeEntry
+        if (stakeEntry) {
+          const rewardEntry = rewardEntries.find((rewardEntry) =>
+            rewardEntry?.parsed?.stakeEntry.equals(stakeEntry?.pubkey)
           )
-        : new BN(total)
+          const [claimableRewards] = calculatePendingRewards(
+            rewardDistributorData,
+            stakeEntry,
+            rewardEntry,
+            rewardDistributorData.parsed.kind === RewardDistributorKind.Mint
+              ? rewardMintInfo?.mintInfo.supply
+              : rewardDistributorTokenAccount!.amount,
+            stakeEntry.parsed.lastStakedAt.add(new BN(86400)).toNumber()
+          )
+          rewardsRateMap[stakeEntry.pubkey.toString()] = {
+            dailyRewards: claimableRewards,
+          }
+          totalDaily = totalDaily.add(claimableRewards)
+        }
+      }
+      return {
+        rewardsRateMap,
+        dailyRewards: totalDaily.eq(new BN(0))
+          ? rewardDistributorData.parsed.rewardAmount.mul(
+              rewardDistributorData.parsed.maxRewardSecondsReceived
+                ? BN.min(
+                    rewardDistributorData.parsed.maxRewardSecondsReceived,
+                    new BN(86400).div(
+                      rewardDistributorData.parsed.rewardDurationSeconds
+                    )
+                  )
+                : new BN(86400).div(
+                    rewardDistributorData.parsed.rewardDurationSeconds
+                  )
+            )
+          : totalDaily,
+      }
     }
   )
 }
