@@ -691,8 +691,8 @@ function Home() {
                       )}
                       rel="noreferrer"
                     >
-                      {rewardMintInfo.data.tokenListData?.name ||
-                        rewardMintInfo.data.metaplexMintData?.data.name ||
+                      {rewardMintInfo.data.tokenListData?.symbol ||
+                        rewardMintInfo.data.metaplexMintData?.data.symbol ||
                         '???'}
                     </a>{' '}
                     / Day
