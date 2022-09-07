@@ -80,18 +80,18 @@ export type StakePoolMetadata = {
 export const defaultSecondaryColor = 'rgba(29, 78, 216, 255)'
 
 export const stakePoolMetadatas: StakePoolMetadata[] = [
-  {
-    name: 'cardinal',
-    displayName: 'Cardinal',
-    stakePoolAddress: new PublicKey(
-      'AxHiaxZeoDsyjD8Eyj5tQtrajkxYk5xebEK1QNQ1LSE7'
-    ),
-    imageUrl: '/logo-colored.png',
-    colors: {
-      primary: 'rgb(54,21,38,0.9)',
-      secondary: 'rgb(157,120,138, 0.6)',
-    },
-  },
+  // {
+  //   name: 'cardinal',
+  //   displayName: 'Cardinal',
+  //   stakePoolAddress: new PublicKey(
+  //     'AxHiaxZeoDsyjD8Eyj5tQtrajkxYk5xebEK1QNQ1LSE7'
+  //   ),
+  //   imageUrl: '/logo-colored.png',
+  //   colors: {
+  //     primary: 'rgb(54,21,38,0.9)',
+  //     secondary: 'rgb(157,120,138, 0.6)',
+  //   },
+  // },
   {
     name: 'yojimbo',
     displayName: 'Yojimbo',
@@ -493,6 +493,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
   {
     name: 'cannaverse',
     displayName: 'Cannaverse',
+    hidden: true,
     stakePoolAddress: new PublicKey(
       '5DoGTq3ciQ1aDFUuTFLhFLdiXuPjnWmjhTSWdzLpZkgY'
     ),
@@ -1288,10 +1289,9 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     styles: {
       fontFamily: 'Industry, sans-serif',
       fontWeight: 700,
-      fontSize: '22px',  
+      fontSize: '22px',
       font: '#000000',
       color: '#000000',
-  
     },
     // Colors object to style the stake page
     colors: {
@@ -1301,10 +1301,11 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       fontColor: '#ffff',
       fontColorSecondary: '#000000',
     },
-    imageUrl:'https://bafkreie5parsjwtmnk7cyixtdoznifdk3hx2kjazzrvecc3mgjrwvr6tfy.ipfs.nftstorage.link/',
+    imageUrl:
+      'https://bafkreie5parsjwtmnk7cyixtdoznifdk3hx2kjazzrvecc3mgjrwvr6tfy.ipfs.nftstorage.link/',
     // Background image for poolq
-    backgroundImage:'https://bafybeifddabmgm3rinrdngbzanttwxp2qfr5ffpu7itgradc4sxplpjvc4.ipfs.nftstorage.link/',
-   
+    backgroundImage:
+      'https://bafybeifddabmgm3rinrdngbzanttwxp2qfr5ffpu7itgradc4sxplpjvc4.ipfs.nftstorage.link/',
 
     // Website url if specified will be navigated to when the image in the header is clicked
     websiteUrl: 'https://www.sweetapocalypse.org/',
@@ -1327,5 +1328,5 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
         value: 'https://www.sweetapomint.org/',
       },
     ],
-  }
+  },
 ]
