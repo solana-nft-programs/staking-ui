@@ -96,15 +96,17 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     name: 'yojimbo',
     displayName: 'Yojimbo',
     stakePoolAddress: new PublicKey(
-      '3MukZ3YHqLDnkzv5fxwocvX6nLBdHhjfcq1jEooVb5JC'
+      'HRthLdCtH62b6xBMve7uFy5mq9b9h8gwUMeKJm9wTQPs'
     ),
     websiteUrl: 'https://twitter.com/YojimboDegens',
     receiptType: ReceiptType.Original,
-    maxStaked: 4397,
-    imageUrl: 'https://arweave.net/_sUvZroKKlVKNAInPAqKER1rYSObhVyCR-Dw3qAOd3Q',
+    maxStaked: 4400,
+    imageUrl: 'https://arweave.net/VP9h1qEmWUgaNPYY1hXSR-FTjKAJpxugWAYDGHvZMTg',
     colors: {
+      primary: 'rgb(207 89 67)',
+      secondary: '#a7594b',
       accent: '#d35e48',
-      fontColor: '#FFFFFF',
+      fontColor: '#092037',
     },
   },
   {
