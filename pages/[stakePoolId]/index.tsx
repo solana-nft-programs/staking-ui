@@ -199,6 +199,18 @@ function Home() {
     }
     setLoadingUnstake(true)
 
+    const ataTx = new Transaction()
+    if (rewardDistributorData.data && rewardDistributorData.data.parsed) {
+      // create user reward mint ata
+      await withFindOrInitAssociatedTokenAccount(
+        ataTx,
+        connection,
+        rewardDistributorData.data.parsed.rewardMint,
+        wallet.publicKey!,
+        wallet.publicKey!
+      )
+    }
+
     let coolDown = false
     const txs: Transaction[] = (
       await Promise.all(
@@ -235,10 +247,12 @@ function Home() {
     ).filter((x): x is Transaction => x !== null)
 
     try {
+      ///
+      const [firstTx, ...remainingTxs] = txs
       await executeAllTransactions(
         connection,
         wallet as Wallet,
-        txs.filter((tx): tx is Transaction => tx !== null),
+        remainingTxs,
         {
           notificationConfig: {
             message: `Successfully ${
@@ -246,7 +260,8 @@ function Home() {
             }`,
             description: 'These tokens are now available in your wallet',
           },
-        }
+        },
+        firstTx
       )
     } catch (e) {}
 

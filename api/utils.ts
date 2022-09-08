@@ -70,9 +70,9 @@ export const executeAllTransactions = async (
             config.notificationConfig &&
               config.notificationConfig.individualSuccesses &&
               notify({
-                message: `${config.notificationConfig.message} ${index + 1}/${
-                  transactions.length
-                }`,
+                message: `${config.notificationConfig.message} ${
+                  index + (preTx ? 2 : 1)
+                }/${transactions.length}`,
                 description: config.notificationConfig.message,
                 txid,
               })
@@ -87,7 +87,7 @@ export const executeAllTransactions = async (
               notify({
                 message: `${
                   config.notificationConfig.errorMessage ?? 'Failed transaction'
-                } ${index + 1}/${transactions.length}`,
+                } ${index + (preTx ? 2 : 1)}/${transactions.length}`,
                 description: handleError(e, `Transaction failed: ${e}`),
                 txid: '',
                 type: 'error',
