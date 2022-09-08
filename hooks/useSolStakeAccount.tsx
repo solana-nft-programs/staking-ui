@@ -129,7 +129,7 @@ export const useSolStakeAccount = () => {
         ); // null coallescing not possible here
 
       if (delegatedActivationEpochs.length !== 0) {
-        const minEpoch = epochInfo.epoch - 6;
+        const minEpoch = epochInfo.epoch - 6; // Change this to bigger
         // Math.max(
         //   ...delegatedActivationEpochs,
         // );
