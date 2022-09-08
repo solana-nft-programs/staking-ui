@@ -167,14 +167,14 @@ function Home() {
       await executeAllTransactions(
         connection,
         wallet as Wallet,
-        remainingTxs,
+        ataTx.instructions.length > 0 ? remainingTxs : txs,
         {
           notificationConfig: {
             message: 'Successfully claimed rewards',
             description: 'These rewards are now available in your wallet',
           },
         },
-        firstTx
+        ataTx.instructions.length > 0 ? firstTx : undefined
       )
     } catch (e) {}
 
@@ -199,10 +199,22 @@ function Home() {
     }
     setLoadingUnstake(true)
 
+    const ataTx = new Transaction()
+    if (rewardDistributorData.data && rewardDistributorData.data.parsed) {
+      // create user reward mint ata
+      await withFindOrInitAssociatedTokenAccount(
+        ataTx,
+        connection,
+        rewardDistributorData.data.parsed.rewardMint,
+        wallet.publicKey!,
+        wallet.publicKey!
+      )
+    }
+
     let coolDown = false
     const txs: Transaction[] = (
       await Promise.all(
-        stakedSelected.map(async (token) => {
+        stakedSelected.map(async (token, i) => {
           try {
             if (!token || !token.stakeEntry) {
               throw new Error('No stake entry for token')
@@ -218,10 +230,19 @@ function Home() {
               })
               coolDown = true
             }
-            return unstake(connection, wallet as Wallet, {
+            const transaction = new Transaction()
+            if (i === 0 && ataTx.instructions.length > 0) {
+              transaction.instructions = ataTx.instructions
+            }
+            const unstakeTx = await unstake(connection, wallet as Wallet, {
               stakePoolId: stakePool?.pubkey,
               originalMintId: token.stakeEntry.parsed.originalMint,
             })
+            transaction.instructions = [
+              ...transaction.instructions,
+              ...unstakeTx.instructions,
+            ]
+            return transaction
           } catch (e) {
             notify({
               message: `${e}`,
@@ -235,10 +256,12 @@ function Home() {
     ).filter((x): x is Transaction => x !== null)
 
     try {
+      ///
+      const [firstTx, ...remainingTxs] = txs
       await executeAllTransactions(
         connection,
         wallet as Wallet,
-        txs.filter((tx): tx is Transaction => tx !== null),
+        ataTx.instructions.length > 0 ? remainingTxs : txs,
         {
           notificationConfig: {
             message: `Successfully ${
@@ -246,7 +269,8 @@ function Home() {
             }`,
             description: 'These tokens are now available in your wallet',
           },
-        }
+        },
+        ataTx.instructions.length > 0 ? firstTx : undefined
       )
     } catch (e) {}
 
