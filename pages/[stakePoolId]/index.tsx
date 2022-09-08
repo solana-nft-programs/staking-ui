@@ -15,8 +15,8 @@ import { BN } from '@project-serum/anchor'
 import * as splToken from '@solana/spl-token'
 import { useWallet } from '@solana/wallet-adapter-react'
 import { useWalletModal } from '@solana/wallet-adapter-react-ui'
-import type { Signer} from '@solana/web3.js';
-import { PublicKey,Transaction  } from '@solana/web3.js'
+import type { Signer } from '@solana/web3.js'
+import { PublicKey, Transaction } from '@solana/web3.js'
 import { defaultSecondaryColor, TokenStandard } from 'api/mapping'
 import { executeAllTransactions } from 'api/utils'
 import { Footer } from 'common/Footer'
@@ -116,34 +116,39 @@ function Home() {
       return
     }
 
-    const tx = new Transaction()
+    const ataTx = new Transaction()
     if (rewardDistributorData.data && rewardDistributorData.data.parsed) {
       // create user reward mint ata
       await withFindOrInitAssociatedTokenAccount(
-        tx,
+        ataTx,
         connection,
         rewardDistributorData.data.parsed.rewardMint,
         wallet.publicKey!,
         wallet.publicKey!
       )
     }
-    let txs: (Transaction | null)[] = await Promise.all(
-      (all ? stakedTokenDatas.data || [] : stakedSelected).map(
-        async (token) => {
+
+    const tokensToStake = all ? stakedTokenDatas.data || [] : stakedSelected
+    const txs: Transaction[] = (
+      await Promise.all(
+        tokensToStake.map(async (token, i) => {
           try {
             if (!token || !token.stakeEntry) {
               throw new Error('No stake entry for token')
             }
-            const transaction = await claimRewards(
-              connection,
-              wallet as Wallet,
-              {
-                stakePoolId: stakePool.pubkey,
-                stakeEntryId: token.stakeEntry.pubkey,
-                skipRewardMintTokenAccount: true,
-              }
-            )
-
+            const transaction = new Transaction()
+            if (i === 0 && ataTx.instructions.length > 0) {
+              transaction.instructions = ataTx.instructions
+            }
+            const claimTx = await claimRewards(connection, wallet as Wallet, {
+              stakePoolId: stakePool.pubkey,
+              stakeEntryId: token.stakeEntry.pubkey,
+              skipRewardMintTokenAccount: true,
+            })
+            transaction.instructions = [
+              ...transaction.instructions,
+              ...claimTx.instructions,
+            ]
             return transaction
           } catch (e) {
             notify({
@@ -153,21 +158,23 @@ function Home() {
             })
             return null
           }
-        }
+        })
       )
-    )
-    txs = [tx, ...txs]
+    ).filter((x): x is Transaction => x !== null)
     try {
+      ///
+      const [firstTx, ...remainingTxs] = txs
       await executeAllTransactions(
         connection,
         wallet as Wallet,
-        txs.filter((tx): tx is Transaction => tx !== null),
+        remainingTxs,
         {
           notificationConfig: {
             message: 'Successfully claimed rewards',
             description: 'These rewards are now available in your wallet',
           },
-        }
+        },
+        firstTx
       )
     } catch (e) {}
 
@@ -193,37 +200,39 @@ function Home() {
     setLoadingUnstake(true)
 
     let coolDown = false
-    const txs: (Transaction | null)[] = await Promise.all(
-      stakedSelected.map(async (token) => {
-        try {
-          if (!token || !token.stakeEntry) {
-            throw new Error('No stake entry for token')
-          }
-          if (
-            stakePool.parsed.cooldownSeconds &&
-            !token.stakeEntry?.parsed.cooldownStartSeconds &&
-            !stakePool.parsed.minStakeSeconds
-          ) {
-            notify({
-              message: `Cooldown period will be initiated for ${token.metaplexData?.data.data.name} unless minimum stake period unsatisfied`,
-              type: 'info',
+    const txs: Transaction[] = (
+      await Promise.all(
+        stakedSelected.map(async (token) => {
+          try {
+            if (!token || !token.stakeEntry) {
+              throw new Error('No stake entry for token')
+            }
+            if (
+              stakePool.parsed.cooldownSeconds &&
+              !token.stakeEntry?.parsed.cooldownStartSeconds &&
+              !stakePool.parsed.minStakeSeconds
+            ) {
+              notify({
+                message: `Cooldown period will be initiated for ${token.metaplexData?.data.data.name} unless minimum stake period unsatisfied`,
+                type: 'info',
+              })
+              coolDown = true
+            }
+            return unstake(connection, wallet as Wallet, {
+              stakePoolId: stakePool?.pubkey,
+              originalMintId: token.stakeEntry.parsed.originalMint,
             })
-            coolDown = true
+          } catch (e) {
+            notify({
+              message: `${e}`,
+              description: `Failed to unstake token ${token?.stakeEntry?.pubkey.toString()}`,
+              type: 'error',
+            })
+            return null
           }
-          return unstake(connection, wallet as Wallet, {
-            stakePoolId: stakePool?.pubkey,
-            originalMintId: token.stakeEntry.parsed.originalMint,
-          })
-        } catch (e) {
-          notify({
-            message: `${e}`,
-            description: `Failed to unstake token ${token?.stakeEntry?.pubkey.toString()}`,
-            type: 'error',
-          })
-          return null
-        }
-      })
-    )
+        })
+      )
+    ).filter((x): x is Transaction => x !== null)
 
     try {
       await executeAllTransactions(

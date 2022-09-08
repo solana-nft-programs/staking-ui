@@ -1,11 +1,14 @@
+import { getBatchedMultipleAccounts } from '@cardinal/common'
+import * as metaplex from '@metaplex-foundation/mpl-token-metadata'
+import * as spl from '@solana/spl-token'
+import type { AccountInfo, ParsedAccountData } from '@solana/web3.js'
+import { PublicKey } from '@solana/web3.js'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 import { useQuery } from 'react-query'
+
+import type { TokenListData } from './useTokenList'
+import { useTokenList } from './useTokenList'
 import { useWalletId } from './useWalletId'
-import * as spl from '@solana/spl-token'
-import * as metaplex from '@metaplex-foundation/mpl-token-metadata'
-import { AccountInfo, ParsedAccountData, PublicKey } from '@solana/web3.js'
-import { getBatchedMultipleAccounts } from '@cardinal/common'
-import { TokenListData, useTokenList } from './useTokenList'
 
 export type UserTokenData = {
   tokenAccount?: {

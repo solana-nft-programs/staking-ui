@@ -1,21 +1,25 @@
-import { useStakePoolId } from './useStakePoolId'
-import { useStakePoolData } from './useStakePoolData'
-import { useStakeAuthorizationsForPool } from './useStakeAuthorizationsForPool'
-import { AccountData, getBatchedMultipleAccounts } from '@cardinal/common'
-import {
+import type { AccountData } from '@cardinal/common'
+import { getBatchedMultipleAccounts } from '@cardinal/common'
+import type {
   StakeAuthorizationData,
   StakeEntryData,
   StakePoolData,
 } from '@cardinal/staking/dist/cjs/programs/stakePool'
-import * as spl from '@solana/spl-token'
-import * as metaplex from '@metaplex-foundation/mpl-token-metadata'
-import { findStakeEntryIdFromMint } from '@cardinal/staking/dist/cjs/programs/stakePool/utils'
-import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
-import { AccountInfo, ParsedAccountData, PublicKey } from '@solana/web3.js'
 import { getStakeEntries } from '@cardinal/staking/dist/cjs/programs/stakePool/accounts'
+import { findStakeEntryIdFromMint } from '@cardinal/staking/dist/cjs/programs/stakePool/utils'
+import * as metaplex from '@metaplex-foundation/mpl-token-metadata'
+import * as spl from '@solana/spl-token'
+import type { AccountInfo, ParsedAccountData } from '@solana/web3.js'
+import { PublicKey } from '@solana/web3.js'
+import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 import { useQuery } from 'react-query'
+
+import { useStakeAuthorizationsForPool } from './useStakeAuthorizationsForPool'
+import { useStakePoolData } from './useStakePoolData'
+import { useStakePoolId } from './useStakePoolId'
+import type { TokenListData } from './useTokenList'
+import { useTokenList } from './useTokenList'
 import { useWalletId } from './useWalletId'
-import { TokenListData, useTokenList } from './useTokenList'
 
 export type AllowedTokenData = BaseTokenData & {
   metadata?: any
@@ -124,7 +128,6 @@ export const useAllowedTokenDatas = (showFungibleTokens: boolean) => {
             tokenAccount.account.data.parsed.info.tokenAmount.uiAmount > 0
         )
         .sort((a, b) => a.pubkey.toBase58().localeCompare(b.pubkey.toBase58()))
-
       const metaplexIds = await Promise.all(
         tokenAccounts.map(
           async (tokenAccount) =>
