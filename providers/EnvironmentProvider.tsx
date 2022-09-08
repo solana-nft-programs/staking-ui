@@ -1,6 +1,7 @@
-import { Cluster, Connection } from '@solana/web3.js'
+import type { Cluster } from '@solana/web3.js'
+import { Connection } from '@solana/web3.js'
 import { firstParam } from 'common/utils'
-import { NextPageContext } from 'next'
+import type { NextPageContext } from 'next'
 import { useRouter } from 'next/router'
 import React, { useContext, useEffect, useMemo, useState } from 'react'
 
@@ -21,8 +22,10 @@ export interface EnvironmentContextValues {
 export const ENVIRONMENTS: Environment[] = [
   {
     label: 'mainnet-beta',
-    primary: process.env.MAINNET_PRIMARY || 'https://ssc-dao.genesysgo.net',
-    secondary: process.env.MAINNET_SECONDARY || 'https://ssc-dao.genesysgo.net',
+    primary:
+      process.env.MAINNET_PRIMARY || 'https://solana-api.projectserum.com',
+    secondary:
+      process.env.MAINNET_SECONDARY || 'https://solana-api.projectserum.com',
   },
   {
     label: 'testnet',
