@@ -1,3 +1,4 @@
+import { withFindOrInitAssociatedTokenAccount } from '@cardinal/common'
 import { DisplayAddress } from '@cardinal/namespaces-components'
 import {
   claimRewards,
@@ -122,10 +123,27 @@ function Home() {
             if (!token || !token.stakeEntry) {
               throw new Error('No stake entry for token')
             }
-            return claimRewards(connection, wallet as Wallet, {
-              stakePoolId: stakePool.pubkey,
-              stakeEntryId: token.stakeEntry.pubkey,
-            })
+            const transaction = await claimRewards(
+              connection,
+              wallet as Wallet,
+              {
+                stakePoolId: stakePool.pubkey,
+                stakeEntryId: token.stakeEntry.pubkey,
+                skipRewardMintTokenAccount: true,
+              }
+            )
+
+            if (rewardDistributorData.data && rewardDistributorData.data.parsed)
+              // create user reward mint ata
+              await withFindOrInitAssociatedTokenAccount(
+                transaction,
+                connection,
+                rewardDistributorData.data.parsed.rewardMint,
+                wallet.publicKey!,
+                wallet.publicKey!
+              )
+
+            return transaction
           } catch (e) {
             notify({
               message: `${e}`,
