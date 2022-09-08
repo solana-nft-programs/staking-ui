@@ -15,8 +15,8 @@ import { BN } from '@project-serum/anchor'
 import * as splToken from '@solana/spl-token'
 import { useWallet } from '@solana/wallet-adapter-react'
 import { useWalletModal } from '@solana/wallet-adapter-react-ui'
-import type { Signer, Transaction } from '@solana/web3.js'
-import { PublicKey } from '@solana/web3.js'
+import type { Signer} from '@solana/web3.js';
+import { PublicKey,Transaction  } from '@solana/web3.js'
 import { defaultSecondaryColor, TokenStandard } from 'api/mapping'
 import { executeAllTransactions } from 'api/utils'
 import { Footer } from 'common/Footer'
@@ -116,7 +116,18 @@ function Home() {
       return
     }
 
-    const txs: (Transaction | null)[] = await Promise.all(
+    const tx = new Transaction()
+    if (rewardDistributorData.data && rewardDistributorData.data.parsed) {
+      // create user reward mint ata
+      await withFindOrInitAssociatedTokenAccount(
+        tx,
+        connection,
+        rewardDistributorData.data.parsed.rewardMint,
+        wallet.publicKey!,
+        wallet.publicKey!
+      )
+    }
+    let txs: (Transaction | null)[] = await Promise.all(
       (all ? stakedTokenDatas.data || [] : stakedSelected).map(
         async (token) => {
           try {
@@ -133,16 +144,6 @@ function Home() {
               }
             )
 
-            if (rewardDistributorData.data && rewardDistributorData.data.parsed)
-              // create user reward mint ata
-              await withFindOrInitAssociatedTokenAccount(
-                transaction,
-                connection,
-                rewardDistributorData.data.parsed.rewardMint,
-                wallet.publicKey!,
-                wallet.publicKey!
-              )
-
             return transaction
           } catch (e) {
             notify({
@@ -155,6 +156,7 @@ function Home() {
         }
       )
     )
+    txs = [tx, ...txs]
     try {
       await executeAllTransactions(
         connection,

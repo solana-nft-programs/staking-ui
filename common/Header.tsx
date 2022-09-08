@@ -119,7 +119,7 @@ export const Header = () => {
                 )}
               </>
             ) : (
-              <TitleText className="flex items-center justify-center gap-2">
+              <TitleText className="flex items-center justify-center gap-2 text-white">
                 {stakePoolMetadata?.displayName || (
                   <img
                     alt={'/cardinal-crosshair.svg'}
