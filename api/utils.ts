@@ -53,7 +53,7 @@ export const executeAllTransactions = async (
     ...txIds,
     ...(
       await Promise.all(
-        transactions.map(async (tx, index) => {
+        txs.map(async (tx, index) => {
           try {
             if (
               config.signers &&
