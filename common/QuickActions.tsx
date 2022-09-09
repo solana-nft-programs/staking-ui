@@ -1,22 +1,4 @@
 import {
-  AllowedTokenData,
-  useAllowedTokenDatas,
-} from 'hooks/useAllowedTokenDatas'
-import { lighten } from 'polished'
-import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
-import { Popover, PopoverItem } from './Popover'
-import { metadataUrl, pubKeyUrl } from './utils'
-import { FiExternalLink } from 'react-icons/fi'
-import { LoadingSpinner } from './LoadingSpinner'
-import { FaEllipsisH } from 'react-icons/fa'
-import { Dispatch, SetStateAction, useState } from 'react'
-import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
-import { getColorByBgColor } from './Button'
-import { ReceiptType } from '@cardinal/staking/dist/cjs/programs/stakePool'
-import { AiFillLock, AiFillUnlock, AiOutlineDatabase } from 'react-icons/ai'
-import { RiMoneyDollarCircleFill } from 'react-icons/ri'
-import { PublicKey } from '@solana/web3.js'
-import {
   claimRewards,
   createStakeEntryAndStakeMint,
   executeTransaction,
@@ -24,20 +6,42 @@ import {
   stake,
   unstake,
 } from '@cardinal/staking'
-import { Wallet } from '@metaplex/js'
-import { useStakePoolData } from 'hooks/useStakePoolData'
-import { useWallet } from '@solana/wallet-adapter-react'
-import { notify } from './Notification'
+import { ReceiptType } from '@cardinal/staking/dist/cjs/programs/stakePool'
+import type { Wallet } from '@metaplex/js'
 import { BN } from '@project-serum/anchor'
-import { parseMintNaturalAmountFromDecimal } from './units'
+import { useWallet } from '@solana/wallet-adapter-react'
+import { PublicKey } from '@solana/web3.js'
+import type {
+  AllowedTokenData} from 'hooks/useAllowedTokenDatas';
 import {
-  StakeEntryTokenData,
-  useStakedTokenDatas,
-} from 'hooks/useStakedTokenDatas'
-import { useStakePoolEntries } from 'hooks/useStakePoolEntries'
+  useAllowedTokenDatas,
+} from 'hooks/useAllowedTokenDatas'
 import { useRewardDistributorData } from 'hooks/useRewardDistributorData'
 import { useRewardDistributorTokenAccount } from 'hooks/useRewardDistributorTokenAccount'
+import type {
+  StakeEntryTokenData} from 'hooks/useStakedTokenDatas';
+import {
+  useStakedTokenDatas,
+} from 'hooks/useStakedTokenDatas'
+import { useStakePoolData } from 'hooks/useStakePoolData'
+import { useStakePoolEntries } from 'hooks/useStakePoolEntries'
+import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
+import { lighten } from 'polished'
+import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
+import type { Dispatch, SetStateAction} from 'react';
+import { useState } from 'react'
+import { AiFillLock, AiFillUnlock, AiOutlineDatabase } from 'react-icons/ai'
 import { BsBookmarkCheck } from 'react-icons/bs'
+import { FaEllipsisH } from 'react-icons/fa'
+import { FiExternalLink } from 'react-icons/fi'
+import { RiMoneyDollarCircleFill } from 'react-icons/ri'
+
+import { getColorByBgColor } from './Button'
+import { LoadingSpinner } from './LoadingSpinner'
+import { notify } from './Notification'
+import { Popover, PopoverItem } from './Popover'
+import { parseMintNaturalAmountFromDecimal } from './units'
+import { metadataUrl, pubKeyUrl } from './utils'
 
 export const QuickActions = ({
   unstakedTokenData,

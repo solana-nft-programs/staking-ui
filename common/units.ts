@@ -1,4 +1,4 @@
-import { BN } from '@project-serum/anchor'
+import type { BN } from '@project-serum/anchor'
 import type { MintInfo } from '@solana/spl-token'
 import { BigNumber } from 'bignumber.js'
 

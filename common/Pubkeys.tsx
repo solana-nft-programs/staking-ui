@@ -1,4 +1,5 @@
-import { PublicKey } from '@solana/web3.js'
+import type { PublicKey } from '@solana/web3.js'
+
 import { pubKeyUrl, shortPubKey } from './utils'
 
 export function ShortPubKeyUrl({

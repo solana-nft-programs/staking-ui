@@ -1,9 +1,10 @@
-import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 import { findAta } from '@cardinal/common'
-import { useRewardDistributorData } from './useRewardDistributorData'
 import * as splToken from '@solana/spl-token'
 import { Keypair } from '@solana/web3.js'
+import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 import { useQuery } from 'react-query'
+
+import { useRewardDistributorData } from './useRewardDistributorData'
 
 export const useRewardDistributorTokenAccount = () => {
   const rewardDistibutorData = useRewardDistributorData()
