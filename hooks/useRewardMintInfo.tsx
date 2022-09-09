@@ -1,10 +1,12 @@
-import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
-import { useRewardDistributorData } from './useRewardDistributorData'
+import { Metadata, MetadataData } from '@metaplex-foundation/mpl-token-metadata'
 import * as splToken from '@solana/spl-token'
 import { Keypair } from '@solana/web3.js'
+import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 import { useQuery } from 'react-query'
-import { TokenListData, useTokenList } from './useTokenList'
-import { Metadata, MetadataData } from '@metaplex-foundation/mpl-token-metadata'
+
+import { useRewardDistributorData } from './useRewardDistributorData'
+import type { TokenListData } from './useTokenList'
+import { useTokenList } from './useTokenList'
 
 export const useRewardMintInfo = () => {
   const { secondaryConnection } = useEnvironmentCtx()

@@ -1,6 +1,6 @@
 import { tryPublicKey } from '@cardinal/namespaces-components'
 import { useWallet } from '@solana/wallet-adapter-react'
-import { PublicKey } from '@solana/web3.js'
+import type { PublicKey } from '@solana/web3.js'
 import { firstParam } from 'common/utils'
 import { useRouter } from 'next/router'
 

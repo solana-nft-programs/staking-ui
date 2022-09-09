@@ -1,14 +1,15 @@
-import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
-import { useWalletId } from './useWalletId'
-import { AccountData } from '@cardinal/common'
+import type { AccountData } from '@cardinal/common'
+import type { StakePoolData } from '@cardinal/staking/dist/cjs/programs/stakePool'
 import {
-  StakePoolData,
   STAKE_POOL_ADDRESS,
   STAKE_POOL_IDL,
 } from '@cardinal/staking/dist/cjs/programs/stakePool'
-import { useQuery } from 'react-query'
-import { Connection, PublicKey } from '@solana/web3.js'
 import { BorshAccountsCoder, utils } from '@project-serum/anchor'
+import type { Connection, PublicKey } from '@solana/web3.js'
+import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
+import { useQuery } from 'react-query'
+
+import { useWalletId } from './useWalletId'
 
 export const getStakePoolsByAuthority = async (
   connection: Connection,

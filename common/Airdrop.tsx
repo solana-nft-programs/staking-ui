@@ -1,4 +1,5 @@
 import { withCreateMint } from '@cardinal/common'
+import { executeTransaction } from '@cardinal/staking'
 import {
   CreateMasterEditionV3,
   CreateMetadataV2,
@@ -12,15 +13,14 @@ import type { Wallet } from '@saberhq/solana-contrib'
 import { useWallet } from '@solana/wallet-adapter-react'
 import type { Connection } from '@solana/web3.js'
 import { Keypair, LAMPORTS_PER_SOL, Transaction } from '@solana/web3.js'
+import type { StakePoolMetadata } from 'api/mapping'
 import { notify } from 'common/Notification'
-import { asWallet } from './Wallets'
-import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
-import { AsyncButton } from './Button'
-
-import { StakePoolMetadata } from 'api/mapping'
-import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
-import { executeTransaction } from '@cardinal/staking'
 import { useAllowedTokenDatas } from 'hooks/useAllowedTokenDatas'
+import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
+import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
+
+import { AsyncButton } from './Button'
+import { asWallet } from './Wallets'
 
 export type AirdropMetadata = { name: string; symbol: string; uri: string }
 
@@ -164,7 +164,7 @@ export const AirdropSol = () => {
   )
 }
 
-let airdrops: { name: string; symbol: string; uri: string }[] = [
+const airdrops: { name: string; symbol: string; uri: string }[] = [
   {
     name: 'Origin Jambo',
     symbol: 'JAMB',

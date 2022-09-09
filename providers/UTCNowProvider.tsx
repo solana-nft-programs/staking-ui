@@ -1,6 +1,7 @@
-import { Connection } from '@solana/web3.js'
-import { ReactChild, useMemo } from 'react'
-import React, { useContext, useEffect, useState } from 'react'
+import type { Connection } from '@solana/web3.js'
+import type { ReactChild} from 'react';
+import React, { useContext, useEffect, useMemo , useState } from 'react'
+
 import { useEnvironmentCtx } from './EnvironmentProvider'
 
 const CLOCK_DRIFT_WARNING_THRESHOLD_SECONDS = 60 * 5

@@ -1,10 +1,9 @@
-import { AccountData } from '@cardinal/common'
-import {
-  StatsEntryData,
-  getStatsEntry,
-} from '@cardinal/stats/dist/cjs/programs/cardinalStats'
+import type { AccountData } from '@cardinal/common'
+import type { StatsEntryData } from '@cardinal/stats/dist/cjs/programs/cardinalStats'
+import { getStatsEntry } from '@cardinal/stats/dist/cjs/programs/cardinalStats'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 import { useQuery } from 'react-query'
+
 import { useStakePoolId } from './useStakePoolId'
 
 export const useStats = () => {

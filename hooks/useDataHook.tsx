@@ -1,5 +1,6 @@
 import { notify } from 'common/Notification'
-import { DependencyList, useEffect, useMemo, useState } from 'react'
+import type { DependencyList} from 'react';
+import { useEffect, useMemo, useState } from 'react'
 
 const DEBUG = true
 

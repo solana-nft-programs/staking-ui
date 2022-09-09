@@ -1,5 +1,6 @@
-import { StakePoolMetadata, stakePoolMetadatas } from 'api/mapping'
-import { PublicKey } from '@solana/web3.js'
+import type { PublicKey } from '@solana/web3.js'
+import type { StakePoolMetadata } from 'api/mapping'
+import { stakePoolMetadatas } from 'api/mapping'
 import { useQuery } from 'react-query'
 
 export const useStakePoolsMetadatas = (
