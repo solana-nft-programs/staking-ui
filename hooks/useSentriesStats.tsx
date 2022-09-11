@@ -14,15 +14,14 @@ export const useSentriesStats = () => {
   const wallet = useWallet()
 
   const address = wallet.publicKey?.toString()
-  return useQuery<SentriesStakingData[] | undefined>(
+  return useQuery<SentriesStakingData | undefined>(
     ['useSentriesStats', address],
     async () => {
       return await fetch(
-        `https://api.sentries.io/v1/power/${address}` // TODO: Changeme
+        `/v1/power/${address}` // TODO: Changeme
       )
         .then((response) => response.json())
         .then((data) => {
-          console.log(data)
           return data
         })
     },

@@ -12,10 +12,9 @@ export const useTokenCheck = () => {
   return useQuery<SentriesStakeCheck[] | undefined>(
     ['useSentriesStats', address],
     async () => {
-      return await fetch(`https://api.sentries.io/v1/check/${address || ''}`)
+      return await fetch(`/v1/check/${address || ''}`)
         .then((response) => response.json())
         .then((data) => {
-          //console.log(data)
           return data
         })
     },
