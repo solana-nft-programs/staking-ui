@@ -56,6 +56,7 @@ import { useNotifications } from 'hooks/useNotifications'
 import { Tab } from '@headlessui/react'
 import { TabButton, TabPanel } from 'components/Tab'
 import { Stats } from 'features/Stats'
+import { ConnectWallet } from 'features/ConnectWallet'
 
 const MAX_EPOCH = new BN(2).pow(new BN(64)).sub(new BN(1))
 
@@ -601,46 +602,6 @@ function Home() {
               </Button>
             </div>
           </div>
-          {(!stakePool && stakePoolLoaded) || stakePoolMetadata?.notFound ? (
-            <div
-              className="mx-5 mb-5 rounded-md border-[1px] bg-opacity-40 p-4 text-center text-lg font-semibold"
-              style={{
-                background:
-                  stakePoolMetadata?.colors?.secondary || defaultSecondaryColor,
-                color: stakePoolMetadata?.colors?.fontColor,
-                borderColor: lighten(
-                  stakePoolMetadata?.colors?.secondary || defaultSecondaryColor,
-                  0.5
-                ),
-              }}
-            >
-              Stake pool not found
-            </div>
-          ) : (
-            !wallet.connected && (
-              <div
-                className={`mx-5 mb-5 cursor-pointer rounded-md border-[1px]  p-4 text-center text-lg font-semibold ${
-                  stakePoolMetadata?.colors?.accent &&
-                  stakePoolMetadata?.colors.fontColor
-                    ? ''
-                    : 'border-yellow-500 bg-yellow-500 bg-opacity-40'
-                }`}
-                style={
-                  stakePoolMetadata?.colors?.accent &&
-                  stakePoolMetadata?.colors.fontColor
-                    ? {
-                        background: stakePoolMetadata?.colors?.secondary,
-                        borderColor: stakePoolMetadata?.colors?.accent,
-                        color: stakePoolMetadata?.colors?.fontColor,
-                      }
-                    : {}
-                }
-                onClick={() => walletModal.setVisible(true)}
-              >
-                Connect wallet to continue
-              </div>
-            )
-          )}
           {analytics.data &&
             Object.keys(analytics.data).length > 0 &&
             totalStaked && (
@@ -680,467 +641,129 @@ function Home() {
                 </div>
               </div>
             )}
-          <div className="flex flex-wrap">
-            <div className="w-1/3 p-4">
-              <Stats 
-                stakedSentries={Number(totalStaked)} 
-                stats={sentriesStats.isFetched ? sentriesStats.data : undefined}
-                isLoading={sentriesStats.isLoading}
-                isError={sentriesStats.isError}
-                recover={sentriesStats.refetch}
-              />
-            </div>
-            <div className="w-2/3 p-4">
-              <Tab.Group defaultIndex={
-                totalUnstakedSentries > totalStakedSentries ? 0 : 1
-              }>
-                <Tab.List className="p-1 border border-neutral-600 rounded-lg flex bg-neutral-900 bg-opacity-70 mb-4 w-fit">
-                  <TabButton>
-                    <div className="flex item-center">
-                      Unstaked
+            {!wallet.connected ? <ConnectWallet /> :
+            <div className="flex flex-wrap -mx-4">
+              <div className="w-1/3 p-4">
+                <Stats 
+                  stakedSentries={Number(totalStaked)} 
+                  stats={sentriesStats.isFetched ? sentriesStats.data : undefined}
+                  isLoading={sentriesStats.isLoading}
+                  isError={sentriesStats.isError}
+                  recover={sentriesStats.refetch}
+                />
+              </div>
+              <div className="w-2/3 p-4">
+                <Tab.Group defaultIndex={
+                  totalUnstakedSentries > totalStakedSentries ? 0 : 1
+                }>
+                  <Tab.List className="p-1 border border-neutral-600 rounded-lg flex bg-neutral-900 bg-opacity-70 mb-4 w-fit">
+                    <TabButton>
+                      <div className="flex item-center">
+                        Unstaked
 
-                      {totalUnstakedSentries ?
-                        <span className="rounded-full flex items-center bg-neutral-600 px-2 ml-1 text-[10px]">
-                          {totalUnstakedSentries}
-                        </span>
-                      : null}
-                    </div>
-                  </TabButton>
-                  <TabButton>
-                    <div className="flex item-center">
-                      Staked
-                      {totalStakedSentries ?
-                        <span className="bg-teal-400 text-white rounded-full flex items-center px-2 ml-1 text-[10px]">
-                          {totalStakedSentries}
-                        </span>
-                      : null}
-                    </div>
-                  </TabButton>
-                </Tab.List>
-                <Tab.Panels>
-                  <TabPanel>
-                    <h2 className="font-semibold text-white text-2xl">
-                      Select Your Sentries
-                    </h2>
-
-                    <div className="my-3 flex-auto overflow-auto">
-                      <div
-                        className="relative my-auto mb-4 h-[60vh] overflow-y-auto overflow-x-hidden rounded-md bg-white bg-opacity-5 p-5"
-                        style={{
-                          background:
-                            stakePoolMetadata?.colors?.backgroundSecondary &&
-                            (contrastColorMode(
-                              stakePoolMetadata?.colors?.primary ?? '#000000'
-                            )[1]
-                              ? lighten(
-                                  stakePoolMetadata?.colors?.backgroundSecondary,
-                                  0.05
-                                )
-                              : darken(
-                                  stakePoolMetadata?.colors?.backgroundSecondary,
-                                  0.05
-                                )),
-                        }}
-                      >
-                        {!allowedTokenDatas.isFetched ? (
-                          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-                            <div className="h-[200px] animate-pulse rounded-lg bg-white bg-opacity-5 p-10"></div>
-                            <div className="h-[200px] animate-pulse rounded-lg bg-white bg-opacity-5 p-10"></div>
-                            <div className="h-[200px] animate-pulse rounded-lg bg-white bg-opacity-5 p-10"></div>
-                          </div>
-                        ) : (allowedTokenDatas.data || []).length == 0 ? (
-                          <p className="text-neutral-600">
-                            No Sentries found in your connected wallet.
-                          </p>
-                        ) : (
-                          <div
-                            className={
-                              'grid grid-cols-1 gap-4 lg:grid-cols-2 xl:grid-cols-3'
-                            }
-                          >
-                            {(
-                              (!stakePoolMetadata?.notFound &&
-                                allowedTokenDatas.data) ||
-                              []
-                            ).map((tk) => (
-                              <div
-                                key={tk.tokenAccount?.pubkey.toString()}
-                                className="mx-auto"
-                              >
-                                <div className="relative w-44 md:w-auto 2xl:w-48">
-                                  <label
-                                    htmlFor={tk?.tokenAccount?.pubkey.toBase58()}
-                                    className="relative"
-                                  >
-                                    <div
-                                      className="relative cursor-pointer rounded-xl"
-                                      onClick={() => selectUnstakedToken(tk)}
-                                      style={{
-                                        boxShadow: isUnstakedTokenSelected(tk)
-                                          ? `0px 0px 20px ${
-                                              stakePoolMetadata?.colors?.secondary ||
-                                              '#FFFFFF'
-                                            }`
-                                          : '',
-                                      }}
-                                    >
-                                      {loadingStake &&
-                                        (isUnstakedTokenSelected(tk) ||
-                                          singleTokenAction ===
-                                            tk.tokenAccount?.account.data.parsed.info.mint.toString()) && (
-                                          <div>
-                                            <div className="absolute top-0 left-0 z-10 flex h-full w-full justify-center rounded-xl bg-black bg-opacity-80 align-middle text-white">
-                                              <div className="my-auto flex">
-                                                <span className="mr-2">
-                                                  <LoadingSpinner height="20px" />
-                                                </span>
-                                                Staking your Sentries...
-                                              </div>
-                                            </div>
-                                          </div>
-                                        )}
-                                      <QuickActions
-                                        receiptType={receiptType}
-                                        unstakedTokenData={tk}
-                                        showFungibleTokens={showFungibleTokens}
-                                        setStakedSelected={setStakedSelected}
-                                        setUnstakedSelected={setUnstakedSelected}
-                                        setLoadingStake={setLoadingStake}
-                                        setLoadingUnstake={setLoadingUnstake}
-                                        setLoadingClaimRewards={
-                                          setLoadingClaimRewards
-                                        }
-                                        setSingleTokenAction={setSingleTokenAction}
-                                        selectUnstakedToken={selectUnstakedToken}
-                                        selectStakedToken={selectStakedToken}
-                                      />
-                                      <img
-                                        className="mx-auto mt-4 rounded-t-xl bg-white bg-opacity-5 object-contain md:h-40 md:w-40 2xl:h-48 2xl:w-48"
-                                        src={
-                                          tk.metadata?.data.image ||
-                                          tk.tokenListData?.logoURI
-                                        }
-                                        alt={
-                                          tk.metadata?.data.name ||
-                                          tk.tokenListData?.name
-                                        }
-                                      />
-                                      <div
-                                        className={`flex-col rounded-b-xl p-2 ${
-                                          stakePoolMetadata?.colors?.fontColor
-                                            ? `text-[${stakePoolMetadata?.colors?.fontColor}]`
-                                            : 'text-gray-200'
-                                        } ${
-                                          stakePoolMetadata?.colors
-                                            ?.backgroundSecondary
-                                            ? `bg-[${stakePoolMetadata?.colors?.backgroundSecondary}]`
-                                            : 'bg-white bg-opacity-10'
-                                        }`}
-                                        style={{
-                                          background:
-                                            stakePoolMetadata?.colors
-                                              ?.backgroundSecondary,
-                                        }}
-                                      >
-                                        <div className="truncate font-semibold">
-                                          {tk.metadata?.data.name ||
-                                            tk.tokenListData?.symbol}
-                                        </div>
-                                      </div>
-                                    </div>
-                                    {isUnstakedTokenSelected(tk) && (
-                                      <div
-                                        className={`absolute top-2 left-2`}
-                                        style={{
-                                          height: '10px',
-                                          width: '10px',
-                                          backgroundColor:
-                                            stakePoolMetadata?.colors?.primary ||
-                                            '#FFFFFF',
-                                          borderRadius: '50%',
-                                          display: 'inline-block',
-                                        }}
-                                      />
-                                    )}
-                                  </label>
-                                </div>
-                              </div>
-                            ))}
-                          </div>
-                        )}
+                        {totalUnstakedSentries ?
+                          <span className="rounded-full flex items-center bg-neutral-600 px-2 ml-1 text-[10px]">
+                            {totalUnstakedSentries}
+                          </span>
+                        : null}
                       </div>
-                    </div>
+                    </TabButton>
+                    <TabButton>
+                      <div className="flex item-center">
+                        Staked
+                        {totalStakedSentries ?
+                          <span className="bg-teal-400 text-white rounded-full flex items-center px-2 ml-1 text-[10px]">
+                            {totalStakedSentries}
+                          </span>
+                        : null}
+                      </div>
+                    </TabButton>
+                  </Tab.List>
+                  <Tab.Panels>
+                    <TabPanel>
+                      <h2 className="font-semibold text-white text-2xl">
+                        Select Your Sentries
+                      </h2>
 
-                    <div className="mt-2 flex items-center justify-between gap-5">
-                      {!stakePoolMetadata?.receiptType && !showFungibleTokens ? (
-                        <MouseoverTooltip
-                          title={
-                            receiptType === ReceiptType.Original
-                              ? 'Lock the original token(s) in your wallet when you stake'
-                              : 'Receive a dynamically generated NFT receipt representing your stake'
-                          }
+                      <div className="my-3 flex-auto overflow-auto">
+                        <div
+                          className="relative my-auto mb-4 h-[60vh] overflow-y-auto overflow-x-hidden rounded-md bg-white bg-opacity-5 p-5"
+                          style={{
+                            background:
+                              stakePoolMetadata?.colors?.backgroundSecondary &&
+                              (contrastColorMode(
+                                stakePoolMetadata?.colors?.primary ?? '#000000'
+                              )[1]
+                                ? lighten(
+                                    stakePoolMetadata?.colors?.backgroundSecondary,
+                                    0.05
+                                  )
+                                : darken(
+                                    stakePoolMetadata?.colors?.backgroundSecondary,
+                                    0.05
+                                  )),
+                          }}
                         >
-                          <div className="flex cursor-pointer flex-row gap-2">
-                            <Switch
-                              checked={receiptType === ReceiptType.Original}
-                              onChange={() =>
-                                setReceiptType(
-                                  receiptType === ReceiptType.Original
-                                    ? ReceiptType.Receipt
-                                    : ReceiptType.Original
-                                )
-                              }
-                              style={{
-                                background:
-                                  stakePoolMetadata?.colors?.secondary ||
-                                  defaultSecondaryColor,
-                                color: stakePoolMetadata?.colors?.fontColor,
-                              }}
-                              className={`relative inline-flex h-6 w-11 items-center rounded-full`}
-                            >
-                              <span className="sr-only">Receipt Type</span>
-                              <span
-                                className={`${
-                                  receiptType === ReceiptType.Original
-                                    ? 'translate-x-6'
-                                    : 'translate-x-1'
-                                } inline-block h-4 w-4 transform rounded-full bg-white`}
-                              />
-                            </Switch>
-                            <div className="flex items-center gap-1">
-                              <span
-                                style={{
-                                  color: stakePoolMetadata?.colors?.fontColor,
-                                }}
-                              >
-                                {receiptType === ReceiptType.Original
-                                  ? 'Original'
-                                  : 'Receipt'}
-                              </span>
-                              <FaInfoCircle />
+                          {!allowedTokenDatas.isFetched ? (
+                            <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+                              <div className="h-[200px] animate-pulse rounded-lg bg-white bg-opacity-5 p-10"></div>
+                              <div className="h-[200px] animate-pulse rounded-lg bg-white bg-opacity-5 p-10"></div>
+                              <div className="h-[200px] animate-pulse rounded-lg bg-white bg-opacity-5 p-10"></div>
                             </div>
-                          </div>
-                        </MouseoverTooltip>
-                      ) : (
-                        <div></div>
-                      )}
-                      <div className="flex gap-5">
-                        <MouseoverTooltip title="Click on your NFTs to select them">
-                          <button
-                            onClick={() => {
-                              if (unstakedSelected.length === 0) {
-                                notify({
-                                  message: `No NFTs selected`,
-                                  type: 'error',
-                                })
-                              } else {
-                                handleStake()
+                          ) : (allowedTokenDatas.data || []).length == 0 ? (
+                            <p className="text-neutral-600">
+                              No Sentries found in your connected wallet.
+                            </p>
+                          ) : (
+                            <div
+                              className={
+                                'grid grid-cols-1 gap-4 lg:grid-cols-2 xl:grid-cols-3'
                               }
-                            }}
-                            style={{
-                              background:
-                                stakePoolMetadata?.colors?.secondary ||
-                                defaultSecondaryColor,
-                              color:
-                                stakePoolMetadata?.colors?.fontColorSecondary ||
-                                stakePoolMetadata?.colors?.fontColor,
-                            }}
-                            className="my-auto flex rounded-md px-4 py-2 hover:scale-[1.03]"
-                          >
-                            <span className="mr-1 inline-block">
-                              {loadingStake && (
-                                <LoadingSpinner
-                                  fill={
-                                    stakePoolMetadata?.colors?.fontColor
-                                      ? stakePoolMetadata?.colors?.fontColor
-                                      : '#FFF'
-                                  }
-                                  height="20px"
-                                />
-                              )}
-                            </span>
-                            <span className="my-auto">
-                              Stake ({unstakedSelected.length})
-                            </span>
-                          </button>
-                        </MouseoverTooltip>
-                        <MouseoverTooltip title="Attempt to stake all NFTs at once">
-                          <button
-                            onClick={() => {
-                              setUnstakedSelected(allowedTokenDatas.data || [])
-                            }}
-                            style={{
-                              background:
-                                stakePoolMetadata?.colors?.secondary ||
-                                defaultSecondaryColor,
-                              color:
-                                stakePoolMetadata?.colors?.fontColorSecondary ||
-                                stakePoolMetadata?.colors?.fontColor,
-                            }}
-                            className="my-auto flex cursor-pointer rounded-md px-4 py-2 hover:scale-[1.03]"
-                          >
-                            <span className="my-auto">Select All</span>
-                          </button>
-                        </MouseoverTooltip>
-                      </div>
-                    </div>
-                  </TabPanel>
-                  <TabPanel>
-                    <div className="mb-5 flex flex-row justify-between">
-                      <div className="flex flex-row items-center">
-                        <h2 className="font-semibold text-white text-2xl">
-                          Staked Sentries
-                        </h2>
-                        <div className="inline-block ml-1">
-                          {stakedTokenDatas.isRefetching ?
-                              (
-                              <LoadingSpinner
-                                fill="#fff"
-                                height="25px"
-                              />
-                            ) : null}
-                        </div>
-                      </div>
-                      <div className="flex flex-col items-end justify-evenly">
-                        {stakePool?.parsed.endDate &&
-                        stakePool?.parsed.endDate.toNumber() !== 0 ? (
-                          <div className="flex flex-col">
-                            <p className="mr-3 text-sm">
-                              End Date:{' '}
-                              {new Date(
-                                stakePool.parsed.endDate?.toNumber() * 1000
-                              ).toDateString()}{' '}
-                            </p>
-                          </div>
-                        ) : (
-                          ''
-                        )}
-                        {stakePool?.parsed.cooldownSeconds &&
-                        stakePool?.parsed.cooldownSeconds !== 0 ? (
-                          <div className="flex flex-col">
-                            <p className="mr-3 text-sm">
-                              Cooldown Period:{' '}
-                              {secondstoDuration(stakePool?.parsed.cooldownSeconds)}{' '}
-                            </p>
-                          </div>
-                        ) : (
-                          ''
-                        )}
-                        {stakePool?.parsed.minStakeSeconds &&
-                        stakePool?.parsed.minStakeSeconds !== 0 ? (
-                          <div className="flex flex-col">
-                            <p className="mr-3 text-sm">
-                              Minimum Stake Seconds:{' '}
-                              {secondstoDuration(stakePool?.parsed.minStakeSeconds)}{' '}
-                            </p>
-                          </div>
-                        ) : (
-                          ''
-                        )}
-                      </div>
-                    </div>
-                    <div className="my-3 flex-auto overflow-auto">
-                      <div
-                        className="relative my-auto mb-4 h-[60vh] overflow-y-auto overflow-x-hidden"
-                        style={{
-                          background:
-                            stakePoolMetadata?.colors?.backgroundSecondary &&
-                            (contrastColorMode(
-                              stakePoolMetadata?.colors?.primary ?? '#000000'
-                            )[1]
-                              ? lighten(
-                                  stakePoolMetadata?.colors?.backgroundSecondary,
-                                  0.05
-                                )
-                              : darken(
-                                  stakePoolMetadata?.colors?.backgroundSecondary,
-                                  0.05
-                                )),
-                        }}
-                      >
-                        {!stakedTokenDatas.isFetched ? (
-                          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-                            <div className="h-[200px] animate-pulse rounded-lg bg-white bg-opacity-5 p-10"></div>
-                            <div className="h-[200px] animate-pulse rounded-lg bg-white bg-opacity-5 p-10"></div>
-                            <div className="h-[200px] animate-pulse rounded-lg bg-white bg-opacity-5 p-10"></div>
-                          </div>
-                        ) : stakedTokenDatas.data?.length === 0 ? (
-                          <p
-                            className={`font-normal text-[${
-                              stakePoolMetadata?.colors?.fontColor
-                                ? ''
-                                : 'text-gray-400'
-                            }]`}
-                          >
-                            No Sentries currently staked.
-                          </p>
-                        ) : (
-                          <div
-                            className={
-                              'grid grid-cols-1 gap-4 lg:grid-cols-2 xl:grid-cols-3'
-                            }
-                          >
-                            {!stakePoolMetadata?.notFound &&
-                              stakedTokenDatas.data &&
-                              stakedTokenDatas.data.map((tk) => (
+                            >
+                              {(
+                                (!stakePoolMetadata?.notFound &&
+                                  allowedTokenDatas.data) ||
+                                []
+                              ).map((tk) => (
                                 <div
-                                  key={tk?.stakeEntry?.pubkey.toBase58()}
+                                  key={tk.tokenAccount?.pubkey.toString()}
                                   className="mx-auto"
                                 >
                                   <div className="relative w-44 md:w-auto 2xl:w-48">
                                     <label
-                                      htmlFor={tk?.stakeEntry?.pubkey.toBase58()}
+                                      htmlFor={tk?.tokenAccount?.pubkey.toBase58()}
                                       className="relative"
                                     >
                                       <div
                                         className="relative cursor-pointer rounded-xl"
-                                        onClick={() => selectStakedToken(tk)}
+                                        onClick={() => selectUnstakedToken(tk)}
                                         style={{
-                                          boxShadow: isStakedTokenSelected(tk)
+                                          boxShadow: isUnstakedTokenSelected(tk)
                                             ? `0px 0px 20px ${
-                                                stakePoolMetadata?.colors
-                                                  ?.secondary || '#FFFFFF'
+                                                stakePoolMetadata?.colors?.secondary ||
+                                                '#FFFFFF'
                                               }`
                                             : '',
                                         }}
                                       >
-                                        {(loadingUnstake || loadingClaimRewards) &&
-                                          (isStakedTokenSelected(tk) ||
+                                        {loadingStake &&
+                                          (isUnstakedTokenSelected(tk) ||
                                             singleTokenAction ===
-                                              tk.stakeEntry?.parsed.originalMint.toString()) && (
+                                              tk.tokenAccount?.account.data.parsed.info.mint.toString()) && (
                                             <div>
-                                              <div className="absolute top-0 left-0 z-10 flex h-full w-full justify-center rounded-lg bg-black bg-opacity-80 align-middle text-white">
-                                                <div className="mx-auto flex items-center justify-center">
+                                              <div className="absolute top-0 left-0 z-10 flex h-full w-full justify-center rounded-xl bg-black bg-opacity-80 align-middle text-white">
+                                                <div className="my-auto flex">
                                                   <span className="mr-2">
                                                     <LoadingSpinner height="20px" />
                                                   </span>
-                                                  {loadingUnstake
-                                                    ? 'Unstaking token...'
-                                                    : 'Claiming rewards...'}
+                                                  Staking your Sentries...
                                                 </div>
                                               </div>
                                             </div>
                                           )}
-                                        {tk.stakeEntry?.parsed.lastStaker.toString() !==
-                                          wallet.publicKey?.toString() && (
-                                          <div>
-                                            <div className="absolute top-0 left-0 z-10 flex h-full w-full justify-center rounded-xl bg-black bg-opacity-80  align-middle text-white">
-                                              <div className="mx-auto flex flex-col items-center justify-center">
-                                                <div>Owned by</div>
-                                                <DisplayAddress
-                                                  dark
-                                                  connection={connection}
-                                                  address={
-                                                    tk.stakeEntry?.parsed.lastStaker
-                                                  }
-                                                />
-                                              </div>
-                                            </div>
-                                          </div>
-                                        )}
                                         <QuickActions
                                           receiptType={receiptType}
-                                          stakedTokenData={tk}
+                                          unstakedTokenData={tk}
                                           showFungibleTokens={showFungibleTokens}
                                           setStakedSelected={setStakedSelected}
                                           setUnstakedSelected={setUnstakedSelected}
@@ -1165,7 +788,7 @@ function Home() {
                                           }
                                         />
                                         <div
-                                          className={`flex-col rounded-b-xl p-2 md:w-40 2xl:w-48 ${
+                                          className={`flex-col rounded-b-xl p-2 ${
                                             stakePoolMetadata?.colors?.fontColor
                                               ? `text-[${stakePoolMetadata?.colors?.fontColor}]`
                                               : 'text-gray-200'
@@ -1185,183 +808,523 @@ function Home() {
                                             {tk.metadata?.data.name ||
                                               tk.tokenListData?.symbol}
                                           </div>
-                                          <div className="mt-2">
-                                            {tk.stakeEntry?.pubkey && (
-                                              <div className="flex w-full flex-row justify-between text-xs font-semibold">
-                                                <span>Boost:</span>
-                                                <span>
-                                                  {(rewardDistributorData.data?.parsed
-                                                    .multiplierDecimals !==
-                                                    undefined &&
-                                                    formatAmountAsDecimal(
-                                                      rewardDistributorData.data
-                                                        ?.parsed.multiplierDecimals ||
-                                                        0,
-                                                      rewardEntries.data
-                                                        ? rewardEntries.data.find(
-                                                            (entry) =>
-                                                              entry.parsed.stakeEntry.equals(
-                                                                tk.stakeEntry?.pubkey!
-                                                              )
-                                                          )?.parsed.multiplier ||
-                                                            rewardDistributorData.data
-                                                              .parsed
-                                                              .defaultMultiplier
-                                                        : rewardDistributorData.data
-                                                            .parsed.defaultMultiplier,
-                                                      rewardDistributorData.data
-                                                        .parsed.multiplierDecimals
-                                                    ).toString()) ||
-                                                    1}
-                                                  x
-                                                </span>
-                                              </div>
-                                            )}
-                                            {tk.stakeEntry?.parsed
-                                              .cooldownStartSeconds &&
-                                            stakePool?.parsed.cooldownSeconds ? (
-                                              <div className="flex w-full flex-row justify-between text-xs font-semibold">
-                                                <span>Cooldown:</span>
-                                                {tk.stakeEntry?.parsed.cooldownStartSeconds.toNumber() +
-                                                  stakePool.parsed.cooldownSeconds -
-                                                  UTCNow >
-                                                0
-                                                  ? secondstoDuration(
-                                                      tk.stakeEntry?.parsed.cooldownStartSeconds.toNumber() +
-                                                        stakePool.parsed
-                                                          .cooldownSeconds -
-                                                        UTCNow
-                                                    )
-                                                  : 'Finished!'}
-                                              </div>
-                                            ) : (
-                                              ''
-                                            )}
-                                            {stakePool?.parsed.minStakeSeconds &&
-                                            tk.stakeEntry?.parsed.lastStakedAt ? (
-                                              <div className="flex w-full flex-row justify-between text-xs font-semibold">
-                                                <span>Min Time:</span>
-                                                {tk.stakeEntry?.parsed.lastStakedAt.toNumber() +
-                                                  stakePool.parsed.minStakeSeconds -
-                                                  UTCNow >
-                                                0
-                                                  ? secondstoDuration(
-                                                      tk.stakeEntry?.parsed.lastStakedAt.toNumber() +
-                                                        stakePool.parsed
-                                                          .minStakeSeconds -
-                                                        UTCNow
-                                                    )
-                                                  : 'Satisfied'}
-                                              </div>
-                                            ) : (
-                                              ''
-                                            )}
-                                          </div>
                                         </div>
-                                        {/* {tk.tokenListData && (
-                                        <div className="absolute bottom-2 left-2">
-                                          {Number(
-                                            getMintDecimalAmountFromNaturalV2(
-                                              tk.tokenListData!.decimals,
-                                              new BN(
-                                                tk.stakeEntry!.parsed.amount.toNumber()
-                                              )
-                                            ).toFixed(2)
-                                          )}{' '}
-                                          {tk.tokenListData.symbol}
-                                        </div>
-                                      )} */}
-                                        {isStakedTokenSelected(tk) && (
-                                          <div
-                                            className={`absolute top-2 left-2`}
-                                            style={{
-                                              height: '10px',
-                                              width: '10px',
-                                              backgroundColor:
-                                                stakePoolMetadata?.colors?.primary ||
-                                                '#FFFFFF',
-                                              borderRadius: '50%',
-                                              display: 'inline-block',
-                                            }}
-                                          />
-                                        )}
                                       </div>
+                                      {isUnstakedTokenSelected(tk) && (
+                                        <div
+                                          className={`absolute top-2 left-2`}
+                                          style={{
+                                            height: '10px',
+                                            width: '10px',
+                                            backgroundColor:
+                                              stakePoolMetadata?.colors?.primary ||
+                                              '#FFFFFF',
+                                            borderRadius: '50%',
+                                            display: 'inline-block',
+                                          }}
+                                        />
+                                      )}
                                     </label>
                                   </div>
                                 </div>
                               ))}
-                          </div>
-                        )}
+                            </div>
+                          )}
+                        </div>
                       </div>
-                    </div>
-                    <div className="mt-2 flex flex-row-reverse flex-wrap justify-between gap-5">
-                      <div className="flex gap-5">
-                        <MouseoverTooltip
-                          title={'Unstake will automatically claim reward for you.'}
-                        >
-                          <button
-                            onClick={() => {
-                              if (stakedSelected.length === 0) {
-                                notify({
-                                  message: `No tokens selected`,
-                                  type: 'error',
-                                })
-                              } else {
-                                handleUnstake()
-                              }
-                            }}
-                            style={{
-                              background:
-                                stakePoolMetadata?.colors?.secondary ||
-                                defaultSecondaryColor,
-                              color:
-                                stakePoolMetadata?.colors?.fontColorSecondary ||
-                                stakePoolMetadata?.colors?.fontColor,
-                            }}
-                            className="my-auto flex rounded-md px-4 py-2 hover:scale-[1.03]"
+
+                      <div className="mt-2 flex items-center justify-between gap-5">
+                        {!stakePoolMetadata?.receiptType && !showFungibleTokens ? (
+                          <MouseoverTooltip
+                            title={
+                              receiptType === ReceiptType.Original
+                                ? 'Lock the original token(s) in your wallet when you stake'
+                                : 'Receive a dynamically generated NFT receipt representing your stake'
+                            }
                           >
-                            <span className="mr-1 inline-block">
-                              {loadingUnstake && (
-                                <LoadingSpinner
-                                  fill={
-                                    stakePoolMetadata?.colors?.fontColor
-                                      ? stakePoolMetadata?.colors?.fontColor
-                                      : '#FFF'
-                                  }
-                                  height="20px"
+                            <div className="flex cursor-pointer flex-row gap-2">
+                              <Switch
+                                checked={receiptType === ReceiptType.Original}
+                                onChange={() =>
+                                  setReceiptType(
+                                    receiptType === ReceiptType.Original
+                                      ? ReceiptType.Receipt
+                                      : ReceiptType.Original
+                                  )
+                                }
+                                style={{
+                                  background:
+                                    stakePoolMetadata?.colors?.secondary ||
+                                    defaultSecondaryColor,
+                                  color: stakePoolMetadata?.colors?.fontColor,
+                                }}
+                                className={`relative inline-flex h-6 w-11 items-center rounded-full`}
+                              >
+                                <span className="sr-only">Receipt Type</span>
+                                <span
+                                  className={`${
+                                    receiptType === ReceiptType.Original
+                                      ? 'translate-x-6'
+                                      : 'translate-x-1'
+                                  } inline-block h-4 w-4 transform rounded-full bg-white`}
                                 />
-                              )}
-                            </span>
-                            <span className="my-auto">
-                              Unstake ({stakedSelected.length})
-                            </span>
-                          </button>
-                        </MouseoverTooltip>
-                        <MouseoverTooltip title="Attempt to unstake all tokens at once">
-                          <button
-                            onClick={() => {
-                              setStakedSelected(stakedTokenDatas.data || [])
-                            }}
-                            style={{
-                              background:
-                                stakePoolMetadata?.colors?.secondary ||
-                                defaultSecondaryColor,
-                              color:
-                                stakePoolMetadata?.colors?.fontColorSecondary ||
-                                stakePoolMetadata?.colors?.fontColor,
-                            }}
-                            className="my-auto flex cursor-pointer rounded-md px-4 py-2 hover:scale-[1.03]"
-                          >
-                            <span className="my-auto">Select All</span>
-                          </button>
-                        </MouseoverTooltip>
+                              </Switch>
+                              <div className="flex items-center gap-1">
+                                <span
+                                  style={{
+                                    color: stakePoolMetadata?.colors?.fontColor,
+                                  }}
+                                >
+                                  {receiptType === ReceiptType.Original
+                                    ? 'Original'
+                                    : 'Receipt'}
+                                </span>
+                                <FaInfoCircle />
+                              </div>
+                            </div>
+                          </MouseoverTooltip>
+                        ) : (
+                          <div></div>
+                        )}
+                        <div className="flex gap-5">
+                          <MouseoverTooltip title="Click on your NFTs to select them">
+                            <button
+                              onClick={() => {
+                                if (unstakedSelected.length === 0) {
+                                  notify({
+                                    message: `No NFTs selected`,
+                                    type: 'error',
+                                  })
+                                } else {
+                                  handleStake()
+                                }
+                              }}
+                              style={{
+                                background:
+                                  stakePoolMetadata?.colors?.secondary ||
+                                  defaultSecondaryColor,
+                                color:
+                                  stakePoolMetadata?.colors?.fontColorSecondary ||
+                                  stakePoolMetadata?.colors?.fontColor,
+                              }}
+                              className="my-auto flex rounded-md px-4 py-2 hover:scale-[1.03]"
+                            >
+                              <span className="mr-1 inline-block">
+                                {loadingStake && (
+                                  <LoadingSpinner
+                                    fill={
+                                      stakePoolMetadata?.colors?.fontColor
+                                        ? stakePoolMetadata?.colors?.fontColor
+                                        : '#FFF'
+                                    }
+                                    height="20px"
+                                  />
+                                )}
+                              </span>
+                              <span className="my-auto">
+                                Stake ({unstakedSelected.length})
+                              </span>
+                            </button>
+                          </MouseoverTooltip>
+                          <MouseoverTooltip title="Attempt to stake all NFTs at once">
+                            <button
+                              onClick={() => {
+                                setUnstakedSelected(allowedTokenDatas.data || [])
+                              }}
+                              style={{
+                                background:
+                                  stakePoolMetadata?.colors?.secondary ||
+                                  defaultSecondaryColor,
+                                color:
+                                  stakePoolMetadata?.colors?.fontColorSecondary ||
+                                  stakePoolMetadata?.colors?.fontColor,
+                              }}
+                              className="my-auto flex cursor-pointer rounded-md px-4 py-2 hover:scale-[1.03]"
+                            >
+                              <span className="my-auto">Select All</span>
+                            </button>
+                          </MouseoverTooltip>
+                        </div>
                       </div>
-                    </div>
-                  </TabPanel>
-                </Tab.Panels>
-              </Tab.Group>
+                    </TabPanel>
+                    <TabPanel>
+                      <div className="mb-5 flex flex-row justify-between">
+                        <div className="flex flex-row items-center">
+                          <h2 className="font-semibold text-white text-2xl">
+                            Staked Sentries
+                          </h2>
+                          <div className="inline-block ml-1">
+                            {stakedTokenDatas.isRefetching ?
+                                (
+                                <LoadingSpinner
+                                  fill="#fff"
+                                  height="25px"
+                                />
+                              ) : null}
+                          </div>
+                        </div>
+                        <div className="flex flex-col items-end justify-evenly">
+                          {stakePool?.parsed.endDate &&
+                          stakePool?.parsed.endDate.toNumber() !== 0 ? (
+                            <div className="flex flex-col">
+                              <p className="mr-3 text-sm">
+                                End Date:{' '}
+                                {new Date(
+                                  stakePool.parsed.endDate?.toNumber() * 1000
+                                ).toDateString()}{' '}
+                              </p>
+                            </div>
+                          ) : (
+                            ''
+                          )}
+                          {stakePool?.parsed.cooldownSeconds &&
+                          stakePool?.parsed.cooldownSeconds !== 0 ? (
+                            <div className="flex flex-col">
+                              <p className="mr-3 text-sm">
+                                Cooldown Period:{' '}
+                                {secondstoDuration(stakePool?.parsed.cooldownSeconds)}{' '}
+                              </p>
+                            </div>
+                          ) : (
+                            ''
+                          )}
+                          {stakePool?.parsed.minStakeSeconds &&
+                          stakePool?.parsed.minStakeSeconds !== 0 ? (
+                            <div className="flex flex-col">
+                              <p className="mr-3 text-sm">
+                                Minimum Stake Seconds:{' '}
+                                {secondstoDuration(stakePool?.parsed.minStakeSeconds)}{' '}
+                              </p>
+                            </div>
+                          ) : (
+                            ''
+                          )}
+                        </div>
+                      </div>
+                      <div className="my-3 flex-auto overflow-auto">
+                        <div
+                          className="relative my-auto mb-4 h-[60vh] overflow-y-auto overflow-x-hidden"
+                          style={{
+                            background:
+                              stakePoolMetadata?.colors?.backgroundSecondary &&
+                              (contrastColorMode(
+                                stakePoolMetadata?.colors?.primary ?? '#000000'
+                              )[1]
+                                ? lighten(
+                                    stakePoolMetadata?.colors?.backgroundSecondary,
+                                    0.05
+                                  )
+                                : darken(
+                                    stakePoolMetadata?.colors?.backgroundSecondary,
+                                    0.05
+                                  )),
+                          }}
+                        >
+                          {!stakedTokenDatas.isFetched ? (
+                            <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+                              <div className="h-[200px] animate-pulse rounded-lg bg-white bg-opacity-5 p-10"></div>
+                              <div className="h-[200px] animate-pulse rounded-lg bg-white bg-opacity-5 p-10"></div>
+                              <div className="h-[200px] animate-pulse rounded-lg bg-white bg-opacity-5 p-10"></div>
+                            </div>
+                          ) : stakedTokenDatas.data?.length === 0 ? (
+                            <p
+                              className={`font-normal text-[${
+                                stakePoolMetadata?.colors?.fontColor
+                                  ? ''
+                                  : 'text-gray-400'
+                              }]`}
+                            >
+                              No Sentries currently staked.
+                            </p>
+                          ) : (
+                            <div
+                              className={
+                                'grid grid-cols-1 gap-4 lg:grid-cols-2 xl:grid-cols-3'
+                              }
+                            >
+                              {!stakePoolMetadata?.notFound &&
+                                stakedTokenDatas.data &&
+                                stakedTokenDatas.data.map((tk) => (
+                                  <div
+                                    key={tk?.stakeEntry?.pubkey.toBase58()}
+                                    className="mx-auto"
+                                  >
+                                    <div className="relative w-44 md:w-auto 2xl:w-48">
+                                      <label
+                                        htmlFor={tk?.stakeEntry?.pubkey.toBase58()}
+                                        className="relative"
+                                      >
+                                        <div
+                                          className="relative cursor-pointer rounded-xl"
+                                          onClick={() => selectStakedToken(tk)}
+                                          style={{
+                                            boxShadow: isStakedTokenSelected(tk)
+                                              ? `0px 0px 20px ${
+                                                  stakePoolMetadata?.colors
+                                                    ?.secondary || '#FFFFFF'
+                                                }`
+                                              : '',
+                                          }}
+                                        >
+                                          {(loadingUnstake || loadingClaimRewards) &&
+                                            (isStakedTokenSelected(tk) ||
+                                              singleTokenAction ===
+                                                tk.stakeEntry?.parsed.originalMint.toString()) && (
+                                              <div>
+                                                <div className="absolute top-0 left-0 z-10 flex h-full w-full justify-center rounded-lg bg-black bg-opacity-80 align-middle text-white">
+                                                  <div className="mx-auto flex items-center justify-center">
+                                                    <span className="mr-2">
+                                                      <LoadingSpinner height="20px" />
+                                                    </span>
+                                                    {loadingUnstake
+                                                      ? 'Unstaking token...'
+                                                      : 'Claiming rewards...'}
+                                                  </div>
+                                                </div>
+                                              </div>
+                                            )}
+                                          {tk.stakeEntry?.parsed.lastStaker.toString() !==
+                                            wallet.publicKey?.toString() && (
+                                            <div>
+                                              <div className="absolute top-0 left-0 z-10 flex h-full w-full justify-center rounded-xl bg-black bg-opacity-80  align-middle text-white">
+                                                <div className="mx-auto flex flex-col items-center justify-center">
+                                                  <div>Owned by</div>
+                                                  <DisplayAddress
+                                                    dark
+                                                    connection={connection}
+                                                    address={
+                                                      tk.stakeEntry?.parsed.lastStaker
+                                                    }
+                                                  />
+                                                </div>
+                                              </div>
+                                            </div>
+                                          )}
+                                          <QuickActions
+                                            receiptType={receiptType}
+                                            stakedTokenData={tk}
+                                            showFungibleTokens={showFungibleTokens}
+                                            setStakedSelected={setStakedSelected}
+                                            setUnstakedSelected={setUnstakedSelected}
+                                            setLoadingStake={setLoadingStake}
+                                            setLoadingUnstake={setLoadingUnstake}
+                                            setLoadingClaimRewards={
+                                              setLoadingClaimRewards
+                                            }
+                                            setSingleTokenAction={setSingleTokenAction}
+                                            selectUnstakedToken={selectUnstakedToken}
+                                            selectStakedToken={selectStakedToken}
+                                          />
+                                          <img
+                                            className="mx-auto mt-4 rounded-t-xl bg-white bg-opacity-5 object-contain md:h-40 md:w-40 2xl:h-48 2xl:w-48"
+                                            src={
+                                              tk.metadata?.data.image ||
+                                              tk.tokenListData?.logoURI
+                                            }
+                                            alt={
+                                              tk.metadata?.data.name ||
+                                              tk.tokenListData?.name
+                                            }
+                                          />
+                                          <div
+                                            className={`flex-col rounded-b-xl p-2 md:w-40 2xl:w-48 ${
+                                              stakePoolMetadata?.colors?.fontColor
+                                                ? `text-[${stakePoolMetadata?.colors?.fontColor}]`
+                                                : 'text-gray-200'
+                                            } ${
+                                              stakePoolMetadata?.colors
+                                                ?.backgroundSecondary
+                                                ? `bg-[${stakePoolMetadata?.colors?.backgroundSecondary}]`
+                                                : 'bg-white bg-opacity-10'
+                                            }`}
+                                            style={{
+                                              background:
+                                                stakePoolMetadata?.colors
+                                                  ?.backgroundSecondary,
+                                            }}
+                                          >
+                                            <div className="truncate font-semibold">
+                                              {tk.metadata?.data.name ||
+                                                tk.tokenListData?.symbol}
+                                            </div>
+                                            <div className="mt-2">
+                                              {tk.stakeEntry?.pubkey && (
+                                                <div className="flex w-full flex-row justify-between text-xs font-semibold">
+                                                  <span>Boost:</span>
+                                                  <span>
+                                                    {(rewardDistributorData.data?.parsed
+                                                      .multiplierDecimals !==
+                                                      undefined &&
+                                                      formatAmountAsDecimal(
+                                                        rewardDistributorData.data
+                                                          ?.parsed.multiplierDecimals ||
+                                                          0,
+                                                        rewardEntries.data
+                                                          ? rewardEntries.data.find(
+                                                              (entry) =>
+                                                                entry.parsed.stakeEntry.equals(
+                                                                  tk.stakeEntry?.pubkey!
+                                                                )
+                                                            )?.parsed.multiplier ||
+                                                              rewardDistributorData.data
+                                                                .parsed
+                                                                .defaultMultiplier
+                                                          : rewardDistributorData.data
+                                                              .parsed.defaultMultiplier,
+                                                        rewardDistributorData.data
+                                                          .parsed.multiplierDecimals
+                                                      ).toString()) ||
+                                                      1}
+                                                    x
+                                                  </span>
+                                                </div>
+                                              )}
+                                              {tk.stakeEntry?.parsed
+                                                .cooldownStartSeconds &&
+                                              stakePool?.parsed.cooldownSeconds ? (
+                                                <div className="flex w-full flex-row justify-between text-xs font-semibold">
+                                                  <span>Cooldown:</span>
+                                                  {tk.stakeEntry?.parsed.cooldownStartSeconds.toNumber() +
+                                                    stakePool.parsed.cooldownSeconds -
+                                                    UTCNow >
+                                                  0
+                                                    ? secondstoDuration(
+                                                        tk.stakeEntry?.parsed.cooldownStartSeconds.toNumber() +
+                                                          stakePool.parsed
+                                                            .cooldownSeconds -
+                                                          UTCNow
+                                                      )
+                                                    : 'Finished!'}
+                                                </div>
+                                              ) : (
+                                                ''
+                                              )}
+                                              {stakePool?.parsed.minStakeSeconds &&
+                                              tk.stakeEntry?.parsed.lastStakedAt ? (
+                                                <div className="flex w-full flex-row justify-between text-xs font-semibold">
+                                                  <span>Min Time:</span>
+                                                  {tk.stakeEntry?.parsed.lastStakedAt.toNumber() +
+                                                    stakePool.parsed.minStakeSeconds -
+                                                    UTCNow >
+                                                  0
+                                                    ? secondstoDuration(
+                                                        tk.stakeEntry?.parsed.lastStakedAt.toNumber() +
+                                                          stakePool.parsed
+                                                            .minStakeSeconds -
+                                                          UTCNow
+                                                      )
+                                                    : 'Satisfied'}
+                                                </div>
+                                              ) : (
+                                                ''
+                                              )}
+                                            </div>
+                                          </div>
+                                          {/* {tk.tokenListData && (
+                                          <div className="absolute bottom-2 left-2">
+                                            {Number(
+                                              getMintDecimalAmountFromNaturalV2(
+                                                tk.tokenListData!.decimals,
+                                                new BN(
+                                                  tk.stakeEntry!.parsed.amount.toNumber()
+                                                )
+                                              ).toFixed(2)
+                                            )}{' '}
+                                            {tk.tokenListData.symbol}
+                                          </div>
+                                        )} */}
+                                          {isStakedTokenSelected(tk) && (
+                                            <div
+                                              className={`absolute top-2 left-2`}
+                                              style={{
+                                                height: '10px',
+                                                width: '10px',
+                                                backgroundColor:
+                                                  stakePoolMetadata?.colors?.primary ||
+                                                  '#FFFFFF',
+                                                borderRadius: '50%',
+                                                display: 'inline-block',
+                                              }}
+                                            />
+                                          )}
+                                        </div>
+                                      </label>
+                                    </div>
+                                  </div>
+                                ))}
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                      <div className="mt-2 flex flex-row-reverse flex-wrap justify-between gap-5">
+                        <div className="flex gap-5">
+                          <MouseoverTooltip
+                            title={'Unstake will automatically claim reward for you.'}
+                          >
+                            <button
+                              onClick={() => {
+                                if (stakedSelected.length === 0) {
+                                  notify({
+                                    message: `No tokens selected`,
+                                    type: 'error',
+                                  })
+                                } else {
+                                  handleUnstake()
+                                }
+                              }}
+                              style={{
+                                background:
+                                  stakePoolMetadata?.colors?.secondary ||
+                                  defaultSecondaryColor,
+                                color:
+                                  stakePoolMetadata?.colors?.fontColorSecondary ||
+                                  stakePoolMetadata?.colors?.fontColor,
+                              }}
+                              className="my-auto flex rounded-md px-4 py-2 hover:scale-[1.03]"
+                            >
+                              <span className="mr-1 inline-block">
+                                {loadingUnstake && (
+                                  <LoadingSpinner
+                                    fill={
+                                      stakePoolMetadata?.colors?.fontColor
+                                        ? stakePoolMetadata?.colors?.fontColor
+                                        : '#FFF'
+                                    }
+                                    height="20px"
+                                  />
+                                )}
+                              </span>
+                              <span className="my-auto">
+                                Unstake ({stakedSelected.length})
+                              </span>
+                            </button>
+                          </MouseoverTooltip>
+                          <MouseoverTooltip title="Attempt to unstake all tokens at once">
+                            <button
+                              onClick={() => {
+                                setStakedSelected(stakedTokenDatas.data || [])
+                              }}
+                              style={{
+                                background:
+                                  stakePoolMetadata?.colors?.secondary ||
+                                  defaultSecondaryColor,
+                                color:
+                                  stakePoolMetadata?.colors?.fontColorSecondary ||
+                                  stakePoolMetadata?.colors?.fontColor,
+                              }}
+                              className="my-auto flex cursor-pointer rounded-md px-4 py-2 hover:scale-[1.03]"
+                            >
+                              <span className="my-auto">Select All</span>
+                            </button>
+                          </MouseoverTooltip>
+                        </div>
+                      </div>
+                    </TabPanel>
+                  </Tab.Panels>
+                </Tab.Group>
+              </div>
             </div>
-          </div>
+          }
         </div>
         <Footer bgColor={stakePoolMetadata?.colors?.primary} />
       </main>
