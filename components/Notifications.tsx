@@ -24,7 +24,7 @@ function Message(props: Message) {
   }
 
   return (
-    <div className={`animate-slide-in cursor-pointer min-w-[280px] p-4 mb-4 rounded-lg border ${types[type]} hover:translate-x-2 transition-transform`} onClick={onClick}>
+    <div className={`text-white animate-slide-in cursor-pointer min-w-[280px] p-4 mb-4 rounded-lg border ${types[type]} hover:translate-x-2 transition-transform`} onClick={onClick}>
       <h4>{message}</h4>
       {description ? <p>{description}</p> : null}
     </div>

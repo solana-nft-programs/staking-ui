@@ -6,7 +6,8 @@ type ButtonProps = {
   hasArrow?: boolean,
   children: ReactNode,
   onClick?: () => void,
-  variant?: 'primary' | 'secondary'
+  variant?: 'primary' | 'secondary',
+  size?: 'base' | 'sm'
 }
 
 export function Button(props: ButtonProps) {
@@ -14,11 +15,17 @@ export function Button(props: ButtonProps) {
     as = 'button', 
     children, 
     hasArrow, 
-    variant = 'primary', 
+    variant = 'primary',
+    size = 'base',
     ...rest 
   } = props
 
   const Tag = as
+
+  const sizes = {
+    base: 'px-7 py-4',
+    sm: 'px-4 py-2'
+  }
 
   const variants = {
     primary: 'bg-purple-400 hover:bg-opacity-70',
@@ -27,7 +34,7 @@ export function Button(props: ButtonProps) {
 
   return (
     <Tag
-      className={`${variants[variant]} px-7 py-4 rounded-full text-sm flex items-center gap-2  transition-colors focus:outline outline-teal-400 outline-2`}
+      className={`${variants[variant]} ${sizes[size]} text-white rounded-full text-sm flex items-center gap-2  transition-colors focus:outline outline-teal-400 outline-2`}
       {...rest}
     >
       <span>  

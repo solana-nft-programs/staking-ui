@@ -40,7 +40,7 @@ export function useNotifications() {
   useEffect(() => {
     let timer = setTimeout(() => {
       remove()
-    }, 1500)
+    }, 4500)
 
     return () => clearTimeout(timer)
   }, [notifications])
