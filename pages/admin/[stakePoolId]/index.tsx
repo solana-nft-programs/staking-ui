@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import { findAta, tryGetAccount } from '@cardinal/common'
-import { executeTransaction, handleError } from '@cardinal/staking'
+import { executeTransaction } from '@cardinal/staking'
 import { RewardDistributorKind } from '@cardinal/staking/dist/cjs/programs/rewardDistributor'
 import {
   getRewardDistributor,
@@ -28,6 +28,7 @@ import { BN } from '@project-serum/anchor'
 import * as splToken from '@solana/spl-token'
 import { useWallet } from '@solana/wallet-adapter-react'
 import { Keypair, PublicKey, Transaction } from '@solana/web3.js'
+import { handleError } from 'common/errors'
 import { Footer } from 'common/Footer'
 import { Header } from 'common/Header'
 import { notify } from 'common/Notification'

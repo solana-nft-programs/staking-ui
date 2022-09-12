@@ -2,7 +2,6 @@ import {
   claimRewards,
   createStakeEntryAndStakeMint,
   executeTransaction,
-  handleError,
   stake,
   unstake,
 } from '@cardinal/staking'
@@ -11,24 +10,18 @@ import type { Wallet } from '@metaplex/js'
 import { BN } from '@project-serum/anchor'
 import { useWallet } from '@solana/wallet-adapter-react'
 import { PublicKey } from '@solana/web3.js'
-import type {
-  AllowedTokenData} from 'hooks/useAllowedTokenDatas';
-import {
-  useAllowedTokenDatas,
-} from 'hooks/useAllowedTokenDatas'
+import type { AllowedTokenData } from 'hooks/useAllowedTokenDatas'
+import { useAllowedTokenDatas } from 'hooks/useAllowedTokenDatas'
 import { useRewardDistributorData } from 'hooks/useRewardDistributorData'
 import { useRewardDistributorTokenAccount } from 'hooks/useRewardDistributorTokenAccount'
-import type {
-  StakeEntryTokenData} from 'hooks/useStakedTokenDatas';
-import {
-  useStakedTokenDatas,
-} from 'hooks/useStakedTokenDatas'
+import type { StakeEntryTokenData } from 'hooks/useStakedTokenDatas'
+import { useStakedTokenDatas } from 'hooks/useStakedTokenDatas'
 import { useStakePoolData } from 'hooks/useStakePoolData'
 import { useStakePoolEntries } from 'hooks/useStakePoolEntries'
 import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
 import { lighten } from 'polished'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
-import type { Dispatch, SetStateAction} from 'react';
+import type { Dispatch, SetStateAction } from 'react'
 import { useState } from 'react'
 import { AiFillLock, AiFillUnlock, AiOutlineDatabase } from 'react-icons/ai'
 import { BsBookmarkCheck } from 'react-icons/bs'
@@ -37,6 +30,7 @@ import { FiExternalLink } from 'react-icons/fi'
 import { RiMoneyDollarCircleFill } from 'react-icons/ri'
 
 import { getColorByBgColor } from './Button'
+import { handleError } from './errors'
 import { LoadingSpinner } from './LoadingSpinner'
 import { notify } from './Notification'
 import { Popover, PopoverItem } from './Popover'

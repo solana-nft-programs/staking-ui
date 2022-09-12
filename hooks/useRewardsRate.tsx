@@ -43,7 +43,8 @@ export const useRewardsRate = () => {
         !rewardDistibutorId ||
         !rewardMintInfoData ||
         !rewardMintInfo ||
-        !stakedTokenData
+        !stakedTokenData ||
+        !rewardDistributorTokenAccount
       ) {
         return undefined
       }
@@ -64,7 +65,7 @@ export const useRewardsRate = () => {
             rewardEntry,
             rewardDistributorData.parsed.kind === RewardDistributorKind.Mint
               ? rewardMintInfo?.mintInfo.supply
-              : rewardDistributorTokenAccount!.amount,
+              : rewardDistributorTokenAccount.amount,
             stakeEntry.parsed.lastStakedAt.add(new BN(86400)).toNumber()
           )
           rewardsRateMap[stakeEntry.pubkey.toString()] = {

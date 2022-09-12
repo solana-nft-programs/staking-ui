@@ -1,4 +1,3 @@
-import { handleError } from '@cardinal/staking'
 import type { Wallet } from '@saberhq/solana-contrib'
 import type {
   ConfirmOptions,
@@ -8,6 +7,7 @@ import type {
   Transaction,
 } from '@solana/web3.js'
 import { sendAndConfirmRawTransaction } from '@solana/web3.js'
+import { handleError } from 'common/errors'
 import { notify } from 'common/Notification'
 
 export const executeAllTransactions = async (
