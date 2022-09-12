@@ -155,9 +155,7 @@ export const Header = () => {
                   </DialectThemeProvider>
                 </DialectContextProvider>
               </>
-            ) : (
-              <WalletMultiButton style={{ all: 'unset' }} className="" />
-            )}
+            ) : null}
           </div>
         </div>
       </nav>
