@@ -55,8 +55,12 @@ import { Notifications } from 'components/Notifications'
 import { useNotifications } from 'hooks/useNotifications'
 import { Tab } from '@headlessui/react'
 import { TabButton, TabPanel } from 'components/Tab'
-import { Stats } from 'features/Stats'
+import { Stats, StatsBlock } from 'features/Stats'
 import { ConnectWallet } from 'features/ConnectWallet'
+import { useEpochInfo } from 'hooks/useEpochInfo'
+import { useSolStakeAccount } from 'hooks/useSolStakeAccount'
+import { useValidatorInfo } from 'hooks/useValidatorInfo'
+import { useSentryPower } from 'hooks/useSentryPower'
 
 const MAX_EPOCH = new BN(2).pow(new BN(64)).sub(new BN(1))
 
@@ -75,6 +79,10 @@ function Home() {
   // const rewards = useRewards()
   // const rewardsRate = useRewardsRate()
   const sentriesStats = useSentriesStats()
+  const sentryPower = useSentryPower()
+  const epochStats = useEpochInfo()
+  const solStakeAccount = useSolStakeAccount()
+  const validatorDetails = useValidatorInfo()
 
   const [unstakedSelected, setUnstakedSelected] = useState<AllowedTokenData[]>(
     []
@@ -585,8 +593,14 @@ function Home() {
           <div className="my-8 flex text-white">
             <div className="w-1/2">
               <h1 className="mb-2 text-4xl font-bold text-white">
-                The Power Grid
+                The Power Grid - {
+                  // @ts-ignore
+                  Intl.NumberFormat('en').format(Math.floor(validatorDetails.data?.totalSolStaked))
+                }◎
               </h1>
+              <StatsBlock 
+              title={`Epoch ${epochStats.data?.epoch} Progress`} 
+              valueAbs={epochStats.data?.prettyProgress} valueRel={epochStats.data?.prettyProgress} color={'#fff'}></StatsBlock>
               <p className="w-3/4 text-lg text-neutral-300">
                 Stake your Sentry here, and power it up by locking SOL in our
                 validator, The Lode
@@ -646,10 +660,10 @@ function Home() {
               <div className="w-1/3 p-4">
                 <Stats 
                   stakedSentries={Number(totalStaked)} 
-                  stats={sentriesStats.isFetched ? sentriesStats.data : undefined}
-                  isLoading={sentriesStats.isLoading}
-                  isError={sentriesStats.isError}
-                  recover={sentriesStats.refetch}
+                  stats={sentryPower.isFetched ? sentryPower.data : undefined}
+                  isLoading={sentryPower.isLoading}
+                  isError={sentryPower.isError}
+                  recover={sentryPower.refetch}
                 />
               </div>
               <div className="w-2/3 p-4">
@@ -676,6 +690,11 @@ function Home() {
                             {totalStakedSentries}
                           </span>
                         : null}
+                      </div>
+                    </TabButton>
+                    <TabButton>
+                      <div className="flex item-center">
+                        ◎ Rewards
                       </div>
                     </TabButton>
                   </Tab.List>
@@ -1198,6 +1217,30 @@ function Home() {
                           )}
                         </div>
                       </div>
+                    </TabPanel>
+                    <TabPanel>
+                      <div className="mb-5 flex justify-between">
+                          <div className="flex items-center w-full">
+                            <div className="flex items-center">
+                              <h2 className="font-semibold text-white text-2xl">
+                                Sol Rewards
+                              </h2>
+                              <div className="inline-block ml-1">
+                                {
+                                // @ts-ignore
+                                (solStakeAccount.data?.error) ? 
+                                "Error loading staking data"  : 
+                               (!(solStakeAccount.isFetched)) ? "Loading" :
+                                (
+                                    // @ts-ignore
+                                    solStakeAccount.data?.stakeAccount?.info
+                                )
+                                  
+                                }
+                              </div>
+                            </div>
+                          </div>
+                        </div>
                     </TabPanel>
                   </Tab.Panels>
                 </Tab.Group>

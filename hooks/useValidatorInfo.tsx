@@ -1,19 +1,18 @@
 import { useQuery } from 'react-query'
-import { useWallet } from '@solana/wallet-adapter-react'
 
-export type SentriesDetailsData = {
-  poweredSentries: number
-  floorPrice: number
-  solPowering: number
+export type ValidatorInfoData = {
+  address: string
+  totalStakedAccounts: number
+  totalSolStaked: number
   error?: string
 }
 
-export const useSentriesStats = () => {
-  return useQuery<SentriesDetailsData | undefined>(
+export const useValidatorInfo = () => {
+  return useQuery<ValidatorInfoData | undefined>(
     ['useSentriesStats'],
     async () => {
       return await fetch(
-        `/v1/sentries`
+        `/v1/validator/LodezVTbz3v5GK6oULfWNFfcs7D4rtMZQkmRjnh65gq` // TODO: Changeme
       )
         .then((response) => response.json())
         .then((data) => {

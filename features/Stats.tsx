@@ -1,9 +1,11 @@
 import { LoadingSpinner } from "common/LoadingSpinner"
 import { Button } from "components/Button"
-import { SentriesStakingData } from "hooks/useSentriesStats"
+import { SentriesDetailsData } from "hooks/useSentriesStats"
+import { SentriesStakingData } from "hooks/useSentryPower"
 import { ReactElement, ReactNode } from "react"
 
 type StatsProps = {
+  sentriesDetails: SentriesDetailsData | undefined,
   stakedSentries: number,
   stats: SentriesStakingData | undefined,
   isLoading: boolean,
@@ -21,8 +23,12 @@ type StatsBlock = {
 }
 
 export function Stats(props: StatsProps) {
-  const { stakedSentries, stats, isLoading, isError, recover } = props
-
+  const { sentriesDetails, stakedSentries, stats, isLoading, isError, recover } = props
+  const testingDetails: SentriesDetailsData = {
+    poweredSentries: 200,
+    floorPrice: 2.8,
+    solPowering: 3982
+  }
   if (isLoading) {
     return (
       <Container>
@@ -47,10 +53,22 @@ export function Stats(props: StatsProps) {
     )
   }
 
+  if(!sentriesDetails){
+    
+  }
+
   const stakedSentriesPercentage = (stakedSentries * 100) / 8000
   const stakedSol = stats?.total_staked
   const SolNeeded = stats?.max_power_level_sol
   const sentriesCount = stats?.nft_count
+
+  const poweredSentries = testingDetails?.poweredSentries
+  const poweredSentriesPercentage = ((poweredSentries * 100) / 8000)
+  const floorPrice = testingDetails?.floorPrice
+  const currentValueLocked = floorPrice * stakedSentries * 31.45 // TODO: Price of SOL
+  const totalMcap = floorPrice * 8000 * 31.45 // TODO: Price of SOL
+  const percentMCap = (currentValueLocked / totalMcap) * 100
+  const solPowering = testingDetails?.solPowering
 
   return (
     <Container>
@@ -101,8 +119,8 @@ export function Stats(props: StatsProps) {
             <path d="M3 9H1C0.726667 9 0.5 8.77333 0.5 8.5C0.5 8.22667 0.726667 8 1 8H3C3.27333 8 3.5 8.22667 3.5 8.5C3.5 8.77333 3.27333 9 3 9Z" fill="white"/>
           </svg>
         }
-        valueRel={7.41}
-        valueAbs={231}
+        valueRel={poweredSentriesPercentage}
+        valueAbs={poweredSentries}
       />
       <Separator />
       <StatsBlock 
@@ -114,15 +132,15 @@ export function Stats(props: StatsProps) {
             <path d="M14.8667 7.77986V11.2132C14.8667 13.2665 13.6934 14.1532 11.9267 14.1532H6.07336C5.57336 14.1532 5.1267 14.0799 4.74003 13.9332C4.4267 13.8199 4.15336 13.6532 3.93336 13.4399C3.81336 13.3265 3.9067 13.1465 4.07336 13.1465H9.9267C12.3934 13.1465 13.86 11.6799 13.86 9.21986V5.77986C13.86 5.61986 14.04 5.51986 14.1534 5.63986C14.6067 6.11986 14.8667 6.81986 14.8667 7.77986Z" fill="white"/>
           </svg>
         }
-        valueRel={38.96}
-        valueAbs={150321.32}
+        valueRel={percentMCap}
+        valueAbs={currentValueLocked}
         prefix="$"
       />
     </Container>
   )
 }
 
-function Progress({ value = 0 }: { value: number }) {
+export function Progress({ value = 0 }: { value: number }) {
   const arc = 'M302 155C302 73.8141 236.186 8 155 8C73.8141 8 8 73.8141 8 155'
 
   return (
@@ -148,7 +166,7 @@ function Progress({ value = 0 }: { value: number }) {
   )
 }
 
-function StatsBlock(props: StatsBlock) {
+export function StatsBlock(props: StatsBlock) {
   const { title, icon, valueAbs, valueRel, color, prefix } = props
 
   const formattedAbs = (prefix ? prefix : '') + valueAbs.toLocaleString()

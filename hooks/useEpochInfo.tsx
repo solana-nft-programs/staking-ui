@@ -19,10 +19,7 @@ export const useEpochInfo = () => {
     // @ts-ignore
     async () => {
       const epochInfo = await secondaryConnection.getEpochInfo()
-      if(!epochInfo){
-          return {error: true}
-      }
-      const {slotIndex, slotsInEpoch} =  epochInfo
+      const {epoch, slotIndex, slotsInEpoch} =  epochInfo
       const epochProgress = slotIndex / slotsInEpoch
       //const samples = await connection.getRecentPerformanceSamples(360);
       const samples = [{samplePeriodSecs: 550, numSlots: 1000}] // Hardcoded until mystery above is solved
@@ -44,10 +41,12 @@ export const useEpochInfo = () => {
       const hourlySlotTime = Math.round(1000 * avgSlotTime_1h);
       const epochTimeRemaining = (slotsInEpoch - slotIndex) * hourlySlotTime;
 
-      console.log(`epochProgress: ${epochProgress}, epochTimeRemaining: ${epochTimeRemaining}`);
+      const prettyProgress = Math.round(Math.floor(epochProgress * 100))
       return {
+          epoch,
           epochInfo,
           epochProgress,
+          prettyProgress,
           epochTimeRemaining,
       };
     },

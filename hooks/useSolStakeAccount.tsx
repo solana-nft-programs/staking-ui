@@ -10,7 +10,6 @@ import { StakeAccount, accounInfoToStakeAccount, sortStakeAccountMetas, promiseA
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 import { useQuery } from 'react-query'
 import { useWallet } from '@solana/wallet-adapter-react'
-import { contrastColorMode } from 'common/utils'
 
 export const STAKE_PROGRAM_ID = new PublicKey('Stake11111111111111111111111111111111111111')
 
@@ -129,36 +128,11 @@ export const useSolStakeAccount = () => {
         ); // null coallescing not possible here
 
       if (delegatedActivationEpochs.length !== 0) {
-        const minEpoch = epochInfo.epoch - 6; // Change this to bigger
+        const minEpoch = epochInfo.epoch - 1; // Change this to bigger
         // Math.max(
         //   ...delegatedActivationEpochs,
         // );
-
-        console.log(`minEpoch: ${minEpoch}`);
-
-        let startEpoch = epochInfo.epoch - 1; // No rewards yet for the current epoch, so query from previous epoch
-        const tasks: (() => Promise<(InflationReward | null)[]>)[] = [];
-        for (let epoch = startEpoch; epoch > minEpoch; epoch--) {
-          tasks.push(() =>
-          secondaryConnection.getInflationReward(
-              newStakeAccountMetas.map((accountMeta) => accountMeta.address),
-              epoch,
-              'finalized'
-            )
-          );
-        }
-
         sortStakeAccountMetas(newStakeAccountMetas);
-
-        const inflationRewardsResults = await promiseAllInBatches(tasks, 4);
-        inflationRewardsResults.forEach((inflationRewards: any) =>
-          inflationRewards.forEach((inflationReward: any, index: number) => {
-            if (inflationReward) {
-              // @ts-ignore
-              newStakeAccountMetas[index].inflationRewards.push(inflationReward);
-            }
-          })
-        );
       }
       // @ts-ignore
       //console.log(inflationRewardsResults)
