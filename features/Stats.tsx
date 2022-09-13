@@ -5,8 +5,8 @@ import { SentriesStakingData } from "hooks/useSentryPower"
 import { ReactElement, ReactNode } from "react"
 
 type StatsProps = {
-  sentriesDetails: SentriesDetailsData | undefined,
   stakedSentries: number,
+  sentriesDetails: SentriesDetailsData | undefined,
   stats: SentriesStakingData | undefined,
   isLoading: boolean,
   isError: boolean,
@@ -23,7 +23,7 @@ type StatsBlock = {
 }
 
 export function Stats(props: StatsProps) {
-  const { sentriesDetails, stakedSentries, stats, isLoading, isError, recover } = props
+  const { stakedSentries, sentriesDetails, stats, isLoading, isError, recover } = props
   const testingDetails: SentriesDetailsData = {
     poweredSentries: 200,
     floorPrice: 2.8,
@@ -51,10 +51,6 @@ export function Stats(props: StatsProps) {
         </div>
       </Container>
     )
-  }
-
-  if(!sentriesDetails){
-    
   }
 
   const stakedSentriesPercentage = (stakedSentries * 100) / 8000

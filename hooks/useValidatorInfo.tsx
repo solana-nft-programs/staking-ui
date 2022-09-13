@@ -9,13 +9,14 @@ export type ValidatorInfoData = {
 
 export const useValidatorInfo = () => {
   return useQuery<ValidatorInfoData | undefined>(
-    ['useSentriesStats'],
+    ['useValidatorInfo'],
     async () => {
       return await fetch(
-        `/v1/validator/LodezVTbz3v5GK6oULfWNFfcs7D4rtMZQkmRjnh65gq` // TODO: Changeme
+        `/v1/validator/LodezVTbz3v5GK6oULfWNFfcs7D4rtMZQkmRjnh65gq`
       )
         .then((response) => response.json())
         .then((data) => {
+          console.log(data)
           return data
         })
     },

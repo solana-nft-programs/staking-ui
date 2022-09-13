@@ -7,6 +7,7 @@ export type SentriesStakingData = {
   total_staked: number
   max_power_level_sol: number
   stake_account_withdraw_authority: string
+  rewards: object
   error?: string
 }
 

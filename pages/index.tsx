@@ -567,6 +567,11 @@ function Home() {
   const totalUnstakedSentries = allowedTokenDatas.isFetched &&
     allowedTokenDatas?.data?.length || 0
 
+  const floorPrice = sentriesStats.isFetched && sentriesStats?.data?.floorPrice || 0
+  const currentValueLocked = floorPrice * totalStaked * 31.45 // TODO: Price of SOL
+  const totalMcap = floorPrice * 8000 * 31.45 // TODO: Price of SOL
+  const solPowering = sentriesStats.isFetched && sentriesStats?.data?.solPowering || 0
+
   return (
     <>
       <main className="relative pt-6">
@@ -593,9 +598,10 @@ function Home() {
           <div className="my-8 flex text-white">
             <div className="w-1/2">
               <h1 className="mb-2 text-4xl font-bold text-white">
-                The Power Grid - {
+                The Power Grid - {!validatorDetails.isLoading ? 
                   // @ts-ignore
                   Intl.NumberFormat('en').format(Math.floor(validatorDetails.data?.totalSolStaked))
+                  : 'error'
                 }◎
               </h1>
               <StatsBlock 
@@ -659,7 +665,8 @@ function Home() {
             <div className="flex flex-wrap -mx-4">
               <div className="w-1/3 p-4">
                 <Stats 
-                  stakedSentries={Number(totalStaked)} 
+                  stakedSentries={Number(totalStaked)}
+                  sentriesStats={sentriesStats.isFetched ? sentriesStats.data : undefined}
                   stats={sentryPower.isFetched ? sentryPower.data : undefined}
                   isLoading={sentryPower.isLoading}
                   isError={sentryPower.isError}
@@ -698,6 +705,11 @@ function Home() {
                       </div>
                     </TabButton>
                   </Tab.List>
+                  <div className="flex rounded-lg w-fit">
+                  <span className="text-white rounded-full flex items-center px-2 ml-1 text-[12px]">
+                    Staked Value ${currentValueLocked} of the ${totalMcap} Market Cap
+                  </span>
+                  </div>
                   <Tab.Panels>
                     <TabPanel>
                     <div className="flex items-center w-full">
@@ -1228,13 +1240,10 @@ function Home() {
                               <div className="inline-block ml-1">
                                 {
                                 // @ts-ignore
-                                (solStakeAccount.data?.error) ? 
-                                "Error loading staking data"  : 
-                               (!(solStakeAccount.isFetched)) ? "Loading" :
-                                (
-                                    // @ts-ignore
-                                    solStakeAccount.data?.stakeAccount?.info
-                                )
+                                (solStakeAccount.isFetched) ? 
+                                // @ts-ignore
+                                JSON.stringify(sentryPower.data?.rewards) : 
+                                'error'
                                   
                                 }
                               </div>
