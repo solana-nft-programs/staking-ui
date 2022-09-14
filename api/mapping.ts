@@ -1134,6 +1134,35 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     },
   },
   {
+    name: 'meta-hunters',
+    displayName: 'Meta Hunters',
+    nameInHeader: true,
+    hidden: true,
+    stakePoolAddress: new PublicKey(
+      'AjuWPVKFZBLZSSJS2xso9zBsfKSzXt14ebEMH6DbAAKg'
+    ),
+    websiteUrl: 'https://www.doubleupnft.com/',
+    receiptType: ReceiptType.Original,
+    tokenStandard: TokenStandard.NonFungible,
+    imageUrl:
+      'https://pbs.twimg.com/profile_images/1536554684172734464/T9A_Y2wl_400x400.jpg',
+    links: [
+      {
+        text: 'Twitter',
+        value: 'https://twitter.com/metahuntersnft?lang=en',
+      },
+      {
+        text: 'Discord',
+        value: 'https://discord.com/invite/Xyzt8qpM',
+      },
+    ],
+    colors: {
+      primary: '#020208',
+      secondary: '#166ca4',
+      fontColor: '#e6e7e8',
+    },
+  },
+  {
     name: 'moonshine-labs',
     displayName: 'Moonshine Labs',
     nameInHeader: true,
