@@ -1143,7 +1143,6 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     name: 'meta-hunters',
     displayName: 'Meta Hunters',
     nameInHeader: true,
-    hidden: true,
     stakePoolAddress: new PublicKey(
       'AjuWPVKFZBLZSSJS2xso9zBsfKSzXt14ebEMH6DbAAKg'
     ),
