@@ -125,7 +125,7 @@ https://www.notion.so/cardinal-labs/Cardinal-Staking-Fees-14e66a64fb2d4615892937
 
 For a custom hostname...
 
-1. Add the mapping of your hostname to pool name in `next.config.js`
+1. Add your `hostname` to your pool config in `api/mapping.ts`
 2. Open a PR to this repo with that change
 3. Set the following record on your DNS provider to continue:
 
