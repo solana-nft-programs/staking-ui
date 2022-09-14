@@ -596,7 +596,7 @@ function Home() {
         <div className="fixed bottom-0 -right-[60px] z-[-1] h-[120px] w-[120px] rounded-full bg-purple-400 opacity-30 blur-[60px]"></div>
         <div className="z-100 container z-10 mx-auto w-full">
           <div className="my-8 flex text-white">
-            <div className="w-1/2">
+            <div className="w-1/3">
               <h1 className="mb-2 text-4xl font-bold text-white">
                 The Power Grid - {!validatorDetails.isLoading ? 
                   // @ts-ignore
@@ -604,15 +604,18 @@ function Home() {
                   : 'error'
                 }◎
               </h1>
-              <StatsBlock 
-              title={`Epoch ${epochStats.data?.epoch} Progress`} 
-              valueAbs={epochStats.data?.prettyProgress} valueRel={epochStats.data?.prettyProgress} color={'#fff'}></StatsBlock>
+              
               <p className="w-3/4 text-lg text-neutral-300">
                 Stake your Sentry here, and power it up by locking SOL in our
                 validator, The Lode
               </p>
             </div>
-            <div className="w-1/2 flex justify-end items-center">
+            <div className="w-1/4 flex">
+            <StatsBlock 
+              title={`Epoch ${epochStats.data?.epoch} Progress`} 
+              valueAbs={epochStats.data?.prettyProgress} valueRel={epochStats.data?.prettyProgress} color={'#fff'}></StatsBlock>
+            </div>
+            <div className="w-1/4 flex justify-end items-center">
               <Button
                 as="button"
                 variant="secondary"
@@ -666,10 +669,10 @@ function Home() {
               <div className="w-1/3 p-4">
                 <Stats 
                   stakedSentries={Number(totalStaked)}
-                  sentriesStats={sentriesStats.isFetched ? sentriesStats.data : undefined}
+                  sentriesDetails={sentriesStats.isFetched ? sentriesStats.data : undefined}
                   stats={sentryPower.isFetched ? sentryPower.data : undefined}
-                  isLoading={sentryPower.isLoading}
-                  isError={sentryPower.isError}
+                  isLoading={sentryPower.isLoading && sentriesStats.isLoading}
+                  isError={sentryPower.isError && sentriesStats.isError}
                   recover={sentryPower.refetch}
                 />
               </div>
@@ -705,7 +708,7 @@ function Home() {
                       </div>
                     </TabButton>
                   </Tab.List>
-                  <div className="flex rounded-lg w-fit">
+                  <div className="w-1/3 flex rounded-lg">
                   <span className="text-white rounded-full flex items-center px-2 ml-1 text-[12px]">
                     Staked Value ${currentValueLocked} of the ${totalMcap} Market Cap
                   </span>
@@ -1242,7 +1245,7 @@ function Home() {
                                 // @ts-ignore
                                 (solStakeAccount.isFetched) ? 
                                 // @ts-ignore
-                                JSON.stringify(sentryPower.data?.rewards) : 
+                                sentryPower.info?.stake.delegation.stake : 
                                 'error'
                                   
                                 }

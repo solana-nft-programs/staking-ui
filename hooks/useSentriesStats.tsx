@@ -5,6 +5,7 @@ export type SentriesDetailsData = {
   poweredSentries: number
   floorPrice: number
   solPowering: number
+  solPrice: number
   error?: string
 }
 

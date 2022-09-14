@@ -24,11 +24,11 @@ type StatsBlock = {
 
 export function Stats(props: StatsProps) {
   const { stakedSentries, sentriesDetails, stats, isLoading, isError, recover } = props
-  const testingDetails: SentriesDetailsData = {
-    poweredSentries: 200,
-    floorPrice: 2.8,
-    solPowering: 3982
-  }
+  // const testingDetails: SentriesDetailsData = {
+  //   poweredSentries: 200,
+  //   floorPrice: 2.8,
+  //   solPowering: 3982
+  // }
   if (isLoading) {
     return (
       <Container>
@@ -56,15 +56,39 @@ export function Stats(props: StatsProps) {
   const stakedSentriesPercentage = (stakedSentries * 100) / 8000
   const stakedSol = stats?.total_staked
   const SolNeeded = stats?.max_power_level_sol
-  const sentriesCount = stats?.nft_count
+  let sentriesCount = stats?.nft_count
 
-  const poweredSentries = testingDetails?.poweredSentries
+  if(!sentriesCount){
+    sentriesCount = 0
+  }
+
+  const solPowering = sentriesDetails?.solPowering
+  const solPrice = sentriesDetails?.solPrice
+  // This is going to be all the maths for calculating the % yearly yield.
+  const totalPctAllocation = sentriesCount / 8000
+  const activePctAllocation = sentriesCount / stakedSentries
+  console.log(`totalpct: ${totalPctAllocation}`)
+  console.log(`activepct: ${activePctAllocation}`)
+  // @ts-ignore
+  const pctSolStaked = stakedSol / solPowering
+  console.log(`pctSol: ${pctSolStaked}`)
+
+  let poweredSentries = sentriesDetails?.poweredSentries
+  if(!poweredSentries){
+    poweredSentries = 0
+  }
   const poweredSentriesPercentage = ((poweredSentries * 100) / 8000)
-  const floorPrice = testingDetails?.floorPrice
-  const currentValueLocked = floorPrice * stakedSentries * 31.45 // TODO: Price of SOL
-  const totalMcap = floorPrice * 8000 * 31.45 // TODO: Price of SOL
+  let floorPrice = sentriesDetails?.floorPrice
+  if(!floorPrice){
+    floorPrice = 0
+  }
+  // @ts-ignore
+  const currentValueLocked = floorPrice * stakedSentries * solPrice // TODO: Price of SOL
+  // @ts-ignore
+  const totalMcap = floorPrice * 8000 * solPrice // TODO: Price of SOL
+  // TODO: Make pretty numbers?
   const percentMCap = (currentValueLocked / totalMcap) * 100
-  const solPowering = testingDetails?.solPowering
+  
 
   return (
     <Container>
