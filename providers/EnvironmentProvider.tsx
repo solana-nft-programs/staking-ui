@@ -1,9 +1,11 @@
 import type { Cluster } from '@solana/web3.js'
 import { Connection } from '@solana/web3.js'
+import type { StakePoolMetadata } from 'api/mapping'
+import { stakePoolMetadatas } from 'api/mapping'
 import { firstParam } from 'common/utils'
 import type { NextPageContext } from 'next'
 import { useRouter } from 'next/router'
-import React, { useContext, useEffect, useMemo, useState } from 'react'
+import React, { useContext, useMemo, useState } from 'react'
 
 export interface Environment {
   label: Cluster
@@ -16,7 +18,6 @@ export interface EnvironmentContextValues {
   setEnvironment: (newEnvironment: Environment) => void
   connection: Connection
   secondaryConnection: Connection
-  customHostname: boolean
 }
 
 export const ENVIRONMENTS: Environment[] = [
@@ -44,15 +45,29 @@ export const getInitialProps = async ({
   ctx,
 }: {
   ctx: NextPageContext
-}): Promise<{ cluster: string }> => {
+}): Promise<{
+  cluster: string
+  poolMapping: StakePoolMetadata | undefined
+}> => {
   const host = ctx.req?.headers.host || ctx.query.host
   const cluster = host?.includes('dev')
     ? 'devnet'
     : (ctx.query.project || ctx.query.host)?.includes('test')
     ? 'testnet'
     : ctx.query.cluster || process.env.BASE_CLUSTER
+
+  const projectParams =
+    ctx.query.pool || ctx.req?.headers.host || ctx.query.host
+
+  const poolMapping = projectParams
+    ? stakePoolMetadatas.find(
+        (config) => config.hostname && projectParams.includes(config.hostname)
+      )
+    : undefined
+
   return {
     cluster: firstParam(cluster),
+    poolMapping: poolMapping,
   }
 }
 
@@ -73,7 +88,6 @@ export function EnvironmentProvider({
   const [environment, setEnvironment] = useState<Environment>(
     foundEnvironment ?? ENVIRONMENTS[0]!
   )
-  const [customHostname, setCustomHostname] = useState<boolean>(false)
 
   useMemo(() => {
     const foundEnvironment = ENVIRONMENTS.find((e) => e.label === cluster)
@@ -93,16 +107,6 @@ export function EnvironmentProvider({
     [environment]
   )
 
-  useEffect(() => {
-    setCustomHostname(
-      window &&
-        !(
-          window.location.hostname.includes('cardinal') ||
-          window.location.hostname.includes('localhost')
-        )
-    )
-  }, [])
-
   return (
     <EnvironmentContext.Provider
       value={{
@@ -110,7 +114,6 @@ export function EnvironmentProvider({
         setEnvironment,
         connection,
         secondaryConnection,
-        customHostname,
       }}
     >
       {children}
