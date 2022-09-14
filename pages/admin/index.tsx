@@ -12,20 +12,25 @@ import { PublicKey } from '@solana/web3.js'
 import { Footer } from 'common/Footer'
 import { Header } from 'common/Header'
 import { notify } from 'common/Notification'
-import { pubKeyUrl, shortPubKey , tryPublicKey } from 'common/utils'
-import type { CreationForm} from 'components/StakePoolForm';
+import { pubKeyUrl, shortPubKey, tryPublicKey } from 'common/utils'
+import type { CreationForm } from 'components/StakePoolForm'
 import { StakePoolForm } from 'components/StakePoolForm'
 import type { StakePool } from 'hooks/useAllStakePools'
 import { useStakePoolsByAuthority } from 'hooks/useStakePoolsByAuthority'
 import { useStakePoolsMetadatas } from 'hooks/useStakePoolsMetadata'
 import Head from 'next/head'
-import { Placeholder } from 'pages'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 import { useState } from 'react'
 import { FaQuestion } from 'react-icons/fa'
 
+export function Placeholder() {
+  return (
+    <div className="h-[300px] animate-pulse rounded-lg bg-white bg-opacity-5 p-10"></div>
+  )
+}
+
 function Admin() {
-  const { connection, environment, customHostname } = useEnvironmentCtx()
+  const { connection, environment } = useEnvironmentCtx()
   const wallet = useWallet()
   const [stakePoolId, setStakePoolId] = useState<PublicKey>()
 
@@ -294,7 +299,7 @@ function Admin() {
           </div>
         </div>
       </div>
-      {!customHostname && <Footer />}
+      <Footer />
     </div>
   )
 }

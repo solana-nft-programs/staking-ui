@@ -54,9 +54,9 @@ import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 import { useEffect, useState } from 'react'
 import { FaInfoCircle } from 'react-icons/fa'
 
-function Home() {
+function StakePoolHome() {
   const router = useRouter()
-  const { connection, environment, customHostname } = useEnvironmentCtx()
+  const { connection, environment } = useEnvironmentCtx()
   const wallet = useWallet()
   const walletModal = useWalletModal()
   const { data: stakePool, isFetched: stakePoolLoaded } = useStakePoolData()
@@ -91,7 +91,7 @@ function Home() {
 
   if (stakePoolMetadata?.redirect) {
     router.push(stakePoolMetadata?.redirect)
-    return
+    return <></>
   }
 
   // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -588,7 +588,7 @@ function Home() {
   }, [stakePoolEntries.isFetched])
 
   if (!stakePoolLoaded) {
-    return
+    return <></>
   }
 
   return (
@@ -1543,11 +1543,11 @@ function Home() {
           </div>
         </div>
       </div>
-      {!customHostname && (
+      {!stakePoolMetadata?.hideFooter && (
         <Footer bgColor={stakePoolMetadata?.colors?.primary} />
       )}
     </div>
   )
 }
 
-export default Home
+export default StakePoolHome

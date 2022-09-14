@@ -44,6 +44,8 @@ export type StakePoolMetadata = {
   notFound?: boolean
   // Optional hostname to remap
   hostname?: string
+  // Optional hide footer
+  hideFooter?: boolean
   // Optional config to link redirect to page when you click on this pool
   redirect?: string
   // Hide allowed tokens style
@@ -477,6 +479,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     websiteUrl: 'https://www.roguesharks.org/',
     receiptType: ReceiptType.Original,
     hostname: 'stake.roguesharks',
+    hideFooter: true,
     maxStaked: 4991, // update with collection size
     imageUrl: '/logos/rogue-sharks.svg',
     tokenStandard: TokenStandard.NonFungible,
@@ -579,6 +582,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     name: 'Orbit',
     displayName: 'Orbit',
     hostname: 'stake.unfrgtn.space',
+    hideFooter: true,
     stakePoolAddress: new PublicKey(
       '4TMt9ehagkdFgZJBnyBRBTNfXUD8xLX18JyPVeGDpaKb'
     ),
@@ -867,6 +871,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     websiteUrl: 'https://1space.me/',
     receiptType: ReceiptType.Original,
     hostname: 'stake.1space.me',
+    hideFooter: true,
     imageUrl: 'https://1space.me/images/os-logo-white.jpeg',
     maxStaked: 200,
     links: [
@@ -1003,6 +1008,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       'AzFdEKtqanvPeQ7chcKNXJHAzcZRLc8GbkSzG8JUrT4W'
     ),
     hostname: 'stake.rebellionbots.io',
+    hideFooter: true,
     websiteUrl: 'https://www.rebellionbots.io',
     receiptType: ReceiptType.Original,
     maxStaked: 801, // update with collection size
@@ -1137,6 +1143,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     name: 'meta-hunters',
     displayName: 'Meta Hunters',
     nameInHeader: true,
+    hidden: true,
     stakePoolAddress: new PublicKey(
       'AjuWPVKFZBLZSSJS2xso9zBsfKSzXt14ebEMH6DbAAKg'
     ),
