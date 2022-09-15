@@ -669,7 +669,7 @@ function AdminStakePool() {
                         <span className="mt-3 flex w-full flex-wrap md:mb-0">
                           <label className="inline-block text-sm font-bold uppercase tracking-wide text-gray-200">
                             Reward Duration Seconds:{' '}
-                            {rewardDistributor.data.parsed.rewardDurationSeconds.toNumber() ||
+                            {rewardDistributor.data.parsed.rewardDurationSeconds.toString() ||
                               '[None]'}
                           </label>
                         </span>
@@ -688,7 +688,7 @@ function AdminStakePool() {
                         <span className="mt-3 flex w-full flex-wrap md:mb-0">
                           <label className="inline-block text-sm font-bold uppercase tracking-wide text-gray-200">
                             Maximum reward seconds:{' '}
-                            {rewardDistributor.data.parsed.maxRewardSecondsReceived?.toNumber() ||
+                            {rewardDistributor.data.parsed.maxRewardSecondsReceived?.toString() ||
                               '[None]'}
                           </label>
                         </span>
