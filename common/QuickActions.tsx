@@ -1,19 +1,13 @@
-import { claimRewards, executeTransaction } from '@cardinal/staking'
 import type { ReceiptType } from '@cardinal/staking/dist/cjs/programs/stakePool'
-import type { Wallet } from '@metaplex/js'
-import { useWallet } from '@solana/wallet-adapter-react'
+import { useHandleClaimRewards } from 'handlers/useHandleClaimRewards'
 import { useHandleStake } from 'handlers/useHandleStake'
 import { useHandleUnstake } from 'handlers/useHandleUnstake'
 import type { AllowedTokenData } from 'hooks/useAllowedTokenDatas'
-import { useRewardDistributorData } from 'hooks/useRewardDistributorData'
-import { useRewardDistributorTokenAccount } from 'hooks/useRewardDistributorTokenAccount'
 import type { StakeEntryTokenData } from 'hooks/useStakedTokenDatas'
-import { useStakePoolData } from 'hooks/useStakePoolData'
 import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
 import { lighten } from 'polished'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 import type { Dispatch, SetStateAction } from 'react'
-import { useState } from 'react'
 import { AiFillLock, AiFillUnlock, AiOutlineDatabase } from 'react-icons/ai'
 import { BsBookmarkCheck } from 'react-icons/bs'
 import { FaEllipsisH } from 'react-icons/fa'
@@ -22,7 +16,6 @@ import { RiMoneyDollarCircleFill } from 'react-icons/ri'
 
 import { getColorByBgColor } from './Button'
 import { LoadingSpinner } from './LoadingSpinner'
-import { notify } from './Notification'
 import { Popover, PopoverItem } from './Popover'
 import { metadataUrl, pubKeyUrl } from './utils'
 
@@ -31,8 +24,6 @@ export const QuickActions = ({
   stakedTokenData,
   receiptType,
   showFungibleTokens,
-  setLoadingClaimRewards,
-  setSingleTokenAction,
   selectUnstakedToken,
   selectStakedToken,
 }: {
@@ -40,20 +31,15 @@ export const QuickActions = ({
   stakedTokenData?: StakeEntryTokenData
   receiptType: ReceiptType
   showFungibleTokens: boolean
-  setLoadingClaimRewards: Dispatch<SetStateAction<boolean>>
   setSingleTokenAction: Dispatch<SetStateAction<string>>
   selectUnstakedToken: (tk: AllowedTokenData) => void
   selectStakedToken: (tk: StakeEntryTokenData) => void
 }) => {
   const { data: stakePoolMetadata } = useStakePoolMetadata()
-  const { data: stakePool } = useStakePoolData()
-  const [loading, setLoading] = useState(false)
   const ctx = useEnvironmentCtx()
-  const wallet = useWallet()
-  const rewardDistributorData = useRewardDistributorData()
-  const rewardDistributorTokenAccountData = useRewardDistributorTokenAccount()
   const handleStake = useHandleStake()
   const handleUnstake = useHandleUnstake()
+  const handleClaimRewards = useHandleClaimRewards()
 
   return (
     <Popover
@@ -156,55 +142,7 @@ export const QuickActions = ({
               <div
                 className="flex cursor-pointer items-center justify-between gap-2"
                 onClick={async () => {
-                  if (!wallet) {
-                    notify({ message: `Wallet not connected`, type: 'error' })
-                    return
-                  }
-                  if (!stakePool) {
-                    notify({ message: `Wallet not connected`, type: 'error' })
-                    return
-                  }
-                  setLoading(true)
-                  setSingleTokenAction(
-                    stakedTokenData.stakeEntry!.parsed.originalMint.toString()
-                  )
-                  setLoadingClaimRewards(true)
-
-                  try {
-                    if (!stakedTokenData || !stakedTokenData.stakeEntry) {
-                      throw new Error('No stake entry for token')
-                    }
-                    const tx = await claimRewards(
-                      ctx.connection,
-                      wallet as Wallet,
-                      {
-                        stakePoolId: stakePool.pubkey,
-                        stakeEntryId: stakedTokenData.stakeEntry.pubkey,
-                      }
-                    )
-                    await executeTransaction(
-                      ctx.connection,
-                      wallet as Wallet,
-                      tx,
-                      {}
-                    )
-                    rewardDistributorData.remove()
-                    rewardDistributorTokenAccountData.remove()
-                    setLoadingClaimRewards(false)
-                    setLoading(false)
-                    setSingleTokenAction('')
-                    notify({
-                      message: 'Successfully claimed rewards',
-                      type: 'success',
-                    })
-                  } catch (e) {
-                    notify({
-                      message: `${e}`,
-                      description: `Failed to claim rewards for token ${stakedTokenData.stakeEntry?.pubkey.toString()}`,
-                      type: 'error',
-                    })
-                    return null
-                  }
+                  handleClaimRewards.mutate({ tokenDatas: [stakedTokenData] })
                 }}
               >
                 Claim Rewards
@@ -243,7 +181,9 @@ export const QuickActions = ({
             : unstakedTokenData?.stakeEntry?.parsed.originalMint.toString()
         }
       >
-        {loading || handleUnstake.isLoading || handleStake.isLoading ? (
+        {handleClaimRewards.isLoading ||
+        handleUnstake.isLoading ||
+        handleStake.isLoading ? (
           <div>
             <LoadingSpinner
               fill={

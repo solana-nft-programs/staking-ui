@@ -1,18 +1,13 @@
-import { withFindOrInitAssociatedTokenAccount } from '@cardinal/common'
 import { DisplayAddress } from '@cardinal/namespaces-components'
-import { claimRewards } from '@cardinal/staking'
 import { RewardDistributorKind } from '@cardinal/staking/dist/cjs/programs/rewardDistributor'
 import { ReceiptType } from '@cardinal/staking/dist/cjs/programs/stakePool'
 import { Switch } from '@headlessui/react'
-import type { Wallet } from '@metaplex/js'
 import { darken, lighten } from '@mui/material'
 import { BN } from '@project-serum/anchor'
 import * as splToken from '@solana/spl-token'
 import { useWallet } from '@solana/wallet-adapter-react'
 import { useWalletModal } from '@solana/wallet-adapter-react-ui'
-import { Transaction } from '@solana/web3.js'
 import { defaultSecondaryColor, TokenStandard } from 'api/mapping'
-import { executeAllTransactions } from 'api/utils'
 import { Footer } from 'common/Footer'
 import { Header } from 'common/Header'
 import { LoadingSpinner } from 'common/LoadingSpinner'
@@ -27,6 +22,7 @@ import { contrastColorMode, pubKeyUrl, secondstoDuration } from 'common/utils'
 import { AllowedTokens } from 'components/AllowedTokens'
 import { PoolAnalytics } from 'components/PoolAnalytics'
 import { StakedStats } from 'components/StakedStats'
+import { useHandleClaimRewards } from 'handlers/useHandleClaimRewards'
 import { useHandleStake } from 'handlers/useHandleStake'
 import { useHandleUnstake } from 'handlers/useHandleUnstake'
 import type { AllowedTokenData } from 'hooks/useAllowedTokenDatas'
@@ -73,7 +69,6 @@ function StakePoolHome() {
   const [receiptType, setReceiptType] = useState<ReceiptType>(
     ReceiptType.Original
   )
-  const [loadingClaimRewards, setLoadingClaimRewards] = useState(false)
   const [showAllowedTokens, setShowAllowedTokens] = useState<boolean>()
   const [showFungibleTokens, setShowFungibleTokens] = useState(false)
   const allowedTokenDatas = useAllowedTokenDatas(showFungibleTokens)
@@ -81,6 +76,7 @@ function StakePoolHome() {
   const rewardDistributorTokenAccountData = useRewardDistributorTokenAccount()
   const handleStake = useHandleStake()
   const handleUnstake = useHandleUnstake()
+  const handleClaimRewards = useHandleClaimRewards()
 
   if (stakePoolMetadata?.redirect) {
     router.push(stakePoolMetadata?.redirect)
@@ -96,84 +92,6 @@ function StakePoolHome() {
     stakePoolMetadata?.receiptType &&
       setReceiptType(stakePoolMetadata?.receiptType)
   }, [stakePoolMetadata?.name])
-
-  async function handleClaimRewards(all?: boolean) {
-    setLoadingClaimRewards(true)
-    if (!wallet) {
-      throw new Error('Wallet not connected')
-    }
-    if (!stakePool) {
-      notify({ message: `No stake pool detected`, type: 'error' })
-      return
-    }
-
-    const ataTx = new Transaction()
-    if (rewardDistributorData.data && rewardDistributorData.data.parsed) {
-      // create user reward mint ata
-      await withFindOrInitAssociatedTokenAccount(
-        ataTx,
-        connection,
-        rewardDistributorData.data.parsed.rewardMint,
-        wallet.publicKey!,
-        wallet.publicKey!
-      )
-    }
-
-    const tokensToStake = all ? stakedTokenDatas.data || [] : stakedSelected
-    const txs: Transaction[] = (
-      await Promise.all(
-        tokensToStake.map(async (token, i) => {
-          try {
-            if (!token || !token.stakeEntry) {
-              throw new Error('No stake entry for token')
-            }
-            const transaction = new Transaction()
-            if (i === 0 && ataTx.instructions.length > 0) {
-              transaction.instructions = ataTx.instructions
-            }
-            const claimTx = await claimRewards(connection, wallet as Wallet, {
-              stakePoolId: stakePool.pubkey,
-              stakeEntryId: token.stakeEntry.pubkey,
-              skipRewardMintTokenAccount: true,
-            })
-            transaction.instructions = [
-              ...transaction.instructions,
-              ...claimTx.instructions,
-            ]
-            return transaction
-          } catch (e) {
-            notify({
-              message: `${e}`,
-              description: `Failed to claim rewards for token ${token?.stakeEntry?.pubkey.toString()}`,
-              type: 'error',
-            })
-            return null
-          }
-        })
-      )
-    ).filter((x): x is Transaction => x !== null)
-    try {
-      ///
-      const [firstTx, ...remainingTxs] = txs
-      await executeAllTransactions(
-        connection,
-        wallet as Wallet,
-        ataTx.instructions.length > 0 ? remainingTxs : txs,
-        {
-          notificationConfig: {
-            message: 'Successfully claimed rewards',
-            description: 'These rewards are now available in your wallet',
-          },
-        },
-        ataTx.instructions.length > 0 ? firstTx : undefined
-      )
-    } catch (e) {}
-
-    rewardDistributorData.remove()
-    rewardDistributorTokenAccountData.remove()
-    setLoadingClaimRewards(false)
-    setStakedSelected([])
-  }
 
   const selectUnstakedToken = (tk: AllowedTokenData, targetValue?: string) => {
     if (handleStake.isLoading || handleUnstake.isLoading) return
@@ -682,7 +600,6 @@ function StakePoolHome() {
                                 receiptType={receiptType}
                                 unstakedTokenData={tk}
                                 showFungibleTokens={showFungibleTokens}
-                                setLoadingClaimRewards={setLoadingClaimRewards}
                                 setSingleTokenAction={setSingleTokenAction}
                                 selectUnstakedToken={selectUnstakedToken}
                                 selectStakedToken={selectStakedToken}
@@ -1030,7 +947,7 @@ function StakePoolHome() {
                                 }}
                               >
                                 {(handleUnstake.isLoading ||
-                                  loadingClaimRewards) &&
+                                  handleClaimRewards.isLoading) &&
                                   (isStakedTokenSelected(tk) ||
                                     singleTokenAction ===
                                       tk.stakeEntry?.parsed.originalMint.toString()) && (
@@ -1068,9 +985,6 @@ function StakePoolHome() {
                                   receiptType={receiptType}
                                   stakedTokenData={tk}
                                   showFungibleTokens={showFungibleTokens}
-                                  setLoadingClaimRewards={
-                                    setLoadingClaimRewards
-                                  }
                                   setSingleTokenAction={setSingleTokenAction}
                                   selectUnstakedToken={selectUnstakedToken}
                                   selectStakedToken={selectStakedToken}
@@ -1218,7 +1132,9 @@ function StakePoolHome() {
                             type: 'error',
                           })
                         } else {
-                          handleClaimRewards()
+                          handleClaimRewards.mutate({
+                            tokenDatas: stakedSelected,
+                          })
                         }
                       }}
                       disabled={!rewards.data?.claimableRewards.gt(new BN(0))}
@@ -1233,7 +1149,7 @@ function StakePoolHome() {
                       className="my-auto flex rounded-md px-4 py-2 hover:scale-[1.03]"
                     >
                       <span className="mr-1 inline-block">
-                        {loadingClaimRewards && (
+                        {handleClaimRewards.isLoading && (
                           <LoadingSpinner
                             fill={
                               stakePoolMetadata?.colors?.fontColor
