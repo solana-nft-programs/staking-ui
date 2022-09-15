@@ -1365,4 +1365,33 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       },
     ],
   },
+  {
+    name: 'annoyed-rex-udder-chaos',
+    displayName: 'Annoyed Rex Club x Udder Chaos',
+    stakePoolAddress: new PublicKey(
+      '9NvrvM3Ji5RbbJtuAqXAzQL6cwHAv7n4KQQoUyUHqgT1'
+    ),
+    websiteUrl: 'https://udderchaos.io/',
+    imageUrl: 'https://oh66ydzlqmacybmraeswa7nxlpv4fogsvikmihqosj3rel6qixfa.arweave.net/cf3sDyuDACwFkQElYH23W-vCuNKqFMQeDpJ3Ei_QRco',
+    maxStaked: 500,
+    receiptType: ReceiptType.Original,
+    tokenStandard: TokenStandard.NonFungible,
+    hideAllowedTokens: true,
+    links: [
+      {
+        text: 'Discord',
+        value: 'https://discord.gg/udderchaos',
+      },
+      {
+        text: 'Buy',
+        value: 'https://magiceden.io/marketplace/arcxuc',
+      },
+    ],
+    colors: {
+      primary: '#000000',
+      secondary: '#BD38F3',
+      accent: '#8B2AB4',
+      fontColor: '#FFFFFF',
+    },
+  },
 ]
