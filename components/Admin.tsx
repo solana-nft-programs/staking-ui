@@ -4,7 +4,6 @@ import {
   handleError,
 } from '@cardinal/staking'
 import { withInitRewardDistributor } from '@cardinal/staking/dist/cjs/programs/rewardDistributor/transaction'
-import type { Wallet } from '@metaplex/js'
 import { BN } from '@project-serum/anchor'
 import type * as splToken from '@solana/spl-token'
 import { useWallet } from '@solana/wallet-adapter-react'
@@ -13,6 +12,7 @@ import { Footer } from 'common/Footer'
 import { Header } from 'common/Header'
 import { notify } from 'common/Notification'
 import { pubKeyUrl, shortPubKey, tryPublicKey } from 'common/utils'
+import { asWallet } from 'common/Wallets'
 import type { CreationForm } from 'components/StakePoolForm'
 import { StakePoolForm } from 'components/StakePoolForm'
 import type { StakePool } from 'hooks/useAllStakePools'
@@ -112,7 +112,7 @@ function Admin() {
       }
       const [transaction, stakePoolPK] = await createStakePool(
         connection,
-        wallet as Wallet,
+        asWallet(wallet),
         stakePoolParams
       )
 
@@ -147,12 +147,12 @@ function Admin() {
         await withInitRewardDistributor(
           transaction,
           connection,
-          wallet as Wallet,
+          asWallet(wallet),
           rewardDistributorKindParams
         )
       }
 
-      await executeTransaction(connection, wallet as Wallet, transaction, {
+      await executeTransaction(connection, asWallet(wallet), transaction, {
         silent: false,
         signers: [],
       })
