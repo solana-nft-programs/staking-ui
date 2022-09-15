@@ -1,7 +1,6 @@
 import { DisplayAddress } from '@cardinal/namespaces-components'
 import { RewardDistributorKind } from '@cardinal/staking/dist/cjs/programs/rewardDistributor'
 import { ReceiptType } from '@cardinal/staking/dist/cjs/programs/stakePool'
-import { Switch } from '@headlessui/react'
 import { darken, lighten } from '@mui/material'
 import { BN } from '@project-serum/anchor'
 import * as splToken from '@solana/spl-token'
@@ -13,7 +12,8 @@ import { Header } from 'common/Header'
 import { LoadingSpinner } from 'common/LoadingSpinner'
 import { notify } from 'common/Notification'
 import { QuickActions } from 'common/QuickActions'
-import { MouseoverTooltip } from 'common/Tooltip'
+import { Toggle } from 'common/Toggle'
+import { Tooltip } from 'common/Tooltip'
 import {
   formatAmountAsDecimal,
   formatMintNaturalAmountAsDecimal,
@@ -695,7 +695,7 @@ function StakePoolHome() {
 
             <div className="mt-2 flex items-center justify-between gap-5">
               {!stakePoolMetadata?.receiptType ? (
-                <MouseoverTooltip
+                <Tooltip
                   title={
                     receiptType === ReceiptType.Original
                       ? 'Lock the original token(s) in your wallet when you stake'
@@ -703,8 +703,8 @@ function StakePoolHome() {
                   }
                 >
                   <div className="flex cursor-pointer flex-row gap-2">
-                    <Switch
-                      checked={receiptType === ReceiptType.Original}
+                    <Toggle
+                      defaultValue={receiptType === ReceiptType.Original}
                       onChange={() =>
                         setReceiptType(
                           receiptType === ReceiptType.Original
@@ -719,16 +719,7 @@ function StakePoolHome() {
                         color: stakePoolMetadata?.colors?.fontColor,
                       }}
                       className={`relative inline-flex h-6 w-11 items-center rounded-full`}
-                    >
-                      <span className="sr-only">Receipt Type</span>
-                      <span
-                        className={`${
-                          receiptType === ReceiptType.Original
-                            ? 'translate-x-6'
-                            : 'translate-x-1'
-                        } inline-block h-4 w-4 transform rounded-full bg-white`}
-                      />
-                    </Switch>
+                    />
                     <div className="flex items-center gap-1">
                       <span
                         style={{
@@ -742,12 +733,12 @@ function StakePoolHome() {
                       <FaInfoCircle />
                     </div>
                   </div>
-                </MouseoverTooltip>
+                </Tooltip>
               ) : (
                 <div></div>
               )}
               <div className="flex gap-5">
-                <MouseoverTooltip title="Click on tokens to select them">
+                <Tooltip title="Click on tokens to select them">
                   <button
                     onClick={() => {
                       if (unstakedSelected.length === 0) {
@@ -788,8 +779,8 @@ function StakePoolHome() {
                       Stake ({unstakedSelected.length})
                     </span>
                   </button>
-                </MouseoverTooltip>
-                <MouseoverTooltip title="Attempt to stake all tokens at once">
+                </Tooltip>
+                <Tooltip title="Attempt to stake all tokens at once">
                   <button
                     onClick={() => {
                       setUnstakedSelected(allowedTokenDatas.data || [])
@@ -806,7 +797,7 @@ function StakePoolHome() {
                   >
                     <span className="my-auto">Select All</span>
                   </button>
-                </MouseoverTooltip>
+                </Tooltip>
               </div>
             </div>
           </div>
@@ -1061,7 +1052,7 @@ function StakePoolHome() {
             </div>
             <div className="mt-2 flex flex-row-reverse flex-wrap justify-between gap-5">
               <div className="flex gap-5">
-                <MouseoverTooltip
+                <Tooltip
                   title={'Unstake will automatically claim reward for you.'}
                 >
                   <button
@@ -1101,8 +1092,8 @@ function StakePoolHome() {
                       Unstake ({stakedSelected.length})
                     </span>
                   </button>
-                </MouseoverTooltip>
-                <MouseoverTooltip title="Attempt to unstake all tokens at once">
+                </Tooltip>
+                <Tooltip title="Attempt to unstake all tokens at once">
                   <button
                     onClick={() => {
                       setStakedSelected(stakedTokenDatas.data || [])
@@ -1119,7 +1110,7 @@ function StakePoolHome() {
                   >
                     <span className="my-auto">Select All</span>
                   </button>
-                </MouseoverTooltip>
+                </Tooltip>
               </div>
               <div className="flex gap-5">
                 {rewardDistributorData.data &&
