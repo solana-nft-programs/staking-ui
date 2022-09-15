@@ -506,7 +506,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     receiptType: ReceiptType.Original,
     maxStaked: 1700,
     imageUrl:
-      'https://cannaverse.gg/wp-content/uploads/2022/05/cannaverse-white-logo-full-1-e1652295225261.png',
+      'https://pbs.twimg.com/profile_images/1518692930139086849/mRqtE7DP_400x400.jpg',
     colors: {
       primary: '#211F20',
       secondary: '#211F20',
