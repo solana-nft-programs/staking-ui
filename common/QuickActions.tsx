@@ -1,16 +1,14 @@
-import { claimRewards, executeTransaction, unstake } from '@cardinal/staking'
+import { claimRewards, executeTransaction } from '@cardinal/staking'
 import type { ReceiptType } from '@cardinal/staking/dist/cjs/programs/stakePool'
 import type { Wallet } from '@metaplex/js'
 import { useWallet } from '@solana/wallet-adapter-react'
 import { useHandleStake } from 'handlers/useHandleStake'
+import { useHandleUnstake } from 'handlers/useHandleUnstake'
 import type { AllowedTokenData } from 'hooks/useAllowedTokenDatas'
-import { useAllowedTokenDatas } from 'hooks/useAllowedTokenDatas'
 import { useRewardDistributorData } from 'hooks/useRewardDistributorData'
 import { useRewardDistributorTokenAccount } from 'hooks/useRewardDistributorTokenAccount'
 import type { StakeEntryTokenData } from 'hooks/useStakedTokenDatas'
-import { useStakedTokenDatas } from 'hooks/useStakedTokenDatas'
 import { useStakePoolData } from 'hooks/useStakePoolData'
-import { useStakePoolEntries } from 'hooks/useStakePoolEntries'
 import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
 import { lighten } from 'polished'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
@@ -23,7 +21,6 @@ import { FiExternalLink } from 'react-icons/fi'
 import { RiMoneyDollarCircleFill } from 'react-icons/ri'
 
 import { getColorByBgColor } from './Button'
-import { handleError } from './errors'
 import { LoadingSpinner } from './LoadingSpinner'
 import { notify } from './Notification'
 import { Popover, PopoverItem } from './Popover'
@@ -34,9 +31,6 @@ export const QuickActions = ({
   stakedTokenData,
   receiptType,
   showFungibleTokens,
-  setStakedSelected,
-  setUnstakedSelected,
-  setLoadingUnstake,
   setLoadingClaimRewards,
   setSingleTokenAction,
   selectUnstakedToken,
@@ -46,25 +40,20 @@ export const QuickActions = ({
   stakedTokenData?: StakeEntryTokenData
   receiptType: ReceiptType
   showFungibleTokens: boolean
-  setStakedSelected: Dispatch<SetStateAction<StakeEntryTokenData[]>>
-  setUnstakedSelected: Dispatch<SetStateAction<AllowedTokenData[]>>
-  setLoadingUnstake: Dispatch<SetStateAction<boolean>>
   setLoadingClaimRewards: Dispatch<SetStateAction<boolean>>
   setSingleTokenAction: Dispatch<SetStateAction<string>>
   selectUnstakedToken: (tk: AllowedTokenData) => void
   selectStakedToken: (tk: StakeEntryTokenData) => void
 }) => {
-  const handleStake = useHandleStake()
   const { data: stakePoolMetadata } = useStakePoolMetadata()
   const { data: stakePool } = useStakePoolData()
   const [loading, setLoading] = useState(false)
   const ctx = useEnvironmentCtx()
   const wallet = useWallet()
-  const stakedTokenDatas = useStakedTokenDatas()
-  const allowedTokenDatas = useAllowedTokenDatas(showFungibleTokens)
-  const stakePoolEntries = useStakePoolEntries()
   const rewardDistributorData = useRewardDistributorData()
   const rewardDistributorTokenAccountData = useRewardDistributorTokenAccount()
+  const handleStake = useHandleStake()
+  const handleUnstake = useHandleUnstake()
 
   return (
     <Popover
@@ -228,82 +217,7 @@ export const QuickActions = ({
               <div
                 className="flex cursor-pointer items-center justify-between gap-2"
                 onClick={async () => {
-                  if (!wallet) {
-                    notify({ message: `Wallet not connected`, type: 'error' })
-                    return
-                  }
-                  if (!stakePool) {
-                    notify({ message: `Wallet not connected`, type: 'error' })
-                    return
-                  }
-                  setLoading(true)
-                  setSingleTokenAction(
-                    stakedTokenData.stakeEntry!.parsed.originalMint.toString()
-                  )
-                  setLoadingUnstake(true)
-
-                  try {
-                    if (!stakedTokenData || !stakedTokenData.stakeEntry) {
-                      throw new Error('No stake entry for token')
-                    }
-                    if (
-                      stakePool.parsed.cooldownSeconds &&
-                      !stakedTokenData.stakeEntry?.parsed.cooldownStartSeconds
-                    ) {
-                      notify({
-                        message: `Cooldown period will be initiated for ${stakedTokenData.metaplexData?.data.data.name} unless minimum stake period unsatisfied`,
-                        type: 'info',
-                      })
-                    }
-                    const tx = await unstake(ctx.connection, wallet as Wallet, {
-                      stakePoolId: stakePool?.pubkey,
-                      originalMintId:
-                        stakedTokenData.stakeEntry.parsed.originalMint,
-                    })
-
-                    try {
-                      await executeTransaction(
-                        ctx.connection,
-                        wallet as Wallet,
-                        tx,
-                        {}
-                      )
-                      notify({
-                        message: 'Successfully unstaked token',
-                        type: 'success',
-                      })
-                    } catch (e) {
-                      notify({
-                        message: `${'Failed to unstake token'}`,
-                        description: handleError(e, `Transaction failed: ${e}`),
-                        txid: '',
-                        type: 'error',
-                      })
-                    }
-
-                    await Promise.all([
-                      stakedTokenDatas.remove(),
-                      allowedTokenDatas.remove(),
-                      stakePoolEntries.remove(),
-                    ]).then(() =>
-                      setTimeout(() => {
-                        stakedTokenDatas.refetch()
-                        allowedTokenDatas.refetch()
-                        stakePoolEntries.refetch()
-                      }, 2000)
-                    )
-                    setStakedSelected([])
-                    setUnstakedSelected([])
-                    setLoadingUnstake(false)
-                    setSingleTokenAction('')
-                  } catch (e) {
-                    notify({
-                      message: `${e}`,
-                      description: `Failed to unstake token ${stakedTokenData?.stakeEntry?.pubkey.toString()}`,
-                      type: 'error',
-                    })
-                    return null
-                  }
+                  handleUnstake.mutate({ tokenDatas: [stakedTokenData] })
                 }}
               >
                 Unstake
@@ -329,7 +243,7 @@ export const QuickActions = ({
             : unstakedTokenData?.stakeEntry?.parsed.originalMint.toString()
         }
       >
-        {loading || handleStake.isLoading ? (
+        {loading || handleUnstake.isLoading || handleStake.isLoading ? (
           <div>
             <LoadingSpinner
               fill={

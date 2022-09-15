@@ -4,13 +4,14 @@ import { getActiveStakeEntriesForPool } from '@cardinal/staking/dist/cjs/program
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 import { useQuery } from 'react-query'
 
+import { TOKEN_DATAS_KEY } from './useAllowedTokenDatas'
 import { useStakePoolId } from './useStakePoolId'
 
 export const useStakePoolEntries = () => {
   const { secondaryConnection } = useEnvironmentCtx()
   const stakePoolId = useStakePoolId()
   return useQuery<AccountData<StakeEntryData>[] | undefined>(
-    ['useStakePoolEntries', stakePoolId?.toString()],
+    [TOKEN_DATAS_KEY, 'useStakePoolEntries', stakePoolId?.toString()],
     async () => {
       if (stakePoolId) {
         return getActiveStakeEntriesForPool(secondaryConnection, stakePoolId)
