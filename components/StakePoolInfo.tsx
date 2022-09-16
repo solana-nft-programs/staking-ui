@@ -1,5 +1,4 @@
 import { RewardDistributorKind } from '@cardinal/staking/dist/cjs/programs/rewardDistributor'
-import * as splToken from '@solana/spl-token'
 import {
   formatAmountAsDecimal,
   formatMintNaturalAmountAsDecimal,
@@ -14,73 +13,21 @@ import { useStakePoolData } from 'hooks/useStakePoolData'
 import { useStakePoolEntries } from 'hooks/useStakePoolEntries'
 import { useStakePoolMaxStaked } from 'hooks/useStakePoolMaxStaked'
 import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
+import { useStakePoolTotalStaked } from 'hooks/useStakePoolTotalStaked'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
-import { useEffect, useState } from 'react'
 
 export const StakePoolInfo = () => {
-  const { connection, environment } = useEnvironmentCtx()
+  const { environment } = useEnvironmentCtx()
   const rewardDistributorData = useRewardDistributorData()
   const rewardMintInfo = useRewardMintInfo()
   const stakePoolEntries = useStakePoolEntries()
   const maxStaked = useStakePoolMaxStaked()
   const rewards = useRewards()
+  const totalStaked = useStakePoolTotalStaked()
   const rewardsRate = useRewardsRate()
   const { isFetched: stakePoolLoaded } = useStakePoolData()
   const { data: stakePoolMetadata } = useStakePoolMetadata()
   const rewardDistributorTokenAccountData = useRewardDistributorTokenAccount()
-
-  const [totalStaked, setTotalStaked] = useState('')
-
-  const totalStakedTokens = async () => {
-    let total = 0
-    if (!stakePoolEntries.data) {
-      setTotalStaked('0')
-      return
-    }
-    const mintToDecimals: { mint: string; decimals: number }[] = []
-    for (const entry of stakePoolEntries.data) {
-      try {
-        if (entry.parsed.amount.toNumber() > 1) {
-          let decimals = 0
-          const match = mintToDecimals.find(
-            (m) => m.mint === entry.parsed.originalMint.toString()
-          )
-          if (match) {
-            decimals = match.decimals
-          } else {
-            const mint = new splToken.Token(
-              connection,
-              entry.parsed.originalMint,
-              splToken.TOKEN_PROGRAM_ID,
-              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-              // @ts-ignore
-              null
-            )
-            const mintInfo = await mint.getMintInfo()
-            decimals = mintInfo.decimals
-            mintToDecimals.push({
-              mint: entry.parsed.originalMint.toString(),
-              decimals: decimals,
-            })
-          }
-          total += entry.parsed.amount.toNumber() / 10 ** decimals
-        } else {
-          total += 1
-        }
-      } catch (e) {
-        console.log('Error calculating total staked tokens', e)
-      }
-    }
-    setTotalStaked(Math.ceil(total).toString())
-  }
-
-  // eslint-disable-next-line react-hooks/rules-of-hooks
-  useEffect(() => {
-    const fetchData = async () => {
-      await totalStakedTokens()
-    }
-    fetchData().catch(console.error)
-  }, [stakePoolEntries.isFetched])
 
   if (
     !stakePoolLoaded ||
@@ -111,7 +58,7 @@ export const StakePoolInfo = () => {
       {stakePoolEntries.data ? (
         <>
           <div className="inline-block text-lg">
-            Total Staked: {Number(totalStaked).toLocaleString()}{' '}
+            Total Staked: {totalStaked.data?.toLocaleString()}{' '}
             {stakePoolMetadata?.maxStaked
               ? `/ ${stakePoolMetadata?.maxStaked.toLocaleString()}`
               : ''}
