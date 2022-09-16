@@ -1,12 +1,12 @@
 import '@cardinal/namespaces-components/dist/esm/styles.css'
 import './styles.css'
-import 'antd/dist/antd.dark.css'
 
 import { WalletIdentityProvider } from '@cardinal/namespaces-components'
 import { WalletProvider } from '@solana/wallet-adapter-react'
 import { WalletModalProvider } from '@solana/wallet-adapter-react-ui'
 import { getWalletAdapters } from '@solana/wallet-adapter-wallets'
 import type { StakePoolMetadata } from 'api/mapping'
+import { ToastContainer } from 'common/Notification'
 import type { AppProps } from 'next/app'
 import {
   EnvironmentProvider,
@@ -44,6 +44,7 @@ const App = ({
             <WalletModalProvider>
               <QueryClientProvider client={queryClient}>
                 <>
+                  <ToastContainer />
                   <Component {...pageProps} />
                   <ReactQueryDevtools initialIsOpen={false} />
                 </>

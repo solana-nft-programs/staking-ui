@@ -1,6 +1,7 @@
 import { findAta } from '@cardinal/common'
 import * as splToken from '@solana/spl-token'
 import { Keypair } from '@solana/web3.js'
+import { REWARD_QUERY_KEY } from 'handlers/useHandleClaimRewards'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 import { useQuery } from 'react-query'
 
@@ -11,6 +12,7 @@ export const useRewardDistributorTokenAccount = () => {
   const { secondaryConnection } = useEnvironmentCtx()
   return useQuery<splToken.AccountInfo | undefined>(
     [
+      REWARD_QUERY_KEY,
       'useRewardDistributorTokenAccount',
       rewardDistibutorData?.data?.pubkey?.toString(),
     ],

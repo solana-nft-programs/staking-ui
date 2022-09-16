@@ -22,7 +22,6 @@ import {
   withUpdateStakePool,
 } from '@cardinal/staking/dist/cjs/programs/stakePool/transaction'
 import { findStakeEntryIdFromMint } from '@cardinal/staking/dist/cjs/programs/stakePool/utils'
-import type { Wallet } from '@metaplex/js'
 import { Tooltip } from '@mui/material'
 import { BN } from '@project-serum/anchor'
 import * as splToken from '@solana/spl-token'
@@ -39,6 +38,7 @@ import {
   tryParseInput,
 } from 'common/units'
 import { pubKeyUrl, shortPubKey, tryPublicKey } from 'common/utils'
+import { asWallet } from 'common/Wallets'
 import type { CreationForm } from 'components/StakePoolForm'
 import { bnValidationTest, StakePoolForm } from 'components/StakePoolForm'
 import { useFormik } from 'formik'
@@ -178,7 +178,7 @@ function AdminStakePool() {
         const transaction = await withUpdateRewardEntry(
           new Transaction(),
           connection,
-          wallet as Wallet,
+          asWallet(wallet),
           {
             stakePoolId: stakePool.data.pubkey,
             rewardDistributorId: rewardDistributor.pubkey,
@@ -186,7 +186,7 @@ function AdminStakePool() {
             multiplier: new BN(values.multipliers[i]!),
           }
         )
-        await executeTransaction(connection, wallet as Wallet, transaction, {
+        await executeTransaction(connection, asWallet(wallet), transaction, {
           silent: false,
           signers: [],
         })
@@ -232,13 +232,13 @@ function AdminStakePool() {
         const transaction = await withAuthorizeStakeEntry(
           new Transaction(),
           connection,
-          wallet as Wallet,
+          asWallet(wallet),
           {
             stakePoolId: stakePool.data.pubkey,
             originalMintId: mint,
           }
         )
-        await executeTransaction(connection, wallet as Wallet, transaction, {
+        await executeTransaction(connection, asWallet(wallet), transaction, {
           silent: false,
           signers: [],
         })
@@ -296,7 +296,7 @@ function AdminStakePool() {
             await withCloseRewardDistributor(
               transaction,
               connection,
-              wallet as Wallet,
+              asWallet(wallet),
               {
                 stakePoolId: stakePool.data.pubkey,
               }
@@ -330,7 +330,7 @@ function AdminStakePool() {
           await withInitRewardDistributor(
             transaction,
             connection,
-            wallet as Wallet,
+            asWallet(wallet),
             rewardDistributorKindParams
           )
           notify({
@@ -342,7 +342,7 @@ function AdminStakePool() {
         await withUpdateRewardDistributor(
           transaction,
           connection,
-          wallet as Wallet,
+          asWallet(wallet),
           {
             stakePoolId: stakePool.data.pubkey,
             defaultMultiplier: values.defaultMultiplier
@@ -398,11 +398,11 @@ function AdminStakePool() {
       await withUpdateStakePool(
         transaction,
         connection,
-        wallet as Wallet,
+        asWallet(wallet),
         stakePoolParams
       )
 
-      await executeTransaction(connection, wallet as Wallet, transaction, {})
+      await executeTransaction(connection, asWallet(wallet), transaction, {})
       notify({
         message:
           'Successfully updated stake pool and reward distributor with ID: ' +
@@ -482,13 +482,13 @@ function AdminStakePool() {
         throw 'Reward Distributor not found'
       }
       const transaction = new Transaction()
-      await withReclaimFunds(transaction, connection, wallet as Wallet, {
+      await withReclaimFunds(transaction, connection, asWallet(wallet), {
         stakePoolId: stakePool.data.pubkey,
         amount: new BN(values.reclaimAmount || 0),
       })
       const txId = await executeTransaction(
         connection,
-        wallet as Wallet,
+        asWallet(wallet),
         transaction,
         {}
       )
@@ -798,7 +798,7 @@ function AdminStakePool() {
                           >
                             <div
                               className={
-                                'inline-block cursor-pointer rounded-md bg-blue-700 px-4 py-2'
+                                'bg-blue-700 inline-block cursor-pointer rounded-md px-4 py-2'
                               }
                             >
                               {loadingReclaim && (
@@ -984,7 +984,7 @@ function AdminStakePool() {
                     <button type="button" onClick={() => handleMutliplier()}>
                       <div
                         className={
-                          'mt-4 inline-block cursor-pointer rounded-md bg-blue-700 px-4 py-2'
+                          'bg-blue-700 mt-4 inline-block cursor-pointer rounded-md px-4 py-2'
                         }
                       >
                         {loadingHandleMultipliers && (
@@ -1033,7 +1033,7 @@ function AdminStakePool() {
                     />
                     <div
                       className={
-                        'mt-4 inline-block cursor-pointer rounded-md bg-blue-700 px-4 py-2'
+                        'bg-blue-700 mt-4 inline-block cursor-pointer rounded-md px-4 py-2'
                       }
                       onClick={() => handleAuthorizeMints()}
                     >

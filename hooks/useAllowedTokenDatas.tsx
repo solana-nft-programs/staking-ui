@@ -21,6 +21,8 @@ import type { TokenListData } from './useTokenList'
 import { useTokenList } from './useTokenList'
 import { useWalletId } from './useWalletId'
 
+export const TOKEN_DATAS_KEY = 'tokenDatas'
+
 export type AllowedTokenData = BaseTokenData & {
   metadata?: any
   stakeEntry?: AccountData<StakeEntryData>
@@ -105,6 +107,7 @@ export const useAllowedTokenDatas = (showFungibleTokens: boolean) => {
   const { data: stakeAuthorizations } = useStakeAuthorizationsForPool()
   return useQuery<AllowedTokenData[] | undefined>(
     [
+      TOKEN_DATAS_KEY,
       'allowedTokenDatas',
       stakePoolId?.toString(),
       stakePool?.pubkey.toString(),

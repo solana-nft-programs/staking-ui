@@ -2,6 +2,7 @@ import type { AccountData } from '@cardinal/common'
 import type { RewardEntryData } from '@cardinal/staking/dist/cjs/programs/rewardDistributor'
 import { getRewardEntries } from '@cardinal/staking/dist/cjs/programs/rewardDistributor/accounts'
 import { findRewardEntryId } from '@cardinal/staking/dist/cjs/programs/rewardDistributor/pda'
+import { REWARD_QUERY_KEY } from 'handlers/useHandleClaimRewards'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 import { useQuery } from 'react-query'
 
@@ -14,6 +15,7 @@ export const useRewardEntries = () => {
   const { secondaryConnection } = useEnvironmentCtx()
   return useQuery<AccountData<RewardEntryData>[] | undefined>(
     [
+      REWARD_QUERY_KEY,
       'useRewardEntries',
       rewardDistibutorData?.pubkey?.toString(),
       stakedTokenDatas,

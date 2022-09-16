@@ -7,6 +7,7 @@ import type { Connection, PublicKey } from '@solana/web3.js'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 import { useQuery } from 'react-query'
 
+import * as useAllowedTokenDatas from './useAllowedTokenDatas'
 import { useStakePoolId } from './useStakePoolId'
 import type { TokenListData } from './useTokenList'
 import { useTokenList } from './useTokenList'
@@ -103,6 +104,7 @@ export const useStakedTokenDatas = () => {
   const { secondaryConnection } = useEnvironmentCtx()
   return useQuery<StakeEntryTokenData[] | undefined>(
     [
+      useAllowedTokenDatas.TOKEN_DATAS_KEY,
       'stakedTokenDatas',
       stakePoolId?.toString(),
       walletIds.join(','),

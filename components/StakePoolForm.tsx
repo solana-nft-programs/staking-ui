@@ -5,7 +5,6 @@ import { executeTransaction } from '@cardinal/staking'
 import type { RewardDistributorData } from '@cardinal/staking/dist/cjs/programs/rewardDistributor'
 import { RewardDistributorKind } from '@cardinal/staking/dist/cjs/programs/rewardDistributor'
 import type { StakePoolData } from '@cardinal/staking/dist/cjs/programs/stakePool'
-import type { Wallet } from '@metaplex/js'
 import { BN } from '@project-serum/anchor'
 import * as splToken from '@solana/spl-token'
 import { useWallet } from '@solana/wallet-adapter-react'
@@ -17,6 +16,7 @@ import { LoadingSpinner } from 'common/LoadingSpinner'
 import { notify } from 'common/Notification'
 import { tryFormatInput, tryParseInput } from 'common/units'
 import { tryPublicKey } from 'common/utils'
+import { asWallet } from 'common/Wallets'
 import { useFormik } from 'formik'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 import { useMemo, useState } from 'react'
@@ -206,7 +206,7 @@ export function StakePoolForm({
           if (transaction.instructions.length > 0) {
             await executeTransaction(
               connection,
-              wallet as Wallet,
+              asWallet(wallet),
               transaction,
               {}
             )
@@ -871,7 +871,7 @@ export function StakePoolForm({
         }}
       >
         <div
-          className={`mt-4 inline-block rounded-md bg-blue-700 px-4 py-2 ${
+          className={`bg-blue-700 mt-4 inline-block rounded-md px-4 py-2 ${
             submitDisabled && values.rewardDistributorKind && type !== 'update'
               ? 'opacity-50'
               : ''

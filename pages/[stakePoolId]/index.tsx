@@ -1,42 +1,32 @@
-import { withFindOrInitAssociatedTokenAccount } from '@cardinal/common'
 import { DisplayAddress } from '@cardinal/namespaces-components'
-import {
-  claimRewards,
-  createStakeEntryAndStakeMint,
-  stake,
-  unstake,
-} from '@cardinal/staking'
 import { RewardDistributorKind } from '@cardinal/staking/dist/cjs/programs/rewardDistributor'
 import { ReceiptType } from '@cardinal/staking/dist/cjs/programs/stakePool'
-import { Switch } from '@headlessui/react'
-import type { Wallet } from '@metaplex/js'
 import { darken, lighten } from '@mui/material'
 import { BN } from '@project-serum/anchor'
 import * as splToken from '@solana/spl-token'
 import { useWallet } from '@solana/wallet-adapter-react'
 import { useWalletModal } from '@solana/wallet-adapter-react-ui'
-import type { Signer } from '@solana/web3.js'
-import { PublicKey, Transaction } from '@solana/web3.js'
 import { defaultSecondaryColor, TokenStandard } from 'api/mapping'
-import { executeAllTransactions } from 'api/utils'
 import { Footer } from 'common/Footer'
 import { Header } from 'common/Header'
 import { LoadingSpinner } from 'common/LoadingSpinner'
 import { notify } from 'common/Notification'
 import { QuickActions } from 'common/QuickActions'
-import { MouseoverTooltip } from 'common/Tooltip'
+import { Toggle } from 'common/Toggle'
+import { Tooltip } from 'common/Tooltip'
 import {
   formatAmountAsDecimal,
   formatMintNaturalAmountAsDecimal,
-  parseMintNaturalAmountFromDecimal,
 } from 'common/units'
 import { contrastColorMode, pubKeyUrl, secondstoDuration } from 'common/utils'
 import { AllowedTokens } from 'components/AllowedTokens'
 import { PoolAnalytics } from 'components/PoolAnalytics'
 import { StakedStats } from 'components/StakedStats'
+import { useHandleClaimRewards } from 'handlers/useHandleClaimRewards'
+import { useHandleStake } from 'handlers/useHandleStake'
+import { useHandleUnstake } from 'handlers/useHandleUnstake'
 import type { AllowedTokenData } from 'hooks/useAllowedTokenDatas'
 import { useAllowedTokenDatas } from 'hooks/useAllowedTokenDatas'
-import { usePoolAnalytics } from 'hooks/usePoolAnalytics'
 import { useRewardDistributorData } from 'hooks/useRewardDistributorData'
 import { useRewardDistributorTokenAccount } from 'hooks/useRewardDistributorTokenAccount'
 import { useRewardMintInfo } from 'hooks/useRewardMintInfo'
@@ -74,20 +64,19 @@ function StakePoolHome() {
   const [stakedSelected, setStakedSelected] = useState<StakeEntryTokenData[]>(
     []
   )
-  const [loadingStake, setLoadingStake] = useState(false)
-  const [loadingUnstake, setLoadingUnstake] = useState(false)
   const [singleTokenAction, setSingleTokenAction] = useState('')
   const [totalStaked, setTotalStaked] = useState('')
   const [receiptType, setReceiptType] = useState<ReceiptType>(
     ReceiptType.Original
   )
-  const [loadingClaimRewards, setLoadingClaimRewards] = useState(false)
   const [showAllowedTokens, setShowAllowedTokens] = useState<boolean>()
   const [showFungibleTokens, setShowFungibleTokens] = useState(false)
   const allowedTokenDatas = useAllowedTokenDatas(showFungibleTokens)
   const { data: stakePoolMetadata } = useStakePoolMetadata()
   const rewardDistributorTokenAccountData = useRewardDistributorTokenAccount()
-  const analytics = usePoolAnalytics()
+  const handleStake = useHandleStake()
+  const handleUnstake = useHandleUnstake()
+  const handleClaimRewards = useHandleClaimRewards()
 
   if (stakePoolMetadata?.redirect) {
     router.push(stakePoolMetadata?.redirect)
@@ -104,364 +93,8 @@ function StakePoolHome() {
       setReceiptType(stakePoolMetadata?.receiptType)
   }, [stakePoolMetadata?.name])
 
-  async function handleClaimRewards(all?: boolean) {
-    setLoadingClaimRewards(true)
-    if (!wallet) {
-      throw new Error('Wallet not connected')
-    }
-    if (!stakePool) {
-      notify({ message: `No stake pool detected`, type: 'error' })
-      return
-    }
-
-    const ataTx = new Transaction()
-    if (rewardDistributorData.data && rewardDistributorData.data.parsed) {
-      // create user reward mint ata
-      await withFindOrInitAssociatedTokenAccount(
-        ataTx,
-        connection,
-        rewardDistributorData.data.parsed.rewardMint,
-        wallet.publicKey!,
-        wallet.publicKey!
-      )
-    }
-
-    const tokensToStake = all ? stakedTokenDatas.data || [] : stakedSelected
-    const txs: Transaction[] = (
-      await Promise.all(
-        tokensToStake.map(async (token, i) => {
-          try {
-            if (!token || !token.stakeEntry) {
-              throw new Error('No stake entry for token')
-            }
-            const transaction = new Transaction()
-            if (i === 0 && ataTx.instructions.length > 0) {
-              transaction.instructions = ataTx.instructions
-            }
-            const claimTx = await claimRewards(connection, wallet as Wallet, {
-              stakePoolId: stakePool.pubkey,
-              stakeEntryId: token.stakeEntry.pubkey,
-              skipRewardMintTokenAccount: true,
-            })
-            transaction.instructions = [
-              ...transaction.instructions,
-              ...claimTx.instructions,
-            ]
-            return transaction
-          } catch (e) {
-            notify({
-              message: `${e}`,
-              description: `Failed to claim rewards for token ${token?.stakeEntry?.pubkey.toString()}`,
-              type: 'error',
-            })
-            return null
-          }
-        })
-      )
-    ).filter((x): x is Transaction => x !== null)
-    try {
-      ///
-      const [firstTx, ...remainingTxs] = txs
-      await executeAllTransactions(
-        connection,
-        wallet as Wallet,
-        ataTx.instructions.length > 0 ? remainingTxs : txs,
-        {
-          notificationConfig: {
-            message: 'Successfully claimed rewards',
-            description: 'These rewards are now available in your wallet',
-          },
-        },
-        ataTx.instructions.length > 0 ? firstTx : undefined
-      )
-    } catch (e) {}
-
-    rewardDistributorData.remove()
-    rewardDistributorTokenAccountData.remove()
-    setLoadingClaimRewards(false)
-    setStakedSelected([])
-  }
-
-  async function handleUnstake() {
-    if (!wallet.connected) {
-      notify({ message: `Wallet not connected`, type: 'error' })
-      return
-    }
-    if (!stakePool) {
-      notify({ message: `No stake pool detected`, type: 'error' })
-      return
-    }
-    if (stakedSelected.length <= 0) {
-      notify({ message: `Not tokens selected`, type: 'error' })
-      return
-    }
-    setLoadingUnstake(true)
-
-    const ataTx = new Transaction()
-    if (rewardDistributorData.data && rewardDistributorData.data.parsed) {
-      // create user reward mint ata
-      await withFindOrInitAssociatedTokenAccount(
-        ataTx,
-        connection,
-        rewardDistributorData.data.parsed.rewardMint,
-        wallet.publicKey!,
-        wallet.publicKey!
-      )
-    }
-
-    let coolDown = false
-    const txs: Transaction[] = (
-      await Promise.all(
-        stakedSelected.map(async (token, i) => {
-          try {
-            if (!token || !token.stakeEntry) {
-              throw new Error('No stake entry for token')
-            }
-            if (
-              stakePool.parsed.cooldownSeconds &&
-              !token.stakeEntry?.parsed.cooldownStartSeconds &&
-              !stakePool.parsed.minStakeSeconds
-            ) {
-              notify({
-                message: `Cooldown period will be initiated for ${token.metaplexData?.data.data.name} unless minimum stake period unsatisfied`,
-                type: 'info',
-              })
-              coolDown = true
-            }
-            const transaction = new Transaction()
-            if (i === 0 && ataTx.instructions.length > 0) {
-              transaction.instructions = ataTx.instructions
-            }
-            const unstakeTx = await unstake(connection, wallet as Wallet, {
-              stakePoolId: stakePool?.pubkey,
-              originalMintId: token.stakeEntry.parsed.originalMint,
-            })
-            transaction.instructions = [
-              ...transaction.instructions,
-              ...unstakeTx.instructions,
-            ]
-            return transaction
-          } catch (e) {
-            notify({
-              message: `${e}`,
-              description: `Failed to unstake token ${token?.stakeEntry?.pubkey.toString()}`,
-              type: 'error',
-            })
-            return null
-          }
-        })
-      )
-    ).filter((x): x is Transaction => x !== null)
-
-    try {
-      ///
-      const [firstTx, ...remainingTxs] = txs
-      await executeAllTransactions(
-        connection,
-        wallet as Wallet,
-        ataTx.instructions.length > 0 ? remainingTxs : txs,
-        {
-          notificationConfig: {
-            message: `Successfully ${
-              coolDown ? 'initiated cooldown' : 'unstaked'
-            }`,
-            description: 'These tokens are now available in your wallet',
-          },
-        },
-        ataTx.instructions.length > 0 ? firstTx : undefined
-      )
-    } catch (e) {}
-
-    await Promise.all([
-      stakedTokenDatas.remove(),
-      allowedTokenDatas.remove(),
-      stakePoolEntries.remove(),
-    ]).then(() =>
-      setTimeout(() => {
-        stakedTokenDatas.refetch()
-        allowedTokenDatas.refetch()
-        stakePoolEntries.refetch()
-        analytics.refetch()
-      }, 2000)
-    )
-    setStakedSelected([])
-    setUnstakedSelected([])
-    setLoadingUnstake(false)
-  }
-
-  async function handleStake() {
-    if (!wallet.connected) {
-      notify({ message: `Wallet not connected`, type: 'error' })
-      return
-    }
-    if (!stakePool) {
-      notify({ message: `Wallet not connected`, type: 'error' })
-      return
-    }
-    if (unstakedSelected.length <= 0) {
-      notify({ message: `Not tokens selected`, type: 'error' })
-      return
-    }
-    setLoadingStake(true)
-
-    const initTxs: { tx: Transaction; signers: Signer[] }[] = []
-    for (let step = 0; step < unstakedSelected.length; step++) {
-      try {
-        const token = unstakedSelected[step]
-        if (!token || !token.tokenAccount) {
-          throw new Error('Token account not set')
-        }
-
-        if (
-          token.tokenAccount?.account.data.parsed.info.tokenAmount.amount > 1 &&
-          !token.amountToStake
-        ) {
-          throw new Error('Invalid amount chosen for token')
-        }
-
-        if (receiptType === ReceiptType.Receipt) {
-          console.log('Creating stake entry and stake mint...')
-          const [initTx, , stakeMintKeypair] =
-            await createStakeEntryAndStakeMint(connection, wallet as Wallet, {
-              stakePoolId: stakePool?.pubkey,
-              originalMintId: new PublicKey(
-                token.tokenAccount.account.data.parsed.info.mint
-              ),
-            })
-          if (initTx.instructions.length > 0) {
-            initTxs.push({
-              tx: initTx,
-              signers: stakeMintKeypair ? [stakeMintKeypair] : [],
-            })
-          }
-        }
-      } catch (e) {
-        notify({
-          message: `Failed to stake token ${unstakedSelected[
-            step
-          ]?.stakeEntry?.pubkey.toString()}`,
-          description: `${e}`,
-          type: 'error',
-        })
-      }
-    }
-
-    if (initTxs.length > 0) {
-      try {
-        await executeAllTransactions(
-          connection,
-          wallet as Wallet,
-          initTxs.map(({ tx }) => tx),
-          {
-            signers: initTxs.map(({ signers }) => signers),
-            throwIndividualError: true,
-            notificationConfig: {
-              message: `Successfully staked`,
-              description: 'Stake progress will now dynamically update',
-            },
-          }
-        )
-      } catch (e) {
-        setLoadingStake(false)
-        return
-      }
-    }
-
-    const txs: (Transaction | null)[] = await Promise.all(
-      unstakedSelected.map(async (token) => {
-        try {
-          if (!token || !token.tokenAccount) {
-            throw new Error('Token account not set')
-          }
-
-          if (
-            token.tokenAccount?.account.data.parsed.info.tokenAmount.amount >
-              1 &&
-            !token.amountToStake
-          ) {
-            throw new Error('Invalid amount chosen for token')
-          }
-
-          if (
-            token.stakeEntry &&
-            token.stakeEntry.parsed.amount.toNumber() > 0
-          ) {
-            throw new Error(
-              'Fungible tokens already staked in the pool. Staked tokens need to be unstaked and then restaked together with the new tokens.'
-            )
-          }
-
-          const amount = token?.amountToStake
-            ? new BN(
-                token?.amountToStake && token.tokenListData
-                  ? parseMintNaturalAmountFromDecimal(
-                      token?.amountToStake,
-                      token.tokenListData.decimals
-                    ).toString()
-                  : 1
-              )
-            : undefined
-          // stake
-          return stake(connection, wallet as Wallet, {
-            stakePoolId: stakePool?.pubkey,
-            receiptType:
-              (!amount ||
-                (amount &&
-                  amount.eq(new BN(1)) &&
-                  receiptType === ReceiptType.Receipt)) &&
-              receiptType !== ReceiptType.None
-                ? receiptType
-                : undefined,
-            originalMintId: new PublicKey(
-              token.tokenAccount.account.data.parsed.info.mint
-            ),
-            userOriginalMintTokenAccountId: token.tokenAccount?.pubkey,
-            amount: amount,
-          })
-        } catch (e) {
-          notify({
-            message: `Failed to unstake token ${token?.stakeEntry?.pubkey.toString()}`,
-            description: `${e}`,
-            type: 'error',
-          })
-          return null
-        }
-      })
-    )
-
-    try {
-      await executeAllTransactions(
-        connection,
-        wallet as Wallet,
-        txs.filter((tx): tx is Transaction => tx !== null),
-        {
-          notificationConfig: {
-            message: `Successfully staked`,
-            description: 'Stake progress will now dynamically update',
-          },
-        }
-      )
-    } catch (e) {}
-
-    await Promise.all([
-      stakedTokenDatas.remove(),
-      allowedTokenDatas.remove(),
-      stakePoolEntries.remove(),
-    ]).then(() =>
-      setTimeout(() => {
-        stakedTokenDatas.refetch()
-        allowedTokenDatas.refetch()
-        stakePoolEntries.refetch()
-        analytics.refetch()
-      }, 2000)
-    )
-    setStakedSelected([])
-    setUnstakedSelected([])
-    setLoadingStake(false)
-  }
-
   const selectUnstakedToken = (tk: AllowedTokenData, targetValue?: string) => {
-    if (loadingStake || loadingUnstake) return
+    if (handleStake.isLoading || handleUnstake.isLoading) return
     const amount = Number(targetValue)
     if (tk.tokenAccount?.account.data.parsed.info.tokenAmount.amount > 1) {
       let newUnstakedSelected = unstakedSelected.filter(
@@ -503,7 +136,7 @@ function StakePoolHome() {
   }
 
   const selectStakedToken = (tk: StakeEntryTokenData) => {
-    if (loadingStake || loadingUnstake) return
+    if (handleStake.isLoading || handleUnstake.isLoading) return
     if (
       tk.stakeEntry?.parsed.lastStaker.toString() !==
       wallet.publicKey?.toString()
@@ -948,7 +581,7 @@ function StakePoolHome() {
                                   : '',
                               }}
                             >
-                              {loadingStake &&
+                              {handleStake.isLoading &&
                                 (isUnstakedTokenSelected(tk) ||
                                   singleTokenAction ===
                                     tk.tokenAccount?.account.data.parsed.info.mint.toString()) && (
@@ -967,11 +600,6 @@ function StakePoolHome() {
                                 receiptType={receiptType}
                                 unstakedTokenData={tk}
                                 showFungibleTokens={showFungibleTokens}
-                                setStakedSelected={setStakedSelected}
-                                setUnstakedSelected={setUnstakedSelected}
-                                setLoadingStake={setLoadingStake}
-                                setLoadingUnstake={setLoadingUnstake}
-                                setLoadingClaimRewards={setLoadingClaimRewards}
                                 setSingleTokenAction={setSingleTokenAction}
                                 selectUnstakedToken={selectUnstakedToken}
                                 selectStakedToken={selectStakedToken}
@@ -1067,7 +695,7 @@ function StakePoolHome() {
 
             <div className="mt-2 flex items-center justify-between gap-5">
               {!stakePoolMetadata?.receiptType ? (
-                <MouseoverTooltip
+                <Tooltip
                   title={
                     receiptType === ReceiptType.Original
                       ? 'Lock the original token(s) in your wallet when you stake'
@@ -1075,8 +703,8 @@ function StakePoolHome() {
                   }
                 >
                   <div className="flex cursor-pointer flex-row gap-2">
-                    <Switch
-                      checked={receiptType === ReceiptType.Original}
+                    <Toggle
+                      defaultValue={receiptType === ReceiptType.Original}
                       onChange={() =>
                         setReceiptType(
                           receiptType === ReceiptType.Original
@@ -1091,16 +719,7 @@ function StakePoolHome() {
                         color: stakePoolMetadata?.colors?.fontColor,
                       }}
                       className={`relative inline-flex h-6 w-11 items-center rounded-full`}
-                    >
-                      <span className="sr-only">Receipt Type</span>
-                      <span
-                        className={`${
-                          receiptType === ReceiptType.Original
-                            ? 'translate-x-6'
-                            : 'translate-x-1'
-                        } inline-block h-4 w-4 transform rounded-full bg-white`}
-                      />
-                    </Switch>
+                    />
                     <div className="flex items-center gap-1">
                       <span
                         style={{
@@ -1114,12 +733,12 @@ function StakePoolHome() {
                       <FaInfoCircle />
                     </div>
                   </div>
-                </MouseoverTooltip>
+                </Tooltip>
               ) : (
                 <div></div>
               )}
               <div className="flex gap-5">
-                <MouseoverTooltip title="Click on tokens to select them">
+                <Tooltip title="Click on tokens to select them">
                   <button
                     onClick={() => {
                       if (unstakedSelected.length === 0) {
@@ -1128,7 +747,10 @@ function StakePoolHome() {
                           type: 'error',
                         })
                       } else {
-                        handleStake()
+                        handleStake.mutate({
+                          tokenDatas: unstakedSelected,
+                          receiptType,
+                        })
                       }
                     }}
                     style={{
@@ -1142,7 +764,7 @@ function StakePoolHome() {
                     className="my-auto flex rounded-md px-4 py-2 hover:scale-[1.03]"
                   >
                     <span className="mr-1 inline-block">
-                      {loadingStake && (
+                      {handleStake.isLoading && (
                         <LoadingSpinner
                           fill={
                             stakePoolMetadata?.colors?.fontColor
@@ -1157,8 +779,8 @@ function StakePoolHome() {
                       Stake ({unstakedSelected.length})
                     </span>
                   </button>
-                </MouseoverTooltip>
-                <MouseoverTooltip title="Attempt to stake all tokens at once">
+                </Tooltip>
+                <Tooltip title="Attempt to stake all tokens at once">
                   <button
                     onClick={() => {
                       setUnstakedSelected(allowedTokenDatas.data || [])
@@ -1175,7 +797,7 @@ function StakePoolHome() {
                   >
                     <span className="my-auto">Select All</span>
                   </button>
-                </MouseoverTooltip>
+                </Tooltip>
               </div>
             </div>
           </div>
@@ -1315,7 +937,8 @@ function StakePoolHome() {
                                     : '',
                                 }}
                               >
-                                {(loadingUnstake || loadingClaimRewards) &&
+                                {(handleUnstake.isLoading ||
+                                  handleClaimRewards.isLoading) &&
                                   (isStakedTokenSelected(tk) ||
                                     singleTokenAction ===
                                       tk.stakeEntry?.parsed.originalMint.toString()) && (
@@ -1325,7 +948,7 @@ function StakePoolHome() {
                                           <span className="mr-2">
                                             <LoadingSpinner height="20px" />
                                           </span>
-                                          {loadingUnstake
+                                          {handleUnstake.isLoading
                                             ? 'Unstaking token...'
                                             : 'Claiming rewards...'}
                                         </div>
@@ -1353,13 +976,6 @@ function StakePoolHome() {
                                   receiptType={receiptType}
                                   stakedTokenData={tk}
                                   showFungibleTokens={showFungibleTokens}
-                                  setStakedSelected={setStakedSelected}
-                                  setUnstakedSelected={setUnstakedSelected}
-                                  setLoadingStake={setLoadingStake}
-                                  setLoadingUnstake={setLoadingUnstake}
-                                  setLoadingClaimRewards={
-                                    setLoadingClaimRewards
-                                  }
                                   setSingleTokenAction={setSingleTokenAction}
                                   selectUnstakedToken={selectUnstakedToken}
                                   selectStakedToken={selectStakedToken}
@@ -1436,7 +1052,7 @@ function StakePoolHome() {
             </div>
             <div className="mt-2 flex flex-row-reverse flex-wrap justify-between gap-5">
               <div className="flex gap-5">
-                <MouseoverTooltip
+                <Tooltip
                   title={'Unstake will automatically claim reward for you.'}
                 >
                   <button
@@ -1447,7 +1063,7 @@ function StakePoolHome() {
                           type: 'error',
                         })
                       } else {
-                        handleUnstake()
+                        handleUnstake.mutate({ tokenDatas: stakedSelected })
                       }
                     }}
                     style={{
@@ -1461,7 +1077,7 @@ function StakePoolHome() {
                     className="my-auto flex rounded-md px-4 py-2 hover:scale-[1.03]"
                   >
                     <span className="mr-1 inline-block">
-                      {loadingUnstake && (
+                      {handleUnstake.isLoading && (
                         <LoadingSpinner
                           fill={
                             stakePoolMetadata?.colors?.fontColor
@@ -1476,8 +1092,8 @@ function StakePoolHome() {
                       Unstake ({stakedSelected.length})
                     </span>
                   </button>
-                </MouseoverTooltip>
-                <MouseoverTooltip title="Attempt to unstake all tokens at once">
+                </Tooltip>
+                <Tooltip title="Attempt to unstake all tokens at once">
                   <button
                     onClick={() => {
                       setStakedSelected(stakedTokenDatas.data || [])
@@ -1494,7 +1110,7 @@ function StakePoolHome() {
                   >
                     <span className="my-auto">Select All</span>
                   </button>
-                </MouseoverTooltip>
+                </Tooltip>
               </div>
               <div className="flex gap-5">
                 {rewardDistributorData.data &&
@@ -1507,7 +1123,9 @@ function StakePoolHome() {
                             type: 'error',
                           })
                         } else {
-                          handleClaimRewards()
+                          handleClaimRewards.mutate({
+                            tokenDatas: stakedSelected,
+                          })
                         }
                       }}
                       disabled={!rewards.data?.claimableRewards.gt(new BN(0))}
@@ -1522,7 +1140,7 @@ function StakePoolHome() {
                       className="my-auto flex rounded-md px-4 py-2 hover:scale-[1.03]"
                     >
                       <span className="mr-1 inline-block">
-                        {loadingClaimRewards && (
+                        {handleClaimRewards.isLoading && (
                           <LoadingSpinner
                             fill={
                               stakePoolMetadata?.colors?.fontColor

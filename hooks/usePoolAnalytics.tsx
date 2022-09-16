@@ -4,6 +4,7 @@ import type { Connection, PublicKey } from '@solana/web3.js'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 import { useQuery } from 'react-query'
 
+import { TOKEN_DATAS_KEY } from './useAllowedTokenDatas'
 import { useStakePoolId } from './useStakePoolId'
 import { useStakePoolMetadata } from './useStakePoolMetadata'
 
@@ -13,7 +14,12 @@ export const usePoolAnalytics = () => {
   const { data: stakePoolMetadata } = useStakePoolMetadata()
 
   return useQuery<{ [trait: string]: number } | undefined>(
-    ['poolAnalytics', stakePoolId?.toString(), stakePoolMetadata],
+    [
+      TOKEN_DATAS_KEY,
+      'poolAnalytics',
+      stakePoolId?.toString(),
+      stakePoolMetadata,
+    ],
     async () => {
       const analyticsData: { [trait: string]: number } = {}
       if (!stakePoolId || !stakePoolMetadata) {
