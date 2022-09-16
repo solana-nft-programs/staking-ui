@@ -52,6 +52,8 @@ export type StakePoolMetadata = {
   hideAllowedTokens?: boolean
   // styles to apply to the whole stake pool
   styles?: CSSProperties
+  // Contrast homepage background
+  contrastHomepageBkg?: string
   // Colors object to style the stake page
   colors?: {
     primary: string
@@ -483,6 +485,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     websiteUrl: 'https://www.roguesharks.org/',
     receiptType: ReceiptType.Original,
     hostname: 'stake.roguesharks',
+    contrastHomepageBkg: true,
     hideFooter: true,
     maxStaked: 4991, // update with collection size
     imageUrl: '/logos/rogue-sharks.svg',
@@ -509,8 +512,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     websiteUrl: 'https://cannaverse.gg/',
     receiptType: ReceiptType.Original,
     maxStaked: 1700,
-    imageUrl:
-      'https://pbs.twimg.com/profile_images/1518692930139086849/mRqtE7DP_400x400.jpg',
+    imageUrl: './logos/cannaverse.png',
     colors: {
       primary: '#211F20',
       secondary: '#211F20',
@@ -1301,6 +1303,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
   {
     name: '666starmoon',
     displayName: '666starmoon',
+    hidden: true,
     stakePoolAddress: new PublicKey(
       'B72Unafq2Y5DqkeN4BGSZ7gyqVTfXjigNrQkgDPxSCjo'
     ),

@@ -29,6 +29,7 @@ export const executeAllTransactions = async (
   },
   preTx?: Transaction
 ): Promise<(string | null)[]> => {
+  connection.getSignaturesForAddress
   const transactions = preTx ? [preTx, ...txs] : txs
   if (transactions.length === 0) return []
 

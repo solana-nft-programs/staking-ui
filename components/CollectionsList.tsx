@@ -46,8 +46,9 @@ export const CollectionsList = ({ configs }: { configs?: StakePool[] }) => {
                     {config.stakePoolMetadata?.imageUrl ? (
                       <img
                         className={`h-full max-h-[50px] max-w-[150px] rounded-xl ${
-                          config.stakePoolMetadata?.logoPadding && 'p-3'
-                        }`}
+                          config.stakePoolMetadata.contrastHomepageBkg &&
+                          `bg-white bg-opacity-20 p-2`
+                        } ${config.stakePoolMetadata?.logoPadding && 'p-3'}`}
                         src={config.stakePoolMetadata?.imageUrl}
                         alt={
                           config.stakePoolMetadata?.name ??
