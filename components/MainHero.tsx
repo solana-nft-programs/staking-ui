@@ -36,7 +36,7 @@ export const MainHero = () => {
               <GlyphPlus />
             </div>
           </div>
-          <div className="flex w-fit gap-3 rounded-xl border-[2px] border-border p-4">
+          <div className="flex w-fit flex-wrap gap-3 rounded-xl border-[2px] border-border p-4">
             {statsNameMapping.map(({ displayName, key }) => (
               <div className="flex items-center gap-2" key={key}>
                 <div className="text-medium-3">{displayName}</div>
