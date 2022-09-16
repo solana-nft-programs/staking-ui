@@ -927,8 +927,10 @@ function StakePoolHome() {
           </div>
         </div>
       </div>
-      {!stakePoolMetadata?.hideFooter && (
+      {!stakePoolMetadata?.hideFooter ? (
         <Footer bgColor={stakePoolMetadata?.colors?.primary} />
+      ) : (
+        <div className="h-24"></div>
       )}
     </div>
   )
