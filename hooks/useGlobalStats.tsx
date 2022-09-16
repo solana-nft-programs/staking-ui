@@ -18,8 +18,8 @@ export const useGlobalStats = () => {
     ['useStats', stakePoolId?.toString()],
     async () => {
       const statsNames = [
-        'total-active-staked-tokens',
         'total-active-stake-entries',
+        'total-active-staked-tokens',
         'total-stake-pools',
       ]
       const statsData = await Promise.all(
