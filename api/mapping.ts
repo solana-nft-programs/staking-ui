@@ -53,7 +53,7 @@ export type StakePoolMetadata = {
   // styles to apply to the whole stake pool
   styles?: CSSProperties
   // Contrast homepage background
-  contrastHomepageBkg?: string
+  contrastHomepageBkg?: boolean
   // Colors object to style the stake page
   colors?: {
     primary: string
