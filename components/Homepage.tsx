@@ -46,12 +46,12 @@ function Homepage() {
           <div className="grid grid-cols-1 gap-5 md:grid-cols-4">
             {!allStakePools.isFetched ? (
               <>
-                <Card skeleton />
-                <Card skeleton />
-                <Card skeleton />
-                <Card skeleton />
-                <Card skeleton />
-                <Card skeleton />
+                <Card skeleton header={<></>} />
+                <Card skeleton header={<></>} />
+                <Card skeleton header={<></>} />
+                <Card skeleton header={<></>} />
+                <Card skeleton header={<></>} />
+                <Card skeleton header={<></>} />
               </>
             ) : allStakePools.data &&
               allStakePools.data?.stakePoolsWithMetadata.length > 0 ? (
