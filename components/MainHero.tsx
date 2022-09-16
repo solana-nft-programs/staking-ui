@@ -7,7 +7,7 @@ export const MainHero = () => {
   const stats = useGlobalStats()
   const router = useRouter()
   return (
-    <div className="relative z-0">
+    <div className="relative z-0 text-sm">
       <div className="blur-4xl absolute left-8 top-52 -z-10 h-[120px] w-[400px] -rotate-[60deg] bg-glow blur-[100px]" />
       <div className="blur-4xl absolute -right-20 top-72 -z-10 h-[100px] w-[550px] -rotate-[60deg] bg-glow blur-[120px]" />
       <HeaderSlim />
