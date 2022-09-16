@@ -1372,7 +1372,8 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       '9NvrvM3Ji5RbbJtuAqXAzQL6cwHAv7n4KQQoUyUHqgT1'
     ),
     websiteUrl: 'https://udderchaos.io/',
-    imageUrl: 'https://oh66ydzlqmacybmraeswa7nxlpv4fogsvikmihqosj3rel6qixfa.arweave.net/cf3sDyuDACwFkQElYH23W-vCuNKqFMQeDpJ3Ei_QRco',
+    imageUrl:
+      'https://oh66ydzlqmacybmraeswa7nxlpv4fogsvikmihqosj3rel6qixfa.arweave.net/cf3sDyuDACwFkQElYH23W-vCuNKqFMQeDpJ3Ei_QRco',
     maxStaked: 500,
     receiptType: ReceiptType.Original,
     tokenStandard: TokenStandard.NonFungible,

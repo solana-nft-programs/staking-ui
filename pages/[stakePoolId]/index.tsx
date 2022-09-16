@@ -1,12 +1,12 @@
 import { DisplayAddress } from '@cardinal/namespaces-components'
 import { RewardDistributorKind } from '@cardinal/staking/dist/cjs/programs/rewardDistributor'
 import { ReceiptType } from '@cardinal/staking/dist/cjs/programs/stakePool'
-import { darken, lighten } from '@mui/material'
 import { BN } from '@project-serum/anchor'
 import * as splToken from '@solana/spl-token'
 import { useWallet } from '@solana/wallet-adapter-react'
 import { useWalletModal } from '@solana/wallet-adapter-react-ui'
 import { defaultSecondaryColor, TokenStandard } from 'api/mapping'
+import { contrastify } from 'common/colors'
 import { Footer } from 'common/Footer'
 import { Header } from 'common/Header'
 import { LoadingSpinner } from 'common/LoadingSpinner'
@@ -260,9 +260,9 @@ function StakePoolHome() {
               background:
                 stakePoolMetadata?.colors?.secondary || defaultSecondaryColor,
               color: stakePoolMetadata?.colors?.fontColor,
-              borderColor: lighten(
-                stakePoolMetadata?.colors?.secondary || defaultSecondaryColor,
-                0.5
+              borderColor: contrastify(
+                0.5,
+                stakePoolMetadata?.colors?.secondary || defaultSecondaryColor
               ),
             }}
           >
@@ -520,17 +520,10 @@ function StakePoolHome() {
                 style={{
                   background:
                     stakePoolMetadata?.colors?.backgroundSecondary &&
-                    (contrastColorMode(
-                      stakePoolMetadata?.colors?.primary ?? '#000000'
-                    )[1]
-                      ? lighten(
-                          stakePoolMetadata?.colors?.backgroundSecondary,
-                          0.05
-                        )
-                      : darken(
-                          stakePoolMetadata?.colors?.backgroundSecondary,
-                          0.05
-                        )),
+                    contrastify(
+                      0.05,
+                      stakePoolMetadata?.colors?.backgroundSecondary
+                    ),
                 }}
               >
                 {!allowedTokenDatas.isFetched ? (
@@ -878,17 +871,10 @@ function StakePoolHome() {
                 style={{
                   background:
                     stakePoolMetadata?.colors?.backgroundSecondary &&
-                    (contrastColorMode(
-                      stakePoolMetadata?.colors?.primary ?? '#000000'
-                    )[1]
-                      ? lighten(
-                          stakePoolMetadata?.colors?.backgroundSecondary,
-                          0.05
-                        )
-                      : darken(
-                          stakePoolMetadata?.colors?.backgroundSecondary,
-                          0.05
-                        )),
+                    contrastify(
+                      0.05,
+                      stakePoolMetadata?.colors?.backgroundSecondary
+                    ),
                 }}
               >
                 {!stakedTokenDatas.isFetched ? (
