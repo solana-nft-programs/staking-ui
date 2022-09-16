@@ -61,6 +61,10 @@ export type StakePoolMetadata = {
     fontColorSecondary?: string
     backgroundSecondary?: string
   }
+  // If the logo should be displayed with paddding
+  logoPadding?: boolean
+  // Optional social links
+  socialLinks?: []
   // Image url to be used as the icon in the pool selector and the header
   imageUrl?: string
   // Secondary image url to be used next to the icon in the pool selector and the header
