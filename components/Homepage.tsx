@@ -1,12 +1,14 @@
+import { Banner } from 'common/Banner'
 import { Footer } from 'common/Footer'
 import { Header } from 'common/Header'
 import { pubKeyUrl, shortPubKey } from 'common/utils'
 import { useAllStakePools } from 'hooks/useAllStakePools'
-import { useStats } from 'hooks/useStats'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 import { FaQuestion } from 'react-icons/fa'
+
+import { GlobalStats } from './GlobalStats'
 
 export function Placeholder() {
   return (
@@ -18,7 +20,6 @@ function Homepage() {
   const { environment } = useEnvironmentCtx()
   const allStakePools = useAllStakePools()
   const router = useRouter()
-  const stats = useStats()
 
   return (
     <div>
@@ -34,24 +35,9 @@ function Homepage() {
       </Head>
 
       <div>
-        {stats.isFetched && stats.data && (
-          <div className="flex flex-wrap justify-center md:flex-nowrap lg:flex lg:flex-row">
-            {Object.keys(stats.data).map((name, i) => {
-              return (
-                <div key={i} className="mx-5 gap-1 pt-2 text-xs">
-                  <span className="font-semibold">{name}:</span>
-                  <span className="ml-2 text-green-500">
-                    {Number(
-                      stats.data![name]!.data.parsed.value
-                    ).toLocaleString()}
-                  </span>
-                </div>
-              )
-            })}
-          </div>
-        )}
+        <Banner />
+        <GlobalStats />
         <Header />
-
         <div
           className="container mx-auto w-full px-5"
           style={{ minHeight: 'calc(100vh - 460px)' }}

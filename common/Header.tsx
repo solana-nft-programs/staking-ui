@@ -6,9 +6,7 @@ import { WalletMultiButton } from '@solana/wallet-adapter-react-ui'
 import { useStakePoolId } from 'hooks/useStakePoolId'
 import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
 import { useRouter } from 'next/router'
-import { lighten } from 'polished'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
-import { useUTCNow } from 'providers/UTCNowProvider'
 
 import { Airdrop } from './Airdrop'
 import { contrastColorMode } from './utils'
@@ -34,37 +32,9 @@ export const Header = () => {
   const wallet = useWallet()
   const stakePoolId = useStakePoolId()
   const { data: stakePoolMetadata } = useStakePoolMetadata()
-  const { clockDrift } = useUTCNow()
 
   return (
     <div>
-      {clockDrift && (
-        <div
-          className="flex w-full items-center justify-center rounded-md py-2 text-center"
-          style={{
-            color: stakePoolMetadata?.colors?.secondary,
-            background: lighten(
-              0.15,
-              stakePoolMetadata?.colors?.primary || '#000'
-            ),
-          }}
-        >
-          <div className="text-xs font-semibold text-yellow-500">
-            Warning{' '}
-            <a
-              target="_blank"
-              rel="noreferrer"
-              href="https://status.solana.com/"
-              className="text-blue-400"
-            >
-              Solana
-            </a>{' '}
-            clock is {Math.floor(clockDrift / 60)} minutes{' '}
-            {clockDrift > 0 ? 'behind' : 'ahead'}. Rewards are now shown aligned
-            to solana clock.
-          </div>
-        </div>
-      )}
       <div
         className={`mb-5 flex flex-wrap justify-between gap-6 px-5 pt-5 text-white`}
         style={{ color: stakePoolMetadata?.colors?.fontColor }}
