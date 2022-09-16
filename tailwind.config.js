@@ -9,8 +9,8 @@ module.exports = {
     extend: {
       backgroundColor: '#000000',
       colors: {
-        primary: '#907EFF',
-        'primary-hover': '#7567CE',
+        primary: '#F2A93C',
+        'primary-hover': '#b77f2b',
         'primary-light': 'rgba(200, 138, 244, 0.12)',
         'primary-2': '#CE81F4',
         border: 'rgba(221, 218, 218, 0.2)',
@@ -18,7 +18,7 @@ module.exports = {
         blue: '#49DEFF',
         'blue-500': 'rgb(59 130 246)',
         accent: '#CE81F4',
-        glow: '#7560FF',
+        glow: '#F2A93C',
         accent: '#FFA500',
         'light-0': '#FFFFFF',
         'light-1': '#F0F1F3',
