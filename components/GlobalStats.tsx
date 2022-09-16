@@ -1,7 +1,7 @@
-import { useStats } from 'hooks/useStats'
+import { useGlobalStats } from 'hooks/useGlobalStats'
 
 export const GlobalStats = () => {
-  const stats = useStats()
+  const stats = useGlobalStats()
   return !stats.isFetched ? (
     <></>
   ) : stats.data ? (
