@@ -1,35 +1,22 @@
 import { AccountConnect } from '@cardinal/namespaces-components'
-import { styled } from '@mui/system'
-import type { Wallet } from '@saberhq/solana-contrib'
 import { useWallet } from '@solana/wallet-adapter-react'
-import { WalletMultiButton } from '@solana/wallet-adapter-react-ui'
+import { useWalletModal } from '@solana/wallet-adapter-react-ui'
+import { GlyphWallet } from 'assets/GlyphWallet'
 import { useStakePoolId } from 'hooks/useStakePoolId'
 import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
 import { useRouter } from 'next/router'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 
 import { Airdrop } from './Airdrop'
+import { ButtonSmall } from './ButtonSmall'
 import { contrastColorMode } from './utils'
-
-export const StyledWalletButton = styled(WalletMultiButton)`
-  color: rgb(55, 65, 81, 1);
-  &:hover {
-    background: none !important;
-  }
-  .wallet-adapter-button {
-    padding: 0px;
-  }
-`
-export const TitleText = styled('div')`
-  @media (max-width: 550px) {
-    font-size: 14px;
-  }
-`
+import { asWallet } from './Wallets'
 
 export const Header = () => {
   const router = useRouter()
-  const ctx = useEnvironmentCtx()
+  const { environment, secondaryConnection } = useEnvironmentCtx()
   const wallet = useWallet()
+  const walletModal = useWalletModal()
   const stakePoolId = useStakePoolId()
   const { data: stakePoolMetadata } = useStakePoolMetadata()
 
@@ -45,8 +32,8 @@ export const Header = () => {
             href={
               stakePoolMetadata?.websiteUrl ||
               `/${
-                ctx.environment.label !== 'mainnet-beta'
-                  ? `?cluster=${ctx.environment.label}`
+                environment.label !== 'mainnet-beta'
+                  ? `?cluster=${environment.label}`
                   : ''
               }`
             }
@@ -89,7 +76,7 @@ export const Header = () => {
                 )}
               </>
             ) : (
-              <TitleText className="flex items-center justify-center gap-2 text-white">
+              <div className="flex items-center justify-center gap-2 text-white">
                 {stakePoolMetadata?.displayName || (
                   <img
                     alt={'/cardinal-crosshair.svg'}
@@ -98,15 +85,15 @@ export const Header = () => {
                   />
                 )}{' '}
                 Staking
-              </TitleText>
+              </div>
             )}
           </a>
-          {ctx.environment.label !== 'mainnet-beta' && (
+          {environment.label !== 'mainnet-beta' && (
             <div className="cursor-pointer rounded-md bg-[#9945ff] p-1 text-[10px] italic text-white">
-              {ctx.environment.label}
+              {environment.label}
             </div>
           )}
-          {ctx.environment.label !== 'mainnet-beta' ? (
+          {environment.label !== 'mainnet-beta' ? (
             <div className="mt-0.5">
               <Airdrop />
             </div>
@@ -133,8 +120,8 @@ export const Header = () => {
                   onClick={() =>
                     router.push(
                       `/admin${
-                        ctx.environment.label !== 'mainnet-beta'
-                          ? `?cluster=${ctx.environment.label}`
+                        environment.label !== 'mainnet-beta'
+                          ? `?cluster=${environment.label}`
                           : ''
                       }`
                     )
@@ -152,22 +139,21 @@ export const Header = () => {
                   ? contrastColorMode(stakePoolMetadata?.colors?.primary)[1]
                   : true
               }
-              connection={ctx.secondaryConnection}
-              environment={ctx.environment.label}
+              connection={secondaryConnection}
+              environment={environment.label}
               handleDisconnect={() => wallet.disconnect()}
-              wallet={wallet as Wallet}
+              wallet={asWallet(wallet)}
             />
           ) : (
-            <StyledWalletButton
-              style={{
-                fontSize: '14px',
-                zIndex: 10,
-                height: '38px',
-                border: 'none',
-                background: 'none',
-                backgroundColor: 'none',
-              }}
-            />
+            <ButtonSmall
+              className="text-xs"
+              onClick={() => walletModal.setVisible(true)}
+            >
+              <>
+                <GlyphWallet />
+                <div className="text-white">Connect wallet</div>
+              </>
+            </ButtonSmall>
           )}
         </div>
       </div>
