@@ -5,7 +5,6 @@ import type { StakePool } from 'hooks/useAllStakePools'
 import { useRouter } from 'next/router'
 import { transparentize } from 'polished'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
-import { FaQuestion } from 'react-icons/fa'
 
 export const CollectionsGrid = ({ configs }: { configs?: StakePool[] }) => {
   const router = useRouter()
@@ -58,8 +57,12 @@ export const CollectionsGrid = ({ configs }: { configs?: StakePool[] }) => {
                   />
                 ) : (
                   <div className="flex h-full flex-grow items-center justify-center">
-                    <div className="flex h-[150px] w-[150px] items-center justify-center rounded-full bg-white bg-opacity-5 text-5xl text-white text-opacity-40">
-                      <FaQuestion />
+                    <div className="flex h-[150px] w-[150px] items-center justify-center rounded-full text-5xl">
+                      <img
+                        className={`max-h-28 rounded-xl fill-red-600`}
+                        src={'/cardinal-crosshair.svg'}
+                        alt={`${config.stakePoolData.pubkey.toString()}`}
+                      />
                     </div>
                   </div>
                 )}

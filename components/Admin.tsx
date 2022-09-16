@@ -21,7 +21,6 @@ import { useStakePoolsMetadatas } from 'hooks/useStakePoolsMetadata'
 import Head from 'next/head'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 import { useState } from 'react'
-import { FaQuestion } from 'react-icons/fa'
 
 export function Placeholder() {
   return (
@@ -280,9 +279,12 @@ function Admin() {
                         />
                       ) : (
                         <div className="flex justify-center align-middle">
-                          <div className="mt-5 flex h-[150px] w-[150px] items-center justify-center rounded-full bg-white bg-opacity-5 text-5xl text-white text-opacity-40">
-                            {/* {shortPubKey(stakePool.stakePoolData.pubkey)} */}
-                            <FaQuestion />
+                          <div className="mt-5 flex h-[100px] w-[100px] items-center justify-center rounded-full text-5xl text-white text-opacity-40">
+                            <img
+                              className="mx-auto mt-5 h-[100px] w-[100px] rounded-md"
+                              src={'/cardinal-crosshair.svg'}
+                              alt={stakePool.stakePoolData.pubkey.toString()}
+                            />
                           </div>
                         </div>
                       )}

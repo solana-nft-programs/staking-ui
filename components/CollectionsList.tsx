@@ -4,7 +4,6 @@ import { ButtonSmall } from 'common/ButtonSmall'
 import type { StakePool } from 'hooks/useAllStakePools'
 import { useRouter } from 'next/router'
 import { transparentize } from 'polished'
-import { FaQuestion } from 'react-icons/fa'
 
 export const CollectionsList = ({ configs }: { configs?: StakePool[] }) => {
   const router = useRouter()
@@ -56,8 +55,12 @@ export const CollectionsList = ({ configs }: { configs?: StakePool[] }) => {
                         }
                       />
                     ) : (
-                      <div className="flex h-[50px] w-[50px] items-center justify-center rounded-full bg-white bg-opacity-5 text-lg text-white text-opacity-40">
-                        <FaQuestion />
+                      <div className="flex h-[50px] w-[50px] items-center justify-center rounded-full text-lg text-white text-opacity-40">
+                        <img
+                          className={`h-full max-h-[40px] max-w-[150px] rounded-xl`}
+                          src={'/cardinal-crosshair.svg'}
+                          alt={config.stakePoolData.pubkey.toString()}
+                        />
                       </div>
                     )}
                   </div>
