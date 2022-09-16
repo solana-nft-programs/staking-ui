@@ -3,7 +3,7 @@ import { FaDiscord, FaGithub, FaMedium, FaTwitter } from 'react-icons/fa'
 
 import { contrastColorMode } from './utils'
 
-const SOCIALS = {
+export const SOCIALS = {
   discord: { icon: <FaDiscord />, link: 'https://discord.gg/byq6uNTugq' },
   github: { icon: <FaGithub />, link: 'https://github.com/cardinal-labs' },
   medium: { icon: <FaMedium />, link: 'https://cardinal-labs.medium.com/' },
@@ -119,7 +119,7 @@ export const Footer = ({
                 target="_blank"
                 rel="noreferrer"
                 style={{ color: accentColor }}
-                className={`hover:text-primary opacity-80 transition-opacity hover:opacity-100`}
+                className={`opacity-80 transition-opacity hover:text-primary hover:opacity-100`}
               >
                 {icon}
               </a>
