@@ -1,6 +1,7 @@
 import { Banner } from 'common/Banner'
 import { Footer } from 'common/Footer'
 import { Header } from 'common/Header'
+import { HeaderSlim } from 'common/HeaderSlim'
 import { pubKeyUrl, shortPubKey } from 'common/utils'
 import { useAllStakePools } from 'hooks/useAllStakePools'
 import Head from 'next/head'
@@ -8,7 +9,7 @@ import { useRouter } from 'next/router'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 import { FaQuestion } from 'react-icons/fa'
 
-import { GlobalStats } from './GlobalStats'
+import { MainHero } from './MainHero'
 
 export function Placeholder() {
   return (
@@ -36,13 +37,12 @@ function Homepage() {
 
       <div>
         <Banner />
-        <GlobalStats />
-        <Header />
+        <HeaderSlim />
+        <MainHero />
         <div
           className="container mx-auto w-full px-5"
           style={{ minHeight: 'calc(100vh - 460px)' }}
         >
-          <div className="mt-10 mb-5 text-lg font-bold">Stake Pools</div>
           <div className="grid grid-cols-1 gap-5 md:grid-cols-4">
             {!allStakePools.isFetched ? (
               <>

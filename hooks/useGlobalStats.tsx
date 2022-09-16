@@ -6,7 +6,7 @@ import { useQuery } from 'react-query'
 
 import { useStakePoolId } from './useStakePoolId'
 
-export const useStats = () => {
+export const useGlobalStats = () => {
   const { secondaryConnection } = useEnvironmentCtx()
   const stakePoolId = useStakePoolId()
   return useQuery<
@@ -44,7 +44,7 @@ export const useStats = () => {
   )
 }
 
-const statsNameMapping = [
+export const statsNameMapping = [
   {
     key: 'total-active-staked-tokens',
     displayName: 'Total Staked Tokens',
