@@ -15,8 +15,8 @@ export function ConnectWallet() {
           <div className="-mt-2 h-[1px] bg-gradient-to-r from-neutral-800 via-neutral-500 to-neutral-800" />
         </div>
         <div className="text-center w-1/2 py-4">
-          <h2 className="text-xl ">Connect Your Solana Wallet</h2>
-          <p className="text-neutral-500">Unlock The Lode yada yada stake your Sentries by yada yada</p>
+          <h2 className="text-xl ">Connect Your Solana Wallet and Access The Lode</h2>
+          <p className="text-neutral-500">Unlock The Lode by staking your Sentries and staking Sol. Built by Sentries, Powered By Cardinal.</p>
         </div>
         <Button as="button" variant="primary" onClick={() => walletModal.setVisible(true)}>Select Wallet</Button>
       </div>
