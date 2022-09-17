@@ -1,5 +1,6 @@
-import { notify } from 'common/Notification'
+
 import { DependencyList, useEffect, useMemo, useState } from 'react'
+import { useNotifications } from './useNotifications'
 
 const DEBUG = true
 
@@ -20,6 +21,7 @@ export function useDataHook<T>(
     refreshInterval?: number
   }
 ): DataHookValues<T> {
+  const { notify }  = useNotifications()
   const [refreshing, setRefreshing] = useState<boolean>(false)
   const [loaded, setLoaded] = useState<boolean>(false)
   const [data, setData] = useState<T>()
@@ -41,7 +43,7 @@ export function useDataHook<T>(
       setData(data)
     } catch (e) {
       console.log('Error fetching data', e)
-      if (params?.errorMessage) notify({ message: params?.errorMessage })
+      if (params?.errorMessage) notify({ message: params?.errorMessage, type: 'error' })
       setError(`${e}`)
     } finally {
       setLoaded(true)
