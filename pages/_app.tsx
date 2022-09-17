@@ -1,5 +1,6 @@
-import '@cardinal/namespaces-components/dist/esm/styles.css'
 import './styles.css'
+import '@cardinal/namespaces-components/dist/esm/styles.css'
+import 'tailwindcss/tailwind.css'
 
 import { WalletIdentityProvider } from '@cardinal/namespaces-components'
 import { WalletProvider } from '@solana/wallet-adapter-react'
