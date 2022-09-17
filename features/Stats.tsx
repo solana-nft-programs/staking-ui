@@ -1,4 +1,5 @@
 import { LoadingSpinner } from "common/LoadingSpinner"
+import { ProgressBar } from "common/ProgressBar"
 import { Button } from "components/Button"
 import { SentriesDetailsData } from "hooks/useSentriesStats"
 import { SentriesStakingData } from "hooks/useSentryPower"
@@ -203,12 +204,8 @@ export function StatsBlock(props: StatsBlock) {
         </div>
           <span className="text-white">{formattedAbs} ({formattedRel})</span>
       </div>
-      <div className="relative mt-3 pt-1">
-        <div className="absolute left-0 top-0 w-full h-2 rounded-full bg-neutral-700"></div>
-        <div className="absolute left-0 top-0 h-2 rounded-full" style={{
-          background: color,
-          width: `${valueRel}%`
-        }}></div>
+      <div className="py-2">
+        <ProgressBar color={color} value={valueRel} />
       </div>
     </div>
   )
