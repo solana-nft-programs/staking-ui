@@ -26,7 +26,7 @@ export const useSentryPower = () => {
     ['useSentryPower', address],
     async () => {
       return await fetch(
-        `/v1/power/${address}` // TODO: Changeme
+        `/v1/power/${address}`
       )
         .then((response) => response.json())
         .then((data) => {

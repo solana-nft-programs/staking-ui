@@ -78,6 +78,8 @@ export function Stats(props: StatsProps) {
   const hasRewards = !!sentryPower.data?.rewards.rewardEpoch
   const totalRewards = hasRewards ? calculateTotalRewards(sentryPower?.data?.rewards as Rewards) : undefined
 
+  const rewardRate = activePctAllocation * pctSolStaked
+
   return (
     <Container>
       <div className="flex justify-center p-10 pb-0 relative -top-10">
@@ -98,10 +100,10 @@ export function Stats(props: StatsProps) {
             <path d="M18.48 11.64C19.14 11.39 19.72 10.98 20.18 10.52C21.11 9.49 21.72 8.26 21.72 6.82C21.72 5.38 20.59 4.25 19.15 4.25H18.59C17.94 2.92 16.58 2 15 2H9.00003C7.42003 2 6.06003 2.92 5.41003 4.25H4.85003C3.41003 4.25 2.28003 5.38 2.28003 6.82C2.28003 8.26 2.89003 9.49 3.82003 10.52C4.28003 10.98 4.86003 11.39 5.52003 11.64C6.56003 14.2 9.06003 16 12 16C14.94 16 17.44 14.2 18.48 11.64ZM14.84 8.45L14.22 9.21C14.12 9.32 14.05 9.54 14.06 9.69L14.12 10.67C14.16 11.27 13.73 11.58 13.17 11.36L12.26 11C12.12 10.95 11.88 10.95 11.74 11L10.83 11.36C10.27 11.58 9.84003 11.27 9.88003 10.67L9.94003 9.69C9.95003 9.54 9.88003 9.32 9.78003 9.21L9.16003 8.45C8.77003 7.99 8.94003 7.48 9.52003 7.33L10.47 7.09C10.62 7.05 10.8 6.91 10.88 6.78L11.41 5.96C11.74 5.45 12.26 5.45 12.59 5.96L13.12 6.78C13.2 6.91 13.38 7.05 13.53 7.09L14.48 7.33C15.06 7.48 15.23 7.99 14.84 8.45Z" fill="#FFDEAD"/>
           </svg>
           <span className="relative top-[2px]">
-            Yearly Reward Rate
+            Reward Rate
           </span>
         </div>
-        <span>1.25%</span>
+        <span>{rewardRate}%</span>
       </div>
       <div className="mt-4 p-4 py-3 rounded-2xl font-semibold border-2 border-neutral-700 flex justify-between">
         <span className="text-neutral-500">Current Rewards</span>

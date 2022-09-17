@@ -1,11 +1,14 @@
 import { useQuery } from 'react-query'
-import { useWallet } from '@solana/wallet-adapter-react'
 
 export type SentriesDetailsData = {
   poweredSentries: number
+  stakedSentries: number
   floorPrice: number
   solPowering: number
   solPrice: number
+  epoch: number
+  epochPct: number
+  epochTimeLeft: string
   error?: string
 }
 
