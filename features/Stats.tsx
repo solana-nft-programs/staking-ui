@@ -1,7 +1,7 @@
 import { LAMPORTS_PER_SOL } from "@solana/web3.js"
 import { LoadingSpinner } from "common/LoadingSpinner"
 import { ProgressBar } from "common/ProgressBar"
-import { valueOrDefault, roundTwoDigitValue } from "common/utils"
+import { valueOrDefault, roundTwoDigitValue, roundXDigitValue } from "common/utils"
 import { Button } from "components/Button"
 import { SentriesDetailsData } from "hooks/useSentriesStats"
 import { Rewards, SentriesStakingData, useSentryPower } from "hooks/useSentryPower"
@@ -78,7 +78,7 @@ export function Stats(props: StatsProps) {
   const hasRewards = !!sentryPower.data?.rewards.rewardEpoch
   const totalRewards = hasRewards ? roundTwoDigitValue(calculateTotalRewards(sentryPower?.data?.rewards as Rewards)) : undefined
 
-  const rewardRate = roundTwoDigitValue((activePctAllocation * pctSolStaked) * 100)
+  const rewardRate = roundXDigitValue(((activePctAllocation * pctSolStaked) * 100), 5)
 
   let sliderPct = (stakedSol / (sentriesCount * 5))
 

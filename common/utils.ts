@@ -153,3 +153,7 @@ export function valueOrDefault(prop: number | undefined, defaultProp: number) {
 export function roundTwoDigitValue(prop: number){
   return parseFloat(String(prop)).toFixed(2)
 }
+
+export function roundXDigitValue(prop: number, places: number){
+  return parseFloat(String(prop)).toFixed(places)
+}
