@@ -32,6 +32,7 @@ import {
 } from '@dialectlabs/react-ui'
 import { EnvironmentType } from 'types/environment'
 import { ClockdriftWarning } from 'components/ClockdriftWarning'
+import EpochProgress from 'features/EpochProgress'
 
 const walletToDialectWallet = (
   wallet: WalletContextState
@@ -98,6 +99,9 @@ export const Header = () => {
               </div>
             ) : null}
             {isNotMainnetBeta ? <Airdrop /> : null}
+          </div>
+          <div className="w-1/3 flex items-center">
+            <EpochProgress />
           </div>
           <div className="relative my-auto flex items-center align-middle">
             {stakePoolId && stakePoolMetadata ? (
