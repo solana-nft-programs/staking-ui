@@ -3,10 +3,10 @@ import { FaDiscord, FaGithub, FaMedium, FaTwitter } from 'react-icons/fa'
 import { contrastColorMode, hexColor } from './utils'
 
 const SOCIALS = {
-  discord: { icon: <FaDiscord />, link: 'https://discord.gg/byq6uNTugq' },
-  github: { icon: <FaGithub />, link: 'https://github.com/cardinal-labs' },
-  medium: { icon: <FaMedium />, link: 'https://cardinal-labs.medium.com/' },
-  twitter: { icon: <FaTwitter />, link: 'https://twitter.com/cardinal_labs' },
+  discord: { icon: <FaDiscord />, link: 'https://discord.gg/sentries' },
+  github: { icon: <FaGithub />, link: 'https://github.com/sentrieshq' },
+  medium: { icon: <FaMedium />, link: 'https://sentrieshq.medium.com/' },
+  twitter: { icon: <FaTwitter />, link: 'https://twitter.com/sentries_sol' },
 }
 
 export const Footer = ({
@@ -18,18 +18,13 @@ export const Footer = ({
 }) => {
   return (
     <div
-      className="mt-10 px-10 pt-5 md:px-32"
-      style={{
-        background: darken(0.03, bgColor),
-      }}
+      className="container relative mx-auto rounded-xl bg-neutral-800 p-6"
     >
-      <div></div>
       <div
-        className="text-md flex items-center justify-between border-t py-8 text-gray-400"
-        style={{ borderColor: lighten(0.2, bgColor) }}
+        className="text-md flex items-center justify-between py-8 text-gray-400"
       >
         <div className="flex items-center justify-center gap-2 text-gray-400">
-          Powered by Cardinal
+          Powered by <a target="_blank" href="https://cardinal.so/">Cardinal</a>
         </div>
         <div className="flex gap-4 text-gray-200">
           {Object.entries(SOCIALS).map(([id, { icon, link }]) => {
@@ -48,9 +43,9 @@ export const Footer = ({
           })}
         </div>
       </div>
-      {/* <div className="text-md flex flex-row justify-center font-medium">
-        Copyright 2022 Cardinal Labs. All rights reserved
-      </div> */}
+      <div className="text-sm flex flex-row justify-center text-gray-400">
+        Copyright Sentries. All rights reserved
+      </div>
     </div>
   )
 }
