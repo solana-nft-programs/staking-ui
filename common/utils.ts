@@ -149,3 +149,7 @@ export function removeTokenName(name: string, stringToRemove: string) {
 export function valueOrDefault(prop: number | undefined, defaultProp: number) {
   return prop ? prop : defaultProp
 }
+
+export function roundTwoDigitValue(prop: number){
+  return parseFloat(String(prop)).toFixed(2)
+}

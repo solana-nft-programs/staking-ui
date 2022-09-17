@@ -1,7 +1,7 @@
 import { LAMPORTS_PER_SOL } from "@solana/web3.js"
 import { LoadingSpinner } from "common/LoadingSpinner"
 import { ProgressBar } from "common/ProgressBar"
-import { valueOrDefault } from "common/utils"
+import { valueOrDefault, roundTwoDigitValue } from "common/utils"
 import { Button } from "components/Button"
 import { SentriesDetailsData } from "hooks/useSentriesStats"
 import { Rewards, SentriesStakingData, useSentryPower } from "hooks/useSentryPower"
@@ -54,14 +54,14 @@ export function Stats(props: StatsProps) {
   }
 
   const stakedSentriesPercentage = (stakedSentries * 100) / 8000
-  const stakedSol = valueOrDefault(stats?.totalStaked, 0)
+  const stakedSol = parseFloat(roundTwoDigitValue(valueOrDefault(stats?.totalStaked, 0)))
   const SolNeeded = valueOrDefault(stats?.maxPowerLevelSol, 0)
-  const sentriesCount = valueOrDefault(stats?.nftCount, 0)
+  const sentriesCount = Number(valueOrDefault(stats?.nftCount, 0))
 
   const solPowering = valueOrDefault(sentriesDetails?.solPowering, 0)
   const solPrice = valueOrDefault(sentriesDetails?.solPrice, 0)
 
-  // This is going to be all the maths for calculating the % yearly yield.
+  // This is going to be all the maths for calculating the % yield.
   const totalPctAllocation = sentriesCount / 8000
   const activePctAllocation = sentriesCount / stakedSentries
   const pctSolStaked = stakedSol / solPowering
@@ -80,10 +80,17 @@ export function Stats(props: StatsProps) {
 
   const rewardRate = activePctAllocation * pctSolStaked
 
+  let sliderPct = (stakedSol / (sentriesCount * 5))
+
+  if((sentriesCount * 5) <= stakedSol || SolNeeded <= 1){
+    sliderPct = 100
+  }
+
   return (
     <Container>
       <div className="flex justify-center p-10 pb-0 relative -top-10">
-        <Progress value={stakedSentriesPercentage} />
+        {/* TODO: Set this to 100% max.. this number is THEIR # of sentries * 5 SOL so SOL out of the / total SOL amount */}
+        <Progress value={sliderPct} />
         <div className="absolute top-1/2 text-white text-center -translate-y-1/2 mt-12">
           <h2 className="font-serif text-8xl">{stakedSol} SOL</h2>
           <p className="text-neutral-600 font-semibold">Staked with The Lode</p>
