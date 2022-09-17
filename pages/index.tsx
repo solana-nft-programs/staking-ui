@@ -727,8 +727,8 @@ function Home() {
                       </div>
                     </div>
                       <div className="my-3 flex-auto overflow-auto">
-                        <div
-                          className="relative my-auto mb-4 h-[60vh] overflow-y-auto overflow-x-hidden rounded-md"
+                      <div
+                          className="relative my-auto mb-4 h-[60vh] overflow-y-auto overflow-x-hidden"
                         >
                           {!allowedTokenDatas.isFetched ? (
                             <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
@@ -954,13 +954,7 @@ function Home() {
                               <div className="h-[200px] animate-pulse rounded-lg bg-white bg-opacity-5 p-10"></div>
                             </div>
                           ) : stakedTokenDatas.data?.length === 0 ? (
-                            <p
-                              className={`font-normal text-[${
-                                stakePoolMetadata?.colors?.fontColor
-                                  ? ''
-                                  : 'text-gray-400'
-                              }]`}
-                            >
+                            <p className="text-neutral-600">
                               No Sentries currently staked.
                             </p>
                           ) : (
