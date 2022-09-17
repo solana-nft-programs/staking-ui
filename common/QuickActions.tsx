@@ -434,6 +434,7 @@ export const QuickActions = ({
                       notify({
                         message: `${'Failed to unstake token'}`,
                         description: handleError(e, `Transaction failed: ${e}`),
+                        // @ts-ignore
                         txid: '',
                         type: 'error',
                       })
