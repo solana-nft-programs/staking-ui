@@ -14,7 +14,7 @@ import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 import { useEffect, useState } from 'react'
 import { Wallet } from '@metaplex/js'
 import { LoadingSpinner } from 'common/LoadingSpinner'
-import { removeTokenName, secondstoDuration } from 'common/utils'
+import { removeTokenName, secondstoDuration, valueOrDefault } from 'common/utils'
 import {
   formatAmountAsDecimal,
   parseMintNaturalAmountFromDecimal,
@@ -93,7 +93,7 @@ function Home() {
   const [loadingStake, setLoadingStake] = useState(false)
   const [loadingUnstake, setLoadingUnstake] = useState(false)
   const [singleTokenAction, setSingleTokenAction] = useState('')
-  const [totalStaked, setTotalStaked] = useState('')
+  const [totalStaked, setTotalStaked] = useState<number>(0)
   const [receiptType, setReceiptType] = useState<ReceiptType>(
     ReceiptType.Original
   )
@@ -510,7 +510,7 @@ function Home() {
   const totalStakedTokens = async () => {
     let total = 0
     if (!stakePoolEntries.data) {
-      setTotalStaked('0')
+      setTotalStaked(0)
       return
     }
     const mintToDecimals: { mint: string; decimals: number }[] = []
@@ -547,7 +547,7 @@ function Home() {
         console.log('Error calculating total staked tokens', e)
       }
     }
-    setTotalStaked(Math.ceil(total).toString())
+    setTotalStaked(Math.ceil(total))
   }
 
   useEffect(() => {
@@ -563,6 +563,7 @@ function Home() {
 
   const totalStakedSentries = stakedTokenDatas.isFetched &&
     stakedTokenDatas?.data?.length || 0
+  const totalStakedInSol = Intl.NumberFormat('en').format(Math.floor(valueOrDefault(validatorDetails.data?.totalSolStaked, 0)))
   
   const totalUnstakedSentries = allowedTokenDatas.isFetched &&
     allowedTokenDatas?.data?.length || 0
@@ -571,6 +572,14 @@ function Home() {
   const currentValueLocked = floorPrice * totalStaked * 31.45 // TODO: Price of SOL
   const totalMcap = floorPrice * 8000 * 31.45 // TODO: Price of SOL
   const solPowering = sentriesStats.isFetched && sentriesStats?.data?.solPowering || 0
+
+  const renderTotalStaked = (
+    <MouseoverTooltip title="Value of total stake">
+      <span className="text-sm align-middle font-normal bg-teal-900 border border-teal-700 p-2 pb-1 rounded-full cursor-default">
+        {totalStakedInSol} <i className="opacity-50 not-italic">◎</i>
+      </span>
+    </MouseoverTooltip>
+  )
 
   return (
     <>
@@ -598,24 +607,14 @@ function Home() {
           <div className="my-8 flex text-white">
             <div className="w-1/3">
               <h1 className="mb-2 text-4xl font-bold text-white">
-                The Power Grid - {!validatorDetails.isLoading ? 
-                  // @ts-ignore
-                  Intl.NumberFormat('en').format(Math.floor(validatorDetails.data?.totalSolStaked))
-                  : 'error'
-                }◎
+                The Power Grid {renderTotalStaked}
               </h1>
-              
-              <p className="w-3/4 text-lg text-neutral-300">
+              <p className="text-lg text-neutral-300">
                 Stake your Sentry here, and power it up by locking SOL in our
                 validator, The Lode
               </p>
             </div>
-            <div className="w-1/4 flex">
-            <StatsBlock 
-              title={`Epoch ${epochStats.data?.epoch} Progress`} 
-              valueAbs={epochStats.data?.prettyProgress} valueRel={epochStats.data?.prettyProgress} color={'#fff'}></StatsBlock>
-            </div>
-            <div className="w-1/4 flex justify-end items-center">
+            <div className="w-2/3 flex justify-end items-center">
               <Button
                 as="button"
                 variant="secondary"
@@ -668,7 +667,7 @@ function Home() {
             <div className="flex flex-wrap -mx-4">
               <div className="w-1/3 p-4">
                 <Stats 
-                  stakedSentries={Number(totalStaked)}
+                  stakedSentries={totalStaked}
                   sentriesDetails={sentriesStats.isFetched ? sentriesStats.data : undefined}
                   stats={sentryPower.isFetched ? sentryPower.data : undefined}
                   isLoading={sentryPower.isLoading && sentriesStats.isLoading}
@@ -702,17 +701,7 @@ function Home() {
                         : null}
                       </div>
                     </TabButton>
-                    <TabButton>
-                      <div className="flex item-center">
-                        ◎ Rewards
-                      </div>
-                    </TabButton>
                   </Tab.List>
-                  <div className="w-1/3 flex rounded-lg">
-                  <span className="text-white rounded-full flex items-center px-2 ml-1 text-[12px]">
-                    Staked Value ${currentValueLocked} of the ${totalMcap} Market Cap
-                  </span>
-                  </div>
                   <Tab.Panels>
                     <TabPanel>
                     <div className="flex items-center w-full">
@@ -1232,27 +1221,6 @@ function Home() {
                           )}
                         </div>
                       </div>
-                    </TabPanel>
-                    <TabPanel>
-                      <div className="mb-5 flex justify-between">
-                          <div className="flex items-center w-full">
-                            <div className="flex items-center">
-                              <h2 className="font-semibold text-white text-2xl">
-                                Sol Rewards
-                              </h2>
-                              <div className="inline-block ml-1">
-                                {
-                                // @ts-ignore
-                                (solStakeAccount.isFetched) ? 
-                                // @ts-ignore
-                                sentryPower.info?.stake.delegation.stake : 
-                                'error'
-                                  
-                                }
-                              </div>
-                            </div>
-                          </div>
-                        </div>
                     </TabPanel>
                   </Tab.Panels>
                 </Tab.Group>

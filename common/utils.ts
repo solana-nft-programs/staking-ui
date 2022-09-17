@@ -145,3 +145,7 @@ export const contrastColorMode = (bgColor: string): [string, boolean] => {
 export function removeTokenName(name: string, stringToRemove: string) {
   return name.replace(stringToRemove, '').trim()
 }
+
+export function valueOrDefault(prop: number | undefined, defaultProp: number) {
+  return prop ? prop : defaultProp
+}

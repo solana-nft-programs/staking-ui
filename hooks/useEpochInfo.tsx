@@ -2,8 +2,9 @@ import { EpochInfo } from "@solana/web3.js"
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 import { useQuery } from 'react-query'
 
-
 export type EpochInfoData = {
+  epoch: number,
+  prettyProgress: number,
   epochInfo: EpochInfo
   epochProgress: number
   epochTimeRemaining: number
@@ -12,16 +13,14 @@ export type EpochInfoData = {
 
 export const useEpochInfo = () => {
   const { secondaryConnection } = useEnvironmentCtx()
-  return useQuery<EpochInfoData[] | undefined>(
+  return useQuery<EpochInfoData>(
     [
       'useEpochInfo',
     ],
-    // @ts-ignore
     async () => {
       const epochInfo = await secondaryConnection.getEpochInfo()
       const {epoch, slotIndex, slotsInEpoch} =  epochInfo
       const epochProgress = slotIndex / slotsInEpoch
-      //const samples = await connection.getRecentPerformanceSamples(360);
       const samples = [{samplePeriodSecs: 550, numSlots: 1000}] // Hardcoded until mystery above is solved
       const timePerSlotSamples = samples
           .filter((sample) => {

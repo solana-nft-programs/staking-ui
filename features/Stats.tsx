@@ -1,8 +1,10 @@
+import { LAMPORTS_PER_SOL } from "@solana/web3.js"
 import { LoadingSpinner } from "common/LoadingSpinner"
 import { ProgressBar } from "common/ProgressBar"
+import { valueOrDefault } from "common/utils"
 import { Button } from "components/Button"
 import { SentriesDetailsData } from "hooks/useSentriesStats"
-import { SentriesStakingData } from "hooks/useSentryPower"
+import { Rewards, SentriesStakingData, useSentryPower } from "hooks/useSentryPower"
 import { ReactElement, ReactNode } from "react"
 
 type StatsProps = {
@@ -25,11 +27,8 @@ type StatsBlock = {
 
 export function Stats(props: StatsProps) {
   const { stakedSentries, sentriesDetails, stats, isLoading, isError, recover } = props
-  // const testingDetails: SentriesDetailsData = {
-  //   poweredSentries: 200,
-  //   floorPrice: 2.8,
-  //   solPowering: 3982
-  // }
+  const sentryPower = useSentryPower()
+
   if (isLoading) {
     return (
       <Container>
@@ -55,41 +54,29 @@ export function Stats(props: StatsProps) {
   }
 
   const stakedSentriesPercentage = (stakedSentries * 100) / 8000
-  const stakedSol = stats?.total_staked
-  const SolNeeded = stats?.max_power_level_sol
-  let sentriesCount = stats?.nft_count
+  const stakedSol = valueOrDefault(stats?.total_staked, 0)
+  const SolNeeded = valueOrDefault(stats?.max_power_level_sol, 0)
+  const sentriesCount = valueOrDefault(stats?.nft_count, 0)
 
-  if(!sentriesCount){
-    sentriesCount = 0
-  }
+  const solPowering = valueOrDefault(sentriesDetails?.solPowering, 0)
+  const solPrice = valueOrDefault(sentriesDetails?.solPrice, 0)
 
-  const solPowering = sentriesDetails?.solPowering
-  const solPrice = sentriesDetails?.solPrice
   // This is going to be all the maths for calculating the % yearly yield.
   const totalPctAllocation = sentriesCount / 8000
   const activePctAllocation = sentriesCount / stakedSentries
-  console.log(`totalpct: ${totalPctAllocation}`)
-  console.log(`activepct: ${activePctAllocation}`)
-  // @ts-ignore
   const pctSolStaked = stakedSol / solPowering
-  console.log(`pctSol: ${pctSolStaked}`)
 
-  let poweredSentries = sentriesDetails?.poweredSentries
-  if(!poweredSentries){
-    poweredSentries = 0
-  }
-  const poweredSentriesPercentage = ((poweredSentries * 100) / 8000)
-  let floorPrice = sentriesDetails?.floorPrice
-  if(!floorPrice){
-    floorPrice = 0
-  }
-  // @ts-ignore
+  const poweredSentries = valueOrDefault(sentriesDetails?.poweredSentries, 0)
+  const poweredSentriesPercentage = (poweredSentries * 100) / 8000
+
+  const floorPrice = valueOrDefault(sentriesDetails?.floorPrice, 0)
+
   const currentValueLocked = floorPrice * stakedSentries * solPrice // TODO: Price of SOL
-  // @ts-ignore
   const totalMcap = floorPrice * 8000 * solPrice // TODO: Price of SOL
-  // TODO: Make pretty numbers?
   const percentMCap = (currentValueLocked / totalMcap) * 100
-  
+
+  const hasRewards = !!sentryPower.data?.rewards.rewardEpoch
+  const totalRewards = hasRewards ? calculateTotalRewards(sentryPower?.data?.rewards as Rewards) : undefined
 
   return (
     <Container>
@@ -115,6 +102,11 @@ export function Stats(props: StatsProps) {
           </span>
         </div>
         <span>1.25%</span>
+      </div>
+      <div className="mt-4 p-4 py-3 rounded-2xl font-semibold border-2 border-neutral-700 flex justify-between">
+        <span className="text-neutral-500">Current Rewards</span>
+        {hasRewards ? <span className="text-white">{totalRewards} <span className="opacity-50 font-normal">◎</span></span>
+        : <span className="font-normal text-neutral-700 text-sm">None so far</span>}
       </div>
       <Separator />
       <StatsBlock 
@@ -161,22 +153,27 @@ export function Stats(props: StatsProps) {
   )
 }
 
-export function Progress({ value = 0 }: { value: number }) {
-  const arc = 'M302 155C302 73.8141 236.186 8 155 8C73.8141 8 8 73.8141 8 155'
+export function Progress({ value }: { value: number }) {
+  const keyPoint = (1 - (+value / 100))
 
   return (
-    <svg width="100%" height="200" viewBox="0 0 310 164" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d={arc} stroke="url(#paint0_linear_172_4504)" pathLength="100" strokeWidth="15" strokeLinecap="round" />
-      <circle cx="0" cy="0" r="12" fill="#F7B551" stroke="white" strokeWidth="5">
-        <animateMotion
-          keyPoints={`0;${+value / 100}`}
-          // fill="freeze"
-          keyTimes="0;1"
-          calcMode="linear"
-          path={arc}
-        >
-        </animateMotion>
-      </circle>
+    <svg width="100%" height="200" viewBox="0 -6 300 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path id="path" d="M302 155C302 73.8141 236.186 8 155 8C73.8141 8 8 73.8141 8 155" stroke="url(#paint0_linear_172_4504)" pathLength="100" strokeWidth="15" strokeLinecap="round" />
+      {value ? (
+        <>
+          <circle cx="0" cy="0" r="12" fill="#F7B551" stroke="white" strokeWidth="5" id="circle" className="animate-fade-in"></circle>
+          <animateMotion
+            dur="0.2s"
+            keyPoints={`0;${keyPoint}`}
+            keyTimes="0;1"
+            fill="freeze"
+            calcMode="linear"
+            xlinkHref="#circle"
+          >
+            <mpath xlinkHref="#path"/>
+          </animateMotion>
+        </>
+      ) : null}
       <defs>
       <linearGradient id="paint0_linear_172_4504" x1="308.5" y1="159.5" x2="1.00001" y2="159.5" gradientUnits="userSpaceOnUse">
       <stop stopColor="#F7B551"/>
@@ -223,4 +220,67 @@ function Container({ children, ...rest }: { children: ReactNode }) {
       {children}
     </div>
   )
+}
+
+function calculateTotalRewards(rewards: Rewards) { 
+  return rewards.rewardAmount.reduce((acc, curr) => acc + curr, 0) / LAMPORTS_PER_SOL
+}
+
+const rewards = {
+  "rewardEpoch": [
+    337,
+    338,
+    339,
+    340,
+    341,
+    342,
+    343,
+    344,
+    345,
+    346,
+    347,
+    348
+  ],
+  "rewardAmount": [
+    2947102,
+    2994028,
+    2993274,
+    2926273,
+    2922497,
+    2910055,
+    2904657,
+    2883221,
+    2896378,
+    2894061,
+    2882934,
+    2889508
+  ],
+  "rewardPostBalance": [
+    6002947102,
+    6005941130,
+    6008934404,
+    6011860677,
+    6014783174,
+    6017693229,
+    6020597886,
+    6023481107,
+    6026377485,
+    6029271546,
+    6032154480,
+    6035043988
+  ],
+  "stake": [
+    6.032761108,
+    6.032761108,
+    6.032761108,
+    6.032761108,
+    6.032761108,
+    6.032761108,
+    6.032761108,
+    6.032761108,
+    6.032761108,
+    6.032761108,
+    6.032761108,
+    6.032761108
+  ]
 }
