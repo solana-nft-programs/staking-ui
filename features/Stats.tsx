@@ -55,7 +55,7 @@ export function Stats(props: StatsProps) {
 
   const stakedSentriesPercentage = (stakedSentries * 100) / 8000
   const stakedSol = parseFloat(roundTwoDigitValue(valueOrDefault(stats?.totalStaked, 0)))
-  const SolNeeded = valueOrDefault(stats?.maxPowerLevelSol, 0)
+  let SolNeeded = valueOrDefault(stats?.maxPowerLevelSol, 0)
   const sentriesCount = Number(valueOrDefault(stats?.nftCount, 0))
 
   const solPowering = valueOrDefault(sentriesDetails?.solPowering, 0)
@@ -76,14 +76,18 @@ export function Stats(props: StatsProps) {
   const percentMCap = (currentValueLocked / totalMcap) * 100
 
   const hasRewards = !!sentryPower.data?.rewards.rewardEpoch
-  const totalRewards = hasRewards ? calculateTotalRewards(sentryPower?.data?.rewards as Rewards) : undefined
+  const totalRewards = hasRewards ? roundTwoDigitValue(calculateTotalRewards(sentryPower?.data?.rewards as Rewards)) : undefined
 
-  const rewardRate = activePctAllocation * pctSolStaked
+  const rewardRate = roundTwoDigitValue((activePctAllocation * pctSolStaked) * 100)
 
   let sliderPct = (stakedSol / (sentriesCount * 5))
 
   if((sentriesCount * 5) <= stakedSol || SolNeeded <= 1){
     sliderPct = 100
+  }
+
+  if(SolNeeded < 0){
+    SolNeeded = 0 
   }
 
   return (
