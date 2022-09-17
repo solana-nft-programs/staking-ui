@@ -54,9 +54,9 @@ export function Stats(props: StatsProps) {
   }
 
   const stakedSentriesPercentage = (stakedSentries * 100) / 8000
-  const stakedSol = valueOrDefault(stats?.total_staked, 0)
-  const SolNeeded = valueOrDefault(stats?.max_power_level_sol, 0)
-  const sentriesCount = valueOrDefault(stats?.nft_count, 0)
+  const stakedSol = valueOrDefault(stats?.totalStaked, 0)
+  const SolNeeded = valueOrDefault(stats?.maxPowerLevelSol, 0)
+  const sentriesCount = valueOrDefault(stats?.nftCount, 0)
 
   const solPowering = valueOrDefault(sentriesDetails?.solPowering, 0)
   const solPrice = valueOrDefault(sentriesDetails?.solPrice, 0)

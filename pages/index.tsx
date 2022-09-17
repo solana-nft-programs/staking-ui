@@ -35,7 +35,6 @@ import { DisplayAddress } from '@cardinal/namespaces-components'
 import { Switch } from '@headlessui/react'
 import { FaInfoCircle } from 'react-icons/fa'
 import { MouseoverTooltip } from 'common/Tooltip'
-import { useUTCNow } from 'providers/UTCNowProvider'
 import { executeAllTransactions } from 'api/utils'
 import { useRouter } from 'next/router'
 import { QuickActions } from 'common/QuickActions'
@@ -80,7 +79,6 @@ function Home() {
   const [showFungibleTokens, setShowFungibleTokens] = useState(false)
   const allowedTokenDatas = useAllowedTokenDatas(showFungibleTokens)
   const { data: stakePoolMetadata } = useStakePoolMetadata()
-  const { UTCNow } = useUTCNow()
   const analytics = usePoolAnalytics()
   const { notify } = useNotifications()
 
