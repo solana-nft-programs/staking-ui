@@ -1,35 +1,38 @@
 import React from 'react'
 import { ProgressBar } from 'common/ProgressBar'
-import { roundTwoDigitValue } from 'common/utils'
+import { roundXDigitValue } from 'common/utils'
 import { MouseoverTooltip } from 'common/Tooltip'
 import { useSentriesStats } from 'hooks/useSentriesStats'
 
 export default function EpochProgress() {
   const epochStats = useSentriesStats()
 
-  if (epochStats.isFetched) {
-    const data = epochStats?.data
+  if (!epochStats.isFetched) return null
 
-    return (
-      <MouseoverTooltip title={`Epoch ${data?.epoch}`}>
-        <div className="w-full text-center group">
-          <span className="text-[12px] text-neutral-400 opacity-0 group-hover:opacity-100 transition-opacity"></span>
-          <div className="w-full text-center flex items-center gap-2 -mt-2">
-              <div className="w-full">
-                <ProgressBar color="grey" value={roundTwoDigitValue((data?.epochPct || 0) * 100) as unknown as number} />
-              </div>
-            <div className="w-1/12 mt-2">
-              <span className="inline-block text-sm text-neutral-600">
-                {roundTwoDigitValue((data?.epochPct || 0) * 100)}%
-              </span>
+  const data = epochStats?.data
+  const percentage = formatPct(data?.epochPct || 0)
+
+  return (
+    <MouseoverTooltip title={`Epoch ${data?.epoch}`}>
+      <div className="w-full text-center group">
+        <span className="text-[12px] text-neutral-400 opacity-0 group-hover:opacity-100 transition-opacity"></span>
+        <div className="w-full text-center flex items-center gap-2 -mt-2">
+            <div className="w-full">
+              <ProgressBar color="grey" value={parseFloat(percentage)} />
             </div>
+          <div className="w-1/12 mt-2">
+            <span className="inline-block text-sm text-neutral-600">
+              {percentage}%
+            </span>
           </div>
         </div>
-      </MouseoverTooltip>
-    )
-  } else {
-    return null
-  }
-
+      </div>
+    </MouseoverTooltip>
+  )
 }
 
+function formatPct(pct: number) {
+  return Number.isInteger(pct)
+    ? pct.toString() 
+    : roundXDigitValue(pct * 100)
+}

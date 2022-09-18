@@ -150,10 +150,21 @@ export function valueOrDefault(prop: number | undefined, defaultProp: number) {
   return prop ? prop : defaultProp
 }
 
-export function roundTwoDigitValue(prop: number){
-  return parseFloat(String(prop)).toFixed(2)
+export function roundXDigitValue(prop: number, places: number = 2){
+  if (prop < 1 && prop > 0) {
+    return prop.toFixed(4)
+  }
+
+  const isInt = Number.isInteger(prop)
+
+  return isInt ? prop.toString() : truncateFloat(prop, places)
 }
 
-export function roundXDigitValue(prop: number, places: number){
-  return parseFloat(String(prop)).toFixed(places)
+export function truncateFloat(prop: number, placement: number = 2) {
+  if (!prop) return ''
+  if (Number.isInteger(prop)) return prop.toString()
+
+  const [int, decimal] = prop.toString().split('.')
+  const slicedDecimal = decimal?.slice(0, placement)
+  return `${int}.${slicedDecimal}`
 }

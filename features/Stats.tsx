@@ -1,7 +1,7 @@
 import { LAMPORTS_PER_SOL } from "@solana/web3.js"
 import { LoadingSpinner } from "common/LoadingSpinner"
 import { ProgressBar } from "common/ProgressBar"
-import { valueOrDefault, roundTwoDigitValue, roundXDigitValue } from "common/utils"
+import { valueOrDefault, roundXDigitValue, truncateFloat } from "common/utils"
 import { Button } from "components/Button"
 import { SentriesDetailsData } from "hooks/useSentriesStats"
 import { Rewards, SentriesStakingData, useSentryPower } from "hooks/useSentryPower"
@@ -54,12 +54,12 @@ export function Stats(props: StatsProps) {
   }
 
   const stakedSentriesPercentage = (stakedSentries * 100) / 8000
-  const stakedSol = parseFloat(roundTwoDigitValue(valueOrDefault(stats?.totalStaked, 0)))
-  let SolNeeded = valueOrDefault(stats?.maxPowerLevelSol, 0)
+  const stakedSol = parseFloat(roundXDigitValue(valueOrDefault(stats?.totalStaked, 0)))
+  const solNeeded = valueOrDefault(stats?.maxPowerLevelSol, 0)
   const sentriesCount = Number(valueOrDefault(stats?.nftCount, 0))
 
   const solPowering = valueOrDefault(sentriesDetails?.solPowering, 0)
-  const solPrice = valueOrDefault(sentriesDetails?.solPrice, 0)
+  const solPrice = calculateSolNeeded(valueOrDefault(sentriesDetails?.solPrice, 0))
 
   // This is going to be all the maths for calculating the % yield.
   const totalPctAllocation = sentriesCount / 8000
@@ -76,19 +76,11 @@ export function Stats(props: StatsProps) {
   const percentMCap = (currentValueLocked / totalMcap) * 100
 
   const hasRewards = !!sentryPower.data?.rewards.rewardEpoch
-  const totalRewards = hasRewards ? roundTwoDigitValue(calculateTotalRewards(sentryPower?.data?.rewards as Rewards)) : undefined
+  const totalRewards = hasRewards ? roundXDigitValue(calculateTotalRewards(sentryPower?.data?.rewards as Rewards)) : undefined
 
   const rewardRate = roundXDigitValue(((activePctAllocation * pctSolStaked) * 100), 5)
 
-  let sliderPct = (stakedSol / (sentriesCount * 5))
-
-  if((sentriesCount * 5) <= stakedSol || SolNeeded <= 1){
-    sliderPct = 100
-  }
-
-  if(SolNeeded < 0){
-    SolNeeded = 0 
-  }
+  const sliderPct = calculateProgress(stakedSol, solNeeded, sentriesCount)
 
   return (
     <Container>
@@ -96,13 +88,13 @@ export function Stats(props: StatsProps) {
         {/* TODO: Set this to 100% max.. this number is THEIR # of sentries * 5 SOL so SOL out of the / total SOL amount */}
         <Progress value={sliderPct} />
         <div className="absolute top-1/2 text-white text-center -translate-y-1/2 mt-12">
-          <h2 className="font-serif text-8xl">{stakedSol} SOL</h2>
+          <h2 className="font-serif" style={{ fontSize: calculateFontSize(stakedSol) }}>{roundXDigitValue(stakedSol)} SOL</h2>
           <p className="text-neutral-600 font-semibold">Staked with The Lode</p>
         </div>
       </div>
       <div className="text-white text-sm text-center">
         <p className="pb-0">You current SOL staked with The Lode is {stakedSol} ◎</p>
-        <p>You will need {SolNeeded} ◎ to power up the {sentriesCount} Sentries NFTs</p>
+        <p>You will need {solNeeded} ◎ to power up the {sentriesCount} Sentries NFTs</p>
       </div>
       <div className="flex justify-between bg-[#F7B551] bg-opacity-30 border border-[#F7B551] p-4 py-3 rounded-2xl text-[#FFDEAD]">
         <div className="flex items-center gap-2">
@@ -114,7 +106,7 @@ export function Stats(props: StatsProps) {
             Reward Rate
           </span>
         </div>
-        <span>{rewardRate}%</span>
+        {rewardRate ? <span>{rewardRate}%</span> : null}
       </div>
       <div className="mt-4 p-4 py-3 rounded-2xl font-semibold border-2 border-neutral-700 flex justify-between">
         <span className="text-neutral-500">Current Rewards</span>
@@ -167,16 +159,17 @@ export function Stats(props: StatsProps) {
 }
 
 export function Progress({ value }: { value: number }) {
-  const keyPoint = (1 - (+value / 100))
+  const keyPoint = 1 - (+value / 100)
 
   return (
     <svg width="100%" height="200" viewBox="0 -6 300 200" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path id="path" d="M302 155C302 73.8141 236.186 8 155 8C73.8141 8 8 73.8141 8 155" stroke="url(#paint0_linear_172_4504)" pathLength="100" strokeWidth="15" strokeLinecap="round" />
-      {value ? (
+      {value !== undefined ? (
         <>
           <circle cx="0" cy="0" r="12" fill="#F7B551" stroke="white" strokeWidth="5" id="circle" className="animate-fade-in"></circle>
           <animateMotion
             dur="0.2s"
+            begin="0.01s"
             keyPoints={`0;${keyPoint}`}
             keyTimes="0;1"
             fill="freeze"
@@ -239,61 +232,26 @@ function calculateTotalRewards(rewards: Rewards) {
   return rewards.rewardAmount.reduce((acc, curr) => acc + curr, 0) / LAMPORTS_PER_SOL
 }
 
-const rewards = {
-  "rewardEpoch": [
-    337,
-    338,
-    339,
-    340,
-    341,
-    342,
-    343,
-    344,
-    345,
-    346,
-    347,
-    348
-  ],
-  "rewardAmount": [
-    2947102,
-    2994028,
-    2993274,
-    2926273,
-    2922497,
-    2910055,
-    2904657,
-    2883221,
-    2896378,
-    2894061,
-    2882934,
-    2889508
-  ],
-  "rewardPostBalance": [
-    6002947102,
-    6005941130,
-    6008934404,
-    6011860677,
-    6014783174,
-    6017693229,
-    6020597886,
-    6023481107,
-    6026377485,
-    6029271546,
-    6032154480,
-    6035043988
-  ],
-  "stake": [
-    6.032761108,
-    6.032761108,
-    6.032761108,
-    6.032761108,
-    6.032761108,
-    6.032761108,
-    6.032761108,
-    6.032761108,
-    6.032761108,
-    6.032761108,
-    6.032761108,
-    6.032761108
-  ]
+function calculateSolNeeded(sol: number) {
+  return sol < 0 ? 0 : sol
+}
+
+function calculateProgress(staked: number, needed: number, sentriesCount: number) {
+  if ((sentriesCount * 5) <= staked || needed <= 1){
+    return 100
+  }
+
+  return staked / (sentriesCount * 5)
+}
+
+function calculateFontSize(num: number): string {
+  const MAX_SIZE = 6
+  const MAGIC_NUMBER = 2.20
+  
+  const truncated = truncateFloat(num)
+  if (!!truncated === false) return `${MAX_SIZE}em`
+
+  const size = MAX_SIZE - (Math.log(truncated.length) / Math.log(MAGIC_NUMBER))
+
+  return `${size}em`
 }
