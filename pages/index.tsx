@@ -537,6 +537,7 @@ function Home() {
           <meta property="og:url" content={url} />
           <meta property="og:description" content={description} />
           <meta property="og:image" content={image} />
+          <script defer data-domain="sentries.io" src="https://plausible.io/js/plausible.js"></script>
         </Head>
         <Header />
         <div className="fixed top-1/2 -left-[210px] z-[-1] h-[420px] w-[420px] rounded-full bg-teal-400 opacity-30 blur-[300px]"></div>
