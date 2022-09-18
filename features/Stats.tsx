@@ -57,11 +57,11 @@ export function Stats(props: StatsProps) {
 
   const stakedSentriesPercentage = (stakedSentries * 100) / 8000
   const stakedSol = parseFloat(roundXDigitValue(valueOrDefault(stats?.totalStaked, 0)))
-  const solNeeded = valueOrDefault(stats?.maxPowerLevelSol, 0)
+  const solNeeded = calculateSolNeeded(valueOrDefault(stats?.maxPowerLevelSol, 0))
   const sentriesCount = Number(valueOrDefault(stats?.nftCount, 0))
 
   const solPowering = valueOrDefault(sentriesDetails?.solPowering, 0)
-  const solPrice = calculateSolNeeded(valueOrDefault(sentriesDetails?.solPrice, 0))
+  const solPrice = valueOrDefault(sentriesDetails?.solPrice, 0)
 
   // This is going to be all the maths for calculating the % yield.
   const totalPctAllocation = sentriesCount / 8000
@@ -112,7 +112,7 @@ export function Stats(props: StatsProps) {
       </div>
       <div className="mt-4 p-4 py-3 rounded-2xl font-semibold border-2 border-neutral-700 flex justify-between items-center">
         <span className="text-neutral-500">Current Rewards</span>
-        {hasRewards ? <Button as="button" size="sm" variant="secondary" onClick={() => setIsModalOpen(true)}>{totalRewards} 323.32320 <span className="opacity-50 font-normal">◎</span></Button>
+        {hasRewards ? <Button as="button" size="sm" variant="secondary" onClick={() => setIsModalOpen(true)}>{totalRewards} <span className="opacity-50 font-normal">◎</span></Button>
         : <span className="font-normal text-neutral-700 text-sm">None so far</span>}
       </div>
       <Separator />

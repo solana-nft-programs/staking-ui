@@ -105,7 +105,8 @@ function formatRewardsTable(rewards: Rewards) {
   const { rewardAmount, rewardEpoch, rewardPostBalance } = rewards
   const table = []
 
-  for (let i = 11; i >= 0; i--) {
+  const tableLength = rewardEpoch.length - 1 >= 11 ? 11 : rewardEpoch.length - 1
+  for (let i = tableLength; i >= 0; i--) {
     table.push([
       rewardEpoch[i], 
       rewardAmount[i] as number / LAMPORTS_PER_SOL, 
