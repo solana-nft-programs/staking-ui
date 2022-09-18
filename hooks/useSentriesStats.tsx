@@ -1,12 +1,20 @@
 import { useQuery } from 'react-query'
 import { useWallet } from '@solana/wallet-adapter-react'
 
+export type Rewards = {
+  rewardEpoch: number[],
+  rewardAmount: number[],
+  rewardPostBalance: number[],
+  stake: number[]
+}
+
 export type SentriesStakingData = {
-  nft_count: number
-  sentry_owner_address: string
-  total_staked: number
-  max_power_level_sol: number
-  stake_account_withdraw_authority: string
+  nftCount: number
+  sentryOwnerAddress: string
+  totalStaked: number
+  maxPowerLevelSol: number
+  stakeAccountWithdrawAuthority: string
+  rewards: Rewards
   error?: string
 }
 
@@ -21,7 +29,7 @@ export const useSentriesStats = () => {
     ],
     async () => {
       return await fetch(
-        `https://api.sentries.io/v1/power/${address}` // TODO: Changeme
+        `https://api.sentries.io/v1/power/${address}`
       )
         .then((response) => response.json())
         .then((data) => {

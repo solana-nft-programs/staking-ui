@@ -808,16 +808,16 @@ function Home() {
                     >
                     You current SOL staked with The Lode is {
                     // @ts-ignore
-                    sentriesStats.data.total_staked ? sentriesStats.data.total_staked : 0
+                    sentriesStats.data.totalStaked ? sentriesStats.data.totalStaked : 0
                     } ◎<br />You will need {
                     // @ts-ignore
-                    sentriesStats.data.max_power_level_sol < 0 ? 0 : sentriesStats.data.max_power_level_sol
+                    sentriesStats.data.maxPowerLevelSol < 0 ? 0 : sentriesStats.data.maxPowerLevelSol
                     } ◎ to power up the {
                     // @ts-ignore
-                    sentriesStats.data.nft_count
+                    sentriesStats.data.nftCount
                     } Sentries NFT{
                     // @ts-ignore
-                    (sentriesStats.data.nft_count > 1) ? ('s') : ('')
+                    (sentriesStats.data.nftCount > 1) ? ('s') : ('')
                     }
                   </span>
                 </div>
