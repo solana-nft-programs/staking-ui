@@ -50,6 +50,7 @@ import { Stats } from 'features/Stats'
 import { ConnectWallet } from 'features/ConnectWallet'
 import { useValidatorInfo } from 'hooks/useValidatorInfo'
 import { useSentryPower } from 'hooks/useSentryPower'
+import { Label } from 'components/Label'
 
 function Home() {
   const router = useRouter()
@@ -495,12 +496,27 @@ function Home() {
   const totalMcap = floorPrice * 8000 * solPrice
   const solPowering = sentriesStats.isFetched && sentriesStats?.data?.solPowering || 0
 
-  const renderTotalStaked = (
-    <MouseoverTooltip title="Value of total stake">
-      <span className="text-sm align-middle font-normal bg-teal-900 border border-teal-700 p-2 pb-1 rounded-full cursor-default">
-        {totalStakedInSol} <i className="opacity-50 not-italic">◎</i>
-      </span>
-    </MouseoverTooltip>
+  const renderStats = (
+    <div className="flex gap-2">
+      <div className="text-xs">
+        <MouseoverTooltip title="Total stake value">
+          <span>
+            <Label classes="bg-teal-900 border border-teal-700 text-teal-100">
+                {totalStakedInSol} <i className="opacity-50 not-italic">◎</i>
+            </Label>
+          </span>
+        </MouseoverTooltip>
+      </div>
+      <div className="text-xs">
+        <MouseoverTooltip title="Total Sentries market cap">
+          <span>
+            <Label classes="bg-sky-900 border border-sky-700 text-sky-100">
+              {totalMcap.toLocaleString()} <i className="opacity-50 not-italic">◎</i>
+            </Label>
+          </span>
+        </MouseoverTooltip>
+      </div>
+    </div>
   )
 
   return (
@@ -529,18 +545,22 @@ function Home() {
           <div className="my-8 flex text-white">
             <div className="w-1/3">
               <h1 className="mb-2 text-4xl font-bold text-white">
-                The Power Grid {renderTotalStaked}
+                The Power Grid
               </h1>
               <p className="text-lg text-neutral-300">
                 Stake your Sentry here, and power it up by locking SOL in our
                 validator, The Lode
               </p>
+              {renderStats}
             </div>
             <div className="w-2/3 flex justify-end items-center">
               <Button
-                as="button"
+                as="a"
                 variant="secondary"
                 hasArrow={true}
+                // @ts-ignore
+                href="https://sentries.io/stake-with-sentries"
+                target="_blank"
               >
                 Learn More
               </Button>
@@ -1075,7 +1095,7 @@ function Home() {
             </div>
           }
         </div>
-        <Footer bgColor={stakePoolMetadata?.colors?.primary} />
+        <Footer />
       </main>
       <Notifications />
     </>

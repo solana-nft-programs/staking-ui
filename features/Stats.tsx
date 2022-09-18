@@ -5,7 +5,8 @@ import { valueOrDefault, roundXDigitValue, truncateFloat } from "common/utils"
 import { Button } from "components/Button"
 import { SentriesDetailsData } from "hooks/useSentriesStats"
 import { Rewards, SentriesStakingData, useSentryPower } from "hooks/useSentryPower"
-import { ReactElement, ReactNode } from "react"
+import { ReactElement, ReactNode, useState } from "react"
+import { RewardsModal } from "./RewardsModal"
 
 type StatsProps = {
   stakedSentries: number,
@@ -28,6 +29,7 @@ type StatsBlock = {
 export function Stats(props: StatsProps) {
   const { stakedSentries, sentriesDetails, stats, isLoading, isError, recover } = props
   const sentryPower = useSentryPower()
+  const [isModalOpen, setIsModalOpen] = useState(false)
 
   if (isLoading) {
     return (
@@ -108,9 +110,9 @@ export function Stats(props: StatsProps) {
         </div>
         {rewardRate ? <span>{rewardRate}%</span> : null}
       </div>
-      <div className="mt-4 p-4 py-3 rounded-2xl font-semibold border-2 border-neutral-700 flex justify-between">
+      <div className="mt-4 p-4 py-3 rounded-2xl font-semibold border-2 border-neutral-700 flex justify-between items-center">
         <span className="text-neutral-500">Current Rewards</span>
-        {hasRewards ? <span className="text-white">{totalRewards} <span className="opacity-50 font-normal">◎</span></span>
+        {hasRewards ? <Button as="button" size="sm" variant="secondary" onClick={() => setIsModalOpen(true)}>{totalRewards} 323.32320 <span className="opacity-50 font-normal">◎</span></Button>
         : <span className="font-normal text-neutral-700 text-sm">None so far</span>}
       </div>
       <Separator />
@@ -154,6 +156,7 @@ export function Stats(props: StatsProps) {
         valueAbs={currentValueLocked}
         prefix="$"
       />
+      <RewardsModal isOpen={isModalOpen} setIsOpen={setIsModalOpen} />
     </Container>
   )
 }
@@ -247,7 +250,7 @@ function calculateProgress(staked: number, needed: number, sentriesCount: number
 function calculateFontSize(num: number): string {
   const MAX_SIZE = 6
   const MAGIC_NUMBER = 2.20
-  
+
   const truncated = truncateFloat(num)
   if (!!truncated === false) return `${MAX_SIZE}em`
 
