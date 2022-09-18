@@ -1402,4 +1402,33 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       fontColor: '#FFFFFF',
     },
   },
+  {
+    name: 'steamland',
+    displayName: 'Harvesting - Steamland',
+    stakePoolAddress: new PublicKey(
+      '5n9G7o9ZZFmfx4dcbd4HgNYcGWFiQ2wGKaKHYT8bWDf7'
+    ),
+    maxStaked: 2222,
+    receiptType: ReceiptType.Original,
+    websiteUrl: 'https://steamland.io',
+    hostname: 'harvest.steamland.io',
+    imageUrl: 'https://raw.githubusercontent.com/Steamland/images/main/harvest_logo.png' ,
+    hidden: true,
+    styles: {
+     fontFamily: 'Industry, sans-serif',
+     fontWeight: 500,
+   },
+   backgroundImage:
+     'https://raw.githubusercontent.com/Steamland/images/main/harvesting_background.png',
+     tokenStandard: TokenStandard.NonFungible,
+     hideAllowedTokens: true,
+     colors: {
+     primary: '#1A1A1D',
+     secondary: '#9e333f',
+     accent: '#313063',
+     fontColor: '#FFFFFF',
+     fontColorSecondary: '#FFFFFF',
+     backgroundSecondary: '#4E4E50',
+   },
+  },
 ]
