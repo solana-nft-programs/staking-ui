@@ -26,7 +26,7 @@ export const useSentryPower = () => {
     ['useSentryPower', address],
     async () => {
       return await fetch(
-        `/v1/power/G16i2xmhU6jfDi1QZyKRMnMEXrEmDsBXNGYi4XvrYZX7`
+        `/v1/power/${address}`
       )
         .then((response) => response.json())
         .then((data) => {
