@@ -8,7 +8,7 @@ export function ConnectWallet() {
   const walletModal = useWalletModal()
 
   return (
-    <div className="bg-neutral-800 rounded-xl p-12">
+    <div className="bg-neutral-800 bg-opacity-70 rounded-xl p-12 mb-8">
       <div className="text-white flex items-center justify-center flex-col p-16 border border-neutral-700 border-dashed rounded-lg">
         <div className="w-48">
           <Image src={sentry} alt="Gray Sentry facing right"  />

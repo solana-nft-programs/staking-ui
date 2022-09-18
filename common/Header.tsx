@@ -88,7 +88,7 @@ export const Header = () => {
   return (
     <>
       {clockDrift && <ClockdriftWarning clockDrift={clockDrift} />}
-      <nav className="container relative mx-auto rounded-xl bg-neutral-800">
+      <nav className="container relative mx-auto rounded-xl bg-neutral-900 bg-opacity-70">
         <div className="flex h-20 justify-between px-5 text-white">
           <div className="flex items-center gap-3">
             <Logo />
