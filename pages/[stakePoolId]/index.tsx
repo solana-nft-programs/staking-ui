@@ -32,6 +32,7 @@ import { useStakePoolData } from 'hooks/useStakePoolData'
 import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
+import { isAbsolute } from 'path'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 import { useEffect, useState } from 'react'
 import { FaInfoCircle } from 'react-icons/fa'
@@ -165,6 +166,9 @@ function StakePoolHome() {
       style={{
         background: stakePoolMetadata?.colors?.primary,
         backgroundImage: `url(${stakePoolMetadata?.backgroundImage})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat'
       }}
     >
       <Head>
@@ -254,7 +258,7 @@ function StakePoolHome() {
             <div className="mt-2 flex w-full flex-row justify-between">
               <div className="flex flex-row">
                 <p className="mb-3 mr-3 inline-block text-lg">
-                  Select Your Tokens
+                  Steamlanders
                 </p>
                 <div className="inline-block">
                   {allowedTokenDatas.isRefetching &&
@@ -588,7 +592,7 @@ function StakePoolHome() {
             <div className="mb-5 flex flex-row justify-between">
               <div className="mt-2 flex flex-row">
                 <p className="mr-3 text-lg">
-                  View Staked Tokens{' '}
+                  Harvesting{' '}
                   {stakedTokenDatas.isFetched &&
                     stakedTokenDatas.data &&
                     `(${stakedTokenDatas.data.length})`}
@@ -671,7 +675,7 @@ function StakePoolHome() {
                         : 'text-gray-400'
                     }]`}
                   >
-                    No tokens currently staked.
+                    No Steamlander harvesting.
                   </p>
                 ) : (
                   <div
@@ -927,11 +931,8 @@ function StakePoolHome() {
           </div>
         </div>
       </div>
-      {!stakePoolMetadata?.hideFooter ? (
-        <Footer bgColor={stakePoolMetadata?.colors?.primary} />
-      ) : (
+      
         <div className="h-24"></div>
-      )}
     </div>
   )
 }
