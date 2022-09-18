@@ -7,6 +7,7 @@ import { SentriesDetailsData } from "hooks/useSentriesStats"
 import { Rewards, SentriesStakingData, useSentryPower } from "hooks/useSentryPower"
 import { ReactElement, ReactNode, useState } from "react"
 import { RewardsModal } from "./RewardsModal"
+import { StakeModal } from "components/StakeModal"
 
 type StatsProps = {
   stakedSentries: number,
@@ -30,6 +31,7 @@ export function Stats(props: StatsProps) {
   const { stakedSentries, sentriesDetails, stats, isLoading, isError, recover } = props
   const sentryPower = useSentryPower()
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const [isStakingModalOpen, setIsStakingModalOpen] = useState(false)
 
   if (isLoading) {
     return (
@@ -156,7 +158,9 @@ export function Stats(props: StatsProps) {
         valueAbs={currentValueLocked}
         prefix="$"
       />
+      {/* <Button as="button" size="sm" variant="secondary" onClick={() => setIsStakingModalOpen(true)}>Testing</Button> */}
       <RewardsModal isOpen={isModalOpen} setIsOpen={setIsModalOpen} />
+      {/* <StakeModal isOpen={isStakingModalOpen} setIsOpen={setIsStakingModalOpen}/> */}
     </Container>
   )
 }
