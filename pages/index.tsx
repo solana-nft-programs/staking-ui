@@ -13,7 +13,7 @@ import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 import { useEffect, useState } from 'react'
 import { Wallet } from '@metaplex/js'
 import { LoadingSpinner } from 'common/LoadingSpinner'
-import { removeTokenName, secondstoDuration, valueOrDefault } from 'common/utils'
+import { removeTokenName, secondstoDuration, truncateFloat, valueOrDefault } from 'common/utils'
 import {
   parseMintNaturalAmountFromDecimal
 } from 'common/units'
@@ -511,7 +511,7 @@ function Home() {
         <MouseoverTooltip title="Total Sentries market cap">
           <span>
             <Label classes="bg-sky-900 border border-sky-700 text-sky-100">
-              {totalMcap.toLocaleString()} <i className="opacity-50 not-italic">◎</i>
+              ${parseFloat(truncateFloat(totalMcap)).toLocaleString()} <i className="opacity-50 not-italic"></i>
             </Label>
           </span>
         </MouseoverTooltip>
