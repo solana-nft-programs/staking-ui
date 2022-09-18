@@ -99,6 +99,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
      maxStaked: 2222,
      receiptType: ReceiptType.Original,
      websiteUrl: 'https://steamland.io',
+     hostname: 'harvest.steamland.io',
      imageUrl: '/steamland_logo.png' ,
      hidden: true,
      styles: {
