@@ -48,9 +48,12 @@ export function StakeModal(props: StakeModal) {
     // Setup a transaction to create our stake account
     // Note: `StakeProgram.createAccount` returns a `Transaction` preconfigured with the necessary `TransactionInstruction`s
     const createStakeAccountTx = StakeProgram.createAccount({
+      // @ts-ignore
       authorized: new Authorized(wallet.publicKey, wallet.publicKey), // Here we set two authorities: Stake Authority and Withdrawal Authority. Both are set to our wallet.
+      // @ts-ignore
       fromPubkey: wallet.publicKey,
       lamports: amountToStake,
+      // @ts-ignore
       lockup: new Lockup(0, 0, wallet.publicKey), // Optional. We'll set this to 0 for demonstration purposes.
       stakePubkey: stakeAccount.publicKey,
     });
@@ -59,6 +62,7 @@ export function StakeModal(props: StakeModal) {
       secondaryConnection,
       createStakeAccountTx,
       [
+        // @ts-ignore
         wallet,
         stakeAccount, // Since we're creating a new stake account, we have that account sign as well
       ]
@@ -76,11 +80,13 @@ export function StakeModal(props: StakeModal) {
     // With a validator selected, we can now setup a transaction that delegates our stake to their vote account.
     const delegateTx = StakeProgram.delegate({
       stakePubkey: stakeAccount.publicKey,
+      // @ts-ignore
       authorizedPubkey: wallet.publicKey,
       votePubkey: selectedValidatorPubkey,
     });
 
     const delegateTxId = await sendAndConfirmTransaction(secondaryConnection, delegateTx, [
+      // @ts-ignore
       wallet,
     ]);
     console.log(
@@ -131,7 +137,6 @@ export function StakeForm() {
         <div>Month</div>
         <div>Year</div>
       </div>
-      <Button>Stake Solana</Button>
     </div>
   )
 }
