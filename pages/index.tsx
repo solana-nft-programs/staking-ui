@@ -1040,6 +1040,16 @@ function Home() {
                                       tk.tokenListData?.name
                                     }
                                   />
+
+                                  <div className="flex w-full flex-row justify-between font-mono uppercase">
+                                    <span>Gang:</span>
+                                    {tk.metadata?.data.attributes.find((attr: any) => attr.trait_type === "1- Gang").value || "Cannot read Gang"}
+                                  </div>
+                                  <div className="flex w-full flex-row justify-between font-mono uppercase">
+                                    <span>Class:</span>
+                                    {tk.metadata?.data.attributes.find((attr: any) => attr.trait_type === "2- Class").value || "Cannot read Class"}
+                                  </div>
+
                                   <div
                                     className={`flex-col pt-2 pb-2 ${stakePoolMetadata?.colors?.fontColor
                                       ? `text-[${stakePoolMetadata?.colors?.fontColor}]`
