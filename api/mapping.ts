@@ -1422,6 +1422,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
      'https://raw.githubusercontent.com/Steamland/images/main/harvesting_background.png',
      tokenStandard: TokenStandard.NonFungible,
      hideAllowedTokens: true,
+     hideFooter: true,
      colors: {
      primary: '#1A1A1D',
      secondary: '#9e333f',
