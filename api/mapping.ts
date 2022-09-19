@@ -1680,6 +1680,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     stakePoolAddress: new PublicKey(
       '5n9G7o9ZZFmfx4dcbd4HgNYcGWFiQ2wGKaKHYT8bWDf7'
     ),
+    contrastHomepageBkg: true,
     maxStaked: 2222,
     receiptType: ReceiptType.Original,
     websiteUrl: 'https://steamland.io',
