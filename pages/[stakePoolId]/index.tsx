@@ -6,6 +6,7 @@ import { useWalletModal } from '@solana/wallet-adapter-react-ui'
 import { defaultSecondaryColor, TokenStandard } from 'api/mapping'
 import { contrastify } from 'common/colors'
 import { Footer } from 'common/Footer'
+import { FooterSlim } from 'common/FooterSlim'
 import { Header } from 'common/Header'
 import { LoadingSpinner } from 'common/LoadingSpinner'
 import { notify } from 'common/Notification'
@@ -30,6 +31,7 @@ import type { StakeEntryTokenData } from 'hooks/useStakedTokenDatas'
 import { useStakedTokenDatas } from 'hooks/useStakedTokenDatas'
 import { useStakePoolData } from 'hooks/useStakePoolData'
 import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
+import { useUserRegion } from 'hooks/useUserRegion'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
@@ -42,6 +44,7 @@ function StakePoolHome() {
   const wallet = useWallet()
   const walletModal = useWalletModal()
   const { data: stakePool, isFetched: stakePoolLoaded } = useStakePoolData()
+  const userRegion = useUserRegion()
   const stakedTokenDatas = useStakedTokenDatas()
   const rewardDistributorData = useRewardDistributorData()
   const rewardMintInfo = useRewardMintInfo()
@@ -156,8 +159,40 @@ function StakePoolHome() {
         tk.stakeEntry?.parsed.originalMint.toString()
     )
 
-  if (!stakePoolLoaded) {
+  if (
+    !stakePoolLoaded ||
+    (stakePoolMetadata?.disallowRegions && !userRegion.isFetched)
+  ) {
     return <></>
+  }
+
+  if (stakePoolMetadata?.disallowRegions && !userRegion.data?.isAllowed) {
+    return (
+      <div
+        className="flex min-h-screen flex-col"
+        style={{
+          background: stakePoolMetadata?.colors?.primary,
+          backgroundImage: `url(${stakePoolMetadata?.backgroundImage})`,
+        }}
+      >
+        <Header />
+        <div className="max flex grow items-center justify-center">
+          <div className="w-[600px] max-w-[95vw] rounded-xl bg-black bg-opacity-50 p-10 text-center">
+            <div className="text-2xl font-bold">
+              Users from Country ({userRegion.data?.countryName}) are not
+              Eligible to Participate
+            </div>
+            <div className="mt-8 text-sm text-light-2">
+              It is prohibited to use certain services offered by Parcl if you
+              are a resident of, or are located, incorporated, or have a
+              registered agent in, {userRegion.data?.countryName} or any other
+              jurisdiction where the Services are restricted.
+            </div>
+          </div>
+        </div>
+        <FooterSlim />
+      </div>
+    )
   }
 
   return (

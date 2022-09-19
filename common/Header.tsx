@@ -102,14 +102,15 @@ export const Header = () => {
           )}
         </div>
         <div className="relative my-auto flex flex-wrap items-center gap-y-6 align-middle">
-          <div className="flex flex-wrap gap-5">
+          <div className="mr-10 flex flex-wrap items-center justify-center gap-8">
             {stakePoolId && stakePoolMetadata ? (
               stakePoolMetadata.links?.map((link) => (
-                <a key={link.value} href={link.value}>
-                  <p
-                    style={{ color: stakePoolMetadata?.colors?.fontColor }}
-                    className="my-auto mr-10 hover:cursor-pointer"
-                  >
+                <a
+                  key={link.value}
+                  href={link.value}
+                  className="cursor-pointer transition-all hover:opacity-80"
+                >
+                  <p style={{ color: stakePoolMetadata?.colors?.fontColor }}>
                     {link.text}
                   </p>
                 </a>

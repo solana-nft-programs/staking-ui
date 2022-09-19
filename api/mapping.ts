@@ -63,6 +63,8 @@ export type StakePoolMetadata = {
     fontColorSecondary?: string
     backgroundSecondary?: string
   }
+  // Disallow regions based on IP address
+  disallowRegions?: { code: string; subdivision?: string }[]
   // If the logo should be displayed with paddding
   logoPadding?: boolean
   // Optional social links
@@ -1100,7 +1102,6 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     stakePoolAddress: new PublicKey(
       '3JXoAsm4YZGzC2VGtSBdN8EX36wW8uuoXX9nWFqamUu2'
     ),
-    hidden: true,
     websiteUrl: 'https://www.hoa.house/',
     receiptType: ReceiptType.Original,
     tokenStandard: TokenStandard.NonFungible,
@@ -1114,6 +1115,277 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       secondary: '#10abf0',
       backgroundSecondary: '#182443',
     },
+  },
+  {
+    name: 'parcl-san-francisco',
+    displayName: 'Parcl San Francisco',
+    stakePoolAddress: new PublicKey(
+      '3woMMfxPCzyGHdtosNtWLKZCWNvok4k3Eup97eayXxWk'
+    ),
+    websiteUrl: 'https://parcl.co/',
+    receiptType: ReceiptType.None,
+    tokenStandard: TokenStandard.Fungible,
+    hideAllowedTokens: true,
+    nameInHeader: true,
+    imageUrl: '/logos/parcl.png',
+    backgroundImage: '/logos/parcl-bg.png',
+    colors: {
+      primary: '#0d1939',
+      secondary: '#10abf0',
+      backgroundSecondary: '#182443',
+    },
+    links: [
+      { text: 'San Francisco', value: '/parcl-san-francisco' },
+      { text: 'Brooklyn', value: '/parcl-brooklyn' },
+      { text: 'Phoenix', value: '/parcl-phoenx' },
+      { text: 'Manhattan', value: '/parcl-manhattan' },
+      { text: 'Los Angeles', value: '/parcl-los-angeles' },
+      { text: 'Miami', value: '/parcl-miami' },
+    ],
+    disallowRegions: [
+      { code: 'US' }, // united states
+      { code: 'CU' }, // cuba
+      { code: 'IR' }, // iran
+      { code: 'LY' }, // libya
+      { code: 'IQ' }, // iraq
+      { code: 'LB' }, // lebanon
+      { code: 'CN' }, // china
+      { code: 'CF' }, // central african republic
+      { code: 'SS' }, // south sudan
+      { code: 'SS' }, // sudan (north)
+      { code: 'SY' }, // syria
+      { code: 'SO' }, // somalia
+      { code: 'VE' }, // venezuela
+      { code: 'YE' }, // yemen
+      { code: 'RU' }, // russia
+      { code: 'UA', subdivision: '43' }, // the crimea
+    ],
+  },
+  {
+    name: 'parcl-miami',
+    displayName: 'Parcl Miami',
+    stakePoolAddress: new PublicKey(
+      '74Zf3B2y6GVsHpoUQ6My8NktzHjT7Cgn6VRkUB946C62'
+    ),
+    websiteUrl: 'https://parcl.co/',
+    receiptType: ReceiptType.None,
+    tokenStandard: TokenStandard.Fungible,
+    hideAllowedTokens: true,
+    nameInHeader: true,
+    imageUrl: '/logos/parcl.png',
+    backgroundImage: '/logos/parcl-bg.png',
+    colors: {
+      primary: '#0d1939',
+      secondary: '#10abf0',
+      backgroundSecondary: '#182443',
+    },
+    links: [
+      { text: 'San Francisco', value: '/parcl-san-francisco' },
+      { text: 'Brooklyn', value: '/parcl-brooklyn' },
+      { text: 'Phoenix', value: '/parcl-phoenx' },
+      { text: 'Manhattan', value: '/parcl-manhattan' },
+      { text: 'Los Angeles', value: '/parcl-los-angeles' },
+      { text: 'Miami', value: '/parcl-miami' },
+    ],
+    disallowRegions: [
+      { code: 'US' }, // united states
+      { code: 'CU' }, // cuba
+      { code: 'IR' }, // iran
+      { code: 'LY' }, // libya
+      { code: 'IQ' }, // iraq
+      { code: 'LB' }, // lebanon
+      { code: 'CN' }, // china
+      { code: 'CF' }, // central african republic
+      { code: 'SS' }, // south sudan
+      { code: 'SS' }, // sudan (north)
+      { code: 'SY' }, // syria
+      { code: 'SO' }, // somalia
+      { code: 'VE' }, // venezuela
+      { code: 'YE' }, // yemen
+      { code: 'RU' }, // russia
+      { code: 'UA', subdivision: '43' }, // the crimea
+    ],
+  },
+  {
+    name: 'parcl-los-angeles',
+    displayName: 'Parcl Los Angeles',
+    stakePoolAddress: new PublicKey(
+      '8kbX53gQnpXqHQKg4Z3T1uSHsDHaP7Q7VnMbfnBWtJvk'
+    ),
+    websiteUrl: 'https://parcl.co/',
+    receiptType: ReceiptType.None,
+    tokenStandard: TokenStandard.Fungible,
+    hideAllowedTokens: true,
+    nameInHeader: true,
+    imageUrl: '/logos/parcl.png',
+    backgroundImage: '/logos/parcl-bg.png',
+    colors: {
+      primary: '#0d1939',
+      secondary: '#10abf0',
+      backgroundSecondary: '#182443',
+    },
+    links: [
+      { text: 'San Francisco', value: '/parcl-san-francisco' },
+      { text: 'Brooklyn', value: '/parcl-brooklyn' },
+      { text: 'Phoenix', value: '/parcl-phoenx' },
+      { text: 'Manhattan', value: '/parcl-manhattan' },
+      { text: 'Los Angeles', value: '/parcl-los-angeles' },
+      { text: 'Miami', value: '/parcl-miami' },
+    ],
+    disallowRegions: [
+      { code: 'US' }, // united states
+      { code: 'CU' }, // cuba
+      { code: 'IR' }, // iran
+      { code: 'LY' }, // libya
+      { code: 'IQ' }, // iraq
+      { code: 'LB' }, // lebanon
+      { code: 'CN' }, // china
+      { code: 'CF' }, // central african republic
+      { code: 'SS' }, // south sudan
+      { code: 'SS' }, // sudan (north)
+      { code: 'SY' }, // syria
+      { code: 'SO' }, // somalia
+      { code: 'VE' }, // venezuela
+      { code: 'YE' }, // yemen
+      { code: 'RU' }, // russia
+      { code: 'UA', subdivision: '43' }, // the crimea
+    ],
+  },
+  {
+    name: 'parcl-manhattan',
+    displayName: 'Parcl Manhattan',
+    stakePoolAddress: new PublicKey(
+      '8ZBEzrvBZiSnCS9cQHpL8orWvMukPCZ4y4nyxzZ8H9i'
+    ),
+    websiteUrl: 'https://parcl.co/',
+    receiptType: ReceiptType.None,
+    tokenStandard: TokenStandard.Fungible,
+    hideAllowedTokens: true,
+    nameInHeader: true,
+    imageUrl: '/logos/parcl.png',
+    backgroundImage: '/logos/parcl-bg.png',
+    colors: {
+      primary: '#0d1939',
+      secondary: '#10abf0',
+      backgroundSecondary: '#182443',
+    },
+    links: [
+      { text: 'San Francisco', value: '/parcl-san-francisco' },
+      { text: 'Brooklyn', value: '/parcl-brooklyn' },
+      { text: 'Phoenix', value: '/parcl-phoenx' },
+      { text: 'Manhattan', value: '/parcl-manhattan' },
+      { text: 'Los Angeles', value: '/parcl-los-angeles' },
+      { text: 'Miami', value: '/parcl-miami' },
+    ],
+    disallowRegions: [
+      { code: 'US' }, // united states
+      { code: 'CU' }, // cuba
+      { code: 'IR' }, // iran
+      { code: 'LY' }, // libya
+      { code: 'IQ' }, // iraq
+      { code: 'LB' }, // lebanon
+      { code: 'CN' }, // china
+      { code: 'CF' }, // central african republic
+      { code: 'SS' }, // south sudan
+      { code: 'SS' }, // sudan (north)
+      { code: 'SY' }, // syria
+      { code: 'SO' }, // somalia
+      { code: 'VE' }, // venezuela
+      { code: 'YE' }, // yemen
+      { code: 'RU' }, // russia
+      { code: 'UA', subdivision: '43' }, // the crimea
+    ],
+  },
+
+  {
+    name: 'parcl-brooklyn',
+    displayName: 'Parcl Brooklyn',
+    stakePoolAddress: new PublicKey(
+      '9jnTHkJzxL14dE2CxAufBsTa19oeuNSMBuyqzZP1kDYh'
+    ),
+    websiteUrl: 'https://parcl.co/',
+    receiptType: ReceiptType.None,
+    tokenStandard: TokenStandard.Fungible,
+    hideAllowedTokens: true,
+    nameInHeader: true,
+    imageUrl: '/logos/parcl.png',
+    backgroundImage: '/logos/parcl-bg.png',
+    colors: {
+      primary: '#0d1939',
+      secondary: '#10abf0',
+      backgroundSecondary: '#182443',
+    },
+    links: [
+      { text: 'San Francisco', value: '/parcl-san-francisco' },
+      { text: 'Brooklyn', value: '/parcl-brooklyn' },
+      { text: 'Phoenix', value: '/parcl-phoenx' },
+      { text: 'Manhattan', value: '/parcl-manhattan' },
+      { text: 'Los Angeles', value: '/parcl-los-angeles' },
+      { text: 'Miami', value: '/parcl-miami' },
+    ],
+    disallowRegions: [
+      { code: 'US' }, // united states
+      { code: 'CU' }, // cuba
+      { code: 'IR' }, // iran
+      { code: 'LY' }, // libya
+      { code: 'IQ' }, // iraq
+      { code: 'LB' }, // lebanon
+      { code: 'CN' }, // china
+      { code: 'CF' }, // central african republic
+      { code: 'SS' }, // south sudan
+      { code: 'SS' }, // sudan (north)
+      { code: 'SY' }, // syria
+      { code: 'SO' }, // somalia
+      { code: 'VE' }, // venezuela
+      { code: 'YE' }, // yemen
+      { code: 'RU' }, // russia
+      { code: 'UA', subdivision: '43' }, // the crimea
+    ],
+  },
+  {
+    name: 'parcl-pheonix',
+    displayName: 'Parcl Phoenix',
+    stakePoolAddress: new PublicKey(
+      'ESbcGhaddmgKWkW63txisKP6HwS3491brbP2hJuTrVY6'
+    ),
+    websiteUrl: 'https://parcl.co/',
+    receiptType: ReceiptType.None,
+    tokenStandard: TokenStandard.Fungible,
+    hideAllowedTokens: true,
+    nameInHeader: true,
+    imageUrl: '/logos/parcl.png',
+    backgroundImage: '/logos/parcl-bg.png',
+    colors: {
+      primary: '#0d1939',
+      secondary: '#10abf0',
+      backgroundSecondary: '#182443',
+    },
+    links: [
+      { text: 'San Francisco', value: '/parcl-san-francisco' },
+      { text: 'Brooklyn', value: '/parcl-brooklyn' },
+      { text: 'Phoenix', value: '/parcl-phoenx' },
+      { text: 'Manhattan', value: '/parcl-manhattan' },
+      { text: 'Los Angeles', value: '/parcl-los-angeles' },
+      { text: 'Miami', value: '/parcl-miami' },
+    ],
+    disallowRegions: [
+      { code: 'US' }, // united states
+      { code: 'CU' }, // cuba
+      { code: 'IR' }, // iran
+      { code: 'LY' }, // libya
+      { code: 'IQ' }, // iraq
+      { code: 'LB' }, // lebanon
+      { code: 'CN' }, // china
+      { code: 'CF' }, // central african republic
+      { code: 'SS' }, // south sudan
+      { code: 'SS' }, // sudan (north)
+      { code: 'SY' }, // syria
+      { code: 'SO' }, // somalia
+      { code: 'VE' }, // venezuela
+      { code: 'YE' }, // yemen
+      { code: 'RU' }, // russia
+      { code: 'UA', subdivision: '43' }, // the crimea
+    ],
   },
   {
     name: 'the-suites',

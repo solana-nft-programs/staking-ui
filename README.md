@@ -96,6 +96,8 @@ export type StakePoolMetadata = {
     fontColorSecondary?: string
     backgroundSecondary?: string
   }
+  // Disallow regions based on IP address
+  disallowRegions?: { code: string; subdivision?: string }[]
   // Image url to be used as the icon in the pool selector and the header
   imageUrl?: string
   // Background banner image for pool
