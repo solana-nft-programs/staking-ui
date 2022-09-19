@@ -1127,7 +1127,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     tokenStandard: TokenStandard.Fungible,
     hideAllowedTokens: true,
     nameInHeader: true,
-    imageUrl: '/logos/parcl.png',
+    imageUrl: '/logos/parcl-san-francisco.png',
     backgroundImage: '/logos/parcl-bg.png',
     colors: {
       primary: '#0d1939',
@@ -1172,7 +1172,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     tokenStandard: TokenStandard.Fungible,
     hideAllowedTokens: true,
     nameInHeader: true,
-    imageUrl: '/logos/parcl.png',
+    imageUrl: '/logos/parcl-miami.png',
     backgroundImage: '/logos/parcl-bg.png',
     colors: {
       primary: '#0d1939',
@@ -1217,7 +1217,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     tokenStandard: TokenStandard.Fungible,
     hideAllowedTokens: true,
     nameInHeader: true,
-    imageUrl: '/logos/parcl.png',
+    imageUrl: '/logos/parcl-los-angeles.png',
     backgroundImage: '/logos/parcl-bg.png',
     colors: {
       primary: '#0d1939',
@@ -1262,7 +1262,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     tokenStandard: TokenStandard.Fungible,
     hideAllowedTokens: true,
     nameInHeader: true,
-    imageUrl: '/logos/parcl.png',
+    imageUrl: '/logos/parcl-manhattan.png',
     backgroundImage: '/logos/parcl-bg.png',
     colors: {
       primary: '#0d1939',
@@ -1308,7 +1308,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     tokenStandard: TokenStandard.Fungible,
     hideAllowedTokens: true,
     nameInHeader: true,
-    imageUrl: '/logos/parcl.png',
+    imageUrl: '/logos/parcl-brooklyn.png',
     backgroundImage: '/logos/parcl-bg.png',
     colors: {
       primary: '#0d1939',
@@ -1353,7 +1353,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     tokenStandard: TokenStandard.Fungible,
     hideAllowedTokens: true,
     nameInHeader: true,
-    imageUrl: '/logos/parcl.png',
+    imageUrl: '/logos/parcl-phoenix.png',
     backgroundImage: '/logos/parcl-bg.png',
     colors: {
       primary: '#0d1939',
