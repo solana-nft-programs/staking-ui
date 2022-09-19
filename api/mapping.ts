@@ -1137,7 +1137,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     links: [
       { text: 'San Francisco', value: '/parcl-san-francisco' },
       { text: 'Brooklyn', value: '/parcl-brooklyn' },
-      { text: 'Phoenix', value: '/parcl-phoenx' },
+      { text: 'Phoenix', value: '/parcl-phoenix' },
       { text: 'Manhattan', value: '/parcl-manhattan' },
       { text: 'Los Angeles', value: '/parcl-los-angeles' },
       { text: 'Miami', value: '/parcl-miami' },
@@ -1182,7 +1182,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     links: [
       { text: 'San Francisco', value: '/parcl-san-francisco' },
       { text: 'Brooklyn', value: '/parcl-brooklyn' },
-      { text: 'Phoenix', value: '/parcl-phoenx' },
+      { text: 'Phoenix', value: '/parcl-phoenix' },
       { text: 'Manhattan', value: '/parcl-manhattan' },
       { text: 'Los Angeles', value: '/parcl-los-angeles' },
       { text: 'Miami', value: '/parcl-miami' },
@@ -1227,7 +1227,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     links: [
       { text: 'San Francisco', value: '/parcl-san-francisco' },
       { text: 'Brooklyn', value: '/parcl-brooklyn' },
-      { text: 'Phoenix', value: '/parcl-phoenx' },
+      { text: 'Phoenix', value: '/parcl-phoenix' },
       { text: 'Manhattan', value: '/parcl-manhattan' },
       { text: 'Los Angeles', value: '/parcl-los-angeles' },
       { text: 'Miami', value: '/parcl-miami' },
@@ -1272,7 +1272,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     links: [
       { text: 'San Francisco', value: '/parcl-san-francisco' },
       { text: 'Brooklyn', value: '/parcl-brooklyn' },
-      { text: 'Phoenix', value: '/parcl-phoenx' },
+      { text: 'Phoenix', value: '/parcl-phoenix' },
       { text: 'Manhattan', value: '/parcl-manhattan' },
       { text: 'Los Angeles', value: '/parcl-los-angeles' },
       { text: 'Miami', value: '/parcl-miami' },
@@ -1318,7 +1318,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     links: [
       { text: 'San Francisco', value: '/parcl-san-francisco' },
       { text: 'Brooklyn', value: '/parcl-brooklyn' },
-      { text: 'Phoenix', value: '/parcl-phoenx' },
+      { text: 'Phoenix', value: '/parcl-phoenix' },
       { text: 'Manhattan', value: '/parcl-manhattan' },
       { text: 'Los Angeles', value: '/parcl-los-angeles' },
       { text: 'Miami', value: '/parcl-miami' },
@@ -1343,7 +1343,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     ],
   },
   {
-    name: 'parcl-pheonix',
+    name: 'parcl-phoenix',
     displayName: 'Parcl Phoenix',
     stakePoolAddress: new PublicKey(
       'ESbcGhaddmgKWkW63txisKP6HwS3491brbP2hJuTrVY6'
@@ -1363,7 +1363,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     links: [
       { text: 'San Francisco', value: '/parcl-san-francisco' },
       { text: 'Brooklyn', value: '/parcl-brooklyn' },
-      { text: 'Phoenix', value: '/parcl-phoenx' },
+      { text: 'Phoenix', value: '/parcl-phoenix' },
       { text: 'Manhattan', value: '/parcl-manhattan' },
       { text: 'Los Angeles', value: '/parcl-los-angeles' },
       { text: 'Miami', value: '/parcl-miami' },
@@ -1684,23 +1684,24 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     receiptType: ReceiptType.Original,
     websiteUrl: 'https://steamland.io',
     hostname: 'harvest.steamland.io',
-    imageUrl: 'https://raw.githubusercontent.com/Steamland/images/main/harvest_logo.png' ,
+    imageUrl:
+      'https://raw.githubusercontent.com/Steamland/images/main/harvest_logo.png',
     hidden: true,
     styles: {
-     fontFamily: 'Industry, sans-serif',
-     fontWeight: 500,
-   },
-   backgroundImage:
-     'https://raw.githubusercontent.com/Steamland/images/main/harvesting_background.png',
-     tokenStandard: TokenStandard.NonFungible,
-     hideAllowedTokens: true,
-     colors: {
-     primary: '#1A1A1D',
-     secondary: '#9e333f',
-     accent: '#313063',
-     fontColor: '#FFFFFF',
-     fontColorSecondary: '#FFFFFF',
-     backgroundSecondary: '#4E4E50',
-   },
+      fontFamily: 'Industry, sans-serif',
+      fontWeight: 500,
+    },
+    backgroundImage:
+      'https://raw.githubusercontent.com/Steamland/images/main/harvesting_background.png',
+    tokenStandard: TokenStandard.NonFungible,
+    hideAllowedTokens: true,
+    colors: {
+      primary: '#1A1A1D',
+      secondary: '#9e333f',
+      accent: '#313063',
+      fontColor: '#FFFFFF',
+      fontColorSecondary: '#FFFFFF',
+      backgroundSecondary: '#4E4E50',
+    },
   },
 ]
