@@ -1705,4 +1705,52 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       backgroundSecondary: '#4E4E50',
     },
   },
+  {
+    name: 'Pixel-Y00ts',
+    displayName: 'Pixel Y0ots',
+    nameInHeader: true,
+    stakePoolAddress: new PublicKey(
+      '6JAjWAWhzAdZRVXmLKpzXy8idqPY3Jb5AUUXzBPm3FGt'
+    ),
+    hostname: 'stake.pixel-y00ts',
+    hideFooter: true,
+    hideAllowedTokens: true,
+    websiteUrl: '',
+    receiptType: ReceiptType.Original,
+    tokenStandard: TokenStandard.NonFungible,
+    // styles to apply to the whole stake pool
+    styles: {
+      fontFamily: 'Industry, sans-serif',
+      fontWeight: 500,
+    },
+    // Colors object to style the stake page
+    colors: {
+      primary: '#181818',
+      secondary: '#177b7b',
+      backgroundSecondary: 'rgb(24 24 24 / 90%)',
+      fontColor: '#F2F2F2',
+    },
+    imageUrl:
+      'https://raw.githubusercontent.com/DicersN00b/loots-logo/main/logo.png',
+    // Background image for poolq
+    backgroundImage:
+      'https://raw.githubusercontent.com/DicersN00b/loots-logo/main/BG%20STAKING.png',
+
+    // Website url if specified will be navigated to when the image in the header is clicked
+    maxStaked: 10000,
+    links: [
+      {
+        text: 'Twitter',
+        value: 'https://twitter.com/PY00ts',
+      },
+      {
+        text: 'Discord',
+        value: 'https://discord.com/invite/pixely00ts',
+      },
+      {
+        text: 'Buy Pixel Y00ts',
+        value: 'https://magiceden.io/marketplace/pixel_yoots',
+      },
+    ],
+  },
 ]
