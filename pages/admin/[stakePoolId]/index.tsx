@@ -1,11 +1,6 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import { RewardDistributorKind } from '@cardinal/staking/dist/cjs/programs/rewardDistributor'
-import { getRewardEntry } from '@cardinal/staking/dist/cjs/programs/rewardDistributor/accounts'
-import { findRewardEntryId } from '@cardinal/staking/dist/cjs/programs/rewardDistributor/pda'
-import { findStakeEntryIdFromMint } from '@cardinal/staking/dist/cjs/programs/stakePool/utils'
 import { Tooltip } from '@mui/material'
-import { useWallet } from '@solana/wallet-adapter-react'
-import { PublicKey } from '@solana/web3.js'
 import { AsyncButton } from 'common/Button'
 import { Footer } from 'common/Footer'
 import { Header } from 'common/Header'
@@ -23,6 +18,7 @@ import { useHandleAuthorizeMints } from 'handlers/useHandleAuthorizeMints'
 import { useHandleReclaimFunds } from 'handlers/useHandleReclaimFunds'
 import { useHandleSetMultipliers } from 'handlers/useHandleSetMultipliers'
 import { useHandleUpdatePool } from 'handlers/useHandleUpdatePool'
+import { useMintMultiplier } from 'hooks/useMintMultiplier'
 import { useRewardDistributorData } from 'hooks/useRewardDistributorData'
 import { useRewardDistributorTokenAccount } from 'hooks/useRewardDistributorTokenAccount'
 import { useRewardMintInfo } from 'hooks/useRewardMintInfo'
@@ -60,21 +56,19 @@ const creationFormSchema = Yup.object({
 export type MultipliersForm = Yup.InferType<typeof creationFormSchema>
 
 function AdminStakePool() {
-  const wallet = useWallet()
-  const { connection, environment } = useEnvironmentCtx()
+  const { environment } = useEnvironmentCtx()
   const stakePool = useStakePoolData()
   const rewardDistributor = useRewardDistributorData()
   const rewardDistributorTokenAccount = useRewardDistributorTokenAccount()
   const rewardMintInfo = useRewardMintInfo()
   const [mintsToAuthorize, setMintsToAuthorize] = useState<string>('')
-  const [loadingLookupMultiplier, setLoadingLookupMultiplier] =
-    useState<boolean>(false)
-  const [multiplierFound, setMultiplierFound] = useState<string>('')
   const { data: stakePoolMetadata } = useStakePoolMetadata()
   const handleAuthorizeMints = useHandleAuthorizeMints()
   const handleSetMultipliers = useHandleSetMultipliers()
   const handleUpdatePool = useHandleUpdatePool()
   const handleReclaimFunds = useHandleReclaimFunds()
+  const [mintLookupId, setMintLookupId] = useState<string>('')
+  const mintMultiplier = useMintMultiplier(mintLookupId)
 
   const initialValues: MultipliersForm = {
     multipliers: [''],
@@ -87,53 +81,6 @@ function AdminStakePool() {
     validationSchema: creationFormSchema,
   })
   const { values, setFieldValue } = formState
-
-  const handleLookupMultiplier = async (mintToLookup: string) => {
-    setLoadingLookupMultiplier(true)
-    try {
-      if (!wallet?.connected) {
-        throw 'Wallet not connected'
-      }
-      if (!stakePool.data) {
-        throw 'Stake pool not found'
-      }
-      if (!rewardDistributor.data) {
-        throw 'Reward Distributor not found'
-      }
-      const mintId = new PublicKey(mintToLookup)
-      let stakeEntryId: PublicKey
-      try {
-        const temp = await findStakeEntryIdFromMint(
-          connection,
-          wallet.publicKey!,
-          stakePool.data!.pubkey,
-          mintId
-        )
-        stakeEntryId = temp[0]
-      } catch (e) {
-        throw 'Invalid mint ID or no reward entry for mint'
-      }
-      const [rewardEntryId] = await findRewardEntryId(
-        rewardDistributor.data.pubkey,
-        stakeEntryId
-      )
-      const rewardEntryData = await getRewardEntry(connection, rewardEntryId)
-      setMultiplierFound(
-        (
-          rewardEntryData.parsed.multiplier.toNumber() /
-          10 ** rewardDistributor.data.parsed.multiplierDecimals
-        ).toString()
-      )
-    } catch (e) {
-      setMultiplierFound('')
-      notify({
-        message: `${e}`,
-        type: 'error',
-      })
-    } finally {
-      setLoadingLookupMultiplier(false)
-    }
-  }
 
   return (
     <div>
@@ -426,21 +373,18 @@ function AdminStakePool() {
                         type="text"
                         placeholder={'Enter Mint ID'}
                         onChange={(e) => {
-                          if (e.target.value.length !== 0) {
-                            handleLookupMultiplier(e.target.value)
-                          } else {
-                            setMultiplierFound('')
-                          }
+                          setMintLookupId(e.target.value)
                         }}
                       />
                       <span className="ml-10 inline-block">
-                        {loadingLookupMultiplier && (
+                        {mintMultiplier.isLoading ? (
                           <TailSpin color="#fff" height={20} width={20} />
-                        )}
-                        {multiplierFound && (
-                          <span className="text-md border px-4 py-2 font-semibold">
-                            {multiplierFound}x
-                          </span>
+                        ) : (
+                          !!mintMultiplier.data && (
+                            <span className="text-md border px-4 py-2 font-semibold">
+                              {mintMultiplier.data}x
+                            </span>
+                          )
                         )}
                       </span>
                     </div>
