@@ -17,10 +17,7 @@ import {
   withUpdateRewardDistributor,
   withUpdateRewardEntry,
 } from '@cardinal/staking/dist/cjs/programs/rewardDistributor/transaction'
-import {
-  withAuthorizeStakeEntry,
-  withUpdateStakePool,
-} from '@cardinal/staking/dist/cjs/programs/stakePool/transaction'
+import { withUpdateStakePool } from '@cardinal/staking/dist/cjs/programs/stakePool/transaction'
 import { findStakeEntryIdFromMint } from '@cardinal/staking/dist/cjs/programs/stakePool/utils'
 import { Tooltip } from '@mui/material'
 import { BN } from '@project-serum/anchor'
@@ -43,6 +40,7 @@ import { asWallet } from 'common/Wallets'
 import type { CreationForm } from 'components/StakePoolForm'
 import { bnValidationTest, StakePoolForm } from 'components/StakePoolForm'
 import { useFormik } from 'formik'
+import { useHandleAuthorizeMints } from 'handlers/useHandleAuthorizeMints'
 import { useRewardDistributorData } from 'hooks/useRewardDistributorData'
 import { useRewardMintInfo } from 'hooks/useRewardMintInfo'
 import { useStakePoolData } from 'hooks/useStakePoolData'
@@ -91,6 +89,7 @@ function AdminStakePool() {
   const rewardMintInfo = useRewardMintInfo()
   const [mintInfo, setMintInfo] = useState<splToken.MintInfo>()
   const { data: stakePoolMetadata } = useStakePoolMetadata()
+  const handleAuthorizeMints = useHandleAuthorizeMints()
 
   const initialValues: MultipliersForm = {
     multipliers: [''],
@@ -197,54 +196,6 @@ function AdminStakePool() {
       const parsedError = handleError(e, `Error setting multiplier: ${e}`)
       notify({
         message: parsedError || String(e),
-        type: 'error',
-      })
-    }
-  }
-
-  const handleAuthorizeMints = async () => {
-    try {
-      if (!wallet?.connected) {
-        throw 'Wallet not connected'
-      }
-      if (!stakePool.data?.pubkey) {
-        throw 'Stake pool pubkey not found'
-      }
-      const authorizePublicKeys =
-        mintsToAuthorize.length > 0
-          ? mintsToAuthorize
-              .split(',')
-              .map((address) => new PublicKey(address.trim()))
-          : []
-
-      if (authorizePublicKeys.length === 0) {
-        notify({ message: `Error: No mints inserted` })
-      }
-      for (let i = 0; i < authorizePublicKeys.length; i++) {
-        const mint = authorizePublicKeys[i]!
-        const transaction = await withAuthorizeStakeEntry(
-          new Transaction(),
-          connection,
-          asWallet(wallet),
-          {
-            stakePoolId: stakePool.data.pubkey,
-            originalMintId: mint,
-          }
-        )
-        await executeTransaction(connection, asWallet(wallet), transaction, {
-          silent: false,
-          signers: [],
-        })
-        notify({
-          message: `Successfully authorized ${i + 1}/${
-            authorizePublicKeys.length
-          }`,
-          type: 'success',
-        })
-      }
-    } catch (e) {
-      notify({
-        message: handleError(e, `Error authorizing mint: ${e}`),
         type: 'error',
       })
     }
@@ -1016,7 +967,12 @@ function AdminStakePool() {
                       }}
                     />
                     <AsyncButton
-                      onClick={() => handleAuthorizeMints()}
+                      loading={handleAuthorizeMints.isLoading}
+                      onClick={() =>
+                        handleAuthorizeMints.mutate({
+                          mintsToAuthorize,
+                        })
+                      }
                       inlineLoader
                       className="w-max"
                     >
