@@ -15,7 +15,6 @@ import {
   withInitRewardDistributor,
   withReclaimFunds,
   withUpdateRewardDistributor,
-  withUpdateRewardEntry,
 } from '@cardinal/staking/dist/cjs/programs/rewardDistributor/transaction'
 import { withUpdateStakePool } from '@cardinal/staking/dist/cjs/programs/stakePool/transaction'
 import { findStakeEntryIdFromMint } from '@cardinal/staking/dist/cjs/programs/stakePool/utils'
@@ -41,6 +40,7 @@ import type { CreationForm } from 'components/StakePoolForm'
 import { bnValidationTest, StakePoolForm } from 'components/StakePoolForm'
 import { useFormik } from 'formik'
 import { useHandleAuthorizeMints } from 'handlers/useHandleAuthorizeMints'
+import { useHandleSetMultipliers } from 'handlers/useHandleSetMultipliers'
 import { useRewardDistributorData } from 'hooks/useRewardDistributorData'
 import { useRewardMintInfo } from 'hooks/useRewardMintInfo'
 import { useStakePoolData } from 'hooks/useStakePoolData'
@@ -90,6 +90,7 @@ function AdminStakePool() {
   const [mintInfo, setMintInfo] = useState<splToken.MintInfo>()
   const { data: stakePoolMetadata } = useStakePoolMetadata()
   const handleAuthorizeMints = useHandleAuthorizeMints()
+  const handleSetMultipliers = useHandleSetMultipliers()
 
   const initialValues: MultipliersForm = {
     multipliers: [''],
@@ -102,104 +103,6 @@ function AdminStakePool() {
     validationSchema: creationFormSchema,
   })
   const { values, setFieldValue } = formState
-
-  const handleMutliplier = async () => {
-    if (!wallet?.connected) {
-      throw 'Wallet not connected'
-    }
-    try {
-      if (!stakePool.data?.pubkey) {
-        throw 'Stake pool pubkey not found'
-      }
-
-      if (!values.multiplierMints) {
-        throw 'Invalid multiplier mints'
-      }
-      if (!values.multipliers) {
-        throw 'Invalid multipliers'
-      }
-
-      if (values.multipliers.length !== values.multiplierMints.length) {
-        notify({
-          message: `Error: Multiplier and mints aren't 1:1`,
-          type: 'error',
-        })
-        return
-      }
-
-      if (values.multiplierMints.toString() === [''].toString())
-        values.multiplierMints = []
-      if (values.multipliers.toString() === [''].toString())
-        values.multipliers = []
-      const pubKeysToSetMultiplier = []
-      for (let i = 0; i < values.multiplierMints.length; i++) {
-        if (values.multiplierMints[i] !== '' && values.multipliers[i] !== '') {
-          pubKeysToSetMultiplier.push(new PublicKey(values.multiplierMints[i]!))
-        } else {
-          notify({
-            message: `Error: Invalid multiplier mint "${values.multiplierMints[
-              i
-            ]!}" or multiplier "${values.multipliers[i]!}"`,
-          })
-          return
-        }
-      }
-
-      if (pubKeysToSetMultiplier.length === 0) {
-        notify({ message: `Info: No mints inserted` })
-      }
-      if (values.multipliers.length === 0) {
-        notify({ message: `Info: No multiplier inserted` })
-      }
-
-      const [rewardDistributorId] = await findRewardDistributorId(
-        stakePool.data.pubkey
-      )
-      const rewardDistributor = await tryGetAccount(() =>
-        getRewardDistributor(connection, rewardDistributorId)
-      )
-      if (!rewardDistributor) {
-        throw 'Reward Distributor for pool not found'
-      }
-
-      for (let i = 0; i < pubKeysToSetMultiplier.length; i++) {
-        const mint = pubKeysToSetMultiplier[i]!
-        const [stakeEntryId] = await findStakeEntryIdFromMint(
-          connection,
-          wallet.publicKey!,
-          stakePool.data.pubkey,
-          mint
-        )
-        const transaction = await withUpdateRewardEntry(
-          new Transaction(),
-          connection,
-          asWallet(wallet),
-          {
-            stakePoolId: stakePool.data.pubkey,
-            rewardDistributorId: rewardDistributor.pubkey,
-            stakeEntryId: stakeEntryId,
-            multiplier: new BN(values.multipliers[i]!),
-          }
-        )
-        await executeTransaction(connection, asWallet(wallet), transaction, {
-          silent: false,
-          signers: [],
-        })
-        notify({
-          message: `Successfully set multiplier ${i + 1}/${
-            pubKeysToSetMultiplier.length
-          }`,
-          type: 'success',
-        })
-      }
-    } catch (e) {
-      const parsedError = handleError(e, `Error setting multiplier: ${e}`)
-      notify({
-        message: parsedError || String(e),
-        type: 'error',
-      })
-    }
-  }
 
   const handleUpdate = async (values: CreationForm) => {
     if (!wallet?.connected) {
@@ -924,7 +827,13 @@ function AdminStakePool() {
                         )
                     )}
                     <AsyncButton
-                      onClick={() => handleMutliplier()}
+                      loading={handleSetMultipliers.isLoading}
+                      onClick={() =>
+                        handleSetMultipliers.mutate({
+                          multiplierMints: values.multiplierMints,
+                          multipliers: values.multipliers,
+                        })
+                      }
                       inlineLoader
                       className="w-max"
                     >
