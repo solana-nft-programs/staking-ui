@@ -18,9 +18,11 @@ export default function EpochProgress() {
         <span className="text-[12px] text-neutral-400 opacity-0 group-hover:opacity-100 transition-opacity"></span>
         <div className="w-full text-center flex items-center gap-2 -mt-2">
             <div className="w-full">
+              <h2>Epoch {data?.epoch} ({data?.epochTimeLeft})</h2>
               <ProgressBar color="grey" value={parseFloat(percentage)} />
             </div>
           <div className="w-1/12 mt-2">
+            <br />
             <span className="inline-block text-sm text-neutral-600">
               {percentage}%
             </span>

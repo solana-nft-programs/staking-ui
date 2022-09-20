@@ -1,13 +1,13 @@
 import { LAMPORTS_PER_SOL } from "@solana/web3.js"
 import { LoadingSpinner } from "common/LoadingSpinner"
 import { ProgressBar } from "common/ProgressBar"
+import { MouseoverTooltip } from "common/Tooltip"
 import { valueOrDefault, roundXDigitValue, truncateFloat } from "common/utils"
 import { Button } from "components/Button"
 import { SentriesDetailsData } from "hooks/useSentriesStats"
 import { Rewards, SentriesStakingData, useSentryPower } from "hooks/useSentryPower"
 import { ReactElement, ReactNode, useState } from "react"
 import { RewardsModal } from "./RewardsModal"
-import { StakeModal } from "components/StakeModal"
 
 type StatsProps = {
   stakedSentries: number,
@@ -58,8 +58,8 @@ export function Stats(props: StatsProps) {
   }
 
   const stakedSentriesPercentage = (stakedSentries * 100) / 8000
-  const stakedSol = parseFloat(roundXDigitValue(valueOrDefault(stats?.totalStaked, 0)))
-  const solNeeded = parseFloat(roundXDigitValue(calculateSolNeeded(valueOrDefault(stats?.maxPowerLevelSol, 0)), 4))
+  const stakedSol = valueOrDefault(stats?.totalStaked, 0)
+  const solNeeded = calculateSolNeeded(valueOrDefault(stats?.maxPowerLevelSol, 0))
   const sentriesCount = Number(valueOrDefault(stats?.nftCount, 0))
 
   const solPowering = valueOrDefault(sentriesDetails?.solPowering, 0) // TODO: Subtract Self Stake
@@ -87,7 +87,7 @@ export function Stats(props: StatsProps) {
 
   const rewardRate = roundXDigitValue(((activePctAllocation * pctSolStaked) * 100), 5)
 
-  const sliderPct = calculateProgress(stakedSol, solNeeded, sentriesCount)
+  const sliderPct = calculateProgress(stakedSol, solNeeded, sentriesCount) * 100
 
   return (
     <Container>
@@ -95,13 +95,13 @@ export function Stats(props: StatsProps) {
         {/* TODO: Set this to 100% max.. this number is THEIR # of sentries * 5 SOL so SOL out of the / total SOL amount */}
         <Progress value={sliderPct} />
         <div className="absolute top-1/2 text-white text-center -translate-y-1/2 mt-12">
-          <h2 className="font-serif" style={{ fontSize: calculateFontSize(stakedSol) }}>{roundXDigitValue(stakedSol)} SOL</h2>
+          <h2 className="font-serif" style={{ fontSize: calculateFontSize(stakedSol) }}>{parseFloat(truncateFloat(stakedSol)).toLocaleString()} SOL</h2>
           <p className="text-neutral-600 font-semibold">Staked with The Lode</p>
         </div>
       </div>
       <div className="text-white text-sm text-center">
-        <p className="pb-0">You current SOL staked with The Lode is {stakedSol} ◎</p>
-        <p>You will need {solNeeded} ◎ to power up the {sentriesCount} Sentries NFTs</p>
+        <p className="pb-0">You current SOL staked with The Lode is {parseFloat(truncateFloat(stakedSol)).toLocaleString()} ◎</p>
+        <p>You will need {parseFloat(truncateFloat(solNeeded)).toLocaleString()} ◎ to power up the {sentriesCount} Sentries NFTs</p>
       </div>
       {/* <div className="flex justify-between bg-[#F7B551] bg-opacity-30 border border-[#F7B551] p-4 py-3 rounded-2xl text-[#FFDEAD]">
         <div className="flex items-center gap-2">
@@ -115,11 +115,13 @@ export function Stats(props: StatsProps) {
         </div>
         {rewardRate ? <span>{rewardRate}%</span> : null}
       </div> */}
+      <MouseoverTooltip title={`Rewards are calculated from your staked SOL in the Lode`}>
       <div className="mt-4 p-4 py-3 rounded-2xl font-semibold border-2 border-neutral-700 flex justify-between items-center">
         <span className="text-neutral-500">Current Rewards</span>
         {hasRewards ? <Button as="button" size="sm" variant="secondary" onClick={() => setIsModalOpen(true)}>{totalRewards} <span className="opacity-50 font-normal">◎</span></Button>
         : <span className="font-normal text-neutral-700 text-sm">None so far</span>}
       </div>
+      </MouseoverTooltip>
       <Separator />
       <StatsBlock 
         color="#9647FB"
@@ -161,9 +163,7 @@ export function Stats(props: StatsProps) {
         valueAbs={currentValueLocked}
         prefix="$"
       />
-      {/* <Button as="button" size="sm" variant="secondary" onClick={() => setIsStakingModalOpen(true)}>Testing</Button> */}
       <RewardsModal isOpen={isModalOpen} setIsOpen={setIsModalOpen} />
-      {/* <StakeModal isOpen={isStakingModalOpen} setIsOpen={setIsStakingModalOpen}/> */}
     </Container>
   )
 }
