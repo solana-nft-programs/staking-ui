@@ -24,7 +24,7 @@ import { useMemo, useState } from 'react'
 import Select from 'react-select'
 import * as Yup from 'yup'
 
-const publicKeyValidationTest = (value: string | undefined): boolean => {
+export const publicKeyValidationTest = (value: string | undefined): boolean => {
   return tryPublicKey(value) ? true : false
 }
 
