@@ -95,6 +95,13 @@ export const allowedTokensForPool = (
         isAllowed = true
       }
     }
+    console.log(
+      stakeAuthorizations?.map((stk) => stk.parsed.mint.toString()),
+      token
+    )
+    if (isAllowed) {
+      console.log('==', token)
+    }
     return isAllowed
   })
 
@@ -176,6 +183,7 @@ export const useAllowedTokenDatas = (showFungibleTokens: boolean) => {
         ),
       }))
 
+      console.log('--', baseTokenDatas, allTokenAccounts)
       const allowedTokens = allowedTokensForPool(
         baseTokenDatas,
         stakePool,
@@ -189,6 +197,7 @@ export const useAllowedTokenDatas = (showFungibleTokens: boolean) => {
             tokenData.metaplexData?.data.tokenStandard ===
               metaplex.TokenStandard.FungibleAsset)
       )
+      console.log('--', allowedTokens)
 
       const stakeEntryIds = await Promise.all(
         allowedTokens.map(
