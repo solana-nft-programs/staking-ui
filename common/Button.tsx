@@ -1,8 +1,10 @@
 import { css } from '@emotion/react'
 import styled from '@emotion/styled'
+import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
 import { lighten } from 'polished'
 import { useState } from 'react'
 
+import { contrastify } from './colors'
 import { LoadingSpinner } from './LoadingSpinner'
 
 export type ButtonProps = {
@@ -93,38 +95,70 @@ export const getColorByBgColor = (bgColor: string) => {
     : '#fff'
 }
 
-export const AsyncButton = ({
-  children,
-  handleClick,
-  className,
-  color,
-  ...buttonProps
-}: {
-  children: JSX.Element | JSX.Element[] | string
+interface Props extends React.HTMLAttributes<HTMLDivElement> {
+  children: React.ReactNode
+  icon?: JSX.Element
+  count?: number
   className?: string
-  color?: string
-  handleClick: () => void
-} & ButtonProps) => {
-  const [loading, setLoading] = useState(false)
+  disabled?: boolean
+  loading?: boolean
+  inlineLoader?: boolean
+  loader?: React.ReactElement
+}
 
+export const AsyncButton: React.FC<Props> = ({
+  children,
+  onClick,
+  className,
+  disabled,
+  loading,
+  inlineLoader,
+  loader,
+  ...rest
+}: Props) => {
+  const [loadingClick, setLoadingClick] = useState(false)
+  const { data: stakePoolMetadata } = useStakePoolMetadata()
+  const loaderElement = loader || (
+    <LoadingSpinner height="15" className="flex items-center justify-center" />
+  )
   return (
-    <Button
-      {...buttonProps}
-      className={className}
-      onClick={async () => {
+    <div
+      {...rest}
+      className={`flex items-center gap-1 rounded-lg bg-primary p-3 text-light-0 transition-colors hover:bg-primary-hover ${className} ${
+        disabled ? 'cursor-default opacity-50' : 'cursor-pointer'
+      }`}
+      css={css`
+        background: ${stakePoolMetadata?.colors?.accent};
+        color: ${stakePoolMetadata?.colors?.accent &&
+        contrastify(1, stakePoolMetadata?.colors?.accent)};
+        &:hover {
+          background: ${!disabled &&
+          stakePoolMetadata?.colors?.accent &&
+          contrastify(0.05, stakePoolMetadata?.colors?.accent)};
+        }
+      `}
+      onClick={async (e) => {
+        if (!onClick || disabled) return
         try {
-          setLoading(true)
-          await handleClick()
+          setLoadingClick(true)
+          await onClick(e)
         } finally {
-          setLoading(false)
+          setLoadingClick(false)
         }
       }}
     >
-      {loading ? (
-        <LoadingSpinner fill={color ? color : '#FFF'} height="15px" />
+      {loading || loadingClick ? (
+        inlineLoader ? (
+          <div className="flex items-center justify-center gap-2">
+            {loaderElement}
+            {children}
+          </div>
+        ) : (
+          loaderElement
+        )
       ) : (
         children
       )}
-    </Button>
+    </div>
   )
 }

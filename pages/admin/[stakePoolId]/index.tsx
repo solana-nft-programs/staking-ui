@@ -27,6 +27,7 @@ import { BN } from '@project-serum/anchor'
 import * as splToken from '@solana/spl-token'
 import { useWallet } from '@solana/wallet-adapter-react'
 import { Keypair, PublicKey, Transaction } from '@solana/web3.js'
+import { AsyncButton } from 'common/Button'
 import { handleError } from 'common/errors'
 import { Footer } from 'common/Footer'
 import { Header } from 'common/Header'
@@ -87,10 +88,6 @@ function AdminStakePool() {
     useState<boolean>(false)
   const [loadingReclaim, setLoadingReclaim] = useState<boolean>(false)
   const [multiplierFound, setMultiplierFound] = useState<string>('')
-  const [loadingHandleAuthorizeMints, setLoadingHandleAuthorizeMints] =
-    useState<boolean>(false)
-  const [loadingHandleMultipliers, setLoadingHandleMultipliers] =
-    useState<boolean>(false)
   const rewardMintInfo = useRewardMintInfo()
   const [mintInfo, setMintInfo] = useState<splToken.MintInfo>()
   const { data: stakePoolMetadata } = useStakePoolMetadata()
@@ -108,7 +105,6 @@ function AdminStakePool() {
   const { values, setFieldValue } = formState
 
   const handleMutliplier = async () => {
-    setLoadingHandleMultipliers(true)
     if (!wallet?.connected) {
       throw 'Wallet not connected'
     }
@@ -203,13 +199,10 @@ function AdminStakePool() {
         message: parsedError || String(e),
         type: 'error',
       })
-    } finally {
-      setLoadingHandleMultipliers(false)
     }
   }
 
   const handleAuthorizeMints = async () => {
-    setLoadingHandleAuthorizeMints(true)
     try {
       if (!wallet?.connected) {
         throw 'Wallet not connected'
@@ -254,8 +247,6 @@ function AdminStakePool() {
         message: handleError(e, `Error authorizing mint: ${e}`),
         type: 'error',
       })
-    } finally {
-      setLoadingHandleAuthorizeMints(false)
     }
   }
 
@@ -981,20 +972,13 @@ function AdminStakePool() {
                           </span>
                         )
                     )}
-                    <button type="button" onClick={() => handleMutliplier()}>
-                      <div
-                        className={
-                          'bg-blue-700 mt-4 inline-block cursor-pointer rounded-md px-4 py-2'
-                        }
-                      >
-                        {loadingHandleMultipliers && (
-                          <div className="mr-2 inline-block">
-                            <TailSpin color="#fff" height={15} width={15} />
-                          </div>
-                        )}
-                        Set Multipliers
-                      </div>
-                    </button>
+                    <AsyncButton
+                      onClick={() => handleMutliplier()}
+                      inlineLoader
+                      className="w-max"
+                    >
+                      Set Multipliers
+                    </AsyncButton>
                   </div>
                 )}
                 {stakePool.data?.parsed.requiresAuthorization && (
@@ -1031,21 +1015,13 @@ function AdminStakePool() {
                         setMintsToAuthorize(e.target.value)
                       }}
                     />
-                    <div
-                      className={
-                        'bg-blue-700 mt-4 inline-block cursor-pointer rounded-md px-4 py-2'
-                      }
+                    <AsyncButton
                       onClick={() => handleAuthorizeMints()}
+                      inlineLoader
+                      className="w-max"
                     >
-                      <div className="flex">
-                        {loadingHandleAuthorizeMints && (
-                          <div className="mr-2">
-                            <TailSpin color="#fff" height={15} width={15} />
-                          </div>
-                        )}
-                        Authorize Mints
-                      </div>
-                    </div>
+                      Authorize Mints
+                    </AsyncButton>
                   </div>
                 )}
               </div>
