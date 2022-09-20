@@ -1,4 +1,5 @@
 import { GlyphPlus } from 'assets/GlyphPlus'
+import { AsyncButton } from 'common/Button'
 import { HeaderSlim } from 'common/HeaderSlim'
 import { statsNameMapping, useGlobalStats } from 'hooks/useGlobalStats'
 import { useRouter } from 'next/router'
@@ -26,15 +27,14 @@ export const MainHero = () => {
             <div className="text-lg text-medium-3">
               Does your NFT collection or tokens need staking?
             </div>
-            <div
-              className="flex cursor-pointer items-center gap-1 rounded-lg bg-primary p-3 text-light-0 transition-colors hover:bg-primary-hover"
+            <AsyncButton
               onClick={() => {
                 router.push('/admin')
               }}
             >
               <>Create your pool</>
               <GlyphPlus />
-            </div>
+            </AsyncButton>
           </div>
           <div className="flex w-fit flex-wrap gap-3 rounded-xl border-[2px] border-border p-4">
             {statsNameMapping.map(({ displayName, key }) => (

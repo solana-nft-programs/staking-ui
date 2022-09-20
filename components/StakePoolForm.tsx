@@ -9,6 +9,7 @@ import { BN } from '@project-serum/anchor'
 import * as splToken from '@solana/spl-token'
 import { useWallet } from '@solana/wallet-adapter-react'
 import { Keypair, PublicKey, Transaction } from '@solana/web3.js'
+import { AsyncButton } from 'common/Button'
 import { handleError } from 'common/errors'
 import { FormFieldTitleInput } from 'common/FormFieldInput'
 import { FormInput } from 'common/FormInput'
@@ -20,7 +21,6 @@ import { asWallet } from 'common/Wallets'
 import { useFormik } from 'formik'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 import { useMemo, useState } from 'react'
-import { TailSpin } from 'react-loader-spinner'
 import Select from 'react-select'
 import * as Yup from 'yup'
 
@@ -856,11 +856,11 @@ export function StakePoolForm({
           )}
         </div>
       </div>
-      <button
+
+      <AsyncButton
         disabled={Boolean(
           values.rewardDistributorKind && submitDisabled && type !== 'update'
         )}
-        type="button"
         onClick={async () => {
           try {
             setLoading(true)
@@ -869,22 +869,11 @@ export function StakePoolForm({
             setLoading(false)
           }
         }}
+        inlineLoader
+        className="mt-4 w-max"
       >
-        <div
-          className={`bg-blue-700 mt-4 inline-block rounded-md px-4 py-2 ${
-            submitDisabled && values.rewardDistributorKind && type !== 'update'
-              ? 'opacity-50'
-              : ''
-          }`}
-        >
-          {loading && (
-            <div className="mr-2 inline-block">
-              <TailSpin color="#fff" height={15} width={15} />
-            </div>
-          )}
-          {type.charAt(0).toUpperCase() + type.slice(1)} Pool
-        </div>
-      </button>
+        {type.charAt(0).toUpperCase() + type.slice(1)} Pool
+      </AsyncButton>
     </form>
   )
 }
