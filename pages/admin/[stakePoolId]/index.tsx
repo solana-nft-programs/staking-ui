@@ -1,18 +1,14 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import { findAta } from '@cardinal/common'
-import { executeTransaction } from '@cardinal/staking'
 import { RewardDistributorKind } from '@cardinal/staking/dist/cjs/programs/rewardDistributor'
 import { getRewardEntry } from '@cardinal/staking/dist/cjs/programs/rewardDistributor/accounts'
 import { findRewardEntryId } from '@cardinal/staking/dist/cjs/programs/rewardDistributor/pda'
-import { withReclaimFunds } from '@cardinal/staking/dist/cjs/programs/rewardDistributor/transaction'
 import { findStakeEntryIdFromMint } from '@cardinal/staking/dist/cjs/programs/stakePool/utils'
 import { Tooltip } from '@mui/material'
-import { BN } from '@project-serum/anchor'
 import * as splToken from '@solana/spl-token'
 import { useWallet } from '@solana/wallet-adapter-react'
-import { Keypair, PublicKey, Transaction } from '@solana/web3.js'
+import { Keypair, PublicKey } from '@solana/web3.js'
 import { AsyncButton } from 'common/Button'
-import { handleError } from 'common/errors'
 import { Footer } from 'common/Footer'
 import { Header } from 'common/Header'
 import { notify } from 'common/Notification'
@@ -23,13 +19,14 @@ import {
   tryParseInput,
 } from 'common/units'
 import { pubKeyUrl, shortPubKey, tryPublicKey } from 'common/utils'
-import { asWallet } from 'common/Wallets'
 import { bnValidationTest, StakePoolForm } from 'components/StakePoolForm'
 import { useFormik } from 'formik'
 import { useHandleAuthorizeMints } from 'handlers/useHandleAuthorizeMints'
+import { useHandleReclaimFunds } from 'handlers/useHandleReclaimFunds'
 import { useHandleSetMultipliers } from 'handlers/useHandleSetMultipliers'
 import { useHandleUpdatePool } from 'handlers/useHandleUpdatePool'
 import { useRewardDistributorData } from 'hooks/useRewardDistributorData'
+import { useRewardDistributorTokenAccount } from 'hooks/useRewardDistributorTokenAccount'
 import { useRewardMintInfo } from 'hooks/useRewardMintInfo'
 import { useStakePoolData } from 'hooks/useStakePoolData'
 import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
@@ -72,7 +69,7 @@ function AdminStakePool() {
   const [mintsToAuthorize, setMintsToAuthorize] = useState<string>('')
   const [loadingLookupMultiplier, setLoadingLookupMultiplier] =
     useState<boolean>(false)
-  const [loadingReclaim, setLoadingReclaim] = useState<boolean>(false)
+  const [loadingRewardAta, setLoadingRewardAta] = useState<boolean>(false)
   const [multiplierFound, setMultiplierFound] = useState<string>('')
   const rewardMintInfo = useRewardMintInfo()
   const [mintInfo, setMintInfo] = useState<splToken.MintInfo>()
@@ -80,6 +77,7 @@ function AdminStakePool() {
   const handleAuthorizeMints = useHandleAuthorizeMints()
   const handleSetMultipliers = useHandleSetMultipliers()
   const handleUpdatePool = useHandleUpdatePool()
+  const handleReclaimFunds = useHandleReclaimFunds()
 
   const initialValues: MultipliersForm = {
     multipliers: [''],
@@ -137,43 +135,6 @@ function AdminStakePool() {
       })
     } finally {
       setLoadingLookupMultiplier(false)
-    }
-  }
-
-  const handleReclaimFunds = async () => {
-    setLoadingReclaim(true)
-    try {
-      if (!wallet?.connected) {
-        throw 'Wallet not connected'
-      }
-      if (!stakePool.data) {
-        throw 'Stake pool not found'
-      }
-      if (!rewardDistributor.data) {
-        throw 'Reward Distributor not found'
-      }
-      const transaction = new Transaction()
-      await withReclaimFunds(transaction, connection, asWallet(wallet), {
-        stakePoolId: stakePool.data.pubkey,
-        amount: new BN(values.reclaimAmount || 0),
-      })
-      const txId = await executeTransaction(
-        connection,
-        asWallet(wallet),
-        transaction,
-        {}
-      )
-      notify({
-        message: `Successfully reclaimed funds from pool. Txid: ${txId}`,
-        type: 'success',
-      })
-    } catch (e) {
-      notify({
-        message: handleError(e, `Error reclaiming funds: ${e}`),
-        type: 'error',
-      })
-    } finally {
-      setLoadingReclaim(false)
     }
   }
 
@@ -430,9 +391,9 @@ function AdminStakePool() {
                               }}
                             />
                             <div
-                              className="cursor-pointer"
+                              className="flex h-full cursor-pointer items-center justify-center"
                               onClick={async () => {
-                                setLoadingReclaim(true)
+                                setLoadingRewardAta(true)
                                 const mint = new PublicKey(
                                   rewardDistributor.data!.parsed.rewardMint
                                 )
@@ -456,34 +417,25 @@ function AdminStakePool() {
                                   'reclaimAmount',
                                   ata.amount.toString()
                                 )
-                                setLoadingReclaim(false)
+                                setLoadingRewardAta(false)
                               }}
                             >
                               Max
                             </div>
                           </div>
-                          <button
+                          <AsyncButton
                             className="ml-5"
-                            type="button"
-                            onClick={() => handleReclaimFunds()}
+                            disabled={loadingRewardAta}
+                            loading={handleReclaimFunds.isLoading}
+                            inlineLoader
+                            onClick={() =>
+                              handleReclaimFunds.mutate({
+                                reclaimAmount: values.reclaimAmount,
+                              })
+                            }
                           >
-                            <div
-                              className={
-                                'bg-blue-700 inline-block cursor-pointer rounded-md px-4 py-2'
-                              }
-                            >
-                              {loadingReclaim && (
-                                <div className="mr-2 inline-block">
-                                  <TailSpin
-                                    color="#fff"
-                                    height={15}
-                                    width={15}
-                                  />
-                                </div>
-                              )}
-                              Reclaim Funds
-                            </div>
-                          </button>
+                            Reclaim Funds
+                          </AsyncButton>
                         </div>
                       </>
                     )}
