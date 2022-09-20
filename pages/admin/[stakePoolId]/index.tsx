@@ -12,13 +12,13 @@ import {
   tryParseInput,
 } from 'common/units'
 import { pubKeyUrl, shortPubKey, tryPublicKey } from 'common/utils'
+import { MintMultiplierLookup } from 'components/MintMultiplierLookup'
 import { bnValidationTest, StakePoolForm } from 'components/StakePoolForm'
 import { useFormik } from 'formik'
 import { useHandleAuthorizeMints } from 'handlers/useHandleAuthorizeMints'
 import { useHandleReclaimFunds } from 'handlers/useHandleReclaimFunds'
 import { useHandleSetMultipliers } from 'handlers/useHandleSetMultipliers'
 import { useHandleUpdatePool } from 'handlers/useHandleUpdatePool'
-import { useMintMultiplier } from 'hooks/useMintMultiplier'
 import { useRewardDistributorData } from 'hooks/useRewardDistributorData'
 import { useRewardDistributorTokenAccount } from 'hooks/useRewardDistributorTokenAccount'
 import { useRewardMintInfo } from 'hooks/useRewardMintInfo'
@@ -27,7 +27,6 @@ import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
 import Head from 'next/head'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 import { useState } from 'react'
-import { TailSpin } from 'react-loader-spinner'
 import * as Yup from 'yup'
 
 const publicKeyValidationTest = (value: string | undefined): boolean => {
@@ -67,8 +66,6 @@ function AdminStakePool() {
   const handleSetMultipliers = useHandleSetMultipliers()
   const handleUpdatePool = useHandleUpdatePool()
   const handleReclaimFunds = useHandleReclaimFunds()
-  const [mintLookupId, setMintLookupId] = useState<string>('')
-  const mintMultiplier = useMintMultiplier(mintLookupId)
 
   const initialValues: MultipliersForm = {
     multipliers: [''],
@@ -361,33 +358,7 @@ function AdminStakePool() {
                         </div>
                       </>
                     )}
-                    <div className="mb-5">
-                      <label
-                        className="mb-2 block text-xs font-bold uppercase tracking-wide text-gray-200"
-                        htmlFor="require-authorization"
-                      >
-                        Look up reward multiplier for mint
-                      </label>
-                      <input
-                        className="mb-3 w-3/5 appearance-none flex-col rounded border border-gray-500 bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800 focus:outline-none"
-                        type="text"
-                        placeholder={'Enter Mint ID'}
-                        onChange={(e) => {
-                          setMintLookupId(e.target.value)
-                        }}
-                      />
-                      <span className="ml-10 inline-block">
-                        {mintMultiplier.isLoading ? (
-                          <TailSpin color="#fff" height={20} width={20} />
-                        ) : (
-                          !!mintMultiplier.data && (
-                            <span className="text-md border px-4 py-2 font-semibold">
-                              {mintMultiplier.data}x
-                            </span>
-                          )
-                        )}
-                      </span>
-                    </div>
+                    <MintMultiplierLookup />
                     <label
                       className="mb-2 block text-xs font-bold uppercase tracking-wide text-gray-200"
                       htmlFor="require-authorization"
