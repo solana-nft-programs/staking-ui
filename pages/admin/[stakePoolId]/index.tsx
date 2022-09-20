@@ -30,7 +30,7 @@ import { useStakePoolData } from 'hooks/useStakePoolData'
 import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
 import Head from 'next/head'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
-import { useMemo, useState } from 'react'
+import { useState } from 'react'
 import { TailSpin } from 'react-loader-spinner'
 import * as Yup from 'yup'
 
@@ -134,8 +134,6 @@ function AdminStakePool() {
       setLoadingLookupMultiplier(false)
     }
   }
-
-  useMemo(async () => {}, [values.reclaimAmount?.toString()])
 
   return (
     <div>
