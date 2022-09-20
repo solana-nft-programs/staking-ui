@@ -1,16 +1,14 @@
-/* eslint-disable jsx-a11y/label-has-associated-control */
 import { Tooltip } from '@mui/material'
-import { AsyncButton } from 'common/Button'
 import { Footer } from 'common/Footer'
 import { Header } from 'common/Header'
 import { ShortPubKeyUrl } from 'common/Pubkeys'
 import { getMintDecimalAmountFromNatural } from 'common/units'
 import { pubKeyUrl, shortPubKey } from 'common/utils'
+import { AuthorizeMints } from 'components/AuthorizeMints'
 import { MintMultiplierLookup } from 'components/MintMultiplierLookup'
 import { MintMultipliers } from 'components/MintMultipliers'
 import { ReclaimFunds } from 'components/ReclaimFunds'
 import { StakePoolForm } from 'components/StakePoolForm'
-import { useHandleAuthorizeMints } from 'handlers/useHandleAuthorizeMints'
 import { useHandleUpdatePool } from 'handlers/useHandleUpdatePool'
 import { useRewardDistributorData } from 'hooks/useRewardDistributorData'
 import { useRewardMintInfo } from 'hooks/useRewardMintInfo'
@@ -18,16 +16,13 @@ import { useStakePoolData } from 'hooks/useStakePoolData'
 import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
 import Head from 'next/head'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
-import { useState } from 'react'
 
 function AdminStakePool() {
   const { environment } = useEnvironmentCtx()
   const stakePool = useStakePoolData()
   const rewardDistributor = useRewardDistributorData()
   const rewardMintInfo = useRewardMintInfo()
-  const [mintsToAuthorize, setMintsToAuthorize] = useState<string>('')
   const { data: stakePoolMetadata } = useStakePoolMetadata()
-  const handleAuthorizeMints = useHandleAuthorizeMints()
   const handleUpdatePool = useHandleUpdatePool()
 
   return (
@@ -89,17 +84,17 @@ function AdminStakePool() {
                 {stakePool.isFetched ? (
                   <>
                     <span className="flex w-full flex-wrap md:mb-0">
-                      <label className="inline-block text-sm font-bold uppercase tracking-wide text-gray-200">
+                      <div className="inline-block text-sm font-bold uppercase tracking-wide text-gray-200">
                         Overlay Text:
-                      </label>
-                      <label className="inline-block pl-2">
+                      </div>
+                      <div className="inline-block pl-2">
                         {stakePool.data?.parsed.overlayText || '[None]'}
-                      </label>
+                      </div>
                     </span>
                     <span className="mt-3 flex w-full flex-wrap md:mb-0">
-                      <label className="inline-block text-sm font-bold uppercase tracking-wide text-gray-200">
+                      <div className="inline-block text-sm font-bold uppercase tracking-wide text-gray-200">
                         Collection Addresses:
-                      </label>
+                      </div>
                       <label className="inline-block pl-2">
                         {stakePool.data?.parsed.requiresCollections &&
                         stakePool.data?.parsed.requiresCollections.length !== 0
@@ -117,9 +112,9 @@ function AdminStakePool() {
                       </label>
                     </span>
                     <span className="mt-3 flex w-full flex-wrap md:mb-0">
-                      <label className="inline-block text-sm font-bold uppercase tracking-wide text-gray-200">
+                      <div className="inline-block text-sm font-bold uppercase tracking-wide text-gray-200">
                         Creator Addresses:
-                      </label>
+                      </div>
                       <label className="inline-block pl-2 text-white">
                         {stakePool.data?.parsed.requiresCreators &&
                         stakePool.data?.parsed.requiresCreators.length !== 0
@@ -245,52 +240,7 @@ function AdminStakePool() {
                   </div>
                 )}
                 {stakePool.data?.parsed.requiresAuthorization && (
-                  <div className="mt-5">
-                    <label
-                      className="mb-2 block text-xs font-bold uppercase tracking-wide text-gray-200"
-                      htmlFor="require-authorization"
-                    >
-                      Authorize access to specific mint
-                    </label>
-                    <p className="mb-2 text-sm italic text-gray-300">
-                      Allow any specific mints access to the stake pool
-                      (separated by commas)
-                    </p>
-                    <p className="mb-5 text-sm italic text-gray-300">
-                      <b>WARNING</b> Do not set more than a few at at time. If
-                      needed take a look at the scripts in{' '}
-                      <a
-                        href="https://github.com/cardinal-labs/cardinal-staking/tree/main/tools"
-                        className="text-blue-500"
-                        target="_blank"
-                        rel="noreferrer"
-                      >
-                        tools
-                      </a>{' '}
-                      to set many at a time.
-                    </p>
-                    <input
-                      className="mb-3 block w-full appearance-none rounded border border-gray-500 bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800 focus:outline-none"
-                      type="text"
-                      placeholder={'Cmwy..., A3fD..., 7Y1v...'}
-                      value={mintsToAuthorize}
-                      onChange={(e) => {
-                        setMintsToAuthorize(e.target.value)
-                      }}
-                    />
-                    <AsyncButton
-                      loading={handleAuthorizeMints.isLoading}
-                      onClick={() =>
-                        handleAuthorizeMints.mutate({
-                          mintsToAuthorize,
-                        })
-                      }
-                      inlineLoader
-                      className="w-max"
-                    >
-                      Authorize Mints
-                    </AsyncButton>
-                  </div>
+                  <AuthorizeMints />
                 )}
               </div>
             </div>
