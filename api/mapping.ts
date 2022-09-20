@@ -1712,6 +1712,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     stakePoolAddress: new PublicKey(
       '6JAjWAWhzAdZRVXmLKpzXy8idqPY3Jb5AUUXzBPm3FGt'
     ),
+    hostname: 'stake.pixel-y00ts',
     hideFooter: true,
     hideAllowedTokens: true,
     websiteUrl: '',
