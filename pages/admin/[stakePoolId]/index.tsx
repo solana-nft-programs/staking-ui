@@ -1,13 +1,12 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import { findAta } from '@cardinal/common'
 import { RewardDistributorKind } from '@cardinal/staking/dist/cjs/programs/rewardDistributor'
 import { getRewardEntry } from '@cardinal/staking/dist/cjs/programs/rewardDistributor/accounts'
 import { findRewardEntryId } from '@cardinal/staking/dist/cjs/programs/rewardDistributor/pda'
 import { findStakeEntryIdFromMint } from '@cardinal/staking/dist/cjs/programs/stakePool/utils'
 import { Tooltip } from '@mui/material'
-import * as splToken from '@solana/spl-token'
+import type * as splToken from '@solana/spl-token'
 import { useWallet } from '@solana/wallet-adapter-react'
-import { Keypair, PublicKey } from '@solana/web3.js'
+import { PublicKey } from '@solana/web3.js'
 import { AsyncButton } from 'common/Button'
 import { Footer } from 'common/Footer'
 import { Header } from 'common/Header'
@@ -66,10 +65,10 @@ function AdminStakePool() {
   const { connection, environment } = useEnvironmentCtx()
   const stakePool = useStakePoolData()
   const rewardDistributor = useRewardDistributorData()
+  const rewardDistributorTokenAccount = useRewardDistributorTokenAccount()
   const [mintsToAuthorize, setMintsToAuthorize] = useState<string>('')
   const [loadingLookupMultiplier, setLoadingLookupMultiplier] =
     useState<boolean>(false)
-  const [loadingRewardAta, setLoadingRewardAta] = useState<boolean>(false)
   const [multiplierFound, setMultiplierFound] = useState<string>('')
   const rewardMintInfo = useRewardMintInfo()
   const [mintInfo, setMintInfo] = useState<splToken.MintInfo>()
@@ -390,42 +389,22 @@ function AdminStakePool() {
                                 )
                               }}
                             />
-                            <div
-                              className="flex h-full cursor-pointer items-center justify-center"
-                              onClick={async () => {
-                                setLoadingRewardAta(true)
-                                const mint = new PublicKey(
-                                  rewardDistributor.data!.parsed.rewardMint
-                                )
-                                const checkMint = new splToken.Token(
-                                  connection,
-                                  mint,
-                                  splToken.TOKEN_PROGRAM_ID,
-                                  Keypair.generate() // unused
-                                )
-                                const mintInfo = await checkMint.getMintInfo()
-                                setMintInfo(mintInfo)
-                                const mintAta = await findAta(
-                                  rewardDistributor.data!.parsed.rewardMint,
-                                  rewardDistributor.data!.pubkey,
-                                  true
-                                )
-                                const ata = await checkMint.getAccountInfo(
-                                  mintAta
-                                )
-                                setFieldValue(
-                                  'reclaimAmount',
-                                  ata.amount.toString()
-                                )
-                                setLoadingRewardAta(false)
-                              }}
-                            >
-                              Max
-                            </div>
+                            {rewardDistributorTokenAccount.data && (
+                              <div
+                                className="flex h-full cursor-pointer items-center justify-center"
+                                onClick={async () => {
+                                  setFieldValue(
+                                    'reclaimAmount',
+                                    rewardDistributorTokenAccount.data?.amount.toString()
+                                  )
+                                }}
+                              >
+                                Max
+                              </div>
+                            )}
                           </div>
                           <AsyncButton
                             className="ml-5"
-                            disabled={loadingRewardAta}
                             loading={handleReclaimFunds.isLoading}
                             inlineLoader
                             onClick={() =>
