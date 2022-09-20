@@ -1,22 +1,10 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import { findAta, tryGetAccount } from '@cardinal/common'
+import { findAta } from '@cardinal/common'
 import { executeTransaction } from '@cardinal/staking'
 import { RewardDistributorKind } from '@cardinal/staking/dist/cjs/programs/rewardDistributor'
-import {
-  getRewardDistributor,
-  getRewardEntry,
-} from '@cardinal/staking/dist/cjs/programs/rewardDistributor/accounts'
-import {
-  findRewardDistributorId,
-  findRewardEntryId,
-} from '@cardinal/staking/dist/cjs/programs/rewardDistributor/pda'
-import {
-  withCloseRewardDistributor,
-  withInitRewardDistributor,
-  withReclaimFunds,
-  withUpdateRewardDistributor,
-} from '@cardinal/staking/dist/cjs/programs/rewardDistributor/transaction'
-import { withUpdateStakePool } from '@cardinal/staking/dist/cjs/programs/stakePool/transaction'
+import { getRewardEntry } from '@cardinal/staking/dist/cjs/programs/rewardDistributor/accounts'
+import { findRewardEntryId } from '@cardinal/staking/dist/cjs/programs/rewardDistributor/pda'
+import { withReclaimFunds } from '@cardinal/staking/dist/cjs/programs/rewardDistributor/transaction'
 import { findStakeEntryIdFromMint } from '@cardinal/staking/dist/cjs/programs/stakePool/utils'
 import { Tooltip } from '@mui/material'
 import { BN } from '@project-serum/anchor'
@@ -36,11 +24,11 @@ import {
 } from 'common/units'
 import { pubKeyUrl, shortPubKey, tryPublicKey } from 'common/utils'
 import { asWallet } from 'common/Wallets'
-import type { CreationForm } from 'components/StakePoolForm'
 import { bnValidationTest, StakePoolForm } from 'components/StakePoolForm'
 import { useFormik } from 'formik'
 import { useHandleAuthorizeMints } from 'handlers/useHandleAuthorizeMints'
 import { useHandleSetMultipliers } from 'handlers/useHandleSetMultipliers'
+import { useHandleUpdatePool } from 'handlers/useHandleUpdatePool'
 import { useRewardDistributorData } from 'hooks/useRewardDistributorData'
 import { useRewardMintInfo } from 'hooks/useRewardMintInfo'
 import { useStakePoolData } from 'hooks/useStakePoolData'
@@ -91,6 +79,7 @@ function AdminStakePool() {
   const { data: stakePoolMetadata } = useStakePoolMetadata()
   const handleAuthorizeMints = useHandleAuthorizeMints()
   const handleSetMultipliers = useHandleSetMultipliers()
+  const handleUpdatePool = useHandleUpdatePool()
 
   const initialValues: MultipliersForm = {
     multipliers: [''],
@@ -103,169 +92,6 @@ function AdminStakePool() {
     validationSchema: creationFormSchema,
   })
   const { values, setFieldValue } = formState
-
-  const handleUpdate = async (values: CreationForm) => {
-    if (!wallet?.connected) {
-      notify({
-        message: 'Wallet not connected',
-        type: 'error',
-      })
-      return
-    }
-    if (
-      wallet.publicKey?.toString() !==
-      stakePool.data?.parsed.authority.toString()
-    ) {
-      notify({
-        message: 'You are not the pool authority.',
-        type: 'error',
-      })
-      return
-    }
-    try {
-      if (!stakePool.data?.pubkey) {
-        throw 'Stake pool pubkey not found'
-      }
-      const transaction = new Transaction()
-      if (
-        values.rewardDistributorKind !== rewardDistributor.data?.parsed.kind
-      ) {
-        if (values.rewardDistributorKind === 0) {
-          const [rewardDistributorId] = await findRewardDistributorId(
-            stakePool.data.pubkey
-          )
-          const rewardDistributorData = await tryGetAccount(() =>
-            getRewardDistributor(connection, rewardDistributorId)
-          )
-          if (rewardDistributorData) {
-            await withCloseRewardDistributor(
-              transaction,
-              connection,
-              asWallet(wallet),
-              {
-                stakePoolId: stakePool.data.pubkey,
-              }
-            )
-            notify({
-              message: 'Removing reward distributor for pool',
-              type: 'info',
-            })
-          }
-        } else {
-          const rewardDistributorKindParams = {
-            stakePoolId: stakePool.data.pubkey,
-            rewardMintId: new PublicKey(values.rewardMintAddress!.trim())!,
-            rewardAmount: values.rewardAmount
-              ? new BN(values.rewardAmount)
-              : undefined,
-            rewardDurationSeconds: values.rewardDurationSeconds
-              ? new BN(values.rewardDurationSeconds)
-              : undefined,
-            kind: values.rewardDistributorKind,
-            supply: values.rewardMintSupply
-              ? new BN(values.rewardMintSupply)
-              : undefined,
-            defaultMultiplier: values.defaultMultiplier
-              ? new BN(values.defaultMultiplier)
-              : undefined,
-            multiplierDecimals: values.multiplierDecimals
-              ? Number(values.multiplierDecimals)
-              : undefined,
-          }
-          await withInitRewardDistributor(
-            transaction,
-            connection,
-            asWallet(wallet),
-            rewardDistributorKindParams
-          )
-          notify({
-            message: 'Initializing reward distributor for pool',
-            type: 'info',
-          })
-        }
-      } else if (rewardDistributor.data) {
-        await withUpdateRewardDistributor(
-          transaction,
-          connection,
-          asWallet(wallet),
-          {
-            stakePoolId: stakePool.data.pubkey,
-            defaultMultiplier: values.defaultMultiplier
-              ? new BN(values.defaultMultiplier)
-              : undefined,
-            multiplierDecimals: values.multiplierDecimals
-              ? Number(values.multiplierDecimals)
-              : undefined,
-            rewardAmount: values.rewardAmount
-              ? new BN(values.rewardAmount)
-              : undefined,
-            rewardDurationSeconds: values.rewardDurationSeconds
-              ? new BN(values.rewardDurationSeconds)
-              : undefined,
-            maxRewardSecondsReceived: values.maxRewardSecondsReceived
-              ? new BN(values.maxRewardSecondsReceived)
-              : undefined,
-          }
-        )
-        notify({
-          message: `Updating reward distributor`,
-          type: 'info',
-        })
-      }
-
-      const collectionPublicKeys = values.requireCollections
-        .map((c) => tryPublicKey(c))
-        .filter((c) => c) as PublicKey[]
-      const creatorPublicKeys = values.requireCreators
-        .map((c) => tryPublicKey(c))
-        .filter((c) => c) as PublicKey[]
-
-      // format date
-      let dateInNum: number | undefined = new Date(
-        values.endDate?.toString() || ''
-      ).getTime()
-      if (dateInNum < Date.now()) {
-        dateInNum = undefined
-      }
-
-      const stakePoolParams = {
-        stakePoolId: stakePool.data.pubkey,
-        requiresCollections: collectionPublicKeys,
-        requiresCreators: creatorPublicKeys,
-        requiresAuthorization: values.requiresAuthorization,
-        resetOnStake: values.resetOnStake,
-        overlayText: values.overlayText,
-        cooldownSeconds: values.cooldownPeriodSeconds,
-        minStakeSeconds: values.minStakeSeconds,
-        endDate: dateInNum ? new BN(dateInNum / 1000) : undefined,
-      }
-
-      await withUpdateStakePool(
-        transaction,
-        connection,
-        asWallet(wallet),
-        stakePoolParams
-      )
-
-      await executeTransaction(connection, asWallet(wallet), transaction, {})
-      notify({
-        message:
-          'Successfully updated stake pool and reward distributor with ID: ' +
-          stakePool.data.pubkey.toString(),
-        type: 'success',
-      })
-
-      await setTimeout(() => {
-        stakePool.refetch()
-        rewardDistributor.refetch()
-      }, 1000)
-    } catch (e) {
-      notify({
-        message: handleError(e, `Error updating stake pool: ${e}`),
-        type: 'error',
-      })
-    }
-  }
 
   const handleLookupMultiplier = async (mintToLookup: string) => {
     setLoadingLookupMultiplier(true)
@@ -388,7 +214,7 @@ function AdminStakePool() {
                 </p>
                 <StakePoolForm
                   type="update"
-                  handleSubmit={handleUpdate}
+                  handleSubmit={(d) => handleUpdatePool.mutate({ values: d })}
                   stakePoolData={stakePool.data}
                   rewardDistributorData={rewardDistributor.data}
                 />
