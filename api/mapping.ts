@@ -1712,6 +1712,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     stakePoolAddress: new PublicKey(
       '6JAjWAWhzAdZRVXmLKpzXy8idqPY3Jb5AUUXzBPm3FGt'
     ),
+    hideFooter: true,
     hideAllowedTokens: true,
     websiteUrl: '',
     receiptType: ReceiptType.Original,
