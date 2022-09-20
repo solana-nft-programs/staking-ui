@@ -114,6 +114,7 @@ export const useAllowedTokenDatas = (showFungibleTokens: boolean) => {
       walletId?.toString(),
       showFungibleTokens,
       tokenList?.length,
+      stakeAuthorizations?.map((s) => s.pubkey.toString()).join(),
     ],
     async () => {
       if (!stakePoolId || !stakePool || !walletId) return
@@ -179,7 +180,15 @@ export const useAllowedTokenDatas = (showFungibleTokens: boolean) => {
         baseTokenDatas,
         stakePool,
         stakeAuthorizations
-      ).filter((tokenData) => showFungibleTokens === !!tokenData.tokenListData)
+      ).filter(
+        (tokenData) =>
+          showFungibleTokens ===
+          (!!tokenData.tokenListData ||
+            tokenData.metaplexData?.data.tokenStandard ===
+              metaplex.TokenStandard.Fungible ||
+            tokenData.metaplexData?.data.tokenStandard ===
+              metaplex.TokenStandard.FungibleAsset)
+      )
 
       const stakeEntryIds = await Promise.all(
         allowedTokens.map(
