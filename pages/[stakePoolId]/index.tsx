@@ -443,39 +443,44 @@ function StakePoolHome() {
                                   {tk.metadata?.data.name ||
                                     tk.tokenListData?.symbol}
                                 </div>
-                                {showFungibleTokens && rewardMintInfo.data && (
-                                  <div className="mt-2">
-                                    <div className="truncate font-semibold">
+                                {showFungibleTokens &&
+                                  tk.tokenAccount &&
+                                  tk.tokenAccount?.account.data.parsed.info
+                                    .tokenAmount.amount > 1 && (
+                                    <div className="mt-2">
+                                      <div className="truncate font-semibold">
+                                        <div className="flex w-full flex-row justify-between text-xs font-semibold">
+                                          <span>Available:</span>
+                                          <span className="px-1">
+                                            {formatAmountAsDecimal(
+                                              tk.tokenAccount.account.data
+                                                .parsed.info.tokenAmount
+                                                .decimals,
+                                              tk.tokenAccount?.account.data
+                                                .parsed.info.tokenAmount.amount,
+                                              tk.tokenAccount.account.data
+                                                .parsed.info.tokenAmount
+                                                .decimals
+                                            )}
+                                          </span>
+                                        </div>
+                                      </div>
                                       <div className="flex w-full flex-row justify-between text-xs font-semibold">
-                                        <span>Available:</span>
-                                        <span className="px-1">
-                                          {formatAmountAsDecimal(
-                                            rewardMintInfo.data?.mintInfo
-                                              .decimals,
-                                            tk.tokenAccount?.account.data.parsed
-                                              .info.tokenAmount.amount,
-                                            rewardMintInfo.data?.mintInfo
-                                              .decimals
-                                          )}
-                                        </span>
+                                        <span>Amount:</span>
+                                        <input
+                                          className="flex w-3/4 rounded-md bg-transparent px-1 text-right text-xs font-medium focus:outline-none"
+                                          type="text"
+                                          placeholder={'Enter Amount'}
+                                          onChange={(e) => {
+                                            selectUnstakedToken(
+                                              tk,
+                                              e.target.value
+                                            )
+                                          }}
+                                        />
                                       </div>
                                     </div>
-                                    <div className="flex w-full flex-row justify-between text-xs font-semibold">
-                                      <span>Amount:</span>
-                                      <input
-                                        className="flex w-3/4 rounded-md bg-transparent px-1 text-right text-xs font-medium focus:outline-none"
-                                        type="text"
-                                        placeholder={'Enter Amount'}
-                                        onChange={(e) => {
-                                          selectUnstakedToken(
-                                            tk,
-                                            e.target.value
-                                          )
-                                        }}
-                                      />
-                                    </div>
-                                  </div>
-                                )}
+                                  )}
                               </div>
                             </div>
                             {isUnstakedTokenSelected(tk) && (
