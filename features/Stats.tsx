@@ -59,14 +59,16 @@ export function Stats(props: StatsProps) {
 
   const stakedSentriesPercentage = (stakedSentries * 100) / 8000
   const stakedSol = parseFloat(roundXDigitValue(valueOrDefault(stats?.totalStaked, 0)))
-  const solNeeded = calculateSolNeeded(valueOrDefault(stats?.maxPowerLevelSol, 0))
+  const solNeeded = parseFloat(roundXDigitValue(calculateSolNeeded(valueOrDefault(stats?.maxPowerLevelSol, 0)), 4))
   const sentriesCount = Number(valueOrDefault(stats?.nftCount, 0))
 
-  const solPowering = valueOrDefault(sentriesDetails?.solPowering, 0)
+  const solPowering = valueOrDefault(sentriesDetails?.solPowering, 0) // TODO: Subtract Self Stake
   const solPrice = valueOrDefault(sentriesDetails?.solPrice, 0)
 
   // This is going to be all the maths for calculating the % yield.
   const totalPctAllocation = sentriesCount / 8000
+
+  // Add the pool allocation between the rewards. 50/50 etc
   const activePctAllocation = sentriesCount / stakedSentries
   const pctSolStaked = stakedSol / solPowering
 
@@ -76,6 +78,7 @@ export function Stats(props: StatsProps) {
   const floorPrice = valueOrDefault(sentriesDetails?.floorPrice, 0)
 
   const currentValueLocked = floorPrice * stakedSentries * solPrice // TODO: Price of SOL
+  // @ts-ignore
   const totalMcap = floorPrice * 8000 * solPrice // TODO: Price of SOL
   const percentMCap = (currentValueLocked / totalMcap) * 100
 
@@ -100,7 +103,7 @@ export function Stats(props: StatsProps) {
         <p className="pb-0">You current SOL staked with The Lode is {stakedSol} ◎</p>
         <p>You will need {solNeeded} ◎ to power up the {sentriesCount} Sentries NFTs</p>
       </div>
-      <div className="flex justify-between bg-[#F7B551] bg-opacity-30 border border-[#F7B551] p-4 py-3 rounded-2xl text-[#FFDEAD]">
+      {/* <div className="flex justify-between bg-[#F7B551] bg-opacity-30 border border-[#F7B551] p-4 py-3 rounded-2xl text-[#FFDEAD]">
         <div className="flex items-center gap-2">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M11.25 18.25H9C7.9 18.25 7 19.15 7 20.25V20.5H6C5.59 20.5 5.25 20.84 5.25 21.25C5.25 21.66 5.59 22 6 22H18C18.41 22 18.75 21.66 18.75 21.25C18.75 20.84 18.41 20.5 18 20.5H17V20.25C17 19.15 16.1 18.25 15 18.25H12.75V15.96C12.5 15.99 12.25 16 12 16C11.75 16 11.5 15.99 11.25 15.96V18.25Z" fill="#FFDEAD"/>
@@ -111,7 +114,7 @@ export function Stats(props: StatsProps) {
           </span>
         </div>
         {rewardRate ? <span>{rewardRate}%</span> : null}
-      </div>
+      </div> */}
       <div className="mt-4 p-4 py-3 rounded-2xl font-semibold border-2 border-neutral-700 flex justify-between items-center">
         <span className="text-neutral-500">Current Rewards</span>
         {hasRewards ? <Button as="button" size="sm" variant="secondary" onClick={() => setIsModalOpen(true)}>{totalRewards} <span className="opacity-50 font-normal">◎</span></Button>

@@ -493,7 +493,8 @@ function Home() {
   const floorPrice = sentriesStats.isFetched && sentriesStats?.data?.floorPrice || 0
   const solPrice = sentriesStats.isFetched && sentriesStats?.data?.solPrice || 0
   const currentValueLocked = floorPrice * totalStaked * solPrice
-  const totalMcap = floorPrice * 8000 * solPrice
+  // @ts-ignore
+  const totalMcap = parseFloat(floorPrice * 8000 * solPrice).toFixed(2)
   const solPowering = sentriesStats.isFetched && sentriesStats?.data?.solPowering || 0
 
   const renderStats = (
