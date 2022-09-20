@@ -4,7 +4,6 @@ import { getRewardEntry } from '@cardinal/staking/dist/cjs/programs/rewardDistri
 import { findRewardEntryId } from '@cardinal/staking/dist/cjs/programs/rewardDistributor/pda'
 import { findStakeEntryIdFromMint } from '@cardinal/staking/dist/cjs/programs/stakePool/utils'
 import { Tooltip } from '@mui/material'
-import type * as splToken from '@solana/spl-token'
 import { useWallet } from '@solana/wallet-adapter-react'
 import { PublicKey } from '@solana/web3.js'
 import { AsyncButton } from 'common/Button'
@@ -66,12 +65,11 @@ function AdminStakePool() {
   const stakePool = useStakePoolData()
   const rewardDistributor = useRewardDistributorData()
   const rewardDistributorTokenAccount = useRewardDistributorTokenAccount()
+  const rewardMintInfo = useRewardMintInfo()
   const [mintsToAuthorize, setMintsToAuthorize] = useState<string>('')
   const [loadingLookupMultiplier, setLoadingLookupMultiplier] =
     useState<boolean>(false)
   const [multiplierFound, setMultiplierFound] = useState<string>('')
-  const rewardMintInfo = useRewardMintInfo()
-  const [mintInfo, setMintInfo] = useState<splToken.MintInfo>()
   const { data: stakePoolMetadata } = useStakePoolMetadata()
   const handleAuthorizeMints = useHandleAuthorizeMints()
   const handleSetMultipliers = useHandleSetMultipliers()
@@ -346,7 +344,7 @@ function AdminStakePool() {
                     <div className="absolute w-full animate-pulse items-center justify-center rounded-lg bg-white bg-opacity-10 p-5"></div>
                   </div>
                 )}
-                {rewardDistributor.data && (
+                {rewardDistributor.data && rewardMintInfo.data && (
                   <div className="mt-10">
                     {rewardDistributor.data.parsed.kind ===
                       RewardDistributorKind.Treasury && (
@@ -367,7 +365,7 @@ function AdminStakePool() {
                               placeholder={'1000000'}
                               value={tryFormatInput(
                                 values.reclaimAmount,
-                                mintInfo?.decimals || 0,
+                                rewardMintInfo.data?.mintInfo.decimals || 0,
                                 '0'
                               )}
                               onChange={(e) => {
@@ -383,7 +381,7 @@ function AdminStakePool() {
                                   'reclaimAmount',
                                   tryParseInput(
                                     e.target.value,
-                                    mintInfo?.decimals || 0,
+                                    rewardMintInfo.data?.mintInfo.decimals || 0,
                                     values.reclaimAmount ?? ''
                                   )
                                 )
