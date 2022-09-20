@@ -11,13 +11,13 @@ import {
   tryFormatInput,
   tryParseInput,
 } from 'common/units'
-import { pubKeyUrl, shortPubKey, tryPublicKey } from 'common/utils'
+import { pubKeyUrl, shortPubKey } from 'common/utils'
 import { MintMultiplierLookup } from 'components/MintMultiplierLookup'
+import { MintMultipliers } from 'components/MintMultipliers'
 import { bnValidationTest, StakePoolForm } from 'components/StakePoolForm'
 import { useFormik } from 'formik'
 import { useHandleAuthorizeMints } from 'handlers/useHandleAuthorizeMints'
 import { useHandleReclaimFunds } from 'handlers/useHandleReclaimFunds'
-import { useHandleSetMultipliers } from 'handlers/useHandleSetMultipliers'
 import { useHandleUpdatePool } from 'handlers/useHandleUpdatePool'
 import { useRewardDistributorData } from 'hooks/useRewardDistributorData'
 import { useRewardDistributorTokenAccount } from 'hooks/useRewardDistributorTokenAccount'
@@ -29,25 +29,7 @@ import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 import { useState } from 'react'
 import * as Yup from 'yup'
 
-const publicKeyValidationTest = (value: string | undefined): boolean => {
-  return tryPublicKey(value) ? true : false
-}
-
 const creationFormSchema = Yup.object({
-  multipliers: Yup.array().of(
-    Yup.string().test(
-      'is-public-key',
-      'Invalid collection address',
-      publicKeyValidationTest
-    )
-  ),
-  multiplierMints: Yup.array().of(
-    Yup.string().test(
-      'is-public-key',
-      'Invalid collection address',
-      publicKeyValidationTest
-    )
-  ),
   reclaimAmount: Yup.string()
     .optional()
     .test('is-valid-bn', 'Invalid reclaim funds amount', bnValidationTest),
@@ -63,18 +45,15 @@ function AdminStakePool() {
   const [mintsToAuthorize, setMintsToAuthorize] = useState<string>('')
   const { data: stakePoolMetadata } = useStakePoolMetadata()
   const handleAuthorizeMints = useHandleAuthorizeMints()
-  const handleSetMultipliers = useHandleSetMultipliers()
   const handleUpdatePool = useHandleUpdatePool()
   const handleReclaimFunds = useHandleReclaimFunds()
 
   const initialValues: MultipliersForm = {
-    multipliers: [''],
-    multiplierMints: [''],
     reclaimAmount: '0',
   }
   const formState = useFormik({
     initialValues,
-    onSubmit: (values) => {},
+    onSubmit: () => {},
     validationSchema: creationFormSchema,
   })
   const { values, setFieldValue } = formState
@@ -359,154 +338,7 @@ function AdminStakePool() {
                       </>
                     )}
                     <MintMultiplierLookup />
-                    <label
-                      className="mb-2 block text-xs font-bold uppercase tracking-wide text-gray-200"
-                      htmlFor="require-authorization"
-                    >
-                      Set multiplier for given mints
-                    </label>
-                    <p className="text-sm italic text-gray-300">
-                      Set the stake multiplier for given mints.
-                      <br />
-                      For a 1x multiplier, enter value{' '}
-                      {10 ** rewardDistributor.data.parsed.multiplierDecimals},
-                      for a 2x multiplier enter value{' '}
-                      {2 *
-                        10 **
-                          rewardDistributor.data.parsed.multiplierDecimals}{' '}
-                      ...
-                    </p>
-                    <p className="text-sm italic text-gray-300">
-                      For decimal multipliers, work with the reward distributor
-                      {"'"}s <b>multiplierDecimals</b>. If you set
-                      multiplierDecimals = 1, then for 1.5x multiplier, enter
-                      value 15 so that value/10**multiplierDecimals = 15/10^1 =
-                      1.5
-                    </p>
-                    <p className="mt-2 text-sm italic text-gray-300">
-                      <b>NOTE</b> that for 1.5x, you could set
-                      multiplierDecimals = 2 and enter value 150, or
-                      multiplierDecimals = 3 and enter value 1500 ...
-                    </p>
-                    <p className="mt-2 mb-5 text-sm italic text-gray-300">
-                      <b>WARNING</b> Do not set more than a few at at time. If
-                      needed take a look at the scripts in{' '}
-                      <a
-                        href="https://github.com/cardinal-labs/cardinal-staking/tree/main/tools"
-                        className="text-blue-500"
-                        target="_blank"
-                        rel="noreferrer"
-                      >
-                        tools
-                      </a>{' '}
-                      to set many at a time.
-                    </p>
-                    <span className="flex flex-row gap-5">
-                      <input
-                        className="mb-3 w-1/6 appearance-none flex-col rounded border border-gray-500 bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800 focus:outline-none"
-                        type="text"
-                        placeholder={'0'}
-                        onChange={(e) => {
-                          setFieldValue('multipliers[0]', e.target.value)
-                        }}
-                      />
-                      <div
-                        className={`mb-3 flex w-full appearance-none justify-between rounded border border-gray-500 bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800`}
-                      >
-                        <input
-                          className={`mr-5 w-full bg-transparent focus:outline-none`}
-                          type="text"
-                          autoComplete="off"
-                          onChange={(e) => {
-                            setFieldValue('multiplierMints[0]', e.target.value)
-                          }}
-                          placeholder={'CmAy...A3fD'}
-                          name="requireCollections"
-                        />
-                        <div
-                          className="cursor-pointer text-xs text-gray-400"
-                          onClick={() => {
-                            setFieldValue(`multiplierMints`, [
-                              '',
-                              ...values.multiplierMints!,
-                            ])
-                            setFieldValue(`multipliers`, [
-                              '',
-                              ...values.multipliers!,
-                            ])
-                          }}
-                        >
-                          Add
-                        </div>
-                      </div>
-                    </span>
-                    {values.multiplierMints!.map(
-                      (v, i) =>
-                        i > 0 && (
-                          <span className="flex flex-row gap-5">
-                            <input
-                              className="mb-3 w-1/6 appearance-none flex-col rounded border border-gray-500 bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800 focus:outline-none"
-                              type="text"
-                              placeholder={'0'}
-                              onChange={(e) => {
-                                setFieldValue(
-                                  `multipliers[${i}]`,
-                                  e.target.value
-                                )
-                              }}
-                            />
-                            <div
-                              className={`mb-3 flex w-full appearance-none justify-between rounded border border-gray-500 bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800`}
-                            >
-                              <input
-                                className={`mr-5 w-full bg-transparent focus:outline-none`}
-                                type="text"
-                                autoComplete="off"
-                                onChange={(e) => {
-                                  setFieldValue(
-                                    `multiplierMints[${i}]`,
-                                    e.target.value
-                                  )
-                                }}
-                                placeholder={'CmAy...A3fD'}
-                                name="requireCollections"
-                              />
-                              <div
-                                className="cursor-pointer text-xs text-gray-400"
-                                onClick={() => {
-                                  setFieldValue(
-                                    `multiplierMints`,
-                                    values.multiplierMints!.filter(
-                                      (_, ix) => ix !== i
-                                    )
-                                  )
-                                  setFieldValue(
-                                    `multipliers`,
-                                    values.multipliers!.filter(
-                                      (_, ix) => ix !== i
-                                    )
-                                  )
-                                }}
-                              >
-                                Remove
-                              </div>
-                            </div>
-                          </span>
-                        )
-                    )}
-                    <AsyncButton
-                      loading={handleSetMultipliers.isLoading}
-                      onClick={() =>
-                        handleSetMultipliers.mutate({
-                          multiplierMints: values.multiplierMints,
-                          multipliers: values.multipliers,
-                        })
-                      }
-                      inlineLoader
-                      className="w-max"
-                    >
-                      Set Multipliers
-                    </AsyncButton>
+                    <MintMultipliers />
                   </div>
                 )}
                 {stakePool.data?.parsed.requiresAuthorization && (
