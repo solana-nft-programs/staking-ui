@@ -25,7 +25,6 @@ import { useHandleUnstake } from 'handlers/useHandleUnstake'
 import type { AllowedTokenData } from 'hooks/useAllowedTokenDatas'
 import { useAllowedTokenDatas } from 'hooks/useAllowedTokenDatas'
 import { useRewardDistributorData } from 'hooks/useRewardDistributorData'
-import { useRewardMintInfo } from 'hooks/useRewardMintInfo'
 import { useRewards } from 'hooks/useRewards'
 import type { StakeEntryTokenData } from 'hooks/useStakedTokenDatas'
 import { useStakedTokenDatas } from 'hooks/useStakedTokenDatas'
@@ -47,7 +46,6 @@ function StakePoolHome() {
   const userRegion = useUserRegion()
   const stakedTokenDatas = useStakedTokenDatas()
   const rewardDistributorData = useRewardDistributorData()
-  const rewardMintInfo = useRewardMintInfo()
   const rewards = useRewards()
 
   const [unstakedSelected, setUnstakedSelected] = useState<AllowedTokenData[]>(
