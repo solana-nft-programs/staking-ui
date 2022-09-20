@@ -1,62 +1,34 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import { RewardDistributorKind } from '@cardinal/staking/dist/cjs/programs/rewardDistributor'
 import { Tooltip } from '@mui/material'
 import { AsyncButton } from 'common/Button'
 import { Footer } from 'common/Footer'
 import { Header } from 'common/Header'
-import { notify } from 'common/Notification'
 import { ShortPubKeyUrl } from 'common/Pubkeys'
-import {
-  getMintDecimalAmountFromNatural,
-  tryFormatInput,
-  tryParseInput,
-} from 'common/units'
+import { getMintDecimalAmountFromNatural } from 'common/units'
 import { pubKeyUrl, shortPubKey } from 'common/utils'
 import { MintMultiplierLookup } from 'components/MintMultiplierLookup'
 import { MintMultipliers } from 'components/MintMultipliers'
-import { bnValidationTest, StakePoolForm } from 'components/StakePoolForm'
-import { useFormik } from 'formik'
+import { ReclaimFunds } from 'components/ReclaimFunds'
+import { StakePoolForm } from 'components/StakePoolForm'
 import { useHandleAuthorizeMints } from 'handlers/useHandleAuthorizeMints'
-import { useHandleReclaimFunds } from 'handlers/useHandleReclaimFunds'
 import { useHandleUpdatePool } from 'handlers/useHandleUpdatePool'
 import { useRewardDistributorData } from 'hooks/useRewardDistributorData'
-import { useRewardDistributorTokenAccount } from 'hooks/useRewardDistributorTokenAccount'
 import { useRewardMintInfo } from 'hooks/useRewardMintInfo'
 import { useStakePoolData } from 'hooks/useStakePoolData'
 import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
 import Head from 'next/head'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 import { useState } from 'react'
-import * as Yup from 'yup'
-
-const creationFormSchema = Yup.object({
-  reclaimAmount: Yup.string()
-    .optional()
-    .test('is-valid-bn', 'Invalid reclaim funds amount', bnValidationTest),
-})
-export type MultipliersForm = Yup.InferType<typeof creationFormSchema>
 
 function AdminStakePool() {
   const { environment } = useEnvironmentCtx()
   const stakePool = useStakePoolData()
   const rewardDistributor = useRewardDistributorData()
-  const rewardDistributorTokenAccount = useRewardDistributorTokenAccount()
   const rewardMintInfo = useRewardMintInfo()
   const [mintsToAuthorize, setMintsToAuthorize] = useState<string>('')
   const { data: stakePoolMetadata } = useStakePoolMetadata()
   const handleAuthorizeMints = useHandleAuthorizeMints()
   const handleUpdatePool = useHandleUpdatePool()
-  const handleReclaimFunds = useHandleReclaimFunds()
-
-  const initialValues: MultipliersForm = {
-    reclaimAmount: '0',
-  }
-  const formState = useFormik({
-    initialValues,
-    onSubmit: () => {},
-    validationSchema: creationFormSchema,
-  })
-  const { values, setFieldValue } = formState
 
   return (
     <div>
@@ -267,76 +239,7 @@ function AdminStakePool() {
                 )}
                 {rewardDistributor.data && rewardMintInfo.data && (
                   <div className="mt-10">
-                    {rewardDistributor.data.parsed.kind ===
-                      RewardDistributorKind.Treasury && (
-                      <>
-                        <label
-                          className="mb-2 block text-xs font-bold uppercase tracking-wide text-gray-200"
-                          htmlFor="require-authorization"
-                        >
-                          Reclaim Funds
-                        </label>
-                        <div className="mb-5 flex flex-row">
-                          <div
-                            className={`flex w-1/4 appearance-none justify-between rounded border border-gray-500 bg-gray-700 py-2 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800`}
-                          >
-                            <input
-                              className={`mr-5 w-full bg-transparent focus:outline-none`}
-                              type="text"
-                              placeholder={'1000000'}
-                              value={tryFormatInput(
-                                values.reclaimAmount,
-                                rewardMintInfo.data?.mintInfo.decimals || 0,
-                                '0'
-                              )}
-                              onChange={(e) => {
-                                const value = Number(e.target.value)
-                                if (Number.isNaN(value)) {
-                                  notify({
-                                    message: `Invalid reclaim amount`,
-                                    type: 'error',
-                                  })
-                                  return
-                                }
-                                setFieldValue(
-                                  'reclaimAmount',
-                                  tryParseInput(
-                                    e.target.value,
-                                    rewardMintInfo.data?.mintInfo.decimals || 0,
-                                    values.reclaimAmount ?? ''
-                                  )
-                                )
-                              }}
-                            />
-                            {rewardDistributorTokenAccount.data && (
-                              <div
-                                className="flex h-full cursor-pointer items-center justify-center"
-                                onClick={async () => {
-                                  setFieldValue(
-                                    'reclaimAmount',
-                                    rewardDistributorTokenAccount.data?.amount.toString()
-                                  )
-                                }}
-                              >
-                                Max
-                              </div>
-                            )}
-                          </div>
-                          <AsyncButton
-                            className="ml-5"
-                            loading={handleReclaimFunds.isLoading}
-                            inlineLoader
-                            onClick={() =>
-                              handleReclaimFunds.mutate({
-                                reclaimAmount: values.reclaimAmount,
-                              })
-                            }
-                          >
-                            Reclaim Funds
-                          </AsyncButton>
-                        </div>
-                      </>
-                    )}
+                    <ReclaimFunds />
                     <MintMultiplierLookup />
                     <MintMultipliers />
                   </div>
