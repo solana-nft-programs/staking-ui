@@ -161,7 +161,7 @@ export function roundXDigitValue(prop: number, places: number = 2){
 }
 
 export function truncateFloat(prop: number, placement: number = 2) {
-  if (!prop) return ''
+  if (!prop) return '0'
   if (Number.isInteger(prop)) return prop.toString()
 
   const [int, decimal] = prop.toString().split('.')

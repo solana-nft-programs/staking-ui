@@ -70,7 +70,9 @@ export function Stats(props: StatsProps) {
 
   // Add the pool allocation between the rewards. 50/50 etc
   const activePctAllocation = sentriesCount / stakedSentries
-  const pctSolStaked = stakedSol / solPowering
+
+  let pctSolStaked = 0
+  let sliderPct = 0
 
   const poweredSentries = valueOrDefault(sentriesDetails?.poweredSentries, 0)
   const poweredSentriesPercentage = (poweredSentries * 100) / 8000
@@ -82,12 +84,14 @@ export function Stats(props: StatsProps) {
   const totalMcap = floorPrice * 8000 * solPrice // TODO: Price of SOL
   const percentMCap = (currentValueLocked / totalMcap) * 100
 
-  const hasRewards = !!sentryPower.data?.rewards.rewardEpoch
+  const hasRewards = !!stats?.rewards.rewardEpoch && stats?.rewards.rewardEpoch.length > 0
   const totalRewards = hasRewards ? roundXDigitValue(calculateTotalRewards(sentryPower?.data?.rewards as Rewards)) : undefined
 
+  if(stakedSol && stakedSol > 0) {
+    pctSolStaked = stakedSol / solPowering
+    sliderPct = calculateProgress(stakedSol, solNeeded, sentriesCount) * 100
+  }
   const rewardRate = roundXDigitValue(((activePctAllocation * pctSolStaked) * 100), 5)
-
-  const sliderPct = calculateProgress(stakedSol, solNeeded, sentriesCount) * 100
 
   return (
     <Container>
@@ -95,7 +99,7 @@ export function Stats(props: StatsProps) {
         {/* TODO: Set this to 100% max.. this number is THEIR # of sentries * 5 SOL so SOL out of the / total SOL amount */}
         <Progress value={sliderPct} />
         <div className="absolute top-1/2 text-white text-center -translate-y-1/2 mt-12">
-          <h2 className="font-serif" style={{ fontSize: calculateFontSize(stakedSol) }}>{parseFloat(truncateFloat(stakedSol)).toLocaleString()} SOL</h2>
+          <h2 className="font-serif" style={{ fontSize: calculateFontSize(stakedSol) }}>{truncateFloat(stakedSol)} SOL</h2>
           <p className="text-neutral-600 font-semibold">Staked with The Lode</p>
         </div>
       </div>
@@ -117,9 +121,9 @@ export function Stats(props: StatsProps) {
       </div> */}
       <MouseoverTooltip title={`Rewards are calculated from your staked SOL in the Lode`}>
       <div className="mt-4 p-4 py-3 rounded-2xl font-semibold border-2 border-neutral-700 flex justify-between items-center">
-        <span className="text-neutral-500">Current Rewards</span>
+        <span className="text-neutral-500">Staked ◎ Rewards</span>
         {hasRewards ? <Button as="button" size="sm" variant="secondary" onClick={() => setIsModalOpen(true)}>{totalRewards} <span className="opacity-50 font-normal">◎</span></Button>
-        : <span className="font-normal text-neutral-700 text-sm">None so far</span>}
+        : <span className="font-normal text-neutral-700 text-sm">None</span>}
       </div>
       </MouseoverTooltip>
       <Separator />
