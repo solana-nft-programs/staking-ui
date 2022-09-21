@@ -24,7 +24,6 @@ export function StakedStats({ tokenData }: { tokenData: StakeEntryTokenData }) {
       ? tokenData.stakeEntry?.parsed.originalMint
       : undefined
   )
-  console.log(mintInfo)
   const rewardDistributorData = useRewardDistributorData()
   const { data: stakePool } = useStakePoolData()
   const rewardEntries = useRewardEntries()

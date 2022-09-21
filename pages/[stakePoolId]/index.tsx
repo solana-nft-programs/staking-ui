@@ -1,4 +1,3 @@
-import { DisplayAddress } from '@cardinal/namespaces-components'
 import { ReceiptType } from '@cardinal/staking/dist/cjs/programs/stakePool'
 import { BN } from '@project-serum/anchor'
 import { useWallet } from '@solana/wallet-adapter-react'
@@ -17,7 +16,7 @@ import { formatAmountAsDecimal } from 'common/units'
 import { contrastColorMode, secondstoDuration } from 'common/utils'
 import { AllowedTokens } from 'components/AllowedTokens'
 import { PoolAnalytics } from 'components/PoolAnalytics'
-import { StakedStats } from 'components/StakedStats'
+import { StakedToken } from 'components/StakedToken'
 import { StakePoolInfo } from 'components/StakePoolInfo'
 import { useHandleClaimRewards } from 'handlers/useHandleClaimRewards'
 import { useHandleStake } from 'handlers/useHandleStake'
@@ -33,13 +32,11 @@ import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
 import { useUserRegion } from 'hooks/useUserRegion'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
-import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 import { useEffect, useState } from 'react'
 import { FaInfoCircle } from 'react-icons/fa'
 
 function StakePoolHome() {
   const router = useRouter()
-  const { connection } = useEnvironmentCtx()
   const wallet = useWallet()
   const walletModal = useWalletModal()
   const { data: stakePool, isFetched: stakePoolLoaded } = useStakePoolData()
@@ -406,7 +403,6 @@ function StakePoolHome() {
                                 receiptType={receiptType}
                                 unstakedTokenData={tk}
                                 showFungibleTokens={showFungibleTokens}
-                                setSingleTokenAction={setSingleTokenAction}
                                 selectUnstakedToken={selectUnstakedToken}
                                 selectStakedToken={selectStakedToken}
                               />
@@ -720,135 +716,20 @@ function StakePoolHome() {
                     {!stakePoolMetadata?.notFound &&
                       stakedTokenDatas.data &&
                       stakedTokenDatas.data.map((tk) => (
-                        <div
+                        <StakedToken
                           key={tk?.stakeEntry?.pubkey.toBase58()}
-                          className="mx-auto"
-                        >
-                          <div className="relative w-44 md:w-auto 2xl:w-48">
-                            <label
-                              htmlFor={tk?.stakeEntry?.pubkey.toBase58()}
-                              className="relative"
-                            >
-                              <div
-                                className="relative cursor-pointer rounded-xl"
-                                onClick={() => selectStakedToken(tk)}
-                                style={{
-                                  boxShadow: isStakedTokenSelected(tk)
-                                    ? `0px 0px 20px ${
-                                        stakePoolMetadata?.colors?.secondary ||
-                                        '#FFFFFF'
-                                      }`
-                                    : '',
-                                }}
-                              >
-                                {(handleUnstake.isLoading ||
-                                  handleClaimRewards.isLoading) &&
-                                  (isStakedTokenSelected(tk) ||
-                                    singleTokenAction ===
-                                      tk.stakeEntry?.parsed.originalMint.toString()) && (
-                                    <div>
-                                      <div className="absolute top-0 left-0 z-10 flex h-full w-full justify-center rounded-lg bg-black bg-opacity-80 align-middle text-white">
-                                        <div className="mx-auto flex items-center justify-center">
-                                          <span className="mr-2">
-                                            <LoadingSpinner height="20px" />
-                                          </span>
-                                          {handleUnstake.isLoading
-                                            ? 'Unstaking token...'
-                                            : 'Claiming rewards...'}
-                                        </div>
-                                      </div>
-                                    </div>
-                                  )}
-                                {tk.stakeEntry?.parsed.lastStaker.toString() !==
-                                  wallet.publicKey?.toString() && (
-                                  <div>
-                                    <div className="absolute top-0 left-0 z-10 flex h-full w-full justify-center rounded-xl bg-black bg-opacity-80  align-middle text-white">
-                                      <div className="mx-auto flex flex-col items-center justify-center">
-                                        <div>Owned by</div>
-                                        <DisplayAddress
-                                          dark
-                                          connection={connection}
-                                          address={
-                                            tk.stakeEntry?.parsed.lastStaker
-                                          }
-                                        />
-                                      </div>
-                                    </div>
-                                  </div>
-                                )}
-                                <QuickActions
-                                  receiptType={receiptType}
-                                  stakedTokenData={tk}
-                                  showFungibleTokens={showFungibleTokens}
-                                  setSingleTokenAction={setSingleTokenAction}
-                                  selectUnstakedToken={selectUnstakedToken}
-                                  selectStakedToken={selectStakedToken}
-                                />
-                                <img
-                                  className="mx-auto mt-4 rounded-t-xl bg-white bg-opacity-5 object-contain md:h-40 md:w-40 2xl:h-48 2xl:w-48"
-                                  src={
-                                    tk.metadata?.data.image ||
-                                    tk.tokenListData?.logoURI
-                                  }
-                                  alt={
-                                    tk.metadata?.data.name ||
-                                    tk.tokenListData?.name
-                                  }
-                                />
-                                <div
-                                  className={`flex-col rounded-b-xl p-2 md:w-40 2xl:w-48 ${
-                                    stakePoolMetadata?.colors?.fontColor
-                                      ? `text-[${stakePoolMetadata?.colors?.fontColor}]`
-                                      : 'text-gray-200'
-                                  } ${
-                                    stakePoolMetadata?.colors
-                                      ?.backgroundSecondary
-                                      ? `bg-[${stakePoolMetadata?.colors?.backgroundSecondary}]`
-                                      : 'bg-white bg-opacity-10'
-                                  }`}
-                                  style={{
-                                    background:
-                                      stakePoolMetadata?.colors
-                                        ?.backgroundSecondary,
-                                  }}
-                                >
-                                  <div className="truncate font-semibold">
-                                    {tk.metadata?.data.name ||
-                                      tk.tokenListData?.symbol}
-                                  </div>
-                                  <StakedStats tokenData={tk} />
-                                </div>
-                                {/* {tk.tokenListData && (
-                                  <div className="absolute bottom-2 left-2">
-                                    {Number(
-                                      getMintDecimalAmountFromNaturalV2(
-                                        tk.tokenListData!.decimals,
-                                        new BN(
-                                          tk.stakeEntry!.parsed.amount.toNumber()
-                                        )
-                                      ).toFixed(2)
-                                    )}{' '}
-                                    {tk.tokenListData.symbol}
-                                  </div>
-                                )} */}
-                                {isStakedTokenSelected(tk) && (
-                                  <div
-                                    className={`absolute top-2 left-2`}
-                                    style={{
-                                      height: '10px',
-                                      width: '10px',
-                                      backgroundColor:
-                                        stakePoolMetadata?.colors?.primary ||
-                                        '#FFFFFF',
-                                      borderRadius: '50%',
-                                      display: 'inline-block',
-                                    }}
-                                  />
-                                )}
-                              </div>
-                            </label>
-                          </div>
-                        </div>
+                          tk={tk}
+                          receiptType={receiptType}
+                          select={() => selectStakedToken(tk)}
+                          selected={isStakedTokenSelected(tk)}
+                          loadingClaim={
+                            handleClaimRewards.isLoading &&
+                            isStakedTokenSelected(tk)
+                          }
+                          loadingUnstake={
+                            handleUnstake.isLoading && isStakedTokenSelected(tk)
+                          }
+                        />
                       ))}
                   </div>
                 )}
