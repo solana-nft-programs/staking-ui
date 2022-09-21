@@ -50,7 +50,6 @@ function StakePoolHome() {
   const [stakedSelected, setStakedSelected] = useState<StakeEntryTokenData[]>(
     []
   )
-  const [singleTokenAction, setSingleTokenAction] = useState('')
   const [receiptType, setReceiptType] = useState<ReceiptType>(
     ReceiptType.Original
   )
@@ -366,7 +365,7 @@ function StakePoolHome() {
                         key={tk?.stakeEntry?.pubkey.toBase58()}
                         tk={tk}
                         receiptType={receiptType}
-                        select={() => selectUnstakedToken(tk)}
+                        select={(tk, amount) => selectUnstakedToken(tk, amount)}
                         selected={isUnstakedTokenSelected(tk)}
                         loadingClaim={
                           handleClaimRewards.isLoading &&
@@ -602,7 +601,7 @@ function StakePoolHome() {
                           key={tk?.stakeEntry?.pubkey.toBase58()}
                           tk={tk}
                           receiptType={receiptType}
-                          select={() => selectStakedToken(tk)}
+                          select={(tk) => selectStakedToken(tk)}
                           selected={isStakedTokenSelected(tk)}
                           loadingClaim={
                             handleClaimRewards.isLoading &&

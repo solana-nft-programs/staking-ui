@@ -105,6 +105,7 @@ export const UnstakedToken = ({
                         type="text"
                         placeholder={'Enter Amount'}
                         onChange={(e) => {
+                          console.log(e.target.value)
                           select(tk, e.target.value)
                         }}
                       />
