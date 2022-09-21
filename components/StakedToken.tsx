@@ -3,6 +3,11 @@ import type { ReceiptType } from '@cardinal/staking/dist/cjs/programs/stakePool'
 import { useWallet } from '@solana/wallet-adapter-react'
 import { LoadingSpinner } from 'common/LoadingSpinner'
 import { QuickActions } from 'common/QuickActions'
+import {
+  getImageFromTokenData,
+  getNameFromTokenData,
+} from 'common/tokenDataUtils'
+import { useMintMetadata } from 'hooks/useMintMetadata'
 import type { StakeEntryTokenData } from 'hooks/useStakedTokenDatas'
 import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
@@ -27,6 +32,7 @@ export const StakedToken = ({
   const wallet = useWallet()
   const { connection } = useEnvironmentCtx()
   const { data: stakePoolMetadata } = useStakePoolMetadata()
+  const mintMetadata = useMintMetadata(tk)
   return (
     <div key={tk?.stakeEntry?.pubkey.toBase58()} className="mx-auto">
       <div className="relative w-44 md:w-auto 2xl:w-48">
@@ -77,11 +83,17 @@ export const StakedToken = ({
               selectUnstakedToken={() => {}}
               selectStakedToken={select}
             />
-            <img
-              className="mx-auto mt-4 rounded-t-xl bg-white bg-opacity-5 object-contain md:h-40 md:w-40 2xl:h-48 2xl:w-48"
-              src={tk.metadata?.data.image || tk.tokenListData?.logoURI}
-              alt={tk.metadata?.data.name || tk.tokenListData?.name}
-            />
+
+            {mintMetadata.isFetched &&
+            getImageFromTokenData(tk, mintMetadata.data) ? (
+              <img
+                className="mx-auto mt-4 rounded-t-xl bg-white bg-opacity-5 object-contain md:h-40 md:w-40 2xl:h-48 2xl:w-48"
+                src={getImageFromTokenData(tk, mintMetadata?.data)}
+                alt={getNameFromTokenData(tk, mintMetadata?.data)}
+              />
+            ) : (
+              <div className="mx-auto mt-4 animate-pulse rounded-t-xl bg-white bg-opacity-5 object-contain md:h-40 md:w-40 2xl:h-48 2xl:w-48" />
+            )}
             <div
               className={`flex-col rounded-b-xl p-2 md:w-40 2xl:w-48 ${
                 stakePoolMetadata?.colors?.fontColor
@@ -97,7 +109,7 @@ export const StakedToken = ({
               }}
             >
               <div className="truncate font-semibold">
-                {tk.metadata?.data.name || tk.tokenListData?.symbol}
+                {tk.tokenListData?.symbol}
               </div>
               <StakedStats tokenData={tk} />
             </div>

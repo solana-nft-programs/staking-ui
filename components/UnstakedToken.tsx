@@ -1,8 +1,13 @@
 import type { ReceiptType } from '@cardinal/staking/dist/cjs/programs/stakePool'
 import { LoadingSpinner } from 'common/LoadingSpinner'
 import { QuickActions } from 'common/QuickActions'
+import {
+  getImageFromTokenData,
+  getNameFromTokenData,
+} from 'common/tokenDataUtils'
 import { formatAmountAsDecimal } from 'common/units'
 import type { AllowedTokenData } from 'hooks/useAllowedTokenDatas'
+import { useMintMetadata } from 'hooks/useMintMetadata'
 import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
 
 export const UnstakedToken = ({
@@ -21,6 +26,8 @@ export const UnstakedToken = ({
   select: (tokenData: AllowedTokenData, amount?: string) => void
 }) => {
   const { data: stakePoolMetadata } = useStakePoolMetadata()
+  const mintMetadata = useMintMetadata(tk)
+  console.log('--', mintMetadata)
   return (
     <div key={tk.tokenAccount?.pubkey.toString()} className="mx-auto">
       <div className="relative w-44 md:w-auto 2xl:w-48">
@@ -57,11 +64,18 @@ export const UnstakedToken = ({
               selectUnstakedToken={select}
               selectStakedToken={() => {}}
             />
-            <img
-              className="mx-auto mt-4 rounded-t-xl bg-white bg-opacity-5 object-contain md:h-40 md:w-40 2xl:h-48 2xl:w-48"
-              src={tk.metadata?.data.image || tk.tokenListData?.logoURI}
-              alt={tk.metadata?.data.name || tk.tokenListData?.name}
-            />
+
+            {mintMetadata.isFetched &&
+            getImageFromTokenData(tk, mintMetadata.data) ? (
+              <img
+                className="mx-auto mt-4 rounded-t-xl bg-white bg-opacity-5 object-contain md:h-40 md:w-40 2xl:h-48 2xl:w-48"
+                src={getImageFromTokenData(tk, mintMetadata.data)}
+                alt={getNameFromTokenData(tk, mintMetadata?.data)}
+              />
+            ) : (
+              <div className="mx-auto mt-4 animate-pulse rounded-t-xl bg-white bg-opacity-5 object-contain md:h-40 md:w-40 2xl:h-48 2xl:w-48" />
+            )}
+
             <div
               className={`flex-col rounded-b-xl p-2 ${
                 stakePoolMetadata?.colors?.fontColor
@@ -77,7 +91,7 @@ export const UnstakedToken = ({
               }}
             >
               <div className="truncate font-semibold">
-                {tk.metadata?.data.name || tk.tokenListData?.symbol}
+                {getNameFromTokenData(tk, mintMetadata?.data)}
               </div>
               {tk.tokenAccount &&
                 tk.tokenAccount?.account.data.parsed.info.tokenAmount.amount >
