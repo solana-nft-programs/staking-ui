@@ -1,4 +1,4 @@
-import { secondstoDuration } from '@cardinal/common'
+import { getExpirationString, secondstoDuration } from '@cardinal/common'
 import { BN } from '@project-serum/anchor'
 import { PublicKey } from '@solana/web3.js'
 
@@ -146,10 +146,10 @@ export function StakedStats({ tokenData }: { tokenData: StakeEntryTokenData }) {
               stakePool.parsed.minStakeSeconds -
               UTCNow >
             0
-              ? secondstoDuration(
+              ? getExpirationString(
                   tokenData.stakeEntry?.parsed.lastStakedAt.toNumber() +
-                    stakePool.parsed.minStakeSeconds -
-                    UTCNow
+                    stakePool.parsed.minStakeSeconds,
+                  UTCNow
                 )
               : 'Satisfied'}
           </span>

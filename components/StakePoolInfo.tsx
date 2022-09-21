@@ -1,4 +1,5 @@
 import { RewardDistributorKind } from '@cardinal/staking/dist/cjs/programs/rewardDistributor'
+import { BN } from '@project-serum/anchor'
 import {
   formatAmountAsDecimal,
   formatMintNaturalAmountAsDecimal,
@@ -92,7 +93,14 @@ export const StakePoolInfo = () => {
       {rewardDistributorData.data && rewardsRate.data && rewardMintInfo.data ? (
         <>
           <div className="inline-block text-lg">
-            <span>Rewards Rate</span>:{' '}
+            <span>
+              {rewardDistributorData.data.parsed.maxRewardSecondsReceived?.eq(
+                new BN(1)
+              )
+                ? '1x Claim'
+                : 'Rewards Rate'}
+            </span>
+            :{' '}
             <span>
               {formatAmountAsDecimal(
                 rewardMintInfo.data.mintInfo.decimals,
@@ -118,7 +126,11 @@ export const StakePoolInfo = () => {
                   rewardMintInfo.data.metaplexMintData?.data.symbol ||
                   '???'}
               </a>{' '}
-              / Day
+              {rewardDistributorData.data.parsed.maxRewardSecondsReceived?.eq(
+                new BN(1)
+              )
+                ? ''
+                : '/ Day'}
             </span>
           </div>
           <div className="flex min-w-[200px] flex-col text-lg">
