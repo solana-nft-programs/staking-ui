@@ -16,13 +16,6 @@ import { useWalletIds } from './useWalletIds'
 export type StakeEntryTokenData = {
   tokenListData?: TokenListData
   metaplexData?: { pubkey: PublicKey; data: metaplex.MetadataData } | null
-  metadata?:
-    | {
-        pubkey: PublicKey
-        data: any
-      }
-    | undefined
-    | null
   stakeEntry: AccountData<StakeEntryData> | null | undefined
 }
 
@@ -70,30 +63,9 @@ export async function getStakeEntryDatas(
     }
   )
 
-  const metadata = await Promise.all(
-    Object.values(metaplexData).map(async (md, i) => {
-      try {
-        if (!md) return null
-        const json = await fetch(md.data.data.uri).then((r) => r.json())
-        return {
-          pubkey: md.pubkey!,
-          data: json,
-        }
-      } catch (e) {
-        return null
-      }
-    })
-  )
-
   return stakeEntries.map((stakeEntry) => ({
     stakeEntry,
     metaplexData: metaplexData[stakeEntry.pubkey.toString()],
-    metadata: metadata.find((data) =>
-      data
-        ? data.pubkey.toBase58() ===
-          metaplexData[stakeEntry.pubkey.toString()]?.pubkey.toBase58()
-        : undefined
-    ),
   }))
 }
 

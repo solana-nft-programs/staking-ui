@@ -24,7 +24,6 @@ import { useWalletId } from './useWalletId'
 export const TOKEN_DATAS_KEY = 'tokenDatas'
 
 export type AllowedTokenData = BaseTokenData & {
-  metadata?: any
   stakeEntry?: AccountData<StakeEntryData>
   amountToStake?: string
 }
@@ -210,31 +209,8 @@ export const useAllowedTokenDatas = (showFungibleTokens: boolean) => {
           ? await getStakeEntries(connection, stakeEntryIds)
           : []
 
-      const metadata = await Promise.all(
-        allowedTokens.map(async (allowedToken) => {
-          try {
-            if (!allowedToken.metaplexData?.data.data.uri) return null
-            const json = await fetch(
-              allowedToken.metaplexData.data.data.uri
-            ).then((r) => r.json())
-            return {
-              pubkey: allowedToken.metaplexData.pubkey,
-              data: json,
-            }
-          } catch (e) {
-            return null
-          }
-        })
-      )
-
       return allowedTokens.map((allowedToken, i) => ({
         ...allowedToken,
-        metadata: metadata.find((data) =>
-          data
-            ? data.pubkey.toBase58() ===
-              allowedToken.metaplexData?.pubkey.toBase58()
-            : undefined
-        ),
         stakeEntryData: stakeEntries[i],
       }))
     },
