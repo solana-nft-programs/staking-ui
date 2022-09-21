@@ -102,15 +102,17 @@ export const useHandleStake = () => {
 
             const amount = token?.amountToStake
               ? new BN(
-                  token?.amountToStake && token.tokenListData
+                  token?.amountToStake &&
+                  token.tokenAccount.account.data.parsed.info.tokenAmount
+                    .amount > 1
                     ? parseMintNaturalAmountFromDecimal(
                         token?.amountToStake,
-                        token.tokenListData.decimals
+                        token.tokenAccount.account.data.parsed.info.tokenAmount
+                          .decimals
                       ).toString()
                     : 1
                 )
               : undefined
-            stake
             return stake(connection, wallet, {
               stakePoolId: stakePoolId,
               receiptType:
