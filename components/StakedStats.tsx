@@ -1,6 +1,7 @@
 import { getExpirationString, secondstoDuration } from '@cardinal/common'
 import { BN } from '@project-serum/anchor'
 import { PublicKey } from '@solana/web3.js'
+import { useMintInfo } from 'hooks/useMintInfo'
 
 import {
   formatAmountAsDecimal,
@@ -18,6 +19,12 @@ import { useUTCNow } from '../providers/UTCNowProvider'
 export function StakedStats({ tokenData }: { tokenData: StakeEntryTokenData }) {
   const { UTCNow } = useUTCNow()
   const rewardMintInfo = useRewardMintInfo()
+  const mintInfo = useMintInfo(
+    tokenData.stakeEntry?.parsed.amount.gt(new BN(1))
+      ? tokenData.stakeEntry?.parsed.originalMint
+      : undefined
+  )
+  console.log(mintInfo)
   const rewardDistributorData = useRewardDistributorData()
   const { data: stakePool } = useStakePoolData()
   const rewardEntries = useRewardEntries()
@@ -26,16 +33,18 @@ export function StakedStats({ tokenData }: { tokenData: StakeEntryTokenData }) {
   return (
     <div className="mt-2">
       {tokenData.stakeEntry &&
-        tokenData.stakeEntry.parsed.amount.toNumber() > 1 &&
+        tokenData.stakeEntry.parsed.amount.gt(new BN(1)) &&
         rewardMintInfo.data && (
           <div className="flex w-full flex-row justify-between text-xs font-semibold">
             <span>Amount:</span>
             <span className="text-right">
-              {formatAmountAsDecimal(
-                rewardMintInfo.data?.mintInfo.decimals,
-                tokenData.stakeEntry && tokenData.stakeEntry.parsed.amount,
-                rewardMintInfo.data?.mintInfo.decimals
-              )}
+              {mintInfo.data
+                ? formatAmountAsDecimal(
+                    mintInfo.data?.decimals,
+                    tokenData.stakeEntry && tokenData.stakeEntry.parsed.amount,
+                    mintInfo.data?.decimals
+                  )
+                : 1}
             </span>
           </div>
         )}
