@@ -54,8 +54,6 @@ export const UnstakedToken = ({
             <QuickActions
               receiptType={receiptType}
               unstakedTokenData={tk}
-              // TODO
-              showFungibleTokens={false}
               selectUnstakedToken={select}
               selectStakedToken={() => {}}
             />

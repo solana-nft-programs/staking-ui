@@ -22,14 +22,12 @@ export const QuickActions = ({
   unstakedTokenData,
   stakedTokenData,
   receiptType,
-  showFungibleTokens,
   selectUnstakedToken,
   selectStakedToken,
 }: {
   unstakedTokenData?: AllowedTokenData
   stakedTokenData?: StakeEntryTokenData
   receiptType: ReceiptType
-  showFungibleTokens: boolean
   selectUnstakedToken: (tk: AllowedTokenData) => void
   selectStakedToken: (tk: StakeEntryTokenData) => void
 }) => {
@@ -105,7 +103,10 @@ export const QuickActions = ({
               </a>
             </PopoverItem>
           )}
-          {!showFungibleTokens && (
+          {!(
+            unstakedTokenData?.tokenAccount?.account.data.parsed.info
+              .tokenAmount.amount > 1
+          ) && (
             <PopoverItem>
               <div
                 className="flex cursor-pointer items-center justify-between gap-2"
