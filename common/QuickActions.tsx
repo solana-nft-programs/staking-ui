@@ -7,7 +7,6 @@ import type { StakeEntryTokenData } from 'hooks/useStakedTokenDatas'
 import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
 import { lighten } from 'polished'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
-import type { Dispatch, SetStateAction } from 'react'
 import { AiFillLock, AiFillUnlock, AiOutlineDatabase } from 'react-icons/ai'
 import { BsBookmarkCheck } from 'react-icons/bs'
 import { FaEllipsisH } from 'react-icons/fa'
@@ -31,7 +30,6 @@ export const QuickActions = ({
   stakedTokenData?: StakeEntryTokenData
   receiptType: ReceiptType
   showFungibleTokens: boolean
-  setSingleTokenAction: Dispatch<SetStateAction<string>>
   selectUnstakedToken: (tk: AllowedTokenData) => void
   selectStakedToken: (tk: StakeEntryTokenData) => void
 }) => {
