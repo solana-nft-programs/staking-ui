@@ -9,15 +9,14 @@ import { FooterSlim } from 'common/FooterSlim'
 import { Header } from 'common/Header'
 import { LoadingSpinner } from 'common/LoadingSpinner'
 import { notify } from 'common/Notification'
-import { QuickActions } from 'common/QuickActions'
 import { Toggle } from 'common/Toggle'
 import { Tooltip } from 'common/Tooltip'
-import { formatAmountAsDecimal } from 'common/units'
 import { contrastColorMode, secondstoDuration } from 'common/utils'
 import { AllowedTokens } from 'components/AllowedTokens'
 import { PoolAnalytics } from 'components/PoolAnalytics'
 import { StakedToken } from 'components/StakedToken'
 import { StakePoolInfo } from 'components/StakePoolInfo'
+import { UnstakedToken } from 'components/UnstakedToken'
 import { useHandleClaimRewards } from 'handlers/useHandleClaimRewards'
 import { useHandleStake } from 'handlers/useHandleStake'
 import { useHandleUnstake } from 'handlers/useHandleUnstake'
@@ -363,137 +362,20 @@ function StakePoolHome() {
                         allowedTokenDatas.data) ||
                       []
                     ).map((tk) => (
-                      <div
-                        key={tk.tokenAccount?.pubkey.toString()}
-                        className="mx-auto"
-                      >
-                        <div className="relative w-44 md:w-auto 2xl:w-48">
-                          <label
-                            htmlFor={tk?.tokenAccount?.pubkey.toBase58()}
-                            className="relative"
-                          >
-                            <div
-                              className="relative cursor-pointer rounded-xl"
-                              onClick={() => selectUnstakedToken(tk)}
-                              style={{
-                                boxShadow: isUnstakedTokenSelected(tk)
-                                  ? `0px 0px 20px ${
-                                      stakePoolMetadata?.colors?.secondary ||
-                                      '#FFFFFF'
-                                    }`
-                                  : '',
-                              }}
-                            >
-                              {handleStake.isLoading &&
-                                (isUnstakedTokenSelected(tk) ||
-                                  singleTokenAction ===
-                                    tk.tokenAccount?.account.data.parsed.info.mint.toString()) && (
-                                  <div>
-                                    <div className="absolute top-0 left-0 z-10 flex h-full w-full justify-center rounded-xl bg-black bg-opacity-80 align-middle text-white">
-                                      <div className="my-auto flex">
-                                        <span className="mr-2">
-                                          <LoadingSpinner height="20px" />
-                                        </span>
-                                        Staking token...
-                                      </div>
-                                    </div>
-                                  </div>
-                                )}
-                              <QuickActions
-                                receiptType={receiptType}
-                                unstakedTokenData={tk}
-                                showFungibleTokens={showFungibleTokens}
-                                selectUnstakedToken={selectUnstakedToken}
-                                selectStakedToken={selectStakedToken}
-                              />
-                              <img
-                                className="mx-auto mt-4 rounded-t-xl bg-white bg-opacity-5 object-contain md:h-40 md:w-40 2xl:h-48 2xl:w-48"
-                                src={
-                                  tk.metadata?.data.image ||
-                                  tk.tokenListData?.logoURI
-                                }
-                                alt={
-                                  tk.metadata?.data.name ||
-                                  tk.tokenListData?.name
-                                }
-                              />
-                              <div
-                                className={`flex-col rounded-b-xl p-2 ${
-                                  stakePoolMetadata?.colors?.fontColor
-                                    ? `text-[${stakePoolMetadata?.colors?.fontColor}]`
-                                    : 'text-gray-200'
-                                } ${
-                                  stakePoolMetadata?.colors?.backgroundSecondary
-                                    ? `bg-[${stakePoolMetadata?.colors?.backgroundSecondary}]`
-                                    : 'bg-white bg-opacity-10'
-                                }`}
-                                style={{
-                                  background:
-                                    stakePoolMetadata?.colors
-                                      ?.backgroundSecondary,
-                                }}
-                              >
-                                <div className="truncate font-semibold">
-                                  {tk.metadata?.data.name ||
-                                    tk.tokenListData?.symbol}
-                                </div>
-                                {showFungibleTokens &&
-                                  tk.tokenAccount &&
-                                  tk.tokenAccount?.account.data.parsed.info
-                                    .tokenAmount.amount > 1 && (
-                                    <div className="mt-2">
-                                      <div className="truncate font-semibold">
-                                        <div className="flex w-full flex-row justify-between text-xs font-semibold">
-                                          <span>Available:</span>
-                                          <span className="px-1">
-                                            {formatAmountAsDecimal(
-                                              tk.tokenAccount.account.data
-                                                .parsed.info.tokenAmount
-                                                .decimals,
-                                              tk.tokenAccount?.account.data
-                                                .parsed.info.tokenAmount.amount,
-                                              tk.tokenAccount.account.data
-                                                .parsed.info.tokenAmount
-                                                .decimals
-                                            )}
-                                          </span>
-                                        </div>
-                                      </div>
-                                      <div className="flex w-full flex-row justify-between text-xs font-semibold">
-                                        <span>Amount:</span>
-                                        <input
-                                          className="flex w-3/4 rounded-md bg-transparent px-1 text-right text-xs font-medium focus:outline-none"
-                                          type="text"
-                                          placeholder={'Enter Amount'}
-                                          onChange={(e) => {
-                                            selectUnstakedToken(
-                                              tk,
-                                              e.target.value
-                                            )
-                                          }}
-                                        />
-                                      </div>
-                                    </div>
-                                  )}
-                              </div>
-                            </div>
-                            {isUnstakedTokenSelected(tk) && (
-                              <div
-                                className={`absolute top-2 left-2`}
-                                style={{
-                                  height: '10px',
-                                  width: '10px',
-                                  backgroundColor:
-                                    stakePoolMetadata?.colors?.primary ||
-                                    '#FFFFFF',
-                                  borderRadius: '50%',
-                                  display: 'inline-block',
-                                }}
-                              />
-                            )}
-                          </label>
-                        </div>
-                      </div>
+                      <UnstakedToken
+                        key={tk?.stakeEntry?.pubkey.toBase58()}
+                        tk={tk}
+                        receiptType={receiptType}
+                        select={() => selectUnstakedToken(tk)}
+                        selected={isUnstakedTokenSelected(tk)}
+                        loadingClaim={
+                          handleClaimRewards.isLoading &&
+                          isUnstakedTokenSelected(tk)
+                        }
+                        loadingUnstake={
+                          handleUnstake.isLoading && isUnstakedTokenSelected(tk)
+                        }
+                      />
                     ))}
                   </div>
                 )}
