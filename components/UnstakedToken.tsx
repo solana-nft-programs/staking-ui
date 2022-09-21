@@ -27,7 +27,6 @@ export const UnstakedToken = ({
 }) => {
   const { data: stakePoolMetadata } = useStakePoolMetadata()
   const mintMetadata = useMintMetadata(tk)
-  console.log('--', mintMetadata)
   return (
     <div key={tk.tokenAccount?.pubkey.toString()} className="mx-auto">
       <div className="relative w-44 md:w-auto 2xl:w-48">
