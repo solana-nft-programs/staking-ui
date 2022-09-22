@@ -1,0 +1,27 @@
+.wallet-adapter-button {
+  @apply bg-purple-400;
+  @apply cursor-pointer;
+  @apply p-3 px-6;
+  @apply rounded-md;
+  font-weight: 500;
+}
+
+.wallet-adapter-button:not([disabled]):hover {
+  @apply hover:bg-teal-500;
+}
+
+.wallet-adapter-modal-list .wallet-adapter-button {
+  @apply bg-transparent;
+}
+
+.wallet-adapter-modal-wrapper {
+  @apply bg-neutral-900;
+}
+
+.wallet-adapter-modal-button-close {
+  @apply bg-neutral-800;
+}
+
+.dt-button > svg {
+  opacity: 0.5;
+}

@@ -11,7 +11,7 @@ import { BN } from '@project-serum/anchor'
 import { useWallet } from '@solana/wallet-adapter-react'
 import { Keypair, PublicKey, Transaction } from '@solana/web3.js'
 import { LoadingSpinner } from 'common/LoadingSpinner'
-import { notify } from 'common/Notification'
+import { useNotifications } from 'hooks/useNotifications'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 import { TailSpin } from 'react-loader-spinner'
 import * as splToken from '@solana/spl-token'
@@ -108,6 +108,7 @@ export function StakePoolForm({
 }) {
   const { connection } = useEnvironmentCtx()
   const wallet = useWallet()
+  const { notify }  = useNotifications()
   const initialValues: CreationForm = {
     overlayText: stakePoolData?.parsed.overlayText ?? 'STAKED',
     requireCollections: (stakePoolData?.parsed.requiresCollections ?? []).map(

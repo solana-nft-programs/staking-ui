@@ -1,5 +1,4 @@
 import './styles.css'
-import 'antd/dist/antd.dark.css'
 import '@cardinal/namespaces-components/dist/esm/styles.css'
 import type { AppProps } from 'next/app'
 import { WalletProvider } from '@solana/wallet-adapter-react'
@@ -14,7 +13,8 @@ import { UTCNowProvider } from 'providers/UTCNowProvider'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import { ReactQueryDevtools } from 'react-query/devtools'
 
-require('@solana/wallet-adapter-react-ui/styles.css')
+import '@solana/wallet-adapter-react-ui/styles.css'
+import '../vendor/Header.css'
 
 export const queryClient = new QueryClient({
   defaultOptions: {

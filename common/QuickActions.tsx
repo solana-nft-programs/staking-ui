@@ -27,7 +27,6 @@ import {
 import { Wallet } from '@metaplex/js'
 import { useStakePoolData } from 'hooks/useStakePoolData'
 import { useWallet } from '@solana/wallet-adapter-react'
-import { notify } from './Notification'
 import { BN } from '@project-serum/anchor'
 import { parseMintNaturalAmountFromDecimal } from './units'
 import {
@@ -38,6 +37,7 @@ import { useStakePoolEntries } from 'hooks/useStakePoolEntries'
 import { useRewardDistributorData } from 'hooks/useRewardDistributorData'
 import { useRewardDistributorTokenAccount } from 'hooks/useRewardDistributorTokenAccount'
 import { BsBookmarkCheck } from 'react-icons/bs'
+import { useNotifications } from 'hooks/useNotifications'
 
 export const QuickActions = ({
   unstakedTokenData,
@@ -76,6 +76,7 @@ export const QuickActions = ({
   const stakePoolEntries = useStakePoolEntries()
   const rewardDistributorData = useRewardDistributorData()
   const rewardDistributorTokenAccountData = useRewardDistributorTokenAccount()
+  const { notify } = useNotifications()
 
   return (
     <Popover
@@ -433,6 +434,7 @@ export const QuickActions = ({
                       notify({
                         message: `${'Failed to unstake token'}`,
                         description: handleError(e, `Transaction failed: ${e}`),
+                        // @ts-ignore
                         txid: '',
                         type: 'error',
                       })

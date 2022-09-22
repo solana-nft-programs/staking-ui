@@ -141,3 +141,30 @@ export const contrastColorMode = (bgColor: string): [string, boolean] => {
     ? ['#ffffff', true]
     : ['#000000', false]
 }
+
+export function removeTokenName(name: string, stringToRemove: string) {
+  return name.replace(stringToRemove, '').trim()
+}
+
+export function valueOrDefault(prop: number | undefined, defaultProp: number) {
+  return prop ? prop : defaultProp
+}
+
+export function roundXDigitValue(prop: number, places: number = 2){
+  if (prop < 1 && prop > 0) {
+    return prop.toFixed(4)
+  }
+
+  const isInt = Number.isInteger(prop)
+
+  return isInt ? prop.toString() : truncateFloat(prop, places)
+}
+
+export function truncateFloat(prop: number, placement: number = 2) {
+  if (!prop) return '0'
+  if (Number.isInteger(prop)) return prop.toString()
+
+  const [int, decimal] = prop.toString().split('.')
+  const slicedDecimal = decimal?.slice(0, placement)
+  return `${int}.${slicedDecimal}`
+}

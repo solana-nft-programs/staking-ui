@@ -20,7 +20,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "format": "prettier --write --plugin-search-dir=. ."
   },
   "dependencies": {
     "@cardinal/common": "^2.0.4",
@@ -30,9 +31,9 @@
     "@cardinal/stats": "^1.0.3",
     "@usedispatch/forum": "^0.3.9",
     "@usedispatch/client": "0.12.0",
-    "@dialectlabs/sdk": "^0.6.5",
-    "@dialectlabs/react-ui": "^1.0.0-alpha.47",
     "@dialectlabs/react-sdk": "^1.0.0-beta.26",
+    "@dialectlabs/react-ui": "^1.0.0-alpha.47",
+    "@dialectlabs/sdk": "^0.6.5",
     "@emotion/styled": "^11.8.1",
     "@headlessui/react": "^1.6.1",
     "@metaplex/js": "^4.12.0",
@@ -49,7 +50,6 @@
     "@solana/wallet-adapter-react-ui": "^0.9.6",
     "@solana/wallet-adapter-wallets": "^0.15.5",
     "@solana/web3.js": "^1.37.1",
-    "antd": "^4.19.5",
     "base58": "^2.0.1",
     "formik": "^2.2.9",
     "next": "12.1.4",
@@ -61,7 +61,8 @@
     "react-popper": "^2.3.0",
     "react-query": "^3.39.1",
     "react-select": "^5.2.2",
-    "yup": "^0.32.11"
+    "yup": "^0.32.11",
+    "zustand": "^4.1.1"
   },
   "devDependencies": {
     "@types/node": "17.0.23",
@@ -71,6 +72,7 @@
     "autoprefixer": "^10.4.4",
     "babel-loader": "^8.2.3",
     "eslint": "^8.11.0",
+    "eslint-plugin-jsx-a11y": "^6.6.1",
     "eslint-plugin-react": "^7.29.4",
     "eslint-plugin-react-hooks": "^4.6.0",
     "postcss": "^8.4.12",

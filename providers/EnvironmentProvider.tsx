@@ -3,6 +3,7 @@ import { firstParam } from 'common/utils'
 import { NextPageContext } from 'next'
 import { useRouter } from 'next/router'
 import React, { useContext, useMemo, useState } from 'react'
+import { EnvironmentType } from 'types/environment'
 
 export interface Environment {
   label: Cluster
@@ -20,15 +21,15 @@ export interface EnvironmentContextValues {
 export const ENVIRONMENTS: Environment[] = [
   {
     label: 'mainnet-beta',
-    primary: process.env.NEXT_PUBLIC_MAINNET_PRIMARY || 'https://ssc-dao.genesysgo.net',
+    primary: process.env.NEXT_PUBLIC_MAINNET_PRIMARY || 'https://rpc.sentries.io/rpc',
     secondary: process.env.NEXT_PUBLIC_MAINNET_SECONDARY,
   },
   {
-    label: 'testnet',
+    label: EnvironmentType.Testnet,
     primary: 'https://api.testnet.solana.com',
   },
   {
-    label: 'devnet',
+    label: EnvironmentType.Devnet,
     primary: 'https://api.devnet.solana.com',
   },
 ]
@@ -43,9 +44,9 @@ export const getInitialProps = async ({
 }): Promise<{ cluster: string }> => {
   const host = ctx.req?.headers.host || ctx.query.host
   const cluster = host?.includes('dev')
-    ? 'devnet'
+    ? EnvironmentType.Devnet
     : (ctx.query.project || ctx.query.host)?.includes('test')
-    ? 'testnet'
+    ? EnvironmentType.Testnet
     : ctx.query.cluster || process.env.BASE_CLUSTER
   return {
     cluster: firstParam(cluster),
