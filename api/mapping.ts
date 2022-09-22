@@ -1712,10 +1712,10 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     stakePoolAddress: new PublicKey(
       '6JAjWAWhzAdZRVXmLKpzXy8idqPY3Jb5AUUXzBPm3FGt'
     ),
-    hostname: 'stake.pixel-y00ts',
+    hostname: 'staking.pixely00ts.xyz',
     hideFooter: true,
     hideAllowedTokens: true,
-    websiteUrl: '',
+    websiteUrl: 'https://www.pixely00ts.xyz/',
     receiptType: ReceiptType.Original,
     tokenStandard: TokenStandard.NonFungible,
     // styles to apply to the whole stake pool
@@ -1739,6 +1739,10 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     // Website url if specified will be navigated to when the image in the header is clicked
     maxStaked: 10000,
     links: [
+      {
+        text: 'Pixel Y00ts',
+        value: 'https://www.pixely00ts.xyz/',
+      },
       {
         text: 'Twitter',
         value: 'https://twitter.com/PY00ts',
