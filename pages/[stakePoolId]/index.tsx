@@ -367,12 +367,8 @@ function StakePoolHome() {
                         receiptType={receiptType}
                         select={(tk, amount) => selectUnstakedToken(tk, amount)}
                         selected={isUnstakedTokenSelected(tk)}
-                        loadingClaim={
-                          handleClaimRewards.isLoading &&
-                          isUnstakedTokenSelected(tk)
-                        }
-                        loadingUnstake={
-                          handleUnstake.isLoading && isUnstakedTokenSelected(tk)
+                        loading={
+                          handleStake.isLoading && isUnstakedTokenSelected(tk)
                         }
                       />
                     ))}
