@@ -1,5 +1,6 @@
 import { useQuery } from 'react-query'
 
+
 export type SentriesDetailsData = {
   poweredSentries: number
   stakedSentries: number
