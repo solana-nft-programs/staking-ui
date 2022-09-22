@@ -14,10 +14,8 @@ import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
 import { getColorByBgColor } from './Button'
 import { ReceiptType } from '@cardinal/staking/dist/cjs/programs/stakePool'
 import { AiFillLock, AiFillUnlock, AiOutlineDatabase } from 'react-icons/ai'
-import { RiMoneyDollarCircleFill } from 'react-icons/ri'
 import { PublicKey } from '@solana/web3.js'
 import {
-  claimRewards,
   createStakeEntryAndStakeMint,
   executeTransaction,
   handleError,
@@ -34,8 +32,6 @@ import {
   useStakedTokenDatas,
 } from 'hooks/useStakedTokenDatas'
 import { useStakePoolEntries } from 'hooks/useStakePoolEntries'
-import { useRewardDistributorData } from 'hooks/useRewardDistributorData'
-import { useRewardDistributorTokenAccount } from 'hooks/useRewardDistributorTokenAccount'
 import { BsBookmarkCheck } from 'react-icons/bs'
 import { useNotifications } from 'hooks/useNotifications'
 
@@ -48,7 +44,6 @@ export const QuickActions = ({
   setUnstakedSelected,
   setLoadingStake,
   setLoadingUnstake,
-  setLoadingClaimRewards,
   setSingleTokenAction,
   selectUnstakedToken,
   selectStakedToken,
@@ -61,7 +56,6 @@ export const QuickActions = ({
   setUnstakedSelected: Dispatch<SetStateAction<AllowedTokenData[]>>
   setLoadingStake: Dispatch<SetStateAction<boolean>>
   setLoadingUnstake: Dispatch<SetStateAction<boolean>>
-  setLoadingClaimRewards: Dispatch<SetStateAction<boolean>>
   setSingleTokenAction: Dispatch<SetStateAction<string>>
   selectUnstakedToken: (tk: AllowedTokenData) => void
   selectStakedToken: (tk: StakeEntryTokenData) => void
@@ -74,8 +68,6 @@ export const QuickActions = ({
   const stakedTokenDatas = useStakedTokenDatas()
   const allowedTokenDatas = useAllowedTokenDatas(showFungibleTokens)
   const stakePoolEntries = useStakePoolEntries()
-  const rewardDistributorData = useRewardDistributorData()
-  const rewardDistributorTokenAccountData = useRewardDistributorTokenAccount()
   const { notify } = useNotifications()
 
   return (
@@ -317,67 +309,6 @@ export const QuickActions = ({
               >
                 Stake
                 <AiFillLock />
-              </div>
-            </PopoverItem>
-          )}
-          {stakedTokenData?.stakeEntry && (
-            <PopoverItem>
-              <div
-                className="flex cursor-pointer items-center justify-between gap-2"
-                onClick={async () => {
-                  if (!wallet) {
-                    notify({ message: `Wallet not connected`, type: 'error' })
-                    return
-                  }
-                  if (!stakePool) {
-                    notify({ message: `Wallet not connected`, type: 'error' })
-                    return
-                  }
-                  setLoading(true)
-                  setSingleTokenAction(
-                    stakedTokenData.stakeEntry!.parsed.originalMint.toString()
-                  )
-                  setLoadingClaimRewards(true)
-
-                  try {
-                    if (!stakedTokenData || !stakedTokenData.stakeEntry) {
-                      throw new Error('No stake entry for token')
-                    }
-                    const tx = await claimRewards(
-                      ctx.connection,
-                      wallet as Wallet,
-                      {
-                        stakePoolId: stakePool.pubkey,
-                        stakeEntryId: stakedTokenData.stakeEntry.pubkey,
-                      }
-                    )
-                    await executeTransaction(
-                      ctx.connection,
-                      wallet as Wallet,
-                      tx,
-                      {}
-                    )
-                    rewardDistributorData.remove()
-                    rewardDistributorTokenAccountData.remove()
-                    setLoadingClaimRewards(false)
-                    setLoading(false)
-                    setSingleTokenAction('')
-                    notify({
-                      message: 'Successfully claimed rewards',
-                      type: 'success',
-                    })
-                  } catch (e) {
-                    notify({
-                      message: `${e}`,
-                      description: `Failed to claim rewards for token ${stakedTokenData.stakeEntry?.pubkey.toString()}`,
-                      type: 'error',
-                    })
-                    return null
-                  }
-                }}
-              >
-                Claim Rewards
-                <RiMoneyDollarCircleFill />
               </div>
             </PopoverItem>
           )}
