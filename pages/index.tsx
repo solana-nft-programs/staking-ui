@@ -76,7 +76,6 @@ function Home() {
   const [receiptType, setReceiptType] = useState<ReceiptType>(
     ReceiptType.Original
   )
-  const [loadingClaimRewards, setLoadingClaimRewards] = useState(false)
   const [showFungibleTokens, setShowFungibleTokens] = useState(false)
   const allowedTokenDatas = useAllowedTokenDatas(showFungibleTokens)
   const { data: stakePoolMetadata } = useStakePoolMetadata()
@@ -816,9 +815,6 @@ function Home() {
                                           setUnstakedSelected={setUnstakedSelected}
                                           setLoadingStake={setLoadingStake}
                                           setLoadingUnstake={setLoadingUnstake}
-                                          setLoadingClaimRewards={
-                                            setLoadingClaimRewards
-                                          }
                                           setSingleTokenAction={setSingleTokenAction}
                                           selectUnstakedToken={selectUnstakedToken}
                                           selectStakedToken={selectStakedToken}
@@ -1005,7 +1001,7 @@ function Home() {
                                               : '',
                                           }}
                                         >
-                                          {(loadingUnstake || loadingClaimRewards) &&
+                                          {(loadingUnstake) &&
                                             (isStakedTokenSelected(tk) ||
                                               singleTokenAction ===
                                                 tk.stakeEntry?.parsed.originalMint.toString()) && (
@@ -1047,9 +1043,6 @@ function Home() {
                                             setUnstakedSelected={setUnstakedSelected}
                                             setLoadingStake={setLoadingStake}
                                             setLoadingUnstake={setLoadingUnstake}
-                                            setLoadingClaimRewards={
-                                              setLoadingClaimRewards
-                                            }
                                             setSingleTokenAction={setSingleTokenAction}
                                             selectUnstakedToken={selectUnstakedToken}
                                             selectStakedToken={selectStakedToken}
