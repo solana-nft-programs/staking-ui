@@ -14,15 +14,13 @@ export const UnstakedToken = ({
   tk,
   selected,
   receiptType,
-  loadingUnstake,
-  loadingClaim,
+  loading,
   select,
 }: {
   tk: AllowedTokenData
   receiptType: ReceiptType
   selected: boolean
-  loadingUnstake: boolean
-  loadingClaim: boolean
+  loading: boolean
   select: (tokenData: AllowedTokenData, amount?: string) => void
 }) => {
   const { data: stakePoolMetadata } = useStakePoolMetadata()
@@ -45,7 +43,7 @@ export const UnstakedToken = ({
                 : '',
             }}
           >
-            {(loadingClaim || loadingUnstake) && (
+            {loading && (
               <div>
                 <div className="absolute top-0 left-0 z-10 flex h-full w-full justify-center rounded-xl bg-black bg-opacity-80 align-middle text-white">
                   <div className="my-auto flex">
