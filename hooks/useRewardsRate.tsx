@@ -77,18 +77,25 @@ export const useRewardsRate = () => {
       return {
         rewardsRateMap,
         dailyRewards: totalDaily.eq(new BN(0))
-          ? rewardDistributorData.parsed.rewardAmount.mul(
-              rewardDistributorData.parsed.maxRewardSecondsReceived
-                ? BN.min(
-                    rewardDistributorData.parsed.maxRewardSecondsReceived,
-                    new BN(86400).div(
+          ? rewardDistributorData.parsed.rewardAmount
+              .mul(
+                rewardDistributorData.parsed.maxRewardSecondsReceived
+                  ? BN.min(
+                      rewardDistributorData.parsed.maxRewardSecondsReceived,
+                      new BN(86400).div(
+                        rewardDistributorData.parsed.rewardDurationSeconds
+                      )
+                    )
+                  : new BN(86400).div(
                       rewardDistributorData.parsed.rewardDurationSeconds
                     )
-                  )
-                : new BN(86400).div(
-                    rewardDistributorData.parsed.rewardDurationSeconds
-                  )
-            )
+              )
+              .mul(rewardDistributorData.parsed.defaultMultiplier)
+              .div(
+                new BN(10).pow(
+                  new BN(rewardDistributorData.parsed.multiplierDecimals)
+                )
+              )
           : totalDaily,
       }
     }
