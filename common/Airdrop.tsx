@@ -113,7 +113,7 @@ export const Airdrop = () => {
   return (
     <AsyncButton
       disabled={!wallet.connected}
-      className="px-3 py-1"
+      className="rounded-md px-3 py-1"
       onClick={async () => {
         if (!wallet.connected) return
         try {

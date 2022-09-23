@@ -73,7 +73,7 @@ export const ReclaimFunds = () => {
           )}
         </div>
         <AsyncButton
-          className="ml-5 px-3 py-1"
+          className="ml-5 rounded-md px-3 py-1"
           loading={handleReclaimFunds.isLoading}
           inlineLoader
           onClick={() =>
