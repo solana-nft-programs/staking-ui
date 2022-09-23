@@ -384,6 +384,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
   {
     name: 'whales',
     displayName: 'Catalina Whales',
+    redirect: 'https://floating.catalinawhalemixer.com/',
     stakePoolAddress: new PublicKey(
       'BrR1W8bNBfJZGqzsSvMQ8tUJL9tm963E6qR7R99YReiD'
     ),
