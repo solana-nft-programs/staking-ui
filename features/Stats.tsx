@@ -105,7 +105,10 @@ export function Stats(props: StatsProps) {
       </div>
       <div className="text-white text-sm text-center">
         <p className="pb-0">Your current SOL staked with The Lode is {parseFloat(truncateFloat(stakedSol)).toLocaleString()} ◎</p>
-        <p>You will need {parseFloat(truncateFloat(solNeeded)).toLocaleString()} ◎ to power up the {sentriesCount} Sentries NFTs</p>
+        {solNeeded > 0 ? (
+          <p>You will need {parseFloat(truncateFloat(solNeeded)).toLocaleString()} ◎ to power up the {sentriesCount} Sentries NFTs</p>
+        ) : ('')
+        }
       </div>
       {/* <div className="flex justify-between bg-[#F7B551] bg-opacity-30 border border-[#F7B551] p-4 py-3 rounded-2xl text-[#FFDEAD]">
         <div className="flex items-center gap-2">
@@ -252,7 +255,7 @@ function calculateSolNeeded(sol: number) {
 
 function calculateProgress(staked: number, needed: number, sentriesCount: number) {
   if ((sentriesCount * 5) <= staked || needed <= 1){
-    return 100
+    return 1
   }
 
   return staked / (sentriesCount * 5)
