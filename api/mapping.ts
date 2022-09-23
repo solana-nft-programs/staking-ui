@@ -387,7 +387,6 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     stakePoolAddress: new PublicKey(
       'BrR1W8bNBfJZGqzsSvMQ8tUJL9tm963E6qR7R99YReiD'
     ),
-    hidden: true,
     receiptType: ReceiptType.Original,
     imageUrl: '/logos/whales.jpg',
     colors: {
@@ -1687,7 +1686,6 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     hostname: 'harvest.steamland.io',
     imageUrl:
       'https://raw.githubusercontent.com/Steamland/images/main/harvest_logo.png',
-    hidden: true,
     styles: {
       fontFamily: 'Industry, sans-serif',
       fontWeight: 500,

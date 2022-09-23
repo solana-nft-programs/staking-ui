@@ -25,7 +25,11 @@ function Homepage() {
       <Banner />
       <MainHero />
       <div className="mx-auto flex flex-col gap-16 px-8 md:px-16">
-        <CollectionsView configs={allStakePools.data?.stakePoolsWithMetadata} />
+        <CollectionsView
+          configs={allStakePools.data?.stakePoolsWithMetadata.filter(
+            (pool) => !pool.stakePoolMetadata?.hidden
+          )}
+        />
         <CollectionsView
           configs={allStakePools.data?.stakePoolsWithoutMetadata}
         />
