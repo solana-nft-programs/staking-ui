@@ -73,7 +73,7 @@ export const ReclaimFunds = () => {
           )}
         </div>
         <AsyncButton
-          className="ml-5"
+          className="ml-5 px-3 py-1"
           loading={handleReclaimFunds.isLoading}
           inlineLoader
           onClick={() =>
@@ -82,7 +82,7 @@ export const ReclaimFunds = () => {
             })
           }
         >
-          Reclaim Funds
+          <div className="text-xs">Reclaim Funds</div>
         </AsyncButton>
       </div>
     </div>

@@ -18,7 +18,6 @@ import { useAllowedTokenDatas } from 'hooks/useAllowedTokenDatas'
 import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 
-import { AsyncButtonSmall } from './AsyncButtonSmall'
 import { AsyncButton } from './Button'
 import { asWallet } from './Wallets'
 
@@ -112,8 +111,9 @@ export const Airdrop = () => {
   const { data: stakePoolMetadata } = useStakePoolMetadata()
 
   return (
-    <AsyncButtonSmall
+    <AsyncButton
       disabled={!wallet.connected}
+      className="px-3 py-1"
       onClick={async () => {
         if (!wallet.connected) return
         try {
@@ -129,8 +129,8 @@ export const Airdrop = () => {
         }
       }}
     >
-      Airdrop
-    </AsyncButtonSmall>
+      <div className="text-xs">Airdrop</div>
+    </AsyncButton>
   )
 }
 
