@@ -124,7 +124,7 @@ export const AsyncButton: React.FC<Props> = ({
   return (
     <div
       {...rest}
-      className={`flex items-center gap-1 rounded-lg bg-primary p-3 text-light-0 transition-colors hover:bg-primary-hover ${className} ${
+      className={`flex items-center gap-1 rounded-md bg-primary px-2 py-1 text-xs font-medium text-light-0 transition-colors hover:bg-primary-hover ${className} ${
         disabled ? 'cursor-default opacity-50' : 'cursor-pointer'
       }`}
       css={css`
