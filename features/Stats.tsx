@@ -104,7 +104,7 @@ export function Stats(props: StatsProps) {
         </div>
       </div>
       <div className="text-white text-sm text-center">
-        <p className="pb-0">You current SOL staked with The Lode is {parseFloat(truncateFloat(stakedSol)).toLocaleString()} ◎</p>
+        <p className="pb-0">Your current SOL staked with The Lode is {parseFloat(truncateFloat(stakedSol)).toLocaleString()} ◎</p>
         <p>You will need {parseFloat(truncateFloat(solNeeded)).toLocaleString()} ◎ to power up the {sentriesCount} Sentries NFTs</p>
       </div>
       {/* <div className="flex justify-between bg-[#F7B551] bg-opacity-30 border border-[#F7B551] p-4 py-3 rounded-2xl text-[#FFDEAD]">
