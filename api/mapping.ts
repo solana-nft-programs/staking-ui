@@ -103,24 +103,6 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
   //   },
   // },
   {
-    name: 'yojimbo',
-    displayName: 'Yojimbo Degens Festival(stake)',
-    nameInHeader: true,
-    stakePoolAddress: new PublicKey(
-      'HRthLdCtH62b6xBMve7uFy5mq9b9h8gwUMeKJm9wTQPs'
-    ),
-    websiteUrl: 'https://twitter.com/YojimboDegens',
-    receiptType: ReceiptType.Original,
-    maxStaked: 4400,
-    imageUrl: 'https://arweave.net/VP9h1qEmWUgaNPYY1hXSR-FTjKAJpxugWAYDGHvZMTg',
-    colors: {
-      primary: 'rgb(207 89 67)',
-      secondary: '#a7594b',
-      accent: '#d35e48',
-      fontColor: '#092037',
-    },
-  },
-  {
     name: 'AOM',
     displayName: 'AOM',
     stakePoolAddress: new PublicKey(
