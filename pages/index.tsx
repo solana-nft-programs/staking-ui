@@ -558,7 +558,7 @@ function Home() {
 
   return (
     <div
-      className="h-screen bg-no-repeat bg-left-top"
+      className="h-screen bg-no-repeat bg-left-top bg-white"
       style={{
         backgroundImage: `url(${stakePoolMetadata?.backgroundImage})`,
         backgroundPosition: "-3rem 0rem",
@@ -572,7 +572,7 @@ function Home() {
       </Head>
       <Header />
       <div
-        className={`container mx-auto w-full`}
+        className={`container mx-auto w-full pt-16 md:pt-0`}
         style={{
           ...stakePoolMetadata?.styles,
           color:
@@ -582,9 +582,9 @@ function Home() {
             )[0],
         }}
       >
-        <div className="my-2 mx-5">
+        <div>
           <div
-            className={`flex-col p-10 ${stakePoolMetadata?.colors?.fontColor
+            className={`flex-col ${stakePoolMetadata?.colors?.fontColor
               ? `text-[${stakePoolMetadata?.colors?.fontColor}]`
               : 'text-gray-200'
               }`}
@@ -650,7 +650,7 @@ function Home() {
                 ) : (
                   <div
                     className={
-                      'grid grid-cols-1 gap-4 lg:grid-cols-2 xl:grid-cols-3'
+                      'grid gap-4 grid-cols-1 md:grid-cols-3 lg:grid-cols-4'
                     }
                   >
                     {!stakePoolMetadata?.notFound &&
@@ -658,7 +658,7 @@ function Home() {
                       stakedTokenDatas.data.map((tk) => (
                         <div
                           key={tk?.stakeEntry?.pubkey.toBase58()}
-                          className="flex justify-centerflex justify-center"
+                          className="flex justify-center"
                         >
                           <div className="relative w-80 max-w-full">
                             <label
@@ -679,7 +679,7 @@ function Home() {
                                     singleTokenAction ===
                                     tk.stakeEntry?.parsed.originalMint.toString()) && (
                                     <div>
-                                      <div className="absolute top-0 left-0 z-10 flex h-full w-full justify-center bg-black bg-opacity-80 align-middle text-white">
+                                      <div className="absolute top-0 left-0 z-10 flex h-full w-full justify-center bg-white bg-opacity-80 align-middle text-black">
                                         <div className="mx-auto flex items-center justify-center">
                                           <span className="mr-2">
                                             <LoadingSpinner height="20px" />
@@ -694,7 +694,7 @@ function Home() {
                                 {tk.stakeEntry?.parsed.lastStaker.toString() !==
                                   wallet.publicKey?.toString() && (
                                     <div>
-                                      <div className="absolute top-0 left-0 z-10 flex h-full w-full justify-center bg-black bg-opacity-80  align-middle text-white">
+                                      <div className="absolute top-0 left-0 z-10 flex h-full w-full justify-center bg-white bg-opacity-80  align-middle text-black">
                                         <div className="mx-auto flex flex-col items-center justify-center">
                                           <div>Owned by</div>
                                           <DisplayAddress
@@ -1137,7 +1137,7 @@ function Home() {
                                   singleTokenAction ===
                                   tk.tokenAccount?.account.data.parsed.info.mint.toString()) && (
                                   <div>
-                                    <div className="absolute top-0 left-0 z-10 flex h-full w-full justify-center bg-black bg-opacity-80 align-middle text-white">
+                                    <div className="absolute top-0 left-0 z-10 flex h-full w-full justify-center bg-white bg-opacity-80 align-middle text-black">
                                       <div className="my-auto flex">
                                         <span className="mr-2">
                                           <LoadingSpinner height="20px" />

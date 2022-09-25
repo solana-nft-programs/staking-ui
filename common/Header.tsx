@@ -3,6 +3,7 @@ import { useWallet } from '@solana/wallet-adapter-react'
 import { WalletMultiButton } from '@solana/wallet-adapter-react-ui'
 
 import { useRouter } from 'next/router'
+import Image from 'next/image'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 import { Airdrop } from './Airdrop'
 import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
@@ -12,6 +13,8 @@ import { Wallet } from '@saberhq/solana-contrib'
 import { useStakePoolId } from 'hooks/useStakePoolId'
 import { useUTCNow } from 'providers/UTCNowProvider'
 import { contrastColorMode } from './utils'
+
+const logo = require('../images/liberty-square-logo.png');
 
 export const StyledWalletButton = styled(WalletMultiButton)`
   color: rgb(55, 65, 81, 1);
@@ -65,9 +68,39 @@ export const Header = () => {
           </div>
         </div>
       )}
-      <div className={`flex justify-end px-5 text-white`}>
+      <div className="grid gap-4 grid-cols-1 md:grid-cols-4 justify-between pt-2">
+          <div className='flex justify-center order-2 md:order-first pt-4'>
+            <Image 
+              src={logo}
+              alt="Liberty Square - logo" 
+              width={280}
+              height={188}
+            />
+          </div>
+          <div className='order-2 col-span-1 sm:col-span-2 h-48 font-mono uppercase'>
+            <div className='grid grid-cols-1 md:grid-cols-2 gap-2'>
+              <span className='col-span-1 md:col-span-2 text-xl xl:text-2xl'>Total collection staked: {}</span>
+              <div className='row-span-3 col-span-1 px-3 md:px-0'>
+                <div className='border-2 border-red-700 px-4 pl-16 md:pl-1'>
+                  <div><p>your collection</p></div>
+                  <div><span className='w-32 text-right inline-block'>common: </span>{}</div>
+                  <div><span className='w-32 text-right inline-block'>rare: </span>{}</div>
+                  <div><span className='w-32 text-right inline-block'>ultra rare: </span>{}</div>
+                  <div><span className='w-32 text-right inline-block'>legendary: </span>{}</div>
+                  <div><p>unclaimed $FLTH: {}</p></div>
+                </div>
+              </div>
+              <div className='row-span-3 col-span-1 flex flex-row md:flex-col justify-between px-3 md:px-0 text-center'>
+                <div className='border-2 border-red-700 px-4 py-1'><button>Stake All</button></div>
+                <div className='border-2 border-red-700 px-4 py-1'><button>Unstake All</button></div>
+                <div className='border-2 border-red-700 px-4 py-1'><button>Withdraw All $FLTH</button></div>
+              </div>
+            </div>
+          </div>
+
+      <div className={`order-first md:order-5 px-5 text-white`}>
         <div className="flex flex-col cols-1">
-          <div className="relative my-auto flex gap-3 align-middle">
+          <div className="relative justify-between flex gap-3 align-middle">
             <div className="flex flex-row gap-3 mt-2 h-6">
               {stakePoolId && stakePoolMetadata ? (
                 stakePoolMetadata.links?.map((link) => (
@@ -105,7 +138,7 @@ export const Header = () => {
                 ''
               )}
             </div>
-            <div className="flex flex-col cols-1 mt-2 pr-5">
+            <div className="flex flex-col cols-1">
               {(wallet.connected && wallet.publicKey) && (
                 <AccountConnect
                   dark={
@@ -122,6 +155,7 @@ export const Header = () => {
             </div>
           </div>
         </div>
+      </div>
       </div>
     </div>
   )

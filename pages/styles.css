@@ -10,6 +10,7 @@
 body {
   font-family: "Impact Label", mono, 'DM Sans', Roboto, sans-serif, 'Apple Color Emoji',
     'Segoe UI Emoji', 'Segoe UI Symbol';
+    color: black;
 }
 
 .wallet-button {
