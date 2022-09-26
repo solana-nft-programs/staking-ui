@@ -14,7 +14,7 @@ export type MintMetadata = AccountData<{
 export const mintMetadataQueryKey = (
   tokenData: AllowedTokenData | StakeEntryTokenData
 ) => {
-  return ['useMintMetadata', getMintfromTokenData(tokenData)]
+  return ['useMintMetadata', getMintfromTokenData(tokenData)?.toString()]
 }
 
 export const getMintfromTokenData = (
