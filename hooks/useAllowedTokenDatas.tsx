@@ -175,7 +175,7 @@ export const useAllowedTokenDatas = (showFungibleTokens: boolean) => {
       const allowedTokens = allowedTokensForPool(
         baseTokenDatas,
         stakePool.data,
-        stakeAuthorizations
+        stakeAuthorizations.data
       ).filter(
         (tokenData) =>
           showFungibleTokens ===
