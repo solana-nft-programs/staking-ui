@@ -2,26 +2,22 @@ import { ReceiptType } from '@cardinal/staking/dist/cjs/programs/stakePool'
 import { BN } from '@project-serum/anchor'
 import { useWallet } from '@solana/wallet-adapter-react'
 import { useWalletModal } from '@solana/wallet-adapter-react-ui'
-import { defaultSecondaryColor, TokenStandard } from 'api/mapping'
+import { defaultSecondaryColor } from 'api/mapping'
 import { contrastify } from 'common/colors'
 import { Footer } from 'common/Footer'
 import { FooterSlim } from 'common/FooterSlim'
 import { Header } from 'common/Header'
 import { LoadingSpinner } from 'common/LoadingSpinner'
 import { notify } from 'common/Notification'
-import { Toggle } from 'common/Toggle'
 import { Tooltip } from 'common/Tooltip'
 import { contrastColorMode, secondstoDuration } from 'common/utils'
-import { AllowedTokens } from 'components/AllowedTokens'
 import { PoolAnalytics } from 'components/PoolAnalytics'
 import { StakedToken } from 'components/StakedToken'
 import { StakePoolInfo } from 'components/StakePoolInfo'
-import { UnstakedToken } from 'components/UnstakedToken'
+import { UnstakedTokens } from 'components/UnstakedTokens'
 import { useHandleClaimRewards } from 'handlers/useHandleClaimRewards'
 import { useHandleStake } from 'handlers/useHandleStake'
 import { useHandleUnstake } from 'handlers/useHandleUnstake'
-import type { AllowedTokenData } from 'hooks/useAllowedTokenDatas'
-import { useAllowedTokenDatas } from 'hooks/useAllowedTokenDatas'
 import { useRewardDistributorData } from 'hooks/useRewardDistributorData'
 import { useRewards } from 'hooks/useRewards'
 import type { StakeEntryTokenData } from 'hooks/useStakedTokenDatas'
@@ -31,8 +27,7 @@ import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
 import { useUserRegion } from 'hooks/useUserRegion'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react'
-import { FaInfoCircle } from 'react-icons/fa'
+import { useState } from 'react'
 
 function StakePoolHome() {
   const router = useRouter()
@@ -44,18 +39,12 @@ function StakePoolHome() {
   const rewardDistributorData = useRewardDistributorData()
   const rewards = useRewards()
 
-  const [unstakedSelected, setUnstakedSelected] = useState<AllowedTokenData[]>(
-    []
-  )
   const [stakedSelected, setStakedSelected] = useState<StakeEntryTokenData[]>(
     []
   )
   const [receiptType, setReceiptType] = useState<ReceiptType>(
     ReceiptType.Original
   )
-  const [showAllowedTokens, setShowAllowedTokens] = useState<boolean>()
-  const [showFungibleTokens, setShowFungibleTokens] = useState(false)
-  const allowedTokenDatas = useAllowedTokenDatas(showFungibleTokens)
   const { data: stakePoolMetadata } = useStakePoolMetadata()
   const handleStake = useHandleStake()
   const handleUnstake = useHandleUnstake()
@@ -64,58 +53,6 @@ function StakePoolHome() {
   if (stakePoolMetadata?.redirect) {
     router.push(stakePoolMetadata?.redirect)
     return <></>
-  }
-
-  // eslint-disable-next-line react-hooks/rules-of-hooks
-  useEffect(() => {
-    stakePoolMetadata?.tokenStandard &&
-      setShowFungibleTokens(
-        stakePoolMetadata?.tokenStandard === TokenStandard.Fungible
-      )
-    stakePoolMetadata?.receiptType &&
-      setReceiptType(stakePoolMetadata?.receiptType)
-  }, [stakePoolMetadata?.name])
-
-  const selectUnstakedToken = (tk: AllowedTokenData, targetValue?: string) => {
-    if (handleStake.isLoading || handleUnstake.isLoading) return
-    const amount = Number(targetValue)
-    if (tk.tokenAccount?.account.data.parsed.info.tokenAmount.amount > 1) {
-      let newUnstakedSelected = unstakedSelected.filter(
-        (data) =>
-          data.tokenAccount?.account.data.parsed.info.mint.toString() !==
-          tk.tokenAccount?.account.data.parsed.info.mint.toString()
-      )
-      if (targetValue && targetValue?.length > 0 && !amount) {
-        notify({
-          message: 'Please enter a valid amount',
-          type: 'error',
-        })
-      } else if (targetValue) {
-        tk.amountToStake = targetValue.toString()
-        newUnstakedSelected = [...newUnstakedSelected, tk]
-        setUnstakedSelected(newUnstakedSelected)
-        return
-      }
-      setUnstakedSelected(
-        unstakedSelected.filter(
-          (data) =>
-            data.tokenAccount?.account.data.parsed.info.mint.toString() !==
-            tk.tokenAccount?.account.data.parsed.info.mint.toString()
-        )
-      )
-    } else {
-      if (isUnstakedTokenSelected(tk)) {
-        setUnstakedSelected(
-          unstakedSelected.filter(
-            (data) =>
-              data.tokenAccount?.account.data.parsed.info.mint.toString() !==
-              tk.tokenAccount?.account.data.parsed.info.mint.toString()
-          )
-        )
-      } else {
-        setUnstakedSelected([...unstakedSelected, tk])
-      }
-    }
   }
 
   const selectStakedToken = (tk: StakeEntryTokenData) => {
@@ -139,12 +76,6 @@ function StakePoolHome() {
     }
   }
 
-  const isUnstakedTokenSelected = (tk: AllowedTokenData) =>
-    unstakedSelected.some(
-      (utk) =>
-        utk.tokenAccount?.account.data.parsed.info.mint.toString() ===
-        tk.tokenAccount?.account.data.parsed.info.mint.toString()
-    )
   const isStakedTokenSelected = (tk: StakeEntryTokenData) =>
     stakedSelected.some(
       (stk) =>
@@ -262,229 +193,7 @@ function StakePoolHome() {
         <StakePoolInfo />
         <PoolAnalytics />
         <div className="my-2 mx-5 grid grid-cols-1 gap-4 md:grid-cols-2">
-          <div
-            className={`flex-col rounded-md p-10 ${
-              stakePoolMetadata?.colors?.fontColor
-                ? `text-[${stakePoolMetadata?.colors?.fontColor}]`
-                : 'text-gray-200'
-            } ${
-              stakePoolMetadata?.colors?.backgroundSecondary
-                ? `bg-[${stakePoolMetadata?.colors?.backgroundSecondary}]`
-                : 'bg-white bg-opacity-5'
-            }`}
-            style={{
-              background: stakePoolMetadata?.colors?.backgroundSecondary,
-              border: stakePoolMetadata?.colors?.accent
-                ? `2px solid ${stakePoolMetadata?.colors?.accent}`
-                : '',
-            }}
-          >
-            <div className="mt-2 flex w-full flex-row justify-between">
-              <div className="flex flex-row">
-                <p className="mb-3 mr-3 inline-block text-lg">
-                  Select Your Tokens
-                </p>
-                <div className="inline-block">
-                  {allowedTokenDatas.isRefetching &&
-                    allowedTokenDatas.isFetched && (
-                      <LoadingSpinner
-                        fill={
-                          stakePoolMetadata?.colors?.fontColor
-                            ? stakePoolMetadata?.colors?.fontColor
-                            : '#FFF'
-                        }
-                        height="25px"
-                      />
-                    )}
-                </div>
-              </div>
-              <div className="flex flex-row">
-                {!stakePoolMetadata?.hideAllowedTokens && (
-                  <button
-                    onClick={() => setShowAllowedTokens(!showAllowedTokens)}
-                    className="text-md mr-5 inline-block rounded-md bg-white bg-opacity-5 px-4 py-1 hover:bg-opacity-10 focus:outline-none"
-                  >
-                    {showAllowedTokens ? 'Hide' : 'Show'} Allowed Tokens
-                  </button>
-                )}
-                {!stakePoolMetadata?.tokenStandard && (
-                  <button
-                    onClick={() => {
-                      setShowFungibleTokens(!showFungibleTokens)
-                    }}
-                    className="text-md inline-block rounded-md bg-white bg-opacity-5 px-4 py-1 hover:bg-opacity-10"
-                  >
-                    {showFungibleTokens ? 'Show NFTs' : 'Show FTs'}
-                  </button>
-                )}
-              </div>
-            </div>
-            {showAllowedTokens && (
-              <AllowedTokens stakePool={stakePool}></AllowedTokens>
-            )}
-            <div className="my-3 flex-auto overflow-auto">
-              <div
-                className="relative my-auto mb-4 h-[60vh] overflow-y-auto overflow-x-hidden rounded-md bg-white bg-opacity-5 p-5"
-                style={{
-                  background:
-                    stakePoolMetadata?.colors?.backgroundSecondary &&
-                    contrastify(
-                      0.05,
-                      stakePoolMetadata?.colors?.backgroundSecondary
-                    ),
-                }}
-              >
-                {!allowedTokenDatas.isFetched ? (
-                  <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-                    <div className="h-[200px] animate-pulse rounded-lg bg-white bg-opacity-5 p-10"></div>
-                    <div className="h-[200px] animate-pulse rounded-lg bg-white bg-opacity-5 p-10"></div>
-                    <div className="h-[200px] animate-pulse rounded-lg bg-white bg-opacity-5 p-10"></div>
-                  </div>
-                ) : (allowedTokenDatas.data || []).length === 0 ? (
-                  <p
-                    className={`font-normal text-[${
-                      stakePoolMetadata?.colors?.fontColor
-                        ? `text-[${stakePoolMetadata?.colors?.fontColor}]`
-                        : 'text-gray-400'
-                    }]`}
-                  >
-                    No allowed tokens found in wallet.
-                  </p>
-                ) : (
-                  <div
-                    className={
-                      'grid grid-cols-1 gap-4 lg:grid-cols-2 xl:grid-cols-3'
-                    }
-                  >
-                    {(
-                      (!stakePoolMetadata?.notFound &&
-                        allowedTokenDatas.data) ||
-                      []
-                    ).map((tk) => (
-                      <UnstakedToken
-                        key={tk?.stakeEntry?.pubkey.toBase58()}
-                        tk={tk}
-                        receiptType={receiptType}
-                        select={(tk, amount) => selectUnstakedToken(tk, amount)}
-                        selected={isUnstakedTokenSelected(tk)}
-                        loading={
-                          handleStake.isLoading && isUnstakedTokenSelected(tk)
-                        }
-                      />
-                    ))}
-                  </div>
-                )}
-              </div>
-            </div>
-
-            <div className="mt-2 flex items-center justify-between gap-5">
-              {!stakePoolMetadata?.receiptType ? (
-                <Tooltip
-                  title={
-                    receiptType === ReceiptType.Original
-                      ? 'Lock the original token(s) in your wallet when you stake'
-                      : 'Receive a dynamically generated NFT receipt representing your stake'
-                  }
-                >
-                  <div className="flex cursor-pointer flex-row gap-2">
-                    <Toggle
-                      defaultValue={receiptType === ReceiptType.Original}
-                      onChange={() =>
-                        setReceiptType(
-                          receiptType === ReceiptType.Original
-                            ? ReceiptType.Receipt
-                            : ReceiptType.Original
-                        )
-                      }
-                      style={{
-                        background:
-                          stakePoolMetadata?.colors?.secondary ||
-                          defaultSecondaryColor,
-                        color: stakePoolMetadata?.colors?.fontColor,
-                      }}
-                      className={`relative inline-flex h-6 w-11 items-center rounded-full`}
-                    />
-                    <div className="flex items-center gap-1">
-                      <span
-                        style={{
-                          color: stakePoolMetadata?.colors?.fontColor,
-                        }}
-                      >
-                        {receiptType === ReceiptType.Original
-                          ? 'Original'
-                          : 'Receipt'}
-                      </span>
-                      <FaInfoCircle />
-                    </div>
-                  </div>
-                </Tooltip>
-              ) : (
-                <div></div>
-              )}
-              <div className="flex gap-5">
-                <Tooltip title="Click on tokens to select them">
-                  <button
-                    onClick={() => {
-                      if (unstakedSelected.length === 0) {
-                        notify({
-                          message: `No tokens selected`,
-                          type: 'error',
-                        })
-                      } else {
-                        handleStake.mutate({
-                          tokenDatas: unstakedSelected,
-                          receiptType,
-                        })
-                      }
-                    }}
-                    style={{
-                      background:
-                        stakePoolMetadata?.colors?.secondary ||
-                        defaultSecondaryColor,
-                      color:
-                        stakePoolMetadata?.colors?.fontColorSecondary ||
-                        stakePoolMetadata?.colors?.fontColor,
-                    }}
-                    className="my-auto flex rounded-md px-4 py-2 hover:scale-[1.03]"
-                  >
-                    <span className="mr-1 inline-block">
-                      {handleStake.isLoading && (
-                        <LoadingSpinner
-                          fill={
-                            stakePoolMetadata?.colors?.fontColor
-                              ? stakePoolMetadata?.colors?.fontColor
-                              : '#FFF'
-                          }
-                          height="20px"
-                        />
-                      )}
-                    </span>
-                    <span className="my-auto">
-                      Stake ({unstakedSelected.length})
-                    </span>
-                  </button>
-                </Tooltip>
-                <Tooltip title="Attempt to stake all tokens at once">
-                  <button
-                    onClick={() => {
-                      setUnstakedSelected(allowedTokenDatas.data || [])
-                    }}
-                    style={{
-                      background:
-                        stakePoolMetadata?.colors?.secondary ||
-                        defaultSecondaryColor,
-                      color:
-                        stakePoolMetadata?.colors?.fontColorSecondary ||
-                        stakePoolMetadata?.colors?.fontColor,
-                    }}
-                    className="my-auto flex cursor-pointer rounded-md px-4 py-2 hover:scale-[1.03]"
-                  >
-                    <span className="my-auto">Select All</span>
-                  </button>
-                </Tooltip>
-              </div>
-            </div>
-          </div>
+          <UnstakedTokens />
           <div
             className={`rounded-md p-10 ${
               stakePoolMetadata?.colors?.fontColor ? '' : 'text-gray-200'

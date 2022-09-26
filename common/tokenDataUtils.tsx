@@ -19,6 +19,5 @@ export const getImageFromTokenData = (
   tokenData: AllowedTokenData | StakeEntryTokenData,
   mintMetadata?: MintMetadata
 ) => {
-  console.log(mintMetadata)
   return mintMetadata?.parsed?.image || tokenData.tokenListData?.logoURI
 }
