@@ -10,6 +10,10 @@ module.exports = {
     './rental-components/**/*.{js,ts,jsx,tsx}',
   ],
   theme: {
+    screens: {
+      'xs': '475px',
+      ...defaultTheme.screens
+    },
     extend: {
       colors: {
         purple: {

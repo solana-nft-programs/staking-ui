@@ -15,12 +15,12 @@ export const Footer = () => {
       <div
         className="text-md flex items-center justify-between text-gray-400"
       >
-        <div className="flex items-center justify-center gap-2 text-gray-400">
-          Powered by <a target="_blank" href="https://cardinal.so/">Cardinal</a>
+        <div className="xs:text-xs sm:text-xs flex items-center justify-center md:gap-2 text-gray-400">
+          <span>Powered by <a target="_blank" href="https://cardinal.so/">Cardinal</a></span>
         </div>
-        <div className="text-sm flex flex-row justify-center text-gray-400">
-        Copyright Sentries. All rights reserved
-      </div>
+        <div className="xs:text-xs sm:text-xs md:text-sm flex flex-row justify-center text-gray-400">
+          <span>Copyright Sentries. All rights reserved.</span>
+        </div>
         <div className="flex gap-4 text-gray-200">
           {Object.entries(SOCIALS).map(([id, { icon, link }]) => {
             return (

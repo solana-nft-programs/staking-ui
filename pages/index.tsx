@@ -542,9 +542,9 @@ function Home() {
         <Header />
         <div className="fixed top-1/2 -left-[210px] z-[-1] h-[420px] w-[420px] rounded-full bg-teal-400 opacity-30 blur-[300px]"></div>
         <div className="fixed bottom-0 -right-[60px] z-[-1] h-[120px] w-[120px] rounded-full bg-purple-400 opacity-30 blur-[60px]"></div>
-        <div className="z-100 container z-10 mx-auto w-full">
+        <div className="z-100 container z-10 mx-auto w-full xs:p-4 sm:p-4">
           <div className="my-8 flex text-white">
-            <div className="w-1/3">
+            <div className="xs:w-full sm:w-full md:w-1/3">
               <h1 className="mb-2 text-4xl font-bold text-white">
                 The Power Grid
               </h1>
@@ -554,7 +554,7 @@ function Home() {
               </p>
               {renderStats}
             </div>
-            <div className="w-2/3 flex justify-end items-center">
+            <div className="xs:w-full sm:w-full md:w-2/3 flex justify-end items-center">
               <Button
                 as="a"
                 variant="secondary"
@@ -567,48 +567,9 @@ function Home() {
               </Button>
             </div>
           </div>
-          {analytics.data &&
-            Object.keys(analytics.data).length > 0 &&
-            totalStaked && (
-              <div
-                className={`mx-5 mb-4 flex flex-wrap items-center gap-4 rounded-md px-10 py-6  md:flex-row md:justify-between ${
-                  stakePoolMetadata?.colors?.fontColor
-                    ? `text-[${stakePoolMetadata?.colors?.fontColor}]`
-                    : 'text-gray-200'
-                } ${
-                  stakePoolMetadata?.colors?.backgroundSecondary
-                    ? `bg-[${stakePoolMetadata?.colors?.backgroundSecondary}]`
-                    : 'bg-white bg-opacity-5'
-                }`}
-                style={{
-                  background: stakePoolMetadata?.colors?.backgroundSecondary,
-                  border: stakePoolMetadata?.colors?.accent
-                    ? `2px solid ${stakePoolMetadata?.colors?.accent}`
-                    : '',
-                }}
-              >
-                <div className="relative flex flex-grow items-center justify-center">
-                  {Object.keys(analytics.data).map((key) => {
-                    return (
-                      <div className="relative flex flex-grow items-center justify-center text-lg">
-                        <span
-                          className={`${
-                            stakePoolMetadata?.colors?.fontColor
-                              ? `text-[${stakePoolMetadata?.colors?.fontColor}]`
-                              : 'text-gray-500'
-                          }`}
-                        >
-                          {key}: {(analytics.data![key]! * 100).toFixed(2)} %
-                        </span>
-                      </div>
-                    )
-                  })}
-                </div>
-              </div>
-            )}
             {!wallet.connected ? <ConnectWallet /> :
             <div className="flex flex-wrap -mx-4">
-              <div className="w-1/3 p-4">
+              <div className="sm:w-full md:w-full lg:w-1/3 p-4">
                 <Stats 
                   stakedSentries={totalStaked}
                   sentriesDetails={sentriesStats.isFetched ? sentriesStats.data : undefined}
@@ -618,7 +579,7 @@ function Home() {
                   recover={sentryPower.refetch}
                 />
               </div>
-              <div className="w-2/3 p-4">
+              <div className="sm:w-full md:w-full lg:w-2/3 p-4">
                 <Tab.Group defaultIndex={
                   totalUnstakedSentries > totalStakedSentries ? 0 : 1
                 }>
@@ -671,10 +632,8 @@ function Home() {
                                   )
                                 }
                                 style={{
-                                  background:
-                                    stakePoolMetadata?.colors?.secondary ||
-                                    defaultSecondaryColor,
-                                  color: stakePoolMetadata?.colors?.fontColor,
+                                  background: 'rgba(29, 78, 216, 255)',
+                                  color: '#ffffff',
                                 }}
                                 className={`relative inline-flex h-6 w-11 items-center rounded-full`}
                               >

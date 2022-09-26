@@ -14,7 +14,7 @@ export default function EpochProgress() {
 
   return (
     <MouseoverTooltip title={`Epoch ${data?.epoch}`}>
-      <div className="w-full text-center group">
+      <div className="xs:hidden sm:hidden md:block lg:block w-full text-center group">
         <span className="text-[12px] text-neutral-400 opacity-0 group-hover:opacity-100 transition-opacity"></span>
         <div className="w-full text-center flex items-center gap-2 -mt-2">
             <div className="w-full">
