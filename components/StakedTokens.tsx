@@ -5,6 +5,7 @@ import { defaultSecondaryColor } from 'api/mapping'
 import { contrastify } from 'common/colors'
 import { LoadingSpinner } from 'common/LoadingSpinner'
 import { notify } from 'common/Notification'
+import { RefreshButton } from 'common/RefreshButton'
 import { secondstoDuration } from 'common/utils'
 import { useHandleClaimRewards } from 'handlers/useHandleClaimRewards'
 import { useHandleUnstake } from 'handlers/useHandleUnstake'
@@ -85,20 +86,14 @@ export const StakedTokens = () => {
               stakedTokenDatas.data &&
               `(${stakedTokenDatas.data.length})`}
           </p>
-          <div className="inline-block">
-            {stakedTokenDatas.isRefetching && stakedTokenDatas.isFetched && (
-              <LoadingSpinner
-                fill={
-                  stakePoolMetadata?.colors?.fontColor
-                    ? stakePoolMetadata?.colors?.fontColor
-                    : '#FFF'
-                }
-                height="25px"
-              />
-            )}
-          </div>
         </div>
         <div className="flex flex-col items-end justify-evenly">
+          <RefreshButton
+            colorized
+            isFetching={stakedTokenDatas.isFetching}
+            dataUpdatdAtMs={stakedTokenDatas.dataUpdatedAt}
+            handleClick={() => stakedTokenDatas.refetch()}
+          />
           {stakePool?.parsed.endDate &&
           stakePool?.parsed.endDate.toNumber() !== 0 ? (
             <div className="flex flex-col">

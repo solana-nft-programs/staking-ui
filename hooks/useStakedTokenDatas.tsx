@@ -72,7 +72,7 @@ export async function getStakeEntryDatas(
 export const useStakedTokenDatas = () => {
   const stakePoolId = useStakePoolId()
   const walletIds = useWalletIds()
-  const { data: tokenList } = useTokenList()
+  const tokenList = useTokenList()
   const { secondaryConnection } = useEnvironmentCtx()
   return useQuery<StakeEntryTokenData[] | undefined>(
     [
@@ -80,7 +80,7 @@ export const useStakedTokenDatas = () => {
       'stakedTokenDatas',
       stakePoolId?.toString(),
       walletIds.join(','),
-      tokenList?.length,
+      tokenList?.data?.length,
     ],
     async () => {
       if (!stakePoolId || !walletIds || walletIds.length <= 0) return
@@ -93,7 +93,7 @@ export const useStakedTokenDatas = () => {
       const hydratedTokenDatas = tokenDatas.reduce((acc, tokenData) => {
         let tokenListData
         try {
-          tokenListData = tokenList?.find(
+          tokenListData = tokenList.data?.find(
             (t) =>
               t.address === tokenData.stakeEntry?.parsed.originalMint.toString()
           )
@@ -114,6 +114,6 @@ export const useStakedTokenDatas = () => {
       }, [] as StakeEntryTokenData[])
       return hydratedTokenDatas
     },
-    { refetchInterval: 60000, enabled: !!stakePoolId && walletIds.length > 0 }
+    { enabled: tokenList.isFetched && !!stakePoolId && walletIds.length > 0 }
   )
 }
