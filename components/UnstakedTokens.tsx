@@ -16,7 +16,7 @@ import { FaInfoCircle } from 'react-icons/fa'
 import { AllowedTokens } from './AllowedTokens'
 import { UnstakedToken } from './UnstakedToken'
 
-export const PAGE_SIZE = 7
+export const PAGE_SIZE = 9
 export const DEFAULT_PAGE: [number, number] = [1, 0]
 
 export const UnstakedTokens = () => {
