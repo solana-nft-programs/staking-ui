@@ -18,7 +18,7 @@ import { useRef, useState } from 'react'
 
 import { StakedToken } from './StakedToken'
 
-export const PAGE_SIZE = 7
+export const PAGE_SIZE = 9
 export const DEFAULT_PAGE: [number, number] = [1, 0]
 
 export const StakedTokens = () => {
