@@ -126,50 +126,46 @@ export function StakedStats({ tokenData }: { tokenData: StakeEntryTokenData }) {
               )}
           </>
         )}
-      {tokenData.stakeEntry?.parsed.cooldownStartSeconds &&
-      stakePool?.parsed.cooldownSeconds ? (
-        <div className="flex w-full flex-row items-center justify-between text-xs font-semibold">
-          <span>Cooldown:</span>
-          <span className="text-right">
-            {tokenData.stakeEntry?.parsed.cooldownStartSeconds.toNumber() +
-              stakePool.parsed.cooldownSeconds -
-              UTCNow >
-            0 ? (
-              getExpirationString(
-                tokenData.stakeEntry?.parsed.cooldownStartSeconds.toNumber() +
-                  stakePool.parsed.cooldownSeconds,
-                UTCNow
-              )
-            ) : (
-              <FaCheck />
-            )}
-          </span>
-        </div>
-      ) : (
-        ''
-      )}
-      {stakePool?.parsed.minStakeSeconds &&
-      tokenData.stakeEntry?.parsed.lastStakedAt ? (
-        <div className="flex w-full flex-row items-center justify-between text-xs font-semibold">
-          <span>Min Time:</span>
-          <span className="text-right">
-            {tokenData.stakeEntry?.parsed.lastStakedAt.toNumber() +
-              stakePool.parsed.minStakeSeconds -
-              UTCNow >
-            0 ? (
-              getExpirationString(
-                tokenData.stakeEntry?.parsed.lastStakedAt.toNumber() +
-                  stakePool.parsed.minStakeSeconds,
-                UTCNow
-              )
-            ) : (
-              <FaCheck />
-            )}
-          </span>
-        </div>
-      ) : (
-        ''
-      )}
+      {!!tokenData.stakeEntry?.parsed.cooldownStartSeconds &&
+        !!stakePool?.parsed.cooldownSeconds && (
+          <div className="flex w-full flex-row items-center justify-between text-xs font-semibold">
+            <span>Cooldown:</span>
+            <span className="text-right">
+              {tokenData.stakeEntry?.parsed.cooldownStartSeconds.toNumber() +
+                stakePool.parsed.cooldownSeconds -
+                UTCNow >
+              0 ? (
+                getExpirationString(
+                  tokenData.stakeEntry?.parsed.cooldownStartSeconds.toNumber() +
+                    stakePool.parsed.cooldownSeconds,
+                  UTCNow
+                )
+              ) : (
+                <FaCheck />
+              )}
+            </span>
+          </div>
+        )}
+      {!!stakePool?.parsed.minStakeSeconds &&
+        !!tokenData.stakeEntry?.parsed.lastStakedAt && (
+          <div className="flex w-full flex-row items-center justify-between text-xs font-semibold">
+            <span>Min Time:</span>
+            <span className="text-right">
+              {tokenData.stakeEntry?.parsed.lastStakedAt.toNumber() +
+                stakePool.parsed.minStakeSeconds -
+                UTCNow >
+              0 ? (
+                getExpirationString(
+                  tokenData.stakeEntry?.parsed.lastStakedAt.toNumber() +
+                    stakePool.parsed.minStakeSeconds,
+                  UTCNow
+                )
+              ) : (
+                <FaCheck />
+              )}
+            </span>
+          </div>
+        )}
     </div>
   )
 }
