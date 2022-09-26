@@ -184,7 +184,7 @@ export const StakedTokens = () => {
                     <StakedToken
                       key={tk?.stakeEntry?.pubkey.toBase58()}
                       tk={tk}
-                      select={() => selectStakedToken(tk)}
+                      select={(tk) => selectStakedToken(tk)}
                       selected={isStakedTokenSelected(tk)}
                       loadingClaim={
                         handleClaimRewards.isLoading &&

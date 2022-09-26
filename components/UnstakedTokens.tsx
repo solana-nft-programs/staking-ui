@@ -196,7 +196,7 @@ export const UnstakedTokens = () => {
                   key={tk?.stakeEntry?.pubkey.toBase58()}
                   tk={tk}
                   receiptType={receiptType}
-                  select={() => selectUnstakedToken(tk)}
+                  select={(tk, amount) => selectUnstakedToken(tk, amount)}
                   selected={isUnstakedTokenSelected(tk)}
                   loading={handleStake.isLoading && isUnstakedTokenSelected(tk)}
                 />
