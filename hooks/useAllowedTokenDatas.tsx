@@ -101,7 +101,7 @@ export const useAllowedTokenDatas = (showFungibleTokens: boolean) => {
   const { connection } = useEnvironmentCtx()
   const tokenList = useTokenList()
   const stakePool = useStakePoolData()
-  const { data: stakeAuthorizations } = useStakeAuthorizationsForPool()
+  const stakeAuthorizations = useStakeAuthorizationsForPool()
   return useQuery<AllowedTokenData[] | undefined>(
     [
       TOKEN_DATAS_KEY,
@@ -110,7 +110,7 @@ export const useAllowedTokenDatas = (showFungibleTokens: boolean) => {
       walletId?.toString(),
       showFungibleTokens,
       tokenList.data?.length,
-      stakeAuthorizations?.map((s) => s.pubkey.toString()).join(),
+      stakeAuthorizations.data?.length ?? 0,
     ],
     async () => {
       if (!stakePoolId || !stakePool.data || !walletId) return
