@@ -40,7 +40,7 @@ export function Button(props: ButtonProps) {
       <span>  
         {children}
       </span>
-      {hasArrow ? <img className="xs:hidden sm:hidden md:block" src={arrow.src} alt="arrow" /> : null}
+      {hasArrow ? <img className="xs:hidden sm:hidden md:hidden lg:block" src={arrow.src} alt="arrow" /> : null}
     </Tag>
   )
 }

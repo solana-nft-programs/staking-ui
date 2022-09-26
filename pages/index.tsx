@@ -542,7 +542,7 @@ function Home() {
         <Header />
         <div className="fixed top-1/2 -left-[210px] z-[-1] h-[420px] w-[420px] rounded-full bg-teal-400 opacity-30 blur-[300px]"></div>
         <div className="fixed bottom-0 -right-[60px] z-[-1] h-[120px] w-[120px] rounded-full bg-purple-400 opacity-30 blur-[60px]"></div>
-        <div className="z-100 container z-10 mx-auto w-full xs:p-4 sm:p-4">
+        <div className="z-100 container z-10 mx-auto w-full xs:p-4 sm:p-4 md:p-4">
           <div className="my-8 flex text-white">
             <div className="xs:w-full sm:w-full md:w-1/3">
               <h1 className="mb-2 text-4xl font-bold text-white">

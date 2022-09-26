@@ -15,10 +15,10 @@ export const Footer = () => {
       <div
         className="text-md flex items-center justify-between text-gray-400"
       >
-        <div className="xs:text-xs sm:text-xs flex items-center justify-center md:gap-2 text-gray-400">
+        <div className="xs:text-xs sm:text-xs md:text-xs flex items-center justify-center md:gap-2 text-gray-400">
           <span>Powered by <a target="_blank" href="https://cardinal.so/">Cardinal</a></span>
         </div>
-        <div className="xs:text-xs sm:text-xs md:text-sm flex flex-row justify-center text-gray-400">
+        <div className="xs:text-xs sm:text-xs md:text-xs lg:text-sm flex flex-row justify-center text-gray-400">
           <span>Copyright Sentries. All rights reserved.</span>
         </div>
         <div className="flex gap-4 text-gray-200">
