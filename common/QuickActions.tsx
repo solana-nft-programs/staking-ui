@@ -27,7 +27,7 @@ export const QuickActions = ({
 }: {
   unstakedTokenData?: AllowedTokenData
   stakedTokenData?: StakeEntryTokenData
-  receiptType: ReceiptType
+  receiptType?: ReceiptType
   selectUnstakedToken: (tk: AllowedTokenData) => void
   selectStakedToken: (tk: StakeEntryTokenData) => void
 }) => {
