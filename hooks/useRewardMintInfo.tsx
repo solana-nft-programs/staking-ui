@@ -10,7 +10,7 @@ import { useTokenList } from './useTokenList'
 
 export const useRewardMintInfo = () => {
   const { secondaryConnection } = useEnvironmentCtx()
-  const { data: tokenList } = useTokenList()
+  const tokenList = useTokenList()
   const { data: rewardDistibutorData } = useRewardDistributorData()
   return useQuery<
     | {
@@ -23,13 +23,13 @@ export const useRewardMintInfo = () => {
     [
       'useRewardMintInfo',
       rewardDistibutorData?.pubkey?.toString(),
-      tokenList?.length,
+      tokenList.data?.length,
     ],
     async () => {
       if (!rewardDistibutorData) return
 
       // tokenListData
-      const tokenListData = tokenList?.find(
+      const tokenListData = tokenList.data?.find(
         (tk) =>
           tk.address === rewardDistibutorData?.parsed.rewardMint.toString()
       )
@@ -59,6 +59,7 @@ export const useRewardMintInfo = () => {
         tokenListData,
         metaplexMintData,
       }
-    }
+    },
+    { enabled: tokenList.isFetched }
   )
 }
