@@ -8,6 +8,7 @@ import { executeAllTransactions } from 'api/utils'
 import { notify } from 'common/Notification'
 import { parseMintNaturalAmountFromDecimal } from 'common/units'
 import { asWallet } from 'common/Wallets'
+import { useStakedTokenDatas } from 'hooks/useStakedTokenDatas'
 import { useMutation, useQueryClient } from 'react-query'
 
 import type { AllowedTokenData } from '../hooks/useAllowedTokenDatas'
@@ -20,7 +21,7 @@ export const useHandleStake = () => {
   const { connection } = useEnvironmentCtx()
   const queryClient = useQueryClient()
   const stakePoolId = useStakePoolId()
-
+  const stakedTokenDatas = useStakedTokenDatas()
   return useMutation(
     async ({
       tokenDatas,
@@ -93,9 +94,14 @@ export const useHandleStake = () => {
             ) {
               throw new Error('Invalid amount chosen for token')
             }
+
+            const mint = token.tokenAccount?.account.data.parsed.info.mint
+            const stakedToken = stakedTokenDatas.data?.find(
+              (s) => s.stakeEntry?.parsed.originalMint.toString() === mint
+            )
             if (
-              token.stakeEntry &&
-              token.stakeEntry.parsed.amount.toNumber() > 0
+              stakedToken &&
+              stakedToken.stakeEntry?.parsed.amount.gt(new BN(0))
             ) {
               throw 'Fungible tokens already staked in the pool. Staked tokens need to be unstaked and then restaked together with the new tokens.'
             }
@@ -123,9 +129,7 @@ export const useHandleStake = () => {
                 receiptType !== ReceiptType.None
                   ? receiptType
                   : undefined,
-              originalMintId: new PublicKey(
-                token.tokenAccount.account.data.parsed.info.mint
-              ),
+              originalMintId: new PublicKey(mint),
               userOriginalMintTokenAccountId: token.tokenAccount.pubkey,
               amount: amount,
             })

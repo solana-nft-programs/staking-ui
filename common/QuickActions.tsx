@@ -175,9 +175,8 @@ export const QuickActions = ({
           ),
         }}
         key={
-          unstakedTokenData?.tokenAccount
-            ? unstakedTokenData.tokenAccount?.account.data.parsed.info.mint.toString()
-            : unstakedTokenData?.stakeEntry?.parsed.originalMint.toString()
+          unstakedTokenData?.tokenAccount?.account.data.parsed.info.mint.toString() ??
+          stakedTokenData?.stakeEntry?.parsed.originalMint.toString()
         }
       >
         {handleClaimRewards.isLoading ||

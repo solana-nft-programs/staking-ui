@@ -31,7 +31,7 @@ export const useRewards = () => {
     [
       'useRewards',
       rewardDistributorData?.pubkey?.toString(),
-      rewardEntries,
+      rewardEntries?.map((r) => r.pubkey.toString()).join(','),
       stakedTokenDatas?.map((s) => s.stakeEntry?.pubkey.toString()).join(','),
       UTCNow,
     ],

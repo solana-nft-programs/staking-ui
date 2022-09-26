@@ -18,7 +18,7 @@ export const useRewardEntries = () => {
       REWARD_QUERY_KEY,
       'useRewardEntries',
       rewardDistibutorData?.pubkey?.toString(),
-      stakedTokenDatas,
+      stakedTokenDatas?.map((s) => s.stakeEntry?.pubkey.toString()).join(','),
     ],
     async () => {
       const rewardDistibutorId = rewardDistibutorData?.pubkey
