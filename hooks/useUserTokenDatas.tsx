@@ -22,9 +22,9 @@ export type UserTokenData = {
 export const useUserTokenDatas = () => {
   const { secondaryConnection } = useEnvironmentCtx()
   const walletId = useWalletId()
-  const { data: tokenList } = useTokenList()
+  const tokenList = useTokenList()
   return useQuery<UserTokenData[]>(
-    ['useUserTokenDatas', walletId?.toString(), tokenList?.length],
+    ['useUserTokenDatas', walletId?.toString(), tokenList.data?.length],
     async () => {
       const allTokenAccounts =
         await secondaryConnection.getParsedTokenAccountsByOwner(walletId!, {
@@ -76,14 +76,14 @@ export const useUserTokenDatas = () => {
       return tokenAccounts.map((tokenAccount, i) => ({
         tokenAccount,
         metaplexData: metaplexData[tokenAccount.pubkey.toString()],
-        tokenListData: tokenList?.find(
+        tokenListData: tokenList.data?.find(
           (t) =>
             t.address === tokenAccount?.account.data.parsed.info.mint.toString()
         ),
       }))
     },
     {
-      enabled: !!walletId,
+      enabled: !!walletId && tokenList.isFetched,
     }
   )
 }

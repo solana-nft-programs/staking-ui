@@ -1,4 +1,5 @@
 import * as splToken from '@solana/spl-token'
+import { Keypair } from '@solana/web3.js'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 import { useQuery } from 'react-query'
 
@@ -32,9 +33,7 @@ export const useStakePoolTotalStaked = () => {
                 connection,
                 entry.parsed.originalMint,
                 splToken.TOKEN_PROGRAM_ID,
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                // @ts-ignore
-                null
+                Keypair.generate()
               )
               const mintInfo = await mint.getMintInfo()
               decimals = mintInfo.decimals

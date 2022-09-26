@@ -32,7 +32,7 @@ export const useRewards = () => {
       'useRewards',
       rewardDistributorData?.pubkey?.toString(),
       rewardEntries,
-      stakedTokenDatas,
+      stakedTokenDatas?.map((s) => s.stakeEntry?.pubkey.toString()).join(','),
       UTCNow,
     ],
     () => {

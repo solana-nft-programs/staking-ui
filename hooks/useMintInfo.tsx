@@ -10,6 +10,7 @@ export const useMintInfo = (mint: PublicKey | undefined) => {
     ['useRewardMintInfo', mint?.toString()],
     async () => {
       if (!mint) return
+      return undefined
       const mintResult = new splToken.Token(
         secondaryConnection,
         mint,
