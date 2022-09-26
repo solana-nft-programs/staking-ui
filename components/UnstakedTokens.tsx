@@ -6,7 +6,6 @@ import { LoadingSpinner } from 'common/LoadingSpinner'
 import { notify } from 'common/Notification'
 import { Toggle } from 'common/Toggle'
 import { useHandleStake } from 'handlers/useHandleStake'
-import { useHandleUnstake } from 'handlers/useHandleUnstake'
 import type { AllowedTokenData } from 'hooks/useAllowedTokenDatas'
 import { useAllowedTokenDatas } from 'hooks/useAllowedTokenDatas'
 import { useStakePoolData } from 'hooks/useStakePoolData'
@@ -36,7 +35,6 @@ export const UnstakedTokens = () => {
   const [showFungibleTokens, setShowFungibleTokens] = useState(false)
   const allowedTokenDatas = useAllowedTokenDatas(showFungibleTokens)
   const handleStake = useHandleStake()
-  const handleUnstake = useHandleUnstake()
 
   useEffect(() => {
     stakePoolMetadata?.tokenStandard &&
@@ -48,7 +46,7 @@ export const UnstakedTokens = () => {
   }, [stakePoolMetadata?.name])
 
   const selectUnstakedToken = (tk: AllowedTokenData, targetValue?: string) => {
-    if (handleStake.isLoading || handleUnstake.isLoading) return
+    if (handleStake.isLoading) return
     const amount = Number(targetValue)
     if (tk.tokenAccount?.account.data.parsed.info.tokenAmount.amount > 1) {
       let newUnstakedSelected = unstakedSelected.filter(
@@ -99,14 +97,8 @@ export const UnstakedTokens = () => {
   return (
     <div
       className={`flex-col rounded-md p-10 ${
-        stakePoolMetadata?.colors?.fontColor
-          ? `text-[${stakePoolMetadata?.colors?.fontColor}]`
-          : 'text-gray-200'
-      } ${
-        stakePoolMetadata?.colors?.backgroundSecondary
-          ? `bg-[${stakePoolMetadata?.colors?.backgroundSecondary}]`
-          : 'bg-white bg-opacity-5'
-      }`}
+        stakePoolMetadata?.colors?.fontColor ? '' : 'text-gray-200'
+      } bg-white bg-opacity-5`}
       style={{
         background: stakePoolMetadata?.colors?.backgroundSecondary,
         border: stakePoolMetadata?.colors?.accent

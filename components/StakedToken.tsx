@@ -1,5 +1,4 @@
 import { DisplayAddress } from '@cardinal/namespaces-components'
-import type { ReceiptType } from '@cardinal/staking/dist/cjs/programs/stakePool'
 import { useWallet } from '@solana/wallet-adapter-react'
 import { LoadingSpinner } from 'common/LoadingSpinner'
 import { QuickActions } from 'common/QuickActions'
@@ -17,13 +16,11 @@ import { StakedStats } from './StakedStats'
 export const StakedToken = ({
   tk,
   selected,
-  receiptType,
   loadingUnstake,
   loadingClaim,
   select,
 }: {
   tk: StakeEntryTokenData
-  receiptType: ReceiptType
   selected: boolean
   loadingUnstake: boolean
   loadingClaim: boolean
@@ -78,7 +75,6 @@ export const StakedToken = ({
               </div>
             )}
             <QuickActions
-              receiptType={receiptType}
               stakedTokenData={tk}
               selectUnstakedToken={() => {}}
               selectStakedToken={select}

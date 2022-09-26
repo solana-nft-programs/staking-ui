@@ -42,7 +42,7 @@ export const CollectionsView = ({
       window.scrollTo({
         behavior: 'smooth',
         top: (ref.current?.offsetTop ?? 0) - 50,
-      }),
+      }), 
     [view]
   )
   return (
