@@ -18,8 +18,8 @@ import { useRef, useState } from 'react'
 
 import { StakedToken } from './StakedToken'
 
-export const PAGE_SIZE = 9
-export const DEFAULT_PAGE: [number, number] = [1, 0]
+export const PAGE_SIZE = 3
+export const DEFAULT_PAGE: [number, number] = [3, 0]
 
 export const StakedTokens = () => {
   const { data: stakePoolMetadata } = useStakePoolMetadata()
