@@ -31,7 +31,6 @@ export function Stats(props: StatsProps) {
   const { stakedSentries, sentriesDetails, stats, isLoading, isError, recover } = props
   const sentryPower = useSentryPower()
   const [isModalOpen, setIsModalOpen] = useState(false)
-  const [isStakingModalOpen, setIsStakingModalOpen] = useState(false)
 
   if (isLoading) {
     return (

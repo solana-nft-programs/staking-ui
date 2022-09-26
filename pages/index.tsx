@@ -6,7 +6,7 @@ import {
 import '@dialectlabs/react-ui/index.css'
 import { ReceiptType } from '@cardinal/staking/dist/cjs/programs/stakePool'
 import { useWallet } from '@solana/wallet-adapter-react'
-import { PublicKey, Signer, Transaction } from '@solana/web3.js'
+import { PublicKey, Signer, Transaction, Authorized, Keypair, StakeProgram, LAMPORTS_PER_SOL, Lockup } from '@solana/web3.js'
 import { Header } from 'common/Header'
 import Head from 'next/head'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
@@ -51,6 +51,9 @@ import { ConnectWallet } from 'features/ConnectWallet'
 import { useValidatorInfo } from 'hooks/useValidatorInfo'
 import { useSentryPower } from 'hooks/useSentryPower'
 import { Label } from 'components/Label'
+import { StakeModal } from 'features/StakeModal'
+
+const VOTE_KEY = 'LodezVTbz3v5GK6oULfWNFfcs7D4rtMZQkmRjnh65gq'
 
 function Home() {
   const router = useRouter()
@@ -77,6 +80,7 @@ function Home() {
     ReceiptType.Original
   )
   const [showFungibleTokens, setShowFungibleTokens] = useState(false)
+  const [isStakingModalOpen, setIsStakingModalOpen] = useState(false)
   const allowedTokenDatas = useAllowedTokenDatas(showFungibleTokens)
   const { data: stakePoolMetadata } = useStakePoolMetadata()
   const analytics = usePoolAnalytics()
@@ -102,6 +106,7 @@ function Home() {
     stakePoolMetadata?.receiptType &&
       setReceiptType(stakePoolMetadata?.receiptType)
   }, [stakePoolMetadata?.name])
+
 
   async function handleUnstake() {
     if (!wallet.connected) {
@@ -579,6 +584,7 @@ function Home() {
                   recover={sentryPower.refetch}
                 />
               </div>
+              <StakeModal isOpen={isStakingModalOpen} setIsOpen={setIsStakingModalOpen} />
               <div className="sm:w-full md:w-full lg:w-2/3 p-4">
                 <Tab.Group defaultIndex={
                   totalUnstakedSentries > totalStakedSentries ? 0 : 1
@@ -604,6 +610,9 @@ function Home() {
                           </span>
                         : null}
                       </div>
+                    </TabButton>
+                    <TabButton>
+                      <Button as="button" size="sm" variant="secondary" onClick={() => setIsStakingModalOpen(true)}>Stake <span className="opacity-50 font-normal">◎</span></Button>
                     </TabButton>
                   </Tab.List>
                   <Tab.Panels>
