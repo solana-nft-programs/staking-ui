@@ -56,9 +56,7 @@ export const useHandleStake = () => {
           }
         } catch (e) {
           notify({
-            message: `Failed to stake token ${tokenDatas[
-              i
-            ]?.stakeEntry?.pubkey.toString()}`,
+            message: `Failed to stake token ${tokenDatas[i]?.tokenAccount?.account.data.parsed.info.mint}`,
             description: `${e}`,
             type: 'error',
           })
@@ -135,7 +133,7 @@ export const useHandleStake = () => {
             })
           } catch (e) {
             console.log({
-              message: `Failed to unstake token ${token?.stakeEntry?.pubkey.toString()}`,
+              message: `Failed to unstake token ${token?.tokenAccount?.account.data.parsed.info.mint}`,
               description: `${e}`,
               type: 'error',
             })

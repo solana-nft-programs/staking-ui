@@ -2,7 +2,6 @@ import type { AccountData } from '@cardinal/common'
 import { getBatchedMultipleAccounts } from '@cardinal/common'
 import type {
   StakeAuthorizationData,
-  StakeEntryData,
   StakePoolData,
 } from '@cardinal/staking/dist/cjs/programs/stakePool'
 import * as metaplex from '@metaplex-foundation/mpl-token-metadata'
@@ -21,22 +20,18 @@ import { useWalletId } from './useWalletId'
 
 export const TOKEN_DATAS_KEY = 'tokenDatas'
 
-export type AllowedTokenData = BaseTokenData & {
-  stakeEntry?: AccountData<StakeEntryData>
-  amountToStake?: string
-}
-
-export type BaseTokenData = {
+export type AllowedTokenData = {
   tokenAccount?: {
     pubkey: PublicKey
     account: AccountInfo<ParsedAccountData>
   }
   metaplexData?: { pubkey: PublicKey; data: metaplex.MetadataData } | null
   tokenListData?: TokenListData
+  amountToStake?: string
 }
 
 export const allowedTokensForPool = (
-  tokenDatas: BaseTokenData[],
+  tokenDatas: AllowedTokenData[],
   stakePool: AccountData<StakePoolData>,
   stakeAuthorizations?: AccountData<StakeAuthorizationData>[],
   allowFrozen?: boolean
