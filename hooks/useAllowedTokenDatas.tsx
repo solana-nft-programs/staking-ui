@@ -5,8 +5,6 @@ import type {
   StakeEntryData,
   StakePoolData,
 } from '@cardinal/staking/dist/cjs/programs/stakePool'
-import { getStakeEntries } from '@cardinal/staking/dist/cjs/programs/stakePool/accounts'
-import { findStakeEntryIdFromMint } from '@cardinal/staking/dist/cjs/programs/stakePool/utils'
 import * as metaplex from '@metaplex-foundation/mpl-token-metadata'
 import * as spl from '@solana/spl-token'
 import type { AccountInfo, ParsedAccountData } from '@solana/web3.js'
@@ -101,22 +99,21 @@ export const useAllowedTokenDatas = (showFungibleTokens: boolean) => {
   const stakePoolId = useStakePoolId()
   const walletId = useWalletId()
   const { connection } = useEnvironmentCtx()
-  const { data: tokenList } = useTokenList()
-  const { data: stakePool } = useStakePoolData()
+  const tokenList = useTokenList()
+  const stakePool = useStakePoolData()
   const { data: stakeAuthorizations } = useStakeAuthorizationsForPool()
   return useQuery<AllowedTokenData[] | undefined>(
     [
       TOKEN_DATAS_KEY,
       'allowedTokenDatas',
-      stakePoolId?.toString(),
-      stakePool?.pubkey.toString(),
+      stakePool.data?.pubkey.toString(),
       walletId?.toString(),
       showFungibleTokens,
-      tokenList?.length,
+      tokenList.data?.length,
       stakeAuthorizations?.map((s) => s.pubkey.toString()).join(),
     ],
     async () => {
-      if (!stakePoolId || !stakePool || !walletId) return
+      if (!stakePoolId || !stakePool.data || !walletId) return
 
       const allTokenAccounts = await connection.getParsedTokenAccountsByOwner(
         walletId!,
@@ -169,7 +166,7 @@ export const useAllowedTokenDatas = (showFungibleTokens: boolean) => {
       const baseTokenDatas = tokenAccounts.map((tokenAccount, i) => ({
         tokenAccount,
         metaplexData: metaplexData[tokenAccount.pubkey.toString()],
-        tokenListData: tokenList?.find(
+        tokenListData: tokenList.data?.find(
           (t) =>
             t.address === tokenAccount?.account.data.parsed.info.mint.toString()
         ),
@@ -177,7 +174,7 @@ export const useAllowedTokenDatas = (showFungibleTokens: boolean) => {
 
       const allowedTokens = allowedTokensForPool(
         baseTokenDatas,
-        stakePool,
+        stakePool.data,
         stakeAuthorizations
       ).filter(
         (tokenData) =>
@@ -189,33 +186,10 @@ export const useAllowedTokenDatas = (showFungibleTokens: boolean) => {
               metaplex.TokenStandard.FungibleAsset)
       )
 
-      const stakeEntryIds = await Promise.all(
-        allowedTokens.map(
-          async (allowedToken) =>
-            (
-              await findStakeEntryIdFromMint(
-                connection,
-                walletId!,
-                stakePoolId,
-                new PublicKey(
-                  allowedToken.tokenAccount?.account.data.parsed.info.mint
-                )
-              )
-            )[0]
-        )
-      )
-      const stakeEntries =
-        stakeEntryIds.length > 0
-          ? await getStakeEntries(connection, stakeEntryIds)
-          : []
-
-      return allowedTokens.map((allowedToken, i) => ({
-        ...allowedToken,
-        stakeEntryData: stakeEntries[i],
-      }))
+      return allowedTokens
     },
     {
-      enabled: !!stakePoolId && !!walletId,
+      enabled: tokenList.isFetched && !!stakePool.data && !!walletId,
     }
   )
 }

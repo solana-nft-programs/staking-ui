@@ -188,7 +188,7 @@ export const UnstakedTokens = () => {
                 : allowedTokenDatas.data?.slice(0, PAGE_SIZE * pageNum[0]) ?? []
               ).map((tk) => (
                 <UnstakedToken
-                  key={tk?.stakeEntry?.pubkey.toBase58()}
+                  key={tk?.tokenAccount?.pubkey.toBase58()}
                   tk={tk}
                   receiptType={receiptType}
                   select={(tk, amount) => selectUnstakedToken(tk, amount)}
