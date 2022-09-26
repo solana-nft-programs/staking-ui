@@ -4,6 +4,7 @@ import { defaultSecondaryColor, TokenStandard } from 'api/mapping'
 import { contrastify } from 'common/colors'
 import { LoadingSpinner } from 'common/LoadingSpinner'
 import { notify } from 'common/Notification'
+import { RefreshButton } from 'common/RefreshButton'
 import { Toggle } from 'common/Toggle'
 import { useHandleStake } from 'handlers/useHandleStake'
 import type { AllowedTokenData } from 'hooks/useAllowedTokenDatas'
@@ -109,20 +110,14 @@ export const UnstakedTokens = () => {
       <div className="mt-2 flex w-full flex-row justify-between">
         <div className="flex flex-row">
           <p className="mb-3 mr-3 inline-block text-lg">Select Your Tokens</p>
-          <div className="inline-block">
-            {allowedTokenDatas.isRefetching && allowedTokenDatas.isFetched && (
-              <LoadingSpinner
-                fill={
-                  stakePoolMetadata?.colors?.fontColor
-                    ? stakePoolMetadata?.colors?.fontColor
-                    : '#FFF'
-                }
-                height="25px"
-              />
-            )}
-          </div>
         </div>
         <div className="flex flex-row">
+          <RefreshButton
+            colorized
+            isFetching={allowedTokenDatas.isFetching}
+            dataUpdatdAtMs={allowedTokenDatas.dataUpdatedAt}
+            handleClick={() => allowedTokenDatas.refetch()}
+          />
           {!stakePoolMetadata?.hideAllowedTokens && (
             <button
               onClick={() => setShowAllowedTokens(!showAllowedTokens)}
