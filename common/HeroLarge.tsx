@@ -5,8 +5,6 @@ import { StakePoolConfig } from 'components/StakePoolConfig'
 import { useStakePoolId } from 'hooks/useStakePoolId'
 // import { StakePoolInfo } from 'components/StakePoolInfo'
 import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
-import { useRouter } from 'next/router'
-import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 
 import { HeroStats } from '../components/HeroStats'
 import { ButtonSmall } from './ButtonSmall'
@@ -14,9 +12,7 @@ import { ButtonSmall } from './ButtonSmall'
 
 export const HeroLarge: React.FC = () => {
   const stakePoolId = useStakePoolId()
-  const { environment } = useEnvironmentCtx()
   const { data: config } = useStakePoolMetadata()
-  const router = useRouter()
   // if (!config?.description) return <StakePoolInfo />
   return (
     <div className="relative -z-10 flex w-full flex-wrap items-stretch justify-center gap-8 py-8 lg:flex-nowrap lg:justify-between lg:gap-24">
@@ -43,7 +39,7 @@ export const HeroLarge: React.FC = () => {
           />
         </div>
       ) : (
-        <div className="flex h-[250px] grow items-center justify-center rounded-xl bg-white bg-opacity-5 md:w-1/4">
+        <div className="flex min-h-[200px] w-full items-center justify-center rounded-xl bg-white bg-opacity-5 md:w-1/4 md:grow">
           <a
             target={'_blank'}
             rel="noreferrer"
