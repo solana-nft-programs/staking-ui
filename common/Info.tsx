@@ -31,7 +31,7 @@ export const Info: React.FC<Props> = ({
   const { data: config } = useStakePoolMetadata()
   return (
     <div
-      className={`relative z-0 flex items-center gap-4 overflow-hidden rounded-xl px-8 py-4 text-xl ${
+      className={`relative z-0 flex flex-col items-center gap-4 overflow-hidden rounded-xl px-8 py-4 text-center text-xl md:flex-row md:text-left ${
         config?.colors?.fontColor ? '' : 'text-gray-200'
       } bg-white bg-opacity-5 ${className}`}
       style={{

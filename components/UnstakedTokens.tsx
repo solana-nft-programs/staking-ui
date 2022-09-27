@@ -188,7 +188,7 @@ export const UnstakedTokens = () => {
         </div>
       </div>
 
-      <div className="mt-2 flex items-center justify-between gap-5">
+      <div className="mt-2 flex flex-col items-center justify-between gap-5 md:flex-row">
         {!stakePoolMetadata?.receiptType ? (
           <Tooltip
             title={

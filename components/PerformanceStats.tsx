@@ -118,32 +118,34 @@ export const PerformanceStats: React.FC<
         )}
       </div>
       <div className="mx-4 my-auto hidden h-10 w-[1px] md:flex"></div>
-      <button
-        onClick={async () =>
-          handleClaimRewards.mutate({
-            tokenDatas: stakedTokenDatas.data ?? [],
-          })
-        }
-        style={{
-          background: stakePoolMetadata?.colors?.secondary,
-          color:
-            stakePoolMetadata?.colors?.fontColorSecondary ||
-            stakePoolMetadata?.colors?.fontColor,
-        }}
-        className="my-auto flex items-center gap-2 rounded-md px-4 py-2 hover:scale-[1.03]"
-      >
-        {handleClaimRewards.isLoading && (
-          <LoadingSpinner
-            fill={
-              stakePoolMetadata?.colors?.fontColor
-                ? stakePoolMetadata?.colors?.fontColor
-                : '#FFF'
-            }
-            height="20px"
-          />
-        )}
-        <div>Claim</div>
-      </button>
+      <div className="flex items-center justify-center">
+        <button
+          onClick={async () =>
+            handleClaimRewards.mutate({
+              tokenDatas: stakedTokenDatas.data ?? [],
+            })
+          }
+          style={{
+            background: stakePoolMetadata?.colors?.secondary,
+            color:
+              stakePoolMetadata?.colors?.fontColorSecondary ||
+              stakePoolMetadata?.colors?.fontColor,
+          }}
+          className="flex items-center gap-2 rounded-md px-4 py-2 hover:scale-[1.03]"
+        >
+          {handleClaimRewards.isLoading && (
+            <LoadingSpinner
+              fill={
+                stakePoolMetadata?.colors?.fontColor
+                  ? stakePoolMetadata?.colors?.fontColor
+                  : '#FFF'
+              }
+              height="20px"
+            />
+          )}
+          <div>Claim</div>
+        </button>
+      </div>
     </div>
   )
 }
