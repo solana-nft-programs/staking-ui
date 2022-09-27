@@ -31,7 +31,7 @@ export const Info: React.FC<Props> = ({
   const { data: config } = useStakePoolMetadata()
   return (
     <div
-      className={`relative z-0 flex flex-col items-center gap-4 overflow-hidden rounded-xl px-8 py-4 text-center text-xl md:flex-row md:text-left ${
+      className={`relative z-0 flex flex-col items-center gap-8 overflow-hidden rounded-xl px-8 py-4 text-center text-xl md:flex-row md:text-left ${
         config?.colors?.fontColor ? '' : 'text-gray-200'
       } bg-white bg-opacity-5 ${className}`}
       style={{
@@ -59,28 +59,30 @@ export const Info: React.FC<Props> = ({
           `
         }
       /> */}
-      <div className="text-white">
-        {icon &&
-          {
-            time: <MdAccessTimeFilled />,
-            featured: <AiFillStar />,
-            available: (
-              <MdSell className="h-[68px] w-[68px] rounded-full border-[2px] border-medium-4 p-3" />
-            ),
-            info: <GlyphQuestion />,
-            activity: (
-              <div className="flex h-[68px] w-[68px] items-center justify-center rounded-full border-[2px] border-medium-4 p-3">
-                <div className="scale-[2]">
-                  <GlyphActivity />
+      <div className="flex flex-col items-center justify-center gap-4 md:flex-row">
+        <div className="text-white">
+          {icon &&
+            {
+              time: <MdAccessTimeFilled />,
+              featured: <AiFillStar />,
+              available: (
+                <MdSell className="h-[68px] w-[68px] rounded-full border-[2px] border-medium-4 p-3" />
+              ),
+              info: <GlyphQuestion />,
+              activity: (
+                <div className="flex h-[68px] w-[68px] items-center justify-center rounded-full border-[2px] border-medium-4 p-3">
+                  <div className="scale-[2]">
+                    <GlyphActivity />
+                  </div>
                 </div>
-              </div>
-            ),
-            performance: <GlyphPerformance />,
-          }[icon]}
-      </div>
-      <div className="flex flex-col">
-        <div className="text-medium-3">{header}</div>
-        <div className="text-light-0">{description}</div>
+              ),
+              performance: <GlyphPerformance />,
+            }[icon]}
+        </div>
+        <div className="flex flex-col">
+          <div className="text-medium-3">{header}</div>
+          <div className="text-light-0">{description}</div>
+        </div>
       </div>
       {content}
     </div>
