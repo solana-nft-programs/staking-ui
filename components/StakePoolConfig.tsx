@@ -7,7 +7,7 @@ export const StakePoolConfig: React.FC<
 > = ({ className }: React.HTMLAttributes<HTMLDivElement>) => {
   const { data: stakePool } = useStakePoolData()
   return (
-    <div className={`flex flex-row gap-2 text-lg ${className}`}>
+    <div className={`flex flex-row gap-8 text-lg ${className}`}>
       {!!stakePool?.parsed.endDate &&
         stakePool?.parsed.endDate.toNumber() !== 0 && (
           <div className="flex flex-row items-center justify-center gap-2">
