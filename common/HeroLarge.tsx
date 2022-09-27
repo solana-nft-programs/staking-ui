@@ -44,19 +44,13 @@ export const HeroLarge: React.FC = () => {
         </div>
       ) : (
         <div className="flex h-[250px] grow items-center justify-center rounded-xl bg-white bg-opacity-5 md:w-1/4">
-          <ButtonSmall
-            onClick={() => {
-              router.push(
-                `/admin${
-                  environment.label !== 'mainnet-beta'
-                    ? `?cluster=${environment.label}`
-                    : ''
-                }`
-              )
-            }}
+          <a
+            target={'_blank'}
+            rel="noreferrer"
+            href={`https://github.com/cardinal-labs/cardinal-staking-ui#customizing-your-stake-pool`}
           >
-            Add image
-          </ButtonSmall>
+            <ButtonSmall onClick={() => {}}>Add image</ButtonSmall>
+          </a>
         </div>
       )}
       <div className="flex w-3/4 grow-[2] flex-col py-4">
