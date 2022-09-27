@@ -23,7 +23,7 @@ export const Header = () => {
   return (
     <div>
       <div
-        className={`mb-5 flex flex-wrap justify-center gap-6 px-5 pt-5 text-white md:justify-between`}
+        className={`mb-5 flex flex-wrap justify-center gap-6 px-10 pt-5 text-white md:justify-between`}
         style={{ color: stakePoolMetadata?.colors?.fontColor }}
       >
         <div className="flex items-center gap-3">
@@ -40,51 +40,21 @@ export const Header = () => {
             className="flex cursor-pointer text-xl font-semibold"
             rel="noreferrer"
           >
-            {stakePoolMetadata?.imageUrl ? (
-              <>
-                <div className="flex flex-row">
-                  <img
-                    className="flex h-[35px] flex-col rounded-lg"
-                    src={stakePoolMetadata?.imageUrl}
-                    alt={stakePoolMetadata?.imageUrl}
-                  />
-                  {stakePoolMetadata.nameInHeader && (
-                    <span
-                      className="ml-5 mt-1 flex flex-col"
-                      style={{ color: stakePoolMetadata?.colors?.fontColor }}
-                    >
-                      {stakePoolMetadata?.displayName}
-                    </span>
-                  )}
-                </div>
-                {stakePoolMetadata?.secondaryImageUrl && (
-                  <div className="ml-2 flex flex-row">
-                    <img
-                      className="flex h-[35px] flex-col"
-                      src={stakePoolMetadata?.secondaryImageUrl}
-                      alt={stakePoolMetadata?.secondaryImageUrl}
-                    />
-                    {stakePoolMetadata.nameInHeader && (
-                      <span
-                        className="ml-5 mt-1 flex flex-col"
-                        style={{ color: stakePoolMetadata?.colors?.fontColor }}
-                      >
-                        {stakePoolMetadata?.displayName}
-                      </span>
-                    )}
-                  </div>
+            {stakePoolMetadata?.secondaryImageUrl && (
+              <div className="ml-2 flex flex-row">
+                <img
+                  className="flex h-[35px] flex-col"
+                  src={stakePoolMetadata?.secondaryImageUrl}
+                  alt={stakePoolMetadata?.secondaryImageUrl}
+                />
+                {stakePoolMetadata.nameInHeader && (
+                  <span
+                    className="ml-5 mt-1 flex flex-col"
+                    style={{ color: stakePoolMetadata?.colors?.fontColor }}
+                  >
+                    {stakePoolMetadata?.displayName}
+                  </span>
                 )}
-              </>
-            ) : (
-              <div className="flex items-center justify-center gap-2 text-white">
-                {stakePoolMetadata?.displayName || (
-                  <img
-                    alt={'/cardinal-crosshair.svg'}
-                    className="inline-block w-4"
-                    src={'/cardinal-crosshair.svg'}
-                  />
-                )}{' '}
-                Staking
               </div>
             )}
           </a>
