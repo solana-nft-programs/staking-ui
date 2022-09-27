@@ -78,16 +78,16 @@ export const StakedTokens = () => {
           : '',
       }}
     >
-      <div className="mb-5 flex flex-row justify-between">
+      <div className="mb-5 flex flex-row items-center justify-between">
         <div className="mt-2 flex flex-row">
-          <p className="mr-3 text-lg">
+          <div className="mr-3 text-lg">
             View Staked Tokens{' '}
             {stakedTokenDatas.isFetched &&
               stakedTokenDatas.data &&
               `(${stakedTokenDatas.data.length})`}
-          </p>
+          </div>
         </div>
-        <div className="flex flex-col items-end justify-evenly">
+        <div className="flex flex-col items-center justify-evenly">
           <RefreshButton
             colorized
             isFetching={stakedTokenDatas.isFetching}

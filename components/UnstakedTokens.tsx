@@ -103,11 +103,13 @@ export const UnstakedTokens = () => {
           : '',
       }}
     >
-      <div className="mt-2 flex w-full flex-row justify-between">
+      <div className="mt-2 flex w-full flex-row items-center justify-between">
         <div className="flex flex-row">
-          <p className="mb-3 mr-3 inline-block text-lg">Select Your Tokens</p>
+          <div className="mb-3 mr-3 inline-block text-lg">
+            Select Your Tokens
+          </div>
         </div>
-        <div className="flex flex-row">
+        <div className="flex flex-row items-center justify-center">
           <RefreshButton
             colorized
             isFetching={allowedTokenDatas.isFetching}
