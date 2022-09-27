@@ -4,18 +4,13 @@ import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
 export const PoolAnalytics = () => {
   const analytics = usePoolAnalytics()
   const { data: stakePoolMetadata } = useStakePoolMetadata()
-  if (!analytics.data || Object.keys(analytics.data).length === 0) return <></>
+  const data = analytics.data
+  if (!data || Object.keys(data).length === 0) return <></>
   return (
     <div
-      className={`mx-5 mb-4 flex flex-wrap items-center gap-4 rounded-md px-10 py-6  md:flex-row md:justify-between ${
-        stakePoolMetadata?.colors?.fontColor
-          ? `text-[${stakePoolMetadata?.colors?.fontColor}]`
-          : 'text-gray-200'
-      } ${
-        stakePoolMetadata?.colors?.backgroundSecondary
-          ? `bg-[${stakePoolMetadata?.colors?.backgroundSecondary}]`
-          : 'bg-white bg-opacity-5'
-      }`}
+      className={`flex w-full flex-col flex-wrap gap-y-5 rounded-xl px-12 py-6 md:flex-row ${
+        stakePoolMetadata?.colors?.fontColor ? '' : 'text-gray-200'
+      } justify-evenly bg-white bg-opacity-5`}
       style={{
         background: stakePoolMetadata?.colors?.backgroundSecondary,
         border: stakePoolMetadata?.colors?.accent
@@ -23,26 +18,30 @@ export const PoolAnalytics = () => {
           : '',
       }}
     >
-      <div className="relative flex flex-grow items-center justify-center">
-        {Object.keys(analytics.data).map((key) => {
-          return (
+      {Object.keys(data).map((key, i) => {
+        return (
+          <>
             <div
               key={key}
-              className="relative flex flex-grow items-center justify-center text-lg"
+              className="flex flex-1 flex-col items-center justify-center"
             >
-              <span
-                className={`${
+              <div className="text-lg text-medium-4">{key}</div>
+              <div
+                className={`text-center text-xl ${
                   stakePoolMetadata?.colors?.fontColor
                     ? `text-[${stakePoolMetadata?.colors?.fontColor}]`
                     : 'text-gray-500'
                 }`}
               >
-                {key}: {(analytics.data![key]! * 100).toFixed(2)}%
-              </span>
+                {(data![key]! * 100).toFixed(2)}%
+              </div>
             </div>
-          )
-        })}
-      </div>
+            {i !== Object.keys(data).length - 1 && (
+              <div className="mx-6 my-auto hidden h-10 w-[1px] bg-border md:flex"></div>
+            )}
+          </>
+        )
+      })}
     </div>
   )
 }
