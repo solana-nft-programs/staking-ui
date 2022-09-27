@@ -5,6 +5,7 @@ import { Transaction } from '@solana/web3.js'
 import { executeAllTransactions } from 'api/utils'
 import { notify } from 'common/Notification'
 import { asWallet } from 'common/Wallets'
+import { TOKEN_DATAS_KEY } from 'hooks/useAllowedTokenDatas'
 import type { StakeEntryTokenData } from 'hooks/useStakedTokenDatas'
 import { useMutation, useQueryClient } from 'react-query'
 
@@ -93,6 +94,7 @@ export const useHandleClaimRewards = () => {
     {
       onSuccess: () => {
         queryClient.resetQueries([REWARD_QUERY_KEY])
+        queryClient.resetQueries([TOKEN_DATAS_KEY])
       },
       onError: (e) => {
         notify({ message: 'Failed to stake', description: `${e}` })
