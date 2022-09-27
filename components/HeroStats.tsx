@@ -45,7 +45,7 @@ export const HeroStats: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({
           </div>
         )}
       </div>
-      <div className="mx-4 my-auto hidden h-10 w-[1px] bg-border md:flex lg:mx-16"></div>
+      <div className="mx-6 my-auto hidden h-10 w-[1px] bg-border md:flex"></div>
       <div className="flex flex-col items-center justify-center">
         <p className="text-lg text-medium-4">Percent Staked</p>
         {!maxStaked ? (
@@ -62,7 +62,7 @@ export const HeroStats: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({
       </div>
       {rewardDistributorData.data && (
         <>
-          <div className="mx-4 my-auto hidden h-10 w-[1px] bg-border md:flex lg:mx-16"></div>
+          <div className="mx-6 my-auto hidden h-10 w-[1px] bg-border md:flex"></div>
           <div className="flex flex-col items-center justify-center">
             <p className="text-lg text-medium-4">
               {rewardDistributorData.data.parsed.maxRewardSecondsReceived?.eq(
@@ -107,7 +107,7 @@ export const HeroStats: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({
               </div>
             )}
           </div>
-          <div className="mx-4 my-auto hidden h-10 w-[1px] bg-border md:flex lg:mx-16"></div>
+          <div className="mx-6 my-auto hidden h-10 w-[1px] bg-border md:flex"></div>
           <div className="flex flex-col items-center justify-center">
             <p className="text-lg text-medium-4">Treasury Balance</p>
             {!rewardsRate.data ||
