@@ -9,12 +9,10 @@ import { Toggle } from 'common/Toggle'
 import { useHandleStake } from 'handlers/useHandleStake'
 import type { AllowedTokenData } from 'hooks/useAllowedTokenDatas'
 import { useAllowedTokenDatas } from 'hooks/useAllowedTokenDatas'
-import { useStakePoolData } from 'hooks/useStakePoolData'
 import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
 import { useEffect, useRef, useState } from 'react'
 import { FaInfoCircle } from 'react-icons/fa'
 
-import { AllowedTokens } from './AllowedTokens'
 import { UnstakedToken } from './UnstakedToken'
 
 export const PAGE_SIZE = 3
@@ -22,7 +20,6 @@ export const DEFAULT_PAGE: [number, number] = [3, 0]
 
 export const UnstakedTokens = () => {
   const { data: stakePoolMetadata } = useStakePoolMetadata()
-  const { data: stakePool } = useStakePoolData()
   const [pageNum, setPageNum] = useState<[number, number]>(DEFAULT_PAGE)
   const ref = useRef<HTMLDivElement | null>(null)
 
@@ -118,14 +115,6 @@ export const UnstakedTokens = () => {
             dataUpdatdAtMs={allowedTokenDatas.dataUpdatedAt}
             handleClick={() => allowedTokenDatas.refetch()}
           />
-          {!stakePoolMetadata?.hideAllowedTokens && (
-            <button
-              onClick={() => setShowAllowedTokens(!showAllowedTokens)}
-              className="text-md mr-5 inline-block rounded-md bg-white bg-opacity-5 px-4 py-1 hover:bg-opacity-10 focus:outline-none"
-            >
-              {showAllowedTokens ? 'Hide' : 'Show'} Allowed Tokens
-            </button>
-          )}
           {!stakePoolMetadata?.tokenStandard && (
             <button
               onClick={() => {
@@ -138,9 +127,6 @@ export const UnstakedTokens = () => {
           )}
         </div>
       </div>
-      {showAllowedTokens && (
-        <AllowedTokens stakePool={stakePool}></AllowedTokens>
-      )}
       <div className="my-3 flex-auto overflow-auto">
         <div
           className="relative my-auto mb-4 h-[60vh] overflow-y-auto overflow-x-hidden rounded-md bg-white bg-opacity-5 p-5"
@@ -171,11 +157,11 @@ export const UnstakedTokens = () => {
             </div>
           ) : (allowedTokenDatas.data || []).length === 0 ? (
             <p
-              className={`font-normal text-[${
+              className={`font-normal ${
                 stakePoolMetadata?.colors?.fontColor
-                  ? `text-[${stakePoolMetadata?.colors?.fontColor}]`
+                  ? `text-[${stakePoolMetadata?.colors?.fontColor}] opacity-50`
                   : 'text-gray-400'
-              }]`}
+              }`}
             >
               No allowed tokens found in wallet.
             </p>

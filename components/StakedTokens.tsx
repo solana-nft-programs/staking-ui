@@ -161,9 +161,11 @@ export const StakedTokens = () => {
             </div>
           ) : stakedTokenDatas.data?.length === 0 ? (
             <p
-              className={`font-normal text-[${
-                stakePoolMetadata?.colors?.fontColor ? '' : 'text-gray-400'
-              }]`}
+              className={`font-normal ${
+                stakePoolMetadata?.colors?.fontColor
+                  ? ''
+                  : 'text-gray-400 opacity-50'
+              }`}
             >
               No tokens currently staked.
             </p>
