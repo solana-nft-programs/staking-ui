@@ -114,7 +114,7 @@ export function StakedStats({ tokenData }: { tokenData: StakeEntryTokenData }) {
                 new BN(60)
               ) && (
                 <div className="flex w-full flex-row justify-between text-xs font-semibold">
-                  <span>Next rewards:</span>
+                  <span>Next Rewards:</span>
                   <span>
                     {secondstoDuration(
                       rewards.data.rewardMap[

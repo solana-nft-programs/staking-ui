@@ -87,7 +87,7 @@ export const StakedTokens = () => {
               `(${stakedTokenDatas.data.length})`}
           </div>
         </div>
-        <div className="flex flex-col items-center justify-evenly">
+        <div className="flex flex-col items-end justify-evenly">
           <RefreshButton
             colorized
             isFetching={stakedTokenDatas.isFetching}
