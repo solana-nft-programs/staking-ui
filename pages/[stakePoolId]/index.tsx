@@ -12,6 +12,8 @@ import { PerformanceStats } from 'components/PerformanceStats'
 import { PoolAnalytics } from 'components/PoolAnalytics'
 import { StakedTokens } from 'components/StakedTokens'
 import { UnstakedTokens } from 'components/UnstakedTokens'
+import { useRewardDistributorData } from 'hooks/useRewardDistributorData'
+import { useStakedTokenDatas } from 'hooks/useStakedTokenDatas'
 import { useStakePoolData } from 'hooks/useStakePoolData'
 import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
 import { useUserRegion } from 'hooks/useUserRegion'
@@ -24,6 +26,8 @@ function StakePoolHome() {
   const walletModal = useWalletModal()
   const { data: stakePool, isFetched: stakePoolLoaded } = useStakePoolData()
   const userRegion = useUserRegion()
+  const rewardDistributorData = useRewardDistributorData()
+  const stakedTokenDatas = useStakedTokenDatas()
 
   const { data: stakePoolMetadata } = useStakePoolMetadata()
 
@@ -140,7 +144,7 @@ function StakePoolHome() {
           )
         )}
         <HeroLarge />
-        {stakePoolMetadata?.description && (
+        {!!rewardDistributorData.data && !!stakedTokenDatas.data?.length && (
           <Info
             colorized
             icon="performance"

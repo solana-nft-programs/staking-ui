@@ -64,7 +64,7 @@ export const StakePoolInfo = () => {
               ? `/ ${stakePoolMetadata?.maxStaked.toLocaleString()}`
               : ''}
           </div>
-          {maxStaked > 0 && (
+          {!!maxStaked && (
             <div className="inline-block text-lg">
               {/*TODO: Change how many total NFTs can possibly be staked for your collection (default 10000) */}
               Percent Staked:{' '}
