@@ -6,14 +6,12 @@ import { contrastify } from 'common/colors'
 import { LoadingSpinner } from 'common/LoadingSpinner'
 import { notify } from 'common/Notification'
 import { RefreshButton } from 'common/RefreshButton'
-import { secondstoDuration } from 'common/utils'
 import { useHandleClaimRewards } from 'handlers/useHandleClaimRewards'
 import { useHandleUnstake } from 'handlers/useHandleUnstake'
 import { useRewardDistributorData } from 'hooks/useRewardDistributorData'
 import { useRewards } from 'hooks/useRewards'
 import type { StakeEntryTokenData } from 'hooks/useStakedTokenDatas'
 import { useStakedTokenDatas } from 'hooks/useStakedTokenDatas'
-import { useStakePoolData } from 'hooks/useStakePoolData'
 import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
 import { useRef, useState } from 'react'
 
@@ -24,7 +22,6 @@ export const DEFAULT_PAGE: [number, number] = [3, 0]
 
 export const StakedTokens = () => {
   const { data: stakePoolMetadata } = useStakePoolMetadata()
-  const { data: stakePool } = useStakePoolData()
   const wallet = useWallet()
   const [pageNum, setPageNum] = useState<[number, number]>(DEFAULT_PAGE)
   const ref = useRef<HTMLDivElement | null>(null)
@@ -87,48 +84,13 @@ export const StakedTokens = () => {
               `(${stakedTokenDatas.data.length})`}
           </div>
         </div>
-        <div className="flex flex-col items-end justify-evenly">
+        <div className="flex flex-row items-center justify-center">
           <RefreshButton
             colorized
             isFetching={stakedTokenDatas.isFetching}
             dataUpdatdAtMs={stakedTokenDatas.dataUpdatedAt}
             handleClick={() => stakedTokenDatas.refetch()}
           />
-          {stakePool?.parsed.endDate &&
-          stakePool?.parsed.endDate.toNumber() !== 0 ? (
-            <div className="flex flex-col">
-              <p className="mr-3 text-sm">
-                End Date:{' '}
-                {new Date(
-                  stakePool.parsed.endDate?.toNumber() * 1000
-                ).toDateString()}{' '}
-              </p>
-            </div>
-          ) : (
-            ''
-          )}
-          {stakePool?.parsed.cooldownSeconds &&
-          stakePool?.parsed.cooldownSeconds !== 0 ? (
-            <div className="flex flex-col">
-              <p className="mr-3 text-sm">
-                Cooldown Period:{' '}
-                {secondstoDuration(stakePool?.parsed.cooldownSeconds)}{' '}
-              </p>
-            </div>
-          ) : (
-            ''
-          )}
-          {stakePool?.parsed.minStakeSeconds &&
-          stakePool?.parsed.minStakeSeconds !== 0 ? (
-            <div className="flex flex-col">
-              <p className="mr-3 text-sm">
-                Minimum Stake Seconds:{' '}
-                {secondstoDuration(stakePool?.parsed.minStakeSeconds)}{' '}
-              </p>
-            </div>
-          ) : (
-            ''
-          )}
         </div>
       </div>
       <div className="my-3 flex-auto overflow-auto">

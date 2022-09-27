@@ -1,6 +1,7 @@
 // import { css } from '@emotion/react'
 import { shortPubKey } from '@cardinal/namespaces-components'
 import { css } from '@emotion/react'
+import { StakePoolConfig } from 'components/StakePoolConfig'
 import { useStakePoolId } from 'hooks/useStakePoolId'
 // import { StakePoolInfo } from 'components/StakePoolInfo'
 import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
@@ -69,6 +70,7 @@ export const HeroLarge: React.FC = () => {
                 config?.displayName ?? shortPubKey(stakePoolId)
               } pool.`}
           </div>
+          <StakePoolConfig />
           {/* <div className="flex gap-4 text-light-0">
             {config.socialLinks?.map(({ icon, link }, i) => {
               return (

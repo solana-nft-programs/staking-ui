@@ -73,7 +73,8 @@ export const Header = () => {
         </div>
         <div className="relative my-auto flex flex-wrap items-center justify-center gap-y-6 align-middle">
           <div className="mr-10 flex flex-wrap items-center justify-center gap-8">
-            {stakePoolId && stakePoolMetadata ? (
+            {stakePoolId &&
+              stakePoolMetadata &&
               stakePoolMetadata.links?.map((link) => (
                 <a
                   key={link.value}
@@ -84,24 +85,7 @@ export const Header = () => {
                     {link.text}
                   </p>
                 </a>
-              ))
-            ) : (
-              <>
-                <div
-                  onClick={() =>
-                    router.push(
-                      `/admin${
-                        environment.label !== 'mainnet-beta'
-                          ? `?cluster=${environment.label}`
-                          : ''
-                      }`
-                    )
-                  }
-                >
-                  <p className="my-auto mr-10 hover:cursor-pointer">Admin</p>
-                </div>
-              </>
-            )}
+              ))}
           </div>
           {wallet.connected && wallet.publicKey ? (
             <AccountConnect
