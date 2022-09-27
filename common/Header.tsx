@@ -4,6 +4,7 @@ import { WalletMultiButton } from '@solana/wallet-adapter-react-ui'
 
 import { useRouter } from 'next/router'
 import Image from 'next/image'
+import { useState } from 'react'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 import { Airdrop } from './Airdrop'
 import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
@@ -13,6 +14,10 @@ import { Wallet } from '@saberhq/solana-contrib'
 import { useStakePoolId } from 'hooks/useStakePoolId'
 import { useUTCNow } from 'providers/UTCNowProvider'
 import { contrastColorMode } from './utils'
+import {
+  StakeEntryTokenData,
+  useStakedTokenDatas,
+} from 'hooks/useStakedTokenDatas'
 
 const logo = require('../images/liberty-square-logo.png');
 
@@ -36,6 +41,7 @@ export const Header = () => {
   const ctx = useEnvironmentCtx()
   const wallet = useWallet()
   const stakePoolId = useStakePoolId()
+  const { data: stakedTokenDatas } = useStakedTokenDatas()
   const { data: stakePoolMetadata } = useStakePoolMetadata()
   const { clockDrift } = useUTCNow()
 
@@ -77,23 +83,58 @@ export const Header = () => {
               height={188}
             />
           </div>
-          <div className='order-2 col-span-1 sm:col-span-2 h-48 font-mono uppercase'>
+          <div className='order-2 col-span-1 sm:col-span-2 h-48 pt-3 font-mono uppercase'>
             <div className='grid grid-cols-1 md:grid-cols-2 gap-2'>
               <span className='col-span-1 md:col-span-2 text-xl xl:text-2xl'>Total collection staked: {}</span>
               <div className='row-span-3 col-span-1 px-3 md:px-0'>
+                {!stakePoolMetadata?.notFound && stakedTokenDatas && (
                 <div className='border-2 border-red-700 px-4 pl-16 md:pl-1'>
                   <div><p>your collection</p></div>
-                  <div><span className='w-32 text-right inline-block'>common: </span>{}</div>
-                  <div><span className='w-32 text-right inline-block'>rare: </span>{}</div>
-                  <div><span className='w-32 text-right inline-block'>ultra rare: </span>{}</div>
-                  <div><span className='w-32 text-right inline-block'>legendary: </span>{}</div>
+                  <div><span className='w-32 text-right inline-block'>Common: </span>{stakedTokenDatas.reduce((prev, current) => {
+                                const isCommon = current?.metadata?.data.attributes.filter((d: any) => {
+                                  return d.trait_type === '2- Class' && d.value === 'Common';
+                                });
+                                if (isCommon.length) {
+                                  return prev + 1;
+                                }
+                                return prev;
+                              }, 0)}
+                  </div>
+                  <div><span className='w-32 text-right inline-block'>Rare: </span>{stakedTokenDatas.reduce((prev, current) => {
+                                const isRare = current?.metadata?.data.attributes.filter((d: any) => {
+                                  return d.trait_type === '2- Class' && d.value === 'Rare';
+                                });
+                                if (isRare.length) {
+                                  return prev + 1;
+                                }
+                                return prev;
+                              }, 0)}</div>
+                  <div><span className='w-32 text-right inline-block'>Ultra Rare: </span>{stakedTokenDatas.reduce((prev, current) => {
+                                const isUltraRare = current?.metadata?.data.attributes.filter((d: any) => {
+                                  return d.trait_type === '2- Class' && d.value === 'Ultra Rare';
+                                });
+                                if (isUltraRare.length) {
+                                  return prev + 1;
+                                }
+                                return prev;
+                              }, 0)}</div>
+                  <div><span className='w-32 text-right inline-block'>Legendary: </span>{stakedTokenDatas.reduce((prev, current) => {
+                                const isLegendary = current?.metadata?.data.attributes.filter((d: any) => {
+                                  return d.trait_type === '2- Class' && d.value === 'Legendary';
+                                });
+                                if (isLegendary.length) {
+                                  return prev + 1;
+                                }
+                                return prev;
+                              }, 0)}</div>
                   <div><p>unclaimed $FLTH: {}</p></div>
                 </div>
-              </div>
-              <div className='row-span-3 col-span-1 flex flex-row md:flex-col justify-between px-3 md:px-0 text-center'>
-                <div className='border-2 border-red-700 px-4 py-1'><button>Stake All</button></div>
-                <div className='border-2 border-red-700 px-4 py-1'><button>Unstake All</button></div>
-                <div className='border-2 border-red-700 px-4 py-1'><button>Withdraw All $FLTH</button></div>
+                )}
+                </div>
+              <div className='row-span-3 col-span-1 flex flex-row md:flex-col justify-between px-3 md:px-0 text-center text-xl font-mono uppercase'>
+                <div className='font-mono uppercase border-2 border-red-700 px-4 py-1'><button>STAKE ALL</button></div>
+                <div className='border-2 border-red-700 px-4 py-1'><button>UNSTAKE All</button></div>
+                <div className='border-2 border-red-700 px-4 py-1'><button>WITHDRAW All $FLTH</button></div>
               </div>
             </div>
           </div>

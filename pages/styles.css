@@ -3,14 +3,15 @@
 @tailwind utilities;
 
 @font-face {
-  font-family: "Impact Label";
-  src: url('../public/Impact_Label_Reversed-webfont.woff') format('woff');
+  font-family: "Gothic Book";
+  src: url('../public/Franklin_Gothic_Book_Regular.ttf') format('ttf');
 }
 
 body {
-  font-family: "Impact Label", mono, 'DM Sans', Roboto, sans-serif, 'Apple Color Emoji',
+  font-family: 'Gothic Book', 'DM Sans', Roboto, sans-serif, 'Apple Color Emoji',
     'Segoe UI Emoji', 'Segoe UI Symbol';
     color: black;
+    background-color: white;
 }
 
 .wallet-button {
@@ -19,10 +20,10 @@ body {
   background-color: white;
   color: black;
   border-radius: 0px;
-  font-family: "Impact Label", ui-monospace, monospace;
+  font-family: 'Gothic Book', Roboto, "DM Sans", ui-monospace, monospace;
 }
 
 .font-mono {
-  font-family: "Impact Label", ui-monospace, monospace !important;
+  font-family: 'Gothic Book', Roboto, "DM Sans", ui-monospace, monospace !important;
   font-size: 16px;
 }

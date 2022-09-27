@@ -719,22 +719,20 @@ function Home() {
                                     tk.tokenListData?.name
                                   }
                                 />
-                                <div
-                                  className={`flex-col pt-2 pb-2 ${stakePoolMetadata?.colors?.fontColor
-                                    ? `text-[${stakePoolMetadata?.colors?.fontColor}]`
-                                    : 'text-gray-200'
-                                    }`}
-                                  style={{
-                                    background:
-                                      stakePoolMetadata?.colors
-                                        ?.backgroundSecondary,
-                                  }}
-                                >
-                                  <div className="truncate font-mono uppercase">
+
+                                  <div className="flex w-full flex-row justify-between font-mono uppercase">
                                     {tk.metadata?.data.name ||
                                       tk.tokenListData?.symbol}
                                   </div>
-                                  <div className="mt-2">
+                                  <div className="flex w-full flex-row justify-between font-mono uppercase">
+                                    <span>Gang:</span>
+                                    {tk.metadata?.data.attributes.find((attr: any) => attr.trait_type === "1- Gang")?.value || "Cannot read Gang"}
+                                  </div>
+                                  <div className="flex w-full flex-row justify-between font-mono uppercase">
+                                    <span>Class:</span>
+                                    {tk.metadata?.data.attributes.find((attr: any) => attr.trait_type === "2- Class")?.value || "Cannot read Class"}
+                                  </div>
+                                  <div>
                                     {tk.stakeEntry &&
                                       tk.stakeEntry.parsed.amount.toNumber() >
                                       1 &&
@@ -877,7 +875,7 @@ function Home() {
                                           {tk.stakeEntry &&
                                             rewardMintInfo.data && (
                                               <div className="mt-2 flex w-full flex-row justify-between gap-2">
-                                                <button className="flex w-1/2 px-4 py-2 justify-center bg-white hover:scale-[1.03]"
+                                                <button className="flex w-1/2 px-4 py-2 justify-center bg-white hover:scale-[1.03] border-2 border-red-700"
                                                   onClick={async () => {
                                                     if (!wallet) {
                                                       notify({ message: `Wallet not connected`, type: 'error' })
@@ -931,7 +929,7 @@ function Home() {
                                                 >
                                                   <span className="my-auto font-mono uppercase text-black">Withdraw</span>
                                                 </button>
-                                                <button className="flex w-1/2 px-4 py-2 justify-center bg-white hover:scale-[1.03]"
+                                                <button className="flex w-1/2 px-4 py-2 justify-center bg-white hover:scale-[1.03] border-2 border-red-700"
                                                   onClick={async () => {
                                                     if (!wallet) {
                                                       notify({ message: `Wallet not connected`, type: 'error' })
@@ -1077,7 +1075,7 @@ function Home() {
                                       ''
                                     )}
                                   </div>
-                                </div>
+                                {/* </div> */}
                                 {/* {tk.tokenListData && (
                                   <div className="absolute bottom-2 left-2">
                                     {Number(
@@ -1177,9 +1175,17 @@ function Home() {
                                   <span>Type:</span>
                                   <span>{getRarityType(tk.metadata?.data) || tk.tokenListData?.symbol}</span> {/* TODO: need rarity tk.metadata?.data.name */}
                                 </div>
+                                <div className="flex w-full flex-row justify-between font-mono uppercase">
+                                  <span>Gang:</span>
+                                  {tk.metadata?.data.attributes.find((attr: any) => attr.trait_type === "1- Gang")?.value || "Cannot read Gang"}
+                                </div>
+                                <div className="flex w-full flex-row justify-between font-mono uppercase">
+                                  <span>Class:</span>
+                                  {tk.metadata?.data.attributes.find((attr: any) => attr.trait_type === "2- Class")?.value || "Cannot read Class"}
+                                </div>
                                 {tk.metadata && (
                                   <div className="mt-2 flex w-full flex-row justify-between gap-2">
-                                    <button className="flex w-full px-4 py-2 justify-center bg-white hover:scale-[1.03]"
+                                    <button className="flex w-full px-4 py-2 mt-8 justify-center bg-white hover:scale-[1.03] border-2 border-red-700"
                                       onClick={async () => {
                                         try {
                                           if (!wallet) {
