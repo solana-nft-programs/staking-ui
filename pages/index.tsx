@@ -805,6 +805,85 @@ function Home() {
                         )}
                       </div>
                     )}
+                    {!stakePoolMetadata?.notFound && stakedTokenDatas.data && (
+                      <div
+                        className={`mx-5 mb-4 flex flex-wrap items-center gap-4 rounded-md px-10 py-6 md:flex-row md:justify-between ${stakePoolMetadata?.colors?.fontColor
+                          ? `text-[${stakePoolMetadata?.colors?.fontColor}]`
+                          : 'text-gray-200'
+                          } ${stakePoolMetadata?.colors?.backgroundSecondary
+                            ? `bg-[${stakePoolMetadata?.colors?.backgroundSecondary}]`
+                            : 'bg-white bg-opacity-5'
+                          }`}
+                        style={{
+                          background: stakePoolMetadata?.colors?.backgroundSecondary,
+                          border: stakePoolMetadata?.colors?.accent
+                            ? `2px solid ${stakePoolMetadata?.colors?.accent}`
+                            : '',
+                        }}
+                      >
+                        {stakedTokenDatas.data.length ? (
+                          <>
+                            <div className="inline-block text-lg">
+                              Common: {stakedTokenDatas.data.reduce((prev, current) => {
+                                const isCommon = current?.metadata?.data.attributes.filter((d: any) => {
+                                  return d.trait_type === '2- Class' && d.value === 'Common';
+                                });
+                                if (isCommon.length) {
+                                  return prev + 1;
+                                }
+                                return prev;
+                              }, 0)}
+                            </div>
+                            <div className="inline-block text-lg">
+                              Rare: {stakedTokenDatas.data.reduce((prev, current) => {
+                                const isRare = current?.metadata?.data.attributes.filter((d: any) => {
+                                  return d.trait_type === '2- Class' && d.value === 'Rare';
+                                });
+                                if (isRare.length) {
+                                  return prev + 1;
+                                }
+                                return prev;
+                              }, 0)}
+                            </div>
+                            <div className="inline-block text-lg">
+                              Ultra rare: {stakedTokenDatas.data.reduce((prev, current) => {
+                                const isUltraRare = current?.metadata?.data.attributes.filter((d: any) => {
+                                  return d.trait_type === '2- Class' && d.value === 'Ultra Rare';
+                                });
+                                if (isUltraRare.length) {
+                                  return prev + 1;
+                                }
+                                return prev;
+                              }, 0)}
+                            </div>
+                            <div className="inline-block text-lg">
+                              Legendary: {stakedTokenDatas.data.reduce((prev, current) => {
+                                const isLegendary = current?.metadata?.data.attributes.filter((d: any) => {
+                                  return d.trait_type === '2- Class' && d.value === 'Legendary';
+                                });
+                                if (isLegendary.length) {
+                                  return prev + 1;
+                                }
+                                return prev;
+                              }, 0)}
+                            </div>
+
+                          </>
+                        ) : (
+                          <div className="relative flex h-8 flex-grow items-center justify-center">
+                            <span
+                              className={`${stakePoolMetadata?.colors?.fontColor
+                                ? `text-[${stakePoolMetadata?.colors?.fontColor}]`
+                                : 'text-gray-500'
+                                }`}
+                            >
+                              Loading your staking stats...
+                            </span>
+                            <div className="absolute w-full animate-pulse items-center justify-center rounded-lg bg-white bg-opacity-10 p-5"></div>
+                          </div>
+                        )}
+                      </div>
+                    )}
                     <PoolAnalytics />
                     <div className="mt-2 flex flex-row-reverse flex-wrap justify-between gap-5">
                       <div className="flex gap-5">
