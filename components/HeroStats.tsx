@@ -8,7 +8,7 @@ import { pubKeyUrl } from 'common/utils'
 import { useRewardDistributorData } from 'hooks/useRewardDistributorData'
 import { useRewardDistributorTokenAccount } from 'hooks/useRewardDistributorTokenAccount'
 import { useRewardMintInfo } from 'hooks/useRewardMintInfo'
-import { useRewardsRate } from 'hooks/useRewardsRate'
+import { baseDailyRate, useRewardsRate } from 'hooks/useRewardsRate'
 import { useStakePoolEntries } from 'hooks/useStakePoolEntries'
 import { useStakePoolMaxStaked } from 'hooks/useStakePoolMaxStaked'
 import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
@@ -30,7 +30,15 @@ export const HeroStats: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({
 
   return (
     <div
-      className={`flex w-full flex-col flex-wrap justify-between gap-y-5 rounded-xl border border-border px-12 py-6 md:flex-row ${className}`}
+      className={`flex w-full flex-col flex-wrap justify-between gap-y-5 rounded-xl border border-border px-12 py-6 md:flex-row ${
+        stakePoolMetadata?.colors?.fontColor ? '' : 'text-gray-200'
+      } bg-white bg-opacity-5 ${className}`}
+      style={{
+        background: stakePoolMetadata?.colors?.backgroundSecondary,
+        border: stakePoolMetadata?.colors?.accent
+          ? `2px solid ${stakePoolMetadata?.colors?.accent}`
+          : '',
+      }}
     >
       <div className="flex flex-col items-center justify-center">
         <div className="text-lg text-medium-4">Total Staked</div>
@@ -48,7 +56,7 @@ export const HeroStats: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({
       <div className="mx-6 my-auto hidden h-10 w-[1px] bg-border md:flex"></div>
       <div className="flex flex-col items-center justify-center">
         <p className="text-lg text-medium-4">Percent Staked</p>
-        {!maxStaked ? (
+        {!stakePoolEntries.data || !maxStaked ? (
           <div className="h-6 w-10 animate-pulse rounded-md bg-border"></div>
         ) : (
           <div className="text-center text-xl text-light-1">
@@ -77,8 +85,7 @@ export const HeroStats: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({
               <div className="text-center text-xl text-light-1">
                 {formatAmountAsDecimal(
                   rewardMintInfo.data.mintInfo.decimals,
-                  rewardsRate.data.dailyRewards,
-                  // max of 5 decimals
+                  baseDailyRate(rewardDistributorData.data),
                   Math.min(rewardMintInfo.data.mintInfo.decimals, 5)
                 )}{' '}
                 <a

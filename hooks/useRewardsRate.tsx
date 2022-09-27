@@ -1,4 +1,6 @@
+import type { AccountData } from '@cardinal/common'
 import { calculatePendingRewards } from '@cardinal/staking'
+import type { RewardDistributorData } from '@cardinal/staking/dist/cjs/programs/rewardDistributor'
 import { RewardDistributorKind } from '@cardinal/staking/dist/cjs/programs/rewardDistributor'
 import { BN } from '@project-serum/anchor'
 import { useQuery } from 'react-query'
@@ -8,6 +10,26 @@ import { useRewardDistributorTokenAccount } from './useRewardDistributorTokenAcc
 import { useRewardEntries } from './useRewardEntries'
 import { useRewardMintInfo } from './useRewardMintInfo'
 import { useStakedTokenDatas } from './useStakedTokenDatas'
+
+export const baseDailyRate = (
+  rewardDistributorData: AccountData<RewardDistributorData>
+) => {
+  return rewardDistributorData.parsed.rewardAmount
+    .mul(
+      rewardDistributorData.parsed.maxRewardSecondsReceived
+        ? BN.min(
+            rewardDistributorData.parsed.maxRewardSecondsReceived,
+            new BN(86400).div(
+              rewardDistributorData.parsed.rewardDurationSeconds
+            )
+          )
+        : new BN(86400).div(rewardDistributorData.parsed.rewardDurationSeconds)
+    )
+    .mul(rewardDistributorData.parsed.defaultMultiplier)
+    .div(
+      new BN(10).pow(new BN(rewardDistributorData.parsed.multiplierDecimals))
+    )
+}
 
 export const useRewardsRate = () => {
   const { data: rewardDistributorData } = useRewardDistributorData()
@@ -77,25 +99,7 @@ export const useRewardsRate = () => {
       return {
         rewardsRateMap,
         dailyRewards: totalDaily.eq(new BN(0))
-          ? rewardDistributorData.parsed.rewardAmount
-              .mul(
-                rewardDistributorData.parsed.maxRewardSecondsReceived
-                  ? BN.min(
-                      rewardDistributorData.parsed.maxRewardSecondsReceived,
-                      new BN(86400).div(
-                        rewardDistributorData.parsed.rewardDurationSeconds
-                      )
-                    )
-                  : new BN(86400).div(
-                      rewardDistributorData.parsed.rewardDurationSeconds
-                    )
-              )
-              .mul(rewardDistributorData.parsed.defaultMultiplier)
-              .div(
-                new BN(10).pow(
-                  new BN(rewardDistributorData.parsed.multiplierDecimals)
-                )
-              )
+          ? baseDailyRate(rewardDistributorData)
           : totalDaily,
       }
     }

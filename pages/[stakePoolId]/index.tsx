@@ -6,7 +6,9 @@ import { Footer } from 'common/Footer'
 import { FooterSlim } from 'common/FooterSlim'
 import { Header } from 'common/Header'
 import { HeroLarge } from 'common/HeroLarge'
+import { Info } from 'common/Info'
 import { contrastColorMode } from 'common/utils'
+import { PerformanceStats } from 'components/PerformanceStats'
 import { PoolAnalytics } from 'components/PoolAnalytics'
 import { StakedTokens } from 'components/StakedTokens'
 import { UnstakedTokens } from 'components/UnstakedTokens'
@@ -85,7 +87,7 @@ function StakePoolHome() {
       </Head>
       <Header />
       <div
-        className="relative z-0 mx-10 mt-4"
+        className="relative z-0 mx-10 mt-4 flex flex-col gap-4"
         style={{
           ...stakePoolMetadata?.styles,
           color:
@@ -138,8 +140,21 @@ function StakePoolHome() {
           )
         )}
         <HeroLarge />
+        {stakePoolMetadata?.description && (
+          <Info
+            colorized
+            icon="performance"
+            header="Personal Charts"
+            description="View your recent performance"
+            content={
+              <div className="flex grow items-center justify-end">
+                <PerformanceStats />
+              </div>
+            }
+          />
+        )}
         <PoolAnalytics />
-        <div className="my-2 grid grid-cols-1 gap-4 md:grid-cols-2">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
           <UnstakedTokens />
           <StakedTokens />
         </div>
