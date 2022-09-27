@@ -176,7 +176,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     colors: {
       primary: '#000000',
       secondary: '#4da1de',
-      accent: '#1fcfb11c',
+      accent: '#30c2b9',
       fontColor: '#FFFFFF',
     },
     airdrops: [

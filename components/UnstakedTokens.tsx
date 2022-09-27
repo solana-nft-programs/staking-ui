@@ -29,7 +29,6 @@ export const UnstakedTokens = () => {
   const [receiptType, setReceiptType] = useState<ReceiptType>(
     ReceiptType.Original
   )
-  const [showAllowedTokens, setShowAllowedTokens] = useState<boolean>()
   const [showFungibleTokens, setShowFungibleTokens] = useState(false)
   const allowedTokenDatas = useAllowedTokenDatas(showFungibleTokens)
   const handleStake = useHandleStake()
