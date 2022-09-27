@@ -34,6 +34,8 @@ export type StakePoolMetadata = {
   nameInHeader?: boolean
   // Publickey for this stake pool
   stakePoolAddress: PublicKey
+  // Description for this stake pool
+  description?: string
   // Default receipt type. Setting this will remove the option for the user to choose which receipt type to use
   receiptType?: ReceiptType
   // Default empty. Setting this will tell the UI to only show tokens of that standard. Supports fungible or non-fungible
@@ -120,6 +122,9 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     stakePoolAddress: new PublicKey(
       '3BZCupFU6X3wYJwgTsKS2vTs4VeMrhSZgx4P2TfzExtP'
     ),
+    logoPadding: true,
+    description:
+      'Blockasset is creating a revolutionary way for fans and athletes to interact and connect with each other by way of multiple touchpoints that provide benefits for both the fan and the athlete.',
     websiteUrl: 'https://hub.blockasset.co/nft-staking-v2',
     imageUrl: '/logos/blockasset.png',
     maxStaked: 11791,
@@ -143,13 +148,6 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       accent: '#1fcfb11c',
       fontColor: '#FFFFFF',
     },
-    airdrops: [
-      {
-        name: 'Blockasset Legends',
-        symbol: 'LEGENDS',
-        uri: 'https://arweave.net/Q5y8_OehSOYCkGiX-hV1H6qiczoDaVdk4Eyi4lhhdQE',
-      },
-    ],
   },
   {
     name: 'blockasset-smesh-bros',

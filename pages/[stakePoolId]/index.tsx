@@ -5,10 +5,10 @@ import { contrastify } from 'common/colors'
 import { Footer } from 'common/Footer'
 import { FooterSlim } from 'common/FooterSlim'
 import { Header } from 'common/Header'
+import { HeroLarge } from 'common/HeroLarge'
 import { contrastColorMode } from 'common/utils'
 import { PoolAnalytics } from 'components/PoolAnalytics'
 import { StakedTokens } from 'components/StakedTokens'
-import { StakePoolInfo } from 'components/StakePoolInfo'
 import { UnstakedTokens } from 'components/UnstakedTokens'
 import { useStakePoolData } from 'hooks/useStakePoolData'
 import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
@@ -85,7 +85,7 @@ function StakePoolHome() {
       </Head>
       <Header />
       <div
-        className={`container mx-auto w-full`}
+        className="relative z-0 mx-10 mt-4"
         style={{
           ...stakePoolMetadata?.styles,
           color:
@@ -137,9 +137,9 @@ function StakePoolHome() {
             </div>
           )
         )}
-        <StakePoolInfo />
+        <HeroLarge />
         <PoolAnalytics />
-        <div className="my-2 mx-5 grid grid-cols-1 gap-4 md:grid-cols-2">
+        <div className="my-2 grid grid-cols-1 gap-4 md:grid-cols-2">
           <UnstakedTokens />
           <StakedTokens />
         </div>

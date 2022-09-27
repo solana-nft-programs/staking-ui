@@ -23,7 +23,7 @@ export const Header = () => {
   return (
     <div>
       <div
-        className={`mb-5 flex flex-wrap justify-between gap-6 px-5 pt-5 text-white`}
+        className={`mb-5 flex flex-wrap justify-center gap-6 px-5 pt-5 text-white md:justify-between`}
         style={{ color: stakePoolMetadata?.colors?.fontColor }}
       >
         <div className="flex items-center gap-3">
@@ -101,7 +101,7 @@ export const Header = () => {
             ''
           )}
         </div>
-        <div className="relative my-auto flex flex-wrap items-center gap-y-6 align-middle">
+        <div className="relative my-auto flex flex-wrap items-center justify-center gap-y-6 align-middle">
           <div className="mr-10 flex flex-wrap items-center justify-center gap-8">
             {stakePoolId && stakePoolMetadata ? (
               stakePoolMetadata.links?.map((link) => (

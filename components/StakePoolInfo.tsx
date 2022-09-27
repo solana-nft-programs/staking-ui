@@ -40,7 +40,7 @@ export const StakePoolInfo = () => {
 
   return (
     <div
-      className={`mx-5 mb-4 flex flex-wrap items-center gap-4 rounded-md px-10 py-6 md:flex-row md:justify-between ${
+      className={`mb-4 flex flex-wrap items-center gap-4 rounded-md px-10 py-6 md:flex-row md:justify-between ${
         stakePoolMetadata?.colors?.fontColor
           ? `text-[${stakePoolMetadata?.colors?.fontColor}]`
           : 'text-gray-200'
