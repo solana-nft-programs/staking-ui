@@ -155,9 +155,9 @@ export const StakedTokens = () => {
         >
           {!stakedTokenDatas.isFetched ? (
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-              <div className="h-[200px] animate-pulse rounded-lg bg-white bg-opacity-5 p-10"></div>
-              <div className="h-[200px] animate-pulse rounded-lg bg-white bg-opacity-5 p-10"></div>
-              <div className="h-[200px] animate-pulse rounded-lg bg-white bg-opacity-5 p-10"></div>
+              <div className="aspect-square animate-pulse rounded-lg bg-white bg-opacity-5 p-10"></div>
+              <div className="aspect-square animate-pulse rounded-lg bg-white bg-opacity-5 p-10"></div>
+              <div className="aspect-square animate-pulse rounded-lg bg-white bg-opacity-5 p-10"></div>
             </div>
           ) : stakedTokenDatas.data?.length === 0 ? (
             <p
