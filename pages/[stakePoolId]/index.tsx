@@ -1,7 +1,3 @@
-import { useWallet } from '@solana/wallet-adapter-react'
-import { useWalletModal } from '@solana/wallet-adapter-react-ui'
-import { defaultSecondaryColor } from 'api/mapping'
-import { contrastify } from 'common/colors'
 import { Footer } from 'common/Footer'
 import { FooterSlim } from 'common/FooterSlim'
 import { Header } from 'common/Header'
@@ -11,6 +7,7 @@ import { contrastColorMode } from 'common/utils'
 import { PerformanceStats } from 'components/PerformanceStats'
 import { PoolAnalytics } from 'components/PoolAnalytics'
 import { StakedTokens } from 'components/StakedTokens'
+import { StakePoolNotice } from 'components/StakePoolNotice'
 import { UnstakedTokens } from 'components/UnstakedTokens'
 import { useRewardDistributorData } from 'hooks/useRewardDistributorData'
 import { useStakedTokenDatas } from 'hooks/useStakedTokenDatas'
@@ -22,9 +19,7 @@ import { useRouter } from 'next/router'
 
 function StakePoolHome() {
   const router = useRouter()
-  const wallet = useWallet()
-  const walletModal = useWalletModal()
-  const { data: stakePool, isFetched: stakePoolLoaded } = useStakePoolData()
+  const { isFetched: stakePoolLoaded } = useStakePoolData()
   const userRegion = useUserRegion()
   const rewardDistributorData = useRewardDistributorData()
   const stakedTokenDatas = useStakedTokenDatas()
@@ -101,49 +96,8 @@ function StakePoolHome() {
             )[0],
         }}
       >
-        {(!stakePool && stakePoolLoaded) || stakePoolMetadata?.notFound ? (
-          <div
-            className="mx-5 mb-5 rounded-md border-[1px] bg-opacity-40 p-4 text-center text-lg font-semibold"
-            style={{
-              background:
-                stakePoolMetadata?.colors?.secondary || defaultSecondaryColor,
-              color: stakePoolMetadata?.colors?.fontColor,
-              borderColor: contrastify(
-                0.5,
-                stakePoolMetadata?.colors?.secondary || defaultSecondaryColor
-              ),
-            }}
-          >
-            Stake pool not found
-          </div>
-        ) : (
-          !wallet.connected && (
-            <div
-              className={`mx-5 mb-5 cursor-pointer rounded-md border-[1px]  p-4 text-center text-lg font-semibold ${
-                stakePoolMetadata?.colors?.accent &&
-                stakePoolMetadata?.colors.fontColor
-                  ? ''
-                  : 'border-yellow-500 bg-yellow-500 bg-opacity-40'
-              }`}
-              style={
-                stakePoolMetadata?.colors?.accent &&
-                stakePoolMetadata?.colors.fontColor
-                  ? {
-                      background: stakePoolMetadata?.colors?.secondary,
-                      borderColor: stakePoolMetadata?.colors?.accent,
-                      color:
-                        stakePoolMetadata?.colors?.fontColorSecondary ||
-                        stakePoolMetadata?.colors?.fontColor,
-                    }
-                  : {}
-              }
-              onClick={() => walletModal.setVisible(true)}
-            >
-              Connect wallet to continue
-            </div>
-          )
-        )}
         <HeroLarge />
+        <PoolAnalytics />
         {!!rewardDistributorData.data && !!stakedTokenDatas.data?.length && (
           <Info
             colorized
@@ -157,7 +111,7 @@ function StakePoolHome() {
             }
           />
         )}
-        <PoolAnalytics />
+        <StakePoolNotice />
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
           <UnstakedTokens />
           <StakedTokens />
