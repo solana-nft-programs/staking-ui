@@ -62,7 +62,6 @@ export const QuickActions = ({
                   ? `text-[${stakePoolMetadata?.colors?.fontColor}]`
                   : 'white',
               }}
-              className="justify-between"
               href={pubKeyUrl(
                 unstakedTokenData?.tokenAccount
                   ? unstakedTokenData.tokenAccount.account.data.parsed.info.mint
@@ -72,8 +71,8 @@ export const QuickActions = ({
               target="_blank"
               rel="noreferrer"
             >
-              View
               <FiExternalLink />
+              View
             </a>
           </PopoverItem>
           {ctx.environment.label !== 'devnet' && (
@@ -87,7 +86,6 @@ export const QuickActions = ({
                     ? `text-[${stakePoolMetadata?.colors?.fontColor}]`
                     : 'white',
                 }}
-                className="justify-between"
                 href={metadataUrl(
                   unstakedTokenData?.tokenAccount
                     ? unstakedTokenData.tokenAccount.account.data.parsed.info
@@ -98,8 +96,8 @@ export const QuickActions = ({
                 target="_blank"
                 rel="noreferrer"
               >
-                Metadata
                 <AiOutlineDatabase />
+                Metadata
               </a>
             </PopoverItem>
           )}
@@ -109,21 +107,21 @@ export const QuickActions = ({
           ) && (
             <PopoverItem>
               <div
-                className="flex cursor-pointer items-center justify-between gap-2"
+                className="flex cursor-pointer items-center gap-2"
                 onClick={async () => {
                   if (unstakedTokenData) selectUnstakedToken(unstakedTokenData)
                   else if (stakedTokenData) selectStakedToken(stakedTokenData)
                 }}
               >
-                Select
                 <BsBookmarkCheck />
+                Select
               </div>
             </PopoverItem>
           )}
           {unstakedTokenData?.tokenAccount && (
             <PopoverItem>
               <div
-                className="flex cursor-pointer items-center justify-between gap-2"
+                className="flex cursor-pointer items-center gap-2"
                 onClick={async () => {
                   handleStake.mutate({
                     tokenDatas: [unstakedTokenData],
@@ -131,34 +129,34 @@ export const QuickActions = ({
                   })
                 }}
               >
-                Stake
                 <AiFillLock />
+                Stake
               </div>
             </PopoverItem>
           )}
           {stakedTokenData?.stakeEntry && (
             <PopoverItem>
               <div
-                className="flex cursor-pointer items-center justify-between gap-2"
+                className="flex cursor-pointer items-center gap-2"
                 onClick={async () => {
                   handleClaimRewards.mutate({ tokenDatas: [stakedTokenData] })
                 }}
               >
-                Claim Rewards
                 <RiMoneyDollarCircleFill />
+                Claim Rewards
               </div>
             </PopoverItem>
           )}
           {stakedTokenData?.stakeEntry && (
             <PopoverItem>
               <div
-                className="flex cursor-pointer items-center justify-between gap-2"
+                className="flex cursor-pointer items-center gap-2"
                 onClick={async () => {
                   handleUnstake.mutate({ tokenDatas: [stakedTokenData] })
                 }}
               >
-                Unstake
                 <AiFillUnlock />
+                Unstake
               </div>
             </PopoverItem>
           )}
