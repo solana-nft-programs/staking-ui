@@ -77,7 +77,7 @@ export const StakePoolInfo = () => {
           )}
         </>
       ) : (
-        <div className="relative flex h-8 flex-grow items-center justify-center">
+        <div className="relative flex h-8 max-w-[50%] flex-grow items-center justify-center">
           <span
             className={`${
               stakePoolMetadata?.colors?.fontColor
@@ -176,8 +176,12 @@ export const StakePoolInfo = () => {
           </div>
         </>
       ) : (
-        <div className="relative flex flex-grow items-center justify-center">
-          {!(rewardDistributorData.isFetched && rewardMintInfo.isFetched) && (
+        <div className="relative flex max-w-[50%] flex-grow items-center justify-center">
+          {!(
+            rewardDistributorData.isFetched &&
+            rewardMintInfo.isFetched &&
+            rewardsRate.isFetched
+          ) && (
             <>
               <span
                 className={`${

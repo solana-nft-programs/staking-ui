@@ -11,7 +11,7 @@ import { useTokenList } from './useTokenList'
 export const useRewardMintInfo = () => {
   const { secondaryConnection } = useEnvironmentCtx()
   const tokenList = useTokenList()
-  const { data: rewardDistibutorData } = useRewardDistributorData()
+  const rewardDistibutor = useRewardDistributorData()
   return useQuery<
     | {
         mintInfo: splToken.MintInfo
@@ -22,21 +22,21 @@ export const useRewardMintInfo = () => {
   >(
     [
       'useRewardMintInfo',
-      rewardDistibutorData?.pubkey?.toString(),
+      rewardDistibutor.data?.pubkey?.toString(),
       tokenList.data?.length,
     ],
     async () => {
-      if (!rewardDistibutorData) return
+      if (!rewardDistibutor.data) return
 
       // tokenListData
       const tokenListData = tokenList.data?.find(
         (tk) =>
-          tk.address === rewardDistibutorData?.parsed.rewardMint.toString()
+          tk.address === rewardDistibutor.data?.parsed.rewardMint.toString()
       )
 
       // Metaplex metadata
       const metadataId = await Metadata.getPDA(
-        rewardDistibutorData.parsed.rewardMint
+        rewardDistibutor.data.parsed.rewardMint
       )
       const accountInfo = await secondaryConnection.getAccountInfo(metadataId)
       let metaplexMintData: MetadataData | undefined
@@ -49,7 +49,7 @@ export const useRewardMintInfo = () => {
       // Mint info
       const rewardMint = new splToken.Token(
         secondaryConnection,
-        rewardDistibutorData.parsed.rewardMint,
+        rewardDistibutor.data.parsed.rewardMint,
         splToken.TOKEN_PROGRAM_ID,
         Keypair.generate() // not used
       )
@@ -60,6 +60,6 @@ export const useRewardMintInfo = () => {
         metaplexMintData,
       }
     },
-    { enabled: tokenList.isFetched }
+    { enabled: tokenList.isFetched && !!rewardDistibutor.data }
   )
 }
