@@ -30,9 +30,9 @@ export const HeroStats: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({
 
   return (
     <div
-      className={`flex w-full flex-col flex-wrap justify-between gap-y-5 rounded-xl border border-border px-12 py-6 md:flex-row ${
+      className={`flex w-full flex-col flex-wrap gap-y-5 rounded-xl px-12 py-6 md:flex-row ${
         stakePoolMetadata?.colors?.fontColor ? '' : 'text-gray-200'
-      } bg-white bg-opacity-5 ${className}`}
+      } justify-evenly bg-white bg-opacity-5 ${className}`}
       style={{
         background: stakePoolMetadata?.colors?.backgroundSecondary,
         border: stakePoolMetadata?.colors?.accent
@@ -40,7 +40,7 @@ export const HeroStats: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({
           : '',
       }}
     >
-      <div className="flex flex-col items-center justify-center">
+      <div className="flex flex-1 flex-col items-center justify-center">
         <div className="text-lg text-medium-4">Total Staked</div>
         {!totalStaked.data ? (
           <div className="h-6 w-10 animate-pulse rounded-md bg-border"></div>
@@ -54,7 +54,7 @@ export const HeroStats: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({
         )}
       </div>
       <div className="mx-6 my-auto hidden h-10 w-[1px] bg-border md:flex"></div>
-      <div className="flex flex-col items-center justify-center">
+      <div className="flex flex-1 flex-col items-center justify-center">
         <p className="text-lg text-medium-4">Percent Staked</p>
         {!stakePoolEntries.data || !maxStaked ? (
           <div className="h-6 w-10 animate-pulse rounded-md bg-border"></div>
@@ -71,7 +71,7 @@ export const HeroStats: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({
       {rewardDistributorData.data && (
         <>
           <div className="mx-6 my-auto hidden h-10 w-[1px] bg-border md:flex"></div>
-          <div className="flex flex-col items-center justify-center">
+          <div className="flex flex-1 flex-col items-center justify-center">
             <p className="text-lg text-medium-4">
               {rewardDistributorData.data.parsed.maxRewardSecondsReceived?.eq(
                 new BN(1)
@@ -115,7 +115,7 @@ export const HeroStats: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({
             )}
           </div>
           <div className="mx-6 my-auto hidden h-10 w-[1px] bg-border md:flex"></div>
-          <div className="flex flex-col items-center justify-center">
+          <div className="flex flex-1 flex-col items-center justify-center">
             <p className="text-lg text-medium-4">Treasury Balance</p>
             {!rewardsRate.data ||
             !rewardMintInfo.data ||

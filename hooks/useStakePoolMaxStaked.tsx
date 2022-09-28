@@ -7,5 +7,5 @@ export const useStakePoolMaxStaked = () => {
   const addressMapping = stakePoolMetadatas.find(
     (p) => stakePoolId?.toString() === p.stakePoolAddress.toString()
   )
-  return addressMapping?.maxStaked || 0
+  return addressMapping?.maxStaked
 }
