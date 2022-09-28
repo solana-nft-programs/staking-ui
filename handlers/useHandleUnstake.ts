@@ -69,6 +69,7 @@ export const useHandleUnstake = () => {
               const unstakeTx = await unstake(connection, wallet, {
                 stakePoolId: stakePoolId,
                 originalMintId: token.stakeEntry.parsed.originalMint,
+                skipRewardMintTokenAccount: true,
               })
               transaction.instructions = [
                 ...transaction.instructions,
