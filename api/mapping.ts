@@ -105,6 +105,36 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
   //   },
   // },
   {
+    name: 'Learn2Earn',
+    displayName: 'Learn 2 Earn DOTS',
+    stakePoolAddress: new PublicKey(
+      'DgrtWV95DP3ix4GFMKDLwqMNZ213KJk9NgM6vmdPtyk1'
+    ),
+    contrastHomepageBkg: true,
+    maxStaked: 5000,
+    receiptType: ReceiptType.Original,
+    websiteUrl: 'https://www.bithq.co/',
+    hostname: 'Learn2Earn.io',
+    imageUrl:
+      'https://cdn.discordapp.com/attachments/989483399477604404/1023947734828449802/DOTS_NFT1.5.png',
+    styles: {
+      fontFamily: 'serif',
+      fontWeight: 500,
+    },
+    backgroundImage:
+      'https://cdn.discordapp.com/attachments/989483399477604404/1024694267282726942/ReliefBlackBackground.jpg',
+    tokenStandard: TokenStandard.NonFungible,
+    hideAllowedTokens: true,
+    colors: {
+      primary: '#000000',
+      secondary: '#FFFFFF',
+      accent: '#000000',
+      fontColor: '#FFFFFF',
+      fontColorSecondary: '#000000',
+      backgroundSecondary: '#000000',
+    },
+  },
+  {
     name: 'AOM',
     displayName: 'AOM',
     stakePoolAddress: new PublicKey(
