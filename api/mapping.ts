@@ -105,7 +105,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
   //   },
   // },
   {
-    name: 'Lear2Earn',
+    name: 'Learn2Earn',
     displayName: 'Learn 2 Earn DOTS',
     stakePoolAddress: new PublicKey(
       'DgrtWV95DP3ix4GFMKDLwqMNZ213KJk9NgM6vmdPtyk1'
@@ -130,7 +130,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       secondary: '#FFFFFF',
       accent: '#000000',
       fontColor: '#FFFFFF',
-      fontColorSecondary: '#FFFFFF',
+      fontColorSecondary: '#000000',
       backgroundSecondary: '#000000',
     },
   },
