@@ -891,7 +891,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     hostname: 'stake.1space.me',
     hideFooter: true,
     imageUrl: 'https://1space.me/images/os-logo-white.jpeg',
-    maxStaked: 200,
+    maxStaked: 300,
     links: [
       {
         text: 'ONEHERO NFT',
