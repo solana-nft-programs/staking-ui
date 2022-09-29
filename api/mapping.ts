@@ -107,7 +107,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
 
   {
     name: 'SHADIES',
-    displayName: 'SHADIES BOOSTED STAKING',
+    displayName: 'SHADIES BOOSTED 2X STAKING',
     stakePoolAddress: new PublicKey(
       '29MgtLuX8ByGMZoreUoY7hsP2YY935gJ3wRB1fhiSF8o'
     ),
