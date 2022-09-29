@@ -104,6 +104,65 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
   //     secondary: 'rgb(157,120,138, 0.6)',
   //   },
   // },
+
+  {
+    name: 'SHADIES',
+    displayName: 'SHADIES BOOSTED STAKING',
+    stakePoolAddress: new PublicKey(
+      '29MgtLuX8ByGMZoreUoY7hsP2YY935gJ3wRB1fhiSF8o'
+    ),
+    redirect: 'staking2x.theshadyclass.xyz',
+    hostname: 'staking2x.theshadyclass.xyz',
+    hidden: false,
+    notFound: false,
+    imageUrl: 'https://raw.githubusercontent.com/flipthetip/test-tsc/main/newth.png',
+    // secondaryImageUrl: 'https://raw.githubusercontent.com/flipthetip/test-tsc/main/arx.png',
+    backgroundImage: 'https://raw.githubusercontent.com/flipthetip/test-tsc/main/newbg.png',
+    styles: {
+      fontFamily: 'Franklin Gothic Medium',
+      // fontWeight: 500,
+      backgroundSize: 'cover',
+      backgroundPosition: 'center',
+    },
+    colors: {
+      primary: '#000000',
+      secondary: '#f34d00',
+      accent: '#413F42',
+      fontColor: '#FFFFFF',
+      fontColorSecondary: '#FFFFFF',
+    },
+    // maxStaked: ,
+    receiptType: ReceiptType.Original,
+  },
+  {
+    name: 'SHADIES',
+    displayName: 'SHADIES STANDARD STAKING',
+    stakePoolAddress: new PublicKey(
+      'zNt5nnEaL87rG9DT2cxvdVMf8sLBe6qEuZK8D5K4r9M'
+    ),
+    redirect: 'staking1x.theshadyclass.xyz',
+    hostname: 'staking1x.theshadyclass.xyz',
+    hidden: false,
+    notFound: false,
+    imageUrl: 'https://raw.githubusercontent.com/flipthetip/test-tsc/main/newth.png',
+    // secondaryImageUrl: 'https://raw.githubusercontent.com/flipthetip/test-tsc/main/arx.png',
+    backgroundImage: 'https://raw.githubusercontent.com/flipthetip/test-tsc/main/newbg.png',
+    styles: {
+      fontFamily: 'Franklin Gothic Medium',
+      // fontWeight: 500,
+      backgroundSize: 'cover',
+      backgroundPosition: 'center',
+    },
+    colors: {
+      primary: '#000000',
+      secondary: '#f34d00',
+      accent: '#413F42',
+      fontColor: '#FFFFFF',
+      fontColorSecondary: '#FFFFFF',
+    },
+    // maxStaked: ,
+    receiptType: ReceiptType.Original,
+  },
   {
     name: 'Learn2Earn',
     displayName: 'Learn 2 Earn DOTS',
