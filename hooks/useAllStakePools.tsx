@@ -1,12 +1,10 @@
 import type { AccountData } from '@cardinal/common'
 import type { StakePoolData } from '@cardinal/staking/dist/cjs/programs/stakePool'
 import { getAllStakePools } from '@cardinal/staking/dist/cjs/programs/stakePool/accounts'
-import type { StakePoolMetadata} from 'api/mapping';
+import type { StakePoolMetadata } from 'api/mapping'
 import { stakePoolMetadatas } from 'api/mapping'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 import { useQuery } from 'react-query'
-
-import { useStakePoolId } from './useStakePoolId'
 
 export type StakePool = {
   stakePoolMetadata?: StakePoolMetadata
@@ -14,16 +12,15 @@ export type StakePool = {
 }
 
 export const useAllStakePools = () => {
-  const { secondaryConnection } = useEnvironmentCtx()
-  const stakePoolId = useStakePoolId()
+  const { connection } = useEnvironmentCtx()
   return useQuery<
     | {
         stakePoolsWithMetadata: StakePool[]
         stakePoolsWithoutMetadata: StakePool[]
       }
     | undefined
-  >(['useAllStakePools', stakePoolId?.toString()], async () => {
-    const allStakePoolDatas = await getAllStakePools(secondaryConnection)
+  >(['useAllStakePools'], async () => {
+    const allStakePoolDatas = await getAllStakePools(connection)
     const [stakePoolsWithMetadata, stakePoolsWithoutMetadata] =
       allStakePoolDatas.reduce(
         (acc, stakePoolData) => {
