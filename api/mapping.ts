@@ -111,7 +111,6 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     stakePoolAddress: new PublicKey(
       '29MgtLuX8ByGMZoreUoY7hsP2YY935gJ3wRB1fhiSF8o'
     ),
-    redirect: 'staking2x.theshadyclass.xyz',
     hostname: 'staking2x.theshadyclass.xyz',
     hidden: false,
     notFound: false,
@@ -140,7 +139,6 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     stakePoolAddress: new PublicKey(
       'zNt5nnEaL87rG9DT2cxvdVMf8sLBe6qEuZK8D5K4r9M'
     ),
-    redirect: 'staking1x.theshadyclass.xyz',
     hostname: 'staking1x.theshadyclass.xyz',
     hidden: false,
     notFound: false,
