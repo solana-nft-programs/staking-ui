@@ -31,7 +31,6 @@ export const useHandleUpdatePool = () => {
     async ({ values }: { values: CreationForm }): Promise<void> => {
       if (!wallet) throw 'Wallet not found'
       if (!stakePool.data) throw 'No stake pool found'
-      if (!rewardDistributor.data) throw 'No reward distributor found'
       if (
         wallet.publicKey?.toString() !==
         stakePool.data?.parsed.authority.toString()
