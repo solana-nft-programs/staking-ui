@@ -114,9 +114,11 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     hostname: 'staking2x.theshadyclass.xyz',
     hidden: false,
     notFound: false,
-    imageUrl: 'https://raw.githubusercontent.com/flipthetip/test-tsc/main/newth.png',
+    imageUrl:
+      'https://raw.githubusercontent.com/flipthetip/test-tsc/main/newth.png',
     // secondaryImageUrl: 'https://raw.githubusercontent.com/flipthetip/test-tsc/main/arx.png',
-    backgroundImage: 'https://raw.githubusercontent.com/flipthetip/test-tsc/main/newbg.png',
+    backgroundImage:
+      'https://raw.githubusercontent.com/flipthetip/test-tsc/main/newbg.png',
     styles: {
       fontFamily: 'Franklin Gothic Medium',
       // fontWeight: 500,
@@ -142,9 +144,11 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     hostname: 'staking1x.theshadyclass.xyz',
     hidden: false,
     notFound: false,
-    imageUrl: 'https://raw.githubusercontent.com/flipthetip/test-tsc/main/newth.png',
+    imageUrl:
+      'https://raw.githubusercontent.com/flipthetip/test-tsc/main/newth.png',
     // secondaryImageUrl: 'https://raw.githubusercontent.com/flipthetip/test-tsc/main/arx.png',
-    backgroundImage: 'https://raw.githubusercontent.com/flipthetip/test-tsc/main/newbg.png',
+    backgroundImage:
+      'https://raw.githubusercontent.com/flipthetip/test-tsc/main/newbg.png',
     styles: {
       fontFamily: 'Franklin Gothic Medium',
       // fontWeight: 500,
@@ -1086,7 +1090,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     hideFooter: true,
     websiteUrl: 'https://www.rebellionbots.io',
     receiptType: ReceiptType.Original,
-    maxStaked: 801, // update with collection size
+    maxStaked: 1083, // update with collection size
     imageUrl: '/logos/rebellion-bots.jpeg',
     secondaryImageUrl: '/logos/secondary-rebellion-bots.png',
     tokenStandard: TokenStandard.NonFungible,
