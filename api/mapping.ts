@@ -106,7 +106,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
   // },
 
   {
-    name: 'SHADIES',
+    name: 'shadiesboosted',
     displayName: 'SHADIES BOOSTED 2X STAKING',
     stakePoolAddress: new PublicKey(
       '29MgtLuX8ByGMZoreUoY7hsP2YY935gJ3wRB1fhiSF8o'
@@ -134,7 +134,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     receiptType: ReceiptType.Original,
   },
   {
-    name: 'SHADIES',
+    name: 'shadiesstandard',
     displayName: 'SHADIES STANDARD STAKING',
     stakePoolAddress: new PublicKey(
       'zNt5nnEaL87rG9DT2cxvdVMf8sLBe6qEuZK8D5K4r9M'
