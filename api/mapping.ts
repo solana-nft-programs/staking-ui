@@ -106,12 +106,12 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
   // },
 
   {
-    name: 'SHADIES',
-    displayName: 'SHADIES BOOSTED STAKING',
+    name: 'shadiesboosted',
+    displayName: 'SHADIES BOOSTED 2X STAKING',
     stakePoolAddress: new PublicKey(
       '29MgtLuX8ByGMZoreUoY7hsP2YY935gJ3wRB1fhiSF8o'
     ),
-    hostname: 'staking2x.theshadyclass.xyz',
+    hostname: 'https://staking2x.theshadyclass.xyz',
     hidden: false,
     notFound: false,
     imageUrl:
@@ -136,12 +136,12 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     receiptType: ReceiptType.Original,
   },
   {
-    name: 'SHADIES',
+    name: 'shadiesstandard',
     displayName: 'SHADIES STANDARD STAKING',
     stakePoolAddress: new PublicKey(
       'zNt5nnEaL87rG9DT2cxvdVMf8sLBe6qEuZK8D5K4r9M'
     ),
-    hostname: 'staking1x.theshadyclass.xyz',
+    hostname: 'https://staking1x.theshadyclass.xyz',
     hidden: false,
     notFound: false,
     imageUrl:
