@@ -671,9 +671,9 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       'https://cdn.discordapp.com/attachments/475411995273854976/987098707449241600/logo_2.png',
     maxStaked: 1941,
     colors: {
-      primary: '#000000',
-      secondary: '#4da1de',
-      accent: '#1fcfb11c',
+      primary: '#2d0c65',
+      secondary: '#ed69fa',
+      accent: '#f7f6fe',
       fontColor: '#FFFFFF',
     },
   },
