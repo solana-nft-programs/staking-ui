@@ -1776,6 +1776,43 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     },
   },
   {
+    name: 'y00topia',
+    displayName: 'y00topia staking',
+    stakePoolAddress: new PublicKey(
+      'GJtJVCBCXVkPuzmS45zWDEkztG1EGGvNcnddL2dsbDmh'
+    ),
+    websiteUrl: 'https://twitter.com/ABCy00topia',
+    imageUrl:
+      'https://cdn.discordapp.com/attachments/1017836201685823549/1027184808171929660/StakingLogo.png',
+    backgroundImage:
+      'https://cdn.discordapp.com/attachments/1017836201685823549/1027186938890965093/bg.png',
+    maxStaked: 1111,
+    
+    receiptType: ReceiptType.Original,
+    tokenStandard: TokenStandard.NonFungible,
+    hideAllowedTokens: true,
+    links: [
+      {
+        text: 'Discord',
+        value: 'https://discord.gg/dUE4ezvUDS',
+      },
+      {
+        text: 'Twitter',
+        value: 'https://twitter.com/ABCy00topia',
+      },
+      {
+        text: 'Buy',
+        value: 'https://magiceden.io/marketplace/abc_y00topia',
+      },
+    ],
+    colors: {
+      primary: '#000000',
+      secondary: '#4275ab',
+      accent: '#f4d04a',
+      fontColor: '#fd4f23',
+    },
+  },
+  {
     name: 'Pixel-Y00ts',
     displayName: 'Pixel Y0ots',
     nameInHeader: true,
@@ -1827,4 +1864,5 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       },
     ],
   },
+  
 ]
