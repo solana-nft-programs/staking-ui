@@ -1837,9 +1837,9 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     ),
     websiteUrl: 'https://twitter.com/ABCy00topia',
     imageUrl:
-      'https://cdn.discordapp.com/attachments/1017836201685823549/1027184808171929660/StakingLogo.png',
+      'https://cdn.discordapp.com/attachments/1017836201685823549/1027266302894669824/white.png',
     backgroundImage:
-      'https://cdn.discordapp.com/attachments/1017836201685823549/1027186938890965093/bg.png',
+      'https://cdn.discordapp.com/attachments/1017836201685823549/1027264876961349712/abc_a.png',
     maxStaked: 1111,
     
     receiptType: ReceiptType.Original,
@@ -1859,11 +1859,17 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
         value: 'https://magiceden.io/marketplace/abc_y00topia',
       },
     ],
+    styles: {
+      fontFamily: 'Industry, sans-serif',
+      fontWeight: 500,
+    },
     colors: {
-      primary: '#000000',
-      secondary: '#4275ab',
-      accent: '#f4d04a',
-      fontColor: '#fd4f23',
+      primary: '#120d18',
+      secondary: '#e42575',
+      accent: '#33273f',
+      fontColor: '#e61f57',
+      fontColorSecondary: '#000000',
+      backgroundSecondary: '#120d18',
     },
   },
   {
