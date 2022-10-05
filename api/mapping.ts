@@ -1528,7 +1528,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     tokenStandard: TokenStandard.NonFungible,
     imageUrl:
       'https://www.arweave.net/IoihJxVlVjKp2x46GpnoQNi1pRWNJiLBI4FQiXK0SPA?ext=png',
-    maxStaked: 3546,
+    maxStaked: 4996,
     backgroundImage:
       'https://shdw-drive.genesysgo.net/5aWZWB6vXbZrf1CNmiM3rAWnzf36Bpuq8rxRYHBzGeGq/msl_caps_card_1.png',
     styles: {
@@ -1550,24 +1550,78 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
           totals: [
             {
               key: 'Bronze',
-              value: 2352,
+              value: 3363,
             },
             {
               key: 'Silver',
-              value: 1085,
+              value: 1498,
             },
             {
               key: 'Gold',
-              value: 98,
+              value: 125,
             },
             {
               key: 'Platinum',
-              value: 7,
+              value: 10,
             },
           ],
         },
       },
     ],
+    links: [
+      {
+        text: 'HOME',
+        value: 'https://warp.moonshinelabs.io/caps-home',
+      },
+      {
+        text: 'GAME',
+        value: 'https://warp.moonshinelabs.io/caps-game',
+      },
+      {
+        text: 'MINT',
+        value: 'https://warp.moonshinelabs.io/caps-mint',
+      },
+      {
+        text: 'BUY',
+        value: 'https://warp.moonshinelabs.io/caps-buy',
+      },
+      {
+        text: 'TWITTER',
+        value: 'https://warp.moonshinelabs.io/caps-twitter',
+      },
+      {
+        text: 'DISCORD',
+        value: 'https://warp.moonshinelabs.io/caps-discord',
+      },
+    ],
+  },
+  {
+    name: 'test-guys',
+    displayName: 'Test Guys',
+    hostname: 'research.moonshinelabs.io',
+    nameInHeader: true,
+    stakePoolAddress: new PublicKey(
+      'z4x4twXzrw8XVEFqQs9EcmgeXfhMqRpwYVpJEeRAbVN'
+    ),
+    websiteUrl: 'https://warp.moonshinelabs.io/caps',
+    receiptType: ReceiptType.Original,
+    tokenStandard: TokenStandard.NonFungible,
+    imageUrl:
+      'https://www.arweave.net/DXw0PO5-EZlx26duubW157IfvpiQvjbAoM5VFCMFEcI?ext=png',
+    maxStaked: 1111,
+    backgroundImage:
+      'https://shdw-drive.genesysgo.net/5aWZWB6vXbZrf1CNmiM3rAWnzf36Bpuq8rxRYHBzGeGq/tgbg.png',
+    styles: {
+      fontFamily: 'Roboto Serif',
+    },
+    colors: {
+      primary: '#7928CA',
+      secondary: '#4a148c',
+      accent: '#DE38C8',
+      fontColor: '#FFFFFF',
+      // fontColorSecondary: '#DE38C8',
+      // backgroundSecondary: '#DE38C8',
+    },
     links: [
       {
         text: 'HOME',
