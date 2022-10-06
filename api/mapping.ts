@@ -1090,7 +1090,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     hideFooter: true,
     websiteUrl: 'https://www.rebellionbots.io',
     receiptType: ReceiptType.Original,
-    maxStaked: 1083, // update with collection size
+    maxStaked: 1987, // update with collection size
     imageUrl: '/logos/rebellion-bots.jpeg',
     secondaryImageUrl: '/logos/secondary-rebellion-bots.png',
     tokenStandard: TokenStandard.NonFungible,
@@ -1841,7 +1841,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     backgroundImage:
       'https://cdn.discordapp.com/attachments/1017836201685823549/1027264876961349712/abc_a.png',
     maxStaked: 1111,
-    
+
     receiptType: ReceiptType.Original,
     tokenStandard: TokenStandard.NonFungible,
     hideAllowedTokens: true,
