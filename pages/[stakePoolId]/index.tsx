@@ -38,7 +38,11 @@ function StakePoolHome() {
     return <></>
   }
 
-  if (stakePoolMetadata?.disallowRegions && !userRegion.data?.isAllowed) {
+  if (
+    stakePoolMetadata?.disallowRegions &&
+    !userRegion.data?.isAllowed &&
+    !process.env.BYPASS_REGION_CHECK
+  ) {
     return (
       <div
         className="flex min-h-screen flex-col"
