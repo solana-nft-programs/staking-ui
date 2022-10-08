@@ -111,10 +111,14 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     stakePoolAddress: new PublicKey(
       'FLJa7J28f2LBFJYqQLhhjaXR4WnfU2RHpSrr32p8bnSz'
     ),
-    imageUrl: '/buildersdao-nft.png',
+    description:
+    'The BuildersDAO is a community of metaverse builders.',
+    imageUrl: '/logos/buildersdao-nft.png',
     colors: {
-      primary: 'rgb(54,21,38,0.9)',
-      secondary: 'rgb(157,120,138, 0.6)',
+      primary: '#000000',
+      secondary: '#4da1de',
+      accent: '#0089C1',
+      fontColor: '#FFFFFF',
     },
   },
   {
