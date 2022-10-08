@@ -106,6 +106,18 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
   // },
 
   {
+    name: 'thebuildersdao',
+    displayName: 'The BuildersDAO',
+    stakePoolAddress: new PublicKey(
+      'FLJa7J28f2LBFJYqQLhhjaXR4WnfU2RHpSrr32p8bnSz'
+    ),
+    imageUrl: '/buildersdao-nft.png',
+    colors: {
+      primary: 'rgb(54,21,38,0.9)',
+      secondary: 'rgb(157,120,138, 0.6)',
+    },
+  },
+  {
     name: 'shadiesboosted',
     displayName: 'SHADIES BOOSTED 2X STAKING',
     stakePoolAddress: new PublicKey(
