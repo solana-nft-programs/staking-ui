@@ -125,7 +125,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     name: 'thenewexplorersclub',
     displayName: 'The New Explorers Club',
     stakePoolAddress: new PublicKey(
-      '8Da8qPqSwc2DNenp5wwK7HWxpSrvxw8LUNoBZ2gAYjazz'
+      '49GnPoU2eexWaSo1n7wDFJov7WLiQ71fvpLj1ZoMxTVL'
     ),
     description:
     'The New Exploreres Club staking pool provided by The BuildersDAO.',
