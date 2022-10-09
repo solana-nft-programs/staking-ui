@@ -109,7 +109,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     name: 'portals',
     displayName: 'Portals',
     stakePoolAddress: new PublicKey(
-      '8Da8qPqSwc2DNenp5wwK7HWxpSrvxw8LUNoBZ2gAYjazz'
+      '8Da8qPqSwc2DNenp5wwK7HWxpSrvxw8LUNoBZ2gAYjaz'
     ),
     description:
     'Portals Staking Pool Provided by The BuildersDAO.',
