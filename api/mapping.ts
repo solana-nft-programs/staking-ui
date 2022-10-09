@@ -116,9 +116,9 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     imageUrl: '/logos/portals-nft.jpg',
     colors: {
       primary: '#0d1718',
-      secondary: '#0d1718',
+      secondary: '#416460',
       accent: '#0089C1',
-      fontColor: '#0089C1',
+      fontColor: '#FFFFFF',
     },
   },
   {
@@ -129,12 +129,13 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     ),
     description:
     'The New Exploreres Club staking pool provided by The BuildersDAO.',
-    imageUrl: '/logos/tnec-nft.jpg.png',
+    imageUrl: '/logos/tnec-nft.jpg',
     colors: {
       primary: '#BCFFE0',
-      secondary: '#BCFFE0',
-      accent: '#000000',
+      secondary: '#6c9180',
+      accent: '#BCFFE0',
       fontColor: '#000000',
+      fontColorSecondary: '#000000',
     },
   },
   {
