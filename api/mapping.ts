@@ -110,14 +110,14 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     stakePoolAddress: new PublicKey(
       'G9nryHatSzQQ93ehjNejhiZpmgzQsRxZVTzLSxiDp8uU'
     ),
-    websiteUrl: 'metamercs.metacreed.com',
+    websiteUrl: 'https://vaults.metacreed.com',
     receiptType: ReceiptType.Receipt,
     imageUrl:
       'https://tz7u3k2viityfxxdjyjaqlvuan4doqvfzin6jbvp5cbiivqk25ja.arweave.net/nn9Nq1VCJ4Le404SCC60A3g3QqXKG-SGr-iChFYK11I',
     maxStaked: 777,
     tokenStandard: TokenStandard.NonFungible,
     hideAllowedTokens: true,
-    hostname: 'CNAME metamercs.metacreed.com cname.vercel-dns.com',
+    hostname: 'CNAME vaults.metacreed.com cname.vercel-dns.com',
     colors: {
       primary: '#2d0c65',
       secondary: '#ed69fa',
