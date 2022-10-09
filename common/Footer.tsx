@@ -38,14 +38,9 @@ export const Footer = ({
               className="mb-2 text-lg font-semibold"
               style={{ color: lighten(0.4, contrastColorMode(bgColor)[0]) }}
             >
-              App
             </div>
-            <a href="/" className="text-gray-400">
-              Pools
-            </a>
-            <a href="/admin" className="text-gray-400">
-              Admin
-            </a>
+
+
           </span>
           <span className="flex flex-col items-start gap-1">
             <div
