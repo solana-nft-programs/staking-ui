@@ -4,10 +4,9 @@ import { FaDiscord, FaGithub, FaMedium, FaTwitter } from 'react-icons/fa'
 import { contrastColorMode } from './utils'
 
 export const SOCIALS = {
-  discord: { icon: <FaDiscord />, link: 'https://discord.gg/byq6uNTugq' },
-  github: { icon: <FaGithub />, link: 'https://github.com/cardinal-labs' },
-  medium: { icon: <FaMedium />, link: 'https://cardinal-labs.medium.com/' },
-  twitter: { icon: <FaTwitter />, link: 'https://twitter.com/cardinal_labs' },
+  discord: { icon: <FaDiscord />, link: 'https://discord.gg/metacreed' },
+  github: { icon: <FaGithub />, link: 'https://github.com/metacreed' },
+  twitter: { icon: <FaTwitter />, link: 'https://twitter.com/MetaCreed' },
 }
 
 export const Footer = ({
@@ -26,20 +25,11 @@ export const Footer = ({
     >
       <div className="flex w-full flex-wrap items-start justify-between gap-10 py-10">
         <div className="flex items-center">
-          <img
-            alt={bgColor}
-            className="inline-block h-[28px]"
-            src={
-              contrastColorMode(bgColor)[1]
-                ? '/cardinal-crosshair.svg'
-                : '/cardinal-crosshair-dark.svg'
-            }
-          />
           <span
             className="ml-3 text-2xl font-semibold"
             style={{ color: lighten(0.4, contrastColorMode(bgColor)[0]) }}
           >
-            Cardinal
+            MetaCreed
           </span>
         </div>
         <div className="flex gap-10 self-end text-center md:gap-20">
@@ -64,16 +54,16 @@ export const Footer = ({
             >
               Resources
             </div>
-            <a href="https://docs.cardinal.so/" className="text-gray-400">
+            <a href="https://docs.metacreed.com/" className="text-gray-400">
               Documentation
             </a>
             <a
-              href="https://github.com/cardinal-labs"
+              href="https://github.com/MetaCreed"
               className="text-gray-400"
             >
               Github
             </a>
-            <a href="mailto:team@cardinal.so" className="text-gray-400">
+            <a href="mailto:partners@metacreed.com" className="text-gray-400">
               Contact
             </a>
             {/*<a href="" className="text-gray-400">
@@ -107,9 +97,7 @@ export const Footer = ({
         className="text-md flex items-center justify-between border-t py-8 text-gray-400"
         style={{ borderColor: lighten(0.2, bgColor) }}
       >
-        <div className="flex items-center justify-center gap-2 text-gray-400">
-          Powered by Cardinal
-        </div>
+
         <div className="flex gap-4 text-gray-200">
           {Object.entries(SOCIALS).map(([id, { icon, link }]) => {
             return (
