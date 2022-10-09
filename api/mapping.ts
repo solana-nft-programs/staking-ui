@@ -106,6 +106,38 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
   // },
 
   {
+    name: 'portals',
+    displayName: 'Portals',
+    stakePoolAddress: new PublicKey(
+      '8Da8qPqSwc2DNenp5wwK7HWxpSrvxw8LUNoBZ2gAYjazz'
+    ),
+    description:
+    'Portals Staking Pool Provided by The BuildersDAO.',
+    imageUrl: '/logos/portals-nft.jpg',
+    colors: {
+      primary: '#0d1718',
+      secondary: '#0d1718',
+      accent: '#0089C1',
+      fontColor: '#0089C1',
+    },
+  },
+  {
+    name: 'thenewexplorersclub',
+    displayName: 'The New Explorers Club',
+    stakePoolAddress: new PublicKey(
+      '8Da8qPqSwc2DNenp5wwK7HWxpSrvxw8LUNoBZ2gAYjazz'
+    ),
+    description:
+    'The New Exploreres Club staking pool provided by The BuildersDAO.',
+    imageUrl: '/logos/tnec-nft.jpg.png',
+    colors: {
+      primary: '#BCFFE0',
+      secondary: '#BCFFE0',
+      accent: '#000000',
+      fontColor: '#000000',
+    },
+  },
+  {
     name: 'thebuildersdao',
     displayName: 'The BuildersDAO',
     stakePoolAddress: new PublicKey(
