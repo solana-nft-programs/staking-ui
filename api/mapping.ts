@@ -1738,4 +1738,34 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       },
     ],
   },
+  {
+    name: 'hellshade',
+    displayName: 'Hellshade Staking',
+    stakePoolAddress: new PublicKey(
+      'GHZ671W39u4d4ELFvqfVeKor1fGGTunrS56PZQqM1wFM'
+    ),
+    description: "Steak your artwork by @Hellshade here to start earning your $BBT '$Blackberry' Tokens for future art drops",
+    hidden: true,
+    notFound: false,
+    imageUrl:
+      'https://images-cdn.exchange.art/LH3Na6UWARcgucQoDRuIkxxaOYXIsAf-I03bPiEFhsw?ext=fastly&width=1000&optimize=medium&auto=avifwebp',
+    // secondaryImageUrl: 'https://raw.githubusercontent.com/flipthetip/test-tsc/main/arx.png',
+    backgroundImage:
+      'https://www.zingerbug.com/Backgrounds/background_images/black_stucco_wall_texture_seamless.jpg',
+    styles: {
+      fontFamily: 'Franklin Gothic Medium',
+      // fontWeight: 500,
+      backgroundSize: 'cover',
+      backgroundPosition: 'center',
+    },
+    colors: {
+      primary: '#000000',
+      secondary: '#5d7f9e',
+      accent: '#fff2cc',
+      fontColor: '#fff2cc',
+      fontColorSecondary: '#fff2cc',
+    },
+    // maxStaked: ,
+    receiptType: ReceiptType.Original,
+  }
 ]
