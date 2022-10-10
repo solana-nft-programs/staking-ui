@@ -112,7 +112,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       '8Da8qPqSwc2DNenp5wwK7HWxpSrvxw8LUNoBZ2gAYjaz'
     ),
     description:
-    'Portals Staking Pool Provided by The BuildersDAO.',
+    'Portals staking pool provided by The BuildersDAO.',
     imageUrl: '/logos/portals-nft.jpg',
     colors: {
       primary: '#0d1718',
@@ -128,14 +128,13 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       '49GnPoU2eexWaSo1n7wDFJov7WLiQ71fvpLj1ZoMxTVL'
     ),
     description:
-    'The New Exploreres Club staking pool provided by The BuildersDAO.',
+    'The New Explorers Club staking pool provided by The BuildersDAO.',
     imageUrl: '/logos/tnec-nft.jpg',
     colors: {
-      primary: '#BCFFE0',
+      primary: '#000000',
       secondary: '#6c9180',
       accent: '#BCFFE0',
-      fontColor: '#000000',
-      fontColorSecondary: '#000000',
+      fontColor: '#FFFFFF',
     },
   },
   {
