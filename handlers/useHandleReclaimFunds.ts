@@ -1,4 +1,3 @@
-import { withFindOrInitAssociatedTokenAccount } from '@cardinal/common'
 import { executeTransaction } from '@cardinal/staking'
 import { withReclaimFunds } from '@cardinal/staking/dist/cjs/programs/rewardDistributor/transaction'
 import { BN } from '@project-serum/anchor'
@@ -28,13 +27,6 @@ export const useHandleReclaimFunds = () => {
       if (!stakePool.data) throw 'No stake pool found'
       if (!rewardDistributor.data) throw 'No reward distributor found'
       const transaction = new Transaction()
-      await withFindOrInitAssociatedTokenAccount(
-        transaction,
-        connection,
-        rewardDistributor.data.parsed.rewardMint,
-        wallet.publicKey,
-        wallet.publicKey
-      )
       await withReclaimFunds(transaction, connection, wallet, {
         stakePoolId: stakePool.data.pubkey,
         amount: new BN(reclaimAmount || 0),

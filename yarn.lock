@@ -374,10 +374,10 @@
     ts-mocha "^8.0.0"
     typescript "^4.5.5"
 
-"@cardinal/staking@^1.10.2":
-  version "1.10.2"
-  resolved "https://registry.yarnpkg.com/@cardinal/staking/-/staking-1.10.2.tgz#c5370fdcf689b95e5309caa849d711335dabe32f"
-  integrity sha512-R36sZfcvbUGFkIN32MyXyNpZTlvUoup5jmPGAg+ngTsWa3VbXHkUJJjMsQlih47ftYKs9eCkgCHogXbcRmf4bQ==
+"@cardinal/staking@^1.10.5":
+  version "1.10.5"
+  resolved "https://registry.yarnpkg.com/@cardinal/staking/-/staking-1.10.5.tgz#118fa27e43a2f1797f79dc5a76b35b861ee9ca1d"
+  integrity sha512-od/nVbL0Hf4OxHYt0OEkaqtiJugvoDSIFNTwnIUx53Jqtx4OgsKB1XBBAbQP9dfpXAKkgvXxsfRe+2VhoT62vw==
   dependencies:
     "@cardinal/common" "^2.0.11"
     "@cardinal/token-manager" "^1.5.13"
@@ -4570,6 +4570,11 @@ js-yaml@4.1.0, js-yaml@^4.1.0:
   integrity sha512-wpxZs9NoxZaJESJGIZTyDEaYpl0FKSA+FB9aJiyemKhMwkxQg63h4T1KJgUGHpTqPDNRcmmYLugrRjJlBtWvRA==
   dependencies:
     argparse "^2.0.1"
+
+jsbi@^4.3.0:
+  version "4.3.0"
+  resolved "https://registry.yarnpkg.com/jsbi/-/jsbi-4.3.0.tgz#b54ee074fb6fcbc00619559305c8f7e912b04741"
+  integrity sha512-SnZNcinB4RIcnEyZqFPdGPVgrg2AcnykiBy0sHVJQKHYeaLUvi3Exj+iaPpLnFVkDPZIV4U0yvgC9/R4uEAZ9g==
 
 jsesc@^2.5.1:
   version "2.5.2"
