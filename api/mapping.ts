@@ -1978,7 +1978,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     stakePoolAddress: new PublicKey(
       'GHZ671W39u4d4ELFvqfVeKor1fGGTunrS56PZQqM1wFM'
     ),
-    description: "Steak your artwork by @Hellshade here to start earning your $BBT '$Blackberry' Tokens for future art drops",
+    description: "Stake your artwork by @Hellshade here to start earning your $BBT '$Blackberry' Tokens for future art drops",
     hidden: true,
     notFound: false,
     imageUrl:
