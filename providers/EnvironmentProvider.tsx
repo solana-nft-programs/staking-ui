@@ -20,8 +20,8 @@ export interface EnvironmentContextValues {
 export const ENVIRONMENTS: Environment[] = [
   {
     label: 'mainnet-beta',
-    primary: process.env.MAINNET_PRIMARY || 'https://api.helius.xyz/v0/rpc?api-key=82376549-81c3-4f27-8778-a11fa2b4287a',
-    secondary: 'https://api.helius.xyz/v0/rpc?api-key=82376549-81c3-4f27-8778-a11fa2b4287a',
+    primary: process.env.MAINNET_PRIMARY || 'https://ssc-dao.genesysgo.net',
+    secondary: 'https://ssc-dao.genesysgo.net',
   },
   {
     label: 'testnet',
