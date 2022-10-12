@@ -20,8 +20,8 @@ export interface EnvironmentContextValues {
 export const ENVIRONMENTS: Environment[] = [
   {
     label: 'mainnet-beta',
-    primary: process.env.MAINNET_PRIMARY || 'https://solape.genesysgo.net',
-    secondary: 'https://solape.genesysgo.net',
+    primary: process.env.MAINNET_PRIMARY || 'https://api.helius.xyz/v0/rpc',
+    secondary: 'https://api.helius.xyz/v0/rpc',
   },
   {
     label: 'testnet',
