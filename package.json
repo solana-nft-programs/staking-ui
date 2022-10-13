@@ -24,7 +24,7 @@
   },
   "dependencies": {
     "@apollo/client": "^3.6.9",
-    "@cardinal/common": "^2.0.11",
+    "@cardinal/common": "^2.0.13",
     "@cardinal/namespaces-components": "^4.1.19",
     "@cardinal/scanner": "^0.1.1",
     "@cardinal/staking": "^1.10.5",
