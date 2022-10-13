@@ -714,7 +714,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     websiteUrl: 'https://unfrgtn.space/',
     receiptType: ReceiptType.Original,
     imageUrl:
-      'https://cdn.discordapp.com/attachments/475411995273854976/987098707449241600/logo_2.png',
+      'https://cdn.discordapp.com/attachments/988356861491302440/1029422494131695737/New_Project.png',
     maxStaked: 1941,
     colors: {
       primary: '#2d0c65',
@@ -722,6 +722,10 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       accent: '#f7f6fe',
       fontColor: '#FFFFFF',
     },
+        links: [
+      { text: 'Twitter', value: 'https://twitter.com/UnfrgtnOrbit' },
+      { text: 'Discord', value: 'https://discord.gg/U2RQ8tZvV9' },
+    ],
   },
   {
     name: 'The Frontier',

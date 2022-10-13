@@ -95,7 +95,7 @@ export async function airdropNFT(
   ]
 
   const txid = await executeTransaction(connection, wallet, transaction, {
-    confirmOptions: { commitment: 'confirmed', maxRetries: 3 },
+    confirmOptions: { commitment: 'confirmed' },
     signers: [masterEditionMint],
   })
   console.log(
