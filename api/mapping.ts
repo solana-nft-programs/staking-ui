@@ -403,6 +403,29 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     },
   },
   {
+    name: 'META',
+    displayName: 'META collections',
+    stakePoolAddress: new PublicKey(
+      'BCtcLrKhiZbFTRMB2W8iQWttYF82cLJzo7ZnnnkqXnnC'
+    ),
+    websiteUrl?: 'https://metaladsai.com',
+    hidden: false,
+    imageUrl:
+      'https://raw.githubusercontent.com/poisonlab/photo/main/WhatsApp%20Image%202022-10-05%20at%2017.53.36.jpeg',
+    styles: {
+      fontFamily: 'serif',
+      fontWeight: 500,
+    },
+    colors: {
+      primary: '#27033d',
+      secondary: '#27033d',
+      accent: '#a3219f',
+      fontColor: '#FFFFFF',
+      fontColorSecondary: '#000000',
+      backgroundSecondary: '#000000',
+    },
+  },
+  {
     name: 'okaybulls',
     displayName: 'Okaybulls',
     stakePoolAddress: new PublicKey(
