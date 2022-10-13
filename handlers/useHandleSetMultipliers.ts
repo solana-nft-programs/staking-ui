@@ -1,5 +1,16 @@
+import {
+  tryGetAccount,
+  withFindOrInitAssociatedTokenAccount,
+} from '@cardinal/common'
 import { executeTransaction } from '@cardinal/staking'
-import { withUpdateRewardEntry } from '@cardinal/staking/dist/cjs/programs/rewardDistributor/transaction'
+import { getRewardEntry } from '@cardinal/staking/dist/cjs/programs/rewardDistributor/accounts'
+import { findRewardEntryId } from '@cardinal/staking/dist/cjs/programs/rewardDistributor/pda'
+import {
+  withInitRewardEntry,
+  withUpdateRewardEntry,
+} from '@cardinal/staking/dist/cjs/programs/rewardDistributor/transaction'
+import { getStakeEntry } from '@cardinal/staking/dist/cjs/programs/stakePool/accounts'
+import { withInitStakeEntry } from '@cardinal/staking/dist/cjs/programs/stakePool/transaction'
 import { findStakeEntryIdFromMint } from '@cardinal/staking/dist/cjs/programs/stakePool/utils'
 import { BN } from '@project-serum/anchor'
 import { useWallet } from '@solana/wallet-adapter-react'
@@ -63,24 +74,66 @@ export const useHandleSetMultipliers = () => {
       }
 
       for (let i = 0; i < pubKeysToSetMultiplier.length; i++) {
-        const mint = pubKeysToSetMultiplier[i]!
+        const transaction = new Transaction()
+
+        const mintId = pubKeysToSetMultiplier[i]!
         const [stakeEntryId] = await findStakeEntryIdFromMint(
           connection,
           wallet.publicKey!,
           stakePool.data.pubkey,
-          mint
+          mintId
         )
-        const transaction = await withUpdateRewardEntry(
-          new Transaction(),
+        await withFindOrInitAssociatedTokenAccount(
+          transaction,
           connection,
-          wallet,
-          {
-            stakePoolId: stakePool.data.pubkey,
-            rewardDistributorId: rewardDistributor.data.pubkey,
-            stakeEntryId: stakeEntryId,
-            multiplier: new BN(multipliers[i]!),
-          }
+          mintId,
+          stakeEntryId,
+          wallet.publicKey,
+          true
         )
+
+        const stakeEntry = tryGetAccount(() =>
+          getStakeEntry(connection, stakeEntryId)
+        )
+        if (!stakeEntry) {
+          await withInitStakeEntry(transaction, connection, wallet, {
+            stakePoolId: stakePool.data.pubkey,
+            originalMintId: mintId,
+          })
+          notify({
+            message: `Initializing stake entry`,
+            type: 'info',
+          })
+        }
+
+        const [rewardEntryId] = await findRewardEntryId(
+          rewardDistributor.data.pubkey,
+          stakeEntryId
+        )
+        const rewardEntry = tryGetAccount(() =>
+          getRewardEntry(connection, rewardEntryId)
+        )
+        if (!rewardEntry) {
+          await withInitRewardEntry(transaction, connection, wallet, {
+            stakeEntryId,
+            rewardDistributorId: rewardDistributor.data.pubkey,
+          })
+          notify({
+            message: `Initializing reward entry`,
+            type: 'info',
+          })
+        }
+
+        await withUpdateRewardEntry(transaction, connection, wallet, {
+          stakePoolId: stakePool.data.pubkey,
+          rewardDistributorId: rewardDistributor.data.pubkey,
+          stakeEntryId: stakeEntryId,
+          multiplier: new BN(multipliers[i]!),
+        })
+        notify({
+          message: `Updating multipler`,
+          type: 'info',
+        })
         await executeTransaction(connection, wallet, transaction, {
           silent: false,
           signers: [],
