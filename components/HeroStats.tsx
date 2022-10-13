@@ -45,7 +45,10 @@ export const HeroStats: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({
         {!totalStaked.data ? (
           <div className="h-6 w-10 animate-pulse rounded-md bg-border"></div>
         ) : (
-          <div className="text-center text-xl text-light-1">
+          <div
+            className="text-center text-xl text-light-1"
+            style={{ color: stakePoolMetadata?.colors?.fontColor }}
+          >
             {totalStaked.data?.toLocaleString()}{' '}
             {stakePoolMetadata?.maxStaked
               ? `/ ${stakePoolMetadata?.maxStaked.toLocaleString()}`
@@ -61,7 +64,10 @@ export const HeroStats: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({
             {!stakePoolEntries.data ? (
               <div className="h-6 w-10 animate-pulse rounded-md bg-border"></div>
             ) : (
-              <div className="text-center text-xl text-light-1">
+              <div
+                className="text-center text-xl text-light-1"
+                style={{ color: stakePoolMetadata?.colors?.fontColor }}
+              >
                 {stakePoolEntries.data?.length &&
                   Math.floor(
                     ((stakePoolEntries.data?.length * 100) / (maxStaked ?? 0)) *
@@ -87,7 +93,10 @@ export const HeroStats: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({
             {!rewardsRate.data || !rewardMintInfo.data ? (
               <div className="h-6 w-10 animate-pulse rounded-md bg-border"></div>
             ) : (
-              <div className="text-center text-xl text-light-1">
+              <div
+                className="text-center text-xl text-light-1"
+                style={{ color: stakePoolMetadata?.colors?.fontColor }}
+              >
                 {formatAmountAsDecimal(
                   rewardMintInfo.data.mintInfo.decimals,
                   baseDailyRate(rewardDistributorData.data),
@@ -127,7 +136,10 @@ export const HeroStats: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({
             !rewardDistributorTokenAccountData.data ? (
               <div className="h-6 w-10 animate-pulse rounded-md bg-border"></div>
             ) : (
-              <div className="text-center text-xl text-light-1">
+              <div
+                className="text-center text-xl text-light-1"
+                style={{ color: stakePoolMetadata?.colors?.fontColor }}
+              >
                 {rewardDistributorData.data.parsed.kind ===
                 RewardDistributorKind.Mint
                   ? formatMintNaturalAmountAsDecimal(

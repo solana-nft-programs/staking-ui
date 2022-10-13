@@ -1,19 +1,15 @@
-// import { css } from '@emotion/react'
 import { shortPubKey } from '@cardinal/namespaces-components'
 import { css } from '@emotion/react'
 import { StakePoolConfig } from 'components/StakePoolConfig'
 import { useStakePoolId } from 'hooks/useStakePoolId'
-// import { StakePoolInfo } from 'components/StakePoolInfo'
 import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
 
 import { HeroStats } from '../components/HeroStats'
 import { ButtonSmall } from './ButtonSmall'
-// import { SocialIcon } from './Socials'
 
 export const HeroLarge: React.FC = () => {
   const stakePoolId = useStakePoolId()
   const { data: config } = useStakePoolMetadata()
-  // if (!config?.description) return <StakePoolInfo />
   return (
     <div className="relative -z-10 flex w-full flex-wrap items-stretch justify-center gap-8 py-8 lg:flex-nowrap lg:justify-between lg:gap-24">
       <div
@@ -51,7 +47,10 @@ export const HeroLarge: React.FC = () => {
       )}
       <div className="flex w-3/4 grow-[2] flex-col py-4">
         <div className="mb-6 flex flex-col gap-6">
-          <div className="text-4xl text-light-0">
+          <div
+            className="text-4xl text-light-0"
+            style={{ color: config?.colors?.fontColor }}
+          >
             {config?.displayName ?? shortPubKey(stakePoolId)}
           </div>
           <div className="text-lg text-medium-3">

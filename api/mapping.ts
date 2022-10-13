@@ -111,8 +111,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     stakePoolAddress: new PublicKey(
       '8Da8qPqSwc2DNenp5wwK7HWxpSrvxw8LUNoBZ2gAYjaz'
     ),
-    description:
-    'Portals staking pool provided by The BuildersDAO.',
+    description: 'Portals staking pool provided by The BuildersDAO.',
     imageUrl: '/logos/portals-nft.jpg',
     colors: {
       primary: '#0d1718',
@@ -128,7 +127,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       '49GnPoU2eexWaSo1n7wDFJov7WLiQ71fvpLj1ZoMxTVL'
     ),
     description:
-    'The New Explorers Club staking pool provided by The BuildersDAO.',
+      'The New Explorers Club staking pool provided by The BuildersDAO.',
     imageUrl: '/logos/tnec-nft.jpg',
     colors: {
       primary: '#000000',
@@ -143,8 +142,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     stakePoolAddress: new PublicKey(
       'FLJa7J28f2LBFJYqQLhhjaXR4WnfU2RHpSrr32p8bnSz'
     ),
-    description:
-    'The BuildersDAO is a community of metaverse builders.',
+    description: 'The BuildersDAO is a community of metaverse builders.',
     imageUrl: '/logos/buildersdao-nft.png',
     colors: {
       primary: '#000000',
@@ -1978,7 +1976,8 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     stakePoolAddress: new PublicKey(
       'GHZ671W39u4d4ELFvqfVeKor1fGGTunrS56PZQqM1wFM'
     ),
-    description: "Stake your artwork by @Hellshade here to start earning your $BBT '$Blackberry' Tokens for future art drops",
+    description:
+      "Stake your artwork by @Hellshade here to start earning your $BBT '$Blackberry' Tokens for future art drops",
     hidden: true,
     notFound: false,
     imageUrl:
@@ -2001,5 +2000,5 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     },
     // maxStaked: ,
     receiptType: ReceiptType.Original,
-  }
+  },
 ]

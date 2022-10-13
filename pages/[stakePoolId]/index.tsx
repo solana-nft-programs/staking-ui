@@ -108,6 +108,7 @@ function StakePoolHome() {
             icon="performance"
             header="Personal Charts"
             description="View your recent performance"
+            style={{ color: stakePoolMetadata?.colors?.fontColor }}
             content={
               <div className="flex grow items-center justify-end">
                 <PerformanceStats />
