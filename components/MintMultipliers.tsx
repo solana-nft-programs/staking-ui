@@ -84,7 +84,7 @@ export const MintMultipliers = () => {
           }}
         />
         <div
-          className={`mb-3 flex w-full appearance-none justify-between rounded border border-gray-500 bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800`}
+          className={`mb-3 flex w-full appearance-none items-center justify-between rounded border border-gray-500 bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800`}
         >
           <input
             className={`mr-5 w-full bg-transparent focus:outline-none`}
@@ -120,7 +120,7 @@ export const MintMultipliers = () => {
                 }}
               />
               <div
-                className={`mb-3 flex w-full appearance-none justify-between rounded border border-gray-500 bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800`}
+                className={`mb-3 flex  w-full appearance-none items-center justify-between rounded border border-gray-500 bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800`}
               >
                 <input
                   className={`mr-5 w-full bg-transparent focus:outline-none`}

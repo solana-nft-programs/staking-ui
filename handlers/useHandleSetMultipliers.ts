@@ -2,7 +2,7 @@ import {
   tryGetAccount,
   withFindOrInitAssociatedTokenAccount,
 } from '@cardinal/common'
-import { executeTransaction } from '@cardinal/staking'
+import { executeTransaction, handleError } from '@cardinal/staking'
 import { getRewardEntry } from '@cardinal/staking/dist/cjs/programs/rewardDistributor/accounts'
 import { findRewardEntryId } from '@cardinal/staking/dist/cjs/programs/rewardDistributor/pda'
 import {
@@ -92,7 +92,7 @@ export const useHandleSetMultipliers = () => {
           true
         )
 
-        const stakeEntry = tryGetAccount(() =>
+        const stakeEntry = await tryGetAccount(() =>
           getStakeEntry(connection, stakeEntryId)
         )
         if (!stakeEntry) {
@@ -110,7 +110,7 @@ export const useHandleSetMultipliers = () => {
           rewardDistributor.data.pubkey,
           stakeEntryId
         )
-        const rewardEntry = tryGetAccount(() =>
+        const rewardEntry = await tryGetAccount(() =>
           getRewardEntry(connection, rewardEntryId)
         )
         if (!rewardEntry) {
@@ -148,7 +148,10 @@ export const useHandleSetMultipliers = () => {
     },
     {
       onError: (e) => {
-        notify({ message: 'Failed to authorize mints', description: `${e}` })
+        notify({
+          message: 'Failed to authorize mints',
+          description: handleError(e, `${e}`),
+        })
       },
     }
   )
