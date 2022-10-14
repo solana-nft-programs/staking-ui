@@ -110,7 +110,7 @@ export const useHandleUnstake = () => {
         queryClient.resetQueries([TOKEN_DATAS_KEY])
       },
       onError: (e) => {
-        notify({ message: 'Failed to stake', description: `${e}` })
+        notify({ message: 'Failed to unstake', description: `${e}` })
       },
     }
   )
