@@ -1131,6 +1131,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       fontColorSecondary: '#000000',
       backgroundSecondary: '#000000',
     },
+    
   },
   {
     name: 'rebellionbots',
