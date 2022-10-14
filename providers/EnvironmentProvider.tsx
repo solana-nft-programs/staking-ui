@@ -18,10 +18,15 @@ export interface EnvironmentContextValues {
 }
 
 export const ENVIRONMENTS: Environment[] = [
+  // {
+  //   label: 'mainnet-beta',
+  //   primary: process.env.MAINNET_PRIMARY || 'https://ssc-dao.genesysgo.net',
+  //   secondary: 'https://ssc-dao.genesysgo.net',
+  // },
   {
     label: 'mainnet-beta',
-    primary: process.env.MAINNET_PRIMARY || 'https://ssc-dao.genesysgo.net',
-    secondary: 'https://ssc-dao.genesysgo.net',
+    primary: process.env.MAINNET_PRIMARY || 'https://solana-api.projectserum.com',
+    secondary: 'https://solana-api.projectserum.com',
   },
   {
     label: 'testnet',
