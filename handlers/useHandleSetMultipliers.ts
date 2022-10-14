@@ -149,7 +149,7 @@ export const useHandleSetMultipliers = () => {
     {
       onError: (e) => {
         notify({
-          message: 'Failed to authorize mints',
+          message: 'Failed to set multiplier',
           description: handleError(e, `${e}`),
         })
       },

@@ -31,7 +31,7 @@ export const UnstakedTokens = () => {
   )
   const [showFungibleTokens, setShowFungibleTokens] = useState(false)
   const allowedTokenDatas = useAllowedTokenDatas(showFungibleTokens)
-  const handleStake = useHandleStake()
+  const handleStake = useHandleStake(() => setUnstakedSelected([]))
 
   useEffect(() => {
     stakePoolMetadata?.tokenStandard &&

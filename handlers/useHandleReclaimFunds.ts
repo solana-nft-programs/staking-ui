@@ -42,7 +42,10 @@ export const useHandleReclaimFunds = () => {
         })
       },
       onError: (e) => {
-        notify({ message: 'Failed to authorize mints', description: `${e}` })
+        notify({
+          message: 'Failed to reclaim funds from pool',
+          description: `${e}`,
+        })
       },
     }
   )
