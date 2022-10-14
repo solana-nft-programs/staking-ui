@@ -14,7 +14,7 @@ import { useStakePoolData } from '../hooks/useStakePoolData'
 import { useStakePoolId } from '../hooks/useStakePoolId'
 import { useEnvironmentCtx } from '../providers/EnvironmentProvider'
 
-export const useHandleUnstake = () => {
+export const useHandleUnstake = (callback?: () => void) => {
   const wallet = asWallet(useWallet())
   const { connection } = useEnvironmentCtx()
   const queryClient = useQueryClient()
@@ -108,6 +108,7 @@ export const useHandleUnstake = () => {
     {
       onSuccess: () => {
         queryClient.resetQueries([TOKEN_DATAS_KEY])
+        if (callback) callback()
       },
       onError: (e) => {
         notify({ message: 'Failed to unstake', description: `${e}` })
