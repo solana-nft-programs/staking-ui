@@ -38,7 +38,11 @@ function StakePoolHome() {
     return <></>
   }
 
-  if (stakePoolMetadata?.disallowRegions && !userRegion.data?.isAllowed) {
+  if (
+    stakePoolMetadata?.disallowRegions &&
+    !userRegion.data?.isAllowed &&
+    !process.env.BYPASS_REGION_CHECK
+  ) {
     return (
       <div
         className="flex min-h-screen flex-col"
@@ -104,6 +108,7 @@ function StakePoolHome() {
             icon="performance"
             header="Personal Charts"
             description="View your recent performance"
+            style={{ color: stakePoolMetadata?.colors?.fontColor }}
             content={
               <div className="flex grow items-center justify-end">
                 <PerformanceStats />

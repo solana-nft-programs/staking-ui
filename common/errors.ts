@@ -281,11 +281,11 @@ export const handleError = (
 ): string => {
   const programIdls = options.programIdls ?? []
   const additionalErrors = options.additionalErrors ?? []
-  const hex = (e as SendTransactionError)?.message?.split(' ').at(-1)
+  const hex = (e as SendTransactionError).message?.split(' ').at(-1)
   const dec = parseInt(hex || '', 16)
   const logs =
-    (e as SendTransactionError)?.logs ?? [
-      (e as SendTransactionError)?.message,
+    (e as SendTransactionError).logs ?? [
+      (e as SendTransactionError).message ?? '',
     ] ?? [(e as Error).toString()] ??
     []
 
@@ -294,7 +294,7 @@ export const handleError = (
       ...programIdls.map(({ idl, programId }) => ({
         // match program on any log that includes programId and 'failed'
         programMatch: logs?.some(
-          (l) => l?.includes(programId.toString()) && l.includes('failed')
+          (l) => l.includes(programId.toString()) && l.includes('failed')
         ),
         // match error with decimal
         errorMatch: idl.errors?.find((err) => err.code === dec)?.msg,
@@ -306,38 +306,43 @@ export const handleError = (
       },
     ],
     ...[
-      {
-        programMatch: true,
-        errorMatch: additionalErrors.find(
-          (err) =>
-            // message includes error
-            (e as SendTransactionError)?.message?.includes(err.code) ||
-            // toString includes error
-            (e as Error).toString().includes(err.code)
-        )?.message,
-      },
       ...programIdls.map(({ idl, programId }) => ({
         // match program on any log that includes programId and 'failed'
         programMatch: logs?.some(
-          (l) => l?.includes(programId.toString()) && l.includes('failed')
+          (l) => l.includes(programId.toString()) && l.includes('failed')
         ),
         errorMatch: idl.errors?.find(
           (err) =>
             // message includes error
-            (e as SendTransactionError)?.message?.includes(
+            (e as SendTransactionError).message?.includes(
               err.code.toString()
             ) ||
             // toString includes error
             (e as Error).toString().includes(err.code.toString()) ||
             // any log includes error
-            (e as SendTransactionError)?.logs?.some((l) =>
+            (e as SendTransactionError).logs?.some((l) =>
               l.toString().includes(err.code.toString())
             )
         )?.msg,
       })),
+      {
+        errorMatch: additionalErrors.find(
+          (err) =>
+            // message includes error
+            (e as SendTransactionError).message?.includes(err.code) ||
+            // toString includes error
+            (e as Error).toString().includes(err.code) ||
+            // any log includes error
+            (e as SendTransactionError).logs?.some((l) =>
+              l.toString().includes(err.code)
+            )
+        )?.message,
+      },
     ],
   ]
-  console.log(matchedErrors)
+
+  console.log('Matched errors:')
+  matchedErrors.map((e) => console.log(e.errorMatch, e.programMatch))
 
   return (
     matchedErrors.find((e) => e.programMatch && e.errorMatch)?.errorMatch ||

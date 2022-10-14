@@ -106,6 +106,52 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
   // },
 
   {
+    name: 'portals',
+    displayName: 'Portals',
+    stakePoolAddress: new PublicKey(
+      '8Da8qPqSwc2DNenp5wwK7HWxpSrvxw8LUNoBZ2gAYjaz'
+    ),
+    description: 'Portals staking pool provided by The BuildersDAO.',
+    imageUrl: '/logos/portals-nft.jpg',
+    colors: {
+      primary: '#0d1718',
+      secondary: '#416460',
+      accent: '#0089C1',
+      fontColor: '#FFFFFF',
+    },
+  },
+  {
+    name: 'thenewexplorersclub',
+    displayName: 'The New Explorers Club',
+    stakePoolAddress: new PublicKey(
+      '49GnPoU2eexWaSo1n7wDFJov7WLiQ71fvpLj1ZoMxTVL'
+    ),
+    description:
+      'The New Explorers Club staking pool provided by The BuildersDAO.',
+    imageUrl: '/logos/tnec-nft.jpg',
+    colors: {
+      primary: '#000000',
+      secondary: '#6c9180',
+      accent: '#BCFFE0',
+      fontColor: '#FFFFFF',
+    },
+  },
+  {
+    name: 'thebuildersdao',
+    displayName: 'The BuildersDAO',
+    stakePoolAddress: new PublicKey(
+      'FLJa7J28f2LBFJYqQLhhjaXR4WnfU2RHpSrr32p8bnSz'
+    ),
+    description: 'The BuildersDAO is a community of metaverse builders.',
+    imageUrl: '/logos/buildersdao-nft.png',
+    colors: {
+      primary: '#000000',
+      secondary: '#4da1de',
+      accent: '#0089C1',
+      fontColor: '#FFFFFF',
+    },
+  },
+  {
     name: 'shadiesboosted',
     displayName: 'SHADIES BOOSTED 2X STAKING',
     stakePoolAddress: new PublicKey(
@@ -354,6 +400,28 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       secondary: '#4da1de',
       accent: '#1fcfb11c',
       fontColor: '#FFFFFF',
+    },
+  },
+  {
+    name: 'META',
+    displayName: 'META collections',
+    stakePoolAddress: new PublicKey(
+      'BCtcLrKhiZbFTRMB2W8iQWttYF82cLJzo7ZnnnkqXnnC'
+    ),
+    websiteUrl: 'https://metaladsai.com',
+    imageUrl:
+      'https://raw.githubusercontent.com/poisonlab/photo/main/WhatsApp%20Image%202022-10-05%20at%2017.53.36.jpeg',
+    styles: {
+      fontFamily: 'serif',
+      fontWeight: 500,
+    },
+    colors: {
+      primary: '#27033d',
+      secondary: '#27033d',
+      accent: '#a3219f',
+      fontColor: '#FFFFFF',
+      fontColorSecondary: '#000000',
+      backgroundSecondary: '#000000',
     },
   },
   {
@@ -668,14 +736,18 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     websiteUrl: 'https://unfrgtn.space/',
     receiptType: ReceiptType.Original,
     imageUrl:
-      'https://cdn.discordapp.com/attachments/475411995273854976/987098707449241600/logo_2.png',
-    maxStaked: 1956,
+      'https://cdn.discordapp.com/attachments/988356861491302440/1029422494131695737/New_Project.png',
+    maxStaked: 1941,
     colors: {
-      primary: '#000000',
-      secondary: '#4da1de',
-      accent: '#1fcfb11c',
+      primary: '#2d0c65',
+      secondary: '#ed69fa',
+      accent: '#f7f6fe',
       fontColor: '#FFFFFF',
     },
+        links: [
+      { text: 'Twitter', value: 'https://twitter.com/UnfrgtnOrbit' },
+      { text: 'Discord', value: 'https://discord.gg/U2RQ8tZvV9' },
+    ],
   },
   {
     name: 'The Frontier',
@@ -1090,7 +1162,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     hideFooter: true,
     websiteUrl: 'https://www.rebellionbots.io',
     receiptType: ReceiptType.Original,
-    maxStaked: 1083, // update with collection size
+    maxStaked: 1205, // update with collection size
     imageUrl: '/logos/rebellion-bots.jpeg',
     secondaryImageUrl: '/logos/secondary-rebellion-bots.png',
     tokenStandard: TokenStandard.NonFungible,
@@ -1528,7 +1600,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     tokenStandard: TokenStandard.NonFungible,
     imageUrl:
       'https://www.arweave.net/IoihJxVlVjKp2x46GpnoQNi1pRWNJiLBI4FQiXK0SPA?ext=png',
-    maxStaked: 3546,
+    maxStaked: 4996,
     backgroundImage:
       'https://shdw-drive.genesysgo.net/5aWZWB6vXbZrf1CNmiM3rAWnzf36Bpuq8rxRYHBzGeGq/msl_caps_card_1.png',
     styles: {
@@ -1550,24 +1622,78 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
           totals: [
             {
               key: 'Bronze',
-              value: 2352,
+              value: 3363,
             },
             {
               key: 'Silver',
-              value: 1085,
+              value: 1498,
             },
             {
               key: 'Gold',
-              value: 98,
+              value: 125,
             },
             {
               key: 'Platinum',
-              value: 7,
+              value: 10,
             },
           ],
         },
       },
     ],
+    links: [
+      {
+        text: 'HOME',
+        value: 'https://warp.moonshinelabs.io/caps-home',
+      },
+      {
+        text: 'GAME',
+        value: 'https://warp.moonshinelabs.io/caps-game',
+      },
+      {
+        text: 'MINT',
+        value: 'https://warp.moonshinelabs.io/caps-mint',
+      },
+      {
+        text: 'BUY',
+        value: 'https://warp.moonshinelabs.io/caps-buy',
+      },
+      {
+        text: 'TWITTER',
+        value: 'https://warp.moonshinelabs.io/caps-twitter',
+      },
+      {
+        text: 'DISCORD',
+        value: 'https://warp.moonshinelabs.io/caps-discord',
+      },
+    ],
+  },
+  {
+    name: 'test-guys',
+    displayName: 'Test Guys',
+    hostname: 'research.moonshinelabs.io',
+    nameInHeader: true,
+    stakePoolAddress: new PublicKey(
+      'z4x4twXzrw8XVEFqQs9EcmgeXfhMqRpwYVpJEeRAbVN'
+    ),
+    websiteUrl: 'https://warp.moonshinelabs.io/caps',
+    receiptType: ReceiptType.Original,
+    tokenStandard: TokenStandard.NonFungible,
+    imageUrl:
+      'https://www.arweave.net/DXw0PO5-EZlx26duubW157IfvpiQvjbAoM5VFCMFEcI?ext=png',
+    maxStaked: 1111,
+    backgroundImage:
+      'https://shdw-drive.genesysgo.net/5aWZWB6vXbZrf1CNmiM3rAWnzf36Bpuq8rxRYHBzGeGq/tgbg.png',
+    styles: {
+      fontFamily: 'Roboto Serif',
+    },
+    colors: {
+      primary: '#7928CA',
+      secondary: '#4a148c',
+      accent: '#DE38C8',
+      fontColor: '#FFFFFF',
+      // fontColorSecondary: '#DE38C8',
+      // backgroundSecondary: '#DE38C8',
+    },
     links: [
       {
         text: 'HOME',
@@ -1776,6 +1902,49 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     },
   },
   {
+    name: 'y00topia',
+    displayName: 'y00topia staking',
+    stakePoolAddress: new PublicKey(
+      'GJtJVCBCXVkPuzmS45zWDEkztG1EGGvNcnddL2dsbDmh'
+    ),
+    websiteUrl: 'https://twitter.com/ABCy00topia',
+    imageUrl:
+      'https://cdn.discordapp.com/attachments/1017836201685823549/1027266302894669824/white.png',
+    backgroundImage:
+      'https://cdn.discordapp.com/attachments/1017836201685823549/1027264876961349712/abc_a.png',
+    maxStaked: 1111,
+
+    receiptType: ReceiptType.Original,
+    tokenStandard: TokenStandard.NonFungible,
+    hideAllowedTokens: true,
+    links: [
+      {
+        text: 'Discord',
+        value: 'https://discord.gg/dUE4ezvUDS',
+      },
+      {
+        text: 'Twitter',
+        value: 'https://twitter.com/ABCy00topia',
+      },
+      {
+        text: 'Buy',
+        value: 'https://magiceden.io/marketplace/abc_y00topia',
+      },
+    ],
+    styles: {
+      fontFamily: 'Industry, sans-serif',
+      fontWeight: 500,
+    },
+    colors: {
+      primary: '#120d18',
+      secondary: '#e42575',
+      accent: '#33273f',
+      fontColor: '#e61f57',
+      fontColorSecondary: '#000000',
+      backgroundSecondary: '#120d18',
+    },
+  },
+  {
     name: 'Pixel-Y00ts',
     displayName: 'Pixel Y0ots',
     nameInHeader: true,
@@ -1826,5 +1995,36 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
         value: 'https://magiceden.io/marketplace/pixel_yoots',
       },
     ],
+  },
+  {
+    name: 'hellshade',
+    displayName: 'Hellshade Staking',
+    stakePoolAddress: new PublicKey(
+      'GHZ671W39u4d4ELFvqfVeKor1fGGTunrS56PZQqM1wFM'
+    ),
+    description:
+      "Stake your artwork by @Hellshade here to start earning your $BBT '$Blackberry' Tokens for future art drops",
+    hidden: true,
+    notFound: false,
+    imageUrl:
+      'https://images-cdn.exchange.art/LH3Na6UWARcgucQoDRuIkxxaOYXIsAf-I03bPiEFhsw?ext=fastly&width=1000&optimize=medium&auto=avifwebp',
+    // secondaryImageUrl: 'https://raw.githubusercontent.com/flipthetip/test-tsc/main/arx.png',
+    backgroundImage:
+      'https://www.zingerbug.com/Backgrounds/background_images/black_stucco_wall_texture_seamless.jpg',
+    styles: {
+      fontFamily: 'Franklin Gothic Medium',
+      // fontWeight: 500,
+      backgroundSize: 'cover',
+      backgroundPosition: 'center',
+    },
+    colors: {
+      primary: '#000000',
+      secondary: '#5d7f9e',
+      accent: '#fff2cc',
+      fontColor: '#fff2cc',
+      fontColorSecondary: '#fff2cc',
+    },
+    // maxStaked: ,
+    receiptType: ReceiptType.Original,
   },
 ]

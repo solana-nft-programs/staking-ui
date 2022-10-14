@@ -29,7 +29,7 @@ export const PerformanceStats: React.FC<
   if (!rewardDistributorData.data) return <></>
   return (
     <div
-      className={`flex flex-col flex-wrap justify-between gap-y-5 md:flex-row ${
+      className={`flex flex-col flex-wrap justify-between gap-5 md:flex-row ${
         stakePoolMetadata?.colors?.fontColor ? '' : 'text-gray-200'
       } ${className}`}
     >
@@ -38,7 +38,10 @@ export const PerformanceStats: React.FC<
         {!stakedTokenDatas.data ? (
           <div className="h-6 w-10 animate-pulse rounded-md bg-border"></div>
         ) : (
-          <div className="text-center text-lg text-light-1">
+          <div
+            className="text-center text-lg text-light-1"
+            style={{ color: stakePoolMetadata?.colors?.fontColor }}
+          >
             {new Date(
               (stakedTokenDatas.data
                 .map((s) => s.stakeEntry?.parsed.lastStakedAt.toNumber())
@@ -54,7 +57,6 @@ export const PerformanceStats: React.FC<
           </div>
         )}
       </div>
-      <div className="mx-6 my-auto hidden h-10 w-[1px] bg-border md:flex"></div>
       <div className="flex flex-row items-center justify-center gap-2">
         <p className="text-lg text-medium-4">
           {rewardDistributorData.data.parsed.maxRewardSecondsReceived?.eq(
@@ -66,7 +68,10 @@ export const PerformanceStats: React.FC<
         {!rewardsRate.data || !rewardMintInfo.data ? (
           <div className="h-6 w-10 animate-pulse rounded-md bg-border"></div>
         ) : (
-          <div className="text-center text-lg text-light-1">
+          <div
+            className="text-center text-lg text-light-1"
+            style={{ color: stakePoolMetadata?.colors?.fontColor }}
+          >
             {formatAmountAsDecimal(
               rewardMintInfo.data.mintInfo.decimals,
               rewardsRate.data.dailyRewards,
@@ -99,13 +104,15 @@ export const PerformanceStats: React.FC<
           </div>
         )}
       </div>
-      <div className="mx-6 my-auto hidden h-10 w-[1px] bg-border md:flex"></div>
       <div className="flex flex-row items-center justify-center gap-2">
         <p className="text-lg text-medium-4">Earnings:</p>
         {!rewards.data || !rewardMintInfo.data ? (
           <div className="h-6 w-10 animate-pulse rounded-md bg-border"></div>
         ) : (
-          <div className="text-center text-lg text-light-1">
+          <div
+            className="text-center text-lg text-light-1"
+            style={{ color: stakePoolMetadata?.colors?.fontColor }}
+          >
             {formatMintNaturalAmountAsDecimal(
               rewardMintInfo.data.mintInfo,
               rewards.data?.claimableRewards,
@@ -117,7 +124,6 @@ export const PerformanceStats: React.FC<
           </div>
         )}
       </div>
-      <div className="mx-4 my-auto hidden h-10 w-[1px] md:flex"></div>
       <div className="flex items-center justify-center">
         <button
           onClick={async () =>
