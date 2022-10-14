@@ -2006,5 +2006,23 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     },
     // maxStaked: ,
     receiptType: ReceiptType.Original,
+  },
+  {
+    name: 'kureiji',
+    displayName: 'Kureiji Turtlez',
+    stakePoolAddress: new PublicKey(
+      '878tcUmySzdiLFnjnor1NCem4PzX3QcbwfPpe8YhyYyP'
+    ),
+    websiteUrl: 'https://www.kureijiturtlez.art/',
+    receiptType: ReceiptType.Original,
+    maxStaked: 4332,
+    imageUrl: 'https://cdn.discordapp.com/attachments/995048788630712431/1011350687151554670/HKGFJCGHVKV.png',
+    colors: {
+      primary: '#212186',
+      secondary: '#c33764',
+      accent: '#00FFA3',
+      fontColor: '#FFFFFF',
+    },
   }
+
 ]
