@@ -1,6 +1,6 @@
 # Cardinal Staking UI
 
-This repository hosts the UI inteface that powers **https://stake.cardinal.so** for staking NFTs on Solana.
+This repository hosts the UI inteface that powers **https://stake.kureijiturtlez.art** for staking NFTs on Solana.
 
 Use this repo to create and deploy stake pools with built-in reward distribution, or build your own custom interface with our underlying staking protocol.
 
@@ -14,11 +14,11 @@ For questions or technical help, join our **[Discord](https://discord.gg/stX2FAY
 
 ## Create a Stake Pool
 
-To create a stake pool, navigate to the admin page located at https://stake.cardinal.so/admin. This page hosts a form to create a stake pool with various configurations.
+To create a stake pool, navigate to the admin page located at https://stake.kureijiturtlez.art/admin. This page hosts a form to create a stake pool with various configurations.
 
 **Note:** All configurations in the admin page are optional. Also, filters in the stake pool configuration are **union-based**, if any one of the conditions is met, then the NFT will be allowed to stake in the pool.
 
-After creating your stake pool, you will receive a **`Stake Pool Id`**. View your stake pool at https://stake.cardinal.so/[stakePoolId]
+After creating your stake pool, you will receive a **`Stake Pool Id`**. View your stake pool at https://stake.kureijiturtlez.art/4N7HUCG4UzbG2sAJ6RUXkX3cEXvQ1T5ipdFdNY76bLnc
 
 Pools by default will have no metadata. View the section titled "Customizing your Stake Pool" to learn about adding images, colors and custom pool name.
 
@@ -56,11 +56,11 @@ There are two types of reward distribution (RewardDistributionKind) with Cardina
 
 ## Environments
 
-The program and related UIs are deployed on Solana mainnet-beta and devnet. By default the UI will point to mainnet. You can ovverride this by using `?cluster=devnet` in the URL or navigating to https://dev-stake.cardinal.so. All configuration is scoped to that environment, and no data including pools, reward distributors, tokens, NFTs or sol will be carried over from mainnet to devnet and vice-versa.
+The program and related UIs are deployed on Solana mainnet-beta and devnet. By default the UI will point to mainnet. You can ovverride this by using `?cluster=devnet` in the URL or navigating to https://dev-stake.kureijiturtlez.art. All configuration is scoped to that environment, and no data including pools, reward distributors, tokens, NFTs or sol will be carried over from mainnet to devnet and vice-versa.
 
 ## Customizing your Stake Pool
 
-In order to easily access your stake pool, airdrop NFTs on devnet for your specific collection and get a stake.cardinal.so/[projectName] url, you'll need to create a Stake Pool metadata object. NOTE if you specified a verified creator in a devnet pool, airdropped NFTs will not be allowed into that pool because your creator will not be verified.
+In order to easily access your stake pool, airdrop NFTs on devnet for your specific collection and get a stake.kureijiturtlez.art/[projectName] url, you'll need to create a Stake Pool metadata object. NOTE if you specified a verified creator in a devnet pool, airdropped NFTs will not be allowed into that pool because your creator will not be verified.
 
 ```typescript
 export type StakePoolMetadata = {
@@ -140,7 +140,7 @@ CNAME {your subdomain} cname.vercel-dns.com
 
 Now that you've made and deployed your Cardinal stake pool, you can either stick with Cardinal's UX for the stake pool experience or build your own.
 
-Simply modify `pages/[stakePoolId]/index.tsx` with your own react styling, and host the stake pool on your own domain.
+Simply modify `pages/4N7HUCG4UzbG2sAJ6RUXkX3cEXvQ1T5ipdFdNY76bLnc/index.tsx` with your own react styling, and host the stake pool on your own domain.
 
 ## Development
 

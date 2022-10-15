@@ -65,7 +65,7 @@ export const MintMultipliers = () => {
         <b>WARNING</b> Do not set more than a few at at time. If needed take a
         look at the scripts in{' '}
         <a
-          href="https://github.com/cardinal-labs/cardinal-staking/tree/main/tools"
+          href="https://github.com/kureijiturtlez/cardinal-staking/tree/main/tools"
           className="text-blue-500"
           target="_blank"
           rel="noreferrer"

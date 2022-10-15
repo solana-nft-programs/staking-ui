@@ -43,7 +43,7 @@ export const HeroLarge: React.FC = () => {
           <a
             target={'_blank'}
             rel="noreferrer"
-            href={`https://github.com/cardinal-labs/cardinal-staking-ui#customizing-your-stake-pool`}
+            href={`https://github.com/kureijiturtlez/cardinal-staking-ui#customizing-your-stake-pool`}
           >
             <ButtonSmall onClick={() => {}}>Add image</ButtonSmall>
           </a>

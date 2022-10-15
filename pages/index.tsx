@@ -1,7 +1,7 @@
 import { useStakePoolMetadataCtx } from 'providers/StakePoolMetadataProvider'
 
 import Homepage from '../components/Homepage'
-import StakePoolHome from './[stakePoolId]'
+import StakePoolHome from './kureiji'
 
 function Home() {
   const { stakePoolMetadata } = useStakePoolMetadataCtx()

@@ -36,3 +36,7 @@ yarn-error.log*
 
 # Sentry
 .sentryclirc
+common/Footer.tsx
+common/Footer.tsx
+common/FooterSlim.tsx
+common/HeroLarge.tsx

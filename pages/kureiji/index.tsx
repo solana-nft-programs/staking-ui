@@ -84,7 +84,7 @@ function StakePoolHome() {
         <link rel="icon" href={stakePoolMetadata?.imageUrl ?? `/favicon.ico`} />
         <script
           defer
-          data-domain="stake.cardinal.so"
+          data-domain="stake.kureijiturtlez.art"
           src="https://plausible.io/js/plausible.js"
         ></script>
       </Head>
