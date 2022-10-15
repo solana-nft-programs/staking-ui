@@ -669,7 +669,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     receiptType: ReceiptType.Original,
     imageUrl:
       'https://cdn.discordapp.com/attachments/988356861491302440/1029422494131695737/New_Project.png',
-    maxStaked: 1941,
+    maxStaked: 1921,
     colors: {
       primary: '#2d0c65',
       secondary: '#ed69fa',
