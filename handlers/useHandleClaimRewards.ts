@@ -97,7 +97,7 @@ export const useHandleClaimRewards = () => {
         queryClient.resetQueries([TOKEN_DATAS_KEY])
       },
       onError: (e) => {
-        notify({ message: 'Failed to stake', description: `${e}` })
+        notify({ message: 'Failed to claim rewards', description: `${e}` })
       },
     }
   )

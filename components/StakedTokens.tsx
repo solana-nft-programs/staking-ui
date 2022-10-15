@@ -32,7 +32,7 @@ export const StakedTokens = () => {
   const stakedTokenDatas = useStakedTokenDatas()
   const rewardDistributorData = useRewardDistributorData()
   const rewards = useRewards()
-  const handleUnstake = useHandleUnstake()
+  const handleUnstake = useHandleUnstake(() => setStakedSelected([]))
   const handleClaimRewards = useHandleClaimRewards()
 
   const selectStakedToken = (tk: StakeEntryTokenData) => {

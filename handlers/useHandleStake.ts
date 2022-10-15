@@ -16,7 +16,7 @@ import { TOKEN_DATAS_KEY } from '../hooks/useAllowedTokenDatas'
 import { useStakePoolId } from '../hooks/useStakePoolId'
 import { useEnvironmentCtx } from '../providers/EnvironmentProvider'
 
-export const useHandleStake = () => {
+export const useHandleStake = (callback?: () => void) => {
   const wallet = asWallet(useWallet())
   const { connection } = useEnvironmentCtx()
   const queryClient = useQueryClient()
@@ -159,6 +159,7 @@ export const useHandleStake = () => {
     {
       onSuccess: () => {
         queryClient.resetQueries([TOKEN_DATAS_KEY])
+        if (callback) callback
       },
       onError: (e) => {
         notify({ message: 'Failed to stake', description: `${e}` })
