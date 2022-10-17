@@ -2028,4 +2028,48 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     // maxStaked: ,
     receiptType: ReceiptType.Original,
   },
+    {
+    name: 'azl-nutzzz-world',
+    displayName: 'AZL Nutzz World Staking',
+    stakePoolAddress: new PublicKey(
+      'APhntuf48ME176zvV3feCo9pN5mQuXqQFsC2gBiBw895'
+    ),
+    contrastHomepageBkg: true,
+    maxStaked: 3333,
+    links: [
+      {
+        text: 'Twitter',
+        value: 'https://twitter.com/AZLnft',
+      },
+      {
+        text: 'Discord',
+        value: 'https://discord.gg/cxgnzF43BT',
+      },
+      {
+        text: 'Magic Eden',
+        value: 'https://magiceden.io/marketplace/azl_nutzzz_world',
+      },
+    ],
+
+    receiptType: ReceiptType.Original,
+    websiteUrl: 'https://stake.cardinal.so/azl-nutzzz-world',
+    imageUrl:
+      'https://bafybeihy4wxax43nyhffx5dyzrt33pjipwap6qmtli55xoft32qsgejxnu.ipfs.nftstorage.link/',
+    styles: {
+      fontFamily: 'Industry, sans-serif',
+      fontWeight: 500,
+    },
+    tokenStandard: TokenStandard.NonFungible,
+    hideAllowedTokens: true,
+    colors: {
+     // primary: '#2d0c65',
+      //secondary: '#ed69fa',
+      //accent: '#f7f6fe',
+      //fontColor: '#FFFFFF',
+      primary: '#000000',
+      secondary: '#BD38F3',
+      accent: '#8B2AB4',
+      fontColor: '#FFFFFF',
+    },
+  },
 ]
