@@ -128,13 +128,13 @@ export const AsyncButton: React.FC<Props> = ({
         disabled ? 'cursor-default opacity-50' : 'cursor-pointer'
       }`}
       css={css`
-        background: ${stakePoolMetadata?.colors?.accent};
-        color: ${stakePoolMetadata?.colors?.accent &&
-        contrastify(1, stakePoolMetadata?.colors?.accent)};
+        background: ${stakePoolMetadata?.colors?.secondary} !important;
+        color: ${stakePoolMetadata?.colors?.secondary &&
+        contrastify(1, stakePoolMetadata?.colors?.secondary)} !important;
         &:hover {
           background: ${!disabled &&
-          stakePoolMetadata?.colors?.accent &&
-          contrastify(0.05, stakePoolMetadata?.colors?.accent)};
+          stakePoolMetadata?.colors?.secondary &&
+          contrastify(0.05, stakePoolMetadata?.colors?.secondary)} !important;
         }
       `}
       onClick={async (e) => {

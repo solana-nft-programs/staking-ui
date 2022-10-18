@@ -282,7 +282,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     colors: {
       primary: '#000000',
       secondary: '#4da1de',
-      accent: '#1fcfb11c',
+      accent: '#2a393a',
       fontColor: '#FFFFFF',
     },
   },
@@ -349,7 +349,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     colors: {
       primary: '#000000',
       secondary: '#4da1de',
-      accent: '#1fcfb11c',
+      accent: '#2a393a',
       fontColor: '#FFFFFF',
     },
     airdrops: [],
@@ -374,7 +374,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     colors: {
       primary: '#000000',
       secondary: '#4da1de',
-      accent: '#1fcfb11c',
+      accent: '#2a393a',
       fontColor: '#FFFFFF',
     },
   },
@@ -398,7 +398,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     colors: {
       primary: '#000000',
       secondary: '#4da1de',
-      accent: '#1fcfb11c',
+      accent: '#2a393a',
       fontColor: '#FFFFFF',
     },
   },
@@ -506,7 +506,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     colors: {
       primary: '#7D89D8',
       secondary: '##131418',
-      accent: '#1fcfb11c',
+      accent: '#2a393a',
       fontColor: '#FFFFFF',
     },
   },
@@ -710,7 +710,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     colors: {
       primary: '#000000',
       secondary: '#4da1de',
-      accent: '#1fcfb11c',
+      accent: '#2a393a',
       fontColor: '#FFFFFF',
     },
   },
@@ -745,7 +745,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       accent: '#f7f6fe',
       fontColor: '#FFFFFF',
     },
-        links: [
+    links: [
       { text: 'Twitter', value: 'https://twitter.com/UnfrgtnOrbit' },
       { text: 'Discord', value: 'https://discord.gg/U2RQ8tZvV9' },
     ],
@@ -1102,7 +1102,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     colors: {
       primary: '#000000',
       secondary: '#4da1de',
-      accent: '#1fcfb11c',
+      accent: '#2a393a',
       fontColor: '#FFFFFF',
     },
   },
@@ -2028,7 +2028,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     // maxStaked: ,
     receiptType: ReceiptType.Original,
   },
-    {
+  {
     name: 'azl-nutzzz-world',
     displayName: 'AZL Nutzz World Staking',
     stakePoolAddress: new PublicKey(
@@ -2062,7 +2062,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     tokenStandard: TokenStandard.NonFungible,
     hideAllowedTokens: true,
     colors: {
-     // primary: '#2d0c65',
+      // primary: '#2d0c65',
       //secondary: '#ed69fa',
       //accent: '#f7f6fe',
       //fontColor: '#FFFFFF',
