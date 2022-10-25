@@ -2103,7 +2103,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     stakePoolAddress: new PublicKey(
       'BGnayVs2xtEjzR42Kdq7vXnmRSjBqP9byP4xkmsmF23f'
     ),
-    hostname: 'staking.soundfamily.herokuapp.com',
+    hostname: 'staking-soundfamily.herokuapp.com',
     hideFooter: true, 
     hideAllowedTokens: true, 
     websiteUrl: 'https://catchtherecord.com/',
