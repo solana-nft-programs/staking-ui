@@ -107,7 +107,8 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
   {
     name: 'lotus',
     displayName: 'The Lotus',
-    hostname: 'https://staking.thelotus.io',
+    hostname: 'staking.thelotus.io',
+    websiteUrl: 'https://www.thelotus.io',
     stakePoolAddress: new PublicKey(
       '4c4JF1m6hteH8F5iMN7nQYo8SfLPCJBNTeXFmjzt9C2J'
     ),
