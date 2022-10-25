@@ -107,16 +107,17 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
   {
     name: 'lotus',
     displayName: 'The Lotus',
-    hostname: 'https://staking.thelotus.io',
+    hostname: 'staking.thelotus.io',
+    websiteUrl: 'https://www.thelotus.io',
     stakePoolAddress: new PublicKey(
       '4c4JF1m6hteH8F5iMN7nQYo8SfLPCJBNTeXFmjzt9C2J'
     ),
     description: 'The Lotus staking pool.',
     imageUrl: '/logos/lotus.svg',
     colors: {
-      primary: '#7FFFB9',
-      secondary: '#91B9FF',
-      accent: '#FF9596',
+      primary: '#303030',
+      secondary: '#7FFFB9',
+      accent: '#91B9FF',
       fontColor: '#FFFFFF',
     },
     receiptType: ReceiptType.Original
