@@ -104,7 +104,21 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
   //     secondary: 'rgb(157,120,138, 0.6)',
   //   },
   // },
-
+  {
+    name: 'lotus',
+    displayName: 'The Lotus',
+    stakePoolAddress: new PublicKey(
+      '4c4JF1m6hteH8F5iMN7nQYo8SfLPCJBNTeXFmjzt9C2J'
+    ),
+    description: 'The Lotus staking pool.',
+    imageUrl: '/logos/lotus.svg',
+    colors: {
+      primary: '#7FFFB9',
+      secondary: '#91B9FF',
+      accent: '#FF9596',
+      fontColor: '#FFFFFF',
+    },
+  },
   {
     name: 'portals',
     displayName: 'Portals',
