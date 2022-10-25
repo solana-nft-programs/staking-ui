@@ -369,6 +369,13 @@
     "@metaplex-foundation/mpl-token-metadata" "^1.2.5"
     "@project-serum/anchor" "^0.24.2"
 
+"@cardinal/scanner@^0.1.1":
+  version "0.1.5"
+  resolved "https://registry.yarnpkg.com/@cardinal/scanner/-/scanner-0.1.5.tgz#03b4cdca076bfe27b38da3eea861ea3edfaaad71"
+  integrity sha512-d1E98HoQtJyzF17TRlx6DYtk12KHAn9Opyj1tdkid/92N/tGcm8M8rqUUYhGIUrgTDtYYc2H2tR7iU5+0nS87A==
+  dependencies:
+    "@cardinal/common" "^2.0.10"
+
 "@cardinal/stake-pool@^1.1.1":
   version "1.1.9"
   resolved "https://registry.yarnpkg.com/@cardinal/stake-pool/-/stake-pool-1.1.9.tgz#aa148066779dfec17bef58d5f612b5225ae85739"

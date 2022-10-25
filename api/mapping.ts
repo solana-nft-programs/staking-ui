@@ -2095,4 +2095,57 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       fontColor: '#FFFFFF',
     },
   },
+ 
+  {
+    name: 'Sound Family DAO',
+    displayName: 'Sound Family DAO Staking',
+    nameInHeader: true,
+    stakePoolAddress: new PublicKey(
+      'BGnayVs2xtEjzR42Kdq7vXnmRSjBqP9byP4xkmsmF23f'
+    ),
+    hostname: 'staking.soundfamily.herokuapp.com',
+    hideFooter: true, 
+    hideAllowedTokens: true, 
+    websiteUrl: 'https://catchtherecord.com/',
+    receiptType: ReceiptType.None,
+    tokenStandard: TokenStandard.NonFungible,
+    imageUrl:
+      'https://gateway.pinata.cloud/ipfs/QmYM9LN8pXJzXz9j79ZNA7y1HRcWVJW5sWVG6YPZ88UFKZ',
+    maxStaked: 1070,
+    backgroundImage:
+      'https://gateway.pinata.cloud/ipfs/QmQtByLThJK3Zfah2W3jqyHVq3buEKsZyp2vN4WxrC4WJ2',
+    colors: {
+      primary: '#5c4b18',
+      secondary: '#d9faf7',
+      accent: '#362304',
+      fontColor: '#edb63e',
+      fontColorSecondary: '#963315',
+    },
+    links: [
+      {
+        text: 'HOME',
+        value: 'https://catchtherecord.com/the-art-of-field-recording',
+      },
+      {
+        text: 'SITE',
+        value: 'https://catchtherecord.com/',
+      },
+      {
+        text: 'MINT',
+        value: 'https://the-art-of-field-recording.club',
+      },
+      {
+        text: 'BUY',
+        value: 'https://magiceden.io/marketplace/k8XrthqoADqQqY5sLo4gPk3t8tHWuyWJsqJT13AiZqv',
+      },
+      {
+        text: 'TWITTER',
+        value: 'https://twitter.com/field_recording',
+      },
+      {
+        text: 'DISCORD',
+        value: 'https://discord.gg/WEU9W5Ew9q',
+      },
+    ],
+  }
 ]
