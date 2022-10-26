@@ -111,7 +111,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     stakePoolAddress: new PublicKey(
       'G9nryHatSzQQ93ehjNejhiZpmgzQsRxZVTzLSxiDp8uU'
     ),
-    hostname: 'staking.metacreed.com',
+    hostname: 'vaults.metacreed.com',
     hideFooter: true,
     hideAllowedTokens: true,
     websiteUrl: 'https://www.metacreed.com/',
