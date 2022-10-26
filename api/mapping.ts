@@ -105,42 +105,6 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
   //   },
   // },
   {
-    name: 'metatattooclub',
-    displayName: 'Meta Tattoo Club',
-    stakePoolAddress: new PublicKey(
-      '4CnsdUSFCFKa9zBupuxFesZZJm64Eq3WgrAePF2KCuXv'
-    ),
-    websiteUrl: 'https://metatattooclub.io/',
-    imageUrl:
-      'https://gateway.pinata.cloud/ipfs/QmQniSw9U7jKXk7fVJcvdkhVfqsLTyNHnukWwm7kfLEmuN',
-    maxStaked: 8888,
-    nameInHeader: true,
-    receiptType: ReceiptType.Original,
-    tokenStandard: TokenStandard.NonFungible,
-    hideAllowedTokens: true,
-    hideFooter: true,
-    styles: {
-      fontFamily: 'Industry, sans-serif',
-      fontWeight: 500,
-      backgroundSize: '100% auto'
-    },
-    links: [
-      {
-        text: 'Buy Now',
-        value: 'https://magiceden.io/marketplace/metatattooclub',
-      },
-    ],
-    colors: {
-      primary: '#000000',
-      secondary: '#d4a137E6',
-      accent: '#d4a137B3',
-      fontColor: '#FFFFFF',
-    },
-    backgroundImage:
-      'https://gateway.pinata.cloud/ipfs/QmdZ6eTjxUzCzguqdNBkYP5uMeHjjpkSgQg8512ozSUvff',
-  
-  },
-  {
     name: 'lotus',
     displayName: 'The Lotus',
     hostname: 'staking.thelotus.io',
@@ -2149,4 +2113,56 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       fontColor: '#FFFFFF',
     },
   },
+  {
+    name: 'MetaMercs',
+    displayName: 'METAMERCS STAKING',
+    nameInHeader: true,
+    stakePoolAddress: new PublicKey(
+      'G9nryHatSzQQ93ehjNejhiZpmgzQsRxZVTzLSxiDp8uU'
+    ),
+    hostname: 'vaults.metacreed.com',
+    hideFooter: true,
+    hideAllowedTokens: true,
+    websiteUrl: 'https://www.metacreed.com/',
+    receiptType: ReceiptType.Original,
+    tokenStandard: TokenStandard.NonFungible,
+    // styles to apply to the whole stake pool
+    styles: {
+      fontFamily: 'Industry, sans-serif',
+      fontWeight: 500,
+    },
+    // Colors object to style the stake page
+    colors: {
+      primary: '#181818',
+      secondary: '#177b7b',
+      backgroundSecondary: 'rgb(24 24 24 / 90%)',
+      fontColor: '#F2F2F2',
+    },
+    imageUrl:
+      'https://tz7u3k2viityfxxdjyjaqlvuan4doqvfzin6jbvp5cbiivqk25ja.arweave.net/nn9Nq1VCJ4Le404SCC60A3g3QqXKG-SGr-iChFYK11I',
+    // Background image for poolq
+    backgroundImage:
+      'https://raw.githubusercontent.com/DicersN00b/loots-logo/main/BG%20STAKING.png',
+
+    // Website url if specified will be navigated to when the image in the header is clicked
+    maxStaked: 777,
+    links: [
+      {
+        text: 'MetaCreed',
+        value: 'https://www.metacreed.com/',
+      },
+      {
+        text: 'Twitter',
+        value: 'https://twitter.com/metacreed',
+      },
+      {
+        text: 'Discord',
+        value: 'https://discord.com/invite/metacreed',
+      },
+      {
+        text: 'Buy MetaMercs',
+        value: 'https://hyperspace.xyz/collection/4Wo6Yuv9Den1DHuv8GmFDhA8cwGa28ToaXRwLwCRUqAX',  
+      },
+    ],
+  }
 ]
