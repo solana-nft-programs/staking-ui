@@ -2115,14 +2115,13 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
   },
   {
     name: 'MetaMercs',
-    displayName: 'METAMERCS',
+    displayName: 'METAMERCS STAKING',
     nameInHeader: true,
     stakePoolAddress: new PublicKey(
       'G9nryHatSzQQ93ehjNejhiZpmgzQsRxZVTzLSxiDp8uU'
     ),
     hostname: 'vaults.metacreed.com',
     hideFooter: true,
-    hideAllowedTokens: true,
     websiteUrl: 'https://www.metacreed.com/',
     receiptType: ReceiptType.Original,
     tokenStandard: TokenStandard.NonFungible,
