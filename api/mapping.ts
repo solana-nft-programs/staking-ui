@@ -64,7 +64,7 @@ export const defaultSecondaryColor = 'black'
 export const stakePoolMetadatas: StakePoolMetadata[] = [{
   name: 'liberty-square',
   displayName: 'Liberty Square',
-  stakePoolAddress: new PublicKey('C3ftNgFmotRc7buGgCxqvquDK31riQ8BHJKVa5TdAVha'),   // stakePoolAddress: new PublicKey(process.env.NEXT_PUBLIC_STAKE_POOL_ID!),
+  stakePoolAddress: new PublicKey(process.env.NEXT_PUBLIC_STAKE_POOL_ID!), // stakePoolAddress: new PublicKey('C3ftNgFmotRc7buGgCxqvquDK31riQ8BHJKVa5TdAVha'),
   websiteUrl: '', // TODO
   receiptType: ReceiptType.Receipt,
   imageUrl: '', // TODO

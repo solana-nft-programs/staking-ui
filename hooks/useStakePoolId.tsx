@@ -6,8 +6,8 @@ export const useStakePoolId = () => {
   // const {
   //   query: { stakePoolId },
   // } = useRouter()
-  // const stakePoolId = process.env.NEXT_PUBLIC_STAKE_NAME!;
-  const stakePoolId = 'C3ftNgFmotRc7buGgCxqvquDK31riQ8BHJKVa5TdAVha';
+  const stakePoolId = process.env.NEXT_PUBLIC_STAKE_NAME!;
+  // const stakePoolId = 'C3ftNgFmotRc7buGgCxqvquDK31riQ8BHJKVa5TdAVha';
   const nameMapping = stakePoolMetadatas.find((p) => p.name === stakePoolId)
   const addressMapping = stakePoolMetadatas.find(
     (p) => p.stakePoolAddress.toString() === stakePoolId
