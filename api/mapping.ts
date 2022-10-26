@@ -120,7 +120,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       accent: '#91B9FF',
       fontColor: '#FFFFFF',
     },
-    receiptType: ReceiptType.Original
+    receiptType: ReceiptType.Original,
   },
   {
     name: 'portals',
@@ -1064,6 +1064,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     receiptType: ReceiptType.Original,
     hostname: 'stake.1space.me',
     hideFooter: true,
+    logoPadding: true,
     imageUrl: 'https://1space.me/images/os-logo-white.jpeg',
     maxStaked: 300,
     links: [
