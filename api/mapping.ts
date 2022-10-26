@@ -105,6 +105,42 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
   //   },
   // },
   {
+    name: 'metatattooclub',
+    displayName: 'Meta Tattoo Club',
+    stakePoolAddress: new PublicKey(
+      '4CnsdUSFCFKa9zBupuxFesZZJm64Eq3WgrAePF2KCuXv'
+    ),
+    websiteUrl: 'https://metatattooclub.io/',
+    imageUrl:
+      'https://gateway.pinata.cloud/ipfs/QmQniSw9U7jKXk7fVJcvdkhVfqsLTyNHnukWwm7kfLEmuN',
+    maxStaked: 8888,
+    nameInHeader: true,
+    receiptType: ReceiptType.Original,
+    tokenStandard: TokenStandard.NonFungible,
+    hideAllowedTokens: true,
+    hideFooter: true,
+    styles: {
+      fontFamily: 'Industry, sans-serif',
+      fontWeight: 500,
+      backgroundSize: '100% auto'
+    },
+    links: [
+      {
+        text: 'Buy Now',
+        value: 'https://magiceden.io/marketplace/metatattooclub',
+      },
+    ],
+    colors: {
+      primary: '#000000',
+      secondary: '#d4a137E6',
+      accent: '#d4a137B3',
+      fontColor: '#FFFFFF',
+    },
+    backgroundImage:
+      'https://gateway.pinata.cloud/ipfs/QmdZ6eTjxUzCzguqdNBkYP5uMeHjjpkSgQg8512ozSUvff',
+  
+  },
+  {
     name: 'lotus',
     displayName: 'The Lotus',
     hostname: 'staking.thelotus.io',
