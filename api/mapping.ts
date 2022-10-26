@@ -154,5 +154,6 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
         text: 'Buy MetaMercs',
         value: 'https://hyperspace.xyz/collection/4Wo6Yuv9Den1DHuv8GmFDhA8cwGa28ToaXRwLwCRUqAX',  
       },
-      },
-    ]
+    ],
+  }
+]
