@@ -104,7 +104,60 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
   //     secondary: 'rgb(157,120,138, 0.6)',
   //   },
   // },
-
+  {
+    name: 'metatattooclub',
+    displayName: 'Meta Tattoo Club',
+    stakePoolAddress: new PublicKey(
+      '4CnsdUSFCFKa9zBupuxFesZZJm64Eq3WgrAePF2KCuXv'
+    ),
+    websiteUrl: 'https://metatattooclub.io/',
+    imageUrl:
+      'https://gateway.pinata.cloud/ipfs/QmQniSw9U7jKXk7fVJcvdkhVfqsLTyNHnukWwm7kfLEmuN',
+    maxStaked: 8888,
+    nameInHeader: true,
+    receiptType: ReceiptType.Original,
+    tokenStandard: TokenStandard.NonFungible,
+    hideAllowedTokens: true,
+    hideFooter: true,
+    styles: {
+      fontFamily: 'Industry, sans-serif',
+      fontWeight: 500,
+      backgroundSize: '100% auto'
+    },
+    links: [
+      {
+        text: 'Buy Now',
+        value: 'https://magiceden.io/marketplace/metatattooclub',
+      },
+    ],
+    colors: {
+      primary: '#000000',
+      secondary: '#d4a137E6',
+      accent: '#d4a137B3',
+      fontColor: '#FFFFFF',
+    },
+    backgroundImage:
+      'https://gateway.pinata.cloud/ipfs/QmdZ6eTjxUzCzguqdNBkYP5uMeHjjpkSgQg8512ozSUvff',
+  
+  },
+  {
+    name: 'lotus',
+    displayName: 'The Lotus',
+    hostname: 'staking.thelotus.io',
+    websiteUrl: 'https://www.thelotus.io',
+    stakePoolAddress: new PublicKey(
+      '4c4JF1m6hteH8F5iMN7nQYo8SfLPCJBNTeXFmjzt9C2J'
+    ),
+    description: 'The Lotus staking pool.',
+    imageUrl: '/logos/lotus.svg',
+    colors: {
+      primary: '#303030',
+      secondary: '#7FFFB9',
+      accent: '#91B9FF',
+      fontColor: '#FFFFFF',
+    },
+    receiptType: ReceiptType.Original,
+  },
   {
     name: 'portals',
     displayName: 'Portals',
@@ -1047,6 +1100,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     receiptType: ReceiptType.Original,
     hostname: 'stake.1space.me',
     hideFooter: true,
+    logoPadding: true,
     imageUrl: 'https://1space.me/images/os-logo-white.jpeg',
     maxStaked: 300,
     links: [
@@ -2095,57 +2149,4 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       fontColor: '#FFFFFF',
     },
   },
- 
-  {
-    name: 'Sound Family DAO',
-    displayName: 'Sound Family DAO Staking',
-    nameInHeader: true,
-    stakePoolAddress: new PublicKey(
-      'BGnayVs2xtEjzR42Kdq7vXnmRSjBqP9byP4xkmsmF23f'
-    ),
-    hostname: 'staking-soundfamily.herokuapp.com',
-    hideFooter: true, 
-    hideAllowedTokens: true, 
-    websiteUrl: 'https://catchtherecord.com/',
-    receiptType: ReceiptType.None,
-    tokenStandard: TokenStandard.NonFungible,
-    imageUrl:
-      'https://gateway.pinata.cloud/ipfs/QmYM9LN8pXJzXz9j79ZNA7y1HRcWVJW5sWVG6YPZ88UFKZ',
-    maxStaked: 1071,
-    backgroundImage:
-      'https://gateway.pinata.cloud/ipfs/QmQtByLThJK3Zfah2W3jqyHVq3buEKsZyp2vN4WxrC4WJ2',
-    colors: {
-      primary: '#5c4b18',
-      secondary: '#d9faf7',
-      accent: '#362304',
-      fontColor: '#edb63e',
-      fontColorSecondary: '#963315',
-    },
-    links: [
-      {
-        text: 'HOME',
-        value: 'https://catchtherecord.com/the-art-of-field-recording',
-      },
-      {
-        text: 'SITE',
-        value: 'https://catchtherecord.com/',
-      },
-      {
-        text: 'MINT',
-        value: 'https://the-art-of-field-recording.club',
-      },
-      {
-        text: 'BUY',
-        value: 'https://magiceden.io/marketplace/k8XrthqoADqQqY5sLo4gPk3t8tHWuyWJsqJT13AiZqv',
-      },
-      {
-        text: 'TWITTER',
-        value: 'https://twitter.com/field_recording',
-      },
-      {
-        text: 'DISCORD',
-        value: 'https://discord.gg/WEU9W5Ew9q',
-      },
-    ],
-  }
 ]
