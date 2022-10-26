@@ -2111,7 +2111,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     tokenStandard: TokenStandard.NonFungible,
     imageUrl:
       'https://gateway.pinata.cloud/ipfs/QmYM9LN8pXJzXz9j79ZNA7y1HRcWVJW5sWVG6YPZ88UFKZ',
-    maxStaked: 1070,
+    maxStaked: 1071,
     backgroundImage:
       'https://gateway.pinata.cloud/ipfs/QmQtByLThJK3Zfah2W3jqyHVq3buEKsZyp2vN4WxrC4WJ2',
     colors: {
