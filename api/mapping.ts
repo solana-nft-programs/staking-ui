@@ -105,6 +105,43 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
   //   },
   // },
   {
+    name: 'bearmarketbeavers',
+    displayName: 'Bear Market Beavers',
+    stakePoolAddress: new PublicKey(
+      'GevXdzt3GXEZHG8TMyPyAF9KGT2zsksCfgHM2Vwpn5ks'
+    ),
+    websiteUrl: 'https://bearmarketbeaver.com/',
+    imageUrl:
+      'https://gateway.pinata.cloud/ipfs/QmW5BaXo2FDyBogVUP4WMuFFMtQ8MpQC5wUWTyPjLSinfD',
+    maxStaked: 6969,
+    nameInHeader: true,
+    description: 'Stake your Handsome Beavers at the Dam to earn $BBALLS',
+    receiptType: ReceiptType.Original,
+    tokenStandard: TokenStandard.NonFungible,
+    hideAllowedTokens: true,
+    hideFooter: true,
+    styles: {
+      fontFamily: 'Paralucent',
+      fontWeight: 500,
+      backgroundSize: '100% auto'
+    },
+    links: [
+      {
+        text: 'Buy Now',
+        value: 'https://hyperspace.xyz/collection/bear_market_beavers',
+      },
+    ],
+    colors: {
+      primary: '#000000',
+      secondary: '#000000',
+      accent: '#000000',
+      fontColor: '#FFFFFF',
+    },
+    backgroundImage:
+      'https://gateway.pinata.cloud/ipfs/Qmc3nAJLVgYsM8QvtPhKCh5BARGSfyaug5rCmyCGdwvuHR',
+  
+  },
+  {
     name: 'metatattooclub',
     displayName: 'Meta Tattoo Club',
     stakePoolAddress: new PublicKey(
