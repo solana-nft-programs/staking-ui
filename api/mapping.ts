@@ -2266,13 +2266,10 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       },
     ],
     colors: {
-      primary: '#0cb2c0',
+      primary: '#672394',
       secondary: '#fad141',
       accent: '#672394',
       fontColor: '#e8e6d9',
-    },
-    backgroundImage:
-      'https://arweave.net/MExBL7bF4tmEqz-G16KzODKN8FacSw54bAvbIn2s8ic',
-  
+    }
   }
 ]
