@@ -5,7 +5,17 @@ import 'tailwindcss/tailwind.css'
 import { WalletIdentityProvider } from '@cardinal/namespaces-components'
 import { WalletProvider } from '@solana/wallet-adapter-react'
 import { WalletModalProvider } from '@solana/wallet-adapter-react-ui'
-import { getWalletAdapters } from '@solana/wallet-adapter-wallets'
+import {
+  BackpackWalletAdapter,
+  BraveWalletAdapter,
+  CoinbaseWalletAdapter,
+  FractalWalletAdapter,
+  GlowWalletAdapter,
+  LedgerWalletAdapter,
+  PhantomWalletAdapter,
+  SolflareWalletAdapter,
+  TorusWalletAdapter,
+} from '@solana/wallet-adapter-wallets'
 import type { StakePoolMetadata } from 'api/mapping'
 import { ToastContainer } from 'common/Notification'
 import type { AppProps } from 'next/app'
@@ -41,7 +51,17 @@ const App = ({
   <EnvironmentProvider defaultCluster={cluster}>
     <StakePoolMetadataProvider poolMapping={poolMapping}>
       <UTCNowProvider>
-        <WalletProvider autoConnect wallets={getWalletAdapters()}>
+        <WalletProvider autoConnect wallets={[
+              new PhantomWalletAdapter(),
+              new BackpackWalletAdapter(),
+              new SolflareWalletAdapter(),
+              new CoinbaseWalletAdapter(),
+              new BraveWalletAdapter(),
+              new FractalWalletAdapter(),
+              new GlowWalletAdapter(),
+              new LedgerWalletAdapter(),
+              new TorusWalletAdapter(),
+            ]}>
           <WalletIdentityProvider>
             <WalletModalProvider>
               <QueryClientProvider client={queryClient}>
