@@ -2246,7 +2246,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     ),
     websiteUrl: 'https://bobbyrabbits.com/#/GnarAFDAO',
     imageUrl:
-      'https://bmstqnq3xzokqivheifev7el3iif777dr2mm77727rrfvhrkih3q.arweave.net/CyU4Nhu-XKgipyIKSvyL2hBf_-OOmM__-vxiWp4qQfc',
+      'https://arweave.net/H-9FITsB2SdPfJXhYq2QWMMSi7SG4LA_0MHbNnN_zN8',
     maxStaked: 3333,
     nameInHeader: true,
     description: 'Stake your GnarAF DAO Card to earn $GNAR',
