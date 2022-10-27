@@ -136,9 +136,10 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       secondary: '#000000',
       accent: '#000000',
       fontColor: '#FFFFFF',
+      fontColorSecondary: '#FFFFFF',
     },
     backgroundImage:
-      'https://gateway.pinata.cloud/ipfs/Qmc3nAJLVgYsM8QvtPhKCh5BARGSfyaug5rCmyCGdwvuHR',
+      'https://gateway.pinata.cloud/ipfs/QmXMvZYdwAHo9hGSAmXKFA7VVFVmYLWdPiQ3wx7HxkKfrN',
   
   },
   {
