@@ -21,6 +21,7 @@ import {
 } from 'hooks/useStakedTokenDatas'
 import { useRewardMintInfo } from 'hooks/useRewardMintInfo'
 import { useRewards } from 'hooks/useRewards'
+import { notify } from './Notification'
 
 const logo = require('../images/liberty-square-logo.png');
 
@@ -39,7 +40,9 @@ export const TitleText = styled('div')`
   }
 `
 
-export const Header = () => {
+export const Header = (props: {totalStaked: string, stakedSelected: StakeEntryTokenData[], 
+                               unstakedSelected: any, handleUnstake: Function,
+                               handleStake: Function, handleClaimRewards: Function}) => {
   const router = useRouter()
   const ctx = useEnvironmentCtx()
   const wallet = useWallet()
@@ -91,12 +94,12 @@ export const Header = () => {
           </div>
           <div className='order-2 col-span-1 sm:col-span-2 h-48 pt-3 font-mono uppercase'>
             <div className='grid grid-cols-1 md:grid-cols-2 gap-2'>
-              <span className='col-span-1 md:col-span-2 text-xl xl:text-2xl'>Total collection staked: {Number(totalStaked).toLocaleString()}{' '}</span>
+              <span className='col-span-1 md:col-span-2 text-xl xl:text-2xl'>Total collection staked: {Number(props.totalStaked).toLocaleString()}{' '}</span>
               <div className='row-span-3 col-span-1 px-3 md:px-0'>
                 {!stakePoolMetadata?.notFound && stakedTokenDatas && rewardMintInfo.data && rewards.data && (
                 <div className='border-2 border-red-700 px-4 pl-16 md:pl-1'>
-                  <div><p>your collection</p></div>
-                  <div><span className='w-32 text-right inline-block'>Common: </span>{stakedTokenDatas.reduce((prev, current) => {
+                  <div><p>your staked collection</p></div>
+                  <div><span className='w-32 text-right inline-block pr-2'>Common:</span>{stakedTokenDatas.reduce((prev, current) => {
                                 const isCommon = current?.metadata?.data.attributes.filter((d: any) => {
                                   return d.trait_type === '2- Class' && d.value === 'Common';
                                 });
@@ -106,7 +109,7 @@ export const Header = () => {
                                 return prev;
                               }, 0)}
                   </div>
-                  <div><span className='w-32 text-right inline-block'>Rare: </span>{stakedTokenDatas.reduce((prev, current) => {
+                  <div><span className='w-32 text-right inline-block pr-2'>Rare:</span>{stakedTokenDatas.reduce((prev, current) => {
                                 const isRare = current?.metadata?.data.attributes.filter((d: any) => {
                                   return d.trait_type === '2- Class' && d.value === 'Rare';
                                 });
@@ -115,7 +118,7 @@ export const Header = () => {
                                 }
                                 return prev;
                               }, 0)}</div>
-                  <div><span className='w-32 text-right inline-block'>Ultra Rare: </span>{stakedTokenDatas.reduce((prev, current) => {
+                  <div><span className='w-32 text-right inline-block pr-2'>Ultra Rare:</span>{stakedTokenDatas.reduce((prev, current) => {
                                 const isUltraRare = current?.metadata?.data.attributes.filter((d: any) => {
                                   return d.trait_type === '2- Class' && d.value === 'Ultra Rare';
                                 });
@@ -124,7 +127,7 @@ export const Header = () => {
                                 }
                                 return prev;
                               }, 0)}</div>
-                  <div><span className='w-32 text-right inline-block'>Legendary: </span>{stakedTokenDatas.reduce((prev, current) => {
+                  <div><span className='w-32 text-right inline-block pr-2'>Legendary:</span>{stakedTokenDatas.reduce((prev, current) => {
                                 const isLegendary = current?.metadata?.data.attributes.filter((d: any) => {
                                   return d.trait_type === '2- Class' && d.value === 'Legendary';
                                 });
@@ -133,22 +136,60 @@ export const Header = () => {
                                 }
                                 return prev;
                               }, 0)}</div>
-                  <div><p>unclaimed $FLTH: {}{formatMintNaturalAmountAsDecimal(
+                  <div><span className='w-32 text-right inline-block pr-2'>Unclaimed:</span>{}{formatMintNaturalAmountAsDecimal(
                                         rewardMintInfo.data.mintInfo,
                                         rewards.data?.claimableRewards,
                                         Math.min(rewardMintInfo.data.mintInfo.decimals, 6)
                                       )}{' '}
                                       {rewardMintInfo.data.tokenListData?.name ||
                                         rewardMintInfo.data.metaplexMintData?.data.name ||
-                                        '???'}</p>
-                  </div>
+                                        '???'}</div>
                 </div>
                 )}
                 </div>
               <div className='row-span-3 col-span-1 flex flex-row md:flex-col justify-between px-3 md:px-0 text-center text-xl font-mono uppercase'>
-                <div className='font-mono uppercase border-2 border-red-700 px-4 py-1'><button>STAKE ALL</button></div>
-                <div className='border-2 border-red-700 px-4 py-1'><button>UNSTAKE All</button></div>
-                <div className='border-2 border-red-700 px-4 py-1'><button>WITHDRAW All $FLTH</button></div>
+                <div className='font-mono uppercase border-2 border-red-700 px-4 py-1'>
+                  <button
+                    onClick={() => {
+                      if (props.unstakedSelected.length === 0) {
+                        notify({
+                          message: `No tokens selected`,
+                          type: 'error',
+                        })
+                      } else {
+                        props.handleStake()
+                      }
+                    }}
+                  >STAKE ({props.unstakedSelected.length})</button>
+                </div>
+                <div className='border-2 border-red-700 px-4 py-1'>
+                  <button 
+                    onClick={() => {
+                      if (props.stakedSelected.length === 0) {
+                        notify({
+                          message: `No tokens selected`,
+                          type: 'error',
+                        })
+                      } else {
+                        props.handleUnstake()
+                      }
+                    }}
+                  >UNSTAKE ({props.stakedSelected.length})</button>
+                </div>
+                <div className='border-2 border-red-700 px-4 py-1'>
+                  <button
+                    onClick={() => {
+                      if (props.stakedSelected.length === 0) {
+                        notify({
+                          message: `No tokens selected`,
+                          type: 'error',
+                        })
+                      } else {
+                        props.handleClaimRewards()
+                      }
+                    }}
+                  >CLAIM $FLTH ({props.stakedSelected.length})</button>
+                </div>
               </div>
             </div>
           </div>
