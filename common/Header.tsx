@@ -14,10 +14,13 @@ import { Wallet } from '@saberhq/solana-contrib'
 import { useStakePoolId } from 'hooks/useStakePoolId'
 import { useUTCNow } from 'providers/UTCNowProvider'
 import { contrastColorMode } from './utils'
+import { formatMintNaturalAmountAsDecimal } from 'common/units'
 import {
   StakeEntryTokenData,
   useStakedTokenDatas,
 } from 'hooks/useStakedTokenDatas'
+import { useRewardMintInfo } from 'hooks/useRewardMintInfo'
+import { useRewards } from 'hooks/useRewards'
 
 const logo = require('../images/liberty-square-logo.png');
 
@@ -43,6 +46,9 @@ export const Header = () => {
   const stakePoolId = useStakePoolId()
   const { data: stakedTokenDatas } = useStakedTokenDatas()
   const { data: stakePoolMetadata } = useStakePoolMetadata()
+  const rewardMintInfo = useRewardMintInfo()
+  const rewards = useRewards()
+  const [totalStaked, setTotalStaked] = useState('')
   const { clockDrift } = useUTCNow()
 
   return (
@@ -85,9 +91,9 @@ export const Header = () => {
           </div>
           <div className='order-2 col-span-1 sm:col-span-2 h-48 pt-3 font-mono uppercase'>
             <div className='grid grid-cols-1 md:grid-cols-2 gap-2'>
-              <span className='col-span-1 md:col-span-2 text-xl xl:text-2xl'>Total collection staked: {}</span>
+              <span className='col-span-1 md:col-span-2 text-xl xl:text-2xl'>Total collection staked: {Number(totalStaked).toLocaleString()}{' '}</span>
               <div className='row-span-3 col-span-1 px-3 md:px-0'>
-                {!stakePoolMetadata?.notFound && stakedTokenDatas && (
+                {!stakePoolMetadata?.notFound && stakedTokenDatas && rewardMintInfo.data && rewards.data && (
                 <div className='border-2 border-red-700 px-4 pl-16 md:pl-1'>
                   <div><p>your collection</p></div>
                   <div><span className='w-32 text-right inline-block'>Common: </span>{stakedTokenDatas.reduce((prev, current) => {
@@ -127,7 +133,15 @@ export const Header = () => {
                                 }
                                 return prev;
                               }, 0)}</div>
-                  <div><p>unclaimed $FLTH: {}</p></div>
+                  <div><p>unclaimed $FLTH: {}{formatMintNaturalAmountAsDecimal(
+                                        rewardMintInfo.data.mintInfo,
+                                        rewards.data?.claimableRewards,
+                                        Math.min(rewardMintInfo.data.mintInfo.decimals, 6)
+                                      )}{' '}
+                                      {rewardMintInfo.data.tokenListData?.name ||
+                                        rewardMintInfo.data.metaplexMintData?.data.name ||
+                                        '???'}</p>
+                  </div>
                 </div>
                 )}
                 </div>
