@@ -2238,5 +2238,39 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
         value: 'https://hyperspace.xyz/collection/4Wo6Yuv9Den1DHuv8GmFDhA8cwGa28ToaXRwLwCRUqAX',  
       },
     ],
+  },
+    {
+  name: 'gnarafdao',
+    displayName: 'GnarAF DAO',
+    stakePoolAddress: new PublicKey(
+      '3hdpn7vkfASdzWvqrLgT83TZLNWdhkG3C1LeubWk7RRZ'
+    ),
+    websiteUrl: 'https://bobbyrabbits.com/#/GnarAFDAO',
+    imageUrl:
+      'https://arweave.net/H-9FITsB2SdPfJXhYq2QWMMSi7SG4LA_0MHbNnN_zN8',
+    maxStaked: 3333,
+    nameInHeader: true,
+    description: 'Stake your GnarAF DAO Card to earn $GNAR',
+    receiptType: ReceiptType.Original,
+    tokenStandard: TokenStandard.NonFungible,
+    hideAllowedTokens: true,
+    hideFooter: true,
+    styles: {
+      fontFamily: 'Paralucent',
+      fontWeight: 500,
+      backgroundSize: '100% auto'
+    },
+    links: [
+      {
+        text: 'Mint Now',
+        value: 'https://gnarafdao.vercel.app/',
+      },
+    ],
+    colors: {
+      primary: '#672394',
+      secondary: '#fad141',
+      accent: '#672394',
+      fontColor: '#e8e6d9',
+    }
   }
 ]
