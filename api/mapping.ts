@@ -105,43 +105,6 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
   //   },
   // },
   {
-    name: 'bearmarketbeavers',
-    displayName: 'Bear Market Beavers',
-    stakePoolAddress: new PublicKey(
-      'GevXdzt3GXEZHG8TMyPyAF9KGT2zsksCfgHM2Vwpn5ks'
-    ),
-    websiteUrl: 'https://bearmarketbeaver.com/',
-    imageUrl:
-      'https://gateway.pinata.cloud/ipfs/QmW5BaXo2FDyBogVUP4WMuFFMtQ8MpQC5wUWTyPjLSinfD',
-    maxStaked: 6969,
-    nameInHeader: true,
-    description: 'Stake your Handsome Beavers at the Dam to earn $BBALLS',
-    receiptType: ReceiptType.Original,
-    tokenStandard: TokenStandard.NonFungible,
-    hideAllowedTokens: true,
-    hideFooter: true,
-    styles: {
-      fontFamily: 'Paralucent',
-      fontWeight: 500,
-      backgroundSize: '100% auto'
-    },
-    links: [
-      {
-        text: 'Buy Now',
-        value: 'https://hyperspace.xyz/collection/bear_market_beavers',
-      },
-    ],
-    colors: {
-      primary: '#000000',
-      secondary: '#000000',
-      accent: '#000000',
-      fontColor: '#FFFFFF',
-    },
-    backgroundImage:
-      'https://gateway.pinata.cloud/ipfs/Qmc3nAJLVgYsM8QvtPhKCh5BARGSfyaug5rCmyCGdwvuHR',
-  
-  },
-  {
     name: 'metatattooclub',
     displayName: 'Meta Tattoo Club',
     stakePoolAddress: new PublicKey(
@@ -2235,6 +2198,58 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       {
         text: 'Buy MetaMercs',
         value: 'https://hyperspace.xyz/collection/4Wo6Yuv9Den1DHuv8GmFDhA8cwGa28ToaXRwLwCRUqAX',  
+      },
+    ],
+  },
+  {
+    name: 'Sound Family DAO',
+    displayName: 'Sound Family DAO Staking',
+    nameInHeader: true,
+    stakePoolAddress: new PublicKey(
+      'BGnayVs2xtEjzR42Kdq7vXnmRSjBqP9byP4xkmsmF23f'
+    ),
+    hostname: 'staking-soundfamily.herokuapp.com',
+    hideFooter: true, 
+    hideAllowedTokens: true, 
+    websiteUrl: 'https://catchtherecord.com/',
+    receiptType: ReceiptType.None,
+    tokenStandard: TokenStandard.NonFungible,
+    imageUrl:
+      'https://gateway.pinata.cloud/ipfs/QmYM9LN8pXJzXz9j79ZNA7y1HRcWVJW5sWVG6YPZ88UFKZ',
+    maxStaked: 1070,
+    backgroundImage:
+      'https://gateway.pinata.cloud/ipfs/QmQtByLThJK3Zfah2W3jqyHVq3buEKsZyp2vN4WxrC4WJ2',
+    colors: {
+      primary: '#5c4b18',
+      secondary: '#d9faf7',
+      accent: '#362304',
+      fontColor: '#edb63e',
+      fontColorSecondary: '#963315',
+    },
+    links: [
+      {
+        text: 'HOME',
+        value: 'https://catchtherecord.com/the-art-of-field-recording',
+      },
+      {
+        text: 'SITE',
+        value: 'https://catchtherecord.com/',
+      },
+      {
+        text: 'MINT',
+        value: 'https://the-art-of-field-recording.club',
+      },
+      {
+        text: 'BUY',
+        value: 'https://magiceden.io/marketplace/k8XrthqoADqQqY5sLo4gPk3t8tHWuyWJsqJT13AiZqv',
+      },
+      {
+        text: 'TWITTER',
+        value: 'https://twitter.com/field_recording',
+      },
+      {
+        text: 'DISCORD',
+        value: 'https://discord.gg/WEU9W5Ew9q',
       },
     ],
   }
