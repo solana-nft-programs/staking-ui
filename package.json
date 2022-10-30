@@ -23,26 +23,23 @@
     "lint": "next lint"
   },
   "resolutions": {
-    "@solana/web3.js": "^1.58.0"
+    "@solana/web3.js": "^1.58.0",
+    "@solana/buffer-layout": "^4.0.0"
   },
   "dependencies": {
     "@apollo/client": "^3.6.9",
-    "@cardinal/common": "^2.0.13",
+    "@cardinal/common": "^4.0.1",
     "@cardinal/namespaces-components": "^4.1.27",
-    "@cardinal/scanner": "^0.1.1",
-    "@cardinal/staking": "^1.10.5",
+    "@cardinal/staking": "^1.10.7",
     "@cardinal/stats": "^1.0.3",
-    "@emotion/babel-plugin": "^11.7.2",
-    "@emotion/babel-preset-css-prop": "^11.2.0",
-    "@emotion/css": "^11.7.1",
     "@emotion/react": "^11.7.1",
-    "@emotion/server": "^11.4.0",
     "@emotion/styled": "^11.6.0",
     "@headlessui/react": "^1.6.1",
     "@mui/material": "^5.8.2",
     "@popperjs/core": "^2.11.5",
     "@project-serum/anchor": "^0.24.2",
     "@saberhq/anchor-contrib": "^1.12.58",
+    "@solana/buffer-layout": "^4.0.0",
     "@saberhq/solana-contrib": "^1.13.2",
     "@sentry/nextjs": "^7.8.1",
     "@solana/qr-code-styling": "^1.6.0-beta.0",
