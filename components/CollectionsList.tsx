@@ -34,6 +34,7 @@ export const CollectionsList = ({ configs }: { configs?: StakePool[] }) => {
                 <div
                   key={`${config.stakePoolData.pubkey.toString()}`}
                   className="flex w-full cursor-pointer gap-4 border-b border-border px-8 py-4 md:flex-row"
+                  // eslint-disable-next-line react/no-unknown-property
                   css={css`
                     &:hover {
                       background: ${config.stakePoolMetadata?.colors?.primary &&
