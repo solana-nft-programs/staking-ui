@@ -13,6 +13,7 @@ import {
   GlowWalletAdapter,
   LedgerWalletAdapter,
   PhantomWalletAdapter,
+  SlopeWalletAdapter,
   SolflareWalletAdapter,
   TorusWalletAdapter,
 } from '@solana/wallet-adapter-wallets'
@@ -61,6 +62,7 @@ const App = ({
               new GlowWalletAdapter(),
               new LedgerWalletAdapter(),
               new TorusWalletAdapter(),
+              new SlopeWalletAdapter(),
             ]}>
           <WalletIdentityProvider>
             <WalletModalProvider>
