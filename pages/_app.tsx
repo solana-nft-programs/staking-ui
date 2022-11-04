@@ -52,18 +52,21 @@ const App = ({
   <EnvironmentProvider defaultCluster={cluster}>
     <StakePoolMetadataProvider poolMapping={poolMapping}>
       <UTCNowProvider>
-        <WalletProvider autoConnect wallets={[
-              new PhantomWalletAdapter(),
-              new BackpackWalletAdapter(),
-              new SolflareWalletAdapter(),
-              new CoinbaseWalletAdapter(),
-              new BraveWalletAdapter(),
-              new FractalWalletAdapter(),
-              new GlowWalletAdapter(),
-              new LedgerWalletAdapter(),
-              new TorusWalletAdapter(),
-              new SlopeWalletAdapter(),
-            ]}>
+        <WalletProvider
+          autoConnect
+          wallets={[
+            new PhantomWalletAdapter(),
+            new BackpackWalletAdapter(),
+            new SolflareWalletAdapter(),
+            new CoinbaseWalletAdapter(),
+            new GlowWalletAdapter(),
+            new BraveWalletAdapter(),
+            new FractalWalletAdapter(),
+            new LedgerWalletAdapter(),
+            new TorusWalletAdapter(),
+            new SlopeWalletAdapter(),
+          ]}
+        >
           <WalletIdentityProvider>
             <WalletModalProvider>
               <QueryClientProvider client={queryClient}>
