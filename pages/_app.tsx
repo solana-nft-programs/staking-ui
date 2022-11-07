@@ -12,6 +12,7 @@ import {
   FractalWalletAdapter,
   GlowWalletAdapter,
   LedgerWalletAdapter,
+  MathWalletAdapter,
   PhantomWalletAdapter,
   SlopeWalletAdapter,
   SolflareWalletAdapter,
@@ -65,6 +66,7 @@ const App = ({
             new LedgerWalletAdapter(),
             new TorusWalletAdapter(),
             new SlopeWalletAdapter(),
+            new MathWalletAdapter(),
           ]}
         >
           <WalletIdentityProvider>
