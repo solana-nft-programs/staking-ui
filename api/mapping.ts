@@ -192,7 +192,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     colors: {
       primary: '#ffffff',
       secondary: '#91B9FF',
-      accent: '#FFFFFF',
+      accent: '#E9E1D1',
       fontColor: '#303030',
     },
     receiptType: ReceiptType.Original,
