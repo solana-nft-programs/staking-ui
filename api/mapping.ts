@@ -116,10 +116,10 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     description: 'The Lotus staking pool.',
     imageUrl: '/logos/lotus.svg',
     colors: {
-      primary: '#7FFFB9',
+      primary: '#ffffff',
       secondary: '#91B9FF',
       accent: '#FFFFFF',
-      fontColor: '#FFFFFF',
+      fontColor: '#303030',
     },
     receiptType: ReceiptType.Original
   },
