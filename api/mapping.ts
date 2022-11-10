@@ -195,7 +195,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       accent: '#E9E1D1',
       fontColor: '#303030',
     },
-    receiptType: ReceiptType.Original,
+    receiptType: ReceiptType.Receipt
   },
   {
     name: 'portals',
