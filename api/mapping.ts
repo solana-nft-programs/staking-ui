@@ -2273,5 +2273,29 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       accent: '#672394',
       fontColor: '#e8e6d9',
     }
-  }
+  },
+
+{    name: 'thepolarians',
+displayName: 'The Polarians',
+stakePoolAddress: new PublicKey(
+  'HSLsc3fyHYyBjTnSPSGyyxubcGdtw4ih8odTcHturZrU'
+  ),
+websiteUrl: 'https://twitter.com/polariansnft',
+receiptType: ReceiptType.Original,
+maxStaked: 2400, // update with collection size
+imageUrl: 'https://dl.airtable.com/.attachments/4267ccfa3ec6b022948a23376955d686/ad374799/polarproject500x500.gif',
+tokenStandard: TokenStandard.NonFungible,
+styles: {
+  fontFamily: 'Player One',
+  fontWeight: 500,
+},
+description: 'Stake your Polarians NFT to earn $CRYSTAL.',
+colors: {
+  primary: '#383838',
+  secondary: '#F0EDE4',
+  accent: '#4D4DFF',
+  fontColor: '#4D4DFF',
+  fontColorSecondary: '#FE5930',
+}
+}
 ]
