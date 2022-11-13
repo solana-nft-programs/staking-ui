@@ -2292,10 +2292,10 @@ styles: {
 description: 'Stake your Polarians NFT to earn $CRYSTAL.',
 colors: {
   primary: '#383838',
-  secondary: '#F0EDE4',
+  secondary: '#4D4DFF',
   accent: '#4D4DFF',
   fontColor: '#4D4DFF',
-  fontColorSecondary: '#FE5930',
+  fontColorSecondary: '#FFFFFF',
 }
 }
 ]
