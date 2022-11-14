@@ -2294,7 +2294,7 @@ colors: {
   primary: '#383838',
   secondary: '#4D4DFF',
   accent: '#4D4DFF',
-  fontColor: '#4D4DFF',
+  fontColor: '#FFFFFF',
   fontColorSecondary: '#FFFFFF',
 }
 }
