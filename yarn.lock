@@ -285,13 +285,13 @@
     eslint-plugin-react "^7.29.3"
     eslint-plugin-react-hooks "^4.3.0"
 
-"@cardinal/namespaces-components@^4.1.27":
-  version "4.1.27"
-  resolved "https://registry.yarnpkg.com/@cardinal/namespaces-components/-/namespaces-components-4.1.27.tgz#7b96a6ecc86f55e1e8f84ce64a578bc44396fb23"
-  integrity sha512-zxxMKi4JzlI+Dvj8iHDKN4Gme28O6tQJa2YnYlXjUpAknpxwVkVNororEnVriXAMFQ6Fo9fnkp+LOw8YkySg5w==
+"@cardinal/namespaces-components@^4.1.28":
+  version "4.1.28"
+  resolved "https://registry.yarnpkg.com/@cardinal/namespaces-components/-/namespaces-components-4.1.28.tgz#dfba611cca2de1fc6047550486f2f6d42906d09d"
+  integrity sha512-cCgyV8DqQAUjRWlNtSFOCuQ5+2IdyvuCZPpsWgnsS+WfhxY8RNJVLVS0wlLKnt75vbaC6BmUfRvclsDIRF25aw==
   dependencies:
     "@cardinal/certificates" "^2.0.1"
-    "@cardinal/common" "^3.0.1"
+    "@cardinal/common" "^4.0.1"
     "@cardinal/eslint-config-react" "^1.0.10"
     "@cardinal/namespaces" "^4.1.55"
     "@cardinal/token-manager" "^1.7.8"
