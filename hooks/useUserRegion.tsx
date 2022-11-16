@@ -1,3 +1,4 @@
+import { defaultDisallowedRegions } from 'api/mapping'
 import { useQuery } from 'react-query'
 
 import { useStakePoolMetadata } from './useStakePoolMetadata'
@@ -12,9 +13,9 @@ export const useUserRegion = () => {
   }>(
     [
       'useUserRegion',
-      stakePoolMetadata?.disallowRegions?.map(
-        (r) => `${r.code}-${r.subdivision}`
-      ),
+      defaultDisallowedRegions
+        .concat(stakePoolMetadata?.disallowRegions || [])
+        .map((r) => `${r.code}}`),
     ],
     async () => {
       const response = await fetch(
@@ -29,11 +30,10 @@ export const useUserRegion = () => {
         countryCode: json.country_code2,
         isAllowed:
           !!json.country_code2 &&
-          !stakePoolMetadata?.disallowRegions?.some(
-            (r) => r.code === json.country_code2
-          ),
+          !defaultDisallowedRegions
+            .concat(stakePoolMetadata?.disallowRegions || [])
+            .some((r) => r.code === json.country_code2),
       }
-    },
-    { enabled: !!stakePoolMetadata?.disallowRegions }
+    }
   )
 }

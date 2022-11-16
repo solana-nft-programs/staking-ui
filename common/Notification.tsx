@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unknown-property */
 import { css } from '@emotion/react'
 import styled from '@emotion/styled'
 import type { Cluster } from '@solana/web3.js'

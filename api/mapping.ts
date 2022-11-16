@@ -91,6 +91,13 @@ export type StakePoolMetadata = {
 
 export const defaultSecondaryColor = 'rgba(29, 78, 216, 255)'
 
+export const defaultDisallowedRegions = [
+  { code: 'CU' },
+  { code: 'IR' },
+  { code: 'KP' },
+  { code: 'SY' },
+]
+
 export const stakePoolMetadatas: StakePoolMetadata[] = [
   // {
   //   name: 'cardinal',
@@ -123,7 +130,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     styles: {
       fontFamily: 'Paralucent',
       fontWeight: 500,
-      backgroundSize: '100% auto'
+      backgroundSize: '100% auto',
     },
     links: [
       {
@@ -140,7 +147,6 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     },
     backgroundImage:
       'https://gateway.pinata.cloud/ipfs/QmYiRZFYsm3xKw6pD82LChvKZaEH2pdWqzvKzsotDjuRGj',
-  
   },
   {
     name: 'metatattooclub',
@@ -160,7 +166,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     styles: {
       fontFamily: 'Industry, sans-serif',
       fontWeight: 500,
-      backgroundSize: '100% auto'
+      backgroundSize: '100% auto',
     },
     links: [
       {
@@ -176,7 +182,6 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     },
     backgroundImage:
       'https://gateway.pinata.cloud/ipfs/QmdZ6eTjxUzCzguqdNBkYP5uMeHjjpkSgQg8512ozSUvff',
-  
   },
   {
     name: 'lotus',
@@ -195,7 +200,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       accent: '#E9E1D1',
       fontColor: '#303030',
     },
-    receiptType: ReceiptType.Receipt
+    receiptType: ReceiptType.Receipt,
   },
   {
     name: 'portals',
@@ -2236,19 +2241,19 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       },
       {
         text: 'Buy MetaMercs',
-        value: 'https://hyperspace.xyz/collection/4Wo6Yuv9Den1DHuv8GmFDhA8cwGa28ToaXRwLwCRUqAX',  
+        value:
+          'https://hyperspace.xyz/collection/4Wo6Yuv9Den1DHuv8GmFDhA8cwGa28ToaXRwLwCRUqAX',
       },
     ],
   },
-    {
-  name: 'gnarafdao',
+  {
+    name: 'gnarafdao',
     displayName: 'GnarAF DAO',
     stakePoolAddress: new PublicKey(
       '3hdpn7vkfASdzWvqrLgT83TZLNWdhkG3C1LeubWk7RRZ'
     ),
     websiteUrl: 'https://bobbyrabbits.com/#/GnarAFDAO',
-    imageUrl:
-      'https://arweave.net/H-9FITsB2SdPfJXhYq2QWMMSi7SG4LA_0MHbNnN_zN8',
+    imageUrl: 'https://arweave.net/H-9FITsB2SdPfJXhYq2QWMMSi7SG4LA_0MHbNnN_zN8',
     maxStaked: 3333,
     nameInHeader: true,
     description: 'Stake your GnarAF DAO Card to earn $GNAR',
@@ -2259,7 +2264,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     styles: {
       fontFamily: 'Paralucent',
       fontWeight: 500,
-      backgroundSize: '100% auto'
+      backgroundSize: '100% auto',
     },
     links: [
       {
@@ -2272,30 +2277,32 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       secondary: '#fad141',
       accent: '#672394',
       fontColor: '#e8e6d9',
-    }
+    },
   },
 
-{    name: 'thepolarians',
-displayName: 'The Polarians',
-stakePoolAddress: new PublicKey(
-  'HSLsc3fyHYyBjTnSPSGyyxubcGdtw4ih8odTcHturZrU'
-  ),
-websiteUrl: 'https://twitter.com/polariansnft',
-receiptType: ReceiptType.Original,
-maxStaked: 2400, // update with collection size
-imageUrl: 'https://dl.airtable.com/.attachments/4267ccfa3ec6b022948a23376955d686/ad374799/polarproject500x500.gif',
-tokenStandard: TokenStandard.NonFungible,
-styles: {
-  fontFamily: 'Player One',
-  fontWeight: 500,
-},
-description: 'Stake your Polarians NFT to earn $CRYSTAL.',
-colors: {
-  primary: '#383838',
-  secondary: '#4D4DFF',
-  accent: '#4D4DFF',
-  fontColor: '#4D4DFF',
-  fontColorSecondary: '#FFFFFF',
-}
-}
+  {
+    name: 'thepolarians',
+    displayName: 'The Polarians',
+    stakePoolAddress: new PublicKey(
+      'HSLsc3fyHYyBjTnSPSGyyxubcGdtw4ih8odTcHturZrU'
+    ),
+    websiteUrl: 'https://twitter.com/polariansnft',
+    receiptType: ReceiptType.Original,
+    maxStaked: 2400, // update with collection size
+    imageUrl:
+      'https://dl.airtable.com/.attachments/4267ccfa3ec6b022948a23376955d686/ad374799/polarproject500x500.gif',
+    tokenStandard: TokenStandard.NonFungible,
+    styles: {
+      fontFamily: 'Player One',
+      fontWeight: 500,
+    },
+    description: 'Stake your Polarians NFT to earn $CRYSTAL.',
+    colors: {
+      primary: '#383838',
+      secondary: '#4D4DFF',
+      accent: '#4D4DFF',
+      fontColor: '#4D4DFF',
+      fontColorSecondary: '#FFFFFF',
+    },
+  },
 ]

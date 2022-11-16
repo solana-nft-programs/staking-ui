@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unknown-property */
 import { shortPubKey } from '@cardinal/namespaces-components'
 import { css } from '@emotion/react'
 import { StakePoolConfig } from 'components/StakePoolConfig'

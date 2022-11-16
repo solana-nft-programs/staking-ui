@@ -1,4 +1,4 @@
-import { css } from '@emotion/react'
+/* eslint-disable react/no-unknown-property */ import { css } from '@emotion/react'
 import { useState } from 'react'
 
 import { LoadingSpinner } from './LoadingSpinner'
