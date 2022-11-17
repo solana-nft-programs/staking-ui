@@ -1,4 +1,3 @@
-/* eslint-disable react/no-unknown-property */
 import { css } from '@emotion/react'
 import { Card } from 'common/Card'
 import { Stats } from 'common/Stats'
