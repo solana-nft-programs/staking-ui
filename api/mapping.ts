@@ -2297,5 +2297,58 @@ colors: {
   fontColor: '#4D4DFF',
   fontColorSecondary: '#FFFFFF',
 }
+},
+{
+name: 'goodapedao',
+displayName: 'Good Ape Dao',
+nameInHeader: true,
+stakePoolAddress: new PublicKey(
+  '6H9zWe1tiucYRyx51rJdxzGGL6AV6ud8me7xTN2jBh7U'
+),
+hostname: 'goodapedao.herokuapp.com',
+hideFooter: true,
+hideAllowedTokens: true,
+websiteUrl: 'https://goodapedao.io/',
+receiptType: ReceiptType.Original,
+tokenStandard: TokenStandard.NonFungible,
+// styles to apply to the whole stake pool
+description: 'Stake your Good Apes to earn $CRAP',
+styles: {
+  fontFamily: 'Industry, sans-serif',
+  fontWeight: 700,
+  fontSize: '22px',
+  font: '#000000',
+  color: '#000000',
+},
+// Colors object to style the stake page
+colors: {
+  primary: '#13293D',
+  secondary: '#000000',
+  backgroundSecondary: '#0D324D',
+  fontColor: '#EBEBD3',
+  fontColorSecondary: '#EBEBD3',
+},
+imageUrl:
+  'https://gateway.pinata.cloud/ipfs/QmWp4YosggjD4uTcopJ5HL6Y64KQakywCtrdhaQi6nKi84',
+// Background image for poolq
+backgroundImage:
+  '',
+
+// Website url if specified will be navigated to when the image in the header is clicked
+maxStaked: 6969,
+links: [
+  {
+    text: 'Twitter',
+    value: 'https://twitter.com/goodapedao',
+  },
+  {
+    text: 'Discord',
+    value: 'https://discord.gg/UApdwRQTjm',
+  },
+  {
+    text: 'Buy GAD',
+    value: 'https://magiceden.io/marketplace/good_apes_',
+  },
+], 
 }
 ]
