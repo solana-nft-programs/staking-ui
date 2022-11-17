@@ -2298,4 +2298,77 @@ colors: {
   fontColorSecondary: '#FFFFFF',
 }
 }
+{
+  name: 'steamland',
+  displayName: 'Harvesting - Steamland',
+  stakePoolAddress: new PublicKey(
+    '5n9G7o9ZZFmfx4dcbd4HgNYcGWFiQ2wGKaKHYT8bWDf7'
+  ),
+  contrastHomepageBkg: true,
+  maxStaked: 2222,
+  receiptType: ReceiptType.Original,
+  websiteUrl: 'https://steamland.io',
+  hostname: 'harvest.steamland.io',
+  imageUrl:
+    'https://raw.githubusercontent.com/Steamland/images/main/harvest_logo.png',
+  styles: {
+    fontFamily: 'Industry, sans-serif',
+    fontWeight: 500,
+  },
+  backgroundImage:
+    'https://raw.githubusercontent.com/Steamland/images/main/harvesting_background.png',
+  tokenStandard: TokenStandard.NonFungible,
+  hideAllowedTokens: true,
+  colors: {
+    primary: '#1A1A1D',
+    secondary: '#9e333f',
+    accent: '#313063',
+    fontColor: '#FFFFFF',
+    fontColorSecondary: '#FFFFFF',
+    backgroundSecondary: '#4E4E50',
+  },
+},
+{
+  name: 'rejected y00ts',
+  displayName: 'RYC staking',
+  stakePoolAddress: new PublicKey(
+    'FMoMKHYVSs38PtGUTZXkK4ALCemZRqszirKsdUbKYJK9'
+  ),
+  websiteUrl: 'https://twitter.com/rejected_y00ts',
+  imageUrl:
+    'https://bafkreiepudc3r356k2ftl3vcdwtykpkqesuhzx7aaqwkqtmdoa35sqhsca.ipfs.nftstorage.link/',
+  backgroundImage:
+    'https://bafybeigfpcg7r6t3hjmpnkw7qlxjpoqyj2ck3lvsara7vtkahfh47c2osy.ipfs.nftstorage.link/',
+  maxStaked: 6969,
+
+  receiptType: ReceiptType.Original,
+  tokenStandard: TokenStandard.NonFungible,
+  hideAllowedTokens: true,
+  links: [
+    {
+      text: 'Discord',
+      value: 'https://discord.gg/gfdcAyrcn9',
+    },
+    {
+      text: 'Twitter',
+      value: 'https://twitter.com/Rejected_y00ts',
+    },
+    {
+      text: 'Magic Eden',
+      value: 'https://magiceden.io/marketplace/rejected_y00ts_club_',
+    },
+  ],
+  styles: {
+    fontFamily: 'Industry, sans-serif',
+    fontWeight: 500,
+  },
+  colors: {
+    primary: '#120d18',
+    secondary: '#e42575',
+    accent: '#33273f',
+    fontColor: '#e61f57',
+    fontColorSecondary: '#000000',
+    backgroundSecondary: '#120d18',
+  },
+},
 ]
