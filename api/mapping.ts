@@ -2303,7 +2303,7 @@ name: 'goodapedao',
 displayName: 'Good Ape Dao',
 nameInHeader: true,
 stakePoolAddress: new PublicKey(
-  'HSLsc3fyHYyBjTnSPSGyyxubcGdtw4ih8odTcHturZrU'
+  '6H9zWe1tiucYRyx51rJdxzGGL6AV6ud8me7xTN2jBh7U'
 ),
 hostname: 'goodapedao.herokuapp.com',
 hideFooter: true,
