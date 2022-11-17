@@ -2305,7 +2305,7 @@ nameInHeader: true,
 stakePoolAddress: new PublicKey(
   '6H9zWe1tiucYRyx51rJdxzGGL6AV6ud8me7xTN2jBh7U'
 ),
-hostname: 'goodapedao.herokuapp.com',
+hostname: 'https://stake.cardinal.so/goodapedao',
 hideFooter: true,
 hideAllowedTokens: true,
 websiteUrl: 'https://goodapedao.io/',
