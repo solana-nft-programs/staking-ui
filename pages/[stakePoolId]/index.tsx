@@ -35,6 +35,7 @@ function StakePoolHome() {
     return <></>
   }
 
+  console.log('userRegion.data?.isAllowed', userRegion.data?.isAllowed)
   if (!userRegion.data?.isAllowed && !process.env.BYPASS_REGION_CHECK) {
     return (
       <div
