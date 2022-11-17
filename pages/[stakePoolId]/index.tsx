@@ -89,7 +89,6 @@ function StakePoolHome() {
         ></script>
       </Head>
       <Header />
-      <img className="w-screen h-auto" src='https://gateway.pinata.cloud/ipfs/QmWLqCHi96DCmjrJLRssSiC4rUWBGj2pfNQkRRfYbyfrKg' alt='main_banner' />
       <div
         className="relative z-0 mx-10 mt-4 flex flex-col gap-4"
         style={{
