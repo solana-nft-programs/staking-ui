@@ -2372,7 +2372,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     },
   },
   {
-    name: 'Mod Cats Club',
+    name: 'Degen Strays Club',
     displayName: 'Cave of Treasure',
     nameInHeader: true,
     stakePoolAddress: new PublicKey(
