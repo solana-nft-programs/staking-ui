@@ -2338,7 +2338,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     imageUrl:
       'https://bafkreiepudc3r356k2ftl3vcdwtykpkqesuhzx7aaqwkqtmdoa35sqhsca.ipfs.nftstorage.link/',
     backgroundImage:
-      'https://bafybeigfpcg7r6t3hjmpnkw7qlxjpoqyj2ck3lvsara7vtkahfh47c2osy.ipfs.nftstorage.link/',
+      'https://bafybeifhtpvxgt2rf3s4nlis4znw7rya36hvbycg6lztcik3bh3re5peje.ipfs.nftstorage.link/',
     maxStaked: 6969,
 
     receiptType: ReceiptType.Original,
