@@ -2371,4 +2371,50 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       backgroundSecondary: '#120d18',
     },
   },
+  {
+    name: 'Degen Strays Club',
+    displayName: 'Cave of Treasure',
+    nameInHeader: true,
+    stakePoolAddress: new PublicKey(
+      'HM4KxPucFiFzJBr1saM1n7Hd4HhkLnp9FQXWaGv6gh5s'
+    ),
+    description: "Stake your Strays, earn $STRYS",
+    hideFooter: true,
+    receiptType: ReceiptType.Receipt,
+    tokenStandard: TokenStandard.NonFungible,
+    // styles to apply to the whole stake pool
+    styles: {
+      fontFamily: 'Inter, sans-serif',
+      fontWeight: 400,
+      backgroundPosition: 'center',
+    },
+    // Colors object to style the stake page
+    colors: {
+      primary: '#120912',
+      secondary: '#372554',
+      backgroundSecondary: 'rgb(24 24 24 / 50%)',
+      fontColor: '#EEEEEE',
+    },
+    imageUrl:
+      'https://arweave.net/NtSVLSp_GQLRJ9V_p0l5aqfz4Y0xFqwpytPHYJCn0gY',
+    // Background image for poolq
+    backgroundImage:
+      'https://user-images.githubusercontent.com/107280738/202006912-0e534e82-e3c7-47d6-9a1b-9c47f12bf1c6.jpg',
+    maxStaked: 4444,
+    // Website url if specified will be navigated to when the image in the header is clicked
+    links: [
+      {
+        text: 'Twitter',
+        value: 'https://twitter.com/modcatsclub',
+      },
+      {
+        text: 'Discord',
+        value: 'https://discord.com/invite/modcatsclub',
+      },
+      {
+        text: 'Magic Eden',
+        value: 'https://magiceden.io/creators/modcatsclub',
+      }  
+    ],
+    },
 ]
