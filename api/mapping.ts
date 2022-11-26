@@ -2378,7 +2378,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     stakePoolAddress: new PublicKey(
       'HM4KxPucFiFzJBr1saM1n7Hd4HhkLnp9FQXWaGv6gh5s'
     ),
-    description: "Stake your Strays, earn $STRYS",
+    description: 'Stake your Strays, earn $STRYS',
     hideFooter: true,
     receiptType: ReceiptType.Receipt,
     tokenStandard: TokenStandard.NonFungible,
@@ -2395,8 +2395,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       backgroundSecondary: 'rgb(24 24 24 / 50%)',
       fontColor: '#EEEEEE',
     },
-    imageUrl:
-      'https://arweave.net/NtSVLSp_GQLRJ9V_p0l5aqfz4Y0xFqwpytPHYJCn0gY',
+    imageUrl: 'https://arweave.net/NtSVLSp_GQLRJ9V_p0l5aqfz4Y0xFqwpytPHYJCn0gY',
     // Background image for poolq
     backgroundImage:
       'https://user-images.githubusercontent.com/107280738/202006912-0e534e82-e3c7-47d6-9a1b-9c47f12bf1c6.jpg',
@@ -2414,94 +2413,96 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       {
         text: 'Magic Eden',
         value: 'https://magiceden.io/creators/modcatsclub',
-      }  
+      },
     ],
-    },
-    {
-      name: 'BioHumans ',
-      displayName: 'BioHumans ',
-      stakePoolAddress: new PublicKey(
-        '7yFb4AQfz88mZzuQVSkCQZzLoA8UEVK8ySHmpHKnGqa2'
-      ),
-      websiteUrl: 'https://t.co/QIAhGtpiaU',
-      imageUrl:
-        'https://raw.githubusercontent.com/conqueror1234/crypto/main/logo.png',
-      maxStaked: 777,
-      receiptType: ReceiptType.Original,
-      tokenStandard: TokenStandard.NonFungible,
-      hideAllowedTokens: true,
-      links: [
-        {
-          text: 'Discord',
-          value: 'https://discord.gg/KNgBrWVYCW',
-        },
-        {
-          text: 'Buy',
-          value: 'https://magiceden.io/marketplace/biohumans',
-        },
-      ],
-      colors: {
-        primary: '#000000',
-        secondary: '#f5050d',
-        accent: '#990505',
-        fontColor: '#FFFFFF',
+  },
+  {
+    name: 'BioHumans ',
+    displayName: 'BioHumans ',
+    stakePoolAddress: new PublicKey(
+      '7yFb4AQfz88mZzuQVSkCQZzLoA8UEVK8ySHmpHKnGqa2'
+    ),
+    websiteUrl: 'https://t.co/QIAhGtpiaU',
+    imageUrl:
+      'https://raw.githubusercontent.com/conqueror1234/crypto/main/logo.png',
+    maxStaked: 777,
+    receiptType: ReceiptType.Original,
+    tokenStandard: TokenStandard.NonFungible,
+    hideAllowedTokens: true,
+    links: [
+      {
+        text: 'Discord',
+        value: 'https://discord.gg/KNgBrWVYCW',
       },
-    },
-    {
-      name: 'Sound Family DAO',
-      displayName: 'Sound Family DAO Staking',
-      nameInHeader: true,
-      stakePoolAddress: new PublicKey(
-        'BGnayVs2xtEjzR42Kdq7vXnmRSjBqP9byP4xkmsmF23f'
-      ),
-      hostname: 'stake-soundfamily.herokuapp.com',
-      hideFooter: true, 
-      hideAllowedTokens: true, 
-      websiteUrl: 'https://catchtherecord.com/',
-      receiptType: ReceiptType.Original,
-      tokenStandard: TokenStandard.NonFungible,
-      imageUrl:
-        'https://d10j3mvrs1suex.cloudfront.net/u/389084/dfd7e4a38cd6b8d454e6536fc377b590e440a03f/original/1-5kjpeg.jpg/!!/meta%3AeyJzcmNCdWNrZXQiOiJiemdsZmlsZXMifQ%3D%3D.jpg',
-      maxStaked: 1080,
-      backgroundImage:
-        'https://d10j3mvrs1suex.cloudfront.net/u/389084/86550f1f3714d5199d6d46331a51e0ea1c6e8986/original/old-paper-texture-in-square-frame-for-cover-art-grungy-frame-in-black-background-can-be-used-to-replicate-the-aged-and-worn-look-for-your-creative-design-free-photo.jpg/!!/meta%3AeyJzcmNCdWNrZXQiOiJiemdsZmlsZXMifQ%3D%3D.jpg',
-        description: 'Stake your The Art of Field Recording, Mic The Art and fun-Sound Family DAO NFTs to earn $SREC.',
-        colors: {
-        primary: '#5c4b18',
-        secondary: '#d9faf7',
-        accent: '#362304',
-        fontColor: '#edb63e',
-        fontColorSecondary: '#963315',
+      {
+        text: 'Buy',
+        value: 'https://magiceden.io/marketplace/biohumans',
       },
-      links: [
-        {
-          text: 'HOME',
-          value: 'https://catchtherecord.com/the-art-of-field-recording',
-        },
-        {
-          text: 'SITE',
-          value: 'https://catchtherecord.com/',
-        },
-        {
-          text: 'MINT 1',
-          value: 'https://the-art-of-field-recording.club',
-        },
-        {
-          text: 'MINT 2',
-          value: 'https://the-art-of-field-recording.club',
-        },
-        {
-          text: 'BUY',
-          value: 'https://magiceden.io/marketplace/k8XrthqoADqQqY5sLo4gPk3t8tHWuyWJsqJT13AiZqv',
-        },
-        {
-          text: 'TWITTER',
-          value: 'https://twitter.com/field_recording',
-        },
-        {
-          text: 'DISCORD',
-          value: 'https://discord.gg/WEU9W5Ew9q',
-        },
-      ],
+    ],
+    colors: {
+      primary: '#000000',
+      secondary: '#f5050d',
+      accent: '#990505',
+      fontColor: '#FFFFFF',
     },
+  },
+  {
+    name: 'Sound Family DAO',
+    displayName: 'Sound Family DAO Staking',
+    nameInHeader: true,
+    stakePoolAddress: new PublicKey(
+      'BGnayVs2xtEjzR42Kdq7vXnmRSjBqP9byP4xkmsmF23f'
+    ),
+    hostname: 'stake-soundfamily.herokuapp.com',
+    hideFooter: true,
+    hideAllowedTokens: true,
+    websiteUrl: 'https://catchtherecord.com/',
+    receiptType: ReceiptType.Original,
+    tokenStandard: TokenStandard.NonFungible,
+    imageUrl:
+      'https://d10j3mvrs1suex.cloudfront.net/u/389084/dfd7e4a38cd6b8d454e6536fc377b590e440a03f/original/1-5kjpeg.jpg/!!/meta%3AeyJzcmNCdWNrZXQiOiJiemdsZmlsZXMifQ%3D%3D.jpg',
+    maxStaked: 1080,
+    backgroundImage:
+      'https://d10j3mvrs1suex.cloudfront.net/u/389084/86550f1f3714d5199d6d46331a51e0ea1c6e8986/original/old-paper-texture-in-square-frame-for-cover-art-grungy-frame-in-black-background-can-be-used-to-replicate-the-aged-and-worn-look-for-your-creative-design-free-photo.jpg/!!/meta%3AeyJzcmNCdWNrZXQiOiJiemdsZmlsZXMifQ%3D%3D.jpg',
+    description:
+      'Stake your The Art of Field Recording, Mic The Art and fun-Sound Family DAO NFTs to earn $SREC.',
+    colors: {
+      primary: '#5c4b18',
+      secondary: '#d9faf7',
+      accent: '#362304',
+      fontColor: '#edb63e',
+      fontColorSecondary: '#963315',
+    },
+    links: [
+      {
+        text: 'HOME',
+        value: 'https://catchtherecord.com/the-art-of-field-recording',
+      },
+      {
+        text: 'SITE',
+        value: 'https://catchtherecord.com/',
+      },
+      {
+        text: 'MINT 1',
+        value: 'https://the-art-of-field-recording.club',
+      },
+      {
+        text: 'MINT 2',
+        value: 'https://the-art-of-field-recording.club',
+      },
+      {
+        text: 'BUY',
+        value:
+          'https://magiceden.io/marketplace/k8XrthqoADqQqY5sLo4gPk3t8tHWuyWJsqJT13AiZqv',
+      },
+      {
+        text: 'TWITTER',
+        value: 'https://twitter.com/field_recording',
+      },
+      {
+        text: 'DISCORD',
+        value: 'https://discord.gg/WEU9W5Ew9q',
+      },
+    ],
+  },
 ]
