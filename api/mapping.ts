@@ -2378,7 +2378,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     stakePoolAddress: new PublicKey(
       'HM4KxPucFiFzJBr1saM1n7Hd4HhkLnp9FQXWaGv6gh5s'
     ),
-    description: "Stake your Strays, earn $STRYS",
+    description: 'Stake your Strays, earn $STRYS',
     hideFooter: true,
     receiptType: ReceiptType.Receipt,
     tokenStandard: TokenStandard.NonFungible,
@@ -2395,8 +2395,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       backgroundSecondary: 'rgb(24 24 24 / 50%)',
       fontColor: '#EEEEEE',
     },
-    imageUrl:
-      'https://arweave.net/NtSVLSp_GQLRJ9V_p0l5aqfz4Y0xFqwpytPHYJCn0gY',
+    imageUrl: 'https://arweave.net/NtSVLSp_GQLRJ9V_p0l5aqfz4Y0xFqwpytPHYJCn0gY',
     // Background image for poolq
     backgroundImage:
       'https://user-images.githubusercontent.com/107280738/202006912-0e534e82-e3c7-47d6-9a1b-9c47f12bf1c6.jpg',
@@ -2414,9 +2413,39 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       {
         text: 'Magic Eden',
         value: 'https://magiceden.io/creators/modcatsclub',
-      }  
+      },
     ],
+  },
+  {
+    name: 'BioHumans ',
+    displayName: 'BioHumans ',
+    stakePoolAddress: new PublicKey(
+      '7yFb4AQfz88mZzuQVSkCQZzLoA8UEVK8ySHmpHKnGqa2'
+    ),
+    websiteUrl: 'https://t.co/QIAhGtpiaU',
+    imageUrl:
+      'https://raw.githubusercontent.com/conqueror1234/crypto/main/logo.png',
+    maxStaked: 777,
+    receiptType: ReceiptType.Original,
+    tokenStandard: TokenStandard.NonFungible,
+    hideAllowedTokens: true,
+    links: [
+      {
+        text: 'Discord',
+        value: 'https://discord.gg/KNgBrWVYCW',
+      },
+      {
+        text: 'Buy',
+        value: 'https://magiceden.io/marketplace/biohumans',
+      },
+    ],
+    colors: {
+      primary: '#000000',
+      secondary: '#f5050d',
+      accent: '#990505',
+      fontColor: '#FFFFFF',
     },
+  },
   {
     name: 'Sound Family DAO',
     displayName: 'Sound Family DAO Staking',
@@ -2425,8 +2454,8 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       'BGnayVs2xtEjzR42Kdq7vXnmRSjBqP9byP4xkmsmF23f'
     ),
     hostname: 'stake-soundfamily.herokuapp.com',
-    hideFooter: true, 
-    hideAllowedTokens: true, 
+    hideFooter: true,
+    hideAllowedTokens: true,
     websiteUrl: 'https://catchtherecord.com/',
     receiptType: ReceiptType.Original,
     tokenStandard: TokenStandard.NonFungible,
@@ -2435,8 +2464,9 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     maxStaked: 1080,
     backgroundImage:
       'https://d10j3mvrs1suex.cloudfront.net/u/389084/86550f1f3714d5199d6d46331a51e0ea1c6e8986/original/old-paper-texture-in-square-frame-for-cover-art-grungy-frame-in-black-background-can-be-used-to-replicate-the-aged-and-worn-look-for-your-creative-design-free-photo.jpg/!!/meta%3AeyJzcmNCdWNrZXQiOiJiemdsZmlsZXMifQ%3D%3D.jpg',
-      description: 'Stake your The Art of Field Recording, Mic The Art and fun-Sound Family DAO NFTs to earn $SREC.',
-      colors: {
+    description:
+      'Stake your The Art of Field Recording, Mic The Art and fun-Sound Family DAO NFTs to earn $SREC.',
+    colors: {
       primary: '#5c4b18',
       secondary: '#d9faf7',
       accent: '#362304',
@@ -2462,7 +2492,8 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       },
       {
         text: 'BUY',
-        value: 'https://magiceden.io/marketplace/k8XrthqoADqQqY5sLo4gPk3t8tHWuyWJsqJT13AiZqv',
+        value:
+          'https://magiceden.io/marketplace/k8XrthqoADqQqY5sLo4gPk3t8tHWuyWJsqJT13AiZqv',
       },
       {
         text: 'TWITTER',
