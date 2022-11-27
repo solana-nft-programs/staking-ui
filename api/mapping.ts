@@ -2336,9 +2336,9 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     ),
     websiteUrl: 'https://twitter.com/rejected_y00ts',
     imageUrl:
-      'https://bafkreiepudc3r356k2ftl3vcdwtykpkqesuhzx7aaqwkqtmdoa35sqhsca.ipfs.nftstorage.link/',
+      'https://bafybeiex3lqiug7djuyl2vws47syaji6of7calc67tt3we4ps4nz5kbpnq.ipfs.nftstorage.link/',
     backgroundImage:
-      'https://bafybeifhtpvxgt2rf3s4nlis4znw7rya36hvbycg6lztcik3bh3re5peje.ipfs.nftstorage.link/',
+      '',
     maxStaked: 6969,
 
     receiptType: ReceiptType.Original,
