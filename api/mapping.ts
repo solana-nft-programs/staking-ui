@@ -2329,10 +2329,10 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     },
   },
   {
-    name: 'rejected y00ts',
+    name: 'rejected y00ts club',
     displayName: 'RYC staking',
     stakePoolAddress: new PublicKey(
-      'FMoMKHYVSs38PtGUTZXkK4ALCemZRqszirKsdUbKYJK9'
+      '7YPHMXpiFAMSeGpxYE66aGPH6UUJGe6samYhzKiEpEqR'
     ),
     websiteUrl: 'https://twitter.com/rejected_y00ts',
     imageUrl:
