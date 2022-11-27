@@ -1,4 +1,3 @@
-/* eslint-disable react/no-unknown-property */
 import { shortPubKey } from '@cardinal/common'
 import { css } from '@emotion/react'
 import type { StakePool } from 'hooks/useAllStakePools'

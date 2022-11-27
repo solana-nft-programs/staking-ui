@@ -1,4 +1,3 @@
-/* eslint-disable react/no-unknown-property */
 import { css } from '@emotion/react'
 import styled from '@emotion/styled'
 import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
