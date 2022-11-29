@@ -1,0 +1,48 @@
+---
+description: 'A basic React 18 component development environment'
+labels: ['react', 'typescript', 'env', 'extension', 'react 18', 'react18']
+---
+
+## Overview
+
+A customized version of the base react env, with support for react18.
+
+### Usage instructions - default env with react18 support
+
+If all you require is the base react env `teambit.react/react` but with react18 support (the base env currently only supports react 16/17) then do the following.
+(If you also need custom configs see the section below):
+
+1. Configure the env via the CLI
+To configure this env for a component (or group of components) via the CLI, run `bit env set "some/*/glob/pattern/**" cardinal-labs.shared/envs/react-with-tailwind`.
+This will add a config section in your `.bitmap` file for the components this is run on. Note - this will override any env setting rules in your `workspace.jsonc` file.
+
+2. Configure with Variants
+Under the **variant** section of your `workspace.json` file choose which components you want to have the custom environment set. You can find the id of the extension in the `react-18-env.aspect.ts` file.
+
+```json
+{
+  "teambit.workspace/variants": {
+    "{ui/**}, {pages/**}": {
+      "cardinal-labs.shared/envs/react-with-tailwind": {}
+    }
+  }
+}
+```
+
+### Usage with customised configs
+
+1. If you are creating a new env for which you require react18 support and the ability to customise its configs, you should [fork](https://bit.dev/docs/reference/cli-reference#format) this env:
+
+```bash
+bit fork cardinal-labs.shared/envs/react-with-tailwind <your-env-name>
+```
+
+2. If you just wish to upgrade your existing custom env to be react18 compatible then just copy over the `overrideDependencies` content in this env's main.runtime.ts file to your
+own custom env's main.runtime.ts file.
+
+:::warning
+This will remove support for react16 and react17 from components built with this env. If you wish to preserve your existing react16+17 compatible env but
+also create an identical react18 env, then please `bit fork` your own custom env and adjust the `overrideDependencies` as above for the forked version
+of your own env.
+:::
+
