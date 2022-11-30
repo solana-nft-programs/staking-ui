@@ -41,10 +41,8 @@ export const MainHero = () => {
               <div className="flex items-center gap-2" key={key}>
                 <div className="text-medium-3">{displayName}</div>
                 <div className="text-light-0">
-                  {stats.data && stats.data[displayName] ? (
-                    Number(
-                      stats.data[displayName]!.data.parsed.value
-                    ).toLocaleString('en-US')
+                  {stats.data && stats.data[key] ? (
+                    Number(stats.data[key]!.value).toLocaleString('en-US')
                   ) : (
                     <div className="mt-[1px] h-5 w-12 animate-pulse rounded-md bg-border" />
                   )}
