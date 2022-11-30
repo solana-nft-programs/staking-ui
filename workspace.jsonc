@@ -39,11 +39,22 @@
     "packageManager": "teambit.dependencies/pnpm",
     "policy": {
       "dependencies": {
+        "@babel/runtime": "7.20.6",
+        "@types/jest": "29.2.3",
+        "@types/node": "18.11.9",
+        "@types/react": "^18.0.25",
+        "@types/react-dom": "^18.0.9",
+        "@types/testing-library__jest-dom": "5.14.5",
+        "classnames": "^2.3.2",
+        "core-js": "3.26.1",
         "events": "3.3.0",
-        "react-dom": "18.2.0",
-        "react-json-pretty": "2.2.0"
+        "react-json-pretty": "2.2.0",
+        "tailwindcss": "^3.2.4"
       },
-      "peerDependencies": {}
+      "peerDependencies": {
+        "react": "18.2.0",
+        "react-dom": "18.2.0"
+      }
     },
     "linkCoreAspects": true
   },
@@ -62,6 +73,7 @@
       "cardinal-labs.shared/envs/react-with-tailwind": {}
     },
     "*": {
+      // "bit-foundations.react/react-version-envs/react-18-env": {}
       /**
        * uncomment to apply the chosen environment on all components.
        **/

@@ -11,39 +11,77 @@
 {
     "constants": {
         "scope": "cardinal-labs.shared",
-        "version": "0.0.1",
+        "version": "0.0.2",
         "mainFile": "index.ts",
         "rootDir": "shared/constants"
     },
     "envs/react-with-tailwind": {
         "scope": "cardinal-labs.shared",
-        "version": "0.0.3",
+        "version": "0.0.4",
         "mainFile": "index.ts",
         "rootDir": "shared/envs/react-with-tailwind"
     },
+    "react-version-envs/react-18-env": {
+        "scope": "bit-foundations.react",
+        "version": "1.0.0",
+        "mainFile": "index.ts",
+        "rootDir": "react/react-version-envs/react-18-env"
+    },
     "types/colors": {
         "scope": "cardinal-labs.shared",
-        "version": "0.0.1",
+        "version": "0.0.2",
         "mainFile": "index.ts",
         "rootDir": "shared/types/colors"
     },
     "types/ui": {
         "scope": "cardinal-labs.shared",
-        "version": "0.0.1",
+        "version": "0.0.2",
         "mainFile": "index.ts",
         "rootDir": "shared/types/ui"
     },
     "ui/button-primary": {
         "scope": "cardinal-labs.shared",
-        "version": "0.0.3",
+        "version": "0.0.4",
         "mainFile": "index.ts",
-        "rootDir": "shared/ui/button-primary"
+        "rootDir": "shared/ui/button-primary",
+        "config": {
+            "teambit.dependencies/dependency-resolver": {
+                "policy": {
+                    "dependencies": {
+                        "react-dom": "18.2.0"
+                    },
+                    "peerDependencies": {
+                        "react-dom": "18.2.0"
+                    }
+                }
+            },
+            "cardinal-labs.shared/envs/react-with-tailwind": {},
+            "teambit.envs/envs": {
+                "env": "cardinal-labs.shared/envs/react-with-tailwind"
+            }
+        }
     },
     "ui/button-secondary": {
         "scope": "cardinal-labs.shared",
-        "version": "0.0.2",
+        "version": "0.0.3",
         "mainFile": "index.ts",
-        "rootDir": "shared/ui/button-secondary"
+        "rootDir": "shared/ui/button-secondary",
+        "config": {
+            "teambit.dependencies/dependency-resolver": {
+                "policy": {
+                    "dependencies": {
+                        "react-dom": "18.2.0"
+                    },
+                    "peerDependencies": {
+                        "react-dom": "18.2.0"
+                    }
+                }
+            },
+            "cardinal-labs.shared/envs/react-with-tailwind": {},
+            "teambit.envs/envs": {
+                "env": "cardinal-labs.shared/envs/react-with-tailwind"
+            }
+        }
     },
     "$schema-version": "15.0.0"
 }
