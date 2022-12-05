@@ -2512,10 +2512,10 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     stakePoolAddress: new PublicKey(
       '6NsLz577nf9eRSfXtH18rDdJHik3PePpKwVVLPrXPtWx'
     ),
-    hostname: 'stake.cardinal.so/Dustcitystaking',
+    hostname: 'stake.cardinal.so/DustCityStaking',
     hideFooter: true,
     hideAllowedTokens: true,
-    websiteUrl: 'https://stake.cardinal.so/Dustcitystaking',
+    websiteUrl: 'https://stake.cardinal.so/DustCityStaking',
     receiptType: ReceiptType.Original,
     tokenStandard: TokenStandard.NonFungible,
     // styles to apply to the whole stake pool
@@ -2530,6 +2530,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     colors: {
       primary: '',
       secondary: '#00D5FF',
+      accent: '00D5FF',
       backgroundSecondary: 'rgba(0, 0, 0, 0.59)',
       fontColor: 'white',
     },
@@ -2537,7 +2538,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       'https://dustcity.world/assets/img/Header/logo.svg',
     // Background image for poolq
     backgroundImage:
-      'https://dustcity.world/assets/img/City/Dust-City.jpg',
+      'https://staking.dustcity.world/_next/static/media/background.50102c46.jpg',
 
     // Website url if specified will be navigated to when the image in the header is clicked
     maxStaked: 3333,
@@ -2581,6 +2582,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     colors: {
       primary: '',
       secondary: '#532138',
+      accent: '#532138',
       backgroundSecondary: 'rgba(53, 109, 130, 0.8)',
       fontColor: 'white',
     },
@@ -2588,7 +2590,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       'https://arweave.net/z64F7Hk0nHfq-KZ9DgTBT3k7CiKfdyyyAqhC3T1TpkQ?ext=png',
     // Background image for poolq
     backgroundImage:
-      'https://dustcity.world/assets/img/City/Dust-City.jpg',
+      'https://rektville.dustcity.world/_next/static/media/background.28fe0052.png',
 
     // Website url if specified will be navigated to when the image in the header is clicked
     maxStaked: 7777,
