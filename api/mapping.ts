@@ -2512,10 +2512,10 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     stakePoolAddress: new PublicKey(
       '6NsLz577nf9eRSfXtH18rDdJHik3PePpKwVVLPrXPtWx'
     ),
-    hostname: 'staking.dustcity.world',
+    hostname: 'stake.cardinal.so/Dustcitystaking',
     hideFooter: true,
     hideAllowedTokens: true,
-    websiteUrl: 'staking.dustcity.world',
+    websiteUrl: 'https://stake.cardinal.so/Dustcitystaking',
     receiptType: ReceiptType.Original,
     tokenStandard: TokenStandard.NonFungible,
     // styles to apply to the whole stake pool
@@ -2563,10 +2563,10 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     stakePoolAddress: new PublicKey(
       'ENPEvNwSMxN6K63YwDMirSVnd9TUisDkY6cuPZiN7unS'
     ),
-    hostname: 'rektville.dustcity.world',
+    hostname: 'stake.cardinal.so/RektvilleStaking',
     hideFooter: true,
     hideAllowedTokens: true,
-    websiteUrl: 'rektville.dustcity.world',
+    websiteUrl: 'https://stake.cardinal.so/RektvilleStaking',
     receiptType: ReceiptType.Original,
     tokenStandard: TokenStandard.NonFungible,
     // styles to apply to the whole stake pool
@@ -2585,7 +2585,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       fontColor: 'white',
     },
     imageUrl:
-      'https://dustcity.world/assets/img/Header/logo.svg',
+      'https://arweave.net/z64F7Hk0nHfq-KZ9DgTBT3k7CiKfdyyyAqhC3T1TpkQ?ext=png',
     // Background image for poolq
     backgroundImage:
       'https://dustcity.world/assets/img/City/Dust-City.jpg',
