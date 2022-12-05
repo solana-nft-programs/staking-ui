@@ -88,7 +88,9 @@ export const useRewardsRate = () => {
             rewardDistributorData.parsed.kind === RewardDistributorKind.Mint
               ? rewardMintInfo?.mintInfo.supply
               : rewardDistributorTokenAccount.amount,
-            stakeEntry.parsed.lastStakedAt.add(new BN(86400)).toNumber()
+            (stakeEntry.parsed.lastUpdatedAt ?? stakeEntry.parsed.lastStakedAt)
+              .add(new BN(86400))
+              .toNumber()
           )
           rewardsRateMap[stakeEntry.pubkey.toString()] = {
             dailyRewards: claimableRewards,
