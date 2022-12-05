@@ -2505,4 +2505,106 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       },
     ],
   },
+  {
+    name: 'DustCityStaking',
+    displayName: 'Dust City Staking',
+    nameInHeader: true,
+    stakePoolAddress: new PublicKey(
+      '6NsLz577nf9eRSfXtH18rDdJHik3PePpKwVVLPrXPtWx'
+    ),
+    hostname: 'staking.dustcity.world',
+    hideFooter: true,
+    hideAllowedTokens: true,
+    websiteUrl: 'staking.dustcity.world',
+    receiptType: ReceiptType.Original,
+    tokenStandard: TokenStandard.NonFungible,
+    // styles to apply to the whole stake pool
+    styles: {
+      fontFamily: 'GTA',
+      fontWeight: 300,
+      backgroundSize: 'cover',
+      backgroundPosition: 'center',
+      backgroundRepeat: 'no-repeat',
+    },
+    // Colors object to style the stake page
+    colors: {
+      primary: '',
+      secondary: '#00D5FF',
+      backgroundSecondary: 'rgba(0, 0, 0, 0.59)',
+      fontColor: 'white',
+    },
+    imageUrl:
+      'https://dustcity.world/assets/img/Header/logo.svg',
+    // Background image for poolq
+    backgroundImage:
+      'https://dustcity.world/assets/img/City/Dust-City.jpg',
+
+    // Website url if specified will be navigated to when the image in the header is clicked
+    maxStaked: 3333,
+    links: [
+      {
+        text: 'Website',
+        value: 'https://dustcity.world/',
+      },
+      {
+        text: 'Twitter',
+        value: 'https://twitter.com/DustCityNFT',
+      },
+      {
+        text: 'MagicEden',
+        value: 'https://magiceden.io/marketplace/dustcity',
+      },
+    ],
+  },
+  {
+    name: 'RektvilleStaking',
+    displayName: 'Rektville Staking',
+    nameInHeader: true,
+    stakePoolAddress: new PublicKey(
+      'ENPEvNwSMxN6K63YwDMirSVnd9TUisDkY6cuPZiN7unS'
+    ),
+    hostname: 'rektville.dustcity.world',
+    hideFooter: true,
+    hideAllowedTokens: true,
+    websiteUrl: 'rektville.dustcity.world',
+    receiptType: ReceiptType.Original,
+    tokenStandard: TokenStandard.NonFungible,
+    // styles to apply to the whole stake pool
+    styles: {
+      fontFamily: 'GTA',
+      fontWeight: 300,
+      backgroundSize: 'cover',
+      backgroundPosition: 'center',
+      backgroundRepeat: 'no-repeat',
+    },
+    // Colors object to style the stake page
+    colors: {
+      primary: '',
+      secondary: '#532138',
+      backgroundSecondary: 'rgba(53, 109, 130, 0.8)',
+      fontColor: 'white',
+    },
+    imageUrl:
+      'https://dustcity.world/assets/img/Header/logo.svg',
+    // Background image for poolq
+    backgroundImage:
+      'https://dustcity.world/assets/img/City/Dust-City.jpg',
+
+    // Website url if specified will be navigated to when the image in the header is clicked
+    maxStaked: 7777,
+    links: [
+      {
+        text: 'Website',
+        value: 'https://dustcity.world/',
+      },
+      {
+        text: 'Twitter',
+        value: 'https://twitter.com/DustCityNFT',
+      },
+      {
+        text: 'MagicEden',
+        value: 'https://magiceden.io/marketplace/rektville',
+      },
+    ],
+  },
 ]
