@@ -2590,7 +2590,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       'https://arweave.net/z64F7Hk0nHfq-KZ9DgTBT3k7CiKfdyyyAqhC3T1TpkQ?ext=png',
     // Background image for poolq
     backgroundImage:
-      'https://rektville.dustcity.world/_next/static/media/background.28fe0052.png',
+      'https://staking.dustcity.world/_next/static/media/background.50102c46.jpg',
 
     // Website url if specified will be navigated to when the image in the header is clicked
     maxStaked: 7777,
