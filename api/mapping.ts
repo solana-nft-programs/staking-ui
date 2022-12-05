@@ -2585,7 +2585,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       fontColor: 'white',
     },
     imageUrl:
-      'https://dustcity.world/assets/img/Header/logo.svg',
+      'https://arweave.net/z64F7Hk0nHfq-KZ9DgTBT3k7CiKfdyyyAqhC3T1TpkQ?ext=png',
     // Background image for poolq
     backgroundImage:
       'https://dustcity.world/assets/img/City/Dust-City.jpg',
