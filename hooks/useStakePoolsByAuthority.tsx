@@ -1,15 +1,23 @@
 import type { AccountData } from '@cardinal/common'
+import type { IdlAccountData } from '@cardinal/rewards-center'
+import { rewardsCenterProgram } from '@cardinal/rewards-center'
 import type { StakePoolData } from '@cardinal/staking/dist/cjs/programs/stakePool'
 import {
   STAKE_POOL_ADDRESS,
   STAKE_POOL_IDL,
 } from '@cardinal/staking/dist/cjs/programs/stakePool'
 import { BorshAccountsCoder, utils } from '@project-serum/anchor'
+import { useWallet } from '@solana/wallet-adapter-react'
 import type { Connection, PublicKey } from '@solana/web3.js'
+import { asEmptyAnchorWallet } from 'common/Wallets'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 import { useQuery } from 'react-query'
 
-import { useWalletId } from './useWalletId'
+import {
+  isStakePoolV2,
+  stakePoolDataToV2,
+  useStakePoolData,
+} from './useStakePoolData'
 
 export const getStakePoolsByAuthority = async (
   connection: Connection,
@@ -60,16 +68,44 @@ export const getStakePoolsByAuthority = async (
 
 export const useStakePoolsByAuthority = () => {
   const { secondaryConnection } = useEnvironmentCtx()
-  const walletId = useWalletId()
+  const { data: stakePoolData } = useStakePoolData()
+  const wallet = useWallet()
 
-  return useQuery<AccountData<StakePoolData>[] | undefined>(
-    ['useStakePoolsByAuthority', walletId?.toString()],
+  return useQuery<
+    Pick<IdlAccountData<'stakePool'>, 'pubkey' | 'parsed'>[] | undefined
+  >(
+    ['useStakePoolsByAuthority', wallet.publicKey?.toString()],
     async () => {
-      if (!walletId) return
-      return getStakePoolsByAuthority(secondaryConnection, walletId)
+      if (!wallet.publicKey || !stakePoolData?.parsed) return
+      if (isStakePoolV2(stakePoolData.parsed)) {
+        const program = rewardsCenterProgram(
+          secondaryConnection,
+          asEmptyAnchorWallet(wallet)
+        )
+        const stakePools = await program.account.stakePool.all([
+          {
+            memcmp: {
+              offset: 10,
+              bytes: wallet.publicKey.toString(),
+            },
+          },
+        ])
+        return stakePools.map((e) => {
+          return { pubkey: e.publicKey, parsed: e.account }
+        })
+      } else {
+        return (
+          await getStakePoolsByAuthority(secondaryConnection, wallet.publicKey)
+        ).map((pool) => {
+          return {
+            pubkey: pool.pubkey,
+            parsed: stakePoolDataToV2(pool.parsed),
+          }
+        })
+      }
     },
     {
-      enabled: !!walletId,
+      enabled: !!wallet.publicKey,
     }
   )
 }

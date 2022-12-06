@@ -21,8 +21,8 @@ export function StakedStats({ tokenData }: { tokenData: StakeEntryTokenData }) {
   const { UTCNow } = useUTCNow()
   const rewardMintInfo = useRewardMintInfo()
   const mintInfo = useMintInfo(
-    tokenData.stakeEntry?.parsed.amount.gt(new BN(1))
-      ? tokenData.stakeEntry?.parsed.originalMint
+    tokenData.stakeEntry?.parsed?.amount.gt(new BN(1))
+      ? tokenData.stakeEntry?.parsed.stakeMint
       : undefined
   )
   const rewardDistributorData = useRewardDistributorData()
@@ -33,7 +33,7 @@ export function StakedStats({ tokenData }: { tokenData: StakeEntryTokenData }) {
   return (
     <div className="mt-2">
       {tokenData.stakeEntry &&
-        tokenData.stakeEntry.parsed.amount.gt(new BN(1)) &&
+        tokenData.stakeEntry.parsed?.amount.gt(new BN(1)) &&
         rewardMintInfo.data && (
           <div className="flex w-full flex-row justify-between text-xs font-semibold">
             <span>Amount:</span>
@@ -52,16 +52,16 @@ export function StakedStats({ tokenData }: { tokenData: StakeEntryTokenData }) {
         <div className="flex w-full flex-row justify-between text-xs font-semibold">
           <span>Boost:</span>
           <span className="text-right">
-            {(rewardDistributorData.data?.parsed.multiplierDecimals !==
+            {(rewardDistributorData.data?.parsed?.multiplierDecimals !==
               undefined &&
               formatAmountAsDecimal(
                 rewardDistributorData.data?.parsed.multiplierDecimals || 0,
                 rewardEntries.data
                   ? rewardEntries.data.find((entry) =>
-                      entry.parsed.stakeEntry.equals(
+                      entry.parsed?.stakeEntry.equals(
                         tokenData.stakeEntry?.pubkey || PublicKey.default
                       )
-                    )?.parsed.multiplier ||
+                    )?.parsed?.multiplier ||
                       rewardDistributorData.data.parsed.defaultMultiplier
                   : rewardDistributorData.data.parsed.defaultMultiplier,
                 rewardDistributorData.data.parsed.multiplierDecimals
@@ -72,8 +72,8 @@ export function StakedStats({ tokenData }: { tokenData: StakeEntryTokenData }) {
         </div>
       )}
       {rewardDistributorData.data &&
-        rewardDistributorData.data.parsed.rewardDurationSeconds &&
-        rewardDistributorData.data.parsed.rewardDurationSeconds.gt(
+        rewardDistributorData.data.parsed?.rewardDurationSeconds &&
+        rewardDistributorData.data.parsed?.rewardDurationSeconds.gt(
           new BN(0)
         ) && (
           <>
@@ -126,8 +126,8 @@ export function StakedStats({ tokenData }: { tokenData: StakeEntryTokenData }) {
               )}
           </>
         )}
-      {!!tokenData.stakeEntry?.parsed.cooldownStartSeconds &&
-        !!stakePool?.parsed.cooldownSeconds && (
+      {!!tokenData.stakeEntry?.parsed?.cooldownStartSeconds &&
+        !!stakePool?.parsed?.cooldownSeconds && (
           <div className="flex w-full flex-row items-center justify-between text-xs font-semibold">
             <span>Cooldown:</span>
             <span className="text-right">
@@ -146,8 +146,8 @@ export function StakedStats({ tokenData }: { tokenData: StakeEntryTokenData }) {
             </span>
           </div>
         )}
-      {!!stakePool?.parsed.minStakeSeconds &&
-        !!tokenData.stakeEntry?.parsed.lastStakedAt && (
+      {!!stakePool?.parsed?.minStakeSeconds &&
+        !!tokenData.stakeEntry?.parsed?.lastStakedAt && (
           <div className="flex w-full flex-row items-center justify-between text-xs font-semibold">
             <span>Min Time:</span>
             <span className="text-right">

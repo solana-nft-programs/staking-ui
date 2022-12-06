@@ -1,28 +1,35 @@
 import { ApolloClient, gql, InMemoryCache } from '@apollo/client'
+import type { IdlAccountData } from '@cardinal/rewards-center'
+import { rewardsCenterProgram } from '@cardinal/rewards-center'
 import { getActiveStakeEntriesForPool } from '@cardinal/staking/dist/cjs/programs/stakePool/accounts'
-import type { Connection, PublicKey } from '@solana/web3.js'
+import type { Wallet } from '@project-serum/anchor'
+import { useWallet } from '@solana/wallet-adapter-react'
+import type { Connection } from '@solana/web3.js'
+import { stakeEntryDataToV2 } from 'api/fetchStakeEntry'
+import { asEmptyAnchorWallet } from 'common/Wallets'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 import { useQuery } from 'react-query'
 
 import { TOKEN_DATAS_KEY } from './useAllowedTokenDatas'
-import { useStakePoolId } from './useStakePoolId'
+import { isStakePoolV2, useStakePoolData } from './useStakePoolData'
 import { useStakePoolMetadata } from './useStakePoolMetadata'
 
 export const usePoolAnalytics = () => {
   const { connection } = useEnvironmentCtx()
-  const stakePoolId = useStakePoolId()
+  const { data: stakePoolData } = useStakePoolData()
   const { data: stakePoolMetadata } = useStakePoolMetadata()
+  const wallet = useWallet()
 
   return useQuery<{ [trait: string]: number } | undefined>(
     [
       TOKEN_DATAS_KEY,
       'poolAnalytics',
-      stakePoolId?.toString(),
+      stakePoolData?.pubkey.toString(),
       stakePoolMetadata,
     ],
     async () => {
       const analyticsData: { [trait: string]: number } = {}
-      if (!stakePoolId || !stakePoolMetadata) {
+      if (!stakePoolData?.pubkey || !stakePoolMetadata) {
         return analyticsData
       }
       const analytics = stakePoolMetadata.analytics
@@ -30,7 +37,8 @@ export const usePoolAnalytics = () => {
 
       const tokensMetadata = await getEntriesMetadataForPool(
         connection,
-        stakePoolId
+        asEmptyAnchorWallet(wallet),
+        stakePoolData
       )
 
       for (const analytic of analytics) {
@@ -74,14 +82,43 @@ export const usePoolAnalytics = () => {
 
 const getEntriesMetadataForPool = async (
   connection: Connection,
-  poolId: PublicKey
+  wallet: Wallet,
+  stakePoolData: Pick<IdlAccountData<'stakePool'>, 'pubkey' | 'parsed'>
 ): Promise<
   {
     address: string
     metadatas_attributes: { trait_type: string; value: string }[]
   }[]
 > => {
-  const allStakeEntries = await getActiveStakeEntriesForPool(connection, poolId)
+  let allStakeEntries: Pick<
+    IdlAccountData<'stakeEntry'>,
+    'pubkey' | 'parsed'
+  >[] = []
+  if (stakePoolData.pubkey && stakePoolData?.parsed) {
+    if (isStakePoolV2(stakePoolData.parsed)) {
+      const program = rewardsCenterProgram(connection, wallet)
+      const stakeEntries = await program.account.stakeEntry.all([
+        {
+          memcmp: {
+            offset: 11,
+            bytes: stakePoolData.pubkey.toString(),
+          },
+        },
+      ])
+      allStakeEntries = stakeEntries.map((e) => {
+        return { pubkey: e.publicKey, parsed: e.account }
+      })
+    } else {
+      allStakeEntries = (
+        await getActiveStakeEntriesForPool(connection, stakePoolData?.pubkey)
+      ).map((entry) => {
+        return {
+          pubkey: entry.pubkey,
+          parsed: stakeEntryDataToV2(entry.parsed),
+        }
+      })
+    }
+  }
   const indexer = new ApolloClient({
     uri: 'https://prod-holaplex.hasura.app/v1/graphql',
     cache: new InMemoryCache({ resultCaching: false }),
@@ -93,7 +130,7 @@ const getEntriesMetadataForPool = async (
               where: {
                 mint_address: {
                     _in: [${allStakeEntries
-                      .map((se) => `"${se.parsed.originalMint.toString()}"`)
+                      .map((se) => `"${se.parsed?.stakeMint.toString()}"`)
                       .join(',')}]
                 }
               }

@@ -58,7 +58,7 @@ export const StakedToken = ({
             </div>
           </div>
         )}
-        {tk.stakeEntry?.parsed.lastStaker.toString() !==
+        {tk.stakeEntry?.parsed?.lastStaker.toString() !==
           wallet.publicKey?.toString() && (
           <div>
             <div className="absolute top-0 left-0 z-10 flex h-full w-full justify-center rounded-xl bg-black bg-opacity-80  align-middle text-white">
@@ -67,7 +67,7 @@ export const StakedToken = ({
                 <DisplayAddress
                   dark
                   connection={connection}
-                  address={tk.stakeEntry?.parsed.lastStaker}
+                  address={tk.stakeEntry?.parsed?.lastStaker}
                 />
               </div>
             </div>

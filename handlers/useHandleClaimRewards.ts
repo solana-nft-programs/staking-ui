@@ -1,5 +1,5 @@
 import { withFindOrInitAssociatedTokenAccount } from '@cardinal/common'
-import { claimRewards } from '@cardinal/staking'
+import { claimRewards } from '@cardinal/rewards-center'
 import { useWallet } from '@solana/wallet-adapter-react'
 import { Transaction } from '@solana/web3.js'
 import { executeAllTransactions } from 'api/utils'
@@ -29,7 +29,7 @@ export const useHandleClaimRewards = () => {
       tokenDatas: StakeEntryTokenData[]
     }): Promise<void> => {
       if (!wallet) throw 'Wallet not found'
-      if (!stakePool) throw 'No stake pool found'
+      if (!stakePool || !stakePool.parsed) throw 'No stake pool found'
 
       const ataTx = new Transaction()
       if (rewardDistributorData.data && rewardDistributorData.data.parsed) {
@@ -55,14 +55,24 @@ export const useHandleClaimRewards = () => {
               if (i === 0 && ataTx.instructions.length > 0) {
                 transaction.instructions = ataTx.instructions
               }
-              const claimTx = await claimRewards(connection, wallet, {
-                stakePoolId: stakePool.pubkey,
-                stakeEntryId: token.stakeEntry.pubkey,
-                skipRewardMintTokenAccount: true,
-              })
+
+              const claimTxs = await claimRewards(
+                connection,
+                wallet,
+                stakePool.parsed!.identifier,
+                [
+                  {
+                    mintId: token.stakeEntry.parsed!.stakeMint,
+                  },
+                ],
+                rewardDistributorData.data
+                  ? [rewardDistributorData.data.pubkey]
+                  : []
+              )
+
               transaction.instructions = [
                 ...transaction.instructions,
-                ...claimTx.instructions,
+                ...claimTxs.map((tx) => tx.instructions).flat(),
               ]
               return transaction
             } catch (e) {

@@ -1,4 +1,8 @@
 import {
+  REWARDS_CENTER_ADDRESS,
+  REWARDS_CENTER_IDL,
+} from '@cardinal/rewards-center'
+import {
   REWARD_DISTRIBUTOR_ADDRESS,
   REWARD_DISTRIBUTOR_IDL,
 } from '@cardinal/staking/dist/cjs/programs/rewardDistributor'
@@ -275,6 +279,7 @@ export const handleError = (
     programIdls: [
       { programId: STAKE_POOL_ADDRESS, idl: STAKE_POOL_IDL },
       { programId: REWARD_DISTRIBUTOR_ADDRESS, idl: REWARD_DISTRIBUTOR_IDL },
+      { programId: REWARDS_CENTER_ADDRESS, idl: REWARDS_CENTER_IDL },
     ],
     additionalErrors: NATIVE_ERRORS,
   }

@@ -5,7 +5,10 @@ import {
   formatMintNaturalAmountAsDecimal,
 } from 'common/units'
 import { pubKeyUrl } from 'common/utils'
-import { useRewardDistributorData } from 'hooks/useRewardDistributorData'
+import {
+  isRewardDistributorV2,
+  useRewardDistributorData,
+} from 'hooks/useRewardDistributorData'
 import { useRewardDistributorTokenAccount } from 'hooks/useRewardDistributorTokenAccount'
 import { useRewardMintInfo } from 'hooks/useRewardMintInfo'
 import { useRewards } from 'hooks/useRewards'
@@ -94,7 +97,7 @@ export const StakePoolInfo = () => {
         <>
           <div className="inline-block text-lg">
             <span>
-              {rewardDistributorData.data.parsed.maxRewardSecondsReceived?.eq(
+              {rewardDistributorData.data.parsed?.maxRewardSecondsReceived?.eq(
                 new BN(1)
               )
                 ? '1x Claim'
@@ -117,7 +120,7 @@ export const StakePoolInfo = () => {
                 }}
                 target="_blank"
                 href={pubKeyUrl(
-                  rewardDistributorData.data.parsed.rewardMint,
+                  rewardDistributorData.data.parsed?.rewardMint,
                   environment.label
                 )}
                 rel="noreferrer"
@@ -126,7 +129,7 @@ export const StakePoolInfo = () => {
                   rewardMintInfo.data.metaplexMintData?.data.symbol ||
                   '???'}
               </a>{' '}
-              {rewardDistributorData.data.parsed.maxRewardSecondsReceived?.eq(
+              {rewardDistributorData.data.parsed?.maxRewardSecondsReceived?.eq(
                 new BN(1)
               )
                 ? ''
@@ -154,8 +157,9 @@ export const StakePoolInfo = () => {
                       '???'}
                   </div>
                   <div className="text-xs text-gray-500">
-                    {rewardDistributorData.data.parsed.kind ===
-                    RewardDistributorKind.Mint
+                    {rewardDistributorData.data.parsed?.kind ===
+                      RewardDistributorKind.Mint &&
+                    !isRewardDistributorV2(rewardDistributorData.data.parsed)
                       ? formatMintNaturalAmountAsDecimal(
                           rewardMintInfo.data.mintInfo,
                           rewardMintInfo.data.mintInfo.supply,

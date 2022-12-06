@@ -9,7 +9,7 @@ export const StakePoolConfig: React.FC<
   const { data: stakePool } = useStakePoolData()
   return (
     <div className={`flex flex-row gap-8 text-lg ${className}`}>
-      {!!stakePool?.parsed.endDate &&
+      {!!stakePool?.parsed?.endDate &&
         stakePool?.parsed.endDate.toNumber() !== 0 && (
           <Tooltip
             title={`Pool will no longer accept staked tokens after this date`}
@@ -25,7 +25,7 @@ export const StakePoolConfig: React.FC<
             </div>
           </Tooltip>
         )}
-      {!!stakePool?.parsed.cooldownSeconds &&
+      {!!stakePool?.parsed?.cooldownSeconds &&
         stakePool?.parsed.cooldownSeconds !== 0 && (
           <Tooltip
             title={`Unstaking tokens will initiate a cooldown period until they can be fully unstaked`}
@@ -39,7 +39,7 @@ export const StakePoolConfig: React.FC<
             </div>
           </Tooltip>
         )}
-      {!!stakePool?.parsed.minStakeSeconds &&
+      {!!stakePool?.parsed?.minStakeSeconds &&
         stakePool?.parsed.minStakeSeconds !== 0 && (
           <Tooltip
             title={`Tokens must be staking for this minimum duration before unstaking or claiming rewards`}

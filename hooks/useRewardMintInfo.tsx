@@ -26,12 +26,13 @@ export const useRewardMintInfo = () => {
       tokenList.data?.length,
     ],
     async () => {
-      if (!rewardDistibutor.data) return
+      if (!rewardDistibutor.data || !rewardDistibutor.data.parsed?.rewardMint)
+        return
 
       // tokenListData
       const tokenListData = tokenList.data?.find(
         (tk) =>
-          tk.address === rewardDistibutor.data?.parsed.rewardMint.toString()
+          tk.address === rewardDistibutor.data?.parsed?.rewardMint.toString()
       )
 
       // Metaplex metadata

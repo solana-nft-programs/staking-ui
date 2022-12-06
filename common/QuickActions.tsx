@@ -65,7 +65,7 @@ export const QuickActions = ({
               href={pubKeyUrl(
                 unstakedTokenData?.tokenAccount
                   ? unstakedTokenData.tokenAccount.account.data.parsed.info.mint
-                  : stakedTokenData!.stakeEntry?.parsed.originalMint,
+                  : stakedTokenData!.stakeEntry?.parsed?.stakeMint,
                 ctx.environment.label
               )}
               target="_blank"
@@ -90,7 +90,7 @@ export const QuickActions = ({
                   unstakedTokenData?.tokenAccount
                     ? unstakedTokenData.tokenAccount.account.data.parsed.info
                         .mint
-                    : stakedTokenData!.stakeEntry?.parsed.originalMint,
+                    : stakedTokenData!.stakeEntry?.parsed?.stakeMint,
                   ctx.environment.label
                 )}
                 target="_blank"
@@ -174,7 +174,7 @@ export const QuickActions = ({
         }}
         key={
           unstakedTokenData?.tokenAccount?.account.data.parsed.info.mint.toString() ??
-          stakedTokenData?.stakeEntry?.parsed.originalMint.toString()
+          stakedTokenData?.stakeEntry?.parsed?.stakeMint.toString()
         }
       >
         {handleClaimRewards.isLoading ||

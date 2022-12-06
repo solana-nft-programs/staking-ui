@@ -1,13 +1,14 @@
 import {
-  createStakePool,
-  executeTransaction,
-  handleError,
-} from '@cardinal/staking'
-import { withInitRewardDistributor } from '@cardinal/staking/dist/cjs/programs/rewardDistributor/transaction'
+  CLAIM_REWARDS_PAYMENT_INFO,
+  findRewardDistributorId,
+  findStakePoolId,
+  rewardsCenterProgram,
+  SOL_PAYMENT_INFO,
+} from '@cardinal/rewards-center'
+import { executeTransaction, handleError } from '@cardinal/staking'
 import { BN } from '@project-serum/anchor'
-import type * as splToken from '@solana/spl-token'
 import { useWallet } from '@solana/wallet-adapter-react'
-import { PublicKey } from '@solana/web3.js'
+import { PublicKey, SystemProgram, Transaction } from '@solana/web3.js'
 import { Footer } from 'common/Footer'
 import { HeaderSlim } from 'common/HeaderSlim'
 import { notify } from 'common/Notification'
@@ -53,13 +54,10 @@ function Admin() {
     [[] as StakePool[], [] as StakePool[]]
   )
 
-  const handleCreation = async (
-    values: CreationForm,
-    rewardMintInfo?: splToken.MintInfo
-  ) => {
+  const handleCreation = async (values: CreationForm) => {
     setStakePoolId(undefined)
     try {
-      if (!wallet?.connected) {
+      if (!wallet?.connected || !wallet.publicKey) {
         throw 'Wallet not connected'
       }
       if (
@@ -99,28 +97,55 @@ function Admin() {
         dateInNum = undefined
       }
       const stakePoolParams = {
-        requiresCollections:
+        allowedCollections:
           collectionPublicKeys.length > 0 ? collectionPublicKeys : undefined,
-        requiresCreators:
+        allowedCreators:
           creatorPublicKeys.length > 0 ? creatorPublicKeys : undefined,
         requiresAuthorization: values.requiresAuthorization,
         resetOnStake: values.resetOnStake,
-        overlayText: values.overlayText || undefined,
-        cooldownSeconds: values.cooldownPeriodSeconds || 0,
-        endDate: dateInNum ? new BN(dateInNum / 1000) : undefined,
+        minStakeSeconds: values.minStakeSeconds || null,
+        // overlayText: values.overlayText || undefined,
+        cooldownSeconds: values.cooldownPeriodSeconds || null,
+        endDate: dateInNum ? new BN(dateInNum / 1000) : null,
       }
-      const [transaction, stakePoolPK] = await createStakePool(
-        connection,
-        asWallet(wallet),
-        stakePoolParams
-      )
+
+      const transaction = new Transaction()
+      const program = rewardsCenterProgram(connection, asWallet(wallet))
+      const identifier = `pool-name-${Math.random()}`
+      const stakePoolId = findStakePoolId(identifier)
+      const ix = await program.methods
+        .initPool({
+          identifier: identifier,
+          allowedCollections: stakePoolParams.allowedCollections ?? [],
+          allowedCreators: stakePoolParams.allowedCreators ?? [],
+          requiresAuthorization: stakePoolParams.requiresAuthorization ?? false,
+          authority: wallet.publicKey,
+          resetOnUnstake: stakePoolParams.resetOnStake ?? false,
+          cooldownSeconds: stakePoolParams.cooldownSeconds,
+          minStakeSeconds: stakePoolParams.minStakeSeconds,
+          endDate: stakePoolParams.endDate,
+          stakePaymentInfo: SOL_PAYMENT_INFO,
+          unstakePaymentInfo: SOL_PAYMENT_INFO,
+        })
+        .accounts({
+          stakePool: stakePoolId,
+          payer: wallet.publicKey,
+          systemProgram: SystemProgram.programId,
+        })
+        .instruction()
+      transaction.add(ix)
+      // const [transaction, stakePoolPK] = await createStakePool(
+      //   connection,
+      //   asWallet(wallet),
+      //   stakePoolParams
+      // )
 
       if (values.rewardDistributorKind) {
         if (Number(values.rewardDurationSeconds) < 1) {
           throw 'RewardDurationSeconds needs to greater or equal to 1'
         }
         const rewardDistributorKindParams = {
-          stakePoolId: stakePoolPK,
+          stakePoolId: stakePoolId,
           rewardMintId: new PublicKey(values.rewardMintAddress!.trim())!,
           rewardAmount: values.rewardAmount
             ? new BN(values.rewardAmount)
@@ -129,9 +154,9 @@ function Admin() {
             ? new BN(values.rewardDurationSeconds)
             : undefined,
           kind: values.rewardDistributorKind,
-          supply: values.rewardMintSupply
-            ? new BN(values.rewardMintSupply)
-            : undefined,
+          // supply: values.rewardMintSupply
+          //   ? new BN(values.rewardMintSupply)
+          //   : undefined,
           multiplerDecimals: values.multiplierDecimals
             ? parseInt(values.multiplierDecimals)
             : undefined,
@@ -143,23 +168,46 @@ function Admin() {
             : undefined,
         }
 
-        await withInitRewardDistributor(
-          transaction,
-          connection,
-          asWallet(wallet),
-          rewardDistributorKindParams
-        )
+        const rewardDistributorId = findRewardDistributorId(stakePoolId)
+        const ix = await program.methods
+          .initRewardDistributor({
+            identifier: new BN(0),
+            rewardAmount: new BN(rewardDistributorKindParams.rewardAmount ?? 0),
+            rewardDurationSeconds: new BN(
+              rewardDistributorKindParams.rewardDurationSeconds ?? 0
+            ),
+            supply: null,
+            defaultMultiplier: new BN(
+              rewardDistributorKindParams.defaultMultiplier ?? 1
+            ),
+            multiplierDecimals:
+              rewardDistributorKindParams.multiplerDecimals ?? 0,
+            maxRewardSecondsReceived:
+              rewardDistributorKindParams.maxRewardSecondsReceived
+                ? new BN(rewardDistributorKindParams.maxRewardSecondsReceived)
+                : null,
+            claimRewardsPaymentInfo: CLAIM_REWARDS_PAYMENT_INFO,
+          })
+          .accounts({
+            rewardDistributor: rewardDistributorId,
+            stakePool: stakePoolId,
+            rewardMint: rewardDistributorKindParams.rewardMintId,
+            authority: wallet.publicKey,
+            payer: wallet.publicKey,
+          })
+          .instruction()
+        transaction.add(ix)
       }
 
       await executeTransaction(connection, asWallet(wallet), transaction, {
         silent: false,
         signers: [],
       })
-      setStakePoolId(stakePoolPK)
+      setStakePoolId(stakePoolId)
 
       notify({
         message:
-          'Successfully created stake pool with ID: ' + stakePoolPK.toString(),
+          'Successfully created stake pool with ID: ' + stakePoolId.toString(),
         type: 'success',
       })
       // const stakePoolData = await getStakePool(connection, stakePoolPK)

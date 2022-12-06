@@ -17,7 +17,7 @@ export const useRewardDistributorTokenAccount = () => {
       rewardDistibutorData?.data?.pubkey?.toString(),
     ],
     async () => {
-      if (!rewardDistibutorData.data) return
+      if (!rewardDistibutorData.data || !rewardDistibutorData.data.parsed) return
       const rewardDistributorTokenAccount = await findAta(
         rewardDistibutorData.data.parsed.rewardMint,
         rewardDistibutorData.data.pubkey,

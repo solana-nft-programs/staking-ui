@@ -8,7 +8,7 @@ import { asWallet } from 'common/Wallets'
 import { useRewardDistributorData } from 'hooks/useRewardDistributorData'
 import { useMutation } from 'react-query'
 
-import { useStakePoolData } from '../hooks/useStakePoolData'
+import { isStakePoolV2, useStakePoolData } from '../hooks/useStakePoolData'
 import { useEnvironmentCtx } from '../providers/EnvironmentProvider'
 
 export const useHandleReclaimFunds = () => {
@@ -24,13 +24,28 @@ export const useHandleReclaimFunds = () => {
       reclaimAmount: string | undefined
     }): Promise<string> => {
       if (!wallet) throw 'Wallet not found'
-      if (!stakePool.data) throw 'No stake pool found'
+      if (!stakePool.data || !stakePool.data.parsed) throw 'No stake pool found'
       if (!rewardDistributor.data) throw 'No reward distributor found'
+
       const transaction = new Transaction()
-      await withReclaimFunds(transaction, connection, wallet, {
-        stakePoolId: stakePool.data.pubkey,
-        amount: new BN(reclaimAmount || 0),
-      })
+      // const program = rewardsCenterProgram(connection, wallet)
+      if (isStakePoolV2(stakePool.data.parsed)) {
+        // to do add instruction to lib.rs of reward center
+        // const ix = await program.methods
+        //   .reclaimFunds()
+        //   .accounts({
+        //     stakePool: stakePool.pubkey,
+        //     stakeAuthorizationRecord: stakeAuthorizationId,
+        //     authority: wallet.publicKey,
+        //   })
+        //   .instruction()
+        // transaction.add(ix)
+      } else {
+        await withReclaimFunds(transaction, connection, wallet, {
+          stakePoolId: stakePool.data.pubkey,
+          amount: new BN(reclaimAmount || 0),
+        })
+      }
       return executeTransaction(connection, wallet, transaction, {})
     },
     {

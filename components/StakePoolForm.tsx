@@ -1,10 +1,8 @@
 /* eslint-disable @typescript-eslint/ban-types */
-import type { AccountData } from '@cardinal/common'
 import { withFindOrInitAssociatedTokenAccount } from '@cardinal/common'
+import type { IdlAccountData } from '@cardinal/rewards-center'
 import { executeTransaction } from '@cardinal/staking'
-import type { RewardDistributorData } from '@cardinal/staking/dist/cjs/programs/rewardDistributor'
 import { RewardDistributorKind } from '@cardinal/staking/dist/cjs/programs/rewardDistributor'
-import type { StakePoolData } from '@cardinal/staking/dist/cjs/programs/stakePool'
 import { BN } from '@project-serum/anchor'
 import * as splToken from '@solana/spl-token'
 import { useWallet } from '@solana/wallet-adapter-react'
@@ -19,6 +17,7 @@ import { tryFormatInput, tryParseInput } from 'common/units'
 import { tryPublicKey } from 'common/utils'
 import { asWallet } from 'common/Wallets'
 import { useFormik } from 'formik'
+import { isRewardDistributorV2 } from 'hooks/useRewardDistributorData'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 import { useMemo, useState } from 'react'
 import Select from 'react-select'
@@ -41,7 +40,7 @@ export const bnValidationTest = (value: string | undefined): boolean => {
 }
 
 const creationFormSchema = Yup.object({
-  overlayText: Yup.string(),
+  // overlayText: Yup.string(),
   requireCollections: Yup.array()
     .of(
       Yup.string().test(
@@ -79,9 +78,9 @@ const creationFormSchema = Yup.object({
   rewardDurationSeconds: Yup.string()
     .optional()
     .test('is-valid-bn', 'Invalid reward durations seconds', bnValidationTest),
-  rewardMintSupply: Yup.string()
-    .optional()
-    .test('is-valid-bn', 'Invalid reward mint supply', bnValidationTest),
+  // rewardMintSupply: Yup.string()
+  //   .optional()
+  //   .test('is-valid-bn', 'Invalid reward mint supply', bnValidationTest),
   maxRewardSecondsReceived: Yup.string()
     .optional()
     .test('is-valid-bn', 'Invalid reward durations seconds', bnValidationTest),
@@ -100,8 +99,11 @@ export function StakePoolForm({
   handleSubmit,
 }: {
   type?: 'update' | 'create'
-  stakePoolData?: AccountData<StakePoolData>
-  rewardDistributorData?: AccountData<RewardDistributorData>
+  stakePoolData?: Pick<IdlAccountData<'stakePool'>, 'pubkey' | 'parsed'>
+  rewardDistributorData?: Pick<
+    IdlAccountData<'rewardDistributor'>,
+    'pubkey' | 'parsed'
+  >
   handleSubmit: (
     values: CreationForm,
     rewardMintInfo?: splToken.MintInfo
@@ -110,43 +112,44 @@ export function StakePoolForm({
   const { connection } = useEnvironmentCtx()
   const wallet = useWallet()
   const initialValues: CreationForm = {
-    overlayText: stakePoolData?.parsed.overlayText ?? 'STAKED',
-    requireCollections: (stakePoolData?.parsed.requiresCollections ?? []).map(
+    // overlayText: stakePoolData?.parsed.overlayText ?? 'STAKED',
+    requireCollections: (stakePoolData?.parsed?.allowedCollections ?? []).map(
       (pk) => pk.toString()
     ),
-    requireCreators: (stakePoolData?.parsed.requiresCreators ?? []).map((pk) =>
+    requireCreators: (stakePoolData?.parsed?.allowedCreators ?? []).map((pk) =>
       pk.toString()
     ),
-    requiresAuthorization: stakePoolData?.parsed.requiresAuthorization ?? false,
-    resetOnStake: stakePoolData?.parsed.resetOnStake ?? false,
-    cooldownPeriodSeconds: stakePoolData?.parsed.cooldownSeconds ?? 0,
-    minStakeSeconds: stakePoolData?.parsed.minStakeSeconds ?? 0,
-    endDate: stakePoolData?.parsed.endDate
+    requiresAuthorization:
+      stakePoolData?.parsed?.requiresAuthorization ?? false,
+    resetOnStake: stakePoolData?.parsed?.resetOnUnstake ?? false,
+    cooldownPeriodSeconds: stakePoolData?.parsed?.cooldownSeconds ?? 0,
+    minStakeSeconds: stakePoolData?.parsed?.minStakeSeconds ?? 0,
+    endDate: stakePoolData?.parsed?.endDate
       ? new Date(stakePoolData?.parsed.endDate.toNumber() * 1000)
           .toISOString()
           .split('T')[0]
       : undefined,
-    rewardDistributorKind: rewardDistributorData?.parsed.kind,
-    rewardMintAddress: rewardDistributorData?.parsed.rewardMint
+    rewardDistributorKind: rewardDistributorData?.parsed?.kind,
+    rewardMintAddress: rewardDistributorData?.parsed?.rewardMint
       ? rewardDistributorData?.parsed.rewardMint.toString()
       : undefined,
-    rewardAmount: rewardDistributorData?.parsed.rewardAmount
+    rewardAmount: rewardDistributorData?.parsed?.rewardAmount
       ? rewardDistributorData?.parsed.rewardAmount.toString()
       : undefined,
-    rewardDurationSeconds: rewardDistributorData?.parsed.rewardDurationSeconds
+    rewardDurationSeconds: rewardDistributorData?.parsed?.rewardDurationSeconds
       ? rewardDistributorData?.parsed.rewardDurationSeconds.toString()
       : undefined,
-    rewardMintSupply: rewardDistributorData?.parsed.maxSupply
-      ? rewardDistributorData?.parsed.maxSupply.toString()
-      : undefined,
+    // rewardMintSupply: rewardDistributorData?.parsed?.maxSupply
+    //   ? rewardDistributorData?.parsed.maxSupply.toString()
+    //   : undefined,
     maxRewardSecondsReceived: rewardDistributorData?.parsed
-      .maxRewardSecondsReceived
+      ?.maxRewardSecondsReceived
       ? rewardDistributorData?.parsed.maxRewardSecondsReceived.toString()
       : undefined,
-    multiplierDecimals: rewardDistributorData?.parsed.multiplierDecimals
+    multiplierDecimals: rewardDistributorData?.parsed?.multiplierDecimals
       ? rewardDistributorData?.parsed.multiplierDecimals.toString()
       : undefined,
-    defaultMultiplier: rewardDistributorData?.parsed.defaultMultiplier
+    defaultMultiplier: rewardDistributorData?.parsed?.defaultMultiplier
       ? rewardDistributorData?.parsed.defaultMultiplier.toString()
       : undefined,
   }
@@ -187,7 +190,7 @@ export function StakePoolForm({
         if (
           type === 'update' &&
           values.rewardMintAddress?.toString() ===
-            rewardDistributorData?.parsed.rewardMint.toString()
+            rewardDistributorData?.parsed?.rewardMint.toString()
         ) {
           return
         }
@@ -245,7 +248,7 @@ export function StakePoolForm({
 
   return (
     <form className="w-full max-w-lg">
-      <div className="-mx-3 flex flex-wrap">
+      {/* <div className="-mx-3 flex flex-wrap">
         <div className="mb-6 mt-4 w-full px-3 md:mb-0">
           <FormFieldTitleInput
             title={'Overlay Text'}
@@ -260,7 +263,7 @@ export function StakePoolForm({
             onChange={handleChange}
           />
         </div>
-      </div>
+      </div> */}
       <div className="-mx-3 flex flex-wrap">
         <div className="mb-6 mt-4 w-full px-3 md:mb-0">
           <FormFieldTitleInput
@@ -301,6 +304,7 @@ export function StakePoolForm({
             (v, i) =>
               i > 0 && (
                 <div
+                  key={v?.toString()}
                   className={`${
                     errors.requireCollections?.at(i)
                       ? 'border-red-500'
@@ -373,6 +377,7 @@ export function StakePoolForm({
             (v, i) =>
               i > 0 && (
                 <div
+                  key={v?.toString()}
                   className={`${
                     errors.requireCreators?.at(i)
                       ? 'border-red-500'
@@ -541,30 +546,33 @@ export function StakePoolForm({
               }
               value={{
                 value: values.rewardDistributorKind?.toString() ?? '0',
-                label: values.rewardDistributorKind
-                  ? RewardDistributorKind[values.rewardDistributorKind] ===
-                    'Mint'
-                    ? 'Mint'
-                    : 'Transfer'
-                  : 'None',
+                label: values.rewardDistributorKind ? 'Transfer' : 'None',
               }}
               options={
-                type === 'update' && rewardDistributorData
+                type === 'update' &&
+                rewardDistributorData &&
+                rewardDistributorData?.parsed?.kind
                   ? [
                       { value: '0', label: 'None' },
                       {
-                        value:
-                          RewardDistributorKind[
-                            rewardDistributorData?.parsed.kind
-                          ] === 'Mint'
-                            ? '1'
-                            : '2',
-                        label:
-                          RewardDistributorKind[
-                            rewardDistributorData?.parsed.kind
-                          ] === 'Mint'
-                            ? 'Mint'
-                            : 'Transfer',
+                        value: isRewardDistributorV2(
+                          rewardDistributorData.parsed
+                        )
+                          ? '2'
+                          : RewardDistributorKind[
+                              rewardDistributorData?.parsed.kind
+                            ] === 'Mint'
+                          ? '1'
+                          : '2',
+                        label: isRewardDistributorV2(
+                          rewardDistributorData.parsed
+                        )
+                          ? 'Transfer'
+                          : RewardDistributorKind[
+                              rewardDistributorData?.parsed.kind
+                            ] === 'Mint'
+                          ? 'Mint'
+                          : 'Transfer', // TODO remove for reward center
                       },
                     ]
                   : [
@@ -578,7 +586,7 @@ export function StakePoolForm({
           {values.rewardDistributorKind ||
           (type !== 'update' &&
             values.rewardDistributorKind !==
-              rewardDistributorData?.parsed.kind &&
+              rewardDistributorData?.parsed?.kind &&
             values.rewardDistributorKind !== 0) ? (
             <>
               <div className="relative mb-6 mt-4 w-full px-3 md:mb-0">
@@ -686,20 +694,12 @@ export function StakePoolForm({
 
                   <div className="mb-6 mt-4 w-full px-3 md:mb-0">
                     <FormFieldTitleInput
-                      title={
-                        values.rewardDistributorKind ===
-                        RewardDistributorKind.Mint
-                          ? 'Reward Max Supply'
-                          : 'Reward Transfer Amount'
-                      }
+                      title={'Reward Transfer Amount'}
                       description={
-                        values.rewardDistributorKind ===
-                        RewardDistributorKind.Mint
-                          ? 'Max number of tokens to mint (max: mint supply).'
-                          : 'How many tokens to transfer to the stake pool for future distribution (max: your asscociated token account balance). This can also be 0 and tokens can be transferred in directly via a wallet ui.'
+                        'How many tokens to transfer to the stake pool for future distribution (max: your asscociated token account balance). This can also be 0 and tokens can be transferred in directly via a wallet ui.'
                       }
                     />
-                    <div
+                    {/* <div
                       className={`${
                         errors.rewardMintSupply
                           ? 'border-red-500'
@@ -763,7 +763,7 @@ export function StakePoolForm({
                       >
                         Max
                       </div>
-                    </div>
+                    </div> */}
                   </div>
                   <div className="relative mb-6 mt-4 w-full px-3 md:mb-0">
                     <FormFieldTitleInput

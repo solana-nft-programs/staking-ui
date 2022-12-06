@@ -1,9 +1,5 @@
-import type { AccountData } from '@cardinal/common'
 import { getBatchedMultipleAccounts } from '@cardinal/common'
-import type {
-  StakeAuthorizationData,
-  StakePoolData,
-} from '@cardinal/staking/dist/cjs/programs/stakePool'
+import type { IdlAccountData } from '@cardinal/rewards-center'
 import * as metaplex from '@metaplex-foundation/mpl-token-metadata'
 import * as spl from '@solana/spl-token'
 import type { AccountInfo, ParsedAccountData } from '@solana/web3.js'
@@ -32,14 +28,18 @@ export type AllowedTokenData = {
 
 export const allowedTokensForPool = (
   tokenDatas: AllowedTokenData[],
-  stakePool: AccountData<StakePoolData>,
-  stakeAuthorizations?: AccountData<StakeAuthorizationData>[],
+  stakePool: Pick<IdlAccountData<'stakePool'>, 'pubkey' | 'parsed'>,
+  stakeAuthorizations?: Pick<
+    IdlAccountData<'stakeAuthorizationRecord'>,
+    'pubkey' | 'parsed'
+  >[],
   allowFrozen?: boolean
 ) =>
   tokenDatas.filter((token) => {
     let isAllowed = true
-    const creatorAddresses = stakePool.parsed.requiresCreators
-    const collectionAddresses = stakePool.parsed.requiresCollections
+    if (!stakePool.parsed) throw 'Stake pool data are unknown'
+    const creatorAddresses = stakePool.parsed.allowedCreators
+    const collectionAddresses = stakePool.parsed.allowedCollections
     const requiresAuthorization = stakePool.parsed.requiresAuthorization
     if (
       !allowFrozen &&
@@ -49,8 +49,8 @@ export const allowedTokensForPool = (
     }
 
     if (
-      stakePool.parsed.requiresCreators.length > 0 ||
-      stakePool.parsed.requiresCollections.length > 0 ||
+      stakePool.parsed.allowedCreators.length > 0 ||
+      stakePool.parsed.allowedCollections.length > 0 ||
       stakePool.parsed.requiresAuthorization
     ) {
       isAllowed = false
@@ -81,7 +81,7 @@ export const allowedTokensForPool = (
       if (
         requiresAuthorization &&
         stakeAuthorizations
-          ?.map((s) => s.parsed.mint.toString())
+          ?.map((s) => s.parsed?.mint.toString())
           ?.includes(token?.tokenAccount?.account.data.parsed.info.mint)
       ) {
         isAllowed = true

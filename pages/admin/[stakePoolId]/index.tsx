@@ -83,22 +83,22 @@ function AdminStakePool() {
                 </p>
                 {stakePool.isFetched ? (
                   <>
-                    <span className="flex w-full flex-wrap md:mb-0">
+                    {/* <span className="flex w-full flex-wrap md:mb-0">
                       <div className="inline-block text-sm font-bold uppercase tracking-wide text-gray-200">
                         Overlay Text:
                       </div>
                       <div className="inline-block pl-2">
-                        {stakePool.data?.parsed.overlayText || '[None]'}
+                        {stakePool.data?.parsed?.overlayText || '[None]'}
                       </div>
-                    </span>
+                    </span> */}
                     <span className="mt-3 flex w-full flex-wrap md:mb-0">
                       <div className="inline-block text-sm font-bold uppercase tracking-wide text-gray-200">
                         Collection Addresses:
                       </div>
                       <label className="inline-block pl-2">
-                        {stakePool.data?.parsed.requiresCollections &&
-                        stakePool.data?.parsed.requiresCollections.length !== 0
-                          ? stakePool.data?.parsed.requiresCollections.map(
+                        {stakePool.data?.parsed?.allowedCollections &&
+                        stakePool.data?.parsed.allowedCollections.length !== 0
+                          ? stakePool.data?.parsed.allowedCollections.map(
                               (collection) => (
                                 <ShortPubKeyUrl
                                   key={collection.toString()}
@@ -116,9 +116,9 @@ function AdminStakePool() {
                         Creator Addresses:
                       </div>
                       <label className="inline-block pl-2 text-white">
-                        {stakePool.data?.parsed.requiresCreators &&
-                        stakePool.data?.parsed.requiresCreators.length !== 0
-                          ? stakePool.data?.parsed.requiresCreators.map(
+                        {stakePool.data?.parsed?.allowedCreators &&
+                        stakePool.data?.parsed.allowedCreators.length !== 0
+                          ? stakePool.data?.parsed.allowedCreators.map(
                               (creator) => (
                                 <ShortPubKeyUrl
                                   key={creator.toString()}
@@ -134,26 +134,26 @@ function AdminStakePool() {
                     <span className="mt-3 flex w-full flex-wrap md:mb-0">
                       <label className="inline-block text-sm font-bold uppercase tracking-wide text-gray-200">
                         Requires Authorization:{' '}
-                        {stakePool.data?.parsed.requiresAuthorization.toString() ||
+                        {stakePool.data?.parsed?.requiresAuthorization.toString() ||
                           '[None]'}
                       </label>
                     </span>
                     <span className="mt-3 flex w-full flex-wrap md:mb-0">
                       <label className="inline-block text-sm font-bold uppercase tracking-wide text-gray-200">
                         Cooldown Period Seconds:{' '}
-                        {stakePool.data?.parsed.cooldownSeconds || '[None]'}
+                        {stakePool.data?.parsed?.cooldownSeconds || '[None]'}
                       </label>
                     </span>
                     <span className="mt-3 flex w-full flex-wrap md:mb-0">
                       <label className="inline-block text-sm font-bold uppercase tracking-wide text-gray-200">
                         Minimum Stake Seconds:{' '}
-                        {stakePool.data?.parsed.minStakeSeconds || '[None]'}
+                        {stakePool.data?.parsed?.minStakeSeconds || '[None]'}
                       </label>
                     </span>
                     <span className="mt-3 flex w-full flex-wrap md:mb-0">
                       <label className="inline-block text-sm font-bold uppercase tracking-wide text-gray-200">
                         End Date:{' '}
-                        {stakePool.data?.parsed.endDate
+                        {stakePool.data?.parsed?.endDate
                           ? new Date(
                               stakePool.data?.parsed.endDate?.toNumber() * 1000
                             ).toDateString()
@@ -186,14 +186,14 @@ function AdminStakePool() {
                         <span className="mt-3 flex w-full flex-wrap md:mb-0">
                           <label className="inline-block text-sm font-bold uppercase tracking-wide text-gray-200">
                             Reward Duration Seconds:{' '}
-                            {rewardDistributor.data.parsed.rewardDurationSeconds.toString() ||
+                            {rewardDistributor.data.parsed?.rewardDurationSeconds.toString() ||
                               '[None]'}
                           </label>
                         </span>
                         <span className="mt-3 flex w-full flex-wrap md:mb-0">
                           <label className="inline-block text-sm font-bold uppercase tracking-wide text-gray-200">
                             Reward Amount:{' '}
-                            {rewardDistributor.data.parsed.rewardAmount &&
+                            {rewardDistributor.data.parsed?.rewardAmount &&
                             rewardMintInfo.data
                               ? getMintDecimalAmountFromNatural(
                                   rewardMintInfo.data?.mintInfo,
@@ -205,22 +205,22 @@ function AdminStakePool() {
                         <span className="mt-3 flex w-full flex-wrap md:mb-0">
                           <label className="inline-block text-sm font-bold uppercase tracking-wide text-gray-200">
                             Maximum reward seconds:{' '}
-                            {rewardDistributor.data.parsed.maxRewardSecondsReceived?.toString() ||
+                            {rewardDistributor.data.parsed?.maxRewardSecondsReceived?.toString() ||
                               '[None]'}
                           </label>
                         </span>
                         <span className="mt-3 flex w-full flex-wrap md:mb-0">
                           <label className="inline-block text-sm font-bold uppercase tracking-wide text-gray-200">
                             Default Multiplier:{' '}
-                            {rewardDistributor.data.parsed.defaultMultiplier.toNumber() ||
+                            {rewardDistributor.data.parsed?.defaultMultiplier.toNumber() ||
                               '[None]'}
                           </label>
                         </span>
                         <span className="mt-3 flex w-full flex-wrap md:mb-0">
                           <label className="inline-block text-sm font-bold uppercase tracking-wide text-gray-200">
                             Multiplier Decimals:{' '}
-                            {rewardDistributor.data.parsed.multiplierDecimals ||
-                              '[None]'}
+                            {rewardDistributor.data.parsed
+                              ?.multiplierDecimals || '[None]'}
                           </label>
                         </span>
                       </>
@@ -239,7 +239,7 @@ function AdminStakePool() {
                     <MintMultipliers />
                   </div>
                 )}
-                {stakePool.data?.parsed.requiresAuthorization && (
+                {stakePool.data?.parsed?.requiresAuthorization && (
                   <AuthorizeMints />
                 )}
               </div>
