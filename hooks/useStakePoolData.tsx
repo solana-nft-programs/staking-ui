@@ -41,13 +41,14 @@ export const useStakePoolData = () => {
 }
 
 export const isStakePoolV2 = (
-  stakePoolData:
+  stakePoolData: (
     | StakePoolData
     | TypeDef<
         AllAccountsMap<CardinalRewardsCenter>['stakePool'],
         IdlTypes<CardinalRewardsCenter>
       >
-): boolean => !('requiresCreators' in stakePoolData)
+  ) & { type?: string }
+): boolean => stakePoolData.type === 'v2'
 
 export const stakePoolDataToV2 = (
   stakePoolData:
@@ -59,7 +60,7 @@ export const stakePoolDataToV2 = (
 ): TypeDef<
   AllAccountsMap<CardinalRewardsCenter>['stakePool'],
   IdlTypes<CardinalRewardsCenter>
-> => {
+> & { type: string } => {
   if (!isStakePoolV2(stakePoolData)) {
     const poolData = stakePoolData as StakePoolData
     return {
@@ -76,10 +77,11 @@ export const stakePoolDataToV2 = (
       allowedCreators: poolData.requiresCreators,
       allowedCollections: poolData.requiresCollections,
       identifier: poolData.identifier.toString(),
+      type: 'v1',
     }
   }
   return stakePoolData as TypeDef<
     AllAccountsMap<CardinalRewardsCenter>['stakePool'],
     IdlTypes<CardinalRewardsCenter>
-  >
+  > & { type: 'v2' }
 }

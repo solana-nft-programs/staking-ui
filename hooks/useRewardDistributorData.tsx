@@ -48,13 +48,14 @@ export const useRewardDistributorData = () => {
 }
 
 export const isRewardDistributorV2 = (
-  rewardDistributorData:
+  rewardDistributorData: (
     | RewardDistributorData
     | TypeDef<
         AllAccountsMap<CardinalRewardsCenter>['rewardDistributor'],
         IdlTypes<CardinalRewardsCenter>
       >
-): boolean => !('identifier' in rewardDistributorData)
+  ) & { type?: string }
+): boolean => rewardDistributorData.type === 'v2'
 
 export const rewardDistributorDataToV2 = (
   rewardDistributorData:
@@ -66,7 +67,7 @@ export const rewardDistributorDataToV2 = (
 ): TypeDef<
   AllAccountsMap<CardinalRewardsCenter>['rewardDistributor'],
   IdlTypes<CardinalRewardsCenter>
-> => {
+> & { type: string } => {
   if (!isRewardDistributorV2(rewardDistributorData)) {
     const rwdData = rewardDistributorData as RewardDistributorData
     return {
@@ -83,12 +84,13 @@ export const rewardDistributorDataToV2 = (
       multiplierDecimals: rwdData.multiplierDecimals,
       claimRewardsPaymentInfo: PublicKey.default,
       maxRewardSecondsReceived: rwdData.maxRewardSecondsReceived,
+      type: 'v1',
     }
   }
   return rewardDistributorData as TypeDef<
     AllAccountsMap<CardinalRewardsCenter>['rewardDistributor'],
     IdlTypes<CardinalRewardsCenter>
-  >
+  > & { type: 'v2' }
 }
 
 export const rewardDistributorDataToV1 = (

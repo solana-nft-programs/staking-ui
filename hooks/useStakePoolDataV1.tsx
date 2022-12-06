@@ -13,7 +13,7 @@ export const useStakePoolDataV1 = () => {
   return useQuery<AccountData<StakePoolData> | undefined>(
     ['stakePoolDataV1', stakePoolId?.toString()],
     async () => {
-      if (!stakePoolId || stakePoolId) return
+      if (!stakePoolId) return
       return getStakePool(secondaryConnection, stakePoolId)
     }
   )

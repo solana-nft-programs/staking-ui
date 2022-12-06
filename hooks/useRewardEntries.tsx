@@ -46,6 +46,11 @@ export const useRewardEntries = () => {
         .filter((tk) => tk && tk.stakeEntry)
         .map((tk) => tk.stakeEntry!)
         .map((entry) => entry.pubkey)
+      console.log(
+        'isRewardDistributorV2(rewardDistibutorData.parsed)',
+        isRewardDistributorV2(rewardDistibutorData.parsed),
+        rewardDistibutorData
+      )
       if (isRewardDistributorV2(rewardDistibutorData.parsed)) {
         const rewardEntryIds = await Promise.all(
           stakeEntryIds.map(async (stakeEntryId) =>

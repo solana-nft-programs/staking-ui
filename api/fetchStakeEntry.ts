@@ -97,7 +97,7 @@ export const isStakeEntryV2 = (
         AllAccountsMap<CardinalRewardsCenter>['stakeEntry'],
         IdlTypes<CardinalRewardsCenter>
       >
-): boolean => !('original_mint' in stakePoolData)
+): boolean => !('originalMint' in stakePoolData)
 
 export const stakeEntryDataToV2 = (
   stakeEntryData:

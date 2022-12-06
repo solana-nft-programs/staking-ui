@@ -11,7 +11,6 @@ import { useQuery } from 'react-query'
 
 import * as useAllowedTokenDatas from './useAllowedTokenDatas'
 import { useStakePoolData } from './useStakePoolData'
-import { useStakePoolId } from './useStakePoolId'
 import type { TokenListData } from './useTokenList'
 import { useTokenList } from './useTokenList'
 import { useWalletIds } from './useWalletIds'
@@ -79,7 +78,6 @@ export async function getStakeEntryDatas(
 }
 
 export const useStakedTokenDatas = () => {
-  const stakePoolId = useStakePoolId()
   const walletIds = useWalletIds()
   const wallet = useWallet()
   const tokenList = useTokenList()
@@ -90,13 +88,13 @@ export const useStakedTokenDatas = () => {
     [
       useAllowedTokenDatas.TOKEN_DATAS_KEY,
       'stakedTokenDatas',
-      stakePoolId?.toString(),
+      stakePoolData?.pubkey?.toString(),
       walletIds.join(','),
       tokenList?.data?.length,
     ],
     async () => {
       if (
-        !stakePoolId ||
+        !stakePoolData?.pubkey ||
         !walletIds ||
         walletIds.length <= 0 ||
         !stakePoolData ||
@@ -138,6 +136,9 @@ export const useStakedTokenDatas = () => {
       }, [] as StakeEntryTokenData[])
       return hydratedTokenDatas
     },
-    { enabled: tokenList.isFetched && !!stakePoolId && walletIds.length > 0 }
+    {
+      enabled:
+        tokenList.isFetched && !!stakePoolData?.pubkey && walletIds.length > 0,
+    }
   )
 }

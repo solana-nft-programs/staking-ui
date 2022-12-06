@@ -30,6 +30,7 @@ export function StakedStats({ tokenData }: { tokenData: StakeEntryTokenData }) {
   const rewardEntries = useRewardEntries()
   const rewardsRate = useRewardsRate()
   const rewards = useRewards()
+
   return (
     <div className="mt-2">
       {tokenData.stakeEntry &&
