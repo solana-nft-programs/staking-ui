@@ -32,6 +32,7 @@
     "@cardinal/stats": "^1.0.3",
     "@emotion/babel-plugin": "^11.7.2",
     "@emotion/babel-preset-css-prop": "^11.2.0",
+    "@solana/buffer-layout": "^4.0.0",
     "@emotion/css": "^11.7.1",
     "@emotion/react": "^11.7.1",
     "@emotion/server": "^11.4.0",
