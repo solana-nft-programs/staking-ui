@@ -2511,11 +2511,13 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     stakePoolAddress: new PublicKey(
       '6NsLz577nf9eRSfXtH18rDdJHik3PePpKwVVLPrXPtWx'
     ),
+    websiteUrl: 'https://staking.dustcity.world/',
+    receiptType: ReceiptType.Original,
     redirect: 'https://staking.dustcity.world/',
-    hidden: false,
-    notFound: true,
     imageUrl:
       'https://dustcity.world/assets/img/Header/logo.svg',
+      maxStaked: 3333,
+      notFound: true,
   },
   {
     name: 'RektvilleStaking',
@@ -2523,10 +2525,12 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     stakePoolAddress: new PublicKey(
       'ENPEvNwSMxN6K63YwDMirSVnd9TUisDkY6cuPZiN7unS'
     ),
+    websiteUrl: 'https://rektville.dustcity.world/',
+    receiptType: ReceiptType.Original,
     redirect: 'https://rektville.dustcity.world/',
-    hidden: false,
-    notFound: true,
     imageUrl:
       'https://arweave.net/z64F7Hk0nHfq-KZ9DgTBT3k7CiKfdyyyAqhC3T1TpkQ?ext=png',
+      maxStaked: 7777,
+      notFound: true,
   },
 ]
