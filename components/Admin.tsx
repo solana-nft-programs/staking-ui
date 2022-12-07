@@ -3,8 +3,9 @@ import type { PublicKey } from '@solana/web3.js'
 import { Footer } from 'common/Footer'
 import { HeaderSlim } from 'common/HeaderSlim'
 import { pubKeyUrl, shortPubKey } from 'common/utils'
-import { StakePoolForm } from 'components/StakePoolForm'
+import { StakePoolCreationFlow } from 'components/stake-pool-creation/StakePoolCreationFlow'
 import { useHandleCreatePool } from 'handlers/useHandleCreatePool'
+// import { StakePoolForm } from 'components/StakePoolForm'
 import type { StakePool } from 'hooks/useAllStakePools'
 import { useStakePoolsByAuthority } from 'hooks/useStakePoolsByAuthority'
 import { useStakePoolsMetadatas } from 'hooks/useStakePoolsMetadata'
@@ -61,10 +62,6 @@ function Admin() {
       <div className="container mx-auto w-full bg-[#1a1b20]">
         <div className="mx-10 my-2 grid h-full grid-cols-2 gap-4 rounded-md bg-white bg-opacity-5 p-10 text-gray-200">
           <div>
-            <p className="text-lg font-bold">Create Staking Pool</p>
-            <p className="mt-1 mb-2 text-sm">
-              All parameters for staking pool are optional
-            </p>
             {stakePoolId && (
               <div className="rounded-lg bg-green-600 bg-opacity-20 p-4">
                 <p className="font-bold">Successfully created Stake Pool.</p>
@@ -78,18 +75,8 @@ function Admin() {
                 </p>
               </div>
             )}
-            <StakePoolForm
-              handleSubmit={(d) =>
-                handleCreatePool.mutate(
-                  { values: d },
-                  {
-                    onSuccess: ([_, stakePoolId]) => {
-                      setStakePoolId(stakePoolId)
-                    },
-                  }
-                )
-              }
-            />
+            <StakePoolCreationFlow />
+            {/* <StakePoolForm handleSubmit={handleCreation} /> */}
           </div>
           <div>
             <div className="mb-5 text-lg font-bold">Your pools</div>
