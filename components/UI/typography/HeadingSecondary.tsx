@@ -11,10 +11,7 @@ type Props = {
 const { H2, DIV } = HeadingElements
 
 export const HeadingSecondary = ({ children, className, el = DIV }: Props) => {
-  const combinedClasses = classNames([
-    'text-3xl font-medium md:w-full min-w-full',
-    className,
-  ])
+  const combinedClasses = classNames(['text-3xl font-medium', className])
 
   switch (el) {
     case H2:
