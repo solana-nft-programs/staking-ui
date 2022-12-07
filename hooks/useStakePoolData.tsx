@@ -2,7 +2,16 @@ import type {
   CardinalRewardsCenter,
   IdlAccountData,
 } from '@cardinal/rewards-center'
+import {
+  REWARDS_CENTER_ADDRESS,
+  REWARDS_CENTER_IDL,
+} from '@cardinal/rewards-center'
 import type { StakePoolData } from '@cardinal/staking/dist/cjs/programs/stakePool'
+import {
+  STAKE_POOL_ADDRESS,
+  STAKE_POOL_IDL,
+} from '@cardinal/staking/dist/cjs/programs/stakePool'
+import { BorshAccountsCoder } from '@project-serum/anchor'
 import type {
   AllAccountsMap,
   IdlTypes,
@@ -10,15 +19,12 @@ import type {
 } from '@project-serum/anchor/dist/cjs/program/namespace/types'
 import { PublicKey } from '@solana/web3.js'
 import { useStakePoolId } from 'hooks/useStakePoolId'
+import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 import { useQuery } from 'react-query'
-
-import { useStakePoolDataV1 } from './useStakePoolDataV1'
-import { useStakePoolDataV2 } from './useStakePoolDataV2'
 
 export const useStakePoolData = () => {
   const stakePoolId = useStakePoolId()
-  const stakePoolDataV1 = useStakePoolDataV1()
-  const stakePoolDataV2 = useStakePoolDataV2()
+  const { connection } = useEnvironmentCtx()
 
   return useQuery<
     Pick<IdlAccountData<'stakePool'>, 'pubkey' | 'parsed'> | undefined
@@ -26,21 +32,36 @@ export const useStakePoolData = () => {
     ['stakePoolData', stakePoolId?.toString()],
     async () => {
       if (!stakePoolId) return
-      if (stakePoolDataV1.data) {
+      const stakePoolAccountInfo = await connection.getAccountInfo(stakePoolId)
+      if (
+        stakePoolAccountInfo?.owner.toString() === STAKE_POOL_ADDRESS.toString()
+      ) {
+        const stakePoolData: StakePoolData = new BorshAccountsCoder(
+          STAKE_POOL_IDL
+        ).decode('stakePool', stakePoolAccountInfo.data)
         return {
           pubkey: stakePoolId,
-          parsed: stakePoolDataToV2(stakePoolDataV1.data.parsed),
+          parsed: stakePoolDataToV2(stakePoolData),
         }
-      }
-      if (stakePoolDataV2.data && stakePoolDataV2.data.parsed) {
+      } else if (
+        stakePoolAccountInfo?.owner.toString() ===
+        REWARDS_CENTER_ADDRESS.toString()
+      ) {
+        const stakePoolData: TypeDef<
+          AllAccountsMap<CardinalRewardsCenter>['stakePool'],
+          IdlTypes<CardinalRewardsCenter>
+        > = new BorshAccountsCoder(REWARDS_CENTER_IDL).decode(
+          'stakePool',
+          stakePoolAccountInfo.data
+        )
         return {
           pubkey: stakePoolId,
-          parsed: stakePoolDataToV2(stakePoolDataV2.data.parsed),
+          parsed: stakePoolDataToV2(stakePoolData),
         }
       }
     },
     {
-      enabled: !!stakePoolDataV1.isFetched && !!stakePoolDataV2.isFetched,
+      enabled: !!stakePoolId,
     }
   )
 }

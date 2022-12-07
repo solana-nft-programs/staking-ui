@@ -3,7 +3,13 @@ import type {
   CardinalRewardsCenter,
   IdlAccountData,
 } from '@cardinal/rewards-center'
+import {
+  fetchIdlAccount,
+  findRewardDistributorId as findRewardDistributorIdV2,
+} from '@cardinal/rewards-center'
 import type { RewardDistributorData } from '@cardinal/staking/dist/cjs/programs/rewardDistributor'
+import { getRewardDistributor } from '@cardinal/staking/dist/cjs/programs/rewardDistributor/accounts'
+import { findRewardDistributorId } from '@cardinal/staking/dist/cjs/programs/rewardDistributor/pda'
 import { BN } from '@project-serum/anchor'
 import type {
   AllAccountsMap,
@@ -12,44 +18,55 @@ import type {
 } from '@project-serum/anchor/dist/cjs/program/namespace/types'
 import { PublicKey } from '@solana/web3.js'
 import { REWARD_QUERY_KEY } from 'handlers/useHandleClaimRewards'
+import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 import { useQuery } from 'react-query'
 
-import { useRewardDistributorDataV1 } from './useRewardDistributorDataV1'
-import { useRewardDistributorDataV2 } from './useRewardDistributorDataV2'
-import { useStakePoolId } from './useStakePoolId'
+import { isStakePoolV2, useStakePoolData } from './useStakePoolData'
 
 export const useRewardDistributorData = () => {
-  const stakePoolId = useStakePoolId()
-  const rewardDistributorDataV1 = useRewardDistributorDataV1()
-  const rewardDistributorDataV2 = useRewardDistributorDataV2()
+  const { data: stakePoolData } = useStakePoolData()
+  const { connection } = useEnvironmentCtx()
 
   return useQuery<
     Pick<IdlAccountData<'rewardDistributor'>, 'pubkey' | 'parsed'> | undefined
   >(
-    [REWARD_QUERY_KEY, 'useRewardDistributorData', stakePoolId?.toString()],
+    [
+      REWARD_QUERY_KEY,
+      'useRewardDistributorData',
+      stakePoolData?.pubkey?.toString(),
+    ],
     async () => {
-      if (!stakePoolId) return
-      if (rewardDistributorDataV1.data) {
+      if (!stakePoolData?.pubkey || !stakePoolData?.parsed) return
+      if (!isStakePoolV2(stakePoolData.parsed)) {
+        const [rewardDistributorId] = await findRewardDistributorId(
+          stakePoolData.pubkey
+        )
+        const rewardDistributorData = await getRewardDistributor(
+          connection,
+          rewardDistributorId
+        )
         return {
-          pubkey: rewardDistributorDataV1.data.pubkey,
-          parsed: rewardDistributorDataToV2(
-            rewardDistributorDataV1.data.parsed
-          ),
+          pubkey: rewardDistributorId,
+          parsed: rewardDistributorDataToV2(rewardDistributorData.parsed),
         }
-      }
-      if (rewardDistributorDataV2.data && rewardDistributorDataV2.data.parsed) {
+      } else {
+        const rewardDistributorId = findRewardDistributorIdV2(
+          stakePoolData?.pubkey,
+          new BN(0)
+        )
+        const rewardDistributorData = await fetchIdlAccount(
+          connection,
+          rewardDistributorId,
+          'rewardDistributor'
+        )
         return {
-          pubkey: rewardDistributorDataV2.data.pubkey,
-          parsed: rewardDistributorDataToV2(
-            rewardDistributorDataV2.data?.parsed
-          ),
+          pubkey: rewardDistributorId,
+          parsed: rewardDistributorDataToV2(rewardDistributorData.parsed),
         }
       }
     },
     {
-      enabled:
-        !!rewardDistributorDataV1.isFetched &&
-        !!rewardDistributorDataV2.isFetched,
+      enabled: !!stakePoolData?.pubkey,
     }
   )
 }
