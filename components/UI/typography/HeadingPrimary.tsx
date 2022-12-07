@@ -1,15 +1,15 @@
-import { HeadingElements, HeadingTextSizes } from "@/types/index";
-import classNames from "classnames";
+import classNames from 'classnames'
+import { HeadingElements, HeadingTextSizes } from 'types/index'
 
 type Props = {
-  children: React.ReactNode;
-  className?: string;
-  el?: HeadingElements;
-  textSize?: HeadingTextSizes;
-};
+  children: React.ReactNode
+  className?: string
+  el?: HeadingElements
+  textSize?: HeadingTextSizes
+}
 
-const { H1, H2, DIV } = HeadingElements;
-const { BASE, LARGE } = HeadingTextSizes;
+const { H1, H2, DIV } = HeadingElements
+const { BASE, LARGE } = HeadingTextSizes
 
 const HeadingPrimary = ({
   children,
@@ -18,23 +18,23 @@ const HeadingPrimary = ({
   textSize = BASE,
 }: Props) => {
   const combinedClasses = classNames([
-    "font-medium text-left",
+    'font-medium text-left',
     className,
     {
-      "text-5xl leading-12": textSize === BASE,
-      "text-7xl": textSize === LARGE,
+      'text-5xl leading-12': textSize === BASE,
+      'text-7xl': textSize === LARGE,
     },
-  ]);
+  ])
 
   switch (el) {
     case H1:
-      return <h1 className={combinedClasses}>{children}</h1>;
+      return <h1 className={combinedClasses}>{children}</h1>
     case H2:
-      return <h2 className={combinedClasses}>{children}</h2>;
+      return <h2 className={combinedClasses}>{children}</h2>
     case DIV:
     default:
-      return <div className={combinedClasses}>{children}</div>;
+      return <div className={combinedClasses}>{children}</div>
   }
-};
+}
 
-export default HeadingPrimary;
+export default HeadingPrimary

@@ -1,3 +1,5 @@
+import HeadingPrimary from 'components/UI/typography/HeadingPrimary'
+
 export const StakePoolCreationFlow = () => {
-  return <div className="">Create your Staking Pool</div>
+  return <HeadingPrimary className="">Create your Staking Pool</HeadingPrimary>
 }
