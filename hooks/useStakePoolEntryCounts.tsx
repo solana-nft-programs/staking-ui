@@ -1,13 +1,8 @@
-import { getBatchedMultipleAccounts } from '@cardinal/common'
-import type { StatsEntryData } from '@cardinal/stats/dist/cjs/programs/cardinalStats'
-import { STATS_IDL } from '@cardinal/stats/dist/cjs/programs/cardinalStats'
-import { findStatsEntryId } from '@cardinal/stats/dist/cjs/programs/cardinalStats/pda'
-import { BorshAccountsCoder } from '@project-serum/anchor'
+import { ApolloClient, gql, InMemoryCache } from '@apollo/client'
 import { useQuery } from 'react-query'
 
 import type { StakePoolMetadata } from '../api/mapping'
 import { stakePoolMetadatas } from '../api/mapping'
-import { useEnvironmentCtx } from '../providers/EnvironmentProvider'
 import type { StakePool } from './useAllStakePools'
 
 export const statName = (poolId: string) => {
@@ -77,34 +72,40 @@ export const compareStakePools = (
 }
 
 export const useStakePoolEntryCounts = () => {
-  const { connection } = useEnvironmentCtx()
+  const index = new ApolloClient({
+    uri: 'https://index.cardinal.so/v1/graphql',
+    cache: new InMemoryCache({ resultCaching: false }),
+  })
+
   const stakePoolIds = stakePoolMetadatas.map((m) => m.stakePoolAddress)
   return useQuery<{ [poolId: string]: number }>(
     ['useStakePoolEntryCounts', stakePoolIds.map((i) => i?.toString())],
     async () => {
-      const statNames = stakePoolIds.map((i) => statName(i.toString()))
-      const accountIds = await Promise.all(
-        statNames.map(async (s) => (await findStatsEntryId(s))[0])
-      )
-      const statEntries = await getBatchedMultipleAccounts(
-        connection,
-        accountIds
-      )
-      const poolIdToStatValue = statEntries.reduce((acc, accountInfo, i) => {
-        const stakePoolId = stakePoolIds[i]!
-        try {
-          const type = 'statsEntry'
-          const coder = new BorshAccountsCoder(STATS_IDL)
-          const parsed = coder.decode(
-            type,
-            accountInfo?.data as Buffer
-          ) as StatsEntryData
-          acc[stakePoolId.toString()] = parseInt(parsed.value)
-        } catch (e) {}
-        return acc
-      }, {} as { [poolId: string]: number })
+      const queryResult = await index.query({
+        query: gql`
+          query GetStakePoolTotals {
+            acc_k0u6qbqshnoizi7cayzl {
+              totalStaked
+              pubkey
+            }
+          }
+        `,
+      })
+      const queryData = queryResult.data['acc_k0u6qbqshnoizi7cayzl'] as
+        | [
+            {
+              totalStaked: number
+              pubkey: string
+            }
+          ]
+        | undefined
 
-      return poolIdToStatValue
+      return (
+        queryData?.reduce((acc, { totalStaked, pubkey }) => {
+          acc[pubkey] = totalStaked
+          return acc
+        }, {} as { [poolId: string]: number }) ?? {}
+      )
     }
   )
 }

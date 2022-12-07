@@ -1139,7 +1139,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     hideFooter: true,
     logoPadding: true,
     imageUrl: 'https://1space.me/images/os-logo-white.jpeg',
-    maxStaked: 300,
+    maxStaked: 399,
     links: [
       {
         text: 'ONEHERO NFT',
@@ -2337,8 +2337,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     websiteUrl: 'https://twitter.com/rejected_y00ts',
     imageUrl:
       'https://bafybeiex3lqiug7djuyl2vws47syaji6of7calc67tt3we4ps4nz5kbpnq.ipfs.nftstorage.link/',
-    backgroundImage:
-      '',
+    backgroundImage: '',
     maxStaked: 6969,
 
     receiptType: ReceiptType.Original,
@@ -2514,10 +2513,9 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     websiteUrl: 'https://staking.dustcity.world/',
     receiptType: ReceiptType.Original,
     redirect: 'https://staking.dustcity.world/',
-    imageUrl:
-      'https://dustcity.world/assets/img/Header/logo.svg',
-      maxStaked: 3333,
-      notFound: true,
+    imageUrl: 'https://dustcity.world/assets/img/Header/logo.svg',
+    maxStaked: 3333,
+    notFound: true,
   },
   {
     name: 'RektvilleStaking',
@@ -2530,7 +2528,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     redirect: 'https://rektville.dustcity.world/',
     imageUrl:
       'https://arweave.net/z64F7Hk0nHfq-KZ9DgTBT3k7CiKfdyyyAqhC3T1TpkQ?ext=png',
-      maxStaked: 7777,
-      notFound: true,
+    maxStaked: 7777,
+    notFound: true,
   },
 ]

@@ -30,7 +30,7 @@ export const CollectionsGrid = ({ configs }: { configs?: StakePool[] }) => {
           <Card skeleton header={<></>} />
         </>
       ) : (
-        configs
+        [...configs]
           .sort((a, b) =>
             compareStakePools(a, b, stakePoolEntryCounts.data ?? {})
           )
