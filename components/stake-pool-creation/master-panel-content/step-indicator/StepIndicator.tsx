@@ -5,7 +5,7 @@ export type StepIndicatorProps = {
   currentStep: number
 }
 
-const numberOfSteps = 7
+const numberOfSteps = 5
 
 export const StepIndicator = ({ currentStep }: StepIndicatorProps) => {
   return (
@@ -15,7 +15,11 @@ export const StepIndicator = ({ currentStep }: StepIndicatorProps) => {
       </div>
       {}
       {[...Array(numberOfSteps)].map((_, index) => (
-        <StepIndicatorBubble isActive={index + 1 === currentStep} key={index} />
+        <StepIndicatorBubble
+          isPast={index + 1 < currentStep}
+          isActive={index + 1 === currentStep}
+          key={index}
+        />
       ))}
     </div>
   )
