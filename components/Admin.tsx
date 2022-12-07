@@ -60,23 +60,25 @@ function Admin() {
 
       <HeaderSlim />
       <div className="container mx-auto w-full bg-[#1a1b20]">
-        <div className="mx-10 my-2 grid h-full grid-cols-2 gap-4 rounded-md bg-white bg-opacity-5 p-10 text-gray-200">
+        <div className="mx-10 my-8 mb-8 flex w-full">
+          <StakePoolCreationFlow />
+        </div>
+        {/* <div className="mx-10 my-2 grid h-full grid-cols-2 gap-4 rounded-md bg-white bg-opacity-5 p-10 text-gray-200">
           <div>
             {stakePoolId && (
               <div className="rounded-lg bg-green-600 bg-opacity-20 p-4">
                 <p className="font-bold">Successfully created Stake Pool.</p>
                 <p>
                   Make sure you <b>SAVE THE POOL ID</b>
-                  {/* and identifier */}
+                  and identifier
                 </p>
                 <p className="mt-2">
                   <b>Pool ID:</b> {stakePoolId.toString()} <br />{' '}
-                  {/* <b>Identifier:</b> {stakePool.parsed.identifier.toString()} */}
+                  <b>Identifier:</b> {stakePool.parsed.identifier.toString()}
                 </p>
               </div>
             )}
-            <StakePoolCreationFlow />
-            {/* <StakePoolForm handleSubmit={handleCreation} /> */}
+            <StakePoolForm handleSubmit={handleCreation} />
           </div>
           <div>
             <div className="mb-5 text-lg font-bold">Your pools</div>
@@ -169,7 +171,7 @@ function Admin() {
               )}
             </div>
           </div>
-        </div>
+        </div> */}
       </div>
       <Footer />
     </div>

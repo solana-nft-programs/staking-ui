@@ -12,7 +12,7 @@ type Props = {
 const { DIV, P } = BodyElements
 const { BASE, LARGE } = BodyTextSizes
 
-const BodyLanding = ({
+export const BodyCopy = ({
   children,
   className,
   el = DIV,
@@ -35,5 +35,3 @@ const BodyLanding = ({
       return <div className={combinedClasses}>{children}</div>
   }
 }
-
-export default BodyLanding
