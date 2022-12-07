@@ -1,7 +1,6 @@
 import { FlagIcon } from 'assets/icons/FlagIcon'
 import { GasPumpIcon } from 'assets/icons/GasPumpIcon'
 import { SettingsIcon } from 'assets/icons/SettingsIcon'
-import { HeadingPrimary } from 'components/UI/typography/HeadingPrimary'
 
 import { HorizontalDivider } from '@/components/UI/HorizontalDivider'
 import { BodyCopy } from '@/components/UI/typography/BodyCopy'
@@ -9,7 +8,6 @@ import { BodyCopy } from '@/components/UI/typography/BodyCopy'
 export const Intro = () => {
   return (
     <>
-      <HeadingPrimary>Create your Staking Pool</HeadingPrimary>
       <BodyCopy>Thank you for your interest!</BodyCopy>
       <BodyCopy>
         Adding utility like staking brings rewards for both the users and the
