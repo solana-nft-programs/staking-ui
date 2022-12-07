@@ -45,7 +45,7 @@ export const HeroStats: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({
     >
       <div className="flex flex-1 flex-col items-center justify-center">
         <div className="text-lg text-medium-4">Total Staked</div>
-        {!totalStaked.data ? (
+        {!totalStaked.isFetched ? (
           <div className="h-6 w-10 animate-pulse rounded-md bg-border"></div>
         ) : (
           <div
@@ -136,7 +136,7 @@ export const HeroStats: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({
             <p className="text-lg text-medium-4">Treasury Balance</p>
             {!rewardsRate.data ||
             !rewardMintInfo.data ||
-            !rewardDistributorTokenAccountData.data ? (
+            !rewardDistributorTokenAccountData.isFetched ? (
               <div className="h-6 w-10 animate-pulse rounded-md bg-border"></div>
             ) : (
               <div
@@ -153,7 +153,8 @@ export const HeroStats: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({
                     )
                   : formatMintNaturalAmountAsDecimal(
                       rewardMintInfo.data.mintInfo,
-                      rewardDistributorTokenAccountData.data?.amount,
+                      rewardDistributorTokenAccountData.data?.amount ||
+                        new BN(0),
                       Math.min(rewardMintInfo.data.mintInfo.decimals, 6)
                     )}
               </div>

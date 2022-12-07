@@ -81,12 +81,7 @@ export const useRewards = () => {
     },
     {
       keepPreviousData: true,
-      enabled:
-        !!stakedTokenDatas &&
-        !!rewardEntries &&
-        !!rewardDistributorData &&
-        (rewardDistributorData?.parsed?.kind === RewardDistributorKind.Mint ||
-          !!rewardDistributorTokenAccount),
+      enabled: !!stakedTokenDatas && !!rewardEntries && !!rewardDistributorData,
     }
   )
 }

@@ -134,8 +134,9 @@ function AdminStakePool() {
                     <span className="mt-3 flex w-full flex-wrap md:mb-0">
                       <label className="inline-block text-sm font-bold uppercase tracking-wide text-gray-200">
                         Requires Authorization:{' '}
-                        {stakePool.data?.parsed?.requiresAuthorization.toString() ||
-                          '[None]'}
+                        {(stakePool.data?.parsed?.requiresAuthorization
+                          ? 'True'
+                          : 'False') || '[None]'}
                       </label>
                     </span>
                     <span className="mt-3 flex w-full flex-wrap md:mb-0">

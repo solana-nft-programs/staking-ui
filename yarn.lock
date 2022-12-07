@@ -368,10 +368,10 @@
     "@solana/spl-token" "^0.1.8"
     "@solana/web3.js" "^1.66.2"
 
-"@cardinal/rewards-center@2.1.0-beta.1":
-  version "2.1.0-beta.1"
-  resolved "https://registry.yarnpkg.com/@cardinal/rewards-center/-/rewards-center-2.1.0-beta.1.tgz#ecd0536333fea77753708f4c6514492dd61faaf8"
-  integrity sha512-Fy23JTYioCOvKR+QwGnaaWBLQk7yw/MYuR0XV8tSnYntWRqPg8sMFTch59L+1C+fXAeRS4wBLgbldZBxldRtNw==
+"@cardinal/rewards-center@2.1.0-beta.4":
+  version "2.1.0-beta.4"
+  resolved "https://registry.yarnpkg.com/@cardinal/rewards-center/-/rewards-center-2.1.0-beta.4.tgz#0d450f0eff4cc32ce251e1cc99248ac7fc621d37"
+  integrity sha512-iGq7Z51LOusF8pi1btiDr1JcnfwnyfcI/qplhrA5bqFsvZB41tYvrEQ/yVbv0B46BDjWzAhxdmohsvQmEhG9Vw==
   dependencies:
     "@cardinal/common" "^4.0.1"
     "@metaplex-foundation/rustbin" "^0.3.1"

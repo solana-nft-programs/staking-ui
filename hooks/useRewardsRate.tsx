@@ -78,8 +78,7 @@ export const useRewardsRate = () => {
         !rewardDistibutorId ||
         !rewardMintInfoData ||
         !rewardMintInfo ||
-        !stakedTokenData ||
-        !rewardDistributorTokenAccount
+        !stakedTokenData
       ) {
         return undefined
       }
@@ -108,11 +107,11 @@ export const useRewardsRate = () => {
                   }
                 : undefined,
               isRewardDistributorV2(rewardDistributorData.parsed)
-                ? rewardDistributorTokenAccount.amount
+                ? rewardDistributorTokenAccount?.amount || new BN(0)
                 : rewardDistributorData.parsed?.kind ===
                   RewardDistributorKind.Mint
                 ? rewardMintInfo?.mintInfo.supply
-                : rewardDistributorTokenAccount.amount,
+                : rewardDistributorTokenAccount?.amount || new BN(0),
               (
                 stakeEntry.parsed.lastUpdatedAt ??
                 stakeEntry.parsed.lastStakedAt

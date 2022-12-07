@@ -26,7 +26,7 @@
     "@apollo/client": "^3.6.9",
     "@cardinal/common": "^2.0.13",
     "@cardinal/namespaces-components": "^4.1.19",
-    "@cardinal/rewards-center": "2.1.0-beta.1",
+    "@cardinal/rewards-center": "2.1.0-beta.4",
     "@cardinal/scanner": "^0.1.1",
     "@cardinal/staking": "1.11.2",
     "@cardinal/stats": "^1.0.3",

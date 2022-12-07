@@ -1,5 +1,7 @@
-import { findAta, tryPublicKey } from '@cardinal/common'
+import { tryPublicKey } from '@cardinal/common'
 import {
+  CLAIM_REWARDS_PAYMENT_INFO,
+  findRewardDistributorId,
   rewardsCenterProgram,
   SOL_PAYMENT_INFO,
 } from '@cardinal/rewards-center'
@@ -13,15 +15,12 @@ import { BN } from '@project-serum/anchor'
 import { TOKEN_PROGRAM_ID } from '@project-serum/anchor/dist/cjs/utils/token'
 import { useWallet } from '@solana/wallet-adapter-react'
 import type { PublicKey } from '@solana/web3.js'
-import { Transaction } from '@solana/web3.js'
+import { SystemProgram, Transaction } from '@solana/web3.js'
 import { handleError } from 'common/errors'
 import { notify } from 'common/Notification'
 import { asWallet } from 'common/Wallets'
 import type { CreationForm } from 'components/StakePoolForm'
-import {
-  isRewardDistributorV2,
-  useRewardDistributorData,
-} from 'hooks/useRewardDistributorData'
+import { useRewardDistributorData } from 'hooks/useRewardDistributorData'
 import { useMutation } from 'react-query'
 
 import { isStakePoolV2, useStakePoolData } from '../hooks/useStakePoolData'
@@ -53,36 +52,71 @@ export const useHandleUpdatePool = () => {
 
       const program = rewardsCenterProgram(connection, wallet)
       const transaction = new Transaction()
-      if (
-        values.rewardDistributorKind !== rewardDistributor.data?.parsed?.kind
-      ) {
-        if (values.rewardDistributorKind === 0) {
-          if (rewardDistributor.data && rewardDistributor.data.parsed) {
-            if (isRewardDistributorV2(rewardDistributor.data.parsed)) {
-              const rewardDistributorAta = await findAta(
-                rewardDistributor.data.parsed.rewardMint,
-                rewardDistributor.data.pubkey,
-                true
-              )
-              const authorityAta = await findAta(
-                rewardDistributor.data.parsed.rewardMint,
-                rewardDistributor.data.parsed.authority,
-                true
-              )
-              const ix = await program.methods
-                .closeRewardDistributor()
-                .accounts({
-                  rewardDistributor: rewardDistributor.data.pubkey,
-                  stakePool: rewardDistributor.data.parsed.stakePool,
-                  rewardMint: rewardDistributor.data.parsed.rewardMint,
-                  rewardDistributorTokenAccount: rewardDistributorAta,
-                  authorityTokenAccount: authorityAta,
-                  signer: wallet.publicKey,
-                  tokenProgram: TOKEN_PROGRAM_ID,
-                })
-                .instruction()
-              transaction.add(ix)
-            } else {
+
+      if (isStakePoolV2(stakePool.data.parsed)) {
+        if (rewardDistributor.data?.parsed) {
+          if (
+            !values.defaultMultiplier ||
+            !values.rewardAmount ||
+            !values.rewardDurationSeconds
+          ) {
+            throw 'Reward distributor params missing'
+          }
+          const ix = await program.methods
+            .updateRewardDistributor({
+              defaultMultiplier: new BN(values.defaultMultiplier),
+              multiplierDecimals: Number(values.multiplierDecimals),
+              rewardAmount: new BN(values.rewardAmount),
+              rewardDurationSeconds: new BN(values.rewardDurationSeconds),
+              maxRewardSecondsReceived: values.maxRewardSecondsReceived
+                ? new BN(values.maxRewardSecondsReceived)
+                : null,
+              claimRewardsPaymentInfo: CLAIM_REWARDS_PAYMENT_INFO,
+            })
+            .accounts({
+              rewardDistributor: rewardDistributor.data.pubkey,
+              authority: wallet.publicKey,
+            })
+            .instruction()
+          transaction.add(ix)
+        } else if (values.rewardMintAddress) {
+          const rewardsDistributorId = findRewardDistributorId(
+            stakePool.data.pubkey,
+            new BN(0)
+          )
+          const ix = await program.methods
+            .initRewardDistributor({
+              rewardAmount: new BN(values.rewardAmount ?? 0),
+              rewardDurationSeconds: new BN(values.rewardDurationSeconds ?? 0),
+              identifier: new BN(0),
+              supply: null,
+              defaultMultiplier: new BN(values.defaultMultiplier ?? 1),
+              multiplierDecimals: Number(values.multiplierDecimals) ?? 0,
+              maxRewardSecondsReceived: values.maxRewardSecondsReceived
+                ? new BN(values.maxRewardSecondsReceived)
+                : null,
+              claimRewardsPaymentInfo: CLAIM_REWARDS_PAYMENT_INFO,
+            })
+            .accounts({
+              rewardDistributor: rewardsDistributorId,
+              stakePool: stakePool.data.pubkey,
+              rewardMint: values.rewardMintAddress,
+              authority: wallet.publicKey,
+              payer: wallet.publicKey,
+              tokenProgram: TOKEN_PROGRAM_ID,
+              systemProgram: SystemProgram.programId,
+            })
+            .instruction()
+          transaction.add(ix)
+        }
+      }
+
+      if (!isStakePoolV2(stakePool.data.parsed)) {
+        if (
+          values.rewardDistributorKind !== rewardDistributor.data?.parsed?.kind
+        ) {
+          if (values.rewardDistributorKind === 0) {
+            if (rewardDistributor.data && rewardDistributor.data.parsed) {
               await withCloseRewardDistributor(
                 transaction,
                 connection,
@@ -96,62 +130,10 @@ export const useHandleUpdatePool = () => {
               message: 'Removing reward distributor for pool',
               type: 'info',
             })
+          } else {
+            throw 'Cannot create deprecated reward distributor'
           }
-        } else {
-          const ix = await program.methods
-            .initRewardDistributor({
-              rewardAmount: values.rewardAmount
-                ? new BN(values.rewardAmount)
-                : new BN(1),
-              rewardDurationSeconds: values.rewardDurationSeconds
-                ? new BN(values.rewardDurationSeconds)
-                : new BN(1),
-              identifier: new BN(0),
-              supply: null,
-              defaultMultiplier: values.defaultMultiplier
-                ? new BN(values.defaultMultiplier)
-                : null,
-              multiplierDecimals: values.multiplierDecimals
-                ? Number(values.multiplierDecimals)
-                : null,
-              maxRewardSecondsReceived: values.maxRewardSecondsReceived
-                ? new BN(values.maxRewardSecondsReceived)
-                : null,
-              claimRewardsPaymentInfo: SOL_PAYMENT_INFO, // TODO CHANGE
-            })
-            .accounts({})
-            .instruction()
-          transaction.add(ix)
-          notify({
-            message: 'Initializing reward distributor for pool',
-            type: 'info',
-          })
-        }
-      } else if (rewardDistributor.data && rewardDistributor.data.parsed) {
-        if (isRewardDistributorV2(rewardDistributor.data.parsed)) {
-          const ix = await program.methods
-            .updateRewardDistributor({
-              defaultMultiplier: values.defaultMultiplier
-                ? new BN(values.defaultMultiplier)
-                : rewardDistributor.data.parsed.defaultMultiplier,
-              multiplierDecimals: values.multiplierDecimals
-                ? Number(values.multiplierDecimals)
-                : rewardDistributor.data.parsed.multiplierDecimals,
-              rewardAmount: values.rewardAmount
-                ? new BN(values.rewardAmount)
-                : rewardDistributor.data.parsed.rewardAmount,
-              rewardDurationSeconds: values.rewardDurationSeconds
-                ? new BN(values.rewardDurationSeconds)
-                : rewardDistributor.data.parsed.rewardDurationSeconds,
-              maxRewardSecondsReceived: values.maxRewardSecondsReceived
-                ? new BN(values.maxRewardSecondsReceived)
-                : rewardDistributor.data.parsed.maxRewardSecondsReceived,
-              claimRewardsPaymentInfo: SOL_PAYMENT_INFO,
-            })
-            .accounts({})
-            .instruction()
-          transaction.add(ix)
-        } else {
+        } else if (rewardDistributor.data && rewardDistributor.data.parsed) {
           await withUpdateRewardDistributor(transaction, connection, wallet, {
             stakePoolId: stakePool.data.pubkey,
             defaultMultiplier: values.defaultMultiplier
@@ -170,11 +152,11 @@ export const useHandleUpdatePool = () => {
               ? new BN(values.maxRewardSecondsReceived)
               : undefined,
           })
+          notify({
+            message: `Updating reward distributor`,
+            type: 'info',
+          })
         }
-        notify({
-          message: `Updating reward distributor`,
-          type: 'info',
-        })
       }
 
       const collectionPublicKeys = values.requireCollections
@@ -227,7 +209,12 @@ export const useHandleUpdatePool = () => {
             stakePaymentInfo: SOL_PAYMENT_INFO,
             unstakePaymentInfo: SOL_PAYMENT_INFO,
           })
-          .accounts({})
+          .accounts({
+            stakePool: stakePool.data.pubkey,
+            authority: wallet.publicKey,
+            payer: wallet.publicKey,
+            systemProgram: SystemProgram.programId,
+          })
           .instruction()
         transaction.add(ix)
       } else {
@@ -244,9 +231,12 @@ export const useHandleUpdatePool = () => {
     {
       onSuccess: () => {
         notify({
-          message:
-            'Successfully updated stake pool and reward distributor with ID: ' +
-            stakePool.data?.pubkey.toString(),
+          message: `Successfully updated stake pool ${stakePool.data?.pubkey.toString()} ${
+            rewardDistributor.data?.parsed
+              ? 'and reward distributor ' +
+                rewardDistributor.data.pubkey.toString()
+              : ''
+          }`,
           type: 'success',
         })
         setTimeout(() => {

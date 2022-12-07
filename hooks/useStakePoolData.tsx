@@ -32,7 +32,12 @@ export const useStakePoolData = () => {
           parsed: stakePoolDataToV2(stakePoolDataV1.data.parsed),
         }
       }
-      return stakePoolDataV2.data
+      if (stakePoolDataV2.data && stakePoolDataV2.data.parsed) {
+        return {
+          pubkey: stakePoolId,
+          parsed: stakePoolDataToV2(stakePoolDataV2.data.parsed),
+        }
+      }
     },
     {
       enabled: !!stakePoolDataV1.isFetched && !!stakePoolDataV2.isFetched,
@@ -48,7 +53,8 @@ export const isStakePoolV2 = (
         IdlTypes<CardinalRewardsCenter>
       >
   ) & { type?: string }
-): boolean => stakePoolData.type === 'v2'
+): boolean =>
+  !('requiresCreators' in stakePoolData || stakePoolData.type === 'v1')
 
 export const stakePoolDataToV2 = (
   stakePoolData:
@@ -80,8 +86,8 @@ export const stakePoolDataToV2 = (
       type: 'v1',
     }
   }
-  return stakePoolData as TypeDef<
+  return { ...stakePoolData, type: 'v2' } as TypeDef<
     AllAccountsMap<CardinalRewardsCenter>['stakePool'],
     IdlTypes<CardinalRewardsCenter>
-  > & { type: 'v2' }
+  > & { type: string }
 }

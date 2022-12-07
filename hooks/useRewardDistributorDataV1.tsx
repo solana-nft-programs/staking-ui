@@ -14,7 +14,7 @@ export const useRewardDistributorDataV1 = () => {
   return useQuery<AccountData<RewardDistributorData> | undefined>(
     [REWARD_QUERY_KEY, 'useRewardDistributorDataV1', stakePoolId?.toString()],
     async () => {
-      if (!stakePoolId) return
+      if (!stakePoolId || stakePoolId) return
       const [rewardDistributorId] = await findRewardDistributorId(stakePoolId)
       return getRewardDistributor(secondaryConnection, rewardDistributorId)
     },

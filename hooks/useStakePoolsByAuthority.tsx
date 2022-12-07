@@ -13,11 +13,7 @@ import { asEmptyAnchorWallet } from 'common/Wallets'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 import { useQuery } from 'react-query'
 
-import {
-  isStakePoolV2,
-  stakePoolDataToV2,
-  useStakePoolData,
-} from './useStakePoolData'
+import { stakePoolDataToV2 } from './useStakePoolData'
 
 export const getStakePoolsByAuthority = async (
   connection: Connection,
@@ -68,7 +64,6 @@ export const getStakePoolsByAuthority = async (
 
 export const useStakePoolsByAuthority = () => {
   const { secondaryConnection } = useEnvironmentCtx()
-  const { data: stakePoolData } = useStakePoolData()
   const wallet = useWallet()
 
   return useQuery<
@@ -76,33 +71,33 @@ export const useStakePoolsByAuthority = () => {
   >(
     ['useStakePoolsByAuthority', wallet.publicKey?.toString()],
     async () => {
-      if (!wallet.publicKey || !stakePoolData?.parsed) return
-      if (isStakePoolV2(stakePoolData.parsed)) {
-        const program = rewardsCenterProgram(
-          secondaryConnection,
-          asEmptyAnchorWallet(wallet)
-        )
-        const stakePools = await program.account.stakePool.all([
+      if (!wallet.publicKey) return
+      const program = rewardsCenterProgram(
+        secondaryConnection,
+        asEmptyAnchorWallet(wallet)
+      )
+      const stakePoolsV1 = (
+        await getStakePoolsByAuthority(secondaryConnection, wallet.publicKey)
+      ).map((pool) => {
+        return {
+          pubkey: pool.pubkey,
+          parsed: stakePoolDataToV2(pool.parsed),
+        }
+      })
+      const stakePoolsV2 = (
+        await program.account.stakePool.all([
           {
             memcmp: {
-              offset: 10,
+              offset: 9,
               bytes: wallet.publicKey.toString(),
             },
           },
         ])
-        return stakePools.map((e) => {
-          return { pubkey: e.publicKey, parsed: e.account }
-        })
-      } else {
-        return (
-          await getStakePoolsByAuthority(secondaryConnection, wallet.publicKey)
-        ).map((pool) => {
-          return {
-            pubkey: pool.pubkey,
-            parsed: stakePoolDataToV2(pool.parsed),
-          }
-        })
-      }
+      ).map((e) => {
+        return { pubkey: e.publicKey, parsed: e.account }
+      })
+      console.log([...stakePoolsV1, ...stakePoolsV2])
+      return [...stakePoolsV1, ...stakePoolsV2]
     },
     {
       enabled: !!wallet.publicKey,

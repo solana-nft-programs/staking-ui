@@ -135,7 +135,7 @@ export const useHandleStake = (callback?: () => void) => {
                 stakePoolData.parsed.identifier,
                 [
                   {
-                    mintId: mint,
+                    mintId: new PublicKey(mint),
                     fungible: (amount?.toNumber() || 0) > 1,
                   },
                 ]
@@ -159,7 +159,7 @@ export const useHandleStake = (callback?: () => void) => {
             }
           } catch (e) {
             console.log({
-              message: `Failed to unstake token ${token?.tokenAccount?.account.data.parsed.info.mint}`,
+              message: `Failed to stake token ${token?.tokenAccount?.account.data.parsed.info.mint}`,
               description: `${e}`,
               type: 'error',
             })
