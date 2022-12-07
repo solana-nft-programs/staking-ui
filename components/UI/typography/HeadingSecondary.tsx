@@ -10,7 +10,7 @@ type Props = {
 
 const { H2, DIV } = HeadingElements
 
-const HeadingSecondary = ({ children, className, el = DIV }: Props) => {
+export const HeadingSecondary = ({ children, className, el = DIV }: Props) => {
   const combinedClasses = classNames([
     'text-3xl font-medium md:w-full min-w-full',
     className,
@@ -24,5 +24,3 @@ const HeadingSecondary = ({ children, className, el = DIV }: Props) => {
       return <div className={combinedClasses}>{children}</div>
   }
 }
-
-export default HeadingSecondary

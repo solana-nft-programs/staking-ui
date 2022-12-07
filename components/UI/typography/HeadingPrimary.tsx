@@ -11,7 +11,7 @@ type Props = {
 const { H1, H2, DIV } = HeadingElements
 const { BASE, LARGE } = HeadingTextSizes
 
-const HeadingPrimary = ({
+export const HeadingPrimary = ({
   children,
   className,
   el = DIV,
@@ -36,5 +36,3 @@ const HeadingPrimary = ({
       return <div className={combinedClasses}>{children}</div>
   }
 }
-
-export default HeadingPrimary
