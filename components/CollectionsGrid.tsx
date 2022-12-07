@@ -105,7 +105,7 @@ export const CollectionsGrid = ({ configs }: { configs?: StakePool[] }) => {
                     />
                   ) : stakePoolEntryCounts.data &&
                     stakePoolEntryCounts.data[poolId(config)] &&
-                    config.stakePoolMetadata?.maxStaked ? (
+                    !!config.stakePoolMetadata?.maxStaked ? (
                     <Stats
                       stats={[
                         {
@@ -129,22 +129,19 @@ export const CollectionsGrid = ({ configs }: { configs?: StakePool[] }) => {
                       ]}
                     />
                   ) : (
-                    stakePoolEntryCounts.data &&
-                    stakePoolEntryCounts.data[poolId(config)] && (
-                      <Stats
-                        stats={[
-                          {
-                            header: 'Total Staked',
-                            value: (
-                              totalStaked(
-                                config.stakePoolMetadata,
-                                stakePoolEntryCounts.data ?? {}
-                              ) ?? 0
-                            ).toLocaleString(),
-                          },
-                        ]}
-                      />
-                    )
+                    <Stats
+                      stats={[
+                        {
+                          header: 'Total Staked',
+                          value: (
+                            totalStaked(
+                              config.stakePoolMetadata,
+                              stakePoolEntryCounts.data ?? {}
+                            ) ?? 0
+                          ).toLocaleString(),
+                        },
+                      ]}
+                    />
                   )}
                 </div>
               }
