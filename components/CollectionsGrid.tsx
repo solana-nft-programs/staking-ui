@@ -96,7 +96,7 @@ export const CollectionsGrid = ({ configs }: { configs?: StakePool[] }) => {
                     <Stats
                       stats={[
                         {
-                          header: 'Percent Staked',
+                          header: 'Total Staked',
                           value: (
                             <div className="mt-1 h-5 w-12 animate-pulse rounded-md bg-border" />
                           ),
@@ -108,6 +108,15 @@ export const CollectionsGrid = ({ configs }: { configs?: StakePool[] }) => {
                     config.stakePoolMetadata?.maxStaked ? (
                     <Stats
                       stats={[
+                        {
+                          header: 'Total Staked',
+                          value: (
+                            totalStaked(
+                              config.stakePoolMetadata,
+                              stakePoolEntryCounts.data ?? {}
+                            ) ?? 0
+                          ).toLocaleString(),
+                        },
                         {
                           header: 'Percent Staked',
                           value: (
