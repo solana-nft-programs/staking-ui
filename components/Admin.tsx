@@ -11,7 +11,11 @@ import { PublicKey } from '@solana/web3.js'
 import { Footer } from 'common/Footer'
 import { HeaderSlim } from 'common/HeaderSlim'
 import { notify } from 'common/Notification'
-import { pubKeyUrl, shortPubKey, tryPublicKey } from 'common/utils'
+import {
+  // pubKeyUrl,
+  // shortPubKey,
+  tryPublicKey,
+} from 'common/utils'
 import { asWallet } from 'common/Wallets'
 import { StakePoolCreationFlow } from 'components/stake-pool-creation/StakePoolCreationFlow'
 import type { CreationForm } from 'components/StakePoolForm'
@@ -188,9 +192,7 @@ function Admin() {
 
       <HeaderSlim />
       <div className="container mx-auto w-full bg-[#1a1b20]">
-        <div className="mx-10 my-8 mb-8 flex w-full">
-          <StakePoolCreationFlow />
-        </div>
+        <StakePoolCreationFlow />
         {/* <div className="mx-10 my-2 grid h-full grid-cols-2 gap-4 rounded-md bg-white bg-opacity-5 p-10 text-gray-200">
           <div>
             {stakePoolId && (
