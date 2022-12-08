@@ -57,7 +57,7 @@ export const MasterPanel = ({
         </div>
       )}
       <StepContent currentStep={currentStep} />
-      <div className="flex items-center space-x-4">
+      <div className="flex items-center space-x-4 py-8">
         {currentStep > 0 && (
           <ButtonPrimary
             onClick={() => setCurrentStep(currentStep - 1)}
