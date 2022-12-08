@@ -1,12 +1,12 @@
 import { InformationCircleIcon } from '@heroicons/react/24/outline'
 import { useState } from 'react'
 
-import { NumberInput } from '@/components/UI/inputs/NumberInput'
-import { LabelText } from '@/components/UI/typography/LabelText'
+import { MultiplierInputs } from '@/components/stake-pool-creation/master-panel/step-content/reward-supply/MultiplierInputs'
 import { ButtonDecrement } from '@/components/UI/buttons/ButtonDecrement'
 import { ButtonIncrement } from '@/components/UI/buttons/ButtonIncrement'
+import { NumberInput } from '@/components/UI/inputs/NumberInput'
 import { TextInput } from '@/components/UI/inputs/TextInput'
-import { MultiplierInputs } from '@/components/stake-pool-creation/master-panel/step-content/reward-supply/MultiplierInputs'
+import { LabelText } from '@/components/UI/typography/LabelText'
 
 export const RewardSupply = () => {
   const [rewardAmountPerStakedToken, setRewardAmountPerStakedToken] =

@@ -4,7 +4,6 @@ import { useState } from 'react'
 export const MultiplierInputs = () => {
   const [multiplier, setMultiplier] = useState('1')
   const [address, setAddress] = useState('')
-  const [numberOfMints, setNumberOfMints] = useState(1)
 
   return (
     <>
