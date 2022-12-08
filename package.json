@@ -35,7 +35,7 @@
     "@emotion/react": "^11.7.1",
     "@emotion/server": "^11.4.0",
     "@emotion/styled": "^11.6.0",
-    "@headlessui/react": "^1.6.1",
+    "@headlessui/react": "^1.7.4",
     "@heroicons/react": "^2.0.13",
     "@mui/material": "^5.8.2",
     "@popperjs/core": "^2.11.5",
