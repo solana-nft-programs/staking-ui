@@ -2,15 +2,14 @@ import { Intro } from '@/components/stake-pool-creation/master-panel/Intro'
 import { Authorization } from '@/components/stake-pool-creation/master-panel/step-content/Authorization'
 
 export type StepContentProps = {
-  majorStep: number
-  minorStep: number
+  currentStep: number
 }
 
-export const StepContent = ({ majorStep, minorStep }: StepContentProps) => {
+export const StepContent = ({ currentStep }: StepContentProps) => {
   return (
     <div>
-      {majorStep === 0 && <Intro />}
-      {majorStep === 1 && <Authorization minorStep={minorStep} />}
+      {currentStep === 0 && <Intro />}
+      {currentStep === 1 && <Authorization />}
     </div>
   )
 }

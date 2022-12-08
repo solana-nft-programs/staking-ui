@@ -4,18 +4,12 @@ import { MasterPanel } from '@/components/stake-pool-creation/master-panel/Maste
 import { SlavePanel } from '@/components/stake-pool-creation/SlavePanel'
 
 export const StakePoolCreationFlow = () => {
-  const [majorStep, setMajorStep] = useState(0)
-  const [minorStep, setMinorStep] = useState(0)
+  const [currentStep, setCurrentStep] = useState(0)
 
   return (
     <div className="mb-8 flex w-full py-8 px-10">
-      <MasterPanel
-        majorStep={majorStep}
-        minorStep={minorStep}
-        setMajorStep={setMajorStep}
-        setMinorStep={setMinorStep}
-      />
-      <SlavePanel majorStep={majorStep} minorStep={minorStep} />
+      <MasterPanel currentStep={currentStep} setCurrentStep={setCurrentStep} />
+      <SlavePanel currentStep={currentStep} />
     </div>
   )
 }
