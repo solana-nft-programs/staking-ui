@@ -66,12 +66,18 @@ export const MasterPanel = ({
             Previous
           </ButtonPrimary>
         )}
-        <ButtonPrimary
-          onClick={() => setCurrentStep(currentStep + 1)}
-          width={ButtonWidths.NARROW}
-        >
-          {currentStep === 0 ? 'Start' : 'Next'}
-        </ButtonPrimary>
+        {currentStep < stepTitles.length - 1 ? (
+          <ButtonPrimary
+            onClick={() => setCurrentStep(currentStep + 1)}
+            width={ButtonWidths.NARROW}
+          >
+            {currentStep === 0 ? 'Start' : 'Next'}
+          </ButtonPrimary>
+        ) : (
+          <ButtonPrimary onClick={() => {}} width={ButtonWidths.NARROW}>
+            Create Stake Pool
+          </ButtonPrimary>
+        )}
         {currentStep > 0 && (
           <BodyCopy className="ml-4">Step {currentStep}/6</BodyCopy>
         )}
