@@ -55,3 +55,8 @@ export enum ButtonWidths {
   NARROW = 'narrow',
   MID = 'mid',
 }
+
+export type RadioGroupOption = {
+  name: string
+  value: string
+}

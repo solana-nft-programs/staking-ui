@@ -1,18 +1,13 @@
-import { useState } from 'react'
 import { RadioGroup as RadioGroupHeadless } from '@headlessui/react'
+import { useState } from 'react'
 
-const options = [
-  {
-    name: 'Transfer',
-    value: 'transfer',
-  },
-  {
-    name: 'Mint',
-    value: 'mint',
-  },
-]
+import type { RadioGroupOption } from '@/types/index'
 
-export const RadioGroup = () => {
+export type RadioGroupProps = {
+  options: RadioGroupOption[]
+}
+
+export const RadioGroup = ({ options }: RadioGroupProps) => {
   const [selected, setSelected] = useState(options[0])
 
   return (
