@@ -19,19 +19,19 @@ export const Intro = () => {
         You will be guided through the whole process:
       </BodyCopy>
       <div className="flex flex-wrap space-y-2 pb-8">
-        <div className="flex w-full rounded-xl bg-gray-600 p-6">
+        <div className="flex w-full rounded-xl bg-gray-800 p-6">
           <div className="mr-4">
             <FlagIcon />
           </div>
           Complete 6 simple steps
         </div>
-        <div className="flex w-full rounded-xl bg-gray-600 p-6">
+        <div className="flex w-full rounded-xl bg-gray-800 p-6">
           <div className="mr-4">
             <GasPumpIcon />
           </div>
           You will only be charged with blockchain gas fees
         </div>
-        <div className="flex w-full rounded-xl bg-gray-600 p-6">
+        <div className="flex w-full rounded-xl bg-gray-800 p-6">
           <div className="mr-4">
             <SettingsIcon />
           </div>
