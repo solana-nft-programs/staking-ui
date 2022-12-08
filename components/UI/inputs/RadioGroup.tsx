@@ -1,15 +1,18 @@
 import { RadioGroup as RadioGroupHeadless } from '@headlessui/react'
-import { useState } from 'react'
 
 import type { RadioGroupOption } from '@/types/index'
 
 export type RadioGroupProps = {
   options: RadioGroupOption[]
+  setSelected: (option: RadioGroupOption) => void
+  selected: RadioGroupOption
 }
 
-export const RadioGroup = ({ options }: RadioGroupProps) => {
-  const [selected, setSelected] = useState(options[0])
-
+export const RadioGroup = ({
+  options,
+  setSelected,
+  selected,
+}: RadioGroupProps) => {
   return (
     <>
       {/* https://github.com/tailwindlabs/headlessui/issues/1523 */}
