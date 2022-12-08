@@ -14,7 +14,7 @@ type Props = {
 const ButtonSecondary = ({ children, color = ORANGE, onClick }: Props) => {
   return (
     <button
-      style={{ minWidth: `${MINIMUM_BUTTON_WIDTH_IN_PX}px` }}
+      style={{ minWidth: MINIMUM_BUTTON_WIDTH_IN_PX }}
       className={classNames({
         'min-w-[230px] rounded-lg px-8 py-3 text-white': true,
         'border border-orange-500': color === ORANGE,
