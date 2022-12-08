@@ -58,7 +58,7 @@ function Admin() {
       </Head>
 
       <HeaderSlim />
-      <div className="container mx-auto w-full bg-[#1a1b20]">
+      <div className="container mx-auto w-full">
         <StakePoolCreationFlow />
         {/* <div className="mx-10 my-2 grid h-full grid-cols-2 gap-4 rounded-md bg-white bg-opacity-5 p-10 text-gray-200">
           <div>

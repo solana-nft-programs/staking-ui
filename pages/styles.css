@@ -19,7 +19,7 @@ body {
   font-family: SFHello, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
     Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
     'Segoe UI Symbol';
-  background-color: rgb(26, 27, 32) !important;
+  @apply bg-gray-900;
   color: #fff;
 }
 
