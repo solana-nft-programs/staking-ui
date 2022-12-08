@@ -3,6 +3,7 @@ import { Authorization } from '@/components/stake-pool-creation/master-panel/ste
 import { RewardDistribution } from '@/components/stake-pool-creation/master-panel/step-content/RewardDistribution'
 import { RewardSupply } from '@/components/stake-pool-creation/master-panel/step-content/reward-supply/RewardSupply'
 import { AdditionalStakeConditions } from '@/components/stake-pool-creation/master-panel/step-content/AdditionalStakeConditions'
+import { TimeBasedParameters } from '@/components/stake-pool-creation/master-panel/step-content/TimeBasedParameters'
 
 export type StepContentProps = {
   currentStep: number
@@ -15,7 +16,7 @@ export const StepContent = ({ currentStep }: StepContentProps) => {
       {currentStep === 1 && <Authorization />}
       {currentStep === 2 && <RewardDistribution />}
       {currentStep === 3 && <RewardSupply />}
-      {currentStep === 4 && <div>Time-based parameters</div>}
+      {currentStep === 4 && <TimeBasedParameters />}
       {currentStep === 5 && <AdditionalStakeConditions />}
     </div>
   )
