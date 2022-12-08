@@ -5,13 +5,24 @@ import { MultiplierInputs } from '@/components/stake-pool-creation/master-panel/
 import { ButtonDecrement } from '@/components/UI/buttons/ButtonDecrement'
 import { ButtonIncrement } from '@/components/UI/buttons/ButtonIncrement'
 import { NumberInput } from '@/components/UI/inputs/NumberInput'
-import { TextInput } from '@/components/UI/inputs/TextInput'
+
 import { LabelText } from '@/components/UI/typography/LabelText'
+import { SelectInput } from '@/components/UI/inputs/SelectInput'
+
+const unitsOfTime = [
+  { value: 'day', label: 'Day' },
+  { value: 'week', label: 'Week' },
+  { value: 'month', label: 'Month' },
+]
 
 export const RewardSupply = () => {
   const [rewardAmountPerStakedToken, setRewardAmountPerStakedToken] =
     useState('')
-  const [generationRate, setGenerationRate] = useState('')
+  const [generationRate, setGenerationRate] = useState('1')
+  const [selectedUnitOfTime, setSelectedUnitOfTime] = useState(
+    unitsOfTime[0]?.value
+  )
+
   return (
     <>
       <div className="pb-6">
@@ -30,14 +41,33 @@ export const RewardSupply = () => {
           <LabelText>Reward generation rate</LabelText>
           <InformationCircleIcon className="ml-1 h-6 w-6 cursor-pointer text-gray-400" />
         </div>
-        <div className="flex space-x-3">
-          <ButtonDecrement onClick={() => {}} />
-          <TextInput
-            className="w-12"
+        <div className="flex">
+          <ButtonDecrement
+            className="mr-3"
+            onClick={() => {
+              if (Number(generationRate) > 0) {
+                setGenerationRate((Number(generationRate) - 1).toString())
+              }
+            }}
+          />
+
+          <NumberInput
+            className="w-12 rounded-r-none text-center"
             value={generationRate}
             onChange={(e) => setGenerationRate(e.target.value)}
           />
-          <ButtonIncrement onClick={() => {}} />
+          <SelectInput
+            className="-ml-1 rounded-l-none"
+            value={selectedUnitOfTime || ''}
+            setValue={setSelectedUnitOfTime}
+            options={unitsOfTime}
+          />
+          <ButtonIncrement
+            className="ml-3"
+            onClick={() =>
+              setGenerationRate((Number(generationRate) + 1).toString())
+            }
+          />
         </div>
       </div>
       <MultiplierInputs />

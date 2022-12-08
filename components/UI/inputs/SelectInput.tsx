@@ -1,14 +1,11 @@
 import classNames from 'classnames'
 
-type Options = {
-  value: string
-  label: string
-}
+import type { InputOption } from '@/types/index'
 
 export type SelectInputProps = {
   value: string
   setValue: (value: string) => void
-  options: Options[]
+  options: InputOption[]
   className?: string
 }
 
