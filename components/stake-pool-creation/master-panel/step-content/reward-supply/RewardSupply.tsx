@@ -8,12 +8,7 @@ import { NumberInput } from '@/components/UI/inputs/NumberInput'
 
 import { LabelText } from '@/components/UI/typography/LabelText'
 import { SelectInput } from '@/components/UI/inputs/SelectInput'
-
-const unitsOfTime = [
-  { value: 'day', label: 'Day' },
-  { value: 'week', label: 'Week' },
-  { value: 'month', label: 'Month' },
-]
+import { unitsOfTime } from '@/constants/index'
 
 export const RewardSupply = () => {
   const [rewardAmountPerStakedToken, setRewardAmountPerStakedToken] =
@@ -50,7 +45,6 @@ export const RewardSupply = () => {
               }
             }}
           />
-
           <NumberInput
             className="w-12 rounded-r-none text-center"
             value={generationRate}

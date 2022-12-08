@@ -1,0 +1,136 @@
+import { ButtonDecrement } from '@/components/UI/buttons/ButtonDecrement'
+import { ButtonIncrement } from '@/components/UI/buttons/ButtonIncrement'
+import { NumberInput } from '@/components/UI/inputs/NumberInput'
+import { SelectInput } from '@/components/UI/inputs/SelectInput'
+import { LabelText } from '@/components/UI/typography/LabelText'
+import { unitsOfTime } from '@/constants/index'
+import { InformationCircleIcon } from '@heroicons/react/24/outline'
+
+import { useState } from 'react'
+
+export const TimeBasedParameters = () => {
+  const [maxStakeDuration, setMaxStakeDuration] = useState('1')
+  const [maxStakeDurationUnitOfTime, setMaxStakeDurationUnitOfTime] = useState(
+    unitsOfTime[0]?.value
+  )
+  const [cooldownPeriod, setCooldownPeriod] = useState('1')
+  const [cooldownPeriodUnitOfTime, setCooldownPeriodUnitOfTime] = useState(
+    unitsOfTime[0]?.value
+  )
+  const [maxRewardDuration, setMaxRewardDuration] = useState('1')
+  const [maxRewardDurationUnitOfTime, setMaxRewardDurationUnitOfTime] =
+    useState(unitsOfTime[0]?.value)
+
+  return (
+    <>
+      <div className="pb-6">
+        <div className="mb-2 flex w-full items-center">
+          <LabelText>
+            Maximum stake duration
+            <span className="ml-1 text-gray-500">(optional)</span>
+          </LabelText>
+          <InformationCircleIcon className="ml-1 h-6 w-6 cursor-pointer text-gray-400" />
+        </div>
+        <div className="flex">
+          <ButtonDecrement
+            className="mr-3"
+            onClick={() => {
+              if (Number(maxStakeDuration) > 0) {
+                setMaxStakeDuration((Number(maxStakeDuration) - 1).toString())
+              }
+            }}
+          />
+          <NumberInput
+            className="w-12 rounded-r-none text-center"
+            value={maxStakeDuration || ''}
+            onChange={(e) => setMaxStakeDuration(e.target.value)}
+          />
+          <SelectInput
+            className="-ml-1 rounded-l-none"
+            value={maxStakeDurationUnitOfTime || ''}
+            setValue={setMaxStakeDurationUnitOfTime}
+            options={unitsOfTime}
+          />
+          <ButtonIncrement
+            className="ml-3"
+            onClick={() =>
+              setMaxStakeDuration((Number(maxStakeDuration) + 1).toString())
+            }
+          />
+        </div>
+      </div>
+      <div className="pb-6">
+        <div className="mb-2 flex w-full items-center">
+          <LabelText>
+            Cooldown period
+            <span className="ml-1 text-gray-500">(optional)</span>
+          </LabelText>
+          <InformationCircleIcon className="ml-1 h-6 w-6 cursor-pointer text-gray-400" />
+        </div>
+        <div className="flex">
+          <ButtonDecrement
+            className="mr-3"
+            onClick={() => {
+              if (Number(cooldownPeriod) > 0) {
+                setCooldownPeriod((Number(cooldownPeriod) - 1).toString())
+              }
+            }}
+          />
+          <NumberInput
+            className="w-12 rounded-r-none text-center"
+            value={cooldownPeriod || ''}
+            onChange={(e) => setCooldownPeriod(e.target.value)}
+          />
+          <SelectInput
+            className="-ml-1 rounded-l-none"
+            value={cooldownPeriodUnitOfTime || ''}
+            setValue={setCooldownPeriodUnitOfTime}
+            options={unitsOfTime}
+          />
+          <ButtonIncrement
+            className="ml-3"
+            onClick={() =>
+              setCooldownPeriod((Number(cooldownPeriod) + 1).toString())
+            }
+          />
+        </div>
+      </div>
+      <div className="pb-6">
+        <div className="mb-2 flex w-full items-center">
+          <LabelText>
+            Maximum reward duration
+            <span className="ml-1 text-gray-500">(optional)</span>
+          </LabelText>
+          <InformationCircleIcon className="ml-1 h-6 w-6 cursor-pointer text-gray-400" />
+        </div>
+        <div className="flex">
+          <ButtonDecrement
+            className="mr-3"
+            onClick={() => {
+              if (Number(maxRewardDuration) > 0) {
+                setMaxRewardDuration((Number(maxRewardDuration) - 1).toString())
+              }
+            }}
+          />
+          <NumberInput
+            className="w-12 rounded-r-none text-center"
+            value={maxRewardDuration || ''}
+            onChange={(e) => setMaxRewardDuration(e.target.value)}
+          />
+          <SelectInput
+            className="-ml-1 rounded-l-none"
+            value={maxRewardDurationUnitOfTime || ''}
+            setValue={setMaxRewardDurationUnitOfTime}
+            options={unitsOfTime}
+          />
+          <ButtonIncrement
+            className="ml-3"
+            onClick={() =>
+              setMaxRewardDuration((Number(maxRewardDuration) + 1).toString())
+            }
+          />
+        </div>
+      </div>
+    </>
+  )
+}
