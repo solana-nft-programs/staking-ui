@@ -1,4 +1,4 @@
-import { StepIndicatorBubble } from '@/components/stake-pool-creation/master-panel-content/step-indicator/StepIndicatorBubble'
+import { StepIndicatorBubble } from '@/components/stake-pool-creation/master-panel/step-indicator/StepIndicatorBubble'
 import { HorizontalDivider } from '@/components/UI/HorizontalDivider'
 
 export type StepIndicatorProps = {

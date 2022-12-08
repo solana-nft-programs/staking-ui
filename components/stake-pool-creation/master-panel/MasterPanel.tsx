@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react'
 
-import { Intro } from '@/components/stake-pool-creation/master-panel-content/Intro'
-import { StepIndicator } from '@/components/stake-pool-creation/master-panel-content/step-indicator/StepIndicator'
+import { StepContent } from '@/components/stake-pool-creation/master-panel/step-content/StepContent'
+import { StepIndicator } from '@/components/stake-pool-creation/master-panel/step-indicator/StepIndicator'
 import { ButtonPrimary } from '@/components/UI/buttons/ButtonPrimary'
+import { BodyCopy } from '@/components/UI/typography/BodyCopy'
 import { HeadingPrimary } from '@/components/UI/typography/HeadingPrimary'
 import { ButtonWidths } from '@/types/index'
 
@@ -13,6 +14,26 @@ export type MasterPanelProps = {
   setMinorStep: (step: number) => void
 }
 
+const majorStepTitles = [
+  'Create your Staking Pool',
+  'Authorization',
+  'Reward distribution',
+  'Rewards supply',
+  'Time-based parameters',
+  'Additional stake conditions',
+  'Summary',
+]
+
+const minorStepTitles = [
+  'Thank you for your interest!',
+  'Decide which NFT collections or coins will be staked.',
+  'Specify the emission and source of rewards for stakers.',
+  'Adjust the amount of rewards per a token staked.',
+  'Introduce optional constraints for staking in your pool.',
+  'Customize the staking technology for your users.',
+  'All steps completed. Please review the details of your Stake Pool below, before you hit the Create button.',
+]
+
 export const MasterPanel = ({
   majorStep,
   minorStep,
@@ -20,6 +41,7 @@ export const MasterPanel = ({
   setMinorStep,
 }: MasterPanelProps) => {
   const [majorStepTitle, setMajorStepTitle] = useState('')
+  const [stepSubtitle, setStepSubtitle] = useState('')
 
   const incrementMajorStep = () => {
     setMinorStep(1)
@@ -27,6 +49,7 @@ export const MasterPanel = ({
   }
 
   const incrementMinorStep = () => setMinorStep(minorStep + 1)
+  const decrementMinorStep = () => setMinorStep(minorStep - 1)
 
   const handlePreviousButtonPress = () => {
     switch (majorStep) {
@@ -40,7 +63,7 @@ export const MasterPanel = ({
           setMajorStep(majorStep - 1)
           setMinorStep(4)
         } else {
-          setMinorStep(minorStep - 1)
+          decrementMinorStep()
         }
         break
       case 3:
@@ -48,7 +71,7 @@ export const MasterPanel = ({
           setMajorStep(majorStep - 1)
           setMinorStep(3)
         } else {
-          setMinorStep(minorStep - 1)
+          decrementMinorStep()
         }
         break
       case 4:
@@ -56,7 +79,7 @@ export const MasterPanel = ({
           setMajorStep(majorStep - 1)
           setMinorStep(3)
         } else {
-          setMinorStep(minorStep - 1)
+          decrementMinorStep()
         }
         break
       case 5:
@@ -64,7 +87,7 @@ export const MasterPanel = ({
           setMajorStep(majorStep - 1)
           setMinorStep(4)
         } else {
-          setMinorStep(minorStep - 1)
+          decrementMinorStep()
         }
         break
       case 6:
@@ -72,7 +95,7 @@ export const MasterPanel = ({
           setMajorStep(majorStep - 1)
           setMinorStep(4)
         } else {
-          setMinorStep(minorStep - 1)
+          decrementMinorStep()
         }
         break
     }
@@ -105,37 +128,23 @@ export const MasterPanel = ({
   }
 
   useEffect(() => {
-    switch (majorStep) {
-      case 0:
-        setMajorStepTitle('Create your staking pool')
-        break
-      case 1:
-        setMajorStepTitle('Authorization')
-        break
-      case 2:
-        setMajorStepTitle('Reward distribution')
-        break
-      case 3:
-        setMajorStepTitle('Rewards supply')
-        break
-      case 4:
-        setMajorStepTitle('Time-based parameters')
-        break
-      case 5:
-        setMajorStepTitle('Additional stake conditions')
-        break
-    }
+    const title = majorStepTitles?.[majorStep]
+    const subTitle = minorStepTitles?.[majorStep]
+    if (!title || !subTitle) return
+    setMajorStepTitle(title)
+    setStepSubtitle(subTitle)
   }, [majorStep])
 
   return (
-    <div className="w-1/3 space-y-6">
+    <div className="w-2/5 space-y-2">
       <HeadingPrimary>{majorStepTitle}</HeadingPrimary>
-      {majorStep === 0 && <Intro />}
+      <BodyCopy className="pb-2">{stepSubtitle}</BodyCopy>
       {minorStep > 0 && (
-        <div className="pb-16">
+        <div className=" pb-16">
           <StepIndicator currentStep={majorStep} />
         </div>
       )}
+      <StepContent majorStep={majorStep} minorStep={minorStep} />
       <div className="flex space-x-4">
         {majorStep > 0 && (
           <ButtonPrimary
