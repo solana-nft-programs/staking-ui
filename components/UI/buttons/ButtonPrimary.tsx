@@ -1,6 +1,5 @@
 import classNames from 'classnames'
 
-import { MINIMUM_BUTTON_WIDTH_IN_PX } from '@/constants/index'
 import { ButtonColors, ButtonWidths } from '@/types/index'
 
 const { ORANGE, PURPLE, GREEN, BLUE, MAROON } = ButtonColors
@@ -25,7 +24,7 @@ export const ButtonPrimary = ({
   return (
     <button
       className={classNames(className, [
-        width === NARROW ? 'w-auto' : `min-w-[${MINIMUM_BUTTON_WIDTH_IN_PX}px]`,
+        width === NARROW ? 'w-auto' : `min-w-[230px]`,
         {
           'flex items-center justify-center rounded-lg px-8 py-2': true,
           'bg-orange-500 text-black': color === ORANGE,
