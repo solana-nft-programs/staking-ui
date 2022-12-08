@@ -1,6 +1,7 @@
+import { useState } from 'react'
+
 import { MasterPanel } from '@/components/stake-pool-creation/MasterPanel'
 import { SlavePanel } from '@/components/stake-pool-creation/SlavePanel'
-import { useState } from 'react'
 
 export const StakePoolCreationFlow = () => {
   const [majorStep, setMajorStep] = useState(0)

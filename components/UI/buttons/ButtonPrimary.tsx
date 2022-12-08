@@ -1,15 +1,18 @@
 import classNames from 'classnames'
 
 import { MINIMUM_BUTTON_WIDTH_IN_PX } from '@/constants/index'
-import { ButtonColors } from '@/types/index'
+import { ButtonColors, ButtonWidths } from '@/types/index'
 
 const { ORANGE, PURPLE, GREEN, BLUE, MAROON } = ButtonColors
+
+const { NARROW, MID } = ButtonWidths
 
 type Props = {
   children: React.ReactNode
   onClick: () => void
   color?: ButtonColors
   className?: string
+  width?: ButtonWidths
 }
 
 export const ButtonPrimary = ({
@@ -17,14 +20,14 @@ export const ButtonPrimary = ({
   color = ORANGE,
   onClick,
   className,
+  width = MID,
 }: Props) => {
   return (
     <button
-      style={{ minWidth: `${MINIMUM_BUTTON_WIDTH_IN_PX}px` }}
       className={classNames(className, [
+        width === NARROW ? 'w-auto' : `min-w-[${MINIMUM_BUTTON_WIDTH_IN_PX}px]`,
         {
-          'flex min-w-[230px]  items-center justify-center rounded-lg px-8 py-2':
-            true,
+          'flex items-center justify-center rounded-lg px-8 py-2': true,
           'bg-orange-500 text-black': color === ORANGE,
           'bg-green-500 text-black': color === GREEN,
           'bg-purple-500 text-white': color === PURPLE,

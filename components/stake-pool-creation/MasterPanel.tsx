@@ -4,6 +4,7 @@ import { Intro } from '@/components/stake-pool-creation/master-panel-content/Int
 import { StepIndicator } from '@/components/stake-pool-creation/master-panel-content/step-indicator/StepIndicator'
 import { ButtonPrimary } from '@/components/UI/buttons/ButtonPrimary'
 import { HeadingPrimary } from '@/components/UI/typography/HeadingPrimary'
+import { ButtonWidths } from '@/types/index'
 
 export type MasterPanelProps = {
   majorStep: number
@@ -26,6 +27,56 @@ export const MasterPanel = ({
   }
 
   const incrementMinorStep = () => setMinorStep(minorStep + 1)
+
+  const handlePreviousButtonPress = () => {
+    switch (majorStep) {
+      case 0:
+        break
+      case 1:
+        minorStep > 1 && setMinorStep(minorStep - 1)
+        break
+      case 2:
+        if (minorStep === 1) {
+          setMajorStep(majorStep - 1)
+          setMinorStep(4)
+        } else {
+          setMinorStep(minorStep - 1)
+        }
+        break
+      case 3:
+        if (minorStep === 1) {
+          setMajorStep(majorStep - 1)
+          setMinorStep(3)
+        } else {
+          setMinorStep(minorStep - 1)
+        }
+        break
+      case 4:
+        if (minorStep === 1) {
+          setMajorStep(majorStep - 1)
+          setMinorStep(3)
+        } else {
+          setMinorStep(minorStep - 1)
+        }
+        break
+      case 5:
+        if (minorStep === 1) {
+          setMajorStep(majorStep - 1)
+          setMinorStep(4)
+        } else {
+          setMinorStep(minorStep - 1)
+        }
+        break
+      case 6:
+        if (minorStep === 1) {
+          setMajorStep(majorStep - 1)
+          setMinorStep(4)
+        } else {
+          setMinorStep(minorStep - 1)
+        }
+        break
+    }
+  }
 
   const handleNextButtonPress = () => {
     switch (majorStep) {
@@ -80,9 +131,24 @@ export const MasterPanel = ({
     <div className="w-1/3 space-y-6">
       <HeadingPrimary>{majorStepTitle}</HeadingPrimary>
       {majorStep === 0 && <Intro />}
-      {minorStep > 0 && <StepIndicator currentStep={majorStep} />}
-      <div className="flex">
-        <ButtonPrimary onClick={handleNextButtonPress}>
+      {minorStep > 0 && (
+        <div className="pb-16">
+          <StepIndicator currentStep={majorStep} />
+        </div>
+      )}
+      <div className="flex space-x-4">
+        {majorStep > 0 && (
+          <ButtonPrimary
+            onClick={handlePreviousButtonPress}
+            width={ButtonWidths.NARROW}
+          >
+            Previous
+          </ButtonPrimary>
+        )}
+        <ButtonPrimary
+          onClick={handleNextButtonPress}
+          width={ButtonWidths.NARROW}
+        >
           {majorStep === 0 ? 'Start' : 'Next'}
         </ButtonPrimary>
       </div>
