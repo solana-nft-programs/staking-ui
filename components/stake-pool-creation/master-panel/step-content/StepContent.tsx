@@ -1,5 +1,5 @@
 import { Intro } from '@/components/stake-pool-creation/master-panel/Intro'
-import { Authorization } from '@/components/stake-pool-creation/master-panel/step-content/Authorization'
+import { Authorization } from '@/components/stake-pool-creation/master-panel/step-content/authorization/Authorization'
 
 export type StepContentProps = {
   currentStep: number
