@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-import { MasterPanel } from '@/components/stake-pool-creation/MasterPanel'
+import { MasterPanel } from '@/components/stake-pool-creation/master-panel/MasterPanel'
 import { SlavePanel } from '@/components/stake-pool-creation/SlavePanel'
 
 export const StakePoolCreationFlow = () => {

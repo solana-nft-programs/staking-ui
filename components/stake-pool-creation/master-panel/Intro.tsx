@@ -8,7 +8,6 @@ import { BodyCopy } from '@/components/UI/typography/BodyCopy'
 export const Intro = () => {
   return (
     <>
-      <BodyCopy>Thank you for your interest!</BodyCopy>
       <BodyCopy>
         Adding utility like staking brings rewards for both the users and the
         NFT collection itself.
@@ -16,7 +15,9 @@ export const Intro = () => {
       <div className="py-8">
         <HorizontalDivider />
       </div>
-      <BodyCopy>You will be guided through the whole process:</BodyCopy>
+      <BodyCopy className="mb-4">
+        You will be guided through the whole process:
+      </BodyCopy>
       <div className="flex flex-wrap space-y-2 pb-8">
         <div className="flex w-full rounded-xl bg-gray-600 p-6">
           <div className="mr-4">
