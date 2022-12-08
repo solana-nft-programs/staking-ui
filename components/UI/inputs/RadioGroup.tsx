@@ -1,11 +1,11 @@
 import { RadioGroup as RadioGroupHeadless } from '@headlessui/react'
 
-import type { RadioGroupOption } from '@/types/index'
+import type { InputOption } from '@/types/index'
 
 export type RadioGroupProps = {
-  options: RadioGroupOption[]
-  setSelected: (option: RadioGroupOption) => void
-  selected: RadioGroupOption
+  options: InputOption[]
+  setSelected: (option: InputOption) => void
+  selected: InputOption
 }
 
 export const RadioGroup = ({
@@ -23,7 +23,7 @@ export const RadioGroup = ({
             // https://github.com/tailwindlabs/headlessui/issues/1523
             // @ts-expect-error
             <RadioGroupHeadless.Option
-              key={option.name}
+              key={option.label}
               value={option}
               className={({ checked }) =>
                 `${checked ? 'bg-black text-gray-400' : 'bg-gray-800'}
@@ -43,7 +43,7 @@ export const RadioGroup = ({
                             checked ? 'bg-black text-white' : 'text-gray-500'
                           }`}
                         >
-                          {option.name}
+                          {option.label}
                         </RadioGroupHeadless.Label>
                       </div>
                     </div>

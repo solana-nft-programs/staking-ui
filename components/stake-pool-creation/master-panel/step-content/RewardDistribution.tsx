@@ -4,15 +4,15 @@ import { useState } from 'react'
 import { RadioGroup } from '@/components/UI/inputs/RadioGroup'
 import { TextInput } from '@/components/UI/inputs/TextInput'
 import { LabelText } from '@/components/UI/typography/LabelText'
-import type { RadioGroupOption } from '@/types/index'
+import type { InputOption } from '@/types/index'
 
 const options = [
   {
-    name: 'Transfer',
+    label: 'Transfer',
     value: 'transfer',
   },
   {
-    name: 'Mint',
+    label: 'Mint',
     value: 'mint',
   },
 ]
@@ -20,8 +20,8 @@ const options = [
 export const RewardDistribution = () => {
   const [mintAddress, setMintAddress] = useState('')
   const [transferAmount, setTransferAmount] = useState('')
-  const [selected, setSelected] = useState<RadioGroupOption>(
-    options[0] as RadioGroupOption
+  const [selected, setSelected] = useState<InputOption>(
+    options[0] as InputOption
   )
 
   return (

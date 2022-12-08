@@ -56,7 +56,7 @@ export enum ButtonWidths {
   MID = 'mid',
 }
 
-export type RadioGroupOption = {
-  name: string
+export type InputOption = {
+  label: string
   value: string
 }
