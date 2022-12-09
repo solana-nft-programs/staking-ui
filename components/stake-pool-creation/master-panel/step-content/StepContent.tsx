@@ -32,7 +32,11 @@ export const StepContent = ({
       {currentStep === 3 && (
         <RewardSupply setActiveSlavePanelScreen={setActiveSlavePanelScreen} />
       )}
-      {currentStep === 4 && <TimeBasedParameters />}
+      {currentStep === 4 && (
+        <TimeBasedParameters
+          setActiveSlavePanelScreen={setActiveSlavePanelScreen}
+        />
+      )}
       {currentStep === 5 && <AdditionalStakeConditions />}
       {currentStep === 6 && <Summary />}
     </div>
