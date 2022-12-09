@@ -1,6 +1,8 @@
 import { InformationCircleIcon } from '@heroicons/react/24/outline'
+import type { Dispatch, SetStateAction } from 'react'
 import { useState } from 'react'
 
+import { SlavePanelScreens } from '@/components/stake-pool-creation/SlavePanel'
 import { ButtonDecrement } from '@/components/UI/buttons/ButtonDecrement'
 import { ButtonIncrement } from '@/components/UI/buttons/ButtonIncrement'
 import { NumberInput } from '@/components/UI/inputs/NumberInput'
@@ -8,7 +10,19 @@ import { SelectInput } from '@/components/UI/inputs/SelectInput'
 import { LabelText } from '@/components/UI/typography/LabelText'
 import { unitsOfTime } from '@/constants/index'
 
-export const TimeBasedParameters = () => {
+export type TimeBasedParametersProps = {
+  setActiveSlavePanelScreen: Dispatch<SetStateAction<SlavePanelScreens>>
+}
+
+export const TimeBasedParameters = ({
+  setActiveSlavePanelScreen,
+}: TimeBasedParametersProps) => {
+  const {
+    TIME_BASED_PARAMETERS_1,
+    TIME_BASED_PARAMETERS_2,
+    TIME_BASED_PARAMETERS_3,
+    TIME_BASED_PARAMETERS_4,
+  } = SlavePanelScreens
   const [maxStakeDuration, setMaxStakeDuration] = useState('1')
   const [maxStakeDurationUnitOfTime, setMaxStakeDurationUnitOfTime] = useState(
     unitsOfTime[0]?.value
@@ -31,7 +45,10 @@ export const TimeBasedParameters = () => {
             Maximum stake duration
             <span className="ml-1 text-gray-500">(optional)</span>
           </LabelText>
-          <InformationCircleIcon className="ml-1 h-6 w-6 cursor-pointer text-gray-400" />
+          <InformationCircleIcon
+            className="ml-1 h-6 w-6 cursor-pointer text-gray-400"
+            onClick={() => setActiveSlavePanelScreen(TIME_BASED_PARAMETERS_1)}
+          />
         </div>
         <div className="flex">
           <ButtonDecrement
@@ -67,7 +84,10 @@ export const TimeBasedParameters = () => {
             Cooldown period
             <span className="ml-1 text-gray-500">(optional)</span>
           </LabelText>
-          <InformationCircleIcon className="ml-1 h-6 w-6 cursor-pointer text-gray-400" />
+          <InformationCircleIcon
+            className="ml-1 h-6 w-6 cursor-pointer text-gray-400"
+            onClick={() => setActiveSlavePanelScreen(TIME_BASED_PARAMETERS_2)}
+          />
         </div>
         <div className="flex">
           <ButtonDecrement
@@ -103,7 +123,10 @@ export const TimeBasedParameters = () => {
             Maximum reward duration
             <span className="ml-1 text-gray-500">(optional)</span>
           </LabelText>
-          <InformationCircleIcon className="ml-1 h-6 w-6 cursor-pointer text-gray-400" />
+          <InformationCircleIcon
+            className="ml-1 h-6 w-6 cursor-pointer text-gray-400"
+            onClick={() => setActiveSlavePanelScreen(TIME_BASED_PARAMETERS_3)}
+          />
         </div>
         <div className="flex">
           <ButtonDecrement
@@ -139,7 +162,10 @@ export const TimeBasedParameters = () => {
             Stake pool termination date
             <span className="ml-1 text-gray-500">(optional)</span>
           </LabelText>
-          <InformationCircleIcon className="ml-1 h-6 w-6 cursor-pointer text-gray-400" />
+          <InformationCircleIcon
+            className="ml-1 h-6 w-6 cursor-pointer text-gray-400"
+            onClick={() => setActiveSlavePanelScreen(TIME_BASED_PARAMETERS_4)}
+          />
         </div>
         <input
           onChange={(e) => setTerminationDate(e.target.value)}

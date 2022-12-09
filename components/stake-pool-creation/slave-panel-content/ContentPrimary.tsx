@@ -8,6 +8,10 @@ import { RewardDistributionTipTwo } from '@/components/stake-pool-creation/slave
 import { RewardSupplyTipOne } from '@/components/stake-pool-creation/slave-panel-content/reward-supply/RewardSupplyTipOne'
 import { RewardSupplyTipThree } from '@/components/stake-pool-creation/slave-panel-content/reward-supply/RewardSupplyTipThree'
 import { RewardSupplyTipTwo } from '@/components/stake-pool-creation/slave-panel-content/reward-supply/RewardSupplyTipTwo'
+import { TimeBasedParametersTipFour } from '@/components/stake-pool-creation/slave-panel-content/time-based-parameters/TimeBasedParametersTipFour'
+import { TimeBasedParametersTipOne } from '@/components/stake-pool-creation/slave-panel-content/time-based-parameters/TimeBasedParametersTipOne'
+import { TimeBasedParametersTipThree } from '@/components/stake-pool-creation/slave-panel-content/time-based-parameters/TimeBasedParametersTipThree'
+import { TimeBasedParametersTipTwo } from '@/components/stake-pool-creation/slave-panel-content/time-based-parameters/TimeBasedParametersTipTwo'
 import { SlavePanelScreens } from '@/components/stake-pool-creation/SlavePanel'
 
 export type ContentPrimaryProps = {
@@ -26,6 +30,10 @@ export const ContentPrimary = ({ activeScreen }: ContentPrimaryProps) => {
     REWARD_SUPPLY_1,
     REWARD_SUPPLY_2,
     REWARD_SUPPLY_3,
+    TIME_BASED_PARAMETERS_1,
+    TIME_BASED_PARAMETERS_2,
+    TIME_BASED_PARAMETERS_3,
+    TIME_BASED_PARAMETERS_4,
   } = SlavePanelScreens
 
   return (
@@ -40,6 +48,18 @@ export const ContentPrimary = ({ activeScreen }: ContentPrimaryProps) => {
       {activeScreen === REWARD_SUPPLY_1 && <RewardSupplyTipOne />}
       {activeScreen === REWARD_SUPPLY_2 && <RewardSupplyTipTwo />}
       {activeScreen === REWARD_SUPPLY_3 && <RewardSupplyTipThree />}
+      {activeScreen === TIME_BASED_PARAMETERS_1 && (
+        <TimeBasedParametersTipOne />
+      )}
+      {activeScreen === TIME_BASED_PARAMETERS_2 && (
+        <TimeBasedParametersTipTwo />
+      )}
+      {activeScreen === TIME_BASED_PARAMETERS_3 && (
+        <TimeBasedParametersTipThree />
+      )}
+      {activeScreen === TIME_BASED_PARAMETERS_4 && (
+        <TimeBasedParametersTipFour />
+      )}
     </div>
   )
 }
