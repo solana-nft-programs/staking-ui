@@ -2371,34 +2371,35 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     },
   },
   {
-    name: 'Degen Strays Club',
+    name: 'Mod Cats Club',
     displayName: 'Cave of Treasure',
     nameInHeader: true,
     stakePoolAddress: new PublicKey(
       'HM4KxPucFiFzJBr1saM1n7Hd4HhkLnp9FQXWaGv6gh5s'
     ),
     description: 'Stake your Strays, earn $STRYS',
+    hostname: 'stakerebels.modcatsclub.xyz',
     hideFooter: true,
     receiptType: ReceiptType.Receipt,
     tokenStandard: TokenStandard.NonFungible,
     // styles to apply to the whole stake pool
     styles: {
-      fontFamily: 'Inter, sans-serif',
+      fontFamily: 'Montserrat',
       fontWeight: 400,
-      backgroundPosition: 'center',
+      objectPosition: 'center'
     },
     // Colors object to style the stake page
     colors: {
-      primary: '#120912',
+      primary: '#372554',
       secondary: '#372554',
       backgroundSecondary: 'rgb(24 24 24 / 50%)',
       fontColor: '#EEEEEE',
     },
-    imageUrl: 'https://arweave.net/NtSVLSp_GQLRJ9V_p0l5aqfz4Y0xFqwpytPHYJCn0gY',
+    imageUrl: 'https://user-images.githubusercontent.com/107280738/206711148-a12b5066-9bcb-4866-b83f-e27ee088c9b1.png',
     // Background image for poolq
     backgroundImage:
       'https://user-images.githubusercontent.com/107280738/202006912-0e534e82-e3c7-47d6-9a1b-9c47f12bf1c6.jpg',
-    maxStaked: 4444,
+    
     // Website url if specified will be navigated to when the image in the header is clicked
     links: [
       {
@@ -2412,6 +2413,10 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       {
         text: 'Magic Eden',
         value: 'https://magiceden.io/creators/modcatsclub',
+      },
+      {
+        text: 'Stray Store',
+        value: 'https://straystore.modcatsclub.xyz',
       },
     ],
   },
@@ -2530,5 +2535,105 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       'https://arweave.net/z64F7Hk0nHfq-KZ9DgTBT3k7CiKfdyyyAqhC3T1TpkQ?ext=png',
     maxStaked: 7777,
     notFound: true,
+  },
+  {
+    name: 'Mod Cats Club',
+    displayName: 'VIP Lounge',
+    nameInHeader: true,
+    stakePoolAddress: new PublicKey(
+      '5fFECqpAuECrwm2S6avLLm1dtvT53H4pWn5QwG96mR64'
+    ),
+    description: 'Stake your Strays, earn $STRYS',
+    hostname: 'stakehonored.modcatsclub.xyz',
+    hideFooter: true,
+    receiptType: ReceiptType.Receipt,
+    tokenStandard: TokenStandard.NonFungible,
+    // styles to apply to the whole stake pool
+    styles: {
+      fontFamily: 'Montserrat',
+      fontWeight: 400,
+      objectPosition: 'center'
+    },
+    // Colors object to style the stake page
+    colors: {
+      primary: '#372554',
+      secondary: '#372554',
+      backgroundSecondary: 'rgb(24 24 24 / 50%)',
+      fontColor: '#EEEEEE',
+    },
+    imageUrl: 'https://user-images.githubusercontent.com/107280738/206711148-a12b5066-9bcb-4866-b83f-e27ee088c9b1.png',
+    // Background image for poolq
+    backgroundImage:
+      'https://user-images.githubusercontent.com/107280738/202006912-0e534e82-e3c7-47d6-9a1b-9c47f12bf1c6.jpg',
+    
+    // Website url if specified will be navigated to when the image in the header is clicked
+    links: [
+      {
+        text: 'Twitter',
+        value: 'https://twitter.com/modcatsclub',
+      },
+      {
+        text: 'Discord',
+        value: 'https://discord.com/invite/modcatsclub',
+      },
+      {
+        text: 'Magic Eden',
+        value: 'https://magiceden.io/creators/modcatsclub',
+      },
+      {
+        text: 'Stray Store',
+        value: 'https://straystore.modcatsclub.xyz',
+      },
+    ],
+  },
+  {
+    name: 'Mod Cats Club',
+    displayName: 'Pot of Gold',
+    nameInHeader: true,
+    stakePoolAddress: new PublicKey(
+      '8RwHHTxfSHhcj1VQ5NZstx4JkTwWWiLvjzG2tthttk4s'
+    ),
+    description: 'Stake your Strays, earn $STRYS',
+    hostname: 'stakegenesis.modcatsclub.xyz',
+    hideFooter: true,
+    receiptType: ReceiptType.Receipt,
+    tokenStandard: TokenStandard.NonFungible,
+    // styles to apply to the whole stake pool
+    styles: {
+      fontFamily: 'Montserrat',
+      fontWeight: 400,
+      objectPosition: 'center'
+    },
+    // Colors object to style the stake page
+    colors: {
+      primary: '#372554',
+      secondary: '#372554',
+      backgroundSecondary: 'rgb(24 24 24 / 50%)',
+      fontColor: '#EEEEEE',
+    },
+    imageUrl: 'https://user-images.githubusercontent.com/107280738/206711148-a12b5066-9bcb-4866-b83f-e27ee088c9b1.png',
+    // Background image for poolq
+    backgroundImage:
+      'https://user-images.githubusercontent.com/107280738/202006912-0e534e82-e3c7-47d6-9a1b-9c47f12bf1c6.jpg',
+    
+    // Website url if specified will be navigated to when the image in the header is clicked
+    links: [
+      {
+        text: 'Twitter',
+        value: 'https://twitter.com/modcatsclub',
+      },
+      {
+        text: 'Discord',
+        value: 'https://discord.com/invite/modcatsclub',
+      },
+      {
+        text: 'Magic Eden',
+        value: 'https://magiceden.io/creators/modcatsclub',
+      },
+      {
+        text: 'Stray Store',
+        value: 'https://straystore.modcatsclub.xyz',
+      },
+    ],
   },
 ]
