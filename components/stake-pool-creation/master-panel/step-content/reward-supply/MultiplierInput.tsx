@@ -22,14 +22,14 @@ export const MultiplierInput = ({
   setAddress,
   setActiveSlavePanelScreen,
 }: MultiplierInputProps) => {
-  const { REWARD_DISTRIBUTION_1 } = SlavePanelScreens
+  const { REWARD_SUPPLY_3 } = SlavePanelScreens
   return (
     <div className="pb-6">
       <div className="mb-2 flex w-full items-center">
         <LabelText>Multiplier for given mints</LabelText>
         <InformationCircleIcon
           className="ml-1 h-6 w-6 cursor-pointer text-gray-400"
-          onClick={() => setActiveSlavePanelScreen(REWARD_DISTRIBUTION_1)}
+          onClick={() => setActiveSlavePanelScreen(REWARD_SUPPLY_3)}
         />
       </div>
       <div className="flex">
