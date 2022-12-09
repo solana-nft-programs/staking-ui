@@ -5,6 +5,9 @@ import { Intro } from '@/components/stake-pool-creation/slave-panel-content/Intr
 import { RewardDistributionTipOne } from '@/components/stake-pool-creation/slave-panel-content/reward-distribution/RewardDistributionTipOne'
 import { RewardDistributionTipThree } from '@/components/stake-pool-creation/slave-panel-content/reward-distribution/RewardDistributionTipThree'
 import { RewardDistributionTipTwo } from '@/components/stake-pool-creation/slave-panel-content/reward-distribution/RewardDistributionTipTwo'
+import { RewardSupplyTipOne } from '@/components/stake-pool-creation/slave-panel-content/reward-supply/RewardSupplyTipOne'
+import { RewardSupplyTipThree } from '@/components/stake-pool-creation/slave-panel-content/reward-supply/RewardSupplyTipThree'
+import { RewardSupplyTipTwo } from '@/components/stake-pool-creation/slave-panel-content/reward-supply/RewardSupplyTipTwo'
 import { SlavePanelScreens } from '@/components/stake-pool-creation/SlavePanel'
 
 export type ContentPrimaryProps = {
@@ -20,6 +23,9 @@ export const ContentPrimary = ({ activeScreen }: ContentPrimaryProps) => {
     REWARD_DISTRIBUTION_1,
     REWARD_DISTRIBUTION_2,
     REWARD_DISTRIBUTION_3,
+    REWARD_SUPPLY_1,
+    REWARD_SUPPLY_2,
+    REWARD_SUPPLY_3,
   } = SlavePanelScreens
 
   return (
@@ -31,6 +37,9 @@ export const ContentPrimary = ({ activeScreen }: ContentPrimaryProps) => {
       {activeScreen === REWARD_DISTRIBUTION_1 && <RewardDistributionTipOne />}
       {activeScreen === REWARD_DISTRIBUTION_2 && <RewardDistributionTipTwo />}
       {activeScreen === REWARD_DISTRIBUTION_3 && <RewardDistributionTipThree />}
+      {activeScreen === REWARD_SUPPLY_1 && <RewardSupplyTipOne />}
+      {activeScreen === REWARD_SUPPLY_2 && <RewardSupplyTipTwo />}
+      {activeScreen === REWARD_SUPPLY_3 && <RewardSupplyTipThree />}
     </div>
   )
 }

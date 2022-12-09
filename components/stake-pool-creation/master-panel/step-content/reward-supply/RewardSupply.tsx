@@ -3,7 +3,7 @@ import type { Dispatch, SetStateAction } from 'react'
 import { useState } from 'react'
 
 import { MultiplierInputs } from '@/components/stake-pool-creation/master-panel/step-content/reward-supply/MultiplierInputs'
-import type { SlavePanelScreens } from '@/components/stake-pool-creation/SlavePanel'
+import { SlavePanelScreens } from '@/components/stake-pool-creation/SlavePanel'
 import { ButtonDecrement } from '@/components/UI/buttons/ButtonDecrement'
 import { ButtonIncrement } from '@/components/UI/buttons/ButtonIncrement'
 import { NumberInput } from '@/components/UI/inputs/NumberInput'
@@ -18,6 +18,9 @@ export type RewardSupplyProps = {
 export const RewardSupply = ({
   setActiveSlavePanelScreen,
 }: RewardSupplyProps) => {
+  const { REWARD_SUPPLY_1, REWARD_SUPPLY_2, REWARD_SUPPLY_3 } =
+    SlavePanelScreens
+
   const [rewardAmountPerStakedToken, setRewardAmountPerStakedToken] =
     useState('')
   const [generationRate, setGenerationRate] = useState('1')
@@ -30,7 +33,10 @@ export const RewardSupply = ({
       <div className="pb-6">
         <div className="mb-2 flex w-full items-center">
           <LabelText>Rewards mint address</LabelText>
-          <InformationCircleIcon className="ml-1 h-6 w-6 cursor-pointer text-gray-400" />
+          <InformationCircleIcon
+            onClick={() => setActiveSlavePanelScreen(REWARD_SUPPLY_1)}
+            className="ml-1 h-6 w-6 cursor-pointer text-gray-400"
+          />
         </div>
         <NumberInput
           placeholder="0.000"
@@ -41,7 +47,10 @@ export const RewardSupply = ({
       <div className="pb-6">
         <div className="mb-2 flex w-full items-center">
           <LabelText>Reward generation rate</LabelText>
-          <InformationCircleIcon className="ml-1 h-6 w-6 cursor-pointer text-gray-400" />
+          <InformationCircleIcon
+            onClick={() => setActiveSlavePanelScreen(REWARD_SUPPLY_2)}
+            className="ml-1 h-6 w-6 cursor-pointer text-gray-400"
+          />
         </div>
         <div className="flex">
           <ButtonDecrement
