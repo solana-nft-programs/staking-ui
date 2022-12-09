@@ -2371,7 +2371,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     },
   },
   {
-    name: 'Mod Cats Club',
+    name: 'Degen Strays Club',
     displayName: 'Cave of Treasure',
     nameInHeader: true,
     stakePoolAddress: new PublicKey(
@@ -2537,7 +2537,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     notFound: true,
   },
   {
-    name: 'Mod Cats Club',
+    name: 'Honored Strays',
     displayName: 'VIP Lounge',
     nameInHeader: true,
     stakePoolAddress: new PublicKey(
@@ -2561,7 +2561,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       backgroundSecondary: 'rgb(24 24 24 / 50%)',
       fontColor: '#EEEEEE',
     },
-    imageUrl: 'https://user-images.githubusercontent.com/107280738/206711148-a12b5066-9bcb-4866-b83f-e27ee088c9b1.png',
+    imageUrl: 'https://user-images.githubusercontent.com/107280738/206760584-00e8c52b-ae9d-4d5f-b265-b783f44e9da4.png',
     // Background image for poolq
     backgroundImage:
       'https://user-images.githubusercontent.com/107280738/202006912-0e534e82-e3c7-47d6-9a1b-9c47f12bf1c6.jpg',
@@ -2611,7 +2611,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       backgroundSecondary: 'rgb(24 24 24 / 50%)',
       fontColor: '#EEEEEE',
     },
-    imageUrl: 'https://user-images.githubusercontent.com/107280738/206711148-a12b5066-9bcb-4866-b83f-e27ee088c9b1.png',
+    imageUrl: 'https://user-images.githubusercontent.com/107280738/206760862-0af2f140-855f-4477-ad54-0d6278db3680.png',
     // Background image for poolq
     backgroundImage:
       'https://user-images.githubusercontent.com/107280738/202006912-0e534e82-e3c7-47d6-9a1b-9c47f12bf1c6.jpg',
