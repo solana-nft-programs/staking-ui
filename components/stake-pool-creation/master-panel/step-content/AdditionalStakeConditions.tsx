@@ -1,12 +1,15 @@
+import { InformationCircleIcon } from '@heroicons/react/24/outline'
+import type { Dispatch, SetStateAction } from 'react'
+import { useState } from 'react'
+
+import { SlavePanelScreens } from '@/components/stake-pool-creation/SlavePanel'
 import { SelectInput } from '@/components/UI/inputs/SelectInput'
 import { TextInput } from '@/components/UI/inputs/TextInput'
 import { LabelText } from '@/components/UI/typography/LabelText'
-import { InformationCircleIcon } from '@heroicons/react/24/outline'
-import { useState } from 'react'
 
 const stakeMechanisms = [
   { value: 'receipt', label: 'Receipt' },
-  { value: 'option2', label: 'Option2' },
+  { value: 'original', label: 'Original' },
 ]
 
 const booleanOptions = [
@@ -14,7 +17,19 @@ const booleanOptions = [
   { value: 'no', label: 'No' },
 ]
 
-export const AdditionalStakeConditions = () => {
+const {
+  ADDITIONAL_STAKE_CONDITIONS_1,
+  ADDITIONAL_STAKE_CONDITIONS_2,
+  ADDITIONAL_STAKE_CONDITIONS_3,
+} = SlavePanelScreens
+
+export type AdditionalStakeConditionsProps = {
+  setActiveSlavePanelScreen: Dispatch<SetStateAction<SlavePanelScreens>>
+}
+
+export const AdditionalStakeConditions = ({
+  setActiveSlavePanelScreen,
+}: AdditionalStakeConditionsProps) => {
   const [overlayText, setOverlayText] = useState('')
   const [stakeMechanism, setStakeMechanism] = useState(
     stakeMechanisms[0]?.value
@@ -24,7 +39,12 @@ export const AdditionalStakeConditions = () => {
     <>
       <div className="mb-2 flex w-full items-center">
         <LabelText>Stake mechanism</LabelText>
-        <InformationCircleIcon className="ml-1 h-6 w-6 cursor-pointer text-gray-400" />
+        <InformationCircleIcon
+          className="ml-1 h-6 w-6 cursor-pointer text-gray-400"
+          onClick={() =>
+            setActiveSlavePanelScreen(ADDITIONAL_STAKE_CONDITIONS_1)
+          }
+        />
       </div>
       <SelectInput
         className="mb-6 w-full"
@@ -34,7 +54,12 @@ export const AdditionalStakeConditions = () => {
       />
       <div className="mb-2 flex w-full items-center">
         <LabelText>Overlay text</LabelText>
-        <InformationCircleIcon className="ml-1 h-6 w-6 cursor-pointer text-gray-400" />
+        <InformationCircleIcon
+          className="ml-1 h-6 w-6 cursor-pointer text-gray-400"
+          onClick={() =>
+            setActiveSlavePanelScreen(ADDITIONAL_STAKE_CONDITIONS_2)
+          }
+        />
       </div>
       <TextInput
         className="mb-6"
@@ -43,7 +68,12 @@ export const AdditionalStakeConditions = () => {
       />
       <div className="mb-2 flex w-full items-center">
         <LabelText>Reset on stake</LabelText>
-        <InformationCircleIcon className="ml-1 h-6 w-6 cursor-pointer text-gray-400" />
+        <InformationCircleIcon
+          className="ml-1 h-6 w-6 cursor-pointer text-gray-400"
+          onClick={() =>
+            setActiveSlavePanelScreen(ADDITIONAL_STAKE_CONDITIONS_3)
+          }
+        />
       </div>
       <SelectInput
         className="mb-6 w-full"

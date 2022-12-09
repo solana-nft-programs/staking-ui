@@ -37,7 +37,11 @@ export const StepContent = ({
           setActiveSlavePanelScreen={setActiveSlavePanelScreen}
         />
       )}
-      {currentStep === 5 && <AdditionalStakeConditions />}
+      {currentStep === 5 && (
+        <AdditionalStakeConditions
+          setActiveSlavePanelScreen={setActiveSlavePanelScreen}
+        />
+      )}
       {currentStep === 6 && <Summary />}
     </div>
   )
