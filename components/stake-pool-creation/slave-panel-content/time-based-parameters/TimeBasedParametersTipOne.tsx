@@ -5,6 +5,7 @@ export const TimeBasedParametersTipOne = () => {
     <>
       <Image
         src="/images/stake-pool-creation/time-based-parameters/tip-one.png"
+        objectFit="contain"
         width={610}
         height={490}
       />

@@ -1,3 +1,6 @@
+import { AdditionalStakeConditionsTipOne } from '@/components/stake-pool-creation/slave-panel-content/additional-stake-conditions/AdditionalStakeConditionsTipOne'
+import { AdditionalStakeConditionsTipThree } from '@/components/stake-pool-creation/slave-panel-content/additional-stake-conditions/AdditionalStakeConditionsTipThree'
+import { AdditionalStakeConditionsTipTwo } from '@/components/stake-pool-creation/slave-panel-content/additional-stake-conditions/AdditionalStakeConditionsTipTwo'
 import { AuthorizationTipOne } from '@/components/stake-pool-creation/slave-panel-content/authorization/AuthorizationTipOne'
 import { AuthorizationTipThree } from '@/components/stake-pool-creation/slave-panel-content/authorization/AuthorizationTipThree'
 import { AuthorizationTipTwo } from '@/components/stake-pool-creation/slave-panel-content/authorization/AuthorizationTipTwo'
@@ -34,6 +37,9 @@ export const ContentPrimary = ({ activeScreen }: ContentPrimaryProps) => {
     TIME_BASED_PARAMETERS_2,
     TIME_BASED_PARAMETERS_3,
     TIME_BASED_PARAMETERS_4,
+    ADDITIONAL_STAKE_CONDITIONS_1,
+    ADDITIONAL_STAKE_CONDITIONS_2,
+    ADDITIONAL_STAKE_CONDITIONS_3,
   } = SlavePanelScreens
 
   return (
@@ -59,6 +65,15 @@ export const ContentPrimary = ({ activeScreen }: ContentPrimaryProps) => {
       )}
       {activeScreen === TIME_BASED_PARAMETERS_4 && (
         <TimeBasedParametersTipFour />
+      )}
+      {activeScreen === ADDITIONAL_STAKE_CONDITIONS_1 && (
+        <AdditionalStakeConditionsTipOne />
+      )}
+      {activeScreen === ADDITIONAL_STAKE_CONDITIONS_2 && (
+        <AdditionalStakeConditionsTipTwo />
+      )}
+      {activeScreen === ADDITIONAL_STAKE_CONDITIONS_3 && (
+        <AdditionalStakeConditionsTipThree />
       )}
     </div>
   )
