@@ -1,11 +1,20 @@
 import { InformationCircleIcon, PlusIcon } from '@heroicons/react/24/outline'
+import type { Dispatch, SetStateAction } from 'react'
 import { useState } from 'react'
 
+import { SlavePanelScreens } from '@/components/stake-pool-creation/SlavePanel'
 import { ButtonLargeWithDottedOutline } from '@/components/UI/buttons/ButtonLargeWithDottedOutline'
 import { TextInput } from '@/components/UI/inputs/TextInput'
 import { LabelText } from '@/components/UI/typography/LabelText'
 
-export const CreatorAddressInputs = () => {
+export type CreatorAddressInputsProps = {
+  setActiveSlavePanelScreen: Dispatch<SetStateAction<SlavePanelScreens>>
+}
+
+export const CreatorAddressInputs = ({
+  setActiveSlavePanelScreen,
+}: CreatorAddressInputsProps) => {
+  const { AUTHORIZATION_1 } = SlavePanelScreens
   const [displayInput, setDisplayInput] = useState(false)
   const [numberOfAddresses, setNumberOfAddresses] = useState(1)
 
@@ -13,8 +22,11 @@ export const CreatorAddressInputs = () => {
   return (
     <div className="space-y-2">
       <div className="flex w-full items-center">
-        <LabelText>Creator Address</LabelText>
-        <InformationCircleIcon className="ml-1 h-6 w-6 cursor-pointer text-gray-400" />
+        <LabelText>Creator address</LabelText>
+        <InformationCircleIcon
+          className="ml-1 h-6 w-6 cursor-pointer text-gray-400"
+          onClick={() => setActiveSlavePanelScreen(AUTHORIZATION_1)}
+        />
       </div>
       {displayInput ? (
         <>
