@@ -78,7 +78,6 @@ export const useHandleClaimRewards = () => {
                     : []
                 )
               } else {
-                console.log('heyyyyy')
                 claimTxs = [
                   await claimRewards(connection, wallet, {
                     stakePoolId: stakePool.pubkey,
