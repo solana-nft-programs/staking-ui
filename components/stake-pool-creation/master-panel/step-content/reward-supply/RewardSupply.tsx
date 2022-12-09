@@ -1,16 +1,23 @@
 import { InformationCircleIcon } from '@heroicons/react/24/outline'
+import type { Dispatch, SetStateAction } from 'react'
 import { useState } from 'react'
 
 import { MultiplierInputs } from '@/components/stake-pool-creation/master-panel/step-content/reward-supply/MultiplierInputs'
+import type { SlavePanelScreens } from '@/components/stake-pool-creation/SlavePanel'
 import { ButtonDecrement } from '@/components/UI/buttons/ButtonDecrement'
 import { ButtonIncrement } from '@/components/UI/buttons/ButtonIncrement'
 import { NumberInput } from '@/components/UI/inputs/NumberInput'
-
-import { LabelText } from '@/components/UI/typography/LabelText'
 import { SelectInput } from '@/components/UI/inputs/SelectInput'
+import { LabelText } from '@/components/UI/typography/LabelText'
 import { unitsOfTime } from '@/constants/index'
 
-export const RewardSupply = () => {
+export type RewardSupplyProps = {
+  setActiveSlavePanelScreen: Dispatch<SetStateAction<SlavePanelScreens>>
+}
+
+export const RewardSupply = ({
+  setActiveSlavePanelScreen,
+}: RewardSupplyProps) => {
   const [rewardAmountPerStakedToken, setRewardAmountPerStakedToken] =
     useState('')
   const [generationRate, setGenerationRate] = useState('1')
@@ -64,7 +71,7 @@ export const RewardSupply = () => {
           />
         </div>
       </div>
-      <MultiplierInputs />
+      <MultiplierInputs setActiveSlavePanelScreen={setActiveSlavePanelScreen} />
     </>
   )
 }
