@@ -1,11 +1,20 @@
 import { InformationCircleIcon, PlusIcon } from '@heroicons/react/24/outline'
+import type { Dispatch, SetStateAction } from 'react'
 import { useState } from 'react'
 
+import { SlavePanelScreens } from '@/components/stake-pool-creation/SlavePanel'
 import { ButtonLargeWithDottedOutline } from '@/components/UI/buttons/ButtonLargeWithDottedOutline'
 import { TextInput } from '@/components/UI/inputs/TextInput'
 import { LabelText } from '@/components/UI/typography/LabelText'
 
-export const AccessAuthorityInputs = () => {
+export type AccessAuthorityInputsProps = {
+  setActiveSlavePanelScreen: Dispatch<SetStateAction<SlavePanelScreens>>
+}
+
+export const AccessAuthorityInputs = ({
+  setActiveSlavePanelScreen,
+}: AccessAuthorityInputsProps) => {
+  const { AUTHORIZATION_3 } = SlavePanelScreens
   const [displayInput, setDisplayInput] = useState(false)
   const [numberOfAddresses, setNumberOfAddresses] = useState(1)
 
@@ -14,7 +23,10 @@ export const AccessAuthorityInputs = () => {
     <div className="space-y-2">
       <div className="flex w-full items-center">
         <LabelText>NFT collection address</LabelText>
-        <InformationCircleIcon className="ml-1 h-6 w-6 cursor-pointer text-gray-400" />
+        <InformationCircleIcon
+          className="ml-1 h-6 w-6 cursor-pointer text-gray-400"
+          onClick={() => setActiveSlavePanelScreen(AUTHORIZATION_3)}
+        />
       </div>
       {displayInput ? (
         <>

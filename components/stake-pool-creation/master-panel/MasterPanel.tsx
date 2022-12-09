@@ -1,7 +1,9 @@
+import type { Dispatch, SetStateAction } from 'react'
 import { useEffect, useState } from 'react'
 
 import { StepContent } from '@/components/stake-pool-creation/master-panel/step-content/StepContent'
 import { StepIndicator } from '@/components/stake-pool-creation/master-panel/step-indicator/StepIndicator'
+import type { SlavePanelScreens } from '@/components/stake-pool-creation/SlavePanel'
 import { ButtonPrimary } from '@/components/UI/buttons/ButtonPrimary'
 import { BodyCopy } from '@/components/UI/typography/BodyCopy'
 import { HeadingPrimary } from '@/components/UI/typography/HeadingPrimary'
@@ -10,6 +12,7 @@ import { ButtonWidths } from '@/types/index'
 export type MasterPanelProps = {
   currentStep: number
   setCurrentStep: (step: number) => void
+  setActiveSlavePanelScreen: Dispatch<SetStateAction<SlavePanelScreens>>
 }
 
 const stepTitles = [
@@ -35,6 +38,7 @@ const stepSubtitles = [
 export const MasterPanel = ({
   currentStep,
   setCurrentStep,
+  setActiveSlavePanelScreen,
 }: MasterPanelProps) => {
   const [title, setTitle] = useState('')
   const [stepSubtitle, setStepSubtitle] = useState('')
@@ -56,7 +60,10 @@ export const MasterPanel = ({
           <StepIndicator currentStep={currentStep} />
         </div>
       )}
-      <StepContent currentStep={currentStep} />
+      <StepContent
+        currentStep={currentStep}
+        setActiveSlavePanelScreen={setActiveSlavePanelScreen}
+      />
       <div className="flex items-center space-x-4 py-8">
         {currentStep > 0 && (
           <ButtonPrimary
