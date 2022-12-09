@@ -2377,7 +2377,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     stakePoolAddress: new PublicKey(
       'HM4KxPucFiFzJBr1saM1n7Hd4HhkLnp9FQXWaGv6gh5s'
     ),
-    description: 'Stake your Strays, earn $STRYS',
+    description: 'Stake your Strays and earn $STRYS',
     hostname: 'stakerebels.modcatsclub.xyz',
     hideFooter: true,
     receiptType: ReceiptType.Receipt,
@@ -2543,7 +2543,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     stakePoolAddress: new PublicKey(
       '5fFECqpAuECrwm2S6avLLm1dtvT53H4pWn5QwG96mR64'
     ),
-    description: 'Stake your Strays, earn $STRYS',
+    description: 'Stake your Strays and earn $STRYS',
     hostname: 'stakehonored.modcatsclub.xyz',
     hideFooter: true,
     receiptType: ReceiptType.Receipt,
@@ -2593,7 +2593,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     stakePoolAddress: new PublicKey(
       '8RwHHTxfSHhcj1VQ5NZstx4JkTwWWiLvjzG2tthttk4s'
     ),
-    description: 'Stake your Strays, earn $STRYS',
+    description: 'Stake your Strays and earn $STRYS',
     hostname: 'stakegenesis.modcatsclub.xyz',
     hideFooter: true,
     receiptType: ReceiptType.Receipt,
