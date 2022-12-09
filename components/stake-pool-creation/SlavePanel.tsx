@@ -1,5 +1,6 @@
-import { Intro } from '@/components/stake-pool-creation/slave-panel-content/Intro'
-import { HeadingPrimary } from '@/components/UI/typography/HeadingPrimary'
+import { ContentPrimary } from '@/components/stake-pool-creation/slave-panel-content/ContentPrimary'
+import FloatingBlurryBlob from '@/components/UI/FloatingBlurryBlob'
+import { FloatingBlurryBlobColors } from '@/types/colors'
 
 export type SlavePanelProps = {
   currentStep: number
@@ -9,13 +10,23 @@ export const SlavePanel = ({ currentStep }: SlavePanelProps) => {
   return (
     <div className="ml-8 flex w-3/5 flex-col">
       <div className="relative flex h-full w-full flex-col items-center justify-center overflow-clip rounded-2xl bg-black py-16">
-        {currentStep === 0 ? (
-          <Intro />
-        ) : (
-          <>
-            <HeadingPrimary className="mb-8">Step {currentStep}</HeadingPrimary>
-          </>
-        )}
+        <ContentPrimary currentStep={currentStep} />
+        <FloatingBlurryBlob
+          color={FloatingBlurryBlobColors.ORANGE}
+          left={300}
+          top={100}
+          height={300}
+          width={130}
+          rotation={20}
+        />
+        <FloatingBlurryBlob
+          color={FloatingBlurryBlobColors.ORANGE}
+          left={750}
+          top={500}
+          height={350}
+          width={240}
+          rotation={40}
+        />
       </div>
     </div>
   )
