@@ -1,12 +1,12 @@
+import { InformationCircleIcon } from '@heroicons/react/24/outline'
+import { useState } from 'react'
+
 import { ButtonDecrement } from '@/components/UI/buttons/ButtonDecrement'
 import { ButtonIncrement } from '@/components/UI/buttons/ButtonIncrement'
 import { NumberInput } from '@/components/UI/inputs/NumberInput'
 import { SelectInput } from '@/components/UI/inputs/SelectInput'
 import { LabelText } from '@/components/UI/typography/LabelText'
 import { unitsOfTime } from '@/constants/index'
-import { InformationCircleIcon } from '@heroicons/react/24/outline'
-
-import { useState } from 'react'
 
 export const TimeBasedParameters = () => {
   const [maxStakeDuration, setMaxStakeDuration] = useState('1')
@@ -20,6 +20,8 @@ export const TimeBasedParameters = () => {
   const [maxRewardDuration, setMaxRewardDuration] = useState('1')
   const [maxRewardDurationUnitOfTime, setMaxRewardDurationUnitOfTime] =
     useState(unitsOfTime[0]?.value)
+
+  const [terminationDate, setTerminationDate] = useState('')
 
   return (
     <>
@@ -130,6 +132,23 @@ export const TimeBasedParameters = () => {
             }
           />
         </div>
+      </div>
+      <div className="pb-6">
+        <div className="mb-2 flex w-full items-center">
+          <LabelText>
+            Stake pool termination date
+            <span className="ml-1 text-gray-500">(optional)</span>
+          </LabelText>
+          <InformationCircleIcon className="ml-1 h-6 w-6 cursor-pointer text-gray-400" />
+        </div>
+        <input
+          onChange={(e) => setTerminationDate(e.target.value)}
+          placeholder="Select date and time"
+          className="rounded-xl border border-gray-700 bg-gray-800 p-2 outline outline-gray-700 focus:outline-orange-500"
+          type="datetime-local"
+          name="termination-date"
+          value={terminationDate}
+        />
       </div>
     </>
   )
