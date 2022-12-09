@@ -140,62 +140,64 @@ function Admin() {
       //   stakePoolParams
       // )
 
-      if (Number(values.rewardDurationSeconds) < 1) {
-        throw 'RewardDurationSeconds needs to greater or equal to 1'
-      }
-      const rewardDistributorKindParams = {
-        stakePoolId: stakePoolId,
-        rewardMintId: new PublicKey(values.rewardMintAddress!.trim())!,
-        rewardAmount: values.rewardAmount
-          ? new BN(values.rewardAmount)
-          : undefined,
-        rewardDurationSeconds: values.rewardDurationSeconds
-          ? new BN(values.rewardDurationSeconds)
-          : undefined,
-        kind: 0,
-        // supply: values.rewardMintSupply
-        //   ? new BN(values.rewardMintSupply)
-        //   : undefined,
-        multiplerDecimals: values.multiplierDecimals
-          ? parseInt(values.multiplierDecimals)
-          : undefined,
-        defaultMultiplier: values.defaultMultiplier
-          ? new BN(values.defaultMultiplier)
-          : undefined,
-        maxRewardSecondsReceived: values.maxRewardSecondsReceived
-          ? new BN(values.maxRewardSecondsReceived)
-          : undefined,
-      }
+      if (values.rewardMintAddress) {
+        if (Number(values.rewardDurationSeconds) < 1) {
+          throw 'RewardDurationSeconds needs to greater or equal to 1'
+        }
+        const rewardDistributorKindParams = {
+          stakePoolId: stakePoolId,
+          rewardMintId: new PublicKey(values.rewardMintAddress!.trim())!,
+          rewardAmount: values.rewardAmount
+            ? new BN(values.rewardAmount)
+            : undefined,
+          rewardDurationSeconds: values.rewardDurationSeconds
+            ? new BN(values.rewardDurationSeconds)
+            : undefined,
+          kind: 0,
+          // supply: values.rewardMintSupply
+          //   ? new BN(values.rewardMintSupply)
+          //   : undefined,
+          multiplerDecimals: values.multiplierDecimals
+            ? parseInt(values.multiplierDecimals)
+            : undefined,
+          defaultMultiplier: values.defaultMultiplier
+            ? new BN(values.defaultMultiplier)
+            : undefined,
+          maxRewardSecondsReceived: values.maxRewardSecondsReceived
+            ? new BN(values.maxRewardSecondsReceived)
+            : undefined,
+        }
 
-      const rewardDistributorId = findRewardDistributorId(stakePoolId)
-      const rwdix = await program.methods
-        .initRewardDistributor({
-          identifier: new BN(0),
-          rewardAmount: new BN(rewardDistributorKindParams.rewardAmount ?? 0),
-          rewardDurationSeconds: new BN(
-            rewardDistributorKindParams.rewardDurationSeconds ?? 0
-          ),
-          supply: null,
-          defaultMultiplier: new BN(
-            rewardDistributorKindParams.defaultMultiplier ?? 1
-          ),
-          multiplierDecimals:
-            rewardDistributorKindParams.multiplerDecimals ?? 0,
-          maxRewardSecondsReceived:
-            rewardDistributorKindParams.maxRewardSecondsReceived
-              ? new BN(rewardDistributorKindParams.maxRewardSecondsReceived)
-              : null,
-          claimRewardsPaymentInfo: DEFAULT_PAYMENT_INFO,
-        })
-        .accounts({
-          rewardDistributor: rewardDistributorId,
-          stakePool: stakePoolId,
-          rewardMint: rewardDistributorKindParams.rewardMintId,
-          authority: wallet.publicKey,
-          payer: wallet.publicKey,
-        })
-        .instruction()
-      transaction.add(rwdix)
+        const rewardDistributorId = findRewardDistributorId(stakePoolId)
+        const rwdix = await program.methods
+          .initRewardDistributor({
+            identifier: new BN(0),
+            rewardAmount: new BN(rewardDistributorKindParams.rewardAmount ?? 0),
+            rewardDurationSeconds: new BN(
+              rewardDistributorKindParams.rewardDurationSeconds ?? 0
+            ),
+            supply: null,
+            defaultMultiplier: new BN(
+              rewardDistributorKindParams.defaultMultiplier ?? 1
+            ),
+            multiplierDecimals:
+              rewardDistributorKindParams.multiplerDecimals ?? 0,
+            maxRewardSecondsReceived:
+              rewardDistributorKindParams.maxRewardSecondsReceived
+                ? new BN(rewardDistributorKindParams.maxRewardSecondsReceived)
+                : null,
+            claimRewardsPaymentInfo: DEFAULT_PAYMENT_INFO,
+          })
+          .accounts({
+            rewardDistributor: rewardDistributorId,
+            stakePool: stakePoolId,
+            rewardMint: rewardDistributorKindParams.rewardMintId,
+            authority: wallet.publicKey,
+            payer: wallet.publicKey,
+          })
+          .instruction()
+        transaction.add(rwdix)
+      }
 
       await executeTransaction(connection, asWallet(wallet), transaction, {
         silent: false,
