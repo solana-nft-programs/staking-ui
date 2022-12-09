@@ -1,9 +1,8 @@
 import { tryPublicKey } from '@cardinal/common'
 import {
-  CLAIM_REWARDS_PAYMENT_INFO,
+  DEFAULT_PAYMENT_INFO,
   findRewardDistributorId,
   rewardsCenterProgram,
-  SOL_PAYMENT_INFO,
 } from '@cardinal/rewards-center'
 import { executeTransaction } from '@cardinal/staking'
 import {
@@ -71,7 +70,7 @@ export const useHandleUpdatePool = () => {
               maxRewardSecondsReceived: values.maxRewardSecondsReceived
                 ? new BN(values.maxRewardSecondsReceived)
                 : null,
-              claimRewardsPaymentInfo: CLAIM_REWARDS_PAYMENT_INFO,
+              claimRewardsPaymentInfo: DEFAULT_PAYMENT_INFO,
             })
             .accounts({
               rewardDistributor: rewardDistributor.data.pubkey,
@@ -95,7 +94,7 @@ export const useHandleUpdatePool = () => {
               maxRewardSecondsReceived: values.maxRewardSecondsReceived
                 ? new BN(values.maxRewardSecondsReceived)
                 : null,
-              claimRewardsPaymentInfo: CLAIM_REWARDS_PAYMENT_INFO,
+              claimRewardsPaymentInfo: DEFAULT_PAYMENT_INFO,
             })
             .accounts({
               rewardDistributor: rewardsDistributorId,
@@ -206,8 +205,8 @@ export const useHandleUpdatePool = () => {
             endDate: values.endDate
               ? new BN(values.endDate)
               : stakePool.data.parsed.endDate,
-            stakePaymentInfo: SOL_PAYMENT_INFO,
-            unstakePaymentInfo: SOL_PAYMENT_INFO,
+            stakePaymentInfo: DEFAULT_PAYMENT_INFO,
+            unstakePaymentInfo: DEFAULT_PAYMENT_INFO,
           })
           .accounts({
             stakePool: stakePool.data.pubkey,

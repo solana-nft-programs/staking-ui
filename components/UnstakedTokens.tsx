@@ -177,16 +177,33 @@ export const UnstakedTokens = () => {
               {(stakePoolMetadata?.notFound
                 ? []
                 : allowedTokenDatas.data?.slice(0, PAGE_SIZE * pageNum[0]) ?? []
-              ).map((tk) => (
-                <UnstakedToken
-                  key={tk?.tokenAccount?.pubkey.toBase58()}
-                  tk={tk}
-                  receiptType={receiptType}
-                  select={(tk, amount) => selectUnstakedToken(tk, amount)}
-                  selected={isUnstakedTokenSelected(tk)}
-                  loading={handleStake.isLoading && isUnstakedTokenSelected(tk)}
-                />
-              ))}
+              )
+                .filter((tk) => {
+                  if (
+                    stakePoolData?.parsed &&
+                    isStakePoolV2(stakePoolData?.parsed)
+                  ) {
+                    if (
+                      tk.tokenAccount?.account.data.parsed.info.tokenAmount
+                        .amount > 1
+                    ) {
+                      return false
+                    }
+                  }
+                  return true
+                })
+                .map((tk) => (
+                  <UnstakedToken
+                    key={tk?.tokenAccount?.pubkey.toBase58()}
+                    tk={tk}
+                    receiptType={receiptType}
+                    select={(tk, amount) => selectUnstakedToken(tk, amount)}
+                    selected={isUnstakedTokenSelected(tk)}
+                    loading={
+                      handleStake.isLoading && isUnstakedTokenSelected(tk)
+                    }
+                  />
+                ))}
             </div>
           )}
         </div>

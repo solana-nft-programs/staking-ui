@@ -1,9 +1,8 @@
 import {
-  CLAIM_REWARDS_PAYMENT_INFO,
+  DEFAULT_PAYMENT_INFO,
   findRewardDistributorId,
   findStakePoolId,
   rewardsCenterProgram,
-  SOL_PAYMENT_INFO,
 } from '@cardinal/rewards-center'
 import { executeTransaction, handleError } from '@cardinal/staking'
 import { BN } from '@project-serum/anchor'
@@ -125,8 +124,8 @@ function Admin() {
           cooldownSeconds: stakePoolParams.cooldownSeconds,
           minStakeSeconds: stakePoolParams.minStakeSeconds,
           endDate: stakePoolParams.endDate,
-          stakePaymentInfo: SOL_PAYMENT_INFO,
-          unstakePaymentInfo: SOL_PAYMENT_INFO,
+          stakePaymentInfo: DEFAULT_PAYMENT_INFO,
+          unstakePaymentInfo: DEFAULT_PAYMENT_INFO,
         })
         .accounts({
           stakePool: stakePoolId,
@@ -186,7 +185,7 @@ function Admin() {
             rewardDistributorKindParams.maxRewardSecondsReceived
               ? new BN(rewardDistributorKindParams.maxRewardSecondsReceived)
               : null,
-          claimRewardsPaymentInfo: CLAIM_REWARDS_PAYMENT_INFO,
+          claimRewardsPaymentInfo: DEFAULT_PAYMENT_INFO,
         })
         .accounts({
           rewardDistributor: rewardDistributorId,
