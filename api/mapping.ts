@@ -1,8 +1,6 @@
 import { ReceiptType } from '@cardinal/staking/dist/cjs/programs/stakePool'
-import { width } from '@mui/system'
 import { PublicKey } from '@solana/web3.js'
 import type { CSSProperties } from 'react'
-import { replaceAt } from 'react-query/types/core/utils'
 
 import type { AirdropMetadata } from '../common/Airdrop'
 
