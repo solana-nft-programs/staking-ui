@@ -24,8 +24,14 @@ export const StepContent = ({
       {currentStep === 1 && (
         <Authorization setActiveSlavePanelScreen={setActiveSlavePanelScreen} />
       )}
-      {currentStep === 2 && <RewardDistribution />}
-      {currentStep === 3 && <RewardSupply />}
+      {currentStep === 2 && (
+        <RewardDistribution
+          setActiveSlavePanelScreen={setActiveSlavePanelScreen}
+        />
+      )}
+      {currentStep === 3 && (
+        <RewardSupply setActiveSlavePanelScreen={setActiveSlavePanelScreen} />
+      )}
       {currentStep === 4 && <TimeBasedParameters />}
       {currentStep === 5 && <AdditionalStakeConditions />}
       {currentStep === 6 && <Summary />}

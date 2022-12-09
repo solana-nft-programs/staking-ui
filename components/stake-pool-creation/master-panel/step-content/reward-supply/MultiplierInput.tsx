@@ -1,5 +1,7 @@
 import { InformationCircleIcon } from '@heroicons/react/24/outline'
+import type { Dispatch, SetStateAction } from 'react'
 
+import { SlavePanelScreens } from '@/components/stake-pool-creation/SlavePanel'
 import { ButtonDecrement } from '@/components/UI/buttons/ButtonDecrement'
 import { ButtonIncrement } from '@/components/UI/buttons/ButtonIncrement'
 import { TextInput } from '@/components/UI/inputs/TextInput'
@@ -10,6 +12,7 @@ export type MultiplierInputProps = {
   setMultiplier: (value: string) => void
   address: string
   setAddress: (value: string) => void
+  setActiveSlavePanelScreen: Dispatch<SetStateAction<SlavePanelScreens>>
 }
 
 export const MultiplierInput = ({
@@ -17,12 +20,17 @@ export const MultiplierInput = ({
   setMultiplier,
   address,
   setAddress,
+  setActiveSlavePanelScreen,
 }: MultiplierInputProps) => {
+  const { REWARD_DISTRIBUTION_1 } = SlavePanelScreens
   return (
     <div className="pb-6">
       <div className="mb-2 flex w-full items-center">
         <LabelText>Multiplier for given mints</LabelText>
-        <InformationCircleIcon className="ml-1 h-6 w-6 cursor-pointer text-gray-400" />
+        <InformationCircleIcon
+          className="ml-1 h-6 w-6 cursor-pointer text-gray-400"
+          onClick={() => setActiveSlavePanelScreen(REWARD_DISTRIBUTION_1)}
+        />
       </div>
       <div className="flex">
         <ButtonDecrement onClick={() => {}} />
