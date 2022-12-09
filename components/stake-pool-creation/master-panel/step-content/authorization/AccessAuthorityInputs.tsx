@@ -5,15 +5,15 @@ import { ButtonLargeWithDottedOutline } from '@/components/UI/buttons/ButtonLarg
 import { TextInput } from '@/components/UI/inputs/TextInput'
 import { LabelText } from '@/components/UI/typography/LabelText'
 
-export const CreatorAddressInputs = () => {
+export const AccessAuthorityInputs = () => {
   const [displayInput, setDisplayInput] = useState(false)
   const [numberOfAddresses, setNumberOfAddresses] = useState(1)
 
-  const [creatorAddresses, setCreatorAddresses] = useState<string[]>([''])
+  const [collectionAddresses, setCollectionAddresses] = useState<string[]>([''])
   return (
     <div className="space-y-2">
       <div className="flex w-full items-center">
-        <LabelText>Creator Address</LabelText>
+        <LabelText>NFT collection address</LabelText>
         <InformationCircleIcon className="ml-1 h-6 w-6 cursor-pointer text-gray-400" />
       </div>
       {displayInput ? (
@@ -21,11 +21,11 @@ export const CreatorAddressInputs = () => {
           {Array.from(Array(numberOfAddresses).keys()).map((i) => (
             <div className="pb-1" key={i}>
               <TextInput
-                value={creatorAddresses[i] || ''}
+                value={collectionAddresses[i] || ''}
                 onChange={(e) => {
-                  const newCreatorAddresses = [...creatorAddresses]
+                  const newCreatorAddresses = [...collectionAddresses]
                   newCreatorAddresses[i] = e.target.value
-                  setCreatorAddresses(newCreatorAddresses)
+                  setCollectionAddresses(newCreatorAddresses)
                 }}
               />
             </div>

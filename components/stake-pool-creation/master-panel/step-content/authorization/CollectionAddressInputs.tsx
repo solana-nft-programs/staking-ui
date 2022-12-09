@@ -5,15 +5,17 @@ import { ButtonLargeWithDottedOutline } from '@/components/UI/buttons/ButtonLarg
 import { TextInput } from '@/components/UI/inputs/TextInput'
 import { LabelText } from '@/components/UI/typography/LabelText'
 
-export const CreatorAddressInputs = () => {
+export const CollectionAddressInputs = () => {
   const [displayInput, setDisplayInput] = useState(false)
   const [numberOfAddresses, setNumberOfAddresses] = useState(1)
 
-  const [creatorAddresses, setCreatorAddresses] = useState<string[]>([''])
+  const [authorizedMintAddresses, setAuthorizedMintAddresses] = useState<
+    string[]
+  >([''])
   return (
     <div className="space-y-2">
       <div className="flex w-full items-center">
-        <LabelText>Creator Address</LabelText>
+        <LabelText>Authorize access to specific mint</LabelText>
         <InformationCircleIcon className="ml-1 h-6 w-6 cursor-pointer text-gray-400" />
       </div>
       {displayInput ? (
@@ -21,11 +23,13 @@ export const CreatorAddressInputs = () => {
           {Array.from(Array(numberOfAddresses).keys()).map((i) => (
             <div className="pb-1" key={i}>
               <TextInput
-                value={creatorAddresses[i] || ''}
+                value={authorizedMintAddresses[i] || ''}
                 onChange={(e) => {
-                  const newCreatorAddresses = [...creatorAddresses]
-                  newCreatorAddresses[i] = e.target.value
-                  setCreatorAddresses(newCreatorAddresses)
+                  const newAuthorizedMintAddresses = [
+                    ...authorizedMintAddresses,
+                  ]
+                  newAuthorizedMintAddresses[i] = e.target.value
+                  setAuthorizedMintAddresses(newAuthorizedMintAddresses)
                 }}
               />
             </div>
