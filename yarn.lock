@@ -230,7 +230,7 @@
     tiny-invariant "^1.2.0"
     tslib "^2.3.1"
 
-"@cardinal/common@^2.0.10", "@cardinal/common@^2.0.11", "@cardinal/common@^2.0.12", "@cardinal/common@^2.0.13":
+"@cardinal/common@^2.0.10", "@cardinal/common@^2.0.11", "@cardinal/common@^2.0.12":
   version "2.0.14"
   resolved "https://registry.yarnpkg.com/@cardinal/common/-/common-2.0.14.tgz#bdbe2f923df048f37ce80de39216d838dc24c1e6"
   integrity sha512-/mZPDrD41JFPl83Potv9b3HklYIKF4ZpFHZV7pFZRXAZc+QDBbjvNDdx5EVW8gFYkfHkfH8M62LbBK8ZDtbm0g==
@@ -275,10 +275,10 @@
     polished "^4.2.2"
     tslib "^2.4.0"
 
-"@cardinal/creator-standard@^2.1.11", "@cardinal/creator-standard@^2.2.0":
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/@cardinal/creator-standard/-/creator-standard-2.2.0.tgz#23e08508edc94bebbfdc0b161cd6eb1a1ae82d49"
-  integrity sha512-NtO3jsSh8oHK+dFXgGEFZENXPE3PFtEOBtM9vQoXpS5Ohlu2HIeSLOzDMJrhuvPRjY5v43MfrDrjps08QNB4bA==
+"@cardinal/creator-standard@^2.1.11":
+  version "2.1.11"
+  resolved "https://registry.yarnpkg.com/@cardinal/creator-standard/-/creator-standard-2.1.11.tgz#426e5ca99d06e6939db90473523cd016807f73ed"
+  integrity sha512-wujthpbzV8PcH9s0YhEiRLlFnTmCBNs3zzBCzRqSB7jfDNOc9j5x4AGbnt1MBsS1yv1GKDbNKrOR+YcjZ3utgA==
   dependencies:
     "@metaplex-foundation/rustbin" "^0.3.1"
     "@metaplex-foundation/solita" "^0.12.2"
@@ -307,7 +307,7 @@
     eslint-plugin-react "^7.29.3"
     eslint-plugin-react-hooks "^4.3.0"
 
-"@cardinal/namespaces-components@^4.1.19":
+"@cardinal/namespaces-components@^4.1.31":
   version "4.1.31"
   resolved "https://registry.yarnpkg.com/@cardinal/namespaces-components/-/namespaces-components-4.1.31.tgz#81f48c6a08eb106a0565931ffa253489506820e6"
   integrity sha512-NU0ySTAFGAIjWTebzHmD23ehgz+8sAEDNiXoBwQd8xNBQquEaTZTjUdnvlzmJIiA+bjRjYnAUawp4IWIrAqD8A==
@@ -379,7 +379,7 @@
     "@solana/spl-token" "^0.1.8"
     "@solana/web3.js" "^1.66.2"
 
-"@cardinal/rewards-center@2.2.1":
+"@cardinal/rewards-center@^2.2.1":
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/@cardinal/rewards-center/-/rewards-center-2.2.1.tgz#cc95d4f8c884a2d8c8f13874fa4908992036d8a1"
   integrity sha512-cZ93FvFfB0fLQ40gwZLfd4PzIDN5zWyUF22+myudTN+kaC/QZpRdD1aOWMmzTmezn15I3YMlPsWlk6qo1nuc1w==

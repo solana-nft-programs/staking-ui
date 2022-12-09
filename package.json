@@ -24,10 +24,9 @@
   },
   "dependencies": {
     "@apollo/client": "^3.6.9",
-    "@cardinal/common": "^2.0.13",
-    "@cardinal/creator-standard": "^2.2.0",
-    "@cardinal/namespaces-components": "^4.1.19",
-    "@cardinal/rewards-center": "2.2.1",
+    "@cardinal/common": "^4.0.1",
+    "@cardinal/namespaces-components": "^4.1.31",
+    "@cardinal/rewards-center": "^2.2.1",
     "@cardinal/scanner": "^0.1.1",
     "@cardinal/staking": "1.11.2",
     "@cardinal/stats": "^1.0.3",
