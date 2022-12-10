@@ -2378,7 +2378,6 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       'HM4KxPucFiFzJBr1saM1n7Hd4HhkLnp9FQXWaGv6gh5s'
     ),
     description: 'Stake your Strays and earn $STRYS',
-    description: 'Stake your Strays, earn $STRYS',
     hostname: 'stakerebels.modcatsclub.xyz',
     hideFooter: true,
     receiptType: ReceiptType.Receipt,
@@ -2539,14 +2538,12 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
   },
   {
     name: 'Honored Strays',
-    name: 'Mod Cats Club',
     displayName: 'VIP Lounge',
     nameInHeader: true,
     stakePoolAddress: new PublicKey(
       '5fFECqpAuECrwm2S6avLLm1dtvT53H4pWn5QwG96mR64'
     ),
     description: 'Stake your Strays and earn $STRYS',
-    description: 'Stake your Strays, earn $STRYS',
     hostname: 'stakehonored.modcatsclub.xyz',
     hideFooter: true,
     receiptType: ReceiptType.Receipt,
@@ -2564,11 +2561,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       backgroundSecondary: 'rgb(24 24 24 / 50%)',
       fontColor: '#EEEEEE',
     },
-<<<<<<< HEAD
-    imageUrl: 'https://user-images.githubusercontent.com/107280738/206760584-00e8c52b-ae9d-4d5f-b265-b783f44e9da4.png',
-=======
     imageUrl: 'https://user-images.githubusercontent.com/107280738/206711148-a12b5066-9bcb-4866-b83f-e27ee088c9b1.png',
->>>>>>> a90461bc35795dbd7f7b96bdd12c9308b7965bde
     // Background image for poolq
     backgroundImage:
       'https://user-images.githubusercontent.com/107280738/202006912-0e534e82-e3c7-47d6-9a1b-9c47f12bf1c6.jpg',
@@ -2600,11 +2593,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     stakePoolAddress: new PublicKey(
       '8RwHHTxfSHhcj1VQ5NZstx4JkTwWWiLvjzG2tthttk4s'
     ),
-<<<<<<< HEAD
     description: 'Stake your Strays and earn $STRYS',
-=======
-    description: 'Stake your Strays, earn $STRYS',
->>>>>>> a90461bc35795dbd7f7b96bdd12c9308b7965bde
     hostname: 'stakegenesis.modcatsclub.xyz',
     hideFooter: true,
     receiptType: ReceiptType.Receipt,
@@ -2622,11 +2611,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       backgroundSecondary: 'rgb(24 24 24 / 50%)',
       fontColor: '#EEEEEE',
     },
-<<<<<<< HEAD
     imageUrl: 'https://user-images.githubusercontent.com/107280738/206760862-0af2f140-855f-4477-ad54-0d6278db3680.png',
-=======
-    imageUrl: 'https://user-images.githubusercontent.com/107280738/206711148-a12b5066-9bcb-4866-b83f-e27ee088c9b1.png',
->>>>>>> a90461bc35795dbd7f7b96bdd12c9308b7965bde
     // Background image for poolq
     backgroundImage:
       'https://user-images.githubusercontent.com/107280738/202006912-0e534e82-e3c7-47d6-9a1b-9c47f12bf1c6.jpg',
