@@ -18,10 +18,8 @@ export const CreatorAddressInputs = ({
   formState,
 }: CreatorAddressInputsProps) => {
   const { AUTHORIZATION_1 } = SlavePanelScreens
+  const { setFieldValue, values } = formState
   const [displayInput, setDisplayInput] = useState(false)
-  const [numberOfAddresses, setNumberOfAddresses] = useState(1)
-
-  const [creatorAddresses, setCreatorAddresses] = useState<string[]>([''])
   return (
     <div className="space-y-2">
       <div className="flex w-full items-center">
@@ -33,26 +31,60 @@ export const CreatorAddressInputs = ({
       </div>
       {displayInput ? (
         <>
-          {Array.from(Array(numberOfAddresses).keys()).map((i) => (
-            <div className="pb-1" key={i}>
-              <TextInput
-                value={creatorAddresses[i] || ''}
-                onChange={(e) => {
-                  const newCreatorAddresses = [...creatorAddresses]
-                  newCreatorAddresses[i] = e.target.value
-                  setCreatorAddresses(newCreatorAddresses)
-                }}
-              />
-            </div>
-          ))}
-          <div className="flex w-full justify-end pb-4">
+          <div className="pb-1">
+            <TextInput
+              placeholder="CmAy...A3fD"
+              value={values.requireCreators[0]}
+              onChange={(e) => {
+                setFieldValue('requireCreators[0]', e.target.value)
+              }}
+            />
+          </div>
+
+          <div className="flex w-full justify-end">
             <button
               className="text-sm text-orange-500"
-              onClick={() => setNumberOfAddresses(numberOfAddresses + 1)}
+              onClick={() =>
+                setFieldValue(`requireCreators`, [
+                  '',
+                  ...values.requireCreators,
+                ])
+              }
             >
               + Add more
             </button>
           </div>
+          {values.requireCreators.map(
+            (address: string, i: number) =>
+              i > 0 && (
+                <>
+                  <div className="pb-1" key={i}>
+                    <TextInput
+                      placeholder="CmAy...A3fD"
+                      onChange={(e) => {
+                        setFieldValue(`requireCreators[${i}]`, e.target.value)
+                      }}
+                      value={address}
+                    />
+                  </div>
+                  <div className="flex w-full justify-end">
+                    <button
+                      className="text-sm text-orange-500"
+                      onClick={() =>
+                        setFieldValue(
+                          `requireCreators`,
+                          values.requireCreators.filter(
+                            (_: string, ix: number) => ix !== i
+                          )
+                        )
+                      }
+                    >
+                      - Remove
+                    </button>
+                  </div>
+                </>
+              )
+          )}
         </>
       ) : (
         <div className="pb-6">
