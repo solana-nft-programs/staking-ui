@@ -7,18 +7,16 @@ import { SlavePanelScreens } from '@/components/stake-pool-creation/SlavePanel'
 import { RadioGroup } from '@/components/UI/inputs/RadioGroup'
 import { TextInput } from '@/components/UI/inputs/TextInput'
 import { LabelText } from '@/components/UI/typography/LabelText'
-import type { InputOption } from '@/types/index'
 
-const options = [
-  {
-    label: 'Transfer',
-    value: 'transfer',
-  },
-  {
-    label: 'Mint',
-    value: 'mint',
-  },
-]
+export enum RewardDistributionKind {
+  MINT = '1',
+  TRANSFER = '2',
+}
+
+const options = Object.keys(RewardDistributionKind).map((value) => ({
+  label: value,
+  value: RewardDistributionKind[value as keyof typeof RewardDistributionKind],
+}))
 
 export type RewardDistributionProps = {
   setActiveSlavePanelScreen: Dispatch<SetStateAction<SlavePanelScreens>>
@@ -27,6 +25,7 @@ export type RewardDistributionProps = {
 
 export const RewardDistribution = ({
   setActiveSlavePanelScreen,
+  formState,
 }: RewardDistributionProps) => {
   const {
     REWARD_DISTRIBUTION_1,
@@ -36,9 +35,8 @@ export const RewardDistribution = ({
 
   const [mintAddress, setMintAddress] = useState('')
   const [transferAmount, setTransferAmount] = useState('')
-  const [selected, setSelected] = useState<InputOption>(
-    options[0] as InputOption
-  )
+
+  const { setFieldValue, values } = formState
 
   return (
     <>
@@ -52,8 +50,17 @@ export const RewardDistribution = ({
         </div>
         <RadioGroup
           options={options}
-          selected={selected}
-          setSelected={setSelected}
+          selected={
+            options.find(
+              ({ value }) => value === values.rewardDistributorKind?.toString()
+            ) || options[0]
+          }
+          onChange={(option) =>
+            setFieldValue(
+              'rewardDistributorKind',
+              option?.value ? parseInt(option?.value) : undefined
+            )
+          }
         />
       </div>
       <div className="pb-6">
