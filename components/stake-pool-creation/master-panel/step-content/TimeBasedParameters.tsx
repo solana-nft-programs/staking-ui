@@ -1,20 +1,23 @@
 import { InformationCircleIcon } from '@heroicons/react/24/outline'
-import type { FormikState, FormikValues } from 'formik'
+import type { FormikHandlers, FormikState, FormikValues } from 'formik'
 import type { Dispatch, SetStateAction } from 'react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { SlavePanelScreens } from '@/components/stake-pool-creation/SlavePanel'
 import { ButtonDecrement } from '@/components/UI/buttons/ButtonDecrement'
 import { ButtonIncrement } from '@/components/UI/buttons/ButtonIncrement'
-import { NumberInput } from '@/components/UI/inputs/NumberInput'
 import { SelectInput } from '@/components/UI/inputs/SelectInput'
+import { TextInput } from '@/components/UI/inputs/TextInput'
 import { LabelText } from '@/components/UI/typography/LabelText'
 import { unitsOfTime } from '@/constants/index'
 
 export type TimeBasedParametersProps = {
   setActiveSlavePanelScreen: Dispatch<SetStateAction<SlavePanelScreens>>
-  formState: FormikState<FormikValues>
+  formState: FormikHandlers & FormikState<FormikValues> & FormikValues
 }
+
+const SECONDS_PER_DAY = 86400
+const SECONDS_PER_HOUR = 3600
 
 export const TimeBasedParameters = ({
   setActiveSlavePanelScreen,
@@ -26,8 +29,8 @@ export const TimeBasedParameters = ({
     TIME_BASED_PARAMETERS_3,
     TIME_BASED_PARAMETERS_4,
   } = SlavePanelScreens
-  const [maxStakeDuration, setMaxStakeDuration] = useState('1')
-  const [maxStakeDurationUnitOfTime, setMaxStakeDurationUnitOfTime] = useState(
+  const [minStakeDuration, setMinStakeDuration] = useState('1')
+  const [minStakeDurationUnitOfTime, setMinStakeDurationUnitOfTime] = useState(
     unitsOfTime[0]?.value
   )
   const [cooldownPeriod, setCooldownPeriod] = useState('1')
@@ -40,12 +43,16 @@ export const TimeBasedParameters = ({
 
   const [terminationDate, setTerminationDate] = useState('')
 
+  useEffect(() => {})
+
+  const { values, setFieldValue, handleChange } = formState
+
   return (
     <>
       <div className="pb-6">
         <div className="mb-2 flex w-full items-center">
           <LabelText>
-            Maximum stake duration
+            Minimum stake duration
             <span className="ml-1 text-gray-500">(optional)</span>
           </LabelText>
           <InformationCircleIcon
@@ -57,26 +64,33 @@ export const TimeBasedParameters = ({
           <ButtonDecrement
             className="mr-3"
             onClick={() => {
-              if (Number(maxStakeDuration) > 0) {
-                setMaxStakeDuration((Number(maxStakeDuration) - 1).toString())
+              if (Number(minStakeDuration) > 0) {
+                setMinStakeDuration((Number(minStakeDuration) - 1).toString())
               }
             }}
           />
-          <NumberInput
+          <TextInput
             className="w-12 rounded-r-none text-center"
-            value={maxStakeDuration || ''}
-            onChange={(e) => setMaxStakeDuration(e.target.value)}
+            value={values.minStakeSeconds}
+            onChange={(e) =>
+              setFieldValue(
+                'minStakeSeconds',
+                minStakeDurationUnitOfTime === 'day'
+                  ? Number(e.target.value) * SECONDS_PER_DAY
+                  : Number(e.target.value) * SECONDS_PER_HOUR
+              )
+            }
           />
           <SelectInput
             className="-ml-1 rounded-l-none"
-            value={maxStakeDurationUnitOfTime || ''}
-            setValue={setMaxStakeDurationUnitOfTime}
+            value={minStakeDurationUnitOfTime || ''}
+            setValue={setMinStakeDurationUnitOfTime}
             options={unitsOfTime}
           />
           <ButtonIncrement
             className="ml-3"
             onClick={() =>
-              setMaxStakeDuration((Number(maxStakeDuration) + 1).toString())
+              setMinStakeDuration((Number(minStakeDuration) + 1).toString())
             }
           />
         </div>
@@ -101,10 +115,17 @@ export const TimeBasedParameters = ({
               }
             }}
           />
-          <NumberInput
+          <TextInput
             className="w-12 rounded-r-none text-center"
-            value={cooldownPeriod || ''}
-            onChange={(e) => setCooldownPeriod(e.target.value)}
+            value={values.cooldownPeriodSeconds}
+            onChange={(e) =>
+              setFieldValue(
+                'cooldownPeriodSeconds',
+                cooldownPeriodUnitOfTime === 'day'
+                  ? Number(e.target.value) * SECONDS_PER_DAY
+                  : Number(e.target.value) * SECONDS_PER_HOUR
+              )
+            }
           />
           <SelectInput
             className="-ml-1 rounded-l-none"
@@ -140,10 +161,17 @@ export const TimeBasedParameters = ({
               }
             }}
           />
-          <NumberInput
+          <TextInput
             className="w-12 rounded-r-none text-center"
-            value={maxRewardDuration || ''}
-            onChange={(e) => setMaxRewardDuration(e.target.value)}
+            value={values.cooldownPeriodSeconds}
+            onChange={(e) =>
+              setFieldValue(
+                'rewardDurationSeconds',
+                maxRewardDurationUnitOfTime === 'day'
+                  ? Number(e.target.value) * SECONDS_PER_DAY
+                  : Number(e.target.value) * SECONDS_PER_HOUR
+              )
+            }
           />
           <SelectInput
             className="-ml-1 rounded-l-none"
@@ -171,12 +199,12 @@ export const TimeBasedParameters = ({
           />
         </div>
         <input
-          onChange={(e) => setTerminationDate(e.target.value)}
+          type="date"
           placeholder="Select date and time"
           className="rounded-xl border border-gray-700 bg-gray-800 p-2 outline outline-gray-700 focus:outline-orange-500"
-          type="datetime-local"
-          name="termination-date"
-          value={terminationDate}
+          name="endDate"
+          value={values.endDate}
+          onChange={handleChange}
         />
       </div>
     </>

@@ -26,7 +26,7 @@ const {
 
 export type AdditionalStakeConditionsProps = {
   setActiveSlavePanelScreen: Dispatch<SetStateAction<SlavePanelScreens>>
-  formState: FormikHandlers & FormikState<FormikValues>
+  formState: FormikHandlers & FormikState<FormikValues> & FormikValues
 }
 
 export const AdditionalStakeConditions = ({

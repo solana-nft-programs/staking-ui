@@ -24,7 +24,7 @@ export const CollectionAddressInputs = ({
   return (
     <div className="space-y-2 pt-4">
       <div className="flex w-full items-center">
-        <LabelText>Authorize access to specific mint</LabelText>
+        <LabelText>NFT collection address</LabelText>
         <InformationCircleIcon
           className="ml-1 h-6 w-6 cursor-pointer text-gray-400"
           onClick={() => setActiveSlavePanelScreen(AUTHORIZATION_2)}
