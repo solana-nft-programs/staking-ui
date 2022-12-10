@@ -18,13 +18,9 @@ export const CollectionAddressInputs = ({
   formState,
 }: CollectionAddressInputsProps) => {
   const [displayInput, setDisplayInput] = useState(false)
-  const [numberOfAddresses, setNumberOfAddresses] = useState(1)
   const { AUTHORIZATION_2 } = SlavePanelScreens
   const { setFieldValue, values } = formState
 
-  const [authorizedMintAddresses, setAuthorizedMintAddresses] = useState<
-    string[]
-  >([''])
   return (
     <div className="space-y-2 pt-4">
       <div className="flex w-full items-center">
