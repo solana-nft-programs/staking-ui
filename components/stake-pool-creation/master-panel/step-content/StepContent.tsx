@@ -1,3 +1,4 @@
+import type { FormikState, FormikValues } from 'formik'
 import type { Dispatch, SetStateAction } from 'react'
 
 import { Intro } from '@/components/stake-pool-creation/master-panel/Intro'
@@ -12,37 +13,48 @@ import type { SlavePanelScreens } from '@/components/stake-pool-creation/SlavePa
 export type StepContentProps = {
   currentStep: number
   setActiveSlavePanelScreen: Dispatch<SetStateAction<SlavePanelScreens>>
+  formState: FormikState<FormikValues>
 }
 
 export const StepContent = ({
   currentStep,
   setActiveSlavePanelScreen,
+  formState,
 }: StepContentProps) => {
   return (
     <div>
       {currentStep === 0 && <Intro />}
       {currentStep === 1 && (
-        <Authorization setActiveSlavePanelScreen={setActiveSlavePanelScreen} />
+        <Authorization
+          setActiveSlavePanelScreen={setActiveSlavePanelScreen}
+          formState={formState}
+        />
       )}
       {currentStep === 2 && (
         <RewardDistribution
           setActiveSlavePanelScreen={setActiveSlavePanelScreen}
+          formState={formState}
         />
       )}
       {currentStep === 3 && (
-        <RewardSupply setActiveSlavePanelScreen={setActiveSlavePanelScreen} />
+        <RewardSupply
+          setActiveSlavePanelScreen={setActiveSlavePanelScreen}
+          formState={formState}
+        />
       )}
       {currentStep === 4 && (
         <TimeBasedParameters
           setActiveSlavePanelScreen={setActiveSlavePanelScreen}
+          formState={formState}
         />
       )}
       {currentStep === 5 && (
         <AdditionalStakeConditions
           setActiveSlavePanelScreen={setActiveSlavePanelScreen}
+          formState={formState}
         />
       )}
-      {currentStep === 6 && <Summary />}
+      {currentStep === 6 && <Summary formState={formState} />}
     </div>
   )
 }

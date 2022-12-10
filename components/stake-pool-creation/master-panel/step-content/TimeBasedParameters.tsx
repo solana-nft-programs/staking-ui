@@ -1,4 +1,5 @@
 import { InformationCircleIcon } from '@heroicons/react/24/outline'
+import type { FormikState, FormikValues } from 'formik'
 import type { Dispatch, SetStateAction } from 'react'
 import { useState } from 'react'
 
@@ -12,10 +13,12 @@ import { unitsOfTime } from '@/constants/index'
 
 export type TimeBasedParametersProps = {
   setActiveSlavePanelScreen: Dispatch<SetStateAction<SlavePanelScreens>>
+  formState: FormikState<FormikValues>
 }
 
 export const TimeBasedParameters = ({
   setActiveSlavePanelScreen,
+  formState,
 }: TimeBasedParametersProps) => {
   const {
     TIME_BASED_PARAMETERS_1,
