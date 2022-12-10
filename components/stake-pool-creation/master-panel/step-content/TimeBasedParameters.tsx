@@ -64,9 +64,13 @@ export const TimeBasedParameters = ({
           <ButtonDecrement
             className="mr-3"
             onClick={() => {
-              if (Number(minStakeDuration) > 0) {
-                setMinStakeDuration((Number(minStakeDuration) - 1).toString())
-              }
+              if (values.minStakeSeconds <= 0) return
+              setFieldValue(
+                'minStakeSeconds',
+                minStakeDurationUnitOfTime === 'day'
+                  ? values.minStakeSeconds - 1 * SECONDS_PER_DAY
+                  : values.minStakeSeconds - 1 * SECONDS_PER_HOUR
+              )
             }}
           />
           <TextInput
@@ -75,7 +79,7 @@ export const TimeBasedParameters = ({
               values.minStakeSeconds /
                 (minStakeDurationUnitOfTime === 'day'
                   ? SECONDS_PER_DAY
-                  : SECONDS_PER_HOUR)
+                  : SECONDS_PER_HOUR) || 0
             )}
             onChange={(e) =>
               setFieldValue(
@@ -94,9 +98,14 @@ export const TimeBasedParameters = ({
           />
           <ButtonIncrement
             className="ml-3"
-            onClick={() =>
-              setMinStakeDuration((Number(minStakeDuration) + 1).toString())
-            }
+            onClick={() => {
+              setFieldValue(
+                'minStakeSeconds',
+                minStakeDurationUnitOfTime === 'day'
+                  ? values.minStakeSeconds + 1 * SECONDS_PER_DAY
+                  : values.minStakeSeconds + 1 * SECONDS_PER_HOUR
+              )
+            }}
           />
         </div>
       </div>
@@ -115,9 +124,13 @@ export const TimeBasedParameters = ({
           <ButtonDecrement
             className="mr-3"
             onClick={() => {
-              if (Number(cooldownPeriod) > 0) {
-                setCooldownPeriod((Number(cooldownPeriod) - 1).toString())
-              }
+              if (values.cooldownPeriodSeconds <= 0) return
+              setFieldValue(
+                'cooldownPeriodSeconds',
+                cooldownPeriodUnitOfTime === 'day'
+                  ? values.cooldownPeriodSeconds - 1 * SECONDS_PER_DAY
+                  : values.cooldownPeriodSeconds - 1 * SECONDS_PER_HOUR
+              )
             }}
           />
           <TextInput
@@ -145,9 +158,14 @@ export const TimeBasedParameters = ({
           />
           <ButtonIncrement
             className="ml-3"
-            onClick={() =>
-              setCooldownPeriod((Number(cooldownPeriod) + 1).toString())
-            }
+            onClick={() => {
+              setFieldValue(
+                'cooldownPeriodSeconds',
+                cooldownPeriodUnitOfTime === 'day'
+                  ? values.cooldownPeriodSeconds + 1 * SECONDS_PER_DAY
+                  : values.cooldownPeriodSeconds + 1 * SECONDS_PER_HOUR
+              )
+            }}
           />
         </div>
       </div>
@@ -166,9 +184,13 @@ export const TimeBasedParameters = ({
           <ButtonDecrement
             className="mr-3"
             onClick={() => {
-              if (Number(maxRewardDuration) > 0) {
-                setMaxRewardDuration((Number(maxRewardDuration) - 1).toString())
-              }
+              if (values.rewardDurationSeconds <= 0) return
+              setFieldValue(
+                'rewardDurationSeconds',
+                maxRewardDurationUnitOfTime === 'day'
+                  ? values.rewardDurationSeconds - 1 * SECONDS_PER_DAY
+                  : values.rewardDurationSeconds - 1 * SECONDS_PER_HOUR
+              )
             }}
           />
           <TextInput
@@ -196,9 +218,14 @@ export const TimeBasedParameters = ({
           />
           <ButtonIncrement
             className="ml-3"
-            onClick={() =>
-              setMaxRewardDuration((Number(maxRewardDuration) + 1).toString())
-            }
+            onClick={() => {
+              setFieldValue(
+                'rewardDurationSeconds',
+                maxRewardDurationUnitOfTime === 'day'
+                  ? values.rewardDurationSeconds + 1 * SECONDS_PER_DAY
+                  : values.rewardDurationSeconds + 1 * SECONDS_PER_HOUR
+              )
+            }}
           />
         </div>
       </div>
