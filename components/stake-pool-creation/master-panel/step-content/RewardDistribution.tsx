@@ -1,12 +1,16 @@
 import { InformationCircleIcon } from '@heroicons/react/24/outline'
+import type * as splToken from '@solana/spl-token'
 import type { FormikHandlers, FormikState, FormikValues } from 'formik'
-import type { Dispatch, SetStateAction } from 'react'
+import type { Dispatch, ReactNode, SetStateAction } from 'react'
 import { useState } from 'react'
 
 import { SlavePanelScreens } from '@/components/stake-pool-creation/SlavePanel'
 import { RadioGroup } from '@/components/UI/inputs/RadioGroup'
 import { TextInput } from '@/components/UI/inputs/TextInput'
 import { LabelText } from '@/components/UI/typography/LabelText'
+import { tryFormatInput, tryParseInput } from 'common/units'
+import { notify } from 'common/Notification'
+import classNames from 'classnames'
 
 export enum RewardDistributionKind {
   MINT = '1',
@@ -21,11 +25,13 @@ const options = Object.keys(RewardDistributionKind).map((value) => ({
 export type RewardDistributionProps = {
   setActiveSlavePanelScreen: Dispatch<SetStateAction<SlavePanelScreens>>
   formState: FormikHandlers & FormikState<FormikValues> & FormikValues
+  mintInfo?: splToken.MintInfo
 }
 
 export const RewardDistribution = ({
   setActiveSlavePanelScreen,
   formState,
+  mintInfo,
 }: RewardDistributionProps) => {
   const {
     REWARD_DISTRIBUTION_1,
@@ -33,10 +39,9 @@ export const RewardDistribution = ({
     REWARD_DISTRIBUTION_3,
   } = SlavePanelScreens
 
-  const [mintAddress, setMintAddress] = useState('')
   const [transferAmount, setTransferAmount] = useState('')
 
-  const { setFieldValue, values } = formState
+  const { setFieldValue, values, errors, handleChange } = formState
 
   return (
     <>
@@ -70,28 +75,67 @@ export const RewardDistribution = ({
             className="ml-1 h-6 w-6 cursor-pointer text-gray-400"
             onClick={() => setActiveSlavePanelScreen(REWARD_DISTRIBUTION_2)}
           />
+          {JSON.stringify(errors.rewardMintAddress)}
         </div>
         <TextInput
-          value={mintAddress}
-          onChange={(e) => setMintAddress(e.target.value)}
+          value={values.rewardMintAddress}
+          onChange={(e) => {
+            setFieldValue('rewardMintAddress', e.target.value)
+          }}
         />
       </div>
-      <div className="mb-2 flex w-full items-center">
-        <LabelText>Reward transfer amount</LabelText>
-        <InformationCircleIcon
-          className="ml-1 h-6 w-6 cursor-pointer text-gray-400"
-          onClick={() => setActiveSlavePanelScreen(REWARD_DISTRIBUTION_3)}
-        />
-      </div>
-      <div className="relative">
-        <TextInput
-          value={transferAmount}
-          onChange={(e) => setTransferAmount(e.target.value)}
-        />
-        <button className="absolute top-0 right-0 bottom-0 rounded-lg bg-gray-900 p-2 px-4 text-gray-400">
-          Max
-        </button>
-      </div>
+      {mintInfo && (
+        <>
+          <div className="mb-2 flex w-full items-center">
+            <LabelText>Reward transfer amount</LabelText>
+            <InformationCircleIcon
+              className="ml-1 h-6 w-6 cursor-pointer text-gray-400"
+              onClick={() => setActiveSlavePanelScreen(REWARD_DISTRIBUTION_3)}
+            />
+          </div>
+          <div className="relative mb-1">
+            <TextInput
+              hasError={!!errors?.rewardAmount}
+              value={tryFormatInput(
+                values.rewardAmount,
+                mintInfo.decimals,
+                values.rewardAmount ?? ''
+              )}
+              onChange={(e) => {
+                if (Number.isNaN(Number(e.target.value))) {
+                  notify({
+                    message: `Invalid reward amount`,
+                    type: 'error',
+                  })
+                  return
+                }
+                setFieldValue(
+                  'rewardAmount',
+                  tryParseInput(
+                    e.target.value,
+                    mintInfo.decimals,
+                    values.rewardAmount ?? ''
+                  )
+                )
+              }}
+            />
+            <button
+              className={classNames([
+                'absolute top-0 right-0 bottom-0 rounded-lg bg-gray-900 p-2 px-4 text-gray-400',
+                errors?.rewardAmount &&
+                  'border-t border-r border-b border-red-500',
+              ])}
+            >
+              Max
+            </button>
+          </div>
+          {!!errors?.rewardAmount && (
+            <div className="text-red-500">
+              {errors?.rewardAmount as ReactNode}
+            </div>
+          )}
+        </>
+      )}
     </>
   )
 }
