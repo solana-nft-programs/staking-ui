@@ -74,10 +74,15 @@ export const RewardDistribution = ({
           onClick={() => setActiveSlavePanelScreen(REWARD_DISTRIBUTION_3)}
         />
       </div>
-      <TextInput
-        value={transferAmount}
-        onChange={(e) => setTransferAmount(e.target.value)}
-      />
+      <div className="relative">
+        <TextInput
+          value={transferAmount}
+          onChange={(e) => setTransferAmount(e.target.value)}
+        />
+        <button className="absolute top-0 right-0 bottom-0 rounded-lg bg-gray-900 p-2 px-4 text-gray-400">
+          Max
+        </button>
+      </div>
     </>
   )
 }
