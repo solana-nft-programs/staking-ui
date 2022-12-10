@@ -1,5 +1,5 @@
 import { InformationCircleIcon, PlusIcon } from '@heroicons/react/24/outline'
-import type { FormikState, FormikValues } from 'formik'
+import type { FormikHelpers, FormikState, FormikValues } from 'formik'
 import type { Dispatch, SetStateAction } from 'react'
 import { useState } from 'react'
 
@@ -10,21 +10,23 @@ import { LabelText } from '@/components/UI/typography/LabelText'
 
 export type CollectionAddressInputsProps = {
   setActiveSlavePanelScreen: Dispatch<SetStateAction<SlavePanelScreens>>
-  formState: FormikState<FormikValues>
+  formState: FormikHelpers<FormikValues> & FormikState<FormikValues>
 }
 
 export const CollectionAddressInputs = ({
   setActiveSlavePanelScreen,
+  formState,
 }: CollectionAddressInputsProps) => {
   const [displayInput, setDisplayInput] = useState(false)
   const [numberOfAddresses, setNumberOfAddresses] = useState(1)
   const { AUTHORIZATION_2 } = SlavePanelScreens
+  const { setFieldValue, values } = formState
 
   const [authorizedMintAddresses, setAuthorizedMintAddresses] = useState<
     string[]
   >([''])
   return (
-    <div className="space-y-2">
+    <div className="space-y-2 pt-4">
       <div className="flex w-full items-center">
         <LabelText>Authorize access to specific mint</LabelText>
         <InformationCircleIcon
@@ -34,28 +36,62 @@ export const CollectionAddressInputs = ({
       </div>
       {displayInput ? (
         <>
-          {Array.from(Array(numberOfAddresses).keys()).map((i) => (
-            <div className="pb-1" key={i}>
-              <TextInput
-                value={authorizedMintAddresses[i] || ''}
-                onChange={(e) => {
-                  const newAuthorizedMintAddresses = [
-                    ...authorizedMintAddresses,
-                  ]
-                  newAuthorizedMintAddresses[i] = e.target.value
-                  setAuthorizedMintAddresses(newAuthorizedMintAddresses)
-                }}
-              />
-            </div>
-          ))}
-          <div className="flex w-full justify-end pb-4">
+          <div className="pb-1">
+            <TextInput
+              placeholder="CmAy...A3fD"
+              value={values.requireCollections[0]}
+              onChange={(e) => {
+                setFieldValue('requireCollections[0]', e.target.value)
+              }}
+            />
+          </div>
+          <div className="flex w-full justify-end">
             <button
               className="text-sm text-orange-500"
-              onClick={() => setNumberOfAddresses(numberOfAddresses + 1)}
+              onClick={() =>
+                setFieldValue(`requireCollections`, [
+                  '',
+                  ...values.requireCollections,
+                ])
+              }
             >
               + Add more
             </button>
           </div>
+          {values.requireCollections.map(
+            (address: string, i: number) =>
+              i > 0 && (
+                <>
+                  <div className="pb-1" key={i}>
+                    <TextInput
+                      placeholder="CmAy...A3fD"
+                      onChange={(e) => {
+                        setFieldValue(
+                          `requireCollections[${i}]`,
+                          e.target.value
+                        )
+                      }}
+                      value={address}
+                    />
+                  </div>
+                  <div className="flex w-full justify-end">
+                    <button
+                      className="text-sm text-orange-500"
+                      onClick={() =>
+                        setFieldValue(
+                          `requireCollections`,
+                          values.requireCollections.filter(
+                            (_: string, ix: number) => ix !== i
+                          )
+                        )
+                      }
+                    >
+                      - Remove
+                    </button>
+                  </div>
+                </>
+              )
+          )}
         </>
       ) : (
         <div className="pb-6">
