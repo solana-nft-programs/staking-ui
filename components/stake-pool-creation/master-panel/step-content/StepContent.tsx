@@ -1,4 +1,4 @@
-import type { FormikState, FormikValues } from 'formik'
+import type { FormikHandlers, FormikState, FormikValues } from 'formik'
 import type { Dispatch, SetStateAction } from 'react'
 
 import { Intro } from '@/components/stake-pool-creation/master-panel/Intro'
@@ -13,7 +13,7 @@ import type { SlavePanelScreens } from '@/components/stake-pool-creation/SlavePa
 export type StepContentProps = {
   currentStep: number
   setActiveSlavePanelScreen: Dispatch<SetStateAction<SlavePanelScreens>>
-  formState: FormikState<FormikValues>
+  formState: FormikHandlers & FormikState<FormikValues>
 }
 
 export const StepContent = ({
