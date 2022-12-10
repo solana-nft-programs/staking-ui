@@ -1,5 +1,5 @@
 import { InformationCircleIcon } from '@heroicons/react/24/outline'
-import type { FormikState, FormikValues } from 'formik'
+import type { FormikHandlers, FormikState, FormikValues } from 'formik'
 import type { Dispatch, SetStateAction } from 'react'
 import { useState } from 'react'
 
@@ -26,13 +26,14 @@ const {
 
 export type AdditionalStakeConditionsProps = {
   setActiveSlavePanelScreen: Dispatch<SetStateAction<SlavePanelScreens>>
-  formState: FormikState<FormikValues>
+  formState: FormikHandlers & FormikState<FormikValues>
 }
 
 export const AdditionalStakeConditions = ({
   setActiveSlavePanelScreen,
+  formState,
 }: AdditionalStakeConditionsProps) => {
-  const [overlayText, setOverlayText] = useState('')
+  const { values, handleChange } = formState
   const [stakeMechanism, setStakeMechanism] = useState(
     stakeMechanisms[0]?.value
   )
@@ -65,8 +66,8 @@ export const AdditionalStakeConditions = ({
       </div>
       <TextInput
         className="mb-6"
-        value={overlayText}
-        onChange={(e) => setOverlayText(e.target.value)}
+        value={values.overlayText}
+        onChange={handleChange}
       />
       <div className="mb-2 flex w-full items-center">
         <LabelText>Reset on stake</LabelText>
