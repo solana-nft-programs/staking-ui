@@ -23,7 +23,7 @@ export const AccessAuthorityInputs = ({
 
   const [collectionAddresses, setCollectionAddresses] = useState<string[]>([''])
   return (
-    <div className="space-y-2">
+    <div className="space-y-2 pt-4">
       <div className="flex w-full items-center">
         <LabelText>NFT collection address</LabelText>
         <InformationCircleIcon

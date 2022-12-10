@@ -1,4 +1,4 @@
-import type { FormikState, FormikValues } from 'formik'
+import type { FormikHelpers, FormikState, FormikValues } from 'formik'
 import type { Dispatch, SetStateAction } from 'react'
 
 import { AccessAuthorityInputs } from '@/components/stake-pool-creation/master-panel/step-content/authorization/AccessAuthorityInputs'
@@ -8,7 +8,7 @@ import type { SlavePanelScreens } from '@/components/stake-pool-creation/SlavePa
 
 export type AuthorizationProps = {
   setActiveSlavePanelScreen: Dispatch<SetStateAction<SlavePanelScreens>>
-  formState: FormikState<FormikValues>
+  formState: FormikHelpers<FormikValues> & FormikState<FormikValues>
 }
 
 export const Authorization = ({
