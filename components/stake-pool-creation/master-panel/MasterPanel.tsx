@@ -1,3 +1,4 @@
+import type { FormikState, FormikValues } from 'formik'
 import type { Dispatch, SetStateAction } from 'react'
 import { useEffect, useState } from 'react'
 
@@ -13,6 +14,7 @@ export type MasterPanelProps = {
   currentStep: number
   setCurrentStep: (step: number) => void
   setActiveSlavePanelScreen: Dispatch<SetStateAction<SlavePanelScreens>>
+  formState: FormikState<FormikValues>
 }
 
 const stepTitles = [
@@ -36,6 +38,7 @@ const stepSubtitles = [
 ]
 
 export const MasterPanel = ({
+  formState,
   currentStep,
   setCurrentStep,
   setActiveSlavePanelScreen,
@@ -61,6 +64,7 @@ export const MasterPanel = ({
         </div>
       )}
       <StepContent
+        formState={formState}
         currentStep={currentStep}
         setActiveSlavePanelScreen={setActiveSlavePanelScreen}
       />

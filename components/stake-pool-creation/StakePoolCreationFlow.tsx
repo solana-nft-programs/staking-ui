@@ -186,6 +186,7 @@ export const StakePoolCreationFlow = ({
         currentStep={currentStep}
         setCurrentStep={setCurrentStep}
         setActiveSlavePanelScreen={setActiveSlavePanelScreen}
+        formState={formState}
       />
       <SlavePanel activeScreen={activeSlavePanelScreen} />
     </div>

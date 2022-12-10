@@ -1,4 +1,5 @@
 import { InformationCircleIcon } from '@heroicons/react/24/outline'
+import type { FormikState, FormikValues } from 'formik'
 import type { Dispatch, SetStateAction } from 'react'
 import { useState } from 'react'
 
@@ -13,13 +14,14 @@ import { unitsOfTime } from '@/constants/index'
 
 export type RewardSupplyProps = {
   setActiveSlavePanelScreen: Dispatch<SetStateAction<SlavePanelScreens>>
+  formState: FormikState<FormikValues>
 }
 
 export const RewardSupply = ({
   setActiveSlavePanelScreen,
+  formState,
 }: RewardSupplyProps) => {
-  const { REWARD_SUPPLY_1, REWARD_SUPPLY_2, REWARD_SUPPLY_3 } =
-    SlavePanelScreens
+  const { REWARD_SUPPLY_1, REWARD_SUPPLY_2 } = SlavePanelScreens
 
   const [rewardAmountPerStakedToken, setRewardAmountPerStakedToken] =
     useState('')

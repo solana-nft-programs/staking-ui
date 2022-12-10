@@ -1,4 +1,4 @@
-import { PencilIcon } from '@heroicons/react/24/outline'
+import type { FormikState, FormikValues } from 'formik'
 
 const summaryItems = [
   {
@@ -31,7 +31,11 @@ const summaryItems = [
   },
 ]
 
-export const Summary = () => {
+export type SummaryProps = {
+  formState: FormikState<FormikValues>
+}
+
+export const Summary = ({ formState }: SummaryProps) => {
   return (
     <div className="max-h-[350px] overflow-y-scroll">
       {summaryItems.map(({ label, value }, i) => (
@@ -41,7 +45,6 @@ export const Summary = () => {
               <span className="text-gray-500">{label}:</span>
               <span className="ml-2 text-gray-200">{value}</span>
             </div>
-            {i === 0 && <PencilIcon className="h-6 w-6 text-gray-500" />}
           </div>
         </div>
       ))}
