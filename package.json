@@ -54,6 +54,7 @@
     "@typescript-eslint/eslint-plugin": "^5.35.1",
     "base58": "^2.0.1",
     "classnames": "^2.3.2",
+    "dayjs": "^1.11.7",
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-jsx-a11y": "^6.6.1",
     "eslint-plugin-react-hooks": "^4.6.0",

@@ -1,4 +1,4 @@
-import type { FormikState, FormikValues } from 'formik'
+import type { FormikHandlers, FormikState, FormikValues } from 'formik'
 import type { Dispatch, SetStateAction } from 'react'
 import { useEffect, useState } from 'react'
 
@@ -14,7 +14,7 @@ export type MasterPanelProps = {
   currentStep: number
   setCurrentStep: (step: number) => void
   setActiveSlavePanelScreen: Dispatch<SetStateAction<SlavePanelScreens>>
-  formState: FormikState<FormikValues>
+  formState: FormikHandlers & FormikState<FormikValues> & FormikValues
 }
 
 const stepTitles = [

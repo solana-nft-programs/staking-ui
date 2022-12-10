@@ -13,7 +13,7 @@ import type { SlavePanelScreens } from '@/components/stake-pool-creation/SlavePa
 export type StepContentProps = {
   currentStep: number
   setActiveSlavePanelScreen: Dispatch<SetStateAction<SlavePanelScreens>>
-  formState: FormikHandlers & FormikState<FormikValues>
+  formState: FormikHandlers & FormikState<FormikValues> & FormikValues
 }
 
 export const StepContent = ({

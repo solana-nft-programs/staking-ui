@@ -1,5 +1,5 @@
 import { InformationCircleIcon, PlusIcon } from '@heroicons/react/24/outline'
-import type { FormikState, FormikValues } from 'formik'
+import type { FormikHandlers, FormikState, FormikValues } from 'formik'
 import type { Dispatch, SetStateAction } from 'react'
 import { useState } from 'react'
 
@@ -10,7 +10,7 @@ import { LabelText } from '@/components/UI/typography/LabelText'
 
 export type AccessAuthorityInputsProps = {
   setActiveSlavePanelScreen: Dispatch<SetStateAction<SlavePanelScreens>>
-  formState: FormikState<FormikValues>
+  formState: FormikHandlers & FormikState<FormikValues> & FormikValues
 }
 
 export const AccessAuthorityInputs = ({
@@ -25,7 +25,7 @@ export const AccessAuthorityInputs = ({
   return (
     <div className="space-y-2 pt-4">
       <div className="flex w-full items-center">
-        <LabelText>NFT collection address</LabelText>
+        <LabelText>Authorize access to specific mint</LabelText>
         <InformationCircleIcon
           className="ml-1 h-6 w-6 cursor-pointer text-gray-400"
           onClick={() => setActiveSlavePanelScreen(AUTHORIZATION_3)}

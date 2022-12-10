@@ -1,4 +1,4 @@
-import type { FormikState, FormikValues } from 'formik'
+import type { FormikHandlers, FormikState, FormikValues } from 'formik'
 
 const summaryItems = [
   {
@@ -32,7 +32,7 @@ const summaryItems = [
 ]
 
 export type SummaryProps = {
-  formState: FormikState<FormikValues>
+  formState: FormikHandlers & FormikState<FormikValues> & FormikValues
 }
 
 export const Summary = ({ formState }: SummaryProps) => {
