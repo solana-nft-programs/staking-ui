@@ -43,9 +43,16 @@ export const TimeBasedParameters = ({
 
   const [terminationDate, setTerminationDate] = useState('')
 
-  useEffect(() => {})
-
   const { values, setFieldValue, handleChange } = formState
+
+  useEffect(() => {
+    if (
+      values.rewardDurationSeconds === null ||
+      values.rewardDurationSeconds === NaN
+    ) {
+      setFieldValue('rewardDurationSeconds', String(0))
+    }
+  }, [values?.rewardDurationSeconds, setFieldValue])
 
   return (
     <>
@@ -195,20 +202,24 @@ export const TimeBasedParameters = ({
           />
           <TextInput
             className="w-12 rounded-r-none text-center"
-            value={String(
-              (values.rewardDurationSeconds || 0) /
-                (maxRewardDurationUnitOfTime === 'day'
-                  ? SECONDS_PER_DAY
-                  : SECONDS_PER_HOUR)
-            )}
-            onChange={(e) =>
+            value={
+              values.rewardDurationSeconds
+                ? String(
+                    values.rewardDurationSeconds /
+                      (maxRewardDurationUnitOfTime === 'day'
+                        ? SECONDS_PER_DAY
+                        : SECONDS_PER_HOUR)
+                  )
+                : '0'
+            }
+            onChange={(e) => {
               setFieldValue(
                 'rewardDurationSeconds',
                 maxRewardDurationUnitOfTime === 'day'
                   ? Number(e.target.value) * SECONDS_PER_DAY
                   : Number(e.target.value) * SECONDS_PER_HOUR
               )
-            }
+            }}
           />
           <SelectInput
             className="-ml-1 rounded-l-none"
@@ -219,11 +230,19 @@ export const TimeBasedParameters = ({
           <ButtonIncrement
             className="ml-3"
             onClick={() => {
+              if (values.rewardDurationSeconds) {
+                setFieldValue(
+                  'rewardDurationSeconds',
+                  maxRewardDurationUnitOfTime === 'day'
+                    ? values.rewardDurationSeconds + 1 * SECONDS_PER_DAY
+                    : values.rewardDurationSeconds + 1 * SECONDS_PER_HOUR
+                )
+              }
               setFieldValue(
                 'rewardDurationSeconds',
                 maxRewardDurationUnitOfTime === 'day'
-                  ? values.rewardDurationSeconds + 1 * SECONDS_PER_DAY
-                  : values.rewardDurationSeconds + 1 * SECONDS_PER_HOUR
+                  ? 1 * SECONDS_PER_DAY
+                  : 1 * SECONDS_PER_HOUR
               )
             }}
           />
