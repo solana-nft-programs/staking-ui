@@ -34,7 +34,7 @@ export const RewardSupply = ({
     <>
       <div className="pb-6">
         <div className="mb-2 flex w-full items-center">
-          <LabelText>Rewards mint address</LabelText>
+          <LabelText>Reward amount per staked token</LabelText>
           <InformationCircleIcon
             onClick={() => setActiveSlavePanelScreen(REWARD_SUPPLY_1)}
             className="ml-1 h-6 w-6 cursor-pointer text-gray-400"
