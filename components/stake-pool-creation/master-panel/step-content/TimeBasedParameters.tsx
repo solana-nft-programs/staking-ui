@@ -71,7 +71,12 @@ export const TimeBasedParameters = ({
           />
           <TextInput
             className="w-12 rounded-r-none text-center"
-            value={values.minStakeSeconds}
+            value={String(
+              values.minStakeSeconds /
+                (minStakeDurationUnitOfTime === 'day'
+                  ? SECONDS_PER_DAY
+                  : SECONDS_PER_HOUR)
+            )}
             onChange={(e) =>
               setFieldValue(
                 'minStakeSeconds',
@@ -117,7 +122,12 @@ export const TimeBasedParameters = ({
           />
           <TextInput
             className="w-12 rounded-r-none text-center"
-            value={values.cooldownPeriodSeconds}
+            value={String(
+              values.cooldownPeriodSeconds /
+                (cooldownPeriodUnitOfTime === 'day'
+                  ? SECONDS_PER_DAY
+                  : SECONDS_PER_HOUR)
+            )}
             onChange={(e) =>
               setFieldValue(
                 'cooldownPeriodSeconds',
@@ -163,7 +173,12 @@ export const TimeBasedParameters = ({
           />
           <TextInput
             className="w-12 rounded-r-none text-center"
-            value={values.cooldownPeriodSeconds}
+            value={String(
+              (values.rewardDurationSeconds || 0) /
+                (maxRewardDurationUnitOfTime === 'day'
+                  ? SECONDS_PER_DAY
+                  : SECONDS_PER_HOUR)
+            )}
             onChange={(e) =>
               setFieldValue(
                 'rewardDurationSeconds',
