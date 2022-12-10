@@ -4,20 +4,20 @@ import type { InputOption } from '@/types/index'
 
 export type RadioGroupProps = {
   options: InputOption[]
-  setSelected: (option: InputOption) => void
-  selected: InputOption
+  onChange: (option: InputOption) => void
+  selected?: { value: string; label: string }
 }
 
 export const RadioGroup = ({
   options,
-  setSelected,
+  onChange,
   selected,
 }: RadioGroupProps) => {
   return (
     <>
       {/* https://github.com/tailwindlabs/headlessui/issues/1523 */}
       {/* @ts-expect-error */}
-      <RadioGroupHeadless value={selected} onChange={setSelected}>
+      <RadioGroupHeadless value={selected || options[0]} onChange={onChange}>
         <div className="flex">
           {options.map((option, i) => (
             // https://github.com/tailwindlabs/headlessui/issues/1523
