@@ -1,3 +1,4 @@
+import type * as splToken from '@solana/spl-token'
 import type { FormikHandlers, FormikState, FormikValues } from 'formik'
 import type { Dispatch, SetStateAction } from 'react'
 
@@ -14,12 +15,14 @@ export type StepContentProps = {
   currentStep: number
   setActiveSlavePanelScreen: Dispatch<SetStateAction<SlavePanelScreens>>
   formState: FormikHandlers & FormikState<FormikValues> & FormikValues
+  mintInfo?: splToken.MintInfo
 }
 
 export const StepContent = ({
   currentStep,
   setActiveSlavePanelScreen,
   formState,
+  mintInfo,
 }: StepContentProps) => {
   return (
     <div>
@@ -32,6 +35,7 @@ export const StepContent = ({
       )}
       {currentStep === 2 && (
         <RewardDistribution
+          mintInfo={mintInfo}
           setActiveSlavePanelScreen={setActiveSlavePanelScreen}
           formState={formState}
         />

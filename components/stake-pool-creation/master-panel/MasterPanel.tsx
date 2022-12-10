@@ -1,3 +1,4 @@
+import type * as splToken from '@solana/spl-token'
 import type { FormikHandlers, FormikState, FormikValues } from 'formik'
 import type { Dispatch, SetStateAction } from 'react'
 import { useEffect, useState } from 'react'
@@ -11,6 +12,7 @@ import { HeadingPrimary } from '@/components/UI/typography/HeadingPrimary'
 import { ButtonWidths } from '@/types/index'
 
 export type MasterPanelProps = {
+  mintInfo?: splToken.MintInfo
   currentStep: number
   setCurrentStep: (step: number) => void
   setActiveSlavePanelScreen: Dispatch<SetStateAction<SlavePanelScreens>>
@@ -38,6 +40,7 @@ const stepSubtitles = [
 ]
 
 export const MasterPanel = ({
+  mintInfo,
   formState,
   currentStep,
   setCurrentStep,
@@ -64,6 +67,7 @@ export const MasterPanel = ({
         </div>
       )}
       <StepContent
+        mintInfo={mintInfo}
         formState={formState}
         currentStep={currentStep}
         setActiveSlavePanelScreen={setActiveSlavePanelScreen}

@@ -5,9 +5,11 @@ export type TextInputProps = {
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void
   className?: string
   placeholder?: string
+  hasError?: boolean
 }
 
 export const TextInput = ({
+  hasError,
   value,
   onChange,
   className,
@@ -19,7 +21,9 @@ export const TextInput = ({
       onChange={onChange}
       value={value}
       className={classNames([
-        'w-full rounded-lg bg-gray-800 p-2 outline outline-gray-600 focus:outline-orange-500',
+        'w-full rounded-lg bg-gray-800 p-2 outline outline-gray-600',
+        hasError && 'border border-red-500',
+        !hasError && 'focus:outline-orange-500',
         className,
       ])}
     />

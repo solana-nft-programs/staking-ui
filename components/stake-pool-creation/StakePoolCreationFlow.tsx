@@ -37,7 +37,6 @@ export const StakePoolCreationFlow = ({
   type = 'create',
   stakePoolData,
   rewardDistributorData,
-  handleSubmit,
 }: StakePoolCreationFlowProps) => {
   const { connection } = useEnvironmentCtx()
   const wallet = useWallet()
@@ -121,6 +120,7 @@ export const StakePoolCreationFlow = ({
         )
         const mintInfo = await checkMint.getMintInfo()
         setMintInfo(mintInfo)
+        setFieldValue('rewardAmount', 0)
         if (
           type === 'update' &&
           values.rewardMintAddress?.toString() ===
@@ -183,6 +183,7 @@ export const StakePoolCreationFlow = ({
   return (
     <div className="mb-8 flex w-full py-8 px-10">
       <MasterPanel
+        mintInfo={mintInfo}
         currentStep={currentStep}
         setCurrentStep={setCurrentStep}
         setActiveSlavePanelScreen={setActiveSlavePanelScreen}
