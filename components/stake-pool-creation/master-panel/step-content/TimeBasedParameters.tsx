@@ -29,26 +29,21 @@ export const TimeBasedParameters = ({
     TIME_BASED_PARAMETERS_3,
     TIME_BASED_PARAMETERS_4,
   } = SlavePanelScreens
-  const [minStakeDuration, setMinStakeDuration] = useState('1')
   const [minStakeDurationUnitOfTime, setMinStakeDurationUnitOfTime] = useState(
     unitsOfTime[0]?.value
   )
-  const [cooldownPeriod, setCooldownPeriod] = useState('1')
   const [cooldownPeriodUnitOfTime, setCooldownPeriodUnitOfTime] = useState(
     unitsOfTime[0]?.value
   )
-  const [maxRewardDuration, setMaxRewardDuration] = useState('1')
   const [maxRewardDurationUnitOfTime, setMaxRewardDurationUnitOfTime] =
     useState(unitsOfTime[0]?.value)
-
-  const [terminationDate, setTerminationDate] = useState('')
 
   const { values, setFieldValue, handleChange } = formState
 
   useEffect(() => {
     if (
       values.rewardDurationSeconds === null ||
-      values.rewardDurationSeconds === NaN
+      Number.isNaN(values.rewardDurationSeconds)
     ) {
       setFieldValue('rewardDurationSeconds', String(0))
     }
