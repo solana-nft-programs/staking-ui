@@ -1,5 +1,5 @@
 import { InformationCircleIcon, PlusIcon } from '@heroicons/react/24/outline'
-import type { FormikHelpers, FormikState, FormikValues } from 'formik'
+import type { FormikHandlers, FormikState, FormikValues } from 'formik'
 import type { Dispatch, SetStateAction } from 'react'
 import { useState } from 'react'
 
@@ -10,7 +10,7 @@ import { LabelText } from '@/components/UI/typography/LabelText'
 
 export type CreatorAddressInputsProps = {
   setActiveSlavePanelScreen: Dispatch<SetStateAction<SlavePanelScreens>>
-  formState: FormikHelpers<FormikValues> & FormikState<FormikValues>
+  formState: FormikHandlers & FormikState<FormikValues> & FormikValues
 }
 
 export const CreatorAddressInputs = ({
