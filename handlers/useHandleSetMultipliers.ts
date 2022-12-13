@@ -18,7 +18,7 @@ import { PublicKey, SystemProgram, Transaction } from '@solana/web3.js'
 import { fetchRewardEntry } from 'api/fetchRewardEntry'
 import { fetchStakeEntry } from 'api/fetchStakeEntry'
 import { notify } from 'common/Notification'
-import { asEmptyAnchorWallet, asWallet } from 'common/Wallets'
+import { asWallet } from 'common/Wallets'
 import { useRewardDistributorData } from 'hooks/useRewardDistributorData'
 import { useMutation } from 'react-query'
 
@@ -102,14 +102,14 @@ export const useHandleSetMultipliers = () => {
 
         const stakeEntry = await fetchStakeEntry(
           connection,
-          asEmptyAnchorWallet(walletContextWallet),
+          wallet,
           stakePool.data,
           mintId,
           false // TODO change for fungible
         )
         if (!stakeEntry) {
           if (isStakePoolV2(stakePool.data.parsed)) {
-            const ix = await program                  .methods
+            const ix = await program.methods
               .initEntry(wallet.publicKey)
               .accounts({
                 stakeEntry: stakeEntryId,
@@ -172,7 +172,7 @@ export const useHandleSetMultipliers = () => {
 
         if (isStakePoolV2(stakePool.data.parsed)) {
           const ix = await program.methods
-            .updateRewardEntry({multiplier: new BN(multipliers[i]!)})
+            .updateRewardEntry({ multiplier: new BN(multipliers[i]!) })
             .accounts({
               rewardEntry: rewardEntryId,
               rewardDistributor: rewardDistributor.data.pubkey,

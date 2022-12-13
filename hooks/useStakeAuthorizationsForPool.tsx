@@ -2,7 +2,7 @@ import type { IdlAccountData } from '@cardinal/rewards-center'
 import { rewardsCenterProgram } from '@cardinal/rewards-center'
 import { getStakeAuthorizationsForPool } from '@cardinal/staking/dist/cjs/programs/stakePool/accounts'
 import { useWallet } from '@solana/wallet-adapter-react'
-import { asEmptyAnchorWallet } from 'common/Wallets'
+import { asWallet } from 'common/Wallets'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 import { useQuery } from 'react-query'
 
@@ -23,7 +23,7 @@ export const useStakeAuthorizationsForPool = () => {
         if (isStakePoolV2(stakePoolData.parsed)) {
           const program = rewardsCenterProgram(
             secondaryConnection,
-            asEmptyAnchorWallet(wallet)
+            asWallet(wallet)
           )
           const stakeAuth = await program.account.stakeAuthorizationRecord.all([
             {

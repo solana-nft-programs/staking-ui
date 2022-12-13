@@ -1,11 +1,10 @@
 import { getBatchedMultipleAccounts } from '@cardinal/common'
 import type { IdlAccountData } from '@cardinal/rewards-center'
 import * as metaplex from '@metaplex-foundation/mpl-token-metadata'
-import type { Wallet } from '@project-serum/anchor'
 import { useWallet } from '@solana/wallet-adapter-react'
 import type { Connection, PublicKey } from '@solana/web3.js'
 import { fetchStakeEntriesForUser } from 'api/fetchStakeEntry'
-import { asEmptyAnchorWallet } from 'common/Wallets'
+import { asWallet } from 'common/Wallets'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 import { useQuery } from 'react-query'
 
@@ -26,7 +25,7 @@ export type StakeEntryTokenData = {
 
 export async function getStakeEntryDatas(
   connection: Connection,
-  wallet: Wallet,
+  wallet: Parameters<typeof fetchStakeEntriesForUser>[1],
   stakePoolData: Pick<IdlAccountData<'stakePool'>, 'pubkey' | 'parsed'>,
   userId: PublicKey
 ): Promise<StakeEntryTokenData[]> {
@@ -105,7 +104,7 @@ export const useStakedTokenDatas = () => {
         walletIds.map((walletId) =>
           getStakeEntryDatas(
             secondaryConnection,
-            asEmptyAnchorWallet(wallet),
+            asWallet(wallet),
             stakePoolData,
             walletId
           )

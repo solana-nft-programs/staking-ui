@@ -3,7 +3,7 @@ import { rewardsCenterProgram } from '@cardinal/rewards-center'
 import { getAllStakeEntries } from '@cardinal/staking/dist/cjs/programs/stakePool/accounts'
 import { useWallet } from '@solana/wallet-adapter-react'
 import { stakeEntryDataToV2 } from 'api/fetchStakeEntry'
-import { asEmptyAnchorWallet } from 'common/Wallets'
+import { asWallet } from 'common/Wallets'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 import { useQuery } from 'react-query'
 
@@ -18,10 +18,7 @@ export const useAllStakeEntries = () => {
     Pick<IdlAccountData<'stakeEntry'>, 'pubkey' | 'parsed'>[] | undefined
   >(['useAllStakeEntries', stakePoolId?.toString()], async () => {
     const stakeEntriesV1 = await getAllStakeEntries(secondaryConnection)
-    const program = rewardsCenterProgram(
-      secondaryConnection,
-      asEmptyAnchorWallet(wallet)
-    )
+    const program = rewardsCenterProgram(secondaryConnection, asWallet(wallet))
     const stakeEntriesV2 = await program.account.stakeEntry.all()
     const allStakePoolDatas = [
       ...stakeEntriesV1.map((entry) => {

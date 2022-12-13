@@ -2,11 +2,10 @@ import { ApolloClient, gql, InMemoryCache } from '@apollo/client'
 import type { IdlAccountData } from '@cardinal/rewards-center'
 import { rewardsCenterProgram } from '@cardinal/rewards-center'
 import { getActiveStakeEntriesForPool } from '@cardinal/staking/dist/cjs/programs/stakePool/accounts'
-import type { Wallet } from '@project-serum/anchor'
 import { useWallet } from '@solana/wallet-adapter-react'
 import type { Connection } from '@solana/web3.js'
 import { stakeEntryDataToV2 } from 'api/fetchStakeEntry'
-import { asEmptyAnchorWallet } from 'common/Wallets'
+import { asWallet } from 'common/Wallets'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 import { useQuery } from 'react-query'
 
@@ -37,7 +36,7 @@ export const usePoolAnalytics = () => {
 
       const tokensMetadata = await getEntriesMetadataForPool(
         connection,
-        asEmptyAnchorWallet(wallet),
+        asWallet(wallet),
         stakePoolData
       )
 
@@ -82,7 +81,7 @@ export const usePoolAnalytics = () => {
 
 const getEntriesMetadataForPool = async (
   connection: Connection,
-  wallet: Wallet,
+  wallet: Parameters<typeof rewardsCenterProgram>[1],
   stakePoolData: Pick<IdlAccountData<'stakePool'>, 'pubkey' | 'parsed'>
 ): Promise<
   {

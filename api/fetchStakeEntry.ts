@@ -14,7 +14,7 @@ import {
   getStakeEntry,
 } from '@cardinal/staking/dist/cjs/programs/stakePool/accounts'
 import { findStakeEntryIdFromMint } from '@cardinal/staking/dist/cjs/programs/stakePool/utils'
-import type { IdlTypes, Wallet } from '@project-serum/anchor'
+import type { IdlTypes } from '@project-serum/anchor'
 import type {
   AllAccountsMap,
   TypeDef,
@@ -26,7 +26,7 @@ import { isStakePoolV2 } from 'hooks/useStakePoolData'
 
 export const fetchStakeEntry = async (
   connection: Connection,
-  wallet: Wallet,
+  wallet: Parameters<typeof rewardsCenterProgram>[1],
   stakePoolData: Pick<IdlAccountData<'stakePool'>, 'pubkey' | 'parsed'>,
   mintId: PublicKey,
   isFungible = false
@@ -60,7 +60,7 @@ export const fetchStakeEntry = async (
 
 export const fetchStakeEntriesForUser = async (
   connection: Connection,
-  wallet: Wallet,
+  wallet: Parameters<typeof rewardsCenterProgram>[1],
   stakePoolData: Pick<IdlAccountData<'stakePool'>, 'pubkey' | 'parsed'>,
   user: PublicKey
 ): Promise<Pick<IdlAccountData<'stakeEntry'>, 'pubkey' | 'parsed'>[]> => {

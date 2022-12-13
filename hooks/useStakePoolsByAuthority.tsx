@@ -9,7 +9,7 @@ import {
 import { BorshAccountsCoder, utils } from '@project-serum/anchor'
 import { useWallet } from '@solana/wallet-adapter-react'
 import type { Connection, PublicKey } from '@solana/web3.js'
-import { asEmptyAnchorWallet } from 'common/Wallets'
+import { asWallet } from 'common/Wallets'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 import { useQuery } from 'react-query'
 
@@ -74,7 +74,7 @@ export const useStakePoolsByAuthority = () => {
       if (!wallet.publicKey) return
       const program = rewardsCenterProgram(
         secondaryConnection,
-        asEmptyAnchorWallet(wallet)
+        asWallet(wallet)
       )
       const stakePoolsV1 = (
         await getStakePoolsByAuthority(secondaryConnection, wallet.publicKey)

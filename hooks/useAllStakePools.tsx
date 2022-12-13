@@ -4,7 +4,7 @@ import { getAllStakePools } from '@cardinal/staking/dist/cjs/programs/stakePool/
 import { useWallet } from '@solana/wallet-adapter-react'
 import type { StakePoolMetadata } from 'api/mapping'
 import { stakePoolMetadatas } from 'api/mapping'
-import { asEmptyAnchorWallet } from 'common/Wallets'
+import { asWallet } from 'common/Wallets'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 import { useQuery } from 'react-query'
 
@@ -26,10 +26,7 @@ export const useAllStakePools = () => {
       }
     | undefined
   >(['useAllStakePools'], async () => {
-    const program = rewardsCenterProgram(
-      connection,
-      asEmptyAnchorWallet(wallet)
-    )
+    const program = rewardsCenterProgram(connection, asWallet(wallet))
     const stakePoolsV1 = await getAllStakePools(connection)
     const stakePoolsV2 = await program.account.stakePool.all()
     const allStakePoolDatas = [
