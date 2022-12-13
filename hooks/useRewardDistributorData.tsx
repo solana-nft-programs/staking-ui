@@ -78,7 +78,7 @@ export const isRewardDistributorV2 = (
         AllAccountsMap<CardinalRewardsCenter>['rewardDistributor'],
         IdlTypes<CardinalRewardsCenter>
       >
-  ) & { type?: string }
+  ) & { type?: 'v1' | 'v2' }
 ): boolean =>
   rewardDistributorData.type === 'v2' || 'identifier' in rewardDistributorData
 
@@ -92,8 +92,8 @@ export const rewardDistributorDataToV2 = (
 ): TypeDef<
   AllAccountsMap<CardinalRewardsCenter>['rewardDistributor'],
   IdlTypes<CardinalRewardsCenter>
-> & { type: string } => {
-  if (!isRewardDistributorV2(rewardDistributorData)) {
+> & { type: 'v1' | 'v2' } => {
+  if (!('identifier' in rewardDistributorData)) {
     const rwdData = rewardDistributorData as RewardDistributorData
     return {
       bump: rwdData.bump,
@@ -112,10 +112,7 @@ export const rewardDistributorDataToV2 = (
       type: 'v1',
     }
   }
-  return { ...rewardDistributorData, type: 'v2' } as TypeDef<
-    AllAccountsMap<CardinalRewardsCenter>['rewardDistributor'],
-    IdlTypes<CardinalRewardsCenter>
-  > & { type: string }
+  return { ...rewardDistributorData, type: 'v2' }
 }
 
 export const rewardDistributorDataToV1 = (
