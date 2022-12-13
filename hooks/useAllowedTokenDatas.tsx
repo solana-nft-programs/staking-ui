@@ -209,7 +209,11 @@ export const useAllowedTokenDatas = (showFungibleTokens: boolean) => {
       return allowedTokens
     },
     {
-      enabled: tokenList.isFetched && !!stakePool.data && !!walletId,
+      enabled:
+        tokenList.isFetched &&
+        allTokenAccounts.isFetched &&
+        !!stakePool.data &&
+        !!walletId,
     }
   )
 }
