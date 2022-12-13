@@ -141,3 +141,9 @@ export const contrastColorMode = (bgColor: string): [string, boolean] => {
     ? ['#ffffff', true]
     : ['#000000', false]
 }
+
+export const camelCaseToTitle = (str: string) => {
+  return str
+    .replace(/([A-Z])/g, ' $1')
+    .replace(/^./, (str) => str.toUpperCase())
+}
