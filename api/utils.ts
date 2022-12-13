@@ -1,15 +1,12 @@
 import type { Wallet } from '@saberhq/solana-contrib'
-import * as spl from '@solana/spl-token'
 import type {
-  AccountInfo,
   ConfirmOptions,
   Connection,
-  ParsedAccountData,
   SendTransactionError,
   Signer,
   Transaction,
 } from '@solana/web3.js'
-import { PublicKey, sendAndConfirmRawTransaction } from '@solana/web3.js'
+import { sendAndConfirmRawTransaction } from '@solana/web3.js'
 import { handleError } from 'common/errors'
 import { notify } from 'common/Notification'
 
@@ -114,33 +111,4 @@ export const executeAllTransactions = async (
     })
   config.callback && config.callback(true)
   return txIds
-}
-
-export const deserializeMintInfo = (
-  mintData: AccountInfo<Buffer | ParsedAccountData> | null
-): spl.MintInfo | null => {
-  if (mintData && mintData?.data && 'parsed' in mintData?.data) {
-    const accountData = mintData?.data
-    return accountData.parsed?.info as spl.MintInfo
-  } else if (
-    mintData?.data &&
-    'length' in mintData?.data &&
-    mintData?.data.length === spl.MintLayout.span
-  ) {
-    const parsed = spl.MintLayout.decode(mintData?.data)
-    if (parsed.mintAuthorityOption === 0) {
-      parsed.mintAuthority = null
-    } else {
-      parsed.mintAuthority = new PublicKey(parsed.mintAuthority)
-    }
-    parsed.supply = parsed.supply
-    parsed.isInitialized = parsed.isInitialized !== 0
-    if (parsed.freezeAuthorityOption === 0) {
-      parsed.freezeAuthority = null
-    } else {
-      parsed.freezeAuthority = new PublicKey(parsed.freezeAuthority)
-    }
-    return parsed as spl.MintInfo
-  }
-  return null
 }

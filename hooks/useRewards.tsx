@@ -74,8 +74,8 @@ export const useRewards = () => {
         }),
         rewardDistributorDataToV1(rewardDistributorData),
         rewardDistributorData.parsed?.kind === RewardDistributorKind.Mint
-          ? rewardMintInfo?.mintInfo.supply
-          : rewardDistributorTokenAccount.amount,
+          ? new BN(rewardMintInfo?.mintInfo.supply.toString())
+          : new BN(rewardDistributorTokenAccount.amount.toString()),
         UTCNow
       )
     },

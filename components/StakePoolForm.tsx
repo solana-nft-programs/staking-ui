@@ -3,9 +3,8 @@ import { withFindOrInitAssociatedTokenAccount } from '@cardinal/common'
 import type { IdlAccountData } from '@cardinal/rewards-center'
 import { executeTransaction } from '@cardinal/staking'
 import { BN } from '@project-serum/anchor'
-import * as splToken from '@solana/spl-token'
 import { useWallet } from '@solana/wallet-adapter-react'
-import { Keypair, PublicKey, Transaction } from '@solana/web3.js'
+import { PublicKey, Transaction } from '@solana/web3.js'
 import { AsyncButton } from 'common/Button'
 import { handleError } from 'common/errors'
 import { FormFieldTitleInput } from 'common/FormFieldInput'
@@ -18,6 +17,8 @@ import { asWallet } from 'common/Wallets'
 import { useFormik } from 'formik'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 import { useMemo, useState } from 'react'
+import type { Account, Mint } from 'spl-token-v3'
+import { getAccount, getMint } from 'spl-token-v3'
 import * as Yup from 'yup'
 
 export const publicKeyValidationTest = (value: string | undefined): boolean => {
@@ -101,10 +102,7 @@ export function StakePoolForm({
     IdlAccountData<'rewardDistributor'>,
     'pubkey' | 'parsed'
   >
-  handleSubmit: (
-    values: CreationForm,
-    rewardMintInfo?: splToken.MintInfo
-  ) => void
+  handleSubmit: (values: CreationForm, rewardMintInfo?: Mint) => void
 }) {
   const { connection } = useEnvironmentCtx()
   const wallet = useWallet()
@@ -160,7 +158,7 @@ export function StakePoolForm({
   const [submitDisabled, setSubmitDisabled] = useState<boolean>(true)
   const [processingMintAddress, setProcessingMintAddress] =
     useState<boolean>(false)
-  const [mintInfo, setMintInfo] = useState<splToken.MintInfo>()
+  const [mintInfo, setMintInfo] = useState<Mint>()
   const [userRewardAmount, setUserRewardAmount] = useState<string>()
   const [loading, setLoading] = useState<boolean>(false)
 
@@ -176,13 +174,7 @@ export function StakePoolForm({
       setProcessingMintAddress(true)
       try {
         const mint = new PublicKey(values.rewardMintAddress)
-        const checkMint = new splToken.Token(
-          connection,
-          mint,
-          splToken.TOKEN_PROGRAM_ID,
-          Keypair.generate() // unused
-        )
-        const mintInfo = await checkMint.getMintInfo()
+        const mintInfo = await getMint(connection, mint)
         setMintInfo(mintInfo)
         if (
           type === 'update' &&
@@ -192,7 +184,7 @@ export function StakePoolForm({
           return
         }
 
-        let userAta: splToken.AccountInfo | undefined = undefined
+        let userAta: Account | undefined = undefined
         try {
           const transaction = new Transaction()
           const mintAta = await withFindOrInitAssociatedTokenAccount(
@@ -211,7 +203,7 @@ export function StakePoolForm({
               {}
             )
           }
-          userAta = await checkMint.getAccountInfo(mintAta)
+          userAta = await getAccount(connection, mintAta)
         } catch (e) {
           notify({
             message: handleError(

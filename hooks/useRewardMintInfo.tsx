@@ -1,8 +1,8 @@
 import { Metadata, MetadataData } from '@metaplex-foundation/mpl-token-metadata'
-import * as splToken from '@solana/spl-token'
-import { Keypair } from '@solana/web3.js'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 import { useQuery } from 'react-query'
+import type { Mint } from 'spl-token-v3'
+import { getMint } from 'spl-token-v3'
 
 import { useRewardDistributorData } from './useRewardDistributorData'
 import type { TokenListData } from './useTokenList'
@@ -14,7 +14,7 @@ export const useRewardMintInfo = () => {
   const rewardDistibutor = useRewardDistributorData()
   return useQuery<
     | {
-        mintInfo: splToken.MintInfo
+        mintInfo: Mint
         tokenListData: TokenListData | undefined
         metaplexMintData: MetadataData | undefined
       }
@@ -48,13 +48,10 @@ export const useRewardMintInfo = () => {
       } catch (e) {}
 
       // Mint info
-      const rewardMint = new splToken.Token(
+      const mintInfo = await getMint(
         secondaryConnection,
-        rewardDistibutor.data.parsed.rewardMint,
-        splToken.TOKEN_PROGRAM_ID,
-        Keypair.generate() // not used
+        rewardDistibutor.data.parsed.rewardMint
       )
-      const mintInfo = await rewardMint.getMintInfo()
       return {
         mintInfo,
         tokenListData,

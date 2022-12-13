@@ -107,11 +107,11 @@ export const useRewardsRate = () => {
                   }
                 : undefined,
               isRewardDistributorV2(rewardDistributorData.parsed)
-                ? rewardDistributorTokenAccount?.amount || new BN(0)
+                ? new BN(rewardDistributorTokenAccount?.amount.toString() || 0)
                 : rewardDistributorData.parsed?.kind ===
                   RewardDistributorKind.Mint
-                ? rewardMintInfo?.mintInfo.supply
-                : rewardDistributorTokenAccount?.amount || new BN(0),
+                ? new BN(rewardMintInfo?.mintInfo.supply.toString())
+                : new BN(rewardDistributorTokenAccount?.amount.toString() || 0),
               (
                 stakeEntry.parsed.lastUpdatedAt ??
                 stakeEntry.parsed.lastStakedAt

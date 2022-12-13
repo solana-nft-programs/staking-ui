@@ -148,13 +148,15 @@ export const HeroStats: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({
                 !isRewardDistributorV2(rewardDistributorData.data.parsed)
                   ? formatMintNaturalAmountAsDecimal(
                       rewardMintInfo.data.mintInfo,
-                      rewardMintInfo.data.mintInfo.supply,
+                      new BN(rewardMintInfo.data.mintInfo.supply.toString()),
                       Math.min(rewardMintInfo.data.mintInfo.decimals, 6)
                     )
                   : formatMintNaturalAmountAsDecimal(
                       rewardMintInfo.data.mintInfo,
-                      rewardDistributorTokenAccountData.data?.amount ||
-                        new BN(0),
+                      new BN(
+                        rewardDistributorTokenAccountData.data?.amount.toString() ||
+                          0
+                      ) || new BN(0),
                       Math.min(rewardMintInfo.data.mintInfo.decimals, 6)
                     )}
               </div>

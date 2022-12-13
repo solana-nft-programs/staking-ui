@@ -162,13 +162,17 @@ export const StakePoolInfo = () => {
                     !isRewardDistributorV2(rewardDistributorData.data.parsed)
                       ? formatMintNaturalAmountAsDecimal(
                           rewardMintInfo.data.mintInfo,
-                          rewardMintInfo.data.mintInfo.supply,
+                          new BN(
+                            rewardMintInfo.data.mintInfo.supply.toString()
+                          ),
                           Math.min(rewardMintInfo.data.mintInfo.decimals, 6)
                         )
                       : rewardDistributorTokenAccountData.data
                       ? formatMintNaturalAmountAsDecimal(
                           rewardMintInfo.data.mintInfo,
-                          rewardDistributorTokenAccountData.data?.amount,
+                          new BN(
+                            rewardDistributorTokenAccountData.data.amount.toString()
+                          ),
                           Math.min(rewardMintInfo.data.mintInfo.decimals, 6)
                         )
                       : '??'}{' '}
