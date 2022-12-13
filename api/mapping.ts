@@ -2385,7 +2385,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     styles: {
       fontFamily: 'Lato',
       fontWeight: 700,
-      objectPosition: 'center'
+      objectPosition: 'center',
     },
     // Colors object to style the stake page
     colors: {
@@ -2394,11 +2394,12 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       backgroundSecondary: 'rgb(24 24 24 / 50%)',
       fontColor: '#EEEEEE',
     },
-    imageUrl: 'https://user-images.githubusercontent.com/107280738/206711148-a12b5066-9bcb-4866-b83f-e27ee088c9b1.png',
+    imageUrl:
+      'https://user-images.githubusercontent.com/107280738/206711148-a12b5066-9bcb-4866-b83f-e27ee088c9b1.png',
     // Background image for poolq
     backgroundImage:
       'https://user-images.githubusercontent.com/107280738/202006912-0e534e82-e3c7-47d6-9a1b-9c47f12bf1c6.jpg',
-    
+
     // Website url if specified will be navigated to when the image in the header is clicked
     links: [
       {
@@ -2580,7 +2581,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     styles: {
       fontFamily: 'Lato',
       fontWeight: 700,
-      objectPosition: 'center'
+      objectPosition: 'center',
     },
     // Colors object to style the stake page
     colors: {
@@ -2589,11 +2590,12 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       backgroundSecondary: 'rgb(24 24 24 / 50%)',
       fontColor: '#EEEEEE',
     },
-    imageUrl: 'https://user-images.githubusercontent.com/107280738/206711148-a12b5066-9bcb-4866-b83f-e27ee088c9b1.png',
+    imageUrl:
+      'https://user-images.githubusercontent.com/107280738/206711148-a12b5066-9bcb-4866-b83f-e27ee088c9b1.png',
     // Background image for poolq
     backgroundImage:
       'https://user-images.githubusercontent.com/107280738/202006912-0e534e82-e3c7-47d6-9a1b-9c47f12bf1c6.jpg',
-    
+
     // Website url if specified will be navigated to when the image in the header is clicked
     links: [
       {
@@ -2629,7 +2631,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     styles: {
       fontFamily: 'Lato',
       fontWeight: 800,
-      objectPosition: 'center'
+      objectPosition: 'center',
     },
     // Colors object to style the stake page
     colors: {
@@ -2638,11 +2640,12 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       backgroundSecondary: 'rgb(24 24 24 / 50%)',
       fontColor: '#EEEEEE',
     },
-    imageUrl: 'https://user-images.githubusercontent.com/107280738/206711148-a12b5066-9bcb-4866-b83f-e27ee088c9b1.png',
+    imageUrl:
+      'https://user-images.githubusercontent.com/107280738/206711148-a12b5066-9bcb-4866-b83f-e27ee088c9b1.png',
     // Background image for poolq
     backgroundImage:
       'https://user-images.githubusercontent.com/107280738/202006912-0e534e82-e3c7-47d6-9a1b-9c47f12bf1c6.jpg',
-    
+
     // Website url if specified will be navigated to when the image in the header is clicked
     links: [
       {
@@ -2666,15 +2669,14 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
   {
     name: 'dwa',
     displayName: 'Bweed Bakery',
-    hostname:'stake.duckzwitattitudes.com',
-    description:
-    'Stake your D.W.A to earn $Bweed',
+    hostname: 'stake.duckzwitattitudes.com',
+    description: 'Stake your D.W.A to earn $Bweed',
     stakePoolAddress: new PublicKey(
       'EAhYUAhAiGKuRzb6Sc249SM4DjCxQtsTzTqgogx6HYmM'
     ),
     websiteUrl: 'https://duckzwitattitudes.com',
     imageUrl:
-    'https://raw.githubusercontent.com/WildyPixel/dwa_img/main/logo2.png',
+      'https://raw.githubusercontent.com/WildyPixel/dwa_img/main/logo2.png',
     //  'https://www.arweave.net/DWKkkbbOi5x6MJhgulQ6FwcXh-emrcaqg8cjTx5j0PI?ext=png',
     maxStaked: 1500,
     nameInHeader: true,
@@ -2687,14 +2689,12 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       fontFamily: 'Industry, sans-serif',
       fontWeight: 500,
       backgroundSize: '100% auto',
-    
     },
     links: [
       {
         text: 'Buy Now',
         value: 'https://mint.duckzwitattitudes.com',
       },
-      
     ],
     colors: {
       primary: '#000000',
@@ -2703,10 +2703,38 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       fontColor: '#FFFFFF',
       fontColorSecondary: '#ffffff',
       backgroundSecondary: '#222222',
-
     },
     backgroundImage:
       'https://raw.githubusercontent.com/WildyPixel/dwa_img/main/bg2.jpeg',
   },
-  
+  {
+    name: 'vandals',
+    displayName: 'Vandals',
+    description:
+      'Train your Vandals to earn $VAULT. You can stake and unstake at any time. $VAULT is a a reward mechanism for Vandals holders to show to reward those who train the hardest.',
+    stakePoolAddress: new PublicKey(
+      'ndu643uUkFBt4YbXgHEfstkU25eEe4kDLjTD5uziEKx'
+    ),
+    websiteUrl: 'https://twitter.com/VandalCityCorp',
+    imageUrl: '/logos/vandals.png',
+    maxStaked: 10000,
+    nameInHeader: true,
+    tokenStandard: TokenStandard.NonFungible,
+    hideAllowedTokens: true,
+    hideFooter: true,
+    links: [
+      {
+        text: 'Buy Now',
+        value:
+          'https://hyperspace.xyz/collection/H5yBW4TwrUqKqpJZ436UnL9YUDBdvn27gzs8WGNKSARE',
+      },
+    ],
+    colors: {
+      primary: '#0d0d0d',
+      secondary: '#ffffff',
+      fontColor: '#ffffff',
+      accent: '#ffffff',
+      fontColorSecondary: '#0d0d0d',
+    },
+  },
 ]
