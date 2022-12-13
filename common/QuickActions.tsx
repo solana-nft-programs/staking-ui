@@ -1,3 +1,4 @@
+import { tryPublicKey } from '@cardinal/common'
 import type { ReceiptType } from '@cardinal/staking/dist/cjs/programs/stakePool'
 import { useHandleClaimRewards } from 'handlers/useHandleClaimRewards'
 import { useHandleStake } from 'handlers/useHandleStake'
@@ -64,7 +65,7 @@ export const QuickActions = ({
               }}
               href={pubKeyUrl(
                 unstakedTokenData?.tokenAccount
-                  ? unstakedTokenData.tokenAccount.account.data.parsed.info.mint
+                  ? tryPublicKey(unstakedTokenData.tokenAccount.parsed.mint)
                   : stakedTokenData!.stakeEntry?.parsed?.stakeMint,
                 ctx.environment.label
               )}
@@ -88,8 +89,7 @@ export const QuickActions = ({
                 }}
                 href={metadataUrl(
                   unstakedTokenData?.tokenAccount
-                    ? unstakedTokenData.tokenAccount.account.data.parsed.info
-                        .mint
+                    ? tryPublicKey(unstakedTokenData.tokenAccount.parsed.mint)
                     : stakedTokenData!.stakeEntry?.parsed?.stakeMint,
                   ctx.environment.label
                 )}
@@ -102,8 +102,8 @@ export const QuickActions = ({
             </PopoverItem>
           )}
           {!(
-            unstakedTokenData?.tokenAccount?.account.data.parsed.info
-              .tokenAmount.amount > 1
+            (unstakedTokenData?.tokenAccount?.parsed.tokenAmount.amount ?? 0) >
+            1
           ) && (
             <PopoverItem>
               <div
@@ -173,7 +173,7 @@ export const QuickActions = ({
           ),
         }}
         key={
-          unstakedTokenData?.tokenAccount?.account.data.parsed.info.mint.toString() ??
+          unstakedTokenData?.tokenAccount?.parsed.mint.toString() ??
           stakedTokenData?.stakeEntry?.parsed?.stakeMint.toString()
         }
       >

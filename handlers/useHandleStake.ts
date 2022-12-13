@@ -51,9 +51,7 @@ export const useHandleStake = (callback?: () => void) => {
               const [initTx, , stakeMintKeypair] =
                 await createStakeEntryAndStakeMint(connection, wallet, {
                   stakePoolId: stakePoolId,
-                  originalMintId: new PublicKey(
-                    token.tokenAccount.account.data.parsed.info.mint
-                  ),
+                  originalMintId: new PublicKey(token.tokenAccount.parsed.mint),
                 })
               if (initTx.instructions.length > 0) {
                 initTxs.push({
@@ -64,7 +62,7 @@ export const useHandleStake = (callback?: () => void) => {
             }
           } catch (e) {
             notify({
-              message: `Failed to stake token ${tokenDatas[i]?.tokenAccount?.account.data.parsed.info.mint}`,
+              message: `Failed to stake token ${tokenDatas[i]?.tokenAccount?.parsed.mint}`,
               description: `${e}`,
               type: 'error',
             })
@@ -95,14 +93,13 @@ export const useHandleStake = (callback?: () => void) => {
           try {
             if (!token.tokenAccount) throw 'Token account invalid'
             if (
-              token.tokenAccount?.account.data.parsed.info.tokenAmount.amount >
-                1 &&
+              token.tokenAccount?.parsed.tokenAmount.amount > 1 &&
               !token.amountToStake
             ) {
               throw new Error('Invalid amount chosen for token')
             }
 
-            const mint = token.tokenAccount?.account.data.parsed.info.mint
+            const mint = token.tokenAccount?.parsed.mint
             const stakedToken = stakedTokenDatas.data?.find(
               (s) => s.stakeEntry?.parsed?.stakeMint.toString() === mint
             )
@@ -116,12 +113,10 @@ export const useHandleStake = (callback?: () => void) => {
             const amount = token?.amountToStake
               ? new BN(
                   token?.amountToStake &&
-                  token.tokenAccount.account.data.parsed.info.tokenAmount
-                    .amount > 1
+                  token.tokenAccount.parsed.tokenAmount.amount > 1
                     ? parseMintNaturalAmountFromDecimal(
                         token?.amountToStake,
-                        token.tokenAccount.account.data.parsed.info.tokenAmount
-                          .decimals
+                        token.tokenAccount.parsed.tokenAmount.decimals
                       ).toString()
                     : 1
                 )
@@ -159,7 +154,7 @@ export const useHandleStake = (callback?: () => void) => {
             }
           } catch (e) {
             console.log({
-              message: `Failed to stake token ${token?.tokenAccount?.account.data.parsed.info.mint}`,
+              message: `Failed to stake token ${token?.tokenAccount?.parsed.mint}`,
               description: `${e}`,
               type: 'error',
             })

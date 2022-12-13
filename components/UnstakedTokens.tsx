@@ -47,11 +47,11 @@ export const UnstakedTokens = () => {
   const selectUnstakedToken = (tk: AllowedTokenData, targetValue?: string) => {
     if (handleStake.isLoading) return
     const amount = Number(targetValue)
-    if (tk.tokenAccount?.account.data.parsed.info.tokenAmount.amount > 1) {
+    if ((tk.tokenAccount?.parsed.tokenAmount.amount ?? 0) > 1) {
       let newUnstakedSelected = unstakedSelected.filter(
         (data) =>
-          data.tokenAccount?.account.data.parsed.info.mint.toString() !==
-          tk.tokenAccount?.account.data.parsed.info.mint.toString()
+          data.tokenAccount?.parsed.mint.toString() !==
+          tk.tokenAccount?.parsed.mint.toString()
       )
       if (targetValue && targetValue?.length > 0 && !amount) {
         notify({
@@ -67,8 +67,8 @@ export const UnstakedTokens = () => {
       setUnstakedSelected(
         unstakedSelected.filter(
           (data) =>
-            data.tokenAccount?.account.data.parsed.info.mint.toString() !==
-            tk.tokenAccount?.account.data.parsed.info.mint.toString()
+            data.tokenAccount?.parsed.mint.toString() !==
+            tk.tokenAccount?.parsed.mint.toString()
         )
       )
     } else {
@@ -76,8 +76,8 @@ export const UnstakedTokens = () => {
         setUnstakedSelected(
           unstakedSelected.filter(
             (data) =>
-              data.tokenAccount?.account.data.parsed.info.mint.toString() !==
-              tk.tokenAccount?.account.data.parsed.info.mint.toString()
+              data.tokenAccount?.parsed.mint.toString() !==
+              tk.tokenAccount?.parsed.mint.toString()
           )
         )
       } else {
@@ -89,8 +89,8 @@ export const UnstakedTokens = () => {
   const isUnstakedTokenSelected = (tk: AllowedTokenData) =>
     unstakedSelected.some(
       (utk) =>
-        utk.tokenAccount?.account.data.parsed.info.mint.toString() ===
-        tk.tokenAccount?.account.data.parsed.info.mint.toString()
+        utk.tokenAccount?.parsed.mint.toString() ===
+        tk.tokenAccount?.parsed.mint.toString()
     )
 
   return (
@@ -183,10 +183,7 @@ export const UnstakedTokens = () => {
                     stakePoolData?.parsed &&
                     isStakePoolV2(stakePoolData?.parsed)
                   ) {
-                    if (
-                      tk.tokenAccount?.account.data.parsed.info.tokenAmount
-                        .amount > 1
-                    ) {
+                    if ((tk.tokenAccount?.parsed.tokenAmount.amount ?? 0) > 1) {
                       return false
                     }
                   }
