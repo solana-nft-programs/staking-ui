@@ -14,11 +14,8 @@ const stakeMechanisms = [
   { value: 'original', label: 'Original' },
 ]
 
-const {
-  ADDITIONAL_STAKE_CONDITIONS_1,
-  ADDITIONAL_STAKE_CONDITIONS_2,
-  ADDITIONAL_STAKE_CONDITIONS_3,
-} = SlavePanelScreens
+const { ADDITIONAL_STAKE_CONDITIONS_2, ADDITIONAL_STAKE_CONDITIONS_3 } =
+  SlavePanelScreens
 
 export type AdditionalStakeConditionsProps = {
   setActiveSlavePanelScreen: Dispatch<SetStateAction<SlavePanelScreens>>
@@ -30,9 +27,6 @@ export const AdditionalStakeConditions = ({
   formState,
 }: AdditionalStakeConditionsProps) => {
   const { values, handleChange } = formState
-  const [stakeMechanism, setStakeMechanism] = useState(
-    stakeMechanisms[0]?.value
-  )
   const [resetOnStake, setResetOnStake] = useState('')
 
   const handleResetOnStakeChange = (value: string) => {
@@ -46,21 +40,6 @@ export const AdditionalStakeConditions = ({
 
   return (
     <>
-      <div className="mb-2 flex w-full items-center">
-        <LabelText>Stake mechanism</LabelText>
-        <InformationCircleIcon
-          className="ml-1 h-6 w-6 cursor-pointer text-gray-400"
-          onClick={() =>
-            setActiveSlavePanelScreen(ADDITIONAL_STAKE_CONDITIONS_1)
-          }
-        />
-      </div>
-      <SelectInput
-        className="mb-6 w-full"
-        value={stakeMechanism || ''}
-        setValue={setStakeMechanism}
-        options={stakeMechanisms}
-      />
       <div className="mb-2 flex w-full items-center">
         <LabelText>Overlay text</LabelText>
         <InformationCircleIcon

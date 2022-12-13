@@ -1,16 +1,14 @@
 import { InformationCircleIcon } from '@heroicons/react/24/outline'
 import type * as splToken from '@solana/spl-token'
+import { notify } from 'common/Notification'
+import { tryFormatInput, tryParseInput } from 'common/units'
 import type { FormikHandlers, FormikState, FormikValues } from 'formik'
 import type { Dispatch, ReactNode, SetStateAction } from 'react'
-import { useState } from 'react'
 
 import { SlavePanelScreens } from '@/components/stake-pool-creation/SlavePanel'
 import { RadioGroup } from '@/components/UI/inputs/RadioGroup'
 import { TextInput } from '@/components/UI/inputs/TextInput'
 import { LabelText } from '@/components/UI/typography/LabelText'
-import { tryFormatInput, tryParseInput } from 'common/units'
-import { notify } from 'common/Notification'
-import classNames from 'classnames'
 
 export enum RewardDistributionKind {
   MINT = '1',
@@ -39,9 +37,7 @@ export const RewardDistribution = ({
     REWARD_DISTRIBUTION_3,
   } = SlavePanelScreens
 
-  const [transferAmount, setTransferAmount] = useState('')
-
-  const { setFieldValue, values, errors, handleChange } = formState
+  const { setFieldValue, values, errors } = formState
 
   return (
     <>
@@ -119,15 +115,6 @@ export const RewardDistribution = ({
                 )
               }}
             />
-            <button
-              className={classNames([
-                'absolute top-0 right-0 bottom-0 rounded-lg bg-gray-900 p-2 px-4 text-gray-400',
-                errors?.rewardAmount &&
-                  'border-t border-r border-b border-red-500',
-              ])}
-            >
-              Max
-            </button>
           </div>
           {!!errors?.rewardAmount && (
             <div className="text-red-500">
