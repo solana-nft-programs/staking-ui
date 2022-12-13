@@ -32,18 +32,14 @@ export const useHandleUpdatePool = () => {
   const rewardDistributor = useRewardDistributorData()
 
   return useMutation(
-    async ({ values }: { values: CreationForm }): Promise<void> => {
+    async ({ values }: { values: CreationForm }): Promise<string> => {
       if (!wallet) throw 'Wallet not found'
       if (!stakePool.data) throw 'No stake pool found'
       if (
         wallet.publicKey?.toString() !==
         stakePool.data?.parsed?.authority.toString()
       ) {
-        notify({
-          message: 'You are not the pool authority.',
-          type: 'error',
-        })
-        return
+        throw 'You are not the pool authority'
       }
       if (!stakePool.data?.pubkey) {
         throw 'Stake pool pubkey not found'
@@ -225,17 +221,19 @@ export const useHandleUpdatePool = () => {
         )
       }
 
-      await executeTransaction(connection, wallet, transaction, {})
+      return executeTransaction(connection, wallet, transaction, {})
     },
     {
-      onSuccess: () => {
+      onSuccess: (txid) => {
         notify({
-          message: `Successfully updated stake pool ${stakePool.data?.pubkey.toString()} ${
+          message: 'Success',
+          description: `Successfully updated stake pool ${stakePool.data?.pubkey.toString()} ${
             rewardDistributor.data?.parsed
               ? 'and reward distributor ' +
                 rewardDistributor.data.pubkey.toString()
               : ''
           }`,
+          txid,
           type: 'success',
         })
         setTimeout(() => {
@@ -246,7 +244,7 @@ export const useHandleUpdatePool = () => {
       onError: (e) => {
         notify({
           message: 'Failed to update pool',
-          description: handleError(e, `Error updating stake pool: ${e}`),
+          description: handleError(e, `${e}`),
         })
       },
     }

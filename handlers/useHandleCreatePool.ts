@@ -200,7 +200,7 @@ export const useHandleCreatePool = () => {
       onError: (e) => {
         notify({
           message: 'Failed to create pool',
-          description: handleError(e, `Error creating stake pool: ${e}`),
+          description: handleError(e, `${e}`),
         })
       },
     }
