@@ -60,3 +60,8 @@ export type InputOption = {
   label: string
   value: string
 }
+
+export const booleanOptions = [
+  { value: 'yes', label: 'Yes' },
+  { value: 'no', label: 'No' },
+]

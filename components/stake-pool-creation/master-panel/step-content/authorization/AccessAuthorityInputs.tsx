@@ -1,12 +1,13 @@
-import { InformationCircleIcon, PlusIcon } from '@heroicons/react/24/outline'
+import { InformationCircleIcon } from '@heroicons/react/24/outline'
 import type { FormikHandlers, FormikState, FormikValues } from 'formik'
 import type { Dispatch, SetStateAction } from 'react'
 import { useState } from 'react'
+import JSONPretty from 'react-json-pretty'
 
 import { SlavePanelScreens } from '@/components/stake-pool-creation/SlavePanel'
-import { ButtonLargeWithDottedOutline } from '@/components/UI/buttons/ButtonLargeWithDottedOutline'
-import { TextInput } from '@/components/UI/inputs/TextInput'
+import { SelectInput } from '@/components/UI/inputs/SelectInput'
 import { LabelText } from '@/components/UI/typography/LabelText'
+import { booleanOptions } from '@/types/index'
 
 export type AccessAuthorityInputsProps = {
   setActiveSlavePanelScreen: Dispatch<SetStateAction<SlavePanelScreens>>
@@ -18,50 +19,31 @@ export const AccessAuthorityInputs = ({
   formState,
 }: AccessAuthorityInputsProps) => {
   const { AUTHORIZATION_3 } = SlavePanelScreens
-  const [displayInput, setDisplayInput] = useState(false)
-  const [numberOfAddresses, setNumberOfAddresses] = useState(1)
+  const [requireAuthorization, setRequireAuthorization] = useState('no')
 
-  const [collectionAddresses, setCollectionAddresses] = useState<string[]>([''])
+  const { values } = formState
+
+  const handleResetOnStakeChange = (value: string) => {
+    values.requiresAuthorization = !!(value === 'yes')
+    setRequireAuthorization(value)
+  }
+
   return (
     <div className="space-y-2 pt-4">
+      <JSONPretty data={values} />
       <div className="flex w-full items-center">
-        <LabelText>Authorize access to specific mint</LabelText>
+        <LabelText>Require authorization to accesses mint</LabelText>
         <InformationCircleIcon
           className="ml-1 h-6 w-6 cursor-pointer text-gray-400"
           onClick={() => setActiveSlavePanelScreen(AUTHORIZATION_3)}
         />
       </div>
-      {displayInput ? (
-        <>
-          {Array.from(Array(numberOfAddresses).keys()).map((i) => (
-            <div className="pb-1" key={i}>
-              <TextInput
-                value={collectionAddresses[i] || ''}
-                onChange={(e) => {
-                  const newCreatorAddresses = [...collectionAddresses]
-                  newCreatorAddresses[i] = e.target.value
-                  setCollectionAddresses(newCreatorAddresses)
-                }}
-              />
-            </div>
-          ))}
-          <div className="flex w-full justify-end pb-4">
-            <button
-              className="text-sm text-orange-500"
-              onClick={() => setNumberOfAddresses(numberOfAddresses + 1)}
-            >
-              + Add more
-            </button>
-          </div>
-        </>
-      ) : (
-        <div className="pb-6">
-          <ButtonLargeWithDottedOutline onClick={() => setDisplayInput(true)}>
-            <PlusIcon className="h-6 w-6" />
-            <div>Add address</div>
-          </ButtonLargeWithDottedOutline>
-        </div>
-      )}
+      <SelectInput
+        className="mb-6 w-full"
+        value={requireAuthorization}
+        setValue={handleResetOnStakeChange}
+        options={booleanOptions}
+      />
     </div>
   )
 }
