@@ -1,7 +1,9 @@
 import { InformationCircleIcon } from '@heroicons/react/24/outline'
 import type { FormikHandlers, FormikState, FormikValues } from 'formik'
 import type { Dispatch, SetStateAction } from 'react'
+import { useEffect } from 'react'
 import { useState } from 'react'
+import JSONPretty from 'react-json-pretty'
 
 import { SlavePanelScreens } from '@/components/stake-pool-creation/SlavePanel'
 import { SelectInput } from '@/components/UI/inputs/SelectInput'
@@ -33,7 +35,17 @@ export const AdditionalStakeConditions = ({
   const [stakeMechanism, setStakeMechanism] = useState(
     stakeMechanisms[0]?.value
   )
-  const [resetOnStake, setResetOnStake] = useState(booleanOptions[0]?.value)
+  const [resetOnStake, setResetOnStake] = useState('')
+
+  const handleResetOnStakeChange = (value: string) => {
+    values.resetOnStake = !!(value === 'yes')
+    setResetOnStake(value)
+  }
+
+  useEffect(() => {
+    setResetOnStake(values.resetOnStake ? 'yes' : 'no')
+  }, [values.resetOnStake])
+
   return (
     <>
       <div className="mb-2 flex w-full items-center">
@@ -74,10 +86,11 @@ export const AdditionalStakeConditions = ({
           }
         />
       </div>
+      <JSONPretty data={values} />
       <SelectInput
         className="mb-6 w-full"
-        value={resetOnStake || ''}
-        setValue={setResetOnStake}
+        value={resetOnStake}
+        setValue={handleResetOnStakeChange}
         options={booleanOptions}
       />
     </>

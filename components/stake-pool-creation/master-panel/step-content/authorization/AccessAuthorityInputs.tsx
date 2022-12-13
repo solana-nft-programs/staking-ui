@@ -1,13 +1,13 @@
 import { InformationCircleIcon } from '@heroicons/react/24/outline'
 import type { FormikHandlers, FormikState, FormikValues } from 'formik'
 import type { Dispatch, SetStateAction } from 'react'
-import { useState } from 'react'
-import JSONPretty from 'react-json-pretty'
+import { useEffect, useState } from 'react'
 
 import { SlavePanelScreens } from '@/components/stake-pool-creation/SlavePanel'
 import { SelectInput } from '@/components/UI/inputs/SelectInput'
 import { LabelText } from '@/components/UI/typography/LabelText'
 import { booleanOptions } from '@/types/index'
+import JSONPretty from 'react-json-pretty'
 
 export type AccessAuthorityInputsProps = {
   setActiveSlavePanelScreen: Dispatch<SetStateAction<SlavePanelScreens>>
@@ -19,7 +19,7 @@ export const AccessAuthorityInputs = ({
   formState,
 }: AccessAuthorityInputsProps) => {
   const { AUTHORIZATION_3 } = SlavePanelScreens
-  const [requireAuthorization, setRequireAuthorization] = useState('no')
+  const [requireAuthorization, setRequireAuthorization] = useState('')
 
   const { values } = formState
 
@@ -27,6 +27,10 @@ export const AccessAuthorityInputs = ({
     values.requiresAuthorization = !!(value === 'yes')
     setRequireAuthorization(value)
   }
+
+  useEffect(() => {
+    setRequireAuthorization(values.requiresAuthorization ? 'yes' : 'no')
+  }, [values.requiresAuthorization])
 
   return (
     <div className="space-y-2 pt-4">
