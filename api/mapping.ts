@@ -2636,4 +2636,50 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       },
     ],
   },
+  {
+    name: 'dwa',
+    displayName: 'Bweed Bakery',
+    hostname:'stake.duckzwitattitudes.com',
+    description:
+    'Stake your D.W.A to earn $Bweed',
+    stakePoolAddress: new PublicKey(
+      'EAhYUAhAiGKuRzb6Sc249SM4DjCxQtsTzTqgogx6HYmM'
+    ),
+    websiteUrl: 'https://duckzwitattitudes.com',
+    imageUrl:
+    'https://raw.githubusercontent.com/WildyPixel/dwa_img/main/logo2.png',
+    //  'https://www.arweave.net/DWKkkbbOi5x6MJhgulQ6FwcXh-emrcaqg8cjTx5j0PI?ext=png',
+    maxStaked: 1500,
+    nameInHeader: true,
+    receiptType: ReceiptType.Original,
+    tokenStandard: TokenStandard.NonFungible,
+    hideAllowedTokens: true,
+    hideFooter: true,
+    contrastHomepageBkg: false,
+    styles: {
+      fontFamily: 'Industry, sans-serif',
+      fontWeight: 500,
+      backgroundSize: '100% auto',
+    
+    },
+    links: [
+      {
+        text: 'Buy Now',
+        value: 'https://mint.duckzwitattitudes.com',
+      },
+      
+    ],
+    colors: {
+      primary: '#000000',
+      secondary: '#a40b11',
+      accent: '#a40b11',
+      fontColor: '#FFFFFF',
+      fontColorSecondary: '#ffffff',
+      backgroundSecondary: '#222222',
+
+    },
+    backgroundImage:
+      'https://raw.githubusercontent.com/WildyPixel/dwa_img/main/bg2.jpeg',
+  },
+  
 ]
