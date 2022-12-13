@@ -230,7 +230,7 @@
     tiny-invariant "^1.2.0"
     tslib "^2.3.1"
 
-"@cardinal/common@^2.0.10", "@cardinal/common@^2.0.11", "@cardinal/common@^2.0.12":
+"@cardinal/common@^2.0.11", "@cardinal/common@^2.0.12":
   version "2.0.14"
   resolved "https://registry.yarnpkg.com/@cardinal/common/-/common-2.0.14.tgz#bdbe2f923df048f37ce80de39216d838dc24c1e6"
   integrity sha512-/mZPDrD41JFPl83Potv9b3HklYIKF4ZpFHZV7pFZRXAZc+QDBbjvNDdx5EVW8gFYkfHkfH8M62LbBK8ZDtbm0g==
@@ -391,13 +391,6 @@
     "@solana/web3.js" "^1.66.2"
     bn.js "^5.2.0"
     js-sha256 "^0.9.0"
-
-"@cardinal/scanner@^0.1.1":
-  version "0.1.5"
-  resolved "https://registry.yarnpkg.com/@cardinal/scanner/-/scanner-0.1.5.tgz#03b4cdca076bfe27b38da3eea861ea3edfaaad71"
-  integrity sha512-d1E98HoQtJyzF17TRlx6DYtk12KHAn9Opyj1tdkid/92N/tGcm8M8rqUUYhGIUrgTDtYYc2H2tR7iU5+0nS87A==
-  dependencies:
-    "@cardinal/common" "^2.0.10"
 
 "@cardinal/stake-pool@^1.1.1":
   version "1.1.9"
