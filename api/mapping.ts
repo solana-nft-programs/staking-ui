@@ -2371,21 +2371,20 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     },
   },
   {
-    name: 'Mod Cats Club',
+    name: 'Degen Strays Club',
     displayName: 'Cave of Treasure',
     nameInHeader: true,
     stakePoolAddress: new PublicKey(
       'HM4KxPucFiFzJBr1saM1n7Hd4HhkLnp9FQXWaGv6gh5s'
     ),
     description: 'Stake your Strays, earn $STRYS',
-    hostname: 'stakerebels.modcatsclub.xyz',
     hideFooter: true,
     receiptType: ReceiptType.Receipt,
     tokenStandard: TokenStandard.NonFungible,
     // styles to apply to the whole stake pool
     styles: {
-      fontFamily: 'Montserrat',
-      fontWeight: 400,
+      fontFamily: 'Lato',
+      fontWeight: 700,
       objectPosition: 'center'
     },
     // Colors object to style the stake page
@@ -2537,21 +2536,20 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     notFound: true,
   },
   {
-    name: 'Mod Cats Club',
+    name: 'Honored Strays',
     displayName: 'VIP Lounge',
     nameInHeader: true,
     stakePoolAddress: new PublicKey(
       '5fFECqpAuECrwm2S6avLLm1dtvT53H4pWn5QwG96mR64'
     ),
     description: 'Stake your Strays, earn $STRYS',
-    hostname: 'stakehonored.modcatsclub.xyz',
     hideFooter: true,
     receiptType: ReceiptType.Receipt,
     tokenStandard: TokenStandard.NonFungible,
     // styles to apply to the whole stake pool
     styles: {
-      fontFamily: 'Montserrat',
-      fontWeight: 400,
+      fontFamily: 'Lato',
+      fontWeight: 700,
       objectPosition: 'center'
     },
     // Colors object to style the stake page
@@ -2594,14 +2592,13 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       '8RwHHTxfSHhcj1VQ5NZstx4JkTwWWiLvjzG2tthttk4s'
     ),
     description: 'Stake your Strays, earn $STRYS',
-    hostname: 'stakegenesis.modcatsclub.xyz',
     hideFooter: true,
     receiptType: ReceiptType.Receipt,
     tokenStandard: TokenStandard.NonFungible,
     // styles to apply to the whole stake pool
     styles: {
-      fontFamily: 'Montserrat',
-      fontWeight: 400,
+      fontFamily: 'Lato',
+      fontWeight: 800,
       objectPosition: 'center'
     },
     // Colors object to style the stake page
