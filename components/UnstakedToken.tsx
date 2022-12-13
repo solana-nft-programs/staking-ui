@@ -1,4 +1,5 @@
 import type { ReceiptType } from '@cardinal/staking/dist/cjs/programs/stakePool'
+import { BN } from '@project-serum/anchor'
 import { LoadingSpinner } from 'common/LoadingSpinner'
 import { QuickActions } from 'common/QuickActions'
 import {
@@ -93,20 +94,16 @@ export const UnstakedToken = ({
             {getNameFromTokenData(tk, mintMetadata?.data)}
           </div>
           {tk.tokenAccount &&
-            tk.tokenAccount?.account.data.parsed.info.tokenAmount.amount >
-              1 && (
+            tk.tokenAccount?.parsed.tokenAmount.amount > 1 && (
               <div className="mt-2">
                 <div className="truncate font-semibold">
                   <div className="flex w-full flex-row justify-between text-xs font-semibold">
                     <span>Available:</span>
                     <span className="px-1">
                       {formatAmountAsDecimal(
-                        tk.tokenAccount.account.data.parsed.info.tokenAmount
-                          .decimals,
-                        tk.tokenAccount?.account.data.parsed.info.tokenAmount
-                          .amount,
-                        tk.tokenAccount.account.data.parsed.info.tokenAmount
-                          .decimals
+                        tk.tokenAccount.parsed.tokenAmount.decimals,
+                        new BN(tk.tokenAccount?.parsed.tokenAmount.amount),
+                        tk.tokenAccount.parsed.tokenAmount.decimals
                       )}
                     </span>
                   </div>
