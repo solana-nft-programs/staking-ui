@@ -7,15 +7,11 @@ import { SlavePanelScreens } from '@/components/stake-pool-creation/SlavePanel'
 import { SelectInput } from '@/components/UI/inputs/SelectInput'
 import { TextInput } from '@/components/UI/inputs/TextInput'
 import { LabelText } from '@/components/UI/typography/LabelText'
+import { booleanOptions } from '@/types/index'
 
 const stakeMechanisms = [
   { value: 'receipt', label: 'Receipt' },
   { value: 'original', label: 'Original' },
-]
-
-const booleanOptions = [
-  { value: 'yes', label: 'Yes' },
-  { value: 'no', label: 'No' },
 ]
 
 const {
