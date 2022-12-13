@@ -21,24 +21,24 @@ export const useStakePoolTotalStaked = () => {
       const mintToDecimals: { mint: string; decimals: number }[] = []
       for (const entry of stakePoolEntries.data) {
         try {
-          if (entry.parsed.amount.toNumber() > 1) {
+          if (entry.parsed?.amount && entry.parsed?.amount.toNumber() > 1) {
             let decimals = 0
             const match = mintToDecimals.find(
-              (m) => m.mint === entry.parsed.originalMint.toString()
+              (m) => m.mint === entry.parsed?.stakeMint.toString()
             )
             if (match) {
               decimals = match.decimals
             } else {
               const mint = new splToken.Token(
                 connection,
-                entry.parsed.originalMint,
+                entry.parsed.stakeMint,
                 splToken.TOKEN_PROGRAM_ID,
                 Keypair.generate()
               )
               const mintInfo = await mint.getMintInfo()
               decimals = mintInfo.decimals
               mintToDecimals.push({
-                mint: entry.parsed.originalMint.toString(),
+                mint: entry.parsed.stakeMint.toString(),
                 decimals: decimals,
               })
             }

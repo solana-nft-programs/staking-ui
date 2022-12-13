@@ -1,4 +1,5 @@
 import { withFindOrInitAssociatedTokenAccount } from '@cardinal/common'
+import { claimRewards as claimRewardsV2 } from '@cardinal/rewards-center'
 import { claimRewards } from '@cardinal/staking'
 import { useWallet } from '@solana/wallet-adapter-react'
 import { Transaction } from '@solana/web3.js'
@@ -9,7 +10,10 @@ import { TOKEN_DATAS_KEY } from 'hooks/useAllowedTokenDatas'
 import type { StakeEntryTokenData } from 'hooks/useStakedTokenDatas'
 import { useMutation, useQueryClient } from 'react-query'
 
-import { useRewardDistributorData } from '../hooks/useRewardDistributorData'
+import {
+  isRewardDistributorV2,
+  useRewardDistributorData,
+} from '../hooks/useRewardDistributorData'
 import { useStakePoolData } from '../hooks/useStakePoolData'
 import { useEnvironmentCtx } from '../providers/EnvironmentProvider'
 
@@ -29,7 +33,9 @@ export const useHandleClaimRewards = () => {
       tokenDatas: StakeEntryTokenData[]
     }): Promise<void> => {
       if (!wallet) throw 'Wallet not found'
-      if (!stakePool) throw 'No stake pool found'
+      if (!stakePool || !stakePool.parsed) throw 'No stake pool found'
+      if (!rewardDistributorData.data?.parsed)
+        throw 'No reward distributor data found'
 
       const ataTx = new Transaction()
       if (rewardDistributorData.data && rewardDistributorData.data.parsed) {
@@ -55,14 +61,35 @@ export const useHandleClaimRewards = () => {
               if (i === 0 && ataTx.instructions.length > 0) {
                 transaction.instructions = ataTx.instructions
               }
-              const claimTx = await claimRewards(connection, wallet, {
-                stakePoolId: stakePool.pubkey,
-                stakeEntryId: token.stakeEntry.pubkey,
-                skipRewardMintTokenAccount: true,
-              })
+
+              let claimTxs: Transaction[] = []
+              if (isRewardDistributorV2(rewardDistributorData.data!.parsed!)) {
+                claimTxs = await claimRewardsV2(
+                  connection,
+                  wallet,
+                  stakePool.parsed!.identifier,
+                  [
+                    {
+                      mintId: token.stakeEntry.parsed!.stakeMint,
+                    },
+                  ],
+                  rewardDistributorData.data
+                    ? [rewardDistributorData.data.pubkey]
+                    : []
+                )
+              } else {
+                claimTxs = [
+                  await claimRewards(connection, wallet, {
+                    stakePoolId: stakePool.pubkey,
+                    stakeEntryId: token.stakeEntry.pubkey,
+                    skipRewardMintTokenAccount: true,
+                  }),
+                ]
+              }
+
               transaction.instructions = [
                 ...transaction.instructions,
-                ...claimTx.instructions,
+                ...claimTxs.map((tx) => tx.instructions).flat(),
               ]
               return transaction
             } catch (e) {

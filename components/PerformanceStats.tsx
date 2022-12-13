@@ -44,7 +44,7 @@ export const PerformanceStats: React.FC<
           >
             {new Date(
               (stakedTokenDatas.data
-                .map((s) => s.stakeEntry?.parsed.lastStakedAt.toNumber())
+                .map((s) => s.stakeEntry?.parsed?.lastStakedAt.toNumber())
                 .sort()
                 .slice(-1)[0] ?? 0) * 1000
             ).toLocaleDateString('en-US', {
@@ -59,7 +59,7 @@ export const PerformanceStats: React.FC<
       </div>
       <div className="flex flex-row items-center justify-center gap-2">
         <p className="text-lg text-medium-4">
-          {rewardDistributorData.data.parsed.maxRewardSecondsReceived?.eq(
+          {rewardDistributorData.data.parsed?.maxRewardSecondsReceived?.eq(
             new BN(1)
           )
             ? '1x Claim:'
@@ -87,7 +87,7 @@ export const PerformanceStats: React.FC<
               }}
               target="_blank"
               href={pubKeyUrl(
-                rewardDistributorData.data.parsed.rewardMint,
+                rewardDistributorData.data.parsed?.rewardMint,
                 environment.label
               )}
               rel="noreferrer"
@@ -96,7 +96,7 @@ export const PerformanceStats: React.FC<
                 rewardMintInfo.data.metaplexMintData?.data.symbol ||
                 '???'}
             </a>{' '}
-            {rewardDistributorData.data.parsed.maxRewardSecondsReceived?.eq(
+            {rewardDistributorData.data.parsed?.maxRewardSecondsReceived?.eq(
               new BN(1)
             )
               ? ''

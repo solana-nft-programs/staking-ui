@@ -2450,6 +2450,36 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     },
   },
   {
+    name: 'BioHumans ',
+    displayName: 'BioHumans ',
+    stakePoolAddress: new PublicKey(
+      '2iA21TAv7JBmRGTKeRHrSdb8FaPxzEgn8kfVbTd6AkGY'
+    ),
+    websiteUrl: 'https://t.co/QIAhGtpiaU',
+    imageUrl:
+      'https://raw.githubusercontent.com/conqueror1234/crypto/main/logo.png',
+    maxStaked: 777,
+    receiptType: ReceiptType.Original,
+    tokenStandard: TokenStandard.NonFungible,
+    hideAllowedTokens: true,
+    links: [
+      {
+        text: 'Discord',
+        value: 'https://discord.gg/KNgBrWVYCW',
+      },
+      {
+        text: 'Buy',
+        value: 'https://magiceden.io/marketplace/biohumans',
+      },
+    ],
+    colors: {
+      primary: '#000000',
+      secondary: '#f5050d',
+      accent: '#990505',
+      fontColor: '#FFFFFF',
+    },
+  },
+  {
     name: 'Sound Family DAO',
     displayName: 'Sound Family DAO Staking',
     nameInHeader: true,

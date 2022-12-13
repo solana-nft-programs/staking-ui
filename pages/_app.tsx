@@ -3,6 +3,7 @@ import '@cardinal/namespaces-components/dist/esm/styles.css'
 import 'tailwindcss/tailwind.css'
 
 import { WalletIdentityProvider } from '@cardinal/namespaces-components'
+import { WalletAdapterNetwork } from '@solana/wallet-adapter-base'
 import { WalletProvider } from '@solana/wallet-adapter-react'
 import { WalletModalProvider } from '@solana/wallet-adapter-react-ui'
 import {
@@ -12,7 +13,6 @@ import {
   FractalWalletAdapter,
   GlowWalletAdapter,
   LedgerWalletAdapter,
-  MathWalletAdapter,
   PhantomWalletAdapter,
   SlopeWalletAdapter,
   SolflareWalletAdapter,
@@ -27,6 +27,7 @@ import {
 } from 'providers/EnvironmentProvider'
 import { StakePoolMetadataProvider } from 'providers/StakePoolMetadataProvider'
 import { UTCNowProvider } from 'providers/UTCNowProvider'
+import { useMemo } from 'react'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import { ReactQueryDevtools } from 'react-query/devtools'
 
@@ -49,42 +50,57 @@ const App = ({
 }: AppProps & {
   cluster: string
   poolMapping: StakePoolMetadata | undefined
-}) => (
-  <EnvironmentProvider defaultCluster={cluster}>
-    <StakePoolMetadataProvider poolMapping={poolMapping}>
-      <UTCNowProvider>
-        <WalletProvider
-          autoConnect
-          wallets={[
-            new PhantomWalletAdapter(),
-            new BackpackWalletAdapter(),
-            new SolflareWalletAdapter(),
-            new CoinbaseWalletAdapter(),
-            new GlowWalletAdapter(),
-            new BraveWalletAdapter(),
-            new FractalWalletAdapter(),
-            new LedgerWalletAdapter(),
-            new TorusWalletAdapter(),
-            new SlopeWalletAdapter(),
-            new MathWalletAdapter(),
-          ]}
-        >
-          <WalletIdentityProvider>
-            <WalletModalProvider>
-              <QueryClientProvider client={queryClient}>
-                <>
-                  <ToastContainer />
-                  <Component {...pageProps} />
-                  <ReactQueryDevtools initialIsOpen={false} />
-                </>
-              </QueryClientProvider>
-            </WalletModalProvider>
-          </WalletIdentityProvider>
-        </WalletProvider>
-      </UTCNowProvider>
-    </StakePoolMetadataProvider>
-  </EnvironmentProvider>
-)
+}) => {
+  const network = useMemo(() => {
+    switch (cluster) {
+      case 'mainnet':
+        return WalletAdapterNetwork.Mainnet
+      case 'devnet':
+        return WalletAdapterNetwork.Devnet
+      case 'testnet':
+        return WalletAdapterNetwork.Testnet
+      default:
+        return WalletAdapterNetwork.Mainnet
+    }
+  }, [cluster])
+
+  const wallets = useMemo(
+    () => [
+      new PhantomWalletAdapter(),
+      new BackpackWalletAdapter(),
+      new SolflareWalletAdapter({ network }),
+      new CoinbaseWalletAdapter(),
+      new BraveWalletAdapter(),
+      new SlopeWalletAdapter(),
+      new FractalWalletAdapter(),
+      new GlowWalletAdapter({ network }),
+      new LedgerWalletAdapter(),
+      new TorusWalletAdapter({ params: { network, showTorusButton: false } }),
+    ],
+    [network]
+  )
+  return (
+    <EnvironmentProvider defaultCluster={cluster}>
+      <StakePoolMetadataProvider poolMapping={poolMapping}>
+        <UTCNowProvider>
+          <WalletProvider autoConnect wallets={wallets}>
+            <WalletIdentityProvider>
+              <WalletModalProvider>
+                <QueryClientProvider client={queryClient}>
+                  <>
+                    <ToastContainer />
+                    <Component {...pageProps} />
+                    <ReactQueryDevtools initialIsOpen={false} />
+                  </>
+                </QueryClientProvider>
+              </WalletModalProvider>
+            </WalletIdentityProvider>
+          </WalletProvider>
+        </UTCNowProvider>
+      </StakePoolMetadataProvider>
+    </EnvironmentProvider>
+  )
+}
 
 App.getInitialProps = getInitialProps
 

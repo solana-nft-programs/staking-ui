@@ -5,7 +5,10 @@ import {
   formatMintNaturalAmountAsDecimal,
 } from 'common/units'
 import { pubKeyUrl } from 'common/utils'
-import { useRewardDistributorData } from 'hooks/useRewardDistributorData'
+import {
+  isRewardDistributorV2,
+  useRewardDistributorData,
+} from 'hooks/useRewardDistributorData'
 import { useRewardDistributorTokenAccount } from 'hooks/useRewardDistributorTokenAccount'
 import { useRewardMintInfo } from 'hooks/useRewardMintInfo'
 import { baseDailyRate, useRewardsRate } from 'hooks/useRewardsRate'
@@ -42,7 +45,7 @@ export const HeroStats: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({
     >
       <div className="flex flex-1 flex-col items-center justify-center">
         <div className="text-lg text-medium-4">Total Staked</div>
-        {!totalStaked.data ? (
+        {!totalStaked.isFetched ? (
           <div className="h-6 w-10 animate-pulse rounded-md bg-border"></div>
         ) : (
           <div
@@ -84,7 +87,7 @@ export const HeroStats: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({
           <div className="mx-6 my-auto hidden h-10 w-[1px] bg-border md:flex"></div>
           <div className="flex flex-1 flex-col items-center justify-center">
             <p className="text-lg text-medium-4">
-              {rewardDistributorData.data.parsed.maxRewardSecondsReceived?.eq(
+              {rewardDistributorData.data.parsed?.maxRewardSecondsReceived?.eq(
                 new BN(1)
               )
                 ? '1x Claim'
@@ -111,7 +114,7 @@ export const HeroStats: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({
                   }}
                   target="_blank"
                   href={pubKeyUrl(
-                    rewardDistributorData.data.parsed.rewardMint,
+                    rewardDistributorData.data.parsed?.rewardMint,
                     environment.label
                   )}
                   rel="noreferrer"
@@ -120,7 +123,7 @@ export const HeroStats: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({
                     rewardMintInfo.data.metaplexMintData?.data.symbol ||
                     '???'}
                 </a>{' '}
-                {rewardDistributorData.data.parsed.maxRewardSecondsReceived?.eq(
+                {rewardDistributorData.data.parsed?.maxRewardSecondsReceived?.eq(
                   new BN(1)
                 )
                   ? ''
@@ -133,15 +136,16 @@ export const HeroStats: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({
             <p className="text-lg text-medium-4">Treasury Balance</p>
             {!rewardsRate.data ||
             !rewardMintInfo.data ||
-            !rewardDistributorTokenAccountData.data ? (
+            !rewardDistributorTokenAccountData.isFetched ? (
               <div className="h-6 w-10 animate-pulse rounded-md bg-border"></div>
             ) : (
               <div
                 className="text-center text-xl text-light-1"
                 style={{ color: stakePoolMetadata?.colors?.fontColor }}
               >
-                {rewardDistributorData.data.parsed.kind ===
-                RewardDistributorKind.Mint
+                {rewardDistributorData.data.parsed?.kind ===
+                  RewardDistributorKind.Mint &&
+                !isRewardDistributorV2(rewardDistributorData.data.parsed)
                   ? formatMintNaturalAmountAsDecimal(
                       rewardMintInfo.data.mintInfo,
                       rewardMintInfo.data.mintInfo.supply,
@@ -149,7 +153,8 @@ export const HeroStats: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({
                     )
                   : formatMintNaturalAmountAsDecimal(
                       rewardMintInfo.data.mintInfo,
-                      rewardDistributorTokenAccountData.data?.amount,
+                      rewardDistributorTokenAccountData.data?.amount ||
+                        new BN(0),
                       Math.min(rewardMintInfo.data.mintInfo.decimals, 6)
                     )}
               </div>

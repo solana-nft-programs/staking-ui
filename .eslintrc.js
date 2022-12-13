@@ -21,6 +21,7 @@ module.exports = {
   },
   settings: { react: { version: 'detect' } },
   rules: {
+    'react/no-unknown-property': ['error', { ignore: ['css'] }],
     'react/react-in-jsx-scope': 'off',
     'jsx-a11y/click-events-have-key-events': 'off',
     'jsx-a11y/no-static-element-interactions': 'off',

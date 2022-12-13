@@ -1,20 +1,10 @@
-import {
-  createStakePool,
-  executeTransaction,
-  handleError,
-} from '@cardinal/staking'
-import { withInitRewardDistributor } from '@cardinal/staking/dist/cjs/programs/rewardDistributor/transaction'
-import { BN } from '@project-serum/anchor'
-import type * as splToken from '@solana/spl-token'
 import { useWallet } from '@solana/wallet-adapter-react'
-import { PublicKey } from '@solana/web3.js'
+import type { PublicKey } from '@solana/web3.js'
 import { Footer } from 'common/Footer'
 import { HeaderSlim } from 'common/HeaderSlim'
-import { notify } from 'common/Notification'
-import { pubKeyUrl, shortPubKey, tryPublicKey } from 'common/utils'
-import { asWallet } from 'common/Wallets'
-import type { CreationForm } from 'components/StakePoolForm'
+import { pubKeyUrl, shortPubKey } from 'common/utils'
 import { StakePoolForm } from 'components/StakePoolForm'
+import { useHandleCreatePool } from 'handlers/useHandleCreatePool'
 import type { StakePool } from 'hooks/useAllStakePools'
 import { useStakePoolsByAuthority } from 'hooks/useStakePoolsByAuthority'
 import { useStakePoolsMetadatas } from 'hooks/useStakePoolsMetadata'
@@ -29,9 +19,10 @@ export function Placeholder() {
 }
 
 function Admin() {
-  const { connection, environment } = useEnvironmentCtx()
+  const { environment } = useEnvironmentCtx()
   const wallet = useWallet()
   const [stakePoolId, setStakePoolId] = useState<PublicKey>()
+  const handleCreatePool = useHandleCreatePool()
 
   const stakePools = useStakePoolsByAuthority()
   const stakePoolsMetadata = useStakePoolsMetadatas(
@@ -52,125 +43,6 @@ function Admin() {
     },
     [[] as StakePool[], [] as StakePool[]]
   )
-
-  const handleCreation = async (
-    values: CreationForm,
-    rewardMintInfo?: splToken.MintInfo
-  ) => {
-    setStakePoolId(undefined)
-    try {
-      if (!wallet?.connected) {
-        throw 'Wallet not connected'
-      }
-      if (
-        (!values.rewardAmount && values.rewardDurationSeconds) ||
-        (values.rewardAmount && !values.rewardDurationSeconds)
-      ) {
-        throw 'Both reward amount and reward duration must be specified'
-      }
-      if (
-        !values.rewardAmount &&
-        !values.rewardMintAddress &&
-        values.rewardDistributorKind
-      ) {
-        throw 'Reward distribution must be specified (cannot be none)'
-      }
-      if (
-        (values.rewardAmount ||
-          values.rewardMintAddress ||
-          values.rewardDistributorKind) &&
-        (!values.rewardAmount || !values.rewardMintAddress)
-      ) {
-        throw 'Please fill out all the fields for reward distribution paramters'
-      }
-
-      const collectionPublicKeys = values.requireCollections
-        .map((c) => tryPublicKey(c))
-        .filter((c) => c) as PublicKey[]
-      const creatorPublicKeys = values.requireCreators
-        .map((c) => tryPublicKey(c))
-        .filter((c) => c) as PublicKey[]
-
-      // format date
-      let dateInNum: number | undefined = new Date(
-        values.endDate?.toString() || ''
-      ).getTime()
-      if (dateInNum < Date.now()) {
-        dateInNum = undefined
-      }
-      const stakePoolParams = {
-        requiresCollections:
-          collectionPublicKeys.length > 0 ? collectionPublicKeys : undefined,
-        requiresCreators:
-          creatorPublicKeys.length > 0 ? creatorPublicKeys : undefined,
-        requiresAuthorization: values.requiresAuthorization,
-        resetOnStake: values.resetOnStake,
-        overlayText: values.overlayText || undefined,
-        cooldownSeconds: values.cooldownPeriodSeconds || 0,
-        endDate: dateInNum ? new BN(dateInNum / 1000) : undefined,
-      }
-      const [transaction, stakePoolPK] = await createStakePool(
-        connection,
-        asWallet(wallet),
-        stakePoolParams
-      )
-
-      if (values.rewardDistributorKind) {
-        if (Number(values.rewardDurationSeconds) < 1) {
-          throw 'RewardDurationSeconds needs to greater or equal to 1'
-        }
-        const rewardDistributorKindParams = {
-          stakePoolId: stakePoolPK,
-          rewardMintId: new PublicKey(values.rewardMintAddress!.trim())!,
-          rewardAmount: values.rewardAmount
-            ? new BN(values.rewardAmount)
-            : undefined,
-          rewardDurationSeconds: values.rewardDurationSeconds
-            ? new BN(values.rewardDurationSeconds)
-            : undefined,
-          kind: values.rewardDistributorKind,
-          supply: values.rewardMintSupply
-            ? new BN(values.rewardMintSupply)
-            : undefined,
-          multiplerDecimals: values.multiplierDecimals
-            ? parseInt(values.multiplierDecimals)
-            : undefined,
-          defaultMultiplier: values.defaultMultiplier
-            ? new BN(values.defaultMultiplier)
-            : undefined,
-          maxRewardSecondsReceived: values.maxRewardSecondsReceived
-            ? new BN(values.maxRewardSecondsReceived)
-            : undefined,
-        }
-
-        await withInitRewardDistributor(
-          transaction,
-          connection,
-          asWallet(wallet),
-          rewardDistributorKindParams
-        )
-      }
-
-      await executeTransaction(connection, asWallet(wallet), transaction, {
-        silent: false,
-        signers: [],
-      })
-      setStakePoolId(stakePoolPK)
-
-      notify({
-        message:
-          'Successfully created stake pool with ID: ' + stakePoolPK.toString(),
-        type: 'success',
-      })
-      // const stakePoolData = await getStakePool(connection, stakePoolPK)
-    } catch (e) {
-      console.log(e)
-      notify({
-        message: handleError(e, `Error creating stake pool: ${e}`),
-        type: 'error',
-      })
-    }
-  }
 
   return (
     <div>
@@ -206,7 +78,18 @@ function Admin() {
                 </p>
               </div>
             )}
-            <StakePoolForm handleSubmit={handleCreation} />
+            <StakePoolForm
+              handleSubmit={(d) =>
+                handleCreatePool.mutate(
+                  { values: d },
+                  {
+                    onSuccess: ([_, stakePoolId]) => {
+                      setStakePoolId(stakePoolId)
+                    },
+                  }
+                )
+              }
+            />
           </div>
           <div>
             <div className="mb-5 text-lg font-bold">Your pools</div>

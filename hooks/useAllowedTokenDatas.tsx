@@ -1,12 +1,10 @@
 import type { AccountData } from '@cardinal/common'
 import { getBatchedMultipleAccounts } from '@cardinal/common'
-import type {
-  StakeAuthorizationData,
-  StakePoolData,
-} from '@cardinal/staking/dist/cjs/programs/stakePool'
+import { findMintManagerId } from '@cardinal/creator-standard'
+import { MintManager } from '@cardinal/creator-standard/dist/cjs/generated'
+import type { IdlAccountData } from '@cardinal/rewards-center'
 import * as metaplex from '@metaplex-foundation/mpl-token-metadata'
-import * as spl from '@solana/spl-token'
-import type { AccountInfo, ParsedAccountData } from '@solana/web3.js'
+import type { AccountInfo } from '@solana/web3.js'
 import { PublicKey } from '@solana/web3.js'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 import { useQuery } from 'react-query'
@@ -14,6 +12,8 @@ import { useQuery } from 'react-query'
 import { useStakeAuthorizationsForPool } from './useStakeAuthorizationsForPool'
 import { useStakePoolData } from './useStakePoolData'
 import { useStakePoolId } from './useStakePoolId'
+import type { ParsedTokenAccountData } from './useTokenAccounts'
+import { useTokenAccounts } from './useTokenAccounts'
 import type { TokenListData } from './useTokenList'
 import { useTokenList } from './useTokenList'
 import { useWalletId } from './useWalletId'
@@ -21,36 +21,44 @@ import { useWalletId } from './useWalletId'
 export const TOKEN_DATAS_KEY = 'tokenDatas'
 
 export type AllowedTokenData = {
-  tokenAccount?: {
-    pubkey: PublicKey
-    account: AccountInfo<ParsedAccountData>
-  }
+  tokenAccount?: AccountData<ParsedTokenAccountData>
   metaplexData?: { pubkey: PublicKey; data: metaplex.MetadataData } | null
+  mintManagerData?: { pubkey: PublicKey; data: MintManager } | null
   tokenListData?: TokenListData
   amountToStake?: string
 }
 
 export const allowedTokensForPool = (
   tokenDatas: AllowedTokenData[],
-  stakePool: AccountData<StakePoolData>,
-  stakeAuthorizations?: AccountData<StakeAuthorizationData>[],
+  stakePool: Pick<IdlAccountData<'stakePool'>, 'pubkey' | 'parsed'>,
+  stakeAuthorizations?: Pick<
+    IdlAccountData<'stakeAuthorizationRecord'>,
+    'pubkey' | 'parsed'
+  >[],
   allowFrozen?: boolean
 ) =>
   tokenDatas.filter((token) => {
     let isAllowed = true
-    const creatorAddresses = stakePool.parsed.requiresCreators
-    const collectionAddresses = stakePool.parsed.requiresCollections
+    if (!stakePool.parsed) throw 'Stake pool data are unknown'
+    const creatorAddresses = stakePool.parsed.allowedCreators
+    const collectionAddresses = stakePool.parsed.allowedCollections
     const requiresAuthorization = stakePool.parsed.requiresAuthorization
+
+    if (token.mintManagerData && token.mintManagerData.data.inUseBy) {
+      return false
+    }
+
     if (
+      !token.mintManagerData &&
       !allowFrozen &&
-      token.tokenAccount?.account.data.parsed.info.state === 'frozen'
+      token.tokenAccount?.parsed.state === 'frozen'
     ) {
       return false
     }
 
     if (
-      stakePool.parsed.requiresCreators.length > 0 ||
-      stakePool.parsed.requiresCollections.length > 0 ||
+      stakePool.parsed.allowedCreators.length > 0 ||
+      stakePool.parsed.allowedCollections.length > 0 ||
       stakePool.parsed.requiresAuthorization
     ) {
       isAllowed = false
@@ -81,8 +89,8 @@ export const allowedTokensForPool = (
       if (
         requiresAuthorization &&
         stakeAuthorizations
-          ?.map((s) => s.parsed.mint.toString())
-          ?.includes(token?.tokenAccount?.account.data.parsed.info.mint)
+          ?.map((s) => s.parsed?.mint.toString())
+          ?.includes(token?.tokenAccount?.parsed.mint)
       ) {
         isAllowed = true
       }
@@ -97,6 +105,7 @@ export const useAllowedTokenDatas = (showFungibleTokens: boolean) => {
   const tokenList = useTokenList()
   const stakePool = useStakePoolData()
   const stakeAuthorizations = useStakeAuthorizationsForPool()
+  const allTokenAccounts = useTokenAccounts()
   return useQuery<AllowedTokenData[] | undefined>(
     [
       TOKEN_DATAS_KEY,
@@ -110,25 +119,13 @@ export const useAllowedTokenDatas = (showFungibleTokens: boolean) => {
     async () => {
       if (!stakePoolId || !stakePool.data || !walletId) return
 
-      const allTokenAccounts = await connection.getParsedTokenAccountsByOwner(
-        walletId!,
-        {
-          programId: spl.TOKEN_PROGRAM_ID,
-        }
-      )
-
-      const tokenAccounts = allTokenAccounts.value
-        .filter(
-          (tokenAccount) =>
-            tokenAccount.account.data.parsed.info.tokenAmount.uiAmount > 0
-        )
-        .sort((a, b) => a.pubkey.toBase58().localeCompare(b.pubkey.toBase58()))
+      const tokenAccounts = allTokenAccounts.data ?? []
       const metaplexIds = await Promise.all(
         tokenAccounts.map(
           async (tokenAccount) =>
             (
               await metaplex.MetadataProgram.findMetadataAccount(
-                new PublicKey(tokenAccount.account.data.parsed.info.mint)
+                new PublicKey(tokenAccount.parsed.mint)
               )
             )[0]
         )
@@ -158,12 +155,39 @@ export const useAllowedTokenDatas = (showFungibleTokens: boolean) => {
         }
       )
 
+      const mintManagerInfos = await getBatchedMultipleAccounts(
+        connection,
+        tokenAccounts.map((tk) =>
+          findMintManagerId(new PublicKey(tk.parsed.mint))
+        )
+      )
+      const mintManagerData = mintManagerInfos.reduce(
+        (acc, accountInfo, i) => {
+          try {
+            acc[tokenAccounts[i]!.pubkey.toString()] = {
+              pubkey: metaplexIds[i]!,
+              ...accountInfo,
+              data: MintManager.fromAccountInfo(
+                accountInfo as AccountInfo<Buffer>
+              )[0],
+            }
+          } catch (e) {}
+          return acc
+        },
+        {} as {
+          [tokenAccountId: string]: {
+            pubkey: PublicKey
+            data: MintManager
+          }
+        }
+      )
+
       const baseTokenDatas = tokenAccounts.map((tokenAccount, i) => ({
         tokenAccount,
         metaplexData: metaplexData[tokenAccount.pubkey.toString()],
+        mintManagerData: mintManagerData[tokenAccount.pubkey.toString()],
         tokenListData: tokenList.data?.find(
-          (t) =>
-            t.address === tokenAccount?.account.data.parsed.info.mint.toString()
+          (t) => t.address === tokenAccount?.parsed.mint.toString()
         ),
       }))
 
@@ -175,16 +199,21 @@ export const useAllowedTokenDatas = (showFungibleTokens: boolean) => {
         (tokenData) =>
           showFungibleTokens ===
           (!!tokenData.tokenListData ||
-            tokenData.metaplexData?.data.tokenStandard ===
+            ((tokenData.metaplexData?.data.tokenStandard ===
               metaplex.TokenStandard.Fungible ||
-            tokenData.metaplexData?.data.tokenStandard ===
-              metaplex.TokenStandard.FungibleAsset)
+              tokenData.metaplexData?.data.tokenStandard ===
+                metaplex.TokenStandard.FungibleAsset) &&
+              !tokenData.mintManagerData))
       )
 
       return allowedTokens
     },
     {
-      enabled: tokenList.isFetched && !!stakePool.data && !!walletId,
+      enabled:
+        tokenList.isFetched &&
+        allTokenAccounts.isFetched &&
+        !!stakePool.data &&
+        !!walletId,
     }
   )
 }

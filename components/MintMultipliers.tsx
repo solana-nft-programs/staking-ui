@@ -47,9 +47,9 @@ export const MintMultipliers = () => {
         Set the stake multiplier for given mints.
         <br />
         For a 1x multiplier, enter value{' '}
-        {10 ** rewardDistributor.data.parsed.multiplierDecimals}, for a 2x
-        multiplier enter value{' '}
-        {2 * 10 ** rewardDistributor.data.parsed.multiplierDecimals} ...
+        {10 ** (rewardDistributor.data.parsed?.multiplierDecimals || 0)}, for a
+        2x multiplier enter value{' '}
+        {2 * 10 ** (rewardDistributor.data.parsed?.multiplierDecimals || 0)} ...
       </p>
       <p className="text-sm italic text-gray-300">
         For decimal multipliers, work with the reward distributor
@@ -110,7 +110,7 @@ export const MintMultipliers = () => {
       {multiplierMints.map(
         (v, i) =>
           i > 0 && (
-            <span className="flex flex-row gap-5">
+            <span key={v} className="flex flex-row gap-5">
               <input
                 className="mb-3 w-1/6 appearance-none flex-col rounded border border-gray-500 bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800 focus:outline-none"
                 type="text"

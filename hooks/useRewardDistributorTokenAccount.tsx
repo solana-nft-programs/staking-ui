@@ -9,7 +9,7 @@ import { useRewardDistributorData } from './useRewardDistributorData'
 
 export const useRewardDistributorTokenAccount = () => {
   const rewardDistibutorData = useRewardDistributorData()
-  const { secondaryConnection } = useEnvironmentCtx()
+  const { connection } = useEnvironmentCtx()
   return useQuery<splToken.AccountInfo | undefined>(
     [
       REWARD_QUERY_KEY,
@@ -17,14 +17,15 @@ export const useRewardDistributorTokenAccount = () => {
       rewardDistibutorData?.data?.pubkey?.toString(),
     ],
     async () => {
-      if (!rewardDistibutorData.data) return
+      if (!rewardDistibutorData.data || !rewardDistibutorData.data.parsed)
+        return
       const rewardDistributorTokenAccount = await findAta(
         rewardDistibutorData.data.parsed.rewardMint,
         rewardDistibutorData.data.pubkey,
         true
       )
       const rewardMint = new splToken.Token(
-        secondaryConnection,
+        connection,
         rewardDistibutorData.data.parsed.rewardMint,
         splToken.TOKEN_PROGRAM_ID,
         Keypair.generate() // not used
