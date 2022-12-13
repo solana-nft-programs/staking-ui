@@ -120,7 +120,7 @@ export const useAllowedTokenDatas = (showFungibleTokens: boolean) => {
       if (!stakePoolId || !stakePool.data || !walletId) return
 
       const allTokenAccounts = await connection.getParsedTokenAccountsByOwner(
-        walletId!,
+        walletId,
         {
           programId: spl.TOKEN_PROGRAM_ID,
         }
