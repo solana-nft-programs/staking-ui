@@ -1,9 +1,7 @@
 import { InformationCircleIcon } from '@heroicons/react/24/outline'
 import type { FormikHandlers, FormikState, FormikValues } from 'formik'
 import type { Dispatch, SetStateAction } from 'react'
-import { useEffect } from 'react'
-import { useState } from 'react'
-import JSONPretty from 'react-json-pretty'
+import { useEffect, useState } from 'react'
 
 import { SlavePanelScreens } from '@/components/stake-pool-creation/SlavePanel'
 import { SelectInput } from '@/components/UI/inputs/SelectInput'
@@ -86,7 +84,6 @@ export const AdditionalStakeConditions = ({
           }
         />
       </div>
-      <JSONPretty data={values} />
       <SelectInput
         className="mb-6 w-full"
         value={resetOnStake}

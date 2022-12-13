@@ -7,7 +7,6 @@ import { SlavePanelScreens } from '@/components/stake-pool-creation/SlavePanel'
 import { SelectInput } from '@/components/UI/inputs/SelectInput'
 import { LabelText } from '@/components/UI/typography/LabelText'
 import { booleanOptions } from '@/types/index'
-import JSONPretty from 'react-json-pretty'
 
 export type AccessAuthorityInputsProps = {
   setActiveSlavePanelScreen: Dispatch<SetStateAction<SlavePanelScreens>>
@@ -34,7 +33,6 @@ export const AccessAuthorityInputs = ({
 
   return (
     <div className="space-y-2 pt-4">
-      <JSONPretty data={values} />
       <div className="flex w-full items-center">
         <LabelText>Require authorization to accesses mint</LabelText>
         <InformationCircleIcon

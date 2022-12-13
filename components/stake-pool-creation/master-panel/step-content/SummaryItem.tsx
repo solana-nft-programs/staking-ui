@@ -36,7 +36,15 @@ export const SummaryItem = ({ item, value }: SummaryItemProps) => {
             <span className="text-gray-500">
               <>{labels[item] ? labels[item] : camelCaseToTitle(item)}:</>
             </span>
-            <span className="ml-2 text-gray-200">{value ? value : 'N/A'}</span>
+            {typeof value === 'boolean' ? (
+              <span className="ml-2 capitalize text-gray-200">
+                {value ? 'Yes' : 'No'}
+              </span>
+            ) : (
+              <span className="ml-2 text-gray-200">
+                {value ? value : 'N/A'}
+              </span>
+            )}
           </div>
         )}
       </div>
