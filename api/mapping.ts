@@ -2556,11 +2556,6 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     styles: {
       fontFamily: 'GTA',
       fontWeight: 300,
-      backgroundSize: '100% auto',
-      backgroundPosition: 'center',
-      backgroundRepeat: 'no-repeat',
-      backgroundImage:
-      'https://i.ibb.co/WD0s2Xc/background-50102c46.jpg',
     },
     colors: {
       primary: '',
@@ -2606,11 +2601,6 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     styles: {
       fontFamily: 'GTA',
       fontWeight: 300,
-      backgroundPosition: 'center',
-      backgroundRepeat: 'no-repeat',
-      backgroundSize: '100% auto',
-      backgroundImage:
-      'https://i.ibb.co/jDjCcDb/background-50102c46.png',
     },
     // Colors object to style the stake page
     colors: {
@@ -2621,8 +2611,8 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     },
     imageUrl:
       'https://arweave.net/z64F7Hk0nHfq-KZ9DgTBT3k7CiKfdyyyAqhC3T1TpkQ?ext=png',
-    backgroundImage:
-      'https://i.ibb.co/jDjCcDb/background-50102c46.png',
+      backgroundImage:
+      'https://i.ibb.co/Qvp8XB1/43.jpg',
 
     // Website url if specified will be navigated to when the image in the header is clicked
     maxStaked: 7777,
