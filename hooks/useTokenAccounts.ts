@@ -1,8 +1,8 @@
 import type { AccountData } from '@cardinal/common'
-import * as spl from '@solana/spl-token'
 import type { Connection, PublicKey } from '@solana/web3.js'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 import { useQuery } from 'react-query'
+import { TOKEN_PROGRAM_ID } from 'spl-token-v3'
 
 import { TOKEN_DATAS_KEY } from './useAllowedTokenDatas'
 import { useWalletId } from './useWalletId'
@@ -28,7 +28,7 @@ export const getTokenAccounts = async (
   const allTokenAccounts = await connection.getParsedTokenAccountsByOwner(
     walletId,
     {
-      programId: spl.TOKEN_PROGRAM_ID,
+      programId: TOKEN_PROGRAM_ID,
     }
   )
   const tokenAccounts = allTokenAccounts.value
