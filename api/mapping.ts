@@ -2620,7 +2620,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       fontColor: 'white',
     },
     imageUrl:
-      'https://i.ibb.co/bbKcpJG/favicon.png',
+      'https://arweave.net/z64F7Hk0nHfq-KZ9DgTBT3k7CiKfdyyyAqhC3T1TpkQ?ext=png',
     backgroundImage:
       'https://i.ibb.co/jDjCcDb/background-50102c46.png',
 
