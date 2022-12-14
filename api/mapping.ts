@@ -2546,6 +2546,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     stakePoolAddress: new PublicKey(
       '6NsLz577nf9eRSfXtH18rDdJHik3PePpKwVVLPrXPtWx'
     ),
+    contrastHomepageBkg: true,
     hostname: 'staking.dustcity.world',
     hideFooter: true,
     hideAllowedTokens: true,
@@ -2555,7 +2556,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     styles: {
       fontFamily: 'GTA',
       fontWeight: 300,
-      backgroundSize: 'cover',
+      backgroundSize: '100% auto',
       backgroundPosition: 'center',
       backgroundRepeat: 'no-repeat',
       backgroundImage:
@@ -2594,6 +2595,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     stakePoolAddress: new PublicKey(
       'ENPEvNwSMxN6K63YwDMirSVnd9TUisDkY6cuPZiN7unS'
     ),
+    contrastHomepageBkg: true,
     hostname: 'rektville.dustcity.world',
     hideFooter: true,
     hideAllowedTokens: true,
@@ -2604,9 +2606,9 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     styles: {
       fontFamily: 'GTA',
       fontWeight: 300,
-      backgroundSize: 'cover',
       backgroundPosition: 'center',
       backgroundRepeat: 'no-repeat',
+      backgroundSize: '100% auto',
       backgroundImage:
       'https://i.ibb.co/jDjCcDb/background-50102c46.png',
     },
