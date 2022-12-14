@@ -61,6 +61,10 @@ export const NATIVE_ERRORS: ErrorCode[] = [
     message:
       'Insufficient funds. User does not have enough balance of token to complete the transaction',
   },
+  {
+    code: '0',
+    message: 'Address already in use',
+  },
   // token program errors
   {
     code: '0x1',

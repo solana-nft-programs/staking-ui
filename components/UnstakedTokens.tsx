@@ -255,19 +255,12 @@ export const UnstakedTokens = () => {
         <div className="flex gap-5">
           <Tooltip title="Click on tokens to select them">
             <button
-              onClick={() => {
-                if (unstakedSelected.length === 0) {
-                  notify({
-                    message: `No tokens selected`,
-                    type: 'error',
-                  })
-                } else {
-                  handleStake.mutate({
-                    tokenDatas: unstakedSelected,
-                    receiptType,
-                  })
-                }
-              }}
+              onClick={() =>
+                handleStake.mutate({
+                  tokenDatas: unstakedSelected,
+                  receiptType,
+                })
+              }
               style={{
                 background:
                   stakePoolMetadata?.colors?.secondary || defaultSecondaryColor,

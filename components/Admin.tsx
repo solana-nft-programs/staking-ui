@@ -54,7 +54,7 @@ function Admin() {
           defer
           data-domain="stake.cardinal.so"
           src="https://plausible.io/js/plausible.js"
-        ></script>
+        />
       </Head>
 
       <HeaderSlim />
