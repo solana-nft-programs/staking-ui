@@ -48,6 +48,7 @@ function StakePoolHome() {
         className="flex min-h-screen flex-col"
         style={{
           background: stakePoolMetadata?.colors?.primary,
+          backgroundSize: 'cover',
           backgroundImage: `url(${stakePoolMetadata?.backgroundImage})`,
         }}
       >
