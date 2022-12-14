@@ -129,7 +129,8 @@ export const useHandleUpdatePool = () => {
               maxRewardSecondsReceived: values.maxRewardSecondsReceived
                 ? new BN(values.maxRewardSecondsReceived)
                 : null,
-              claimRewardsPaymentInfo: DEFAULT_PAYMENT_INFO,
+              claimRewardsPaymentInfo:
+                rewardDistributor.data.parsed.claimRewardsPaymentInfo,
             })
             .accounts({
               rewardDistributor: rewardDistributor.data.pubkey,
