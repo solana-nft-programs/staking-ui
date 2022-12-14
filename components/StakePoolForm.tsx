@@ -617,15 +617,6 @@ export function StakePoolForm({
                     }}
                   />
                 </div>
-
-                <div className="mb-6 mt-4 w-full px-3 md:mb-0">
-                  <FormFieldTitleInput
-                    title={'Reward Transfer Amount'}
-                    description={
-                      'How many tokens to transfer to the stake pool for future distribution (max: your asscociated token account balance). This can also be 0 and tokens can be transferred in directly via a wallet ui.'
-                    }
-                  />
-                </div>
                 <div className="relative mb-6 mt-4 w-full px-3 md:mb-0">
                   <FormFieldTitleInput
                     title={'Maximum reward seconds'}
