@@ -103,7 +103,7 @@ export const HeroStats: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({
                 {formatAmountAsDecimal(
                   rewardMintInfo.data.mintInfo.decimals,
                   baseDailyRate(rewardDistributorData.data),
-                  Math.min(rewardMintInfo.data.mintInfo.decimals, 5)
+                  Math.min(rewardMintInfo.data.mintInfo.decimals, 3)
                 )}{' '}
                 <a
                   className="underline"
