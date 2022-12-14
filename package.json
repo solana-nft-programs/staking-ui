@@ -27,7 +27,7 @@
     "@cardinal/common": "^4.0.1",
     "@cardinal/namespaces-components": "^4.1.31",
     "@cardinal/rewards-center": "^2.2.1",
-    "@cardinal/staking": "1.11.2",
+    "@cardinal/staking": "1.13.0",
     "@cardinal/stats": "^1.0.3",
     "@emotion/babel-plugin": "^11.7.2",
     "@emotion/babel-preset-css-prop": "^11.2.0",

@@ -80,7 +80,7 @@ export const isRewardDistributorV2 = (
       >
   ) & { type?: 'v1' | 'v2' }
 ): boolean =>
-  rewardDistributorData.type === 'v2' || 'identifier' in rewardDistributorData
+  !('maxSupply' in rewardDistributorData || rewardDistributorData.type === 'v1')
 
 export const rewardDistributorDataToV2 = (
   rewardDistributorData:

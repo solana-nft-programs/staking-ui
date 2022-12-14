@@ -9,6 +9,7 @@ import { useQuery } from 'react-query'
 import {
   isRewardDistributorV2,
   rewardDistributorDataToV1,
+  rewardDistributorDataToV2,
   useRewardDistributorData,
 } from './useRewardDistributorData'
 import { useRewardDistributorTokenAccount } from './useRewardDistributorTokenAccount'
@@ -129,7 +130,10 @@ export const useRewardsRate = () => {
       return {
         rewardsRateMap,
         dailyRewards: totalDaily.eq(new BN(0))
-          ? baseDailyRate(rewardDistributorData)
+          ? baseDailyRate({
+              pubkey: rewardDistributorData.pubkey,
+              parsed: rewardDistributorDataToV2(rewardDistributorData.parsed),
+            })
           : totalDaily,
       }
     }

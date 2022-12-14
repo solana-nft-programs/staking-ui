@@ -162,5 +162,6 @@ export const stakeEntryDataToV1 = (
     stakeMint: PublicKey.default,
     cooldownStartSeconds: entryData.cooldownStartSeconds,
     lastUpdatedAt: entryData.lastUpdatedAt,
+    grouped: false,
   }
 }
