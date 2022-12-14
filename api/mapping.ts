@@ -2546,6 +2546,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     stakePoolAddress: new PublicKey(
       '6NsLz577nf9eRSfXtH18rDdJHik3PePpKwVVLPrXPtWx'
     ),
+    contrastHomepageBkg: true,
     hostname: 'staking.dustcity.world',
     hideFooter: true,
     hideAllowedTokens: true,
@@ -2555,10 +2556,11 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     styles: {
       fontFamily: 'GTA',
       fontWeight: 300,
-      backgroundSize: 'cover',
+      backgroundSize: '100% auto',
       backgroundPosition: 'center',
       backgroundRepeat: 'no-repeat',
-      backgroundImage: 'https://i.ibb.co/WD0s2Xc/background-50102c46.jpg',
+      backgroundImage:
+      'https://i.ibb.co/WD0s2Xc/background-50102c46.jpg',
     },
     colors: {
       primary: '',
@@ -2566,8 +2568,10 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       backgroundSecondary: 'rgba(0, 0, 0, 0.59)',
       fontColor: 'white',
     },
-    imageUrl: 'https://dustcity.world/assets/img/Header/logo.svg',
-    backgroundImage: 'https://i.ibb.co/WD0s2Xc/background-50102c46.jpg',
+    imageUrl:
+      'https://dustcity.world/assets/img/Header/logo.svg',
+    backgroundImage:
+      'https://i.ibb.co/WD0s2Xc/background-50102c46.jpg',
     maxStaked: 3333,
     links: [
       {
@@ -2591,6 +2595,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     stakePoolAddress: new PublicKey(
       'ENPEvNwSMxN6K63YwDMirSVnd9TUisDkY6cuPZiN7unS'
     ),
+    contrastHomepageBkg: true,
     hostname: 'rektville.dustcity.world',
     hideFooter: true,
     hideAllowedTokens: true,
@@ -2601,10 +2606,11 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     styles: {
       fontFamily: 'GTA',
       fontWeight: 300,
-      backgroundSize: 'cover',
       backgroundPosition: 'center',
       backgroundRepeat: 'no-repeat',
-      backgroundImage: 'https://i.ibb.co/jDjCcDb/background-50102c46.png',
+      backgroundSize: '100% auto',
+      backgroundImage:
+      'https://i.ibb.co/jDjCcDb/background-50102c46.png',
     },
     // Colors object to style the stake page
     colors: {
@@ -2613,8 +2619,10 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       backgroundSecondary: 'rgba(53, 109, 130, 0.8)',
       fontColor: 'white',
     },
-    imageUrl: 'https://i.ibb.co/bbKcpJG/favicon.png',
-    backgroundImage: 'https://i.ibb.co/jDjCcDb/background-50102c46.png',
+    imageUrl:
+      'https://i.ibb.co/bbKcpJG/favicon.png',
+    backgroundImage:
+      'https://i.ibb.co/jDjCcDb/background-50102c46.png',
 
     // Website url if specified will be navigated to when the image in the header is clicked
     maxStaked: 7777,
