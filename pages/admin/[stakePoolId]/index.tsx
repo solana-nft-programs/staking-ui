@@ -9,6 +9,7 @@ import { MintMultiplierLookup } from 'components/MintMultiplierLookup'
 import { MintMultipliers } from 'components/MintMultipliers'
 import { ReclaimFunds } from 'components/ReclaimFunds'
 import { StakePoolForm } from 'components/StakePoolForm'
+import { TransferFunds } from 'components/TransferFunds'
 import { useHandleUpdatePool } from 'handlers/useHandleUpdatePool'
 import { useRewardDistributorData } from 'hooks/useRewardDistributorData'
 import { useRewardMintInfo } from 'hooks/useRewardMintInfo'
@@ -236,6 +237,7 @@ function AdminStakePool() {
                 {rewardDistributor.data && rewardMintInfo.data && (
                   <div className="mt-10">
                     <ReclaimFunds />
+                    <TransferFunds />
                     <MintMultiplierLookup />
                     <MintMultipliers />
                   </div>

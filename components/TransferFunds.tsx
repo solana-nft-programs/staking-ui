@@ -2,25 +2,21 @@ import { RewardDistributorKind } from '@cardinal/staking/dist/cjs/programs/rewar
 import { AsyncButton } from 'common/Button'
 import { notify } from 'common/Notification'
 import { tryFormatInput, tryParseInput } from 'common/units'
-import { useHandleReclaimFunds } from 'handlers/useHandleReclaimFunds'
-import {
-  isRewardDistributorV2,
-  useRewardDistributorData,
-} from 'hooks/useRewardDistributorData'
+import { useHandleTransferFunds } from 'handlers/useHandleTransferFunds'
+import { useRewardDistributorData } from 'hooks/useRewardDistributorData'
 import { useRewardDistributorTokenAccount } from 'hooks/useRewardDistributorTokenAccount'
 import { useRewardMintInfo } from 'hooks/useRewardMintInfo'
 import { useState } from 'react'
 
-export const ReclaimFunds = () => {
-  const [reclaimAmount, setReclaimAmount] = useState<string>()
+export const TransferFunds = () => {
+  const [transferAmount, setTransferAmount] = useState<string>()
   const rewardMintInfo = useRewardMintInfo()
   const rewardDistributor = useRewardDistributorData()
   const rewardDistributorTokenAccount = useRewardDistributorTokenAccount()
-  const handleReclaimFunds = useHandleReclaimFunds()
+  const handleTransferFunds = useHandleTransferFunds()
   if (
     !rewardDistributor.data ||
-    rewardDistributor.data.parsed?.kind !== RewardDistributorKind.Treasury ||
-    !isRewardDistributorV2(rewardDistributor.data.parsed)
+    rewardDistributor.data.parsed?.kind !== RewardDistributorKind.Treasury
   ) {
     return <></>
   }
@@ -30,7 +26,7 @@ export const ReclaimFunds = () => {
         className="mb-2 block text-xs font-bold uppercase tracking-wide text-gray-200"
         htmlFor="require-authorization"
       >
-        Reclaim Funds
+        Transfer Funds
       </label>
       <div className="mb-5 flex flex-row">
         <div
@@ -41,7 +37,7 @@ export const ReclaimFunds = () => {
             type="text"
             placeholder={'1000000'}
             value={tryFormatInput(
-              reclaimAmount,
+              transferAmount,
               rewardMintInfo.data?.mintInfo.decimals || 0,
               '0'
             )}
@@ -54,39 +50,27 @@ export const ReclaimFunds = () => {
                 })
                 return
               }
-              setReclaimAmount(
+              setTransferAmount(
                 tryParseInput(
                   e.target.value,
                   rewardMintInfo.data?.mintInfo.decimals || 0,
-                  reclaimAmount ?? ''
+                  transferAmount ?? ''
                 )
               )
             }}
           />
-          {rewardDistributorTokenAccount.data && (
-            <div
-              className="flex h-full cursor-pointer items-center justify-center"
-              onClick={async () => {
-                setReclaimAmount(
-                  rewardDistributorTokenAccount.data?.amount.toString()
-                )
-              }}
-            >
-              Max
-            </div>
-          )}
         </div>
         <AsyncButton
           className="ml-5 rounded-md px-3 py-1"
-          loading={handleReclaimFunds.isLoading}
+          loading={handleTransferFunds.isLoading}
           inlineLoader
           onClick={() =>
-            handleReclaimFunds.mutate({
-              reclaimAmount: reclaimAmount,
+            handleTransferFunds.mutate({
+              transferAmount: Number(transferAmount),
             })
           }
         >
-          <div className="text-xs">Reclaim Funds</div>
+          <div className="text-xs">Transfer Funds</div>
         </AsyncButton>
       </div>
     </div>
