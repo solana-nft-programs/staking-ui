@@ -5,16 +5,17 @@ import {
   rewardsCenterProgram,
 } from '@cardinal/rewards-center'
 import { executeTransaction } from '@cardinal/staking'
+import { RewardDistributorKind } from '@cardinal/staking/dist/cjs/programs/rewardDistributor'
 import {
   withCloseRewardDistributor,
+  withInitRewardDistributor,
   withUpdateRewardDistributor,
 } from '@cardinal/staking/dist/cjs/programs/rewardDistributor/transaction'
 import { withUpdateStakePool } from '@cardinal/staking/dist/cjs/programs/stakePool/transaction'
 import { BN } from '@project-serum/anchor'
 import { TOKEN_PROGRAM_ID } from '@project-serum/anchor/dist/cjs/utils/token'
 import { useWallet } from '@solana/wallet-adapter-react'
-import type { PublicKey } from '@solana/web3.js'
-import { SystemProgram, Transaction } from '@solana/web3.js'
+import { PublicKey, SystemProgram, Transaction } from '@solana/web3.js'
 import { handleError } from 'common/errors'
 import { notify } from 'common/Notification'
 import { asWallet } from 'common/Wallets'
@@ -128,30 +129,53 @@ export const useHandleUpdatePool = () => {
           } else {
             throw 'Cannot create deprecated reward distributor'
           }
-        } else if (rewardDistributor.data && rewardDistributor.data.parsed) {
-          await withUpdateRewardDistributor(transaction, connection, wallet, {
+        } else {
+          await withInitRewardDistributor(transaction, connection, wallet, {
             stakePoolId: stakePool.data.pubkey,
-            defaultMultiplier: values.defaultMultiplier
-              ? new BN(values.defaultMultiplier)
-              : undefined,
-            multiplierDecimals: values.multiplierDecimals
-              ? Number(values.multiplierDecimals)
-              : undefined,
+            rewardMintId: new PublicKey(values.rewardMintAddress!.trim())!,
             rewardAmount: values.rewardAmount
               ? new BN(values.rewardAmount)
               : undefined,
             rewardDurationSeconds: values.rewardDurationSeconds
               ? new BN(values.rewardDurationSeconds)
               : undefined,
-            maxRewardSecondsReceived: values.maxRewardSecondsReceived
-              ? new BN(values.maxRewardSecondsReceived)
+            kind: RewardDistributorKind.Treasury, // TODO
+            supply: new BN(0), // TODO
+            defaultMultiplier: values.defaultMultiplier
+              ? new BN(values.defaultMultiplier)
+              : undefined,
+            multiplierDecimals: values.multiplierDecimals
+              ? Number(values.multiplierDecimals)
               : undefined,
           })
           notify({
-            message: `Updating reward distributor`,
+            message: 'Initializing reward distributor for pool',
             type: 'info',
           })
         }
+      } else if (rewardDistributor.data) {
+        await withUpdateRewardDistributor(transaction, connection, wallet, {
+          stakePoolId: stakePool.data.pubkey,
+          defaultMultiplier: values.defaultMultiplier
+            ? new BN(values.defaultMultiplier)
+            : undefined,
+          multiplierDecimals: values.multiplierDecimals
+            ? Number(values.multiplierDecimals)
+            : undefined,
+          rewardAmount: values.rewardAmount
+            ? new BN(values.rewardAmount)
+            : undefined,
+          rewardDurationSeconds: values.rewardDurationSeconds
+            ? new BN(values.rewardDurationSeconds)
+            : undefined,
+          maxRewardSecondsReceived: values.maxRewardSecondsReceived
+            ? new BN(values.maxRewardSecondsReceived)
+            : undefined,
+        })
+        notify({
+          message: `Updating reward distributor`,
+          type: 'info',
+        })
       }
 
       const collectionPublicKeys = values.requireCollections
@@ -175,7 +199,7 @@ export const useHandleUpdatePool = () => {
         allowedCreators: creatorPublicKeys,
         requiresAuthorization: values.requiresAuthorization,
         resetOnStake: values.resetOnStake,
-        // overlayText: values.overlayText,
+        // overlayText: values.overlayText, // TODO
         cooldownSeconds: values.cooldownPeriodSeconds,
         minStakeSeconds: values.minStakeSeconds,
         endDate: dateInNum ? new BN(dateInNum / 1000) : undefined,
@@ -213,12 +237,18 @@ export const useHandleUpdatePool = () => {
           .instruction()
         transaction.add(ix)
       } else {
-        await withUpdateStakePool(
-          transaction,
-          connection,
-          wallet,
-          stakePoolParams
-        )
+        await withUpdateStakePool(transaction, connection, wallet, {
+          stakePoolId: stakePoolParams.stakePoolId,
+          requiresCollections: stakePoolParams.allowedCollections,
+          requiresCreators: stakePoolParams.allowedCreators,
+          requiresAuthorization: stakePoolParams.requiresAuthorization,
+          overlayText: '',
+          resetOnStake: stakePoolParams.resetOnStake,
+          cooldownSeconds: stakePoolParams.cooldownSeconds,
+          minStakeSeconds: stakePoolParams.minStakeSeconds,
+          endDate: stakePoolParams.endDate,
+          doubleOrResetEnabled: false,
+        })
       }
 
       return executeTransaction(connection, wallet, transaction, {})
