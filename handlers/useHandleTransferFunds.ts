@@ -45,7 +45,7 @@ export const useHandleTransferFunds = () => {
         transaction,
         connection,
         rewardDistributor.data.parsed?.rewardMint,
-        stakePool.data.pubkey,
+        rewardDistributor.data.pubkey,
         wallet.publicKey,
         true
       )
