@@ -95,8 +95,8 @@ export const useHandleUpdatePool = () => {
             endDate: values.endDate
               ? new BN(values.endDate)
               : stakePool.data.parsed.endDate,
-            stakePaymentInfo: DEFAULT_PAYMENT_INFO,
-            unstakePaymentInfo: DEFAULT_PAYMENT_INFO,
+            stakePaymentInfo: stakePool.data.parsed.stakePaymentInfo,
+            unstakePaymentInfo: stakePool.data.parsed.unstakePaymentInfo,
           })
           .accounts({
             stakePool: stakePool.data.pubkey,
@@ -188,7 +188,7 @@ export const useHandleUpdatePool = () => {
           cooldownSeconds: stakePoolParams.cooldownSeconds,
           minStakeSeconds: stakePoolParams.minStakeSeconds,
           endDate: stakePoolParams.endDate,
-          doubleOrResetEnabled: false,
+          doubleOrResetEnabled: false, // TODO
         })
         notify({
           message: 'Updating stake pool',

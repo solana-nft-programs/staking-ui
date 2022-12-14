@@ -67,6 +67,7 @@ export const useRewardDistributorData = () => {
     },
     {
       enabled: !!stakePoolData?.pubkey,
+      retry: false,
     }
   )
 }
