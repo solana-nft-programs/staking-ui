@@ -5,6 +5,7 @@ import { ShortPubKeyUrl } from 'common/Pubkeys'
 import { getMintDecimalAmountFromNatural } from 'common/units'
 import { pubKeyUrl, shortPubKey } from 'common/utils'
 import { AuthorizeMints } from 'components/AuthorizeMints'
+import { CloseRewardDistributor } from 'components/CloseRewardDistributor'
 import { MintMultiplierLookup } from 'components/MintMultiplierLookup'
 import { MintMultipliers } from 'components/MintMultipliers'
 import { ReclaimFunds } from 'components/ReclaimFunds'
@@ -236,6 +237,7 @@ function AdminStakePool() {
                 )}
                 {rewardDistributor.data && rewardMintInfo.data && (
                   <div className="mt-10">
+                    <CloseRewardDistributor />
                     <ReclaimFunds />
                     <TransferFunds />
                     <MintMultiplierLookup />

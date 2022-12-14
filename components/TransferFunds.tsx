@@ -4,7 +4,6 @@ import { notify } from 'common/Notification'
 import { tryFormatInput, tryParseInput } from 'common/units'
 import { useHandleTransferFunds } from 'handlers/useHandleTransferFunds'
 import { useRewardDistributorData } from 'hooks/useRewardDistributorData'
-import { useRewardDistributorTokenAccount } from 'hooks/useRewardDistributorTokenAccount'
 import { useRewardMintInfo } from 'hooks/useRewardMintInfo'
 import { useState } from 'react'
 
@@ -12,7 +11,6 @@ export const TransferFunds = () => {
   const [transferAmount, setTransferAmount] = useState<string>()
   const rewardMintInfo = useRewardMintInfo()
   const rewardDistributor = useRewardDistributorData()
-  const rewardDistributorTokenAccount = useRewardDistributorTokenAccount()
   const handleTransferFunds = useHandleTransferFunds()
   if (
     !rewardDistributor.data ||
