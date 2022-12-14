@@ -90,7 +90,7 @@ export const UnstakedToken = ({
             background: stakePoolMetadata?.colors?.backgroundSecondary,
           }}
         >
-          <div className="truncate font-semibold">
+          <div className="max-w-[120px] truncate font-semibold">
             {getNameFromTokenData(tk, mintMetadata?.data)}
           </div>
           {tk.tokenAccount &&
