@@ -72,7 +72,7 @@ export const useTokenList = () => {
         .then((data) => [...data['tokens'], ...additionalMints])
     },
     {
-      retry: 2,
+      retry: false,
     }
   )
 }
