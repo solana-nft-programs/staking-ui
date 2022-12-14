@@ -2612,7 +2612,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     imageUrl:
       'https://arweave.net/z64F7Hk0nHfq-KZ9DgTBT3k7CiKfdyyyAqhC3T1TpkQ?ext=png',
       backgroundImage:
-      'https://i.ibb.co/Qvp8XB1/43.jpg',
+      'https://i.ibb.co/bvp5KF2/43.jpg',
 
     // Website url if specified will be navigated to when the image in the header is clicked
     maxStaked: 7777,
