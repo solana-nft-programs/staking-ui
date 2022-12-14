@@ -20,7 +20,7 @@ export const ReclaimFunds = () => {
   if (
     !rewardDistributor.data ||
     rewardDistributor.data.parsed?.kind !== RewardDistributorKind.Treasury ||
-    !isRewardDistributorV2(rewardDistributor.data.parsed)
+    isRewardDistributorV2(rewardDistributor.data.parsed)
   ) {
     return <></>
   }

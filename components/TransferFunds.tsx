@@ -3,7 +3,10 @@ import { AsyncButton } from 'common/Button'
 import { notify } from 'common/Notification'
 import { tryFormatInput, tryParseInput } from 'common/units'
 import { useHandleTransferFunds } from 'handlers/useHandleTransferFunds'
-import { useRewardDistributorData } from 'hooks/useRewardDistributorData'
+import {
+  isRewardDistributorV2,
+  useRewardDistributorData,
+} from 'hooks/useRewardDistributorData'
 import { useRewardMintInfo } from 'hooks/useRewardMintInfo'
 import { useState } from 'react'
 
@@ -14,7 +17,8 @@ export const TransferFunds = () => {
   const handleTransferFunds = useHandleTransferFunds()
   if (
     !rewardDistributor.data ||
-    rewardDistributor.data.parsed?.kind !== RewardDistributorKind.Treasury
+    (rewardDistributor.data.parsed?.kind === RewardDistributorKind.Mint &&
+      !isRewardDistributorV2(rewardDistributor.data.parsed))
   ) {
     return <></>
   }

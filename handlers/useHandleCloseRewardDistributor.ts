@@ -1,6 +1,7 @@
 import { withFindOrInitAssociatedTokenAccount } from '@cardinal/common'
 import { rewardsCenterProgram } from '@cardinal/rewards-center'
 import { executeTransaction } from '@cardinal/staking'
+import { withCloseRewardDistributor } from '@cardinal/staking/dist/cjs/programs/rewardDistributor/transaction'
 import { useWallet } from '@solana/wallet-adapter-react'
 import { Transaction } from '@solana/web3.js'
 import { notify } from 'common/Notification'
@@ -58,7 +59,9 @@ export const useHandleCloseRewardDistributor = () => {
           .instruction()
         transaction.add(ix)
       } else {
-        // do nothing
+        await withCloseRewardDistributor(transaction, connection, wallet, {
+          stakePoolId: stakePool.data.pubkey,
+        })
       }
       return executeTransaction(connection, wallet, transaction, {})
     },
