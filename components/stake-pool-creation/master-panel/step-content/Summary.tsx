@@ -13,6 +13,7 @@ export const Summary = ({ formState }: SummaryProps) => {
     <div className="max-h-[350px] overflow-y-scroll">
       {Object.keys(values).map((item) => {
         const label = item as LabelKey
+
         return <SummaryItem item={label} value={values[item]} key={item} />
       })}
     </div>

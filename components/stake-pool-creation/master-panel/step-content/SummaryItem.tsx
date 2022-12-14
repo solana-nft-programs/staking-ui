@@ -1,8 +1,12 @@
+import { PublicKey } from '@solana/web3.js'
+import { ShortPubKeyUrl } from 'common/Pubkeys'
 import { camelCaseToTitle } from 'common/utils'
+import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
+import { Fragment } from 'react'
 
 export type SummaryItemProps = {
   item: LabelKey
-  value: string
+  value: string | string[]
 }
 
 export enum LabelKey {
@@ -18,6 +22,22 @@ const labels = {
 }
 
 export const SummaryItem = ({ item, value }: SummaryItemProps) => {
+  const { environment } = useEnvironmentCtx()
+
+  const formatPubKeys = (pubKeys: string[]) => {
+    return pubKeys.map((pubKey, i) => {
+      return (
+        <Fragment key={pubKey}>
+          <ShortPubKeyUrl
+            pubkey={new PublicKey(pubKey)}
+            cluster={environment.label}
+          ></ShortPubKeyUrl>
+          {i < pubKeys.length - 1 && ', '}
+        </Fragment>
+      )
+    })
+  }
+
   return (
     <div className="w-full py-1" key={item}>
       <div className="flex w-full items-center justify-between rounded-xl bg-gray-800 p-6">
@@ -27,8 +47,11 @@ export const SummaryItem = ({ item, value }: SummaryItemProps) => {
             <span className="text-gray-500">
               <>{labels[item] ? labels[item] : camelCaseToTitle(item)}:</>
             </span>
+
             <span className="ml-2 text-gray-200">
-              {value?.length ? value : 'N/A'}
+              {value?.length && typeof value !== 'string'
+                ? formatPubKeys(value)
+                : 'N/A'}
             </span>
           </div>
         ) : (

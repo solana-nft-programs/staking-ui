@@ -1,7 +1,12 @@
 import { InformationCircleIcon, PlusIcon } from '@heroicons/react/24/outline'
-import type { FormikHandlers, FormikState, FormikValues } from 'formik'
+import type {
+  FormikErrors,
+  FormikHandlers,
+  FormikState,
+  FormikValues,
+} from 'formik'
 import type { Dispatch, SetStateAction } from 'react'
-import { useState } from 'react'
+import { Fragment, useState } from 'react'
 
 import { SlavePanelScreens } from '@/components/stake-pool-creation/SlavePanel'
 import { ButtonLargeWithDottedOutline } from '@/components/UI/buttons/ButtonLargeWithDottedOutline'
@@ -10,7 +15,10 @@ import { LabelText } from '@/components/UI/typography/LabelText'
 
 export type CollectionAddressInputsProps = {
   setActiveSlavePanelScreen: Dispatch<SetStateAction<SlavePanelScreens>>
-  formState: FormikHandlers & FormikState<FormikValues> & FormikValues
+  formState: FormikHandlers &
+    FormikState<FormikValues> &
+    FormikValues &
+    FormikErrors<FormikValues>
 }
 
 export const CollectionAddressInputs = ({
@@ -19,7 +27,11 @@ export const CollectionAddressInputs = ({
 }: CollectionAddressInputsProps) => {
   const [displayInput, setDisplayInput] = useState(false)
   const { AUTHORIZATION_2 } = SlavePanelScreens
-  const { setFieldValue, values } = formState
+  const { setFieldValue, values, errors } = formState
+
+  const { requireCollections: requireCollectionsErrors } = errors as {
+    requireCollections: string | string[]
+  }
 
   return (
     <div className="space-y-2 pt-4">
@@ -30,12 +42,15 @@ export const CollectionAddressInputs = ({
           onClick={() => setActiveSlavePanelScreen(AUTHORIZATION_2)}
         />
       </div>
-      {displayInput ? (
+      {displayInput || values.requireCollections.length > 0 ? (
         <>
           <div className="pb-1">
             <TextInput
               placeholder="CmAy...A3fD"
               value={values.requireCollections[0]}
+              hasError={
+                !!requireCollectionsErrors && !!requireCollectionsErrors[0]
+              }
               onChange={(e) => {
                 setFieldValue('requireCollections[0]', e.target.value)
               }}
@@ -57,7 +72,7 @@ export const CollectionAddressInputs = ({
           {values.requireCollections.map(
             (address: string, i: number) =>
               i > 0 && (
-                <>
+                <Fragment key={i}>
                   <div className="pb-1" key={i}>
                     <TextInput
                       placeholder="CmAy...A3fD"
@@ -85,7 +100,7 @@ export const CollectionAddressInputs = ({
                       - Remove
                     </button>
                   </div>
-                </>
+                </Fragment>
               )
           )}
         </>

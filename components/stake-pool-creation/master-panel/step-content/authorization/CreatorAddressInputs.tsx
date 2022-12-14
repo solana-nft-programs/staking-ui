@@ -1,7 +1,7 @@
 import { InformationCircleIcon, PlusIcon } from '@heroicons/react/24/outline'
 import type { FormikHandlers, FormikState, FormikValues } from 'formik'
 import type { Dispatch, SetStateAction } from 'react'
-import { useState } from 'react'
+import { Fragment, useState } from 'react'
 
 import { SlavePanelScreens } from '@/components/stake-pool-creation/SlavePanel'
 import { ButtonLargeWithDottedOutline } from '@/components/UI/buttons/ButtonLargeWithDottedOutline'
@@ -18,8 +18,13 @@ export const CreatorAddressInputs = ({
   formState,
 }: CreatorAddressInputsProps) => {
   const { AUTHORIZATION_1 } = SlavePanelScreens
-  const { setFieldValue, values } = formState
+  const { setFieldValue, values, errors } = formState
   const [displayInput, setDisplayInput] = useState(false)
+
+  const { requireCreators: requireCreatorsErrors } = errors as {
+    requireCreators: string | string[]
+  }
+
   return (
     <div className="space-y-2">
       <div className="flex w-full items-center">
@@ -29,12 +34,13 @@ export const CreatorAddressInputs = ({
           onClick={() => setActiveSlavePanelScreen(AUTHORIZATION_1)}
         />
       </div>
-      {displayInput ? (
+      {displayInput || values.requireCreators.length > 0 ? (
         <>
           <div className="pb-1">
             <TextInput
               placeholder="CmAy...A3fD"
               value={values.requireCreators[0]}
+              hasError={!!requireCreatorsErrors && !!requireCreatorsErrors[0]}
               onChange={(e) => {
                 setFieldValue('requireCreators[0]', e.target.value)
               }}
@@ -57,10 +63,13 @@ export const CreatorAddressInputs = ({
           {values.requireCreators.map(
             (address: string, i: number) =>
               i > 0 && (
-                <>
+                <Fragment key={i}>
                   <div className="pb-1" key={i}>
                     <TextInput
                       placeholder="CmAy...A3fD"
+                      hasError={
+                        !!requireCreatorsErrors && !!requireCreatorsErrors[i]
+                      }
                       onChange={(e) => {
                         setFieldValue(`requireCreators[${i}]`, e.target.value)
                       }}
@@ -82,7 +91,7 @@ export const CreatorAddressInputs = ({
                       - Remove
                     </button>
                   </div>
-                </>
+                </Fragment>
               )
           )}
         </>

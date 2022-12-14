@@ -46,7 +46,6 @@
     "@solana/buffer-layout": "^4.0.0",
     "@solana/qr-code-styling": "^1.6.0-beta.0",
     "@solana/spl-token": "^0.3.6",
-    "spl-token-v3": "npm:@solana/spl-token@0.3.6",
     "@solana/wallet-adapter-react": "^0.15.20",
     "@solana/wallet-adapter-react-ui": "^0.9.18",
     "@solana/wallet-adapter-wallets": "^0.19.5",
@@ -72,6 +71,8 @@
     "react-popper": "^2.3.0",
     "react-query": "^3.39.1",
     "react-select": "^5.2.2",
+    "spl-token-v3": "npm:@solana/spl-token@0.3.6",
+    "tweetnacl": "^1.0.3",
     "yup": "^0.32.11"
   },
   "devDependencies": {
