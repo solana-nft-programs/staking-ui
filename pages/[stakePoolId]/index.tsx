@@ -75,6 +75,7 @@ function StakePoolHome() {
     <div
       style={{
         background: stakePoolMetadata?.colors?.primary,
+        backgroundSize: 'cover',
         backgroundImage: `url(${stakePoolMetadata?.backgroundImage})`,
       }}
     >
