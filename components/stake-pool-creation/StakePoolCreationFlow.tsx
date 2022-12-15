@@ -183,6 +183,7 @@ export const StakePoolCreationFlow = ({
   return (
     <div className="mb-8 flex w-full py-8 px-10">
       <MasterPanel
+        submitDisabled={submitDisabled}
         mintInfo={mintInfo}
         currentStep={currentStep}
         setCurrentStep={setCurrentStep}

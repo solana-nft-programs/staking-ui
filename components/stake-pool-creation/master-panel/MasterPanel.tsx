@@ -12,6 +12,7 @@ import { HeadingPrimary } from '@/components/UI/typography/HeadingPrimary'
 import { ButtonWidths } from '@/types/index'
 
 export type MasterPanelProps = {
+  submitDisabled: boolean
   mintInfo?: splToken.MintInfo
   currentStep: number
   setCurrentStep: (step: number) => void
@@ -40,6 +41,7 @@ const stepSubtitles = [
 ]
 
 export const MasterPanel = ({
+  submitDisabled,
   mintInfo,
   formState,
   currentStep,
@@ -89,7 +91,11 @@ export const MasterPanel = ({
             {currentStep === 0 ? 'Start' : 'Next'}
           </ButtonPrimary>
         ) : (
-          <ButtonPrimary onClick={() => {}} width={ButtonWidths.NARROW}>
+          <ButtonPrimary
+            onClick={() => {}}
+            width={ButtonWidths.NARROW}
+            disabled={submitDisabled}
+          >
             Create Stake Pool
           </ButtonPrimary>
         )}

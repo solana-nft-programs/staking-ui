@@ -35,6 +35,7 @@ export const RewardDistribution = ({
     REWARD_DISTRIBUTION_1,
     REWARD_DISTRIBUTION_2,
     REWARD_DISTRIBUTION_3,
+    REWARD_SUPPLY_1,
   } = SlavePanelScreens
 
   const { setFieldValue, values, errors } = formState
@@ -71,10 +72,12 @@ export const RewardDistribution = ({
             className="ml-1 h-6 w-6 cursor-pointer text-gray-400"
             onClick={() => setActiveSlavePanelScreen(REWARD_DISTRIBUTION_2)}
           />
-          {JSON.stringify(errors.rewardMintAddress)}
         </div>
         <TextInput
           value={values.rewardMintAddress}
+          hasError={
+            values.rewardMintAddress !== '' && Boolean(errors.rewardMintAddress)
+          }
           onChange={(e) => {
             setFieldValue('rewardMintAddress', e.target.value)
           }}
