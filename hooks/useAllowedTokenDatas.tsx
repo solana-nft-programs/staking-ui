@@ -40,6 +40,7 @@ export const allowedTokensForPool = (
   tokenDatas.filter((token) => {
     let isAllowed = true
     if (!stakePool.parsed) throw 'Stake pool data are unknown'
+    if (!token?.tokenAccount?.parsed) throw 'No token account found'
     const creatorAddresses = stakePool.parsed.allowedCreators
     const collectionAddresses = stakePool.parsed.allowedCollections
     const requiresAuthorization = stakePool.parsed.requiresAuthorization

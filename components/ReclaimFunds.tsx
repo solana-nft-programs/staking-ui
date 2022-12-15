@@ -19,8 +19,8 @@ export const ReclaimFunds = () => {
   const handleReclaimFunds = useHandleReclaimFunds()
   if (
     !rewardDistributor.data ||
-    rewardDistributor.data.parsed?.kind !== RewardDistributorKind.Treasury ||
-    isRewardDistributorV2(rewardDistributor.data.parsed)
+    (rewardDistributor.data.parsed?.kind !== RewardDistributorKind.Treasury &&
+      !isRewardDistributorV2(rewardDistributor.data.parsed))
   ) {
     return <></>
   }
