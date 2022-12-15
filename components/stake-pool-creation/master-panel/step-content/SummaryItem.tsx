@@ -45,6 +45,7 @@ export const SummaryItem = ({ item, value }: SummaryItemProps) => {
       item === LabelKey.requireCollections ||
       item === LabelKey.requireCreators
     ) {
+      if (!value || value.length < 1) return 'N/A'
       return formatPubKeys(value as string[])
     }
     if (item === LabelKey.rewardDistributorKind) {
