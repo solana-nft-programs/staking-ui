@@ -3,8 +3,10 @@ import type * as splToken from '@solana/spl-token'
 import { notify } from 'common/Notification'
 import { tryFormatInput, tryParseInput } from 'common/units'
 import type { FormikHandlers, FormikState, FormikValues } from 'formik'
+import { useRewardDistributorData } from 'hooks/useRewardDistributorData'
 import type { Dispatch, ReactNode, SetStateAction } from 'react'
 
+import type { FlowType } from '@/components/stake-pool-creation/master-panel/step-content/StepContent'
 import { SlavePanelScreens } from '@/components/stake-pool-creation/SlavePanel'
 import { RadioGroup } from '@/components/UI/inputs/RadioGroup'
 import { TextInput } from '@/components/UI/inputs/TextInput'
@@ -24,12 +26,14 @@ export type RewardDistributionProps = {
   setActiveSlavePanelScreen: Dispatch<SetStateAction<SlavePanelScreens>>
   formState: FormikHandlers & FormikState<FormikValues> & FormikValues
   mintInfo?: splToken.MintInfo
+  type: FlowType
 }
 
 export const RewardDistribution = ({
   setActiveSlavePanelScreen,
   formState,
   mintInfo,
+  type,
 }: RewardDistributionProps) => {
   const {
     REWARD_DISTRIBUTION_1,
@@ -39,6 +43,7 @@ export const RewardDistribution = ({
   } = SlavePanelScreens
 
   const { setFieldValue, values, errors } = formState
+  const rewardDistributor = useRewardDistributorData()
 
   return (
     <>
@@ -74,10 +79,11 @@ export const RewardDistribution = ({
           />
         </div>
         <TextInput
-          value={values.rewardMintAddress}
+          disabled={type === 'update' && rewardDistributor.data !== undefined}
           hasError={
             values.rewardMintAddress !== '' && Boolean(errors.rewardMintAddress)
           }
+          value={values.rewardMintAddress}
           onChange={(e) => {
             setFieldValue('rewardMintAddress', e.target.value)
           }}
@@ -94,6 +100,9 @@ export const RewardDistribution = ({
           </div>
           <div className="relative mb-1">
             <TextInput
+              disabled={
+                type === 'update' && rewardDistributor?.data !== undefined
+              }
               hasError={!!errors?.rewardAmount}
               value={tryFormatInput(
                 values.rewardAmount,

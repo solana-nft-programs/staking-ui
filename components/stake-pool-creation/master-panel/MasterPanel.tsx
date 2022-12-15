@@ -3,6 +3,7 @@ import type { FormikHandlers, FormikState, FormikValues } from 'formik'
 import type { Dispatch, SetStateAction } from 'react'
 import { useEffect, useState } from 'react'
 
+import type { FlowType } from '@/components/stake-pool-creation/master-panel/step-content/StepContent'
 import { StepContent } from '@/components/stake-pool-creation/master-panel/step-content/StepContent'
 import { StepIndicator } from '@/components/stake-pool-creation/master-panel/step-indicator/StepIndicator'
 import type { SlavePanelScreens } from '@/components/stake-pool-creation/SlavePanel'
@@ -18,6 +19,7 @@ export type MasterPanelProps = {
   setCurrentStep: (step: number) => void
   setActiveSlavePanelScreen: Dispatch<SetStateAction<SlavePanelScreens>>
   formState: FormikHandlers & FormikState<FormikValues> & FormikValues
+  type: FlowType
 }
 
 const stepTitles = [
@@ -47,6 +49,7 @@ export const MasterPanel = ({
   currentStep,
   setCurrentStep,
   setActiveSlavePanelScreen,
+  type,
 }: MasterPanelProps) => {
   const [title, setTitle] = useState('')
   const [stepSubtitle, setStepSubtitle] = useState('')
@@ -69,6 +72,7 @@ export const MasterPanel = ({
         </div>
       )}
       <StepContent
+        type={type}
         mintInfo={mintInfo}
         formState={formState}
         currentStep={currentStep}

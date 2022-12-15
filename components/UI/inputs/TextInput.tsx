@@ -1,6 +1,7 @@
 import classNames from 'classnames'
 
 export type TextInputProps = {
+  disabled?: boolean
   value: string
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void
   className?: string
@@ -9,6 +10,7 @@ export type TextInputProps = {
 }
 
 export const TextInput = ({
+  disabled,
   hasError,
   value,
   onChange,
@@ -17,6 +19,7 @@ export const TextInput = ({
 }: TextInputProps) => {
   return (
     <input
+      disabled={disabled}
       placeholder={placeholder}
       onChange={onChange}
       value={value}

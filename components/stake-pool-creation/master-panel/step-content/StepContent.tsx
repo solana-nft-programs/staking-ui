@@ -11,11 +11,14 @@ import { Summary } from '@/components/stake-pool-creation/master-panel/step-cont
 import { TimeBasedParameters } from '@/components/stake-pool-creation/master-panel/step-content/TimeBasedParameters'
 import type { SlavePanelScreens } from '@/components/stake-pool-creation/SlavePanel'
 
+export type FlowType = 'create' | 'update'
+
 export type StepContentProps = {
   currentStep: number
   setActiveSlavePanelScreen: Dispatch<SetStateAction<SlavePanelScreens>>
   formState: FormikHandlers & FormikState<FormikValues> & FormikValues
   mintInfo?: splToken.MintInfo
+  type: FlowType
 }
 
 export const StepContent = ({
@@ -23,6 +26,7 @@ export const StepContent = ({
   setActiveSlavePanelScreen,
   formState,
   mintInfo,
+  type,
 }: StepContentProps) => {
   return (
     <div>
@@ -35,6 +39,7 @@ export const StepContent = ({
       )}
       {currentStep === 2 && (
         <RewardDistribution
+          type={type}
           mintInfo={mintInfo}
           setActiveSlavePanelScreen={setActiveSlavePanelScreen}
           formState={formState}

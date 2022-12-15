@@ -5,7 +5,7 @@ export type StepIndicatorProps = {
   currentStep: number
 }
 
-const numberOfSteps = 5
+const numberOfSteps = 4
 
 export const StepIndicator = ({ currentStep }: StepIndicatorProps) => {
   return (
