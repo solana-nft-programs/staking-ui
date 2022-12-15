@@ -90,6 +90,7 @@ export const useStakePoolEntryCounts = () => {
             }
             q2: acc_o5zqddeady2fcbezcoee {
               totalStaked
+              pubkey
             }
           }
         `,
