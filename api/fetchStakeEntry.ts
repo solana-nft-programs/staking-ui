@@ -120,7 +120,7 @@ export const stakeEntryDataToV2 = (
       stakeMint: entryData.originalMint,
       lastStaker: entryData.lastStaker,
       lastStakedAt: entryData.lastStakedAt,
-      lastUpdatedAt: entryData.lastUpdatedAt || new BN(0),
+      lastUpdatedAt: entryData.lastUpdatedAt || entryData.lastStakedAt,
       totalStakeSeconds: entryData.totalStakeSeconds,
       usedStakeSeconds: new BN(0),
       cooldownStartSeconds: entryData.cooldownStartSeconds,
