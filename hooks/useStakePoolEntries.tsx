@@ -2,6 +2,7 @@ import type { IdlAccountData } from '@cardinal/rewards-center'
 import { rewardsCenterProgram } from '@cardinal/rewards-center'
 import { getActiveStakeEntriesForPool } from '@cardinal/staking/dist/cjs/programs/stakePool/accounts'
 import { useWallet } from '@solana/wallet-adapter-react'
+import { PublicKey } from '@solana/web3.js'
 import { stakeEntryDataToV2 } from 'api/fetchStakeEntry'
 import { asWallet } from 'common/Wallets'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
@@ -34,9 +35,15 @@ export const useStakePoolEntries = () => {
               },
             },
           ])
-          return stakeEntries.map((e) => {
-            return { pubkey: e.publicKey, parsed: e.account }
-          })
+          return stakeEntries
+            .filter(
+              (entry) =>
+                entry.account.lastStaker.toString() !==
+                PublicKey.default.toString()
+            )
+            .map((e) => {
+              return { pubkey: e.publicKey, parsed: e.account }
+            })
         } else {
           return (
             await getActiveStakeEntriesForPool(

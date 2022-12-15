@@ -7,6 +7,7 @@ import { useStakePoolEntries } from './useStakePoolEntries'
 export const useStakePoolTotalStaked = () => {
   const { connection } = useEnvironmentCtx()
   const stakePoolEntries = useStakePoolEntries()
+
   return useQuery<number>(
     [
       'useStakePoolTotalStaked',
