@@ -41,10 +41,7 @@ export const TimeBasedParameters = ({
   const { values, setFieldValue, handleChange } = formState
 
   useEffect(() => {
-    if (
-      values.rewardDurationSeconds === null ||
-      Number.isNaN(values.rewardDurationSeconds)
-    ) {
+    if (!values.rewardDurationSeconds) {
       setFieldValue('rewardDurationSeconds', String(0))
     }
   }, [values?.rewardDurationSeconds, setFieldValue])
@@ -197,16 +194,12 @@ export const TimeBasedParameters = ({
           />
           <TextInput
             className="w-12 rounded-r-none text-center"
-            value={
-              values.rewardDurationSeconds
-                ? String(
-                    values.rewardDurationSeconds /
-                      (maxRewardDurationUnitOfTime === 'day'
-                        ? SECONDS_PER_DAY
-                        : SECONDS_PER_HOUR)
-                  )
-                : '0'
-            }
+            value={String(
+              values.rewardDurationSeconds /
+                (maxRewardDurationUnitOfTime === 'day'
+                  ? SECONDS_PER_DAY
+                  : SECONDS_PER_HOUR)
+            )}
             onChange={(e) => {
               setFieldValue(
                 'rewardDurationSeconds',
@@ -225,19 +218,11 @@ export const TimeBasedParameters = ({
           <ButtonIncrement
             className="ml-3"
             onClick={() => {
-              if (values.rewardDurationSeconds) {
-                setFieldValue(
-                  'rewardDurationSeconds',
-                  maxRewardDurationUnitOfTime === 'day'
-                    ? values.rewardDurationSeconds + 1 * SECONDS_PER_DAY
-                    : values.rewardDurationSeconds + 1 * SECONDS_PER_HOUR
-                )
-              }
               setFieldValue(
                 'rewardDurationSeconds',
                 maxRewardDurationUnitOfTime === 'day'
-                  ? 1 * SECONDS_PER_DAY
-                  : 1 * SECONDS_PER_HOUR
+                  ? values.rewardDurationSeconds + 1 * SECONDS_PER_DAY
+                  : values.rewardDurationSeconds + 1 * SECONDS_PER_HOUR
               )
             }}
           />

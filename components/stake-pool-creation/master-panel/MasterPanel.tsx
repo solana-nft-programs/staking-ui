@@ -98,7 +98,7 @@ export const MasterPanel = ({
             width={ButtonWidths.NARROW}
             disabled={submitDisabled}
           >
-            Create Stake Pool
+            {type === 'create' ? 'Create Stake Pool' : 'Update Stake Pool'}
           </ButtonPrimary>
         )}
         {currentStep > 0 && (
