@@ -29,7 +29,7 @@ export const useStakePoolEntries = () => {
           const stakeEntries = await program.account.stakeEntry.all([
             {
               memcmp: {
-                offset: 11,
+                offset: 10,
                 bytes: stakePoolData.pubkey.toString(),
               },
             },
