@@ -1,3 +1,4 @@
+import { tryPublicKey } from '@cardinal/common'
 import { PublicKey } from '@solana/web3.js'
 import { ShortPubKeyUrl } from 'common/Pubkeys'
 import { camelCaseToTitle } from 'common/utils'
@@ -14,6 +15,7 @@ export enum LabelKey {
   requireCollections = 'requireCollections',
   requireCreators = 'requireCreators',
   rewardDistributorKind = 'rewardDistributorKind',
+  rewardMintAddress = 'rewardMintAddress',
 }
 
 const labels = {
@@ -21,6 +23,7 @@ const labels = {
   requireCollections: 'Required Collections',
   requireCreators: 'Required Creators',
   rewardDistributorKind: 'Reward Distribution',
+  rewardMintAddress: 'Reward Mint Address',
 }
 
 export const SummaryItem = ({ item, value }: SummaryItemProps) => {
@@ -28,6 +31,7 @@ export const SummaryItem = ({ item, value }: SummaryItemProps) => {
 
   const formatPubKeys = (pubKeys: string[]) => {
     return pubKeys.map((pubKey, i) => {
+      if (!tryPublicKey(pubKey)) return <></>
       return (
         <Fragment key={pubKey}>
           <ShortPubKeyUrl
@@ -51,6 +55,15 @@ export const SummaryItem = ({ item, value }: SummaryItemProps) => {
     if (item === LabelKey.rewardDistributorKind) {
       return value === '1' ? 'Mint' : 'Transfer'
     }
+    if (item === LabelKey.rewardMintAddress) {
+      if (!tryPublicKey(value)) return 'N/A'
+      return (
+        <ShortPubKeyUrl
+          pubkey={new PublicKey(value)}
+          cluster={environment.label}
+        ></ShortPubKeyUrl>
+      )
+    }
   }
 
   return (
@@ -58,6 +71,7 @@ export const SummaryItem = ({ item, value }: SummaryItemProps) => {
       <div className="flex w-full items-center justify-between rounded-xl bg-gray-800 p-6">
         {item === LabelKey.rewardDistributorKind ||
         item === LabelKey.requireCollections ||
+        item === LabelKey.rewardMintAddress ||
         item === LabelKey.requireCreators ? (
           <div className="flex">
             <span className="text-gray-500">
