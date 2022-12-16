@@ -23,10 +23,6 @@ export const RewardDistributionTipThree = () => {
           later have to be transferred into the rewards pool directly via your
           wallet.
         </LargeCopy>
-        <BodyCopy>
-          Hint: By clicking on MAX button your asscociated token account balance
-          will supply the Stake Pool rewards treasury.
-        </BodyCopy>
       </div>
     </>
   )

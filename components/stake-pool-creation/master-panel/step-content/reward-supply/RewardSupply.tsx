@@ -19,7 +19,6 @@ export type RewardSupplyProps = {
 
 export const RewardSupply = ({
   setActiveSlavePanelScreen,
-  formState,
 }: RewardSupplyProps) => {
   const { REWARD_SUPPLY_1, REWARD_SUPPLY_2 } = SlavePanelScreens
 

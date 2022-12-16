@@ -20,8 +20,8 @@ export enum LabelKey {
 
 const labels = {
   overlayText: 'Overlay Text',
-  requireCollections: 'Required Collections',
-  requireCreators: 'Required Creators',
+  requireCollections: 'Allowed Collections',
+  requireCreators: 'Allowed Creators',
   rewardDistributorKind: 'Reward Distribution',
   rewardMintAddress: 'Reward Mint Address',
 }

@@ -30,6 +30,7 @@ export enum BodyElements {
 }
 
 export enum BodyTextSizes {
+  SMALL = 'small',
   BASE = 'base',
   LARGE = 'large',
 }

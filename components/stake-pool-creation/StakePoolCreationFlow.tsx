@@ -3,15 +3,17 @@ import { withFindOrInitAssociatedTokenAccount } from '@cardinal/common'
 import { executeTransaction } from '@cardinal/staking'
 import type { RewardDistributorData } from '@cardinal/staking/dist/cjs/programs/rewardDistributor'
 import type { StakePoolData } from '@cardinal/staking/dist/cjs/programs/stakePool'
-import * as splToken from '@solana/spl-token'
+import type * as splToken from '@solana/spl-token'
 import { useWallet } from '@solana/wallet-adapter-react'
-import { Keypair, PublicKey, Transaction } from '@solana/web3.js'
+import { PublicKey, Transaction } from '@solana/web3.js'
 import { handleError } from 'common/errors'
 import { notify } from 'common/Notification'
 import { asWallet } from 'common/Wallets'
 import { useFormik } from 'formik'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 import { useMemo, useState } from 'react'
+import type { Account, Mint } from 'spl-token-v3'
+import { getAccount, getMint } from 'spl-token-v3'
 
 import { MasterPanel } from '@/components/stake-pool-creation/master-panel/MasterPanel'
 import type { CreationForm } from '@/components/stake-pool-creation/Schema'
@@ -46,7 +48,6 @@ export const StakePoolCreationFlow = ({
     useState<SlavePanelScreens>(INTRO)
 
   const initialValues: CreationForm = {
-    overlayText: stakePoolData?.parsed.overlayText ?? 'STAKED',
     requireCollections: (stakePoolData?.parsed.requiresCollections ?? []).map(
       (pk) => pk.toString()
     ),
@@ -62,7 +63,6 @@ export const StakePoolCreationFlow = ({
           .toISOString()
           .split('T')[0]
       : undefined,
-    rewardDistributorKind: rewardDistributorData?.parsed.kind,
     rewardMintAddress: rewardDistributorData?.parsed.rewardMint
       ? rewardDistributorData?.parsed.rewardMint.toString()
       : undefined,
@@ -92,13 +92,13 @@ export const StakePoolCreationFlow = ({
     onSubmit: () => {},
     validationSchema: creationFormSchema,
   })
-  const { values, errors, setFieldValue, handleChange } = formState
+  const { values, setFieldValue } = formState
 
   const [submitDisabled, setSubmitDisabled] = useState<boolean>(true)
-  const [processingMintAddress, setProcessingMintAddress] =
+  const [_processingMintAddress, setProcessingMintAddress] =
     useState<boolean>(false)
-  const [mintInfo, setMintInfo] = useState<splToken.MintInfo>()
-  const [userRewardAmount, setUserRewardAmount] = useState<string>()
+  const [mintInfo, setMintInfo] = useState<Mint>()
+  const [_userRewardAmount, setUserRewardAmount] = useState<string>()
 
   useMemo(async () => {
     if (values.rewardMintAddress) {
@@ -107,18 +107,13 @@ export const StakePoolCreationFlow = ({
           message: `Wallet not connected`,
           type: 'error',
         })
+        return
       }
       setSubmitDisabled(true)
       setProcessingMintAddress(true)
       try {
         const mint = new PublicKey(values.rewardMintAddress)
-        const checkMint = new splToken.Token(
-          connection,
-          mint,
-          splToken.TOKEN_PROGRAM_ID,
-          Keypair.generate() // unused
-        )
-        const mintInfo = await checkMint.getMintInfo()
+        const mintInfo = await getMint(connection, mint)
         setMintInfo(mintInfo)
         setFieldValue('rewardAmount', 0)
         if (
@@ -129,7 +124,7 @@ export const StakePoolCreationFlow = ({
           return
         }
 
-        let userAta: splToken.AccountInfo | undefined = undefined
+        let userAta: Account | undefined = undefined
         try {
           const transaction = new Transaction()
           const mintAta = await withFindOrInitAssociatedTokenAccount(
@@ -148,7 +143,7 @@ export const StakePoolCreationFlow = ({
               {}
             )
           }
-          userAta = await checkMint.getAccountInfo(mintAta)
+          userAta = await getAccount(connection, mintAta)
         } catch (e) {
           notify({
             message: handleError(

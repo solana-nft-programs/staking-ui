@@ -1,9 +1,8 @@
-import type * as splToken from '@solana/spl-token'
 import type { FormikHandlers, FormikState, FormikValues } from 'formik'
 import type { Dispatch, SetStateAction } from 'react'
+import type { Mint } from 'spl-token-v3'
 
 import { Intro } from '@/components/stake-pool-creation/master-panel/Intro'
-import { AdditionalStakeConditions } from '@/components/stake-pool-creation/master-panel/step-content/AdditionalStakeConditions'
 import { Authorization } from '@/components/stake-pool-creation/master-panel/step-content/authorization/Authorization'
 import { RewardDistribution } from '@/components/stake-pool-creation/master-panel/step-content/RewardDistribution'
 import { Summary } from '@/components/stake-pool-creation/master-panel/step-content/Summary'
@@ -16,7 +15,7 @@ export type StepContentProps = {
   currentStep: number
   setActiveSlavePanelScreen: Dispatch<SetStateAction<SlavePanelScreens>>
   formState: FormikHandlers & FormikState<FormikValues> & FormikValues
-  mintInfo?: splToken.MintInfo
+  mintInfo?: Mint
   type: FlowType
 }
 
@@ -50,13 +49,7 @@ export const StepContent = ({
           formState={formState}
         />
       )}
-      {currentStep === 4 && (
-        <AdditionalStakeConditions
-          setActiveSlavePanelScreen={setActiveSlavePanelScreen}
-          formState={formState}
-        />
-      )}
-      {currentStep === 5 && <Summary formState={formState} />}
+      {currentStep === 4 && <Summary formState={formState} />}
     </div>
   )
 }

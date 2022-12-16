@@ -12,12 +12,12 @@ export const RewardSupplyTipTwo = () => {
       />
       <div className="mt-8 max-w-lg space-y-4 px-4">
         <BodyCopy>
-          Specify the minimum duration to stake a single natural amount of token
-          (1 NFT or 1 coin) for stakers to receive reward.
+          Specify the duration to stake a single natural amount of token (1 NFT
+          or 1 coin) for stakers to receive reward.
         </BodyCopy>
         <BodyCopy>
           Information about standard reward rate in your Stake Pool will be
-          visible on users’ assets when browsing your Stake Pool page.
+          visible on users assets when browsing your Stake Pool page.
         </BodyCopy>
       </div>
     </>

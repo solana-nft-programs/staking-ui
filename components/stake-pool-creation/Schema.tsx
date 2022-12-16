@@ -19,7 +19,6 @@ export const bnValidationTest = (value: string | undefined): boolean => {
 }
 
 export const creationFormSchema = Yup.object({
-  overlayText: Yup.string(),
   requireCollections: Yup.array()
     .of(
       Yup.string().test(
@@ -45,7 +44,6 @@ export const creationFormSchema = Yup.object({
   endDate: Yup.string()
     .optional()
     .test('is-valid-bn', 'Invalid endDate', bnValidationTest),
-  rewardDistributorKind: Yup.number().optional().min(0).max(2),
   rewardMintAddress: Yup.string().test(
     'is-public-key',
     'Invalid reward mint address',

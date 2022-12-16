@@ -16,7 +16,7 @@ export const AllowedTokens = ({
       <div className="flex flex-col">
         <span className="mb-2">Allowed Creators:</span>
         {stakePool?.parsed?.allowedCreators.length === 0 ? (
-          <span className="text-xs text-gray-500">No required creators</span>
+          <span className="text-xs text-gray-500">No allowed creators</span>
         ) : (
           <span className="flex flex-col">
             {stakePool?.parsed?.allowedCreators.map((c) => (
@@ -32,7 +32,7 @@ export const AllowedTokens = ({
       <div className="ml-5 flex flex-col">
         <span className="mb-2">Allowed Collections:</span>
         {stakePool?.parsed?.allowedCollections.length === 0 ? (
-          <span className="text-xs text-gray-500">No required collections</span>
+          <span className="text-xs text-gray-500">No allowed collections</span>
         ) : (
           <span className="flex flex-col">
             {stakePool?.parsed?.allowedCollections.map((c) => (

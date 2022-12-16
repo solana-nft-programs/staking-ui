@@ -1,7 +1,7 @@
-import type * as splToken from '@solana/spl-token'
 import type { FormikHandlers, FormikState, FormikValues } from 'formik'
 import type { Dispatch, SetStateAction } from 'react'
 import { useEffect, useState } from 'react'
+import type { Mint } from 'spl-token-v3'
 
 import type { FlowType } from '@/components/stake-pool-creation/master-panel/step-content/StepContent'
 import { StepContent } from '@/components/stake-pool-creation/master-panel/step-content/StepContent'
@@ -14,7 +14,7 @@ import { ButtonWidths } from '@/types/index'
 
 export type MasterPanelProps = {
   submitDisabled: boolean
-  mintInfo?: splToken.MintInfo
+  mintInfo?: Mint
   currentStep: number
   setCurrentStep: (step: number) => void
   setActiveSlavePanelScreen: Dispatch<SetStateAction<SlavePanelScreens>>
@@ -27,7 +27,6 @@ const stepTitles = [
   'Authorization',
   'Reward distribution',
   'Time-based parameters',
-  'Additional stake conditions',
   'Summary',
 ]
 
@@ -102,7 +101,7 @@ export const MasterPanel = ({
           </ButtonPrimary>
         )}
         {currentStep > 0 && (
-          <BodyCopy className="ml-4">Step {currentStep}/6</BodyCopy>
+          <BodyCopy className="ml-4">Step {currentStep}/4</BodyCopy>
         )}
       </div>
     </div>

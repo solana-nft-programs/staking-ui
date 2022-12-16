@@ -10,7 +10,7 @@ type Props = {
 }
 
 const { DIV, P } = BodyElements
-const { BASE, LARGE } = BodyTextSizes
+const { BASE, LARGE, SMALL } = BodyTextSizes
 
 export const BodyCopy = ({
   children,
@@ -22,6 +22,7 @@ export const BodyCopy = ({
     'text-gray-400 md:min-w-0 min-w-full',
     className,
     {
+      'text-sm': textSize === SMALL,
       'text-base': textSize === BASE,
       'text-xl': textSize === LARGE,
     },
