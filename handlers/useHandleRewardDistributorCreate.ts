@@ -15,7 +15,7 @@ import { useRewardDistributorData } from 'hooks/useRewardDistributorData'
 import { isStakePoolV2, useStakePoolData } from 'hooks/useStakePoolData'
 import { useMutation } from 'react-query'
 
-import type { RewardDistributorForm } from '@/components/RewardDistributorUpdate'
+import type { RewardDistributorForm } from '@/components/admin/RewardDistributorUpdate'
 
 import { useEnvironmentCtx } from '../providers/EnvironmentProvider'
 

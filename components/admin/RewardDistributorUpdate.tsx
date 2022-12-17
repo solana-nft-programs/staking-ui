@@ -18,7 +18,7 @@ import * as Yup from 'yup'
 import {
   bnValidationTest,
   publicKeyValidationTest,
-} from './stake-pool-creation/Schema'
+} from '../stake-pool-creation/Schema'
 
 const rewardDistributorSchema = Yup.object({
   rewardMintAddress: Yup.string().test(

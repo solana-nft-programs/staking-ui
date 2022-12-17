@@ -1,5 +1,6 @@
-import Admin from 'components/Admin'
 import { useStakePoolMetadataCtx } from 'providers/StakePoolMetadataProvider'
+
+import Admin from '@/components/admin/Admin'
 
 import AdminStakePool from './[stakePoolId]'
 

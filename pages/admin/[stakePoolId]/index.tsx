@@ -7,7 +7,7 @@ import { useRouter } from 'next/router'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 import { VscChevronLeft } from 'react-icons/vsc'
 
-import { AdminStakePool } from '@/components/AdminPool'
+import { AdminStakePool } from '@/components/admin/AdminPool'
 
 function Home() {
   const router = useRouter()

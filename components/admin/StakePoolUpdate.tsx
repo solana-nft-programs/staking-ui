@@ -14,7 +14,7 @@ import * as Yup from 'yup'
 import {
   bnValidationTest,
   publicKeyValidationTest,
-} from './stake-pool-creation/Schema'
+} from '../stake-pool-creation/Schema'
 
 const stakePoolUpdateSchema = Yup.object({
   requireCollections: Yup.array()

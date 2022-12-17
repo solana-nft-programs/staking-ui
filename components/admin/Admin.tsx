@@ -11,9 +11,9 @@ import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 import { useState } from 'react'
 import { VscChevronLeft } from 'react-icons/vsc'
 
+import { StepIndicator } from '../stake-pool-creation/master-panel/step-indicator/StepIndicator'
 import { AdminStakePool } from './AdminPool'
 import { AdminPools } from './AdminPools'
-import { StepIndicator } from './stake-pool-creation/master-panel/step-indicator/StepIndicator'
 
 type PANE_OPTIONS = 'create' | 'edit'
 

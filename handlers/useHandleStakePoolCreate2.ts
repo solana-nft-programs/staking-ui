@@ -14,7 +14,7 @@ import { notify } from 'common/Notification'
 import { asWallet } from 'common/Wallets'
 import { useMutation, useQueryClient } from 'react-query'
 
-import type { StakePoolUpdateForm } from '@/components/StakePoolUpdate'
+import type { StakePoolUpdateForm } from '@/components/admin/StakePoolUpdate'
 
 import { useEnvironmentCtx } from '../providers/EnvironmentProvider'
 
