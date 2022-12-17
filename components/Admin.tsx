@@ -25,7 +25,7 @@ function Admin() {
       </Head>
 
       <HeaderSlim />
-      <div className="container mx-auto h-screen w-full">
+      <div className="container mx-auto w-full">
         <StakePoolCreationFlow handleSubmit={() => {}} />
       </div>
       <Footer />
