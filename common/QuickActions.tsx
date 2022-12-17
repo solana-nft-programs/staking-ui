@@ -1,4 +1,4 @@
-import { tryPublicKey } from '@cardinal/common'
+import { contrastify, tryPublicKey } from '@cardinal/common'
 import type { ReceiptType } from '@cardinal/staking/dist/cjs/programs/stakePool'
 import { useHandleClaimRewards } from 'handlers/useHandleClaimRewards'
 import { useHandleStake } from 'handlers/useHandleStake'
@@ -14,7 +14,6 @@ import { FaEllipsisH } from 'react-icons/fa'
 import { FiExternalLink } from 'react-icons/fi'
 import { RiMoneyDollarCircleFill } from 'react-icons/ri'
 
-import { getColorByBgColor } from './Button'
 import { LoadingSpinner } from './LoadingSpinner'
 import { Popover, PopoverItem } from './Popover'
 import { metadataUrl, pubKeyUrl } from './utils'
@@ -48,9 +47,7 @@ export const QuickActions = ({
               0.07,
               stakePoolMetadata?.colors?.primary || '#000'
             ),
-            color: getColorByBgColor(
-              stakePoolMetadata?.colors?.primary || '#000'
-            ),
+            color: contrastify(1, stakePoolMetadata?.colors?.primary || '#000'),
           }}
         >
           <PopoverItem>
