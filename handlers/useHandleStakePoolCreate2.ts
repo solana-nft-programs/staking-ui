@@ -32,6 +32,7 @@ export const useHandleStakePoolCreate2 = () => {
         throw 'Wallet not connected'
       }
 
+      // format pubkeys
       const collectionPublicKeys = values.requireCollections
         .map((c) => tryPublicKey(c))
         .filter((c) => c) as PublicKey[]
@@ -39,7 +40,6 @@ export const useHandleStakePoolCreate2 = () => {
         .map((c) => tryPublicKey(c))
         .filter((c) => c) as PublicKey[]
 
-      console.log(values)
       // format date
       let dateInNum: number | undefined = new Date(
         values.endDate?.toString() || ''
@@ -47,19 +47,8 @@ export const useHandleStakePoolCreate2 = () => {
       if (dateInNum < Date.now()) {
         dateInNum = undefined
       }
-      const stakePoolParams = {
-        allowedCollections:
-          collectionPublicKeys.length > 0 ? collectionPublicKeys : undefined,
-        allowedCreators:
-          creatorPublicKeys.length > 0 ? creatorPublicKeys : undefined,
-        requiresAuthorization: values.requiresAuthorization,
-        resetOnStake: values.resetOnStake,
-        minStakeSeconds: values.minStakeSeconds || null,
-        // overlayText: values.overlayText || undefined,
-        cooldownSeconds: values.cooldownPeriodSeconds || null,
-        endDate: dateInNum ? new BN(dateInNum / 1000) : null,
-      }
 
+      console.log(values)
       const transaction = new Transaction()
       const program = rewardsCenterProgram(connection, wallet)
       const identifier = `pool-name-${Math.random()}`
@@ -67,14 +56,14 @@ export const useHandleStakePoolCreate2 = () => {
       const ix = await program.methods
         .initPool({
           identifier: identifier,
-          allowedCollections: stakePoolParams.allowedCollections ?? [],
-          allowedCreators: stakePoolParams.allowedCreators ?? [],
-          requiresAuthorization: stakePoolParams.requiresAuthorization ?? false,
+          allowedCollections: collectionPublicKeys,
+          allowedCreators: creatorPublicKeys,
+          requiresAuthorization: values.requiresAuthorization ?? false,
           authority: wallet.publicKey,
-          resetOnUnstake: stakePoolParams.resetOnStake ?? false,
-          cooldownSeconds: stakePoolParams.cooldownSeconds,
-          minStakeSeconds: stakePoolParams.minStakeSeconds,
-          endDate: stakePoolParams.endDate,
+          resetOnUnstake: values.resetOnStake ?? false,
+          cooldownSeconds: values.cooldownPeriodSeconds || null,
+          minStakeSeconds: values.minStakeSeconds || null,
+          endDate: dateInNum ? new BN(dateInNum / 1000) : null,
           stakePaymentInfo: DEFAULT_PAYMENT_INFO,
           unstakePaymentInfo: DEFAULT_PAYMENT_INFO,
         })
