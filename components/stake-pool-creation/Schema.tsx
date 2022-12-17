@@ -6,8 +6,10 @@ export const publicKeyValidationTest = (value: string | undefined): boolean => {
   return tryPublicKey(value) ? true : false
 }
 
-export const bnValidationTest = (value: string | undefined): boolean => {
-  if (value === undefined) return false
+export const optionalBnValidationTest = (
+  value: string | undefined
+): boolean => {
+  if (value === undefined) return true
   try {
     new BN(value)
     return true
@@ -16,6 +18,11 @@ export const bnValidationTest = (value: string | undefined): boolean => {
     if (0 < num && num < 1) return true
     return false
   }
+}
+
+export const bnValidationTest = (value: string | undefined): boolean => {
+  if (value === undefined) return false
+  return optionalBnValidationTest(value)
 }
 
 export const creationFormSchema = Yup.object({

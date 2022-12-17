@@ -1,8 +1,7 @@
-import { tryFormatInput, tryParseInput, tryPublicKey } from '@cardinal/common'
+import { tryFormatInput, tryPublicKey } from '@cardinal/common'
 import { AsyncButton } from 'common/Button'
 import { FormFieldTitleInput } from 'common/FormFieldInput'
 import { LoadingSpinner } from 'common/LoadingSpinner'
-import { notify } from 'common/Notification'
 import { useFormik } from 'formik'
 import { useHandleRewardDistributorCreate } from 'handlers/useHandleRewardDistributorCreate'
 import { useHandleRewardDistributorRemove } from 'handlers/useHandleRewardDistributorRemove'
@@ -16,8 +15,10 @@ import * as Yup from 'yup'
 
 import {
   bnValidationTest,
+  optionalBnValidationTest,
   publicKeyValidationTest,
 } from '../stake-pool-creation/Schema'
+import { BNInput } from '../UI/inputs/BNInput'
 import { TextInput } from '../UI/inputs/TextInput'
 
 const rewardDistributorSchema = Yup.object({
@@ -34,11 +35,25 @@ const rewardDistributorSchema = Yup.object({
     .test('is-valid-bn', 'Invalid reward durations seconds', bnValidationTest),
   maxRewardSecondsReceived: Yup.string()
     .optional()
-    .test('is-valid-bn', 'Invalid repward durations seconds', bnValidationTest),
-  multiplierDecimals: Yup.string().optional(),
+    .test(
+      'is-valid-bn',
+      'Invalid repward durations seconds',
+      optionalBnValidationTest
+    ),
+  multiplierDecimals: Yup.string()
+    .optional()
+    .test(
+      'is-valid-bn',
+      'Invalid default multiplier',
+      optionalBnValidationTest
+    ),
   defaultMultiplier: Yup.string()
     .optional()
-    .test('is-valid-bn', 'Invalid default multiplier', bnValidationTest),
+    .test(
+      'is-valid-bn',
+      'Invalid default multiplier',
+      optionalBnValidationTest
+    ),
 })
 
 const defaultValues = (
@@ -127,7 +142,7 @@ export function RewardDistributorUpdate() {
           title={'Reward Amount'}
           description={`Amount of tokens to be distributed per duration staked. Accumulates per natural amount of staked tokens.`}
         />
-        <TextInput
+        <BNInput
           disabled={!mintInfo.data}
           hasError={!!errors.rewardAmount}
           placeholder={'0'}
@@ -136,24 +151,8 @@ export function RewardDistributorUpdate() {
             mintInfo.data?.decimals,
             values.rewardAmount ?? ''
           )}
-          onChange={(e) => {
-            const value = Number(e.target.value)
-            if (Number.isNaN(value)) {
-              notify({
-                message: `Invalid reward amount`,
-                type: 'error',
-              })
-              return
-            }
-            setFieldValue(
-              'rewardAmount',
-              tryParseInput(
-                e.target.value,
-                mintInfo.data?.decimals,
-                values.rewardAmount ?? ''
-              )
-            )
-          }}
+          decimals={mintInfo.data?.decimals}
+          handleChange={(v) => setFieldValue('rewardAmount', v)}
         />
       </div>
       <div className="">
@@ -163,21 +162,13 @@ export function RewardDistributorUpdate() {
             'Duration in seconds to stake a single natural amount of token to receive the reward amount.'
           }
         />
-        <TextInput
+        <BNInput
           disabled={!mintInfo.data}
           hasError={!!errors.rewardDurationSeconds}
           placeholder={'1'}
           value={values.rewardDurationSeconds}
-          onChange={(e) => {
-            const seconds = Number(e.target.value)
-            if (!seconds && e.target.value.length !== 0) {
-              notify({
-                message: `Invalid reward duration seconds`,
-                type: 'error',
-              })
-            }
-            setFieldValue('rewardDurationSeconds', e.target.value.toString())
-          }}
+          decimals={0}
+          handleChange={(v) => setFieldValue('rewardDurationSeconds', v)}
         />
       </div>
       <div className="">
@@ -187,18 +178,13 @@ export function RewardDistributorUpdate() {
             'The maximum seconds a reward entry can receive rewards for'
           }
         />
-        <TextInput
+        <BNInput
           disabled={!mintInfo.data}
-          hasError={
-            !!values.maxRewardSecondsReceived &&
-            values.maxRewardSecondsReceived !== '' &&
-            !!errors.maxRewardSecondsReceived
-          }
+          hasError={!!errors.maxRewardSecondsReceived}
           placeholder={'None'}
           value={values.maxRewardSecondsReceived}
-          onChange={(e) => {
-            setFieldValue('maxRewardSecondsReceived', e.target.value)
-          }}
+          decimals={0}
+          handleChange={(v) => setFieldValue('maxRewardSecondsReceived', v)}
         />
       </div>
       <div className="">
@@ -208,20 +194,13 @@ export function RewardDistributorUpdate() {
             'Decimals of the reward distributor to achieve decimal multipliers.'
           }
         />
-        <TextInput
+        <BNInput
           disabled={!mintInfo.data}
+          hasError={!!errors.multiplierDecimals}
           placeholder={'0'}
           value={values.multiplierDecimals}
-          onChange={(e) => {
-            const supply = Number(e.target.value.replaceAll(',', ''))
-            if (!supply && e.target.value.length !== 0) {
-              notify({
-                message: `Invalid multiplier decimals`,
-                type: 'error',
-              })
-            }
-            setFieldValue('multiplierDecimals', e.target.value.toString())
-          }}
+          decimals={0}
+          handleChange={(v) => setFieldValue('multiplierDecimals', v)}
         />
       </div>
       <div className="">
@@ -231,21 +210,13 @@ export function RewardDistributorUpdate() {
             'Default multiplier to be used to achieve decimal multipliers.'
           }
         />
-        <TextInput
+        <BNInput
           disabled={!mintInfo.data}
-          type="text"
+          hasError={!!errors.defaultMultiplier}
           placeholder={'1'}
           value={values.defaultMultiplier}
-          onChange={(e) => {
-            const supply = Number(e.target.value.replaceAll(',', ''))
-            if (!supply && e.target.value.length !== 0) {
-              notify({
-                message: `Invalid default multiplier`,
-                type: 'error',
-              })
-            }
-            setFieldValue('defaultMultiplier', e.target.value.toString())
-          }}
+          decimals={0}
+          handleChange={(v) => setFieldValue('defaultMultiplier', v)}
         />
       </div>
       <AsyncButton

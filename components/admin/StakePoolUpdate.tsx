@@ -269,7 +269,7 @@ export function StakePoolUpdate({
             }
           />
           <TextInput
-            type="date"
+            type="datetime-local"
             placeholder={'None'}
             value={values.endDate}
             onChange={(e) => {

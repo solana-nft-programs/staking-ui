@@ -1,8 +1,7 @@
 import { RewardDistributorKind } from '@cardinal/staking/dist/cjs/programs/rewardDistributor'
 import { AsyncButton } from 'common/Button'
 import { FormFieldTitleInput } from 'common/FormFieldInput'
-import { notify } from 'common/Notification'
-import { tryFormatInput, tryParseInput } from 'common/units'
+import { tryFormatInput } from 'common/units'
 import { useHandleTransferFunds } from 'handlers/useHandleTransferFunds'
 import {
   isRewardDistributorV2,
@@ -11,7 +10,7 @@ import {
 import { useRewardMintInfo } from 'hooks/useRewardMintInfo'
 import { useState } from 'react'
 
-import { TextInput } from '../UI/inputs/TextInput'
+import { BNInput } from '../UI/inputs/BNInput'
 
 export const TransferFunds = () => {
   const [transferAmount, setTransferAmount] = useState<string>()
@@ -32,7 +31,7 @@ export const TransferFunds = () => {
         description={'Transfer funds to this reward distributor'}
       />
       <div className="mb-5 flex flex-row gap-2">
-        <TextInput
+        <BNInput
           className="flex w-auto flex-grow"
           type="text"
           placeholder={'1000000'}
@@ -41,23 +40,8 @@ export const TransferFunds = () => {
             rewardMintInfo.data?.mintInfo.decimals || 0,
             '0'
           )}
-          onChange={(e) => {
-            const value = Number(e.target.value)
-            if (Number.isNaN(value)) {
-              notify({
-                message: `Invalid reclaim amount`,
-                type: 'error',
-              })
-              return
-            }
-            setTransferAmount(
-              tryParseInput(
-                e.target.value,
-                rewardMintInfo.data?.mintInfo.decimals || 0,
-                transferAmount ?? ''
-              )
-            )
-          }}
+          decimals={rewardMintInfo.data?.mintInfo.decimals}
+          handleChange={(v) => setTransferAmount(v)}
         />
         <AsyncButton
           className="rounded-md px-3 py-2"

@@ -5,7 +5,6 @@ type Props = React.DetailedHTMLProps<
   HTMLInputElement
 > & {
   disabled?: boolean
-  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void
   className?: string
   placeholder?: string
   hasError?: boolean
