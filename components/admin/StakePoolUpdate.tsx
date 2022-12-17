@@ -241,16 +241,12 @@ export function StakePoolUpdate({
       </div>
       <div className="flex flex-wrap">
         <div className="w-full">
-          <label
-            className="mb-2 block text-xs font-bold uppercase tracking-wide text-gray-200"
-            htmlFor="require-authorization"
-          >
-            NFT Mint List
-          </label>
-          <p className="mb-2 text-sm italic text-gray-300">
-            If selected, NFTs / specific mints can be arbitrarily authorized to
-            enter the pool
-          </p>
+          <FormFieldTitleInput
+            title={'NFT Mint List'}
+            description={
+              'If selected, NFTs / specific mints can be arbitrarily authorized to enter the pool'
+            }
+          />
           <input
             className="mb-3 cursor-pointer"
             id="require-authorization"
@@ -330,16 +326,12 @@ export function StakePoolUpdate({
       </div>
       <div className="flex flex-wrap">
         <div className="">
-          <label
-            className="mb-2 block text-xs font-bold uppercase tracking-wide text-gray-200"
-            htmlFor="require-authorization"
-          >
-            Reset on stake
-          </label>
-          <p className="mb-2 text-sm italic text-gray-300">
-            If selected, everytime a user stakes the stake timer will reset
-            rather than accumulate.
-          </p>
+          <FormFieldTitleInput
+            title={'Reset on stake'}
+            description={
+              'If selected, everytime a user stakes the stake timer will reset rather than accumulate.'
+            }
+          />
           <input
             className="mb-3 cursor-pointer"
             id="reset-on-unstake"
