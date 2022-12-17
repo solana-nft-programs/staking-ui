@@ -2,12 +2,10 @@ import { LoadingSpinner } from 'common/LoadingSpinner'
 import type { FormikHandlers, FormikState, FormikValues } from 'formik'
 import { useHandleCreatePool } from 'handlers/useHandleCreatePoolNew'
 import type { Dispatch, SetStateAction } from 'react'
-import { useEffect, useState } from 'react'
 import type { Mint } from 'spl-token-v3'
 
 import type { FlowType } from '@/components/stake-pool-creation/master-panel/step-content/StepContent'
 import { StepContent } from '@/components/stake-pool-creation/master-panel/step-content/StepContent'
-import { StepIndicator } from '@/components/stake-pool-creation/master-panel/step-indicator/StepIndicator'
 import type { SlavePanelScreens } from '@/components/stake-pool-creation/SlavePanel'
 import { ButtonPrimary } from '@/components/UI/buttons/ButtonPrimary'
 import { BodyCopy } from '@/components/UI/typography/BodyCopy'
@@ -52,27 +50,11 @@ export const MasterPanel = ({
   setActiveSlavePanelScreen,
   type,
 }: MasterPanelProps) => {
-  const [title, setTitle] = useState('')
-  const [stepSubtitle, setStepSubtitle] = useState('')
   const handleCreatePool = useHandleCreatePool()
-
-  useEffect(() => {
-    const title = stepTitles?.[currentStep]
-    const subTitle = stepSubtitles?.[currentStep]
-    if (!title || !subTitle) return
-    setTitle(title)
-    setStepSubtitle(subTitle)
-  }, [currentStep])
-
   return (
     <div className="w-2/5 space-y-2">
-      <HeadingPrimary>{title}</HeadingPrimary>
-      <BodyCopy className="pb-2">{stepSubtitle}</BodyCopy>
-      {currentStep > 0 && (
-        <div className=" pb-16">
-          <StepIndicator currentStep={currentStep} />
-        </div>
-      )}
+      <HeadingPrimary>{stepTitles?.[currentStep]}</HeadingPrimary>
+      <BodyCopy className="pb-2">{stepSubtitles?.[currentStep]}</BodyCopy>
       <StepContent
         type={type}
         mintInfo={mintInfo}

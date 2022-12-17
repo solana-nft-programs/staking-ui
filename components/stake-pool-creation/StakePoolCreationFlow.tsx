@@ -52,12 +52,12 @@ export const StakePoolCreationFlow = ({
   const { connection, environment } = useEnvironmentCtx()
   const wallet = useWallet()
   const handleCreatePool = useHandleCreatePool()
-  const stakePooldForAdmin = useStakePoolsByAuthority()
+  const stakePoolsByAuthority = useStakePoolsByAuthority()
   const stakePoolsMetadata = useStakePoolsMetadatas(
-    stakePooldForAdmin.data?.map((s) => s.pubkey)
+    stakePoolsByAuthority.data?.map((s) => s.pubkey)
   )
   const [stakePoolsWithMetadata, stakePoolsWithoutMetadata] = (
-    stakePooldForAdmin.data || []
+    stakePoolsByAuthority.data || []
   ).reduce(
     (acc, stakePoolData) => {
       const stakePoolMetadata = (stakePoolsMetadata.data || {})[
@@ -225,8 +225,8 @@ export const StakePoolCreationFlow = ({
         <SlavePanel activeScreen={activeSlavePanelScreen} />
       </div>
       {currentStep === 0 &&
-        stakePooldForAdmin.data &&
-        stakePooldForAdmin.data?.length > 0 && (
+        stakePoolsByAuthority.data &&
+        stakePoolsByAuthority.data?.length > 0 && (
           <>
             <div className="text-2xl font-medium">My Stake Pools</div>
             <div className="grid grid-cols-3 gap-5 py-10">

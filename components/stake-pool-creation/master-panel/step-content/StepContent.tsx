@@ -9,6 +9,8 @@ import { RewardDistribution } from '@/components/stake-pool-creation/master-pane
 import { Summary } from '@/components/stake-pool-creation/master-panel/step-content/Summary'
 import type { SlavePanelScreens } from '@/components/stake-pool-creation/SlavePanel'
 
+import { StepIndicator } from '../step-indicator/StepIndicator'
+
 export type FlowType = 'create' | 'update'
 
 export type StepContentProps = {
@@ -27,7 +29,12 @@ export const StepContent = ({
   type,
 }: StepContentProps) => {
   return (
-    <div>
+    <div className="min-h-[540px]">
+      {currentStep > 0 && (
+        <div className=" pb-16">
+          <StepIndicator currentStep={currentStep} />
+        </div>
+      )}
       {currentStep === 0 && <Intro />}
       {currentStep === 1 && (
         <Authorization

@@ -17,7 +17,8 @@ export const NumberInput = ({
     <input
       placeholder={placeholder}
       onChange={onChange}
-      type="number"
+      type="text"
+      inputMode="numeric"
       value={value}
       className={classNames([
         'w-full rounded-lg bg-gray-800 p-2 outline outline-gray-600 focus:outline-orange-500',

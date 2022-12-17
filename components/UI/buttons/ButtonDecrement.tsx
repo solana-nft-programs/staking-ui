@@ -13,7 +13,7 @@ export const ButtonDecrement = ({
   return (
     <button
       className={classNames([
-        'flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-lg bg-gray-600 p-2 outline outline-gray-600',
+        'flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-lg bg-gray-600 p-2 outline outline-gray-600',
         className,
       ])}
       onClick={onClick}
