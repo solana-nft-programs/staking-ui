@@ -110,7 +110,7 @@ export const AdminStakePool = () => {
             }}
           />
         </div>
-        <div className="mt-4 flex w-1/2 flex-grow justify-center px-10">
+        <div className="mt-4 flex w-full max-w-[640px] flex-grow justify-center px-10">
           {
             {
               'stake-pool': stakePool.isFetching ? (

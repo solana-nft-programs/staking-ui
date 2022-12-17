@@ -116,7 +116,7 @@ export function StakePoolUpdate({
             (v, i) =>
               i > 0 && (
                 <div
-                  key={v?.toString()}
+                  key={i}
                   className={`${
                     errors.requireCollections?.at(i)
                       ? 'border-red-500'
@@ -188,7 +188,7 @@ export function StakePoolUpdate({
             (v, i) =>
               i > 0 && (
                 <div
-                  key={v?.toString()}
+                  key={i}
                   className={`${
                     errors.requireCreators?.at(i)
                       ? 'border-red-500'
