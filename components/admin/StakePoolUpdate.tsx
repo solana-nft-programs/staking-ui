@@ -16,6 +16,7 @@ import {
   publicKeyValidationTest,
 } from '../stake-pool-creation/Schema'
 import { TextInput } from '../UI/inputs/TextInput'
+import { TextInputIcon } from '../UI/inputs/TextInputIcon'
 
 const stakePoolUpdateSchema = Yup.object({
   requireCollections: Yup.array()
@@ -101,69 +102,47 @@ export function StakePoolUpdate({
             title={'Collection Addresses []'}
             description={'Allow any NFTs with these collection addresses'}
           />
-          <div
-            className={`${
-              values.requireCollections[0] !== '' &&
-              errors.requireCollections?.at(0)
-                ? 'border-red-500'
-                : 'border-gray-500'
-            } flex appearance-none items-center justify-between rounded border bg-gray-700 py-3 px-4 text-gray-200 placeholder-gray-500 focus:bg-gray-800`}
-          >
-            <input
-              className={`mr-5 w-full bg-transparent focus:outline-none`}
-              type="text"
-              placeholder={'CmAy...A3fD'}
-              name="requireCollections"
-              value={values.requireCollections[0]}
-              onChange={(e) =>
-                setFieldValue('requireCollections[0]', e.target.value)
-              }
-            />
-            <div
-              className="cursor-pointer text-xs text-gray-400"
-              onClick={() =>
-                setFieldValue(`requireCollections`, [
-                  '',
-                  ...values.requireCollections,
-                ])
-              }
-            >
-              Add
-            </div>
-          </div>
+          <TextInputIcon
+            placeholder={'CmAy...A3fD'}
+            onChange={(e) =>
+              setFieldValue('requireCollections[0]', e.target.value)
+            }
+            error={
+              values.requireCollections.at(0) !== '' &&
+              !!errors.requireCollections?.at(0)
+            }
+            value={values.requireCollections[0]}
+            icon="Add"
+            onIconClick={() =>
+              setFieldValue(`requireCollections`, [
+                '',
+                ...values.requireCollections,
+              ])
+            }
+          />
           {values.requireCollections.map(
             (v, i) =>
               i > 0 && (
-                <div
+                <TextInputIcon
                   key={i}
-                  className={`${
-                    errors.requireCollections?.at(i)
-                      ? 'border-red-500'
-                      : 'border-gray-500'
-                  } mt-3 flex appearance-none items-center justify-between rounded border bg-gray-700 py-3 px-4 text-gray-200 placeholder-gray-500 focus:bg-gray-800`}
-                >
-                  <input
-                    className={`mr-5 w-full bg-transparent focus:outline-none`}
-                    type="text"
-                    placeholder={'CmAy...A3fD'}
-                    name="requireCollections"
-                    value={v}
-                    onChange={(e) =>
-                      setFieldValue(`requireCollections[${i}]`, e.target.value)
-                    }
-                  />
-                  <div
-                    className="cursor-pointer text-xs text-gray-400"
-                    onClick={() =>
-                      setFieldValue(
-                        `requireCollections`,
-                        values.requireCollections.filter((_, ix) => ix !== i)
-                      )
-                    }
-                  >
-                    Remove
-                  </div>
-                </div>
+                  className="mt-3"
+                  placeholder={'CmAy...A3fD'}
+                  onChange={(e) =>
+                    setFieldValue(`requireCollections[${i}]`, e.target.value)
+                  }
+                  error={
+                    values.requireCollections?.at(i) !== '' &&
+                    !!errors.requireCollections?.at(i)
+                  }
+                  value={v}
+                  icon="Remove"
+                  onIconClick={() =>
+                    setFieldValue(
+                      `requireCollections`,
+                      values.requireCollections.filter((_, ix) => ix !== i)
+                    )
+                  }
+                />
               )
           )}
         </div>
@@ -174,68 +153,46 @@ export function StakePoolUpdate({
             title={'Creator Addresses []'}
             description={'Allow any NFTs with these creator addresses'}
           />
-          <div
-            className={`${
-              values.requireCreators[0] !== '' && errors.requireCreators?.at(0)
-                ? 'border-red-500'
-                : 'border-gray-500'
-            } flex appearance-none items-center justify-between rounded border bg-gray-700 py-3 px-4 text-gray-200 placeholder-gray-500 focus:bg-gray-800`}
-          >
-            <input
-              className={`mr-5 w-full bg-transparent focus:outline-none`}
-              type="text"
-              placeholder={'CmAy...A3fD'}
-              name="requireCreators"
-              value={values.requireCreators[0]}
-              onChange={(e) =>
-                setFieldValue('requireCreators[0]', e.target.value)
-              }
-            />
-            <div
-              className="cursor-pointer text-xs text-gray-400"
-              onClick={() =>
-                setFieldValue(`requireCreators`, [
-                  '',
-                  ...values.requireCreators,
-                ])
-              }
-            >
-              Add
-            </div>
-          </div>
+          <TextInputIcon
+            type="text"
+            placeholder={'CmAy...A3fD'}
+            name="requireCreators"
+            error={
+              values.requireCreators[0] !== '' &&
+              !!errors.requireCreators?.at(0)
+            }
+            value={values.requireCreators[0]}
+            onChange={(e) =>
+              setFieldValue('requireCreators[0]', e.target.value)
+            }
+            icon="Add"
+            onIconClick={() =>
+              setFieldValue(`requireCreators`, ['', ...values.requireCreators])
+            }
+          />
           {values.requireCreators.map(
             (v, i) =>
               i > 0 && (
-                <div
+                <TextInputIcon
                   key={i}
-                  className={`${
-                    errors.requireCreators?.at(i)
-                      ? 'border-red-500'
-                      : 'border-gray-500'
-                  } mt-3 flex appearance-none items-center justify-between rounded border bg-gray-700 py-3 px-4 text-gray-200 placeholder-gray-500 focus:bg-gray-800`}
-                >
-                  <input
-                    className={`mr-5 w-full bg-transparent focus:outline-none`}
-                    type="text"
-                    placeholder={'CmAy...A3fD'}
-                    name="requireCreators"
-                    value={v}
-                    onChange={(e) =>
-                      setFieldValue(`requireCreators[${i}]`, e.target.value)
-                    }
-                  />
-                  <div
-                    className="cursor-pointer text-xs text-gray-400"
-                    onClick={() =>
-                      setFieldValue(
-                        `requireCreators`,
-                        values.requireCreators.filter((_, ix) => ix !== i)
-                      )
-                    }
-                  >
-                    Remove
-                  </div>
-                </div>
+                  className="mt-3"
+                  placeholder={'CmAy...A3fD'}
+                  error={
+                    values.requireCreators.at(i) !== '' &&
+                    !!errors.requireCreators?.at(i)
+                  }
+                  value={v}
+                  onChange={(e) =>
+                    setFieldValue(`requireCreators[${i}]`, e.target.value)
+                  }
+                  icon="Remove"
+                  onIconClick={() =>
+                    setFieldValue(
+                      `requireCreators`,
+                      values.requireCreators.filter((_, ix) => ix !== i)
+                    )
+                  }
+                />
               )
           )}
         </div>

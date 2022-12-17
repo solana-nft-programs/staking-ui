@@ -1,6 +1,6 @@
 export const FormFieldTitleInput = (props: {
   title: string
-  description: string
+  description: React.ReactNode
 }) => (
   <>
     <div className="mb-2 block text-xs font-bold uppercase tracking-wide text-gray-200">
