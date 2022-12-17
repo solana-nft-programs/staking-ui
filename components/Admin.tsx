@@ -55,7 +55,7 @@ function Admin() {
                     onClick={() => setPane('edit')}
                   >
                     <VscChevronLeft />
-                    Back
+                    Manage
                   </div>
                 ),
                 edit: 'Your Stake Pool',

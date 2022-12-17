@@ -3,11 +3,13 @@ import { LoadingSpinner } from 'common/LoadingSpinner'
 import type { StakePool } from 'hooks/useAllStakePools'
 import { useStakePoolsByAuthority } from 'hooks/useStakePoolsByAuthority'
 import { useStakePoolsMetadatas } from 'hooks/useStakePoolsMetadata'
+import { useWalletId } from 'hooks/useWalletId'
 import { useRouter } from 'next/router'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 
 export const AdminPools = () => {
   const router = useRouter()
+  const walletId = useWalletId()
   const { environment } = useEnvironmentCtx()
   const stakePoolsByAuthority = useStakePoolsByAuthority()
   const stakePoolsMetadata = useStakePoolsMetadatas(
@@ -31,7 +33,11 @@ export const AdminPools = () => {
   const allPoolds = stakePoolsWithMetadata.concat(stakePoolsWithoutMetadata)
   return (
     <div className="">
-      {!stakePoolsByAuthority.isFetched ? (
+      {!walletId ? (
+        <div className="my-12 flex items-center justify-center text-gray-500">
+          Wallet not connected
+        </div>
+      ) : !stakePoolsByAuthority.isFetched ? (
         <div className="my-12 flex items-center justify-center text-gray-500">
           <LoadingSpinner />
         </div>
