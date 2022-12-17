@@ -29,7 +29,7 @@ export const TransferFunds = () => {
         title={'Transfer funds'}
         description={'Transfer funds to this reward distributor'}
       />
-      <div className="mb-5 flex flex-row">
+      <div className="mb-5 flex flex-row gap-2">
         <div
           className={`flex flex-grow appearance-none justify-between rounded border border-gray-500 bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800`}
         >
@@ -62,7 +62,7 @@ export const TransferFunds = () => {
           />
         </div>
         <AsyncButton
-          className="ml-4 rounded-md px-3 py-2"
+          className="rounded-md px-3 py-2"
           loading={handleTransferFunds.isLoading}
           inlineLoader
           onClick={() =>

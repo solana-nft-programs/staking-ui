@@ -13,7 +13,7 @@ export const MintMultiplierLookup = () => {
         title={'Lookup mint multiplier'}
         description={'Remember to account for multiplier decimals'}
       />
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-2">
         <input
           className="flex-grow appearance-none flex-col rounded border border-gray-500 bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800 focus:outline-none"
           type="text"

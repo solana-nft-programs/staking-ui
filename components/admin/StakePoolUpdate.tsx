@@ -254,6 +254,7 @@ export function StakePoolUpdate({
             type="checkbox"
             name="requiresAuthorization"
             checked={values.requiresAuthorization}
+            readOnly
           />{' '}
           <span
             className="my-auto cursor-pointer text-sm"
@@ -334,6 +335,7 @@ export function StakePoolUpdate({
             type="checkbox"
             name="resetOnStake"
             checked={values.resetOnStake}
+            readOnly
           />{' '}
           <span
             className="my-auto cursor-pointer text-sm"

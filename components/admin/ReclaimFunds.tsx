@@ -31,7 +31,7 @@ export const ReclaimFunds = () => {
         title={'Reclaim funds'}
         description={'Reclaim funds from this reward distributor'}
       />
-      <div className="mb-5 flex flex-row">
+      <div className="mb-5 flex flex-row gap-2">
         <div
           className={`flex flex-grow appearance-none justify-between rounded border border-gray-500 bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800`}
         >
@@ -76,7 +76,7 @@ export const ReclaimFunds = () => {
           )}
         </div>
         <AsyncButton
-          className="ml-4 rounded-md px-3 py-1"
+          className="rounded-md px-3 py-1"
           loading={handleReclaimFunds.isLoading}
           inlineLoader
           onClick={() =>

@@ -74,7 +74,7 @@ export const MintMultipliers = () => {
         </a>{' '}
         to set many at a time.
       </p>
-      <span className="flex flex-row gap-5">
+      <div className="flex flex-row gap-2">
         <input
           className="mb-3 w-1/6 appearance-none flex-col rounded border border-gray-500 bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800 focus:outline-none"
           type="text"
@@ -106,11 +106,11 @@ export const MintMultipliers = () => {
             Add
           </div>
         </div>
-      </span>
+      </div>
       {multiplierMints.map(
         (v, i) =>
           i > 0 && (
-            <span key={v} className="flex flex-row gap-5">
+            <div key={i} className="flex flex-row gap-2">
               <input
                 className="mb-3 w-1/6 appearance-none flex-col rounded border border-gray-500 bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800 focus:outline-none"
                 type="text"
@@ -120,7 +120,7 @@ export const MintMultipliers = () => {
                 }}
               />
               <div
-                className={`mb-3 flex  w-full appearance-none items-center justify-between rounded border border-gray-500 bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800`}
+                className={`mb-3 flex w-full appearance-none items-center justify-between rounded border border-gray-500 bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800`}
               >
                 <input
                   className={`mr-5 w-full bg-transparent focus:outline-none`}
@@ -148,7 +148,7 @@ export const MintMultipliers = () => {
                   Remove
                 </div>
               </div>
-            </span>
+            </div>
           )
       )}
       <AsyncButton
