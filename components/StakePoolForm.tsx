@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/ban-types */
 import { withFindOrInitAssociatedTokenAccount } from '@cardinal/common'
 import type { IdlAccountData } from '@cardinal/rewards-center'
 import { executeTransaction } from '@cardinal/staking'
@@ -76,9 +75,6 @@ const creationFormSchema = Yup.object({
   rewardDurationSeconds: Yup.string()
     .optional()
     .test('is-valid-bn', 'Invalid reward durations seconds', bnValidationTest),
-  // rewardMintSupply: Yup.string()
-  //   .optional()
-  //   .test('is-valid-bn', 'Invalid reward mint supply', bnValidationTest),
   maxRewardSecondsReceived: Yup.string()
     .optional()
     .test('is-valid-bn', 'Invalid reward durations seconds', bnValidationTest),
@@ -716,42 +712,4 @@ export function StakePoolForm({
       </AsyncButton>
     </form>
   )
-}
-
-export const customStyles = {
-  control: (base: {}) => ({
-    ...base,
-    background: 'rgb(55, 65, 81)',
-    borderColor: 'rgb(107, 114, 128)',
-  }),
-  Input: (base: {}) => ({
-    ...base,
-    color: 'white',
-  }),
-  menu: (base: {}) => ({
-    ...base,
-    background: 'rgb(55, 65, 81)',
-    '&:hover': {
-      background: 'rgb(55, 65, 81)',
-    },
-    '&:focus': {
-      background: 'rgb(75, 85, 99) !important',
-    },
-    borderRadius: 0,
-    marginTop: 0,
-  }),
-  option: (base: {}) => ({
-    ...base,
-    background: 'rgb(55, 65, 81)',
-    '&:hover': {
-      background: 'rgb(75, 85, 99)',
-    },
-    '&:focus': {
-      background: 'rgb(75, 85, 99) !important',
-    },
-  }),
-  singleValue: (provided: {}) => ({
-    ...provided,
-    color: 'white',
-  }),
 }

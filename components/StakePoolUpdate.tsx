@@ -85,7 +85,7 @@ export function StakePoolUpdate({
     onSubmit: () => {},
     validationSchema: stakePoolUpdateSchema,
   })
-  const { values, errors, setValues, setFieldValue, handleChange } = formState
+  const { values, errors, setValues, setFieldValue } = formState
 
   useEffect(() => {
     setValues(defaultValues(stakePool.data))
@@ -257,7 +257,6 @@ export function StakePoolUpdate({
             type="checkbox"
             name="requiresAuthorization"
             checked={values.requiresAuthorization}
-            onChange={handleChange}
           />{' '}
           <span
             className="my-auto cursor-pointer text-sm"
@@ -284,9 +283,10 @@ export function StakePoolUpdate({
             className="mb-3 block w-full appearance-none rounded border border-gray-500 bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800 focus:outline-none"
             type="text"
             placeholder={'0'}
-            name="cooldownPeriodSeconds"
             value={values.cooldownPeriodSeconds}
-            onChange={handleChange}
+            onChange={(e) => {
+              setFieldValue('cooldownPeriodSeconds', e.target.value)
+            }}
           />
         </div>
       </div>
@@ -302,9 +302,10 @@ export function StakePoolUpdate({
             className="mb-3 block w-full appearance-none rounded border border-gray-500 bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800 focus:outline-none"
             type="text"
             placeholder={'0'}
-            name="minStakeSeconds"
             value={values.minStakeSeconds}
-            onChange={handleChange}
+            onChange={(e) => {
+              setFieldValue('minStakeSeconds', e.target.value)
+            }}
           />
         </div>
       </div>
@@ -320,9 +321,10 @@ export function StakePoolUpdate({
             className="mb-3 block w-full appearance-none rounded border border-gray-500 bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800 focus:outline-none"
             type="date"
             placeholder={'None'}
-            name="endDate"
             value={values.endDate}
-            onChange={handleChange}
+            onChange={(e) => {
+              setFieldValue('endDate', e.target.value)
+            }}
           />
         </div>
       </div>
@@ -344,7 +346,6 @@ export function StakePoolUpdate({
             type="checkbox"
             name="resetOnStake"
             checked={values.resetOnStake}
-            onChange={handleChange}
           />{' '}
           <span
             className="my-auto cursor-pointer text-sm"

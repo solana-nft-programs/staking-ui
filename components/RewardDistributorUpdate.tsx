@@ -201,7 +201,6 @@ export function RewardDistributorUpdate() {
                 'The maximum seconds a reward entry can receive rewards for'
               }
             />
-
             <FormInput
               error={
                 !!values.maxRewardSecondsReceived &&

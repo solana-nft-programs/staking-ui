@@ -2,7 +2,7 @@ import classNames from 'classnames'
 
 export type DateInputProps = {
   disabled?: boolean
-  value: string
+  value: string | undefined
   setValue: (string: string) => void
   className?: string
   placeholder?: string
