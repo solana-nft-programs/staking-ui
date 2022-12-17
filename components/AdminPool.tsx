@@ -81,9 +81,7 @@ export const AdminStakePool = () => {
           className="text-4xl text-light-0"
           style={{ color: config?.colors?.fontColor }}
         >
-          {config?.displayName ?? stakePoolId
-            ? shortPubKey(stakePoolId)
-            : 'New stake pool'}
+          {config?.displayName ?? shortPubKey(stakePoolId)}
         </div>
         {stakePool.data && <StakePoolImage />}
         <TabSelector<PANE_OPTIONS>

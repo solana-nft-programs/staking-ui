@@ -86,7 +86,18 @@ function Admin() {
         </div>
         {
           {
-            create: <AdminStakePool />,
+            create: (
+              <div className="">
+                <div className="mx-auto flex w-full flex-col items-center justify-center gap-6 px-10">
+                  <div className="text-4xl text-light-0">Create new pool</div>
+                  <div className="text-gray-400">
+                    Adding utility like staking brings rewards for both the
+                    users and the NFT collection itself.
+                  </div>
+                </div>
+                <AdminStakePool />
+              </div>
+            ),
             edit: <AdminPools />,
           }[pane]
         }
