@@ -13,6 +13,7 @@ import type { Mint } from 'spl-token-v3'
 
 import type { FlowType } from '@/components/stake-pool-creation/master-panel/step-content/StepContent'
 import { SlavePanelScreens } from '@/components/stake-pool-creation/SlavePanel'
+import { DurationInput } from '@/components/UI/inputs/DurationInput'
 import { NumberInput } from '@/components/UI/inputs/NumberInput'
 import { TextInput } from '@/components/UI/inputs/TextInput'
 import { LabelText } from '@/components/UI/typography/LabelText'
@@ -39,7 +40,7 @@ export const RewardDistribution = ({
 
   const { setFieldValue, values, errors } = formState
   const rewardDistributor = useRewardDistributorData()
-
+  console.log(formState.values)
   return (
     <div className="flex flex-col gap-6">
       <div className="">
@@ -101,7 +102,7 @@ export const RewardDistribution = ({
               />
             </div>
             <NumberInput
-              placeholder="0.000"
+              placeholder="0"
               value={values.rewardDurationSeconds}
               onChange={(e) => {
                 setFieldValue('rewardDurationSeconds', e.target.value)
@@ -194,6 +195,27 @@ export const RewardDistribution = ({
                 }}
               />
             </div>
+          </div>
+          <div className="">
+            <div className="mb-2 flex w-full items-center">
+              <LabelText>
+                Maximum reward duration
+                <span className="ml-1 text-gray-500">(optional)</span>
+              </LabelText>
+              <InformationCircleIcon
+                className="ml-1 h-6 w-6 cursor-pointer text-gray-400"
+                onClick={() =>
+                  setActiveSlavePanelScreen(
+                    SlavePanelScreens.TIME_BASED_PARAMETERS_3
+                  )
+                }
+              />
+            </div>
+            <DurationInput
+              defaultAmount={values.maxRewardSecondsReceived ?? null}
+              defaultOption={'seconds'}
+              handleChange={(v) => setFieldValue('maxRewardSecondsReceived', v)}
+            />
           </div>
         </>
       )}

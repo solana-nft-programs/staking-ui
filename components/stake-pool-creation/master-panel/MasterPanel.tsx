@@ -1,6 +1,5 @@
 import { LoadingSpinner } from 'common/LoadingSpinner'
 import type { FormikHandlers, FormikState, FormikValues } from 'formik'
-import { useHandleCreatePool } from 'handlers/useHandleCreatePoolNew'
 import type { Dispatch, SetStateAction } from 'react'
 import type { Mint } from 'spl-token-v3'
 
@@ -12,8 +11,6 @@ import { BodyCopy } from '@/components/UI/typography/BodyCopy'
 import { HeadingPrimary } from '@/components/UI/typography/HeadingPrimary'
 import { ButtonWidths } from '@/types/index'
 
-import type { CreationForm } from '../Schema'
-
 export type MasterPanelProps = {
   submitDisabled: boolean
   mintInfo?: Mint
@@ -22,6 +19,8 @@ export type MasterPanelProps = {
   setActiveSlavePanelScreen: Dispatch<SetStateAction<SlavePanelScreens>>
   formState: FormikHandlers & FormikState<FormikValues> & FormikValues
   type: FlowType
+  handleSubmit: () => void
+  isLoading?: boolean
 }
 
 const stepTitles = [
@@ -48,9 +47,10 @@ export const MasterPanel = ({
   currentStep,
   setCurrentStep,
   setActiveSlavePanelScreen,
+  handleSubmit,
+  isLoading,
   type,
 }: MasterPanelProps) => {
-  const handleCreatePool = useHandleCreatePool()
   return (
     <div className="w-2/5 space-y-2">
       <HeadingPrimary>{stepTitles?.[currentStep]}</HeadingPrimary>
@@ -80,21 +80,16 @@ export const MasterPanel = ({
           </ButtonPrimary>
         ) : (
           <ButtonPrimary
-            onClick={() => {
-              handleCreatePool.mutate({
-                values: formState.values as CreationForm,
-                mintInfo: mintInfo,
-              })
-            }}
+            onClick={() => handleSubmit()}
             width={ButtonWidths.NARROW}
             disabled={submitDisabled}
           >
-            {handleCreatePool.isLoading ? (
+            {isLoading ? (
               <LoadingSpinner fill={'#FFF'} height="25px" />
             ) : type === 'create' ? (
-              'Create Stake Pool'
+              'Create'
             ) : (
-              'Update Stake Pool'
+              'Update'
             )}
           </ButtonPrimary>
         )}

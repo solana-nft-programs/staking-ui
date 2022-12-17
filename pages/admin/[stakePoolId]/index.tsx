@@ -1,6 +1,6 @@
 import { Tooltip } from '@mui/material'
-import { Footer } from 'common/Footer'
-import { Header } from 'common/Header'
+import { FooterSlim } from 'common/FooterSlim'
+import { HeaderSlim } from 'common/HeaderSlim'
 import { ShortPubKeyUrl } from 'common/Pubkeys'
 import { getMintDecimalAmountFromNatural } from 'common/units'
 import { pubKeyUrl, shortPubKey } from 'common/utils'
@@ -19,7 +19,7 @@ import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
 import Head from 'next/head'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 
-function AdminStakePool() {
+function Home() {
   const { environment } = useEnvironmentCtx()
   const stakePool = useStakePoolData()
   const rewardDistributor = useRewardDistributorData()
@@ -47,7 +47,7 @@ function AdminStakePool() {
         />
       </Head>
 
-      <Header />
+      <HeaderSlim />
       <div className="container mx-auto w-full bg-[#1a1b20]">
         <div className="my-2 h-full min-h-[55vh] rounded-md bg-white bg-opacity-5 p-10 text-gray-200">
           {!stakePool.isFetched || !rewardDistributor.isFetched ? (
@@ -256,9 +256,9 @@ function AdminStakePool() {
           )}
         </div>
       </div>
-      <Footer />
+      <FooterSlim />
     </div>
   )
 }
 
-export default AdminStakePool
+export default Home

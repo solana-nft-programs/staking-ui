@@ -1,7 +1,7 @@
 import { InformationCircleIcon } from '@heroicons/react/24/outline'
 import type { FormikHandlers, FormikState, FormikValues } from 'formik'
 import type { Dispatch, SetStateAction } from 'react'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
 import { SlavePanelScreens } from '@/components/stake-pool-creation/SlavePanel'
 import { DateInput } from '@/components/UI/inputs/DateInput'
@@ -25,15 +25,8 @@ export const AdditionalFeatures = ({
     setResetOnStake(value)
   }
   const { values, setFieldValue } = formState
-
-  useEffect(() => {
-    if (!values.rewardDurationSeconds) {
-      setFieldValue('rewardDurationSeconds', String(0))
-    }
-  }, [values?.rewardDurationSeconds, setFieldValue])
-
   return (
-    <div className="flex w-3/4 flex-col gap-6">
+    <div className="flex flex-col gap-6">
       <div className="">
         <div className="mb-2 flex w-full items-center">
           <LabelText>
@@ -50,7 +43,7 @@ export const AdditionalFeatures = ({
           />
         </div>
         <DurationInput
-          defaultAmount={values.minStakeSeconds}
+          defaultAmount={values.minStakeSeconds ?? null}
           defaultOption={'seconds'}
           handleChange={(v) => setFieldValue('minStakeSeconds', v)}
         />
@@ -71,30 +64,9 @@ export const AdditionalFeatures = ({
           />
         </div>
         <DurationInput
-          defaultAmount={values.cooldownPeriodSeconds}
+          defaultAmount={values.cooldownPeriodSeconds ?? null}
           defaultOption={'seconds'}
           handleChange={(v) => setFieldValue('cooldownPeriodSeconds', v)}
-        />
-      </div>
-      <div className="">
-        <div className="mb-2 flex w-full items-center">
-          <LabelText>
-            Maximum reward duration
-            <span className="ml-1 text-gray-500">(optional)</span>
-          </LabelText>
-          <InformationCircleIcon
-            className="ml-1 h-6 w-6 cursor-pointer text-gray-400"
-            onClick={() =>
-              setActiveSlavePanelScreen(
-                SlavePanelScreens.TIME_BASED_PARAMETERS_3
-              )
-            }
-          />
-        </div>
-        <DurationInput
-          defaultAmount={values.maxRewardSecondsReceived}
-          defaultOption={'seconds'}
-          handleChange={(v) => setFieldValue('maxRewardSecondsReceived', v)}
         />
       </div>
       <div className="">

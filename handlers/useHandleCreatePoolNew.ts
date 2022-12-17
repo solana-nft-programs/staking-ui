@@ -57,6 +57,7 @@ export const useHandleCreatePool = () => {
         .map((c) => tryPublicKey(c))
         .filter((c) => c) as PublicKey[]
 
+      console.log(values)
       // format date
       let dateInNum: number | undefined = new Date(
         values.endDate?.toString() || ''

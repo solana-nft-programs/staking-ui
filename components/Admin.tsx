@@ -1,14 +1,9 @@
-import { Footer } from 'common/Footer'
+import { FooterSlim } from 'common/FooterSlim'
 import { HeaderSlim } from 'common/HeaderSlim'
 import { StakePoolCreationFlow } from 'components/stake-pool-creation/StakePoolCreationFlow'
-// import { StakePoolForm } from 'components/StakePoolForm'
 import Head from 'next/head'
 
-export function Placeholder() {
-  return (
-    <div className="h-[300px] animate-pulse rounded-lg bg-white bg-opacity-5 p-10"></div>
-  )
-}
+import { AdminPools } from './AdminPools'
 
 function Admin() {
   return (
@@ -25,10 +20,11 @@ function Admin() {
       </Head>
 
       <HeaderSlim />
-      <div className="container mx-auto w-full">
-        <StakePoolCreationFlow handleSubmit={() => {}} />
+      <div className="container mx-auto w-full px-10">
+        <StakePoolCreationFlow />
+        <AdminPools />
       </div>
-      <Footer />
+      <FooterSlim />
     </div>
   )
 }

@@ -1,8 +1,11 @@
-import { ButtonPrimary } from '@/components/UI/buttons/ButtonPrimary'
 import { PlusIcon } from '@heroicons/react/24/solid'
 import { HeaderSlim } from 'common/HeaderSlim'
 import { statsNameMapping, useGlobalStats } from 'hooks/useGlobalStats'
 import { useRouter } from 'next/router'
+
+import { ButtonPrimary } from '@/components/UI/buttons/ButtonPrimary'
+
+import { ButtonWidths } from '../types'
 
 export const MainHero = () => {
   const stats = useGlobalStats()
@@ -31,6 +34,7 @@ export const MainHero = () => {
               onClick={() => {
                 router.push('/admin')
               }}
+              width={ButtonWidths.NARROW}
             >
               Create your pool
               <PlusIcon className="ml-2 h-6 w-6" />
