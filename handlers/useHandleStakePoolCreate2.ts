@@ -12,17 +12,16 @@ import { SystemProgram, Transaction } from '@solana/web3.js'
 import { handleError } from 'common/errors'
 import { notify } from 'common/Notification'
 import { asWallet } from 'common/Wallets'
-import { useMutation } from 'react-query'
+import { useMutation, useQueryClient } from 'react-query'
 
 import type { StakePoolUpdateForm } from '@/components/StakePoolUpdate'
 
-import { useStakePoolData } from '../hooks/useStakePoolData'
 import { useEnvironmentCtx } from '../providers/EnvironmentProvider'
 
 export const useHandleStakePoolCreate2 = () => {
   const wallet = asWallet(useWallet())
   const { connection } = useEnvironmentCtx()
-  const stakePool = useStakePoolData()
+  const queryClient = useQueryClient()
   return useMutation(
     async ({
       values,
@@ -93,14 +92,14 @@ export const useHandleStakePoolCreate2 = () => {
       return [txid, stakePoolId]
     },
     {
-      onSuccess: ([txid]) => {
+      onSuccess: ([txid, stakePoolId]) => {
         notify({
           message: 'Success',
-          description: `Successfully created stake pool ${stakePool.data?.pubkey.toString()}`,
+          description: `Successfully created stake pool ${stakePoolId.toString()}`,
           txid,
           type: 'success',
         })
-        stakePool.refetch()
+        queryClient.resetQueries()
       },
       onError: (e) => {
         notify({

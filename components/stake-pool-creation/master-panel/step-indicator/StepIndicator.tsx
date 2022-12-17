@@ -9,7 +9,7 @@ const numberOfSteps = 3
 
 export const StepIndicator = ({ currentStep }: StepIndicatorProps) => {
   return (
-    <div className="relative flex items-center justify-between py-2">
+    <div className="relative flex w-full items-center justify-between py-2">
       <div className="absolute w-full px-1">
         <HorizontalDivider />
       </div>

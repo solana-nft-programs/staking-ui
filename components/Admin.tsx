@@ -1,12 +1,19 @@
+import { FlagIcon } from 'assets/icons/FlagIcon'
+import { GasPumpIcon } from 'assets/icons/GasPumpIcon'
+import { SettingsIcon } from 'assets/icons/SettingsIcon'
 import { AsyncButton } from 'common/Button'
 import { FooterSlim } from 'common/FooterSlim'
 import { HeaderSlim } from 'common/HeaderSlim'
+import { withCluster } from 'common/utils'
 import Head from 'next/head'
+import { useRouter } from 'next/router'
+import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 import { useState } from 'react'
 import { VscChevronLeft } from 'react-icons/vsc'
 
-import { AdminStakePool } from './AdminPool'
 import { AdminPools } from './AdminPools'
+import { StepIndicator } from './stake-pool-creation/master-panel/step-indicator/StepIndicator'
+import { StakePoolUpdate } from './StakePoolUpdate'
 
 type PANE_OPTIONS = 'create' | 'edit'
 
@@ -29,7 +36,9 @@ type PANE_OPTIONS = 'create' | 'edit'
 // ]
 
 function Admin() {
+  const { environment } = useEnvironmentCtx()
   const [pane, setPane] = useState<PANE_OPTIONS>('edit')
+  const router = useRouter()
   return (
     <div className="flex min-h-screen flex-col">
       <Head>
@@ -75,27 +84,49 @@ function Admin() {
               ),
             }[pane]
           }
-          {/* <TabSelector<PANE_OPTIONS>
-            defaultOption={paneTabs[0]}
-            options={paneTabs}
-            value={paneTabs.find((p) => p.value === pane)}
-            onChange={(o) => {
-              setPane(o.value)
-            }}
-          /> */}
         </div>
         {
           {
             create: (
-              <div className="">
-                <div className="mx-auto flex w-full flex-col items-center justify-center gap-6 px-10">
+              <div className="mx-auto w-full max-w-[600px]">
+                <div className="mx-auto mb-10 flex w-full w-full flex-col items-center justify-center gap-6">
                   <div className="text-4xl text-light-0">Create new pool</div>
+                  <StepIndicator currentStep={0} />
                   <div className="text-gray-400">
                     Adding utility like staking brings rewards for both the
                     users and the NFT collection itself.
                   </div>
+                  <div className="flex flex-wrap gap-2">
+                    <div className="flex w-full rounded-xl bg-gray-800 p-6">
+                      <div className="mr-4">
+                        <FlagIcon />
+                      </div>
+                      Setup your stake pool - all parameters are editable
+                    </div>
+                    <div className="flex w-full rounded-xl bg-gray-800 p-6">
+                      <div className="mr-4">
+                        <GasPumpIcon />
+                      </div>
+                      You will only be charged with blockchain gas fees
+                    </div>
+                    <div className="flex w-full rounded-xl bg-gray-800 p-6">
+                      <div className="mr-4">
+                        <SettingsIcon />
+                      </div>
+                      Edit add reward distribution mechanisms after creation
+                    </div>
+                  </div>
                 </div>
-                <AdminStakePool />
+                <StakePoolUpdate
+                  onSuccess={(stakePoolId) =>
+                    router.push(
+                      withCluster(
+                        `/admin/${stakePoolId?.toString()}`,
+                        environment.label
+                      )
+                    )
+                  }
+                />
               </div>
             ),
             edit: <AdminPools />,

@@ -1,3 +1,4 @@
+import type { Cluster } from '@solana/web3.js'
 import { PublicKey } from '@solana/web3.js'
 
 export function shortPubKey(pubkey: PublicKey | string | null | undefined) {
@@ -146,4 +147,12 @@ export const camelCaseToTitle = (str: string) => {
   return str
     .replace(/([A-Z])/g, ' $1')
     .replace(/^./, (str) => str.toUpperCase())
+}
+
+export const withCluster = (s: string, cluster: Cluster) => {
+  return `${s}${
+    cluster !== 'mainnet-beta'
+      ? `${s.includes('?') ? '&' : '?'}cluster=${cluster}`
+      : ''
+  }`
 }

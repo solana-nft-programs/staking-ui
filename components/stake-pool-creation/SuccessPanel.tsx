@@ -2,6 +2,7 @@ import { ChevronLeftIcon } from '@heroicons/react/24/outline'
 import type { PublicKey } from '@solana/web3.js'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
+import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 
 import FloatingBlurryBlob from '@/components/UI/FloatingBlurryBlob'
 import { ButtonColors, FloatingBlurryBlobColors } from '@/types/colors'
@@ -15,6 +16,7 @@ const { TRANSPARENT } = ButtonColors
 
 export const SuccessPanel = ({ stakePoolId }: { stakePoolId?: PublicKey }) => {
   const router = useRouter()
+  const { environment } = useEnvironmentCtx()
   return (
     <div className="flex h-screen flex-col pt-5 pb-10">
       <div className="relative flex h-full w-full flex-col overflow-clip rounded-2xl bg-black">
@@ -57,7 +59,11 @@ export const SuccessPanel = ({ stakePoolId }: { stakePoolId?: PublicKey }) => {
         <ButtonPrimary
           width={ButtonWidths.NARROW}
           className="mx-auto mt-6"
-          onClick={() => router.push(`/${stakePoolId?.toString()}`)}
+          onClick={() =>
+            router.push(
+              `/${stakePoolId?.toString()}?cluster=${environment.label}`
+            )
+          }
         >
           View
         </ButtonPrimary>

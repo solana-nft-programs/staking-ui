@@ -1,5 +1,6 @@
 import { shortPubKey } from '@cardinal/common'
 import { LoadingSpinner } from 'common/LoadingSpinner'
+import { withCluster } from 'common/utils'
 import type { StakePool } from 'hooks/useAllStakePools'
 import { useStakePoolsByAuthority } from 'hooks/useStakePoolsByAuthority'
 import { useStakePoolsMetadatas } from 'hooks/useStakePoolsMetadata'
@@ -53,14 +54,13 @@ export const AdminPools = () => {
               className="h-[300px] cursor-pointer rounded-lg bg-white bg-opacity-5 p-10 transition-all duration-100 hover:scale-[1.01]"
               onClick={() => {
                 router.push(
-                  `/admin/${
-                    stakePool.stakePoolMetadata?.name ||
-                    stakePool.stakePoolData.pubkey.toString()
-                  }${
-                    environment.label !== 'mainnet-beta'
-                      ? `?cluster=${environment.label}`
-                      : ''
-                  }`
+                  withCluster(
+                    `/admin/${
+                      stakePool.stakePoolMetadata?.name ||
+                      stakePool.stakePoolData.pubkey.toString()
+                    }`,
+                    environment.label
+                  )
                 )
               }}
             >
