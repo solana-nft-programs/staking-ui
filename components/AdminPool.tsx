@@ -1,4 +1,5 @@
 import { pubKeyUrl, shortPubKey } from '@cardinal/common'
+import type { PublicKey } from '@solana/web3.js'
 import { TabSelector } from 'common/TabSelector'
 import { useRewardDistributorData } from 'hooks/useRewardDistributorData'
 import { useStakePoolData } from 'hooks/useStakePoolData'
@@ -23,7 +24,11 @@ export type PANE_OPTIONS =
   | 'reward-multipliers'
   | 'reward-funds'
 
-export const AdminStakePool = () => {
+export const AdminStakePool = ({
+  onSuccess,
+}: {
+  onSuccess?: (p: PublicKey | undefined) => void
+}) => {
   const { environment } = useEnvironmentCtx()
   const { data: config } = useStakePoolMetadata()
   const stakePoolId = useStakePoolId()
@@ -78,7 +83,7 @@ export const AdminStakePool = () => {
 
   return (
     <div className="mx-auto flex w-full flex-grow flex-col items-center gap-6">
-      <div className="flex w-full flex-col items-center justify-center gap-6 px-10">
+      <div className="flex w-full flex-col items-center justify-center gap-6">
         <div
           className="text-4xl text-light-0"
           style={{ color: config?.colors?.fontColor }}
@@ -102,10 +107,10 @@ export const AdminStakePool = () => {
           }}
         />
       </div>
-      <div className="mt-4 flex w-full max-w-[640px] flex-grow justify-center px-10">
+      <div className="mt-4 flex w-full max-w-[640px] flex-grow justify-center">
         {
           {
-            'stake-pool': <StakePoolUpdate />,
+            'stake-pool': <StakePoolUpdate onSuccess={onSuccess} />,
             'mint-authorization': <AuthorizeMints />,
             'reward-distributor': <RewardDistributorUpdate />,
             'reward-multipliers': (

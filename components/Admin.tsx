@@ -11,9 +11,9 @@ import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 import { useState } from 'react'
 import { VscChevronLeft } from 'react-icons/vsc'
 
+import { AdminStakePool } from './AdminPool'
 import { AdminPools } from './AdminPools'
 import { StepIndicator } from './stake-pool-creation/master-panel/step-indicator/StepIndicator'
-import { StakePoolUpdate } from './StakePoolUpdate'
 
 type PANE_OPTIONS = 'create' | 'edit'
 
@@ -88,8 +88,8 @@ function Admin() {
         {
           {
             create: (
-              <div className="mx-auto w-full max-w-[600px]">
-                <div className="mx-auto mb-10 flex w-full w-full flex-col items-center justify-center gap-6">
+              <div className="mx-auto w-full">
+                <div className="mx-auto mb-4 flex w-full w-full max-w-[600px] flex-col items-center justify-center gap-6">
                   <div className="text-4xl text-light-0">Create new pool</div>
                   <StepIndicator currentStep={0} />
                   <div className="text-gray-400">
@@ -114,12 +114,11 @@ function Admin() {
                       <div className="mr-4">
                         <SettingsIcon />
                       </div>
-                      Add features and reward distribution mechanisms after
-                      creation
+                      Add features and reward distribution mechanisms
                     </div>
                   </div>
                 </div>
-                <StakePoolUpdate
+                <AdminStakePool
                   onSuccess={(stakePoolId) =>
                     router.push(
                       withCluster(
