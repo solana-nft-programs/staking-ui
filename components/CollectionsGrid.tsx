@@ -7,7 +7,6 @@ import {
   compareStakePools,
   percentStaked,
   poolId,
-  totalStaked,
   useStakePoolEntryCounts,
 } from 'hooks/useStakePoolEntryCounts'
 import { useRouter } from 'next/router'
@@ -111,10 +110,7 @@ export const CollectionsGrid = ({ configs }: { configs?: StakePool[] }) => {
                         {
                           header: 'Total Staked',
                           value: (
-                            totalStaked(
-                              config.stakePoolMetadata,
-                              stakePoolEntryCounts.data ?? {}
-                            ) ?? 0
+                            stakePoolEntryCounts.data[poolId(config)] ?? 0
                           ).toLocaleString(),
                         },
                         {
@@ -134,10 +130,8 @@ export const CollectionsGrid = ({ configs }: { configs?: StakePool[] }) => {
                         {
                           header: 'Total Staked',
                           value: (
-                            totalStaked(
-                              config.stakePoolMetadata,
-                              stakePoolEntryCounts.data ?? {}
-                            ) ?? 0
+                            (stakePoolEntryCounts.data ?? {})[poolId(config)] ??
+                            0
                           ).toLocaleString(),
                         },
                       ]}

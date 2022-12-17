@@ -84,27 +84,42 @@ export const useStakePoolEntryCounts = () => {
       const queryResult = await index.query({
         query: gql`
           query GetStakePoolTotals {
-            acc_k0u6qbqshnoizi7cayzl {
+            q1: acc_k0u6qbqshnoizi7cayzl {
+              totalStaked
+              pubkey
+            }
+            q2: acc_o5zqddeady2fcbezcoee {
               totalStaked
               pubkey
             }
           }
         `,
       })
-      const queryData = queryResult.data['acc_k0u6qbqshnoizi7cayzl'] as
-        | [
-            {
-              totalStaked: number
-              pubkey: string
-            }
-          ]
+      const queryData = queryResult.data as
+        | {
+            q1: [
+              {
+                totalStaked: number
+                pubkey: string
+              }
+            ]
+            q2: [
+              {
+                totalStaked: number
+                pubkey: string
+              }
+            ]
+          }
         | undefined
 
       return (
-        queryData?.reduce((acc, { totalStaked, pubkey }) => {
-          acc[pubkey] = totalStaked
-          return acc
-        }, {} as { [poolId: string]: number }) ?? {}
+        (queryData ? [...queryData?.q1, ...queryData.q2] : [])?.reduce(
+          (acc, { totalStaked, pubkey }) => {
+            acc[pubkey] = totalStaked
+            return acc
+          },
+          {} as { [poolId: string]: number }
+        ) ?? {}
       )
     }
   )
