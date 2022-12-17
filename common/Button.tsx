@@ -1,6 +1,7 @@
 import { css } from '@emotion/react'
 import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
 import { useState } from 'react'
+import { twMerge } from 'tailwind-merge'
 
 import { contrastify } from './colors'
 import { LoadingSpinner } from './LoadingSpinner'
@@ -64,11 +65,13 @@ export const AsyncButton: React.FC<Props> = ({
   return (
     <div
       {...rest}
-      className={`flex items-center gap-1 rounded-lg bg-primary p-3 text-light-0 transition-colors ${className} ${
+      className={twMerge(
+        `flex items-center gap-1 rounded-lg bg-primary p-3 text-light-0 transition-colors`,
         disabled
           ? 'cursor-default opacity-50'
-          : 'cursor-pointer hover:bg-primary-hover'
-      }`}
+          : 'cursor-pointer hover:bg-primary-hover',
+        className
+      )}
       css={
         colorized &&
         css`
