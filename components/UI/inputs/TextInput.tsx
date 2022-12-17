@@ -1,8 +1,10 @@
 import classNames from 'classnames'
 
-export type TextInputProps = {
+type Props = React.DetailedHTMLProps<
+  React.InputHTMLAttributes<HTMLInputElement>,
+  HTMLInputElement
+> & {
   disabled?: boolean
-  value: string
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void
   className?: string
   placeholder?: string
@@ -16,7 +18,8 @@ export const TextInput = ({
   onChange,
   className,
   placeholder,
-}: TextInputProps) => {
+  ...props
+}: Props) => {
   return (
     <input
       disabled={disabled}
@@ -24,11 +27,13 @@ export const TextInput = ({
       onChange={onChange}
       value={value}
       className={classNames([
-        'w-full rounded-lg bg-gray-800 p-2 outline outline-gray-600',
-        hasError && 'outline outline-red-500',
-        !hasError && 'focus:outline-orange-500',
+        'w-full appearance-none rounded bg-gray-700 py-3 px-4 text-gray-200 placeholder-gray-500 outline',
+        !disabled && hasError ? 'outline outline-red-500' : 'outline-gray-500',
+        !disabled && !hasError && 'focus:bg-gray-800', //focus:outline-orange-500
+        disabled && 'opacity-30',
         className,
       ])}
+      {...props}
     />
   )
 }

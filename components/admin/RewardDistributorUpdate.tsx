@@ -1,7 +1,6 @@
 import { tryFormatInput, tryParseInput, tryPublicKey } from '@cardinal/common'
 import { AsyncButton } from 'common/Button'
 import { FormFieldTitleInput } from 'common/FormFieldInput'
-import { FormInput } from 'common/FormInput'
 import { LoadingSpinner } from 'common/LoadingSpinner'
 import { notify } from 'common/Notification'
 import { useFormik } from 'formik'
@@ -19,6 +18,7 @@ import {
   bnValidationTest,
   publicKeyValidationTest,
 } from '../stake-pool-creation/Schema'
+import { TextInput } from '../UI/inputs/TextInput'
 
 const rewardDistributorSchema = Yup.object({
   rewardMintAddress: Yup.string().test(
@@ -105,167 +105,149 @@ export function RewardDistributorUpdate() {
           ''
         )}
         <FormFieldTitleInput
-          title={'(Optional) Reward Mint Address'}
+          title={'Reward Mint Address'}
           description={'The mint address of the reward token'}
         />
-        <FormInput
+        <TextInput
           disabled={rewardDistributorData !== undefined}
-          error={
+          hasError={
             !!values.rewardMintAddress &&
             values.rewardMintAddress !== '' &&
-            Boolean(errors.rewardMintAddress)
+            !!errors.rewardMintAddress
           }
-          className={`mb-3 block w-full appearance-none rounded border border-gray-500 bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800 focus:outline-none`}
-          type="text"
-          placeholder={'Enter Mint Address First: So1111..11112'}
+          placeholder={'Enter mint address first: So1111..11112'}
           value={values.rewardMintAddress}
           onChange={(e) => {
             setFieldValue('rewardMintAddress', e.target.value)
           }}
         />
       </div>
-      {values.rewardMintAddress && mintInfo.data && (
-        <>
-          <div className="">
-            <FormFieldTitleInput
-              title={'Reward Amount'}
-              description={`Amount of tokens to be distributed per duration staked. Accumulates per natural amount of staked tokens.`}
-            />
-            <FormInput
-              error={Boolean(errors.rewardAmount)}
-              className={`${
-                errors.rewardAmount ? 'border-red-500' : 'border-gray-500'
-              } mb-3 block w-full appearance-none rounded border border-gray-500 bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800 focus:outline-none`}
-              type="text"
-              placeholder={'10'}
-              value={tryFormatInput(
-                values.rewardAmount,
+      <div className="">
+        <FormFieldTitleInput
+          title={'Reward Amount'}
+          description={`Amount of tokens to be distributed per duration staked. Accumulates per natural amount of staked tokens.`}
+        />
+        <TextInput
+          disabled={!mintInfo.data}
+          hasError={!!errors.rewardAmount}
+          placeholder={'0'}
+          value={tryFormatInput(
+            values.rewardAmount,
+            mintInfo.data?.decimals,
+            values.rewardAmount ?? ''
+          )}
+          onChange={(e) => {
+            const value = Number(e.target.value)
+            if (Number.isNaN(value)) {
+              notify({
+                message: `Invalid reward amount`,
+                type: 'error',
+              })
+              return
+            }
+            setFieldValue(
+              'rewardAmount',
+              tryParseInput(
+                e.target.value,
                 mintInfo.data?.decimals,
                 values.rewardAmount ?? ''
-              )}
-              onChange={(e) => {
-                const value = Number(e.target.value)
-                if (Number.isNaN(value)) {
-                  notify({
-                    message: `Invalid reward amount`,
-                    type: 'error',
-                  })
-                  return
-                }
-                setFieldValue(
-                  'rewardAmount',
-                  tryParseInput(
-                    e.target.value,
-                    mintInfo.data?.decimals,
-                    values.rewardAmount ?? ''
-                  )
-                )
-              }}
-            />
-          </div>
-          <div className="">
-            <FormFieldTitleInput
-              title={'Reward Duration Seconds'}
-              description={
-                'Duration in seconds to stake a single natural amount of token to receive the reward amount.'
-              }
-            />
-            <FormInput
-              className={`${
-                errors.rewardDurationSeconds
-                  ? 'border-red-500'
-                  : 'border-gray-500'
-              } mb-3 block w-full appearance-none rounded border border-gray-500 bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800 focus:outline-none`}
-              type="text"
-              placeholder={'60'}
-              value={values.rewardDurationSeconds}
-              onChange={(e) => {
-                const seconds = Number(e.target.value)
-                if (!seconds && e.target.value.length !== 0) {
-                  notify({
-                    message: `Invalid reward duration seconds`,
-                    type: 'error',
-                  })
-                }
-                setFieldValue(
-                  'rewardDurationSeconds',
-                  e.target.value.toString()
-                )
-              }}
-            />
-          </div>
-          <div className="">
-            <FormFieldTitleInput
-              title={'Maximum reward seconds'}
-              description={
-                'The maximum seconds a reward entry can receive rewards for'
-              }
-            />
-            <FormInput
-              error={
-                !!values.maxRewardSecondsReceived &&
-                values.maxRewardSecondsReceived !== '' &&
-                !!errors.maxRewardSecondsReceived
-              }
-              className={`mb-3 block w-full appearance-none rounded border border-gray-500 bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800 focus:outline-none`}
-              type="text"
-              placeholder={'None'}
-              value={values.maxRewardSecondsReceived}
-              onChange={(e) => {
-                setFieldValue('maxRewardSecondsReceived', e.target.value)
-              }}
-            />
-          </div>
-          <div className="">
-            <FormFieldTitleInput
-              title={'Multiplier Decimals'}
-              description={
-                'Decimals of the reward distributor to achieve decimal multipliers.'
-              }
-            />
-            <FormInput
-              className={`mb-3 block w-full appearance-none rounded border border-gray-500 bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800 focus:outline-none`}
-              type="text"
-              placeholder={'0'}
-              value={values.multiplierDecimals}
-              onChange={(e) => {
-                const supply = Number(e.target.value.replaceAll(',', ''))
-                if (!supply && e.target.value.length !== 0) {
-                  notify({
-                    message: `Invalid multiplier decimals`,
-                    type: 'error',
-                  })
-                }
-                setFieldValue('multiplierDecimals', e.target.value.toString())
-              }}
-            />
-          </div>
-          <div className="">
-            <FormFieldTitleInput
-              title={'Default Multiplier'}
-              description={
-                'Default multiplier to be used to achieve decimal multipliers.'
-              }
-            />{' '}
-            <FormInput
-              className={`mb-3 block w-full appearance-none rounded border border-gray-500 bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800 focus:outline-none`}
-              type="text"
-              placeholder={'1'}
-              value={values.defaultMultiplier}
-              onChange={(e) => {
-                const supply = Number(e.target.value.replaceAll(',', ''))
-                if (!supply && e.target.value.length !== 0) {
-                  notify({
-                    message: `Invalid default multiplier`,
-                    type: 'error',
-                  })
-                }
-                setFieldValue('defaultMultiplier', e.target.value.toString())
-              }}
-            />
-          </div>
-        </>
-      )}
+              )
+            )
+          }}
+        />
+      </div>
+      <div className="">
+        <FormFieldTitleInput
+          title={'Reward Duration Seconds'}
+          description={
+            'Duration in seconds to stake a single natural amount of token to receive the reward amount.'
+          }
+        />
+        <TextInput
+          disabled={!mintInfo.data}
+          hasError={!!errors.rewardDurationSeconds}
+          placeholder={'1'}
+          value={values.rewardDurationSeconds}
+          onChange={(e) => {
+            const seconds = Number(e.target.value)
+            if (!seconds && e.target.value.length !== 0) {
+              notify({
+                message: `Invalid reward duration seconds`,
+                type: 'error',
+              })
+            }
+            setFieldValue('rewardDurationSeconds', e.target.value.toString())
+          }}
+        />
+      </div>
+      <div className="">
+        <FormFieldTitleInput
+          title={'Maximum reward seconds'}
+          description={
+            'The maximum seconds a reward entry can receive rewards for'
+          }
+        />
+        <TextInput
+          disabled={!mintInfo.data}
+          hasError={
+            !!values.maxRewardSecondsReceived &&
+            values.maxRewardSecondsReceived !== '' &&
+            !!errors.maxRewardSecondsReceived
+          }
+          placeholder={'None'}
+          value={values.maxRewardSecondsReceived}
+          onChange={(e) => {
+            setFieldValue('maxRewardSecondsReceived', e.target.value)
+          }}
+        />
+      </div>
+      <div className="">
+        <FormFieldTitleInput
+          title={'Multiplier Decimals'}
+          description={
+            'Decimals of the reward distributor to achieve decimal multipliers.'
+          }
+        />
+        <TextInput
+          disabled={!mintInfo.data}
+          placeholder={'0'}
+          value={values.multiplierDecimals}
+          onChange={(e) => {
+            const supply = Number(e.target.value.replaceAll(',', ''))
+            if (!supply && e.target.value.length !== 0) {
+              notify({
+                message: `Invalid multiplier decimals`,
+                type: 'error',
+              })
+            }
+            setFieldValue('multiplierDecimals', e.target.value.toString())
+          }}
+        />
+      </div>
+      <div className="">
+        <FormFieldTitleInput
+          title={'Default Multiplier'}
+          description={
+            'Default multiplier to be used to achieve decimal multipliers.'
+          }
+        />
+        <TextInput
+          disabled={!mintInfo.data}
+          type="text"
+          placeholder={'1'}
+          value={values.defaultMultiplier}
+          onChange={(e) => {
+            const supply = Number(e.target.value.replaceAll(',', ''))
+            if (!supply && e.target.value.length !== 0) {
+              notify({
+                message: `Invalid default multiplier`,
+                type: 'error',
+              })
+            }
+            setFieldValue('defaultMultiplier', e.target.value.toString())
+          }}
+        />
+      </div>
       <AsyncButton
         disabled={
           !mintInfo.data ||

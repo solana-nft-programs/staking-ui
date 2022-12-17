@@ -15,6 +15,7 @@ import {
   bnValidationTest,
   publicKeyValidationTest,
 } from '../stake-pool-creation/Schema'
+import { TextInput } from '../UI/inputs/TextInput'
 
 const stakePoolUpdateSchema = Yup.object({
   requireCollections: Yup.array()
@@ -106,7 +107,7 @@ export function StakePoolUpdate({
               errors.requireCollections?.at(0)
                 ? 'border-red-500'
                 : 'border-gray-500'
-            } mb-3 flex appearance-none items-center justify-between rounded border bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800`}
+            } flex appearance-none items-center justify-between rounded border bg-gray-700 py-3 px-4 text-gray-200 placeholder-gray-500 focus:bg-gray-800`}
           >
             <input
               className={`mr-5 w-full bg-transparent focus:outline-none`}
@@ -139,7 +140,7 @@ export function StakePoolUpdate({
                     errors.requireCollections?.at(i)
                       ? 'border-red-500'
                       : 'border-gray-500'
-                  } mb-3 flex appearance-none items-center justify-between rounded border bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800`}
+                  } mt-3 flex appearance-none items-center justify-between rounded border bg-gray-700 py-3 px-4 text-gray-200 placeholder-gray-500 focus:bg-gray-800`}
                 >
                   <input
                     className={`mr-5 w-full bg-transparent focus:outline-none`}
@@ -178,7 +179,7 @@ export function StakePoolUpdate({
               values.requireCreators[0] !== '' && errors.requireCreators?.at(0)
                 ? 'border-red-500'
                 : 'border-gray-500'
-            } mb-3 flex appearance-none items-center justify-between rounded border bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800`}
+            } flex appearance-none items-center justify-between rounded border bg-gray-700 py-3 px-4 text-gray-200 placeholder-gray-500 focus:bg-gray-800`}
           >
             <input
               className={`mr-5 w-full bg-transparent focus:outline-none`}
@@ -211,7 +212,7 @@ export function StakePoolUpdate({
                     errors.requireCreators?.at(i)
                       ? 'border-red-500'
                       : 'border-gray-500'
-                  } mb-3 flex appearance-none items-center justify-between rounded border bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800`}
+                  } mt-3 flex appearance-none items-center justify-between rounded border bg-gray-700 py-3 px-4 text-gray-200 placeholder-gray-500 focus:bg-gray-800`}
                 >
                   <input
                     className={`mr-5 w-full bg-transparent focus:outline-none`}
@@ -248,7 +249,7 @@ export function StakePoolUpdate({
             }
           />
           <input
-            className="mb-3 cursor-pointer"
+            className="cursor-pointer"
             id="require-authorization"
             type="checkbox"
             name="requiresAuthorization"
@@ -275,9 +276,7 @@ export function StakePoolUpdate({
               'Number of seconds to "cool down" (unstaked, but still in the pool) once user unstakes a mint'
             }
           />
-          <input
-            className="mb-3 block w-full appearance-none rounded border border-gray-500 bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800 focus:outline-none"
-            type="text"
+          <TextInput
             placeholder={'0'}
             value={values.cooldownPeriodSeconds}
             onChange={(e) => {
@@ -294,9 +293,7 @@ export function StakePoolUpdate({
               'Number of seconds a mint has to stay in the pool once staked before being able to be unstaked'
             }
           />
-          <input
-            className="mb-3 block w-full appearance-none rounded border border-gray-500 bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800 focus:outline-none"
-            type="text"
+          <TextInput
             placeholder={'0'}
             value={values.minStakeSeconds}
             onChange={(e) => {
@@ -313,8 +310,7 @@ export function StakePoolUpdate({
               'End date for pool when staking is disabled but claiming rewards and unstaking is still enabled'
             }
           />
-          <input
-            className="mb-3 block w-full appearance-none rounded border border-gray-500 bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800 focus:outline-none"
+          <TextInput
             type="date"
             placeholder={'None'}
             value={values.endDate}
@@ -333,7 +329,7 @@ export function StakePoolUpdate({
             }
           />
           <input
-            className="mb-3 cursor-pointer"
+            className="cursor-pointer"
             id="reset-on-unstake"
             type="checkbox"
             name="resetOnStake"

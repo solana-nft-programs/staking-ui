@@ -17,24 +17,6 @@ import { AdminPools } from './AdminPools'
 
 type PANE_OPTIONS = 'create' | 'edit'
 
-// const paneTabs: {
-//   label: JSX.Element
-//   value: PANE_OPTIONS
-//   disabled?: boolean
-//   tooltip?: string
-// }[] = [
-//   {
-//     label: <div className="flex items-center gap-2">Create</div>,
-//     value: 'create',
-//     tooltip: 'Create a new pool',
-//   },
-//   {
-//     label: <div className="flex items-center gap-2">Edit</div>,
-//     value: 'edit',
-//     tooltip: 'Edit existing pools',
-//   },
-// ]
-
 function Admin() {
   const { environment } = useEnvironmentCtx()
   const [pane, setPane] = useState<PANE_OPTIONS>('edit')
@@ -89,7 +71,7 @@ function Admin() {
           {
             create: (
               <div className="mx-auto w-full">
-                <div className="mx-auto mb-4 flex w-full w-full max-w-[600px] flex-col items-center justify-center gap-6">
+                <div className="mx-auto mb-4 flex w-full w-full max-w-[640px] flex-col items-center justify-center gap-6">
                   <div className="text-4xl text-light-0">Create new pool</div>
                   <StepIndicator currentStep={0} />
                   <div className="text-gray-400">
