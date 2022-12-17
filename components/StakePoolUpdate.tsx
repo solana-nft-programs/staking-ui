@@ -1,10 +1,13 @@
-/* eslint-disable @typescript-eslint/ban-types */
-import type { IdlAccountData } from '@cardinal/rewards-center'
 import { AsyncButton } from 'common/Button'
 import { FormFieldTitleInput } from 'common/FormFieldInput'
+import { LoadingSpinner } from 'common/LoadingSpinner'
 import { useFormik } from 'formik'
+import { useHandleStakePoolCreate2 } from 'handlers/useHandleStakePoolCreate2'
 import { useHandleStakePoolUpdate } from 'handlers/useHandleStakePoolUpdate'
+import { useStakePoolData } from 'hooks/useStakePoolData'
+import { useStakePoolId } from 'hooks/useStakePoolId'
 import { useWalletId } from 'hooks/useWalletId'
+import { useEffect } from 'react'
 import * as Yup from 'yup'
 
 import {
@@ -40,16 +43,10 @@ const stakePoolUpdateSchema = Yup.object({
     .test('is-valid-bn', 'Invalid endDate', bnValidationTest),
 })
 
-export type StakePoolUpdateForm = Yup.InferType<typeof stakePoolUpdateSchema>
-
-export function StakePoolUpdate({
-  stakePoolData,
-}: {
-  stakePoolData?: Pick<IdlAccountData<'stakePool'>, 'pubkey' | 'parsed'>
-}) {
-  const walletId = useWalletId()
-  const handleStakePoolUpdate = useHandleStakePoolUpdate()
-  const initialValues: StakePoolUpdateForm = {
+const defaultValues = (
+  stakePoolData: ReturnType<typeof useStakePoolData>['data']
+): StakePoolUpdateForm => {
+  return {
     requireCollections: (stakePoolData?.parsed?.allowedCollections ?? []).map(
       (pk) => pk.toString()
     ),
@@ -67,13 +64,29 @@ export function StakePoolUpdate({
           .split('T')[0]
       : undefined,
   }
+}
+
+export type StakePoolUpdateForm = Yup.InferType<typeof stakePoolUpdateSchema>
+
+export function StakePoolUpdate() {
+  const walletId = useWalletId()
+  const stakePooldId = useStakePoolId()
+  const stakePool = useStakePoolData()
+  const handleStakePoolUpdate = useHandleStakePoolUpdate()
+  const handleStakePoolCreate = useHandleStakePoolCreate2()
+  const initialValues = defaultValues(stakePool.data)
   const formState = useFormik({
     initialValues,
     onSubmit: () => {},
     validationSchema: stakePoolUpdateSchema,
   })
-  const { values, errors, setFieldValue, handleChange } = formState
+  const { values, errors, setValues, setFieldValue, handleChange } = formState
 
+  useEffect(() => {
+    setValues(defaultValues(stakePool.data))
+  }, [JSON.stringify(stakePool)])
+
+  if (stakePooldId && !stakePool.isFetched) return <LoadingSpinner />
   return (
     <div className="flex w-full flex-col gap-4">
       <div className="flex flex-wrap">
@@ -338,16 +351,21 @@ export function StakePoolUpdate({
       </div>
       <AsyncButton
         disabled={
-          walletId?.toString() !== stakePoolData?.parsed.authority.toString()
+          stakePool.data &&
+          walletId?.toString() !== stakePool.data?.parsed.authority.toString()
         }
         onClick={async () => {
-          handleStakePoolUpdate.mutate({ values })
+          stakePool.data
+            ? handleStakePoolUpdate.mutate({ values })
+            : handleStakePoolCreate.mutate({ values })
         }}
-        loading={handleStakePoolUpdate.isLoading}
+        loading={
+          handleStakePoolUpdate.isLoading || handleStakePoolCreate.isLoading
+        }
         inlineLoader
         className="mx-auto mt-4 flex w-full items-center justify-center text-center"
       >
-        Update
+        {stakePool.data ? 'Update' : 'Create'}
       </AsyncButton>
     </div>
   )

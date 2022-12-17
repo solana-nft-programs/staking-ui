@@ -1,10 +1,13 @@
-import { pubKeyUrl, shortPubKey } from '@cardinal/common'
+import { shortPubKey } from '@cardinal/common'
+import { LoadingSpinner } from 'common/LoadingSpinner'
 import type { StakePool } from 'hooks/useAllStakePools'
 import { useStakePoolsByAuthority } from 'hooks/useStakePoolsByAuthority'
 import { useStakePoolsMetadatas } from 'hooks/useStakePoolsMetadata'
+import { useRouter } from 'next/router'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 
 export const AdminPools = () => {
+  const router = useRouter()
   const { environment } = useEnvironmentCtx()
   const stakePoolsByAuthority = useStakePoolsByAuthority()
   const stakePoolsMetadata = useStakePoolsMetadatas(
@@ -25,18 +28,25 @@ export const AdminPools = () => {
     [[] as StakePool[], [] as StakePool[]]
   )
 
+  const allPoolds = stakePoolsWithMetadata.concat(stakePoolsWithoutMetadata)
   return (
-    <>
-      <div className="text-2xl font-medium">My Stake Pools</div>
-      <div className="grid grid-cols-3 gap-5 py-10">
-        {stakePoolsWithMetadata
-          .concat(stakePoolsWithoutMetadata)
-          .map((stakePool) => (
+    <div className="">
+      {!stakePoolsByAuthority.isFetched ? (
+        <div className="my-12 flex items-center justify-center text-gray-500">
+          <LoadingSpinner />
+        </div>
+      ) : allPoolds.length === 0 ? (
+        <div className="my-12 flex items-center justify-center text-gray-500">
+          No stake pools found
+        </div>
+      ) : (
+        <div className="grid grid-cols-3 gap-5 py-10">
+          {allPoolds.map((stakePool) => (
             <div
               key={stakePool.stakePoolData.pubkey.toString()}
               className="h-[300px] cursor-pointer rounded-lg bg-white bg-opacity-5 p-10 transition-all duration-100 hover:scale-[1.01]"
               onClick={() => {
-                window.open(
+                router.push(
                   `/admin/${
                     stakePool.stakePoolMetadata?.name ||
                     stakePool.stakePoolData.pubkey.toString()
@@ -44,9 +54,7 @@ export const AdminPools = () => {
                     environment.label !== 'mainnet-beta'
                       ? `?cluster=${environment.label}`
                       : ''
-                  }`,
-                  '_blank',
-                  'noopener,noreferrer'
+                  }`
                 )
               }}
             >
@@ -56,31 +64,11 @@ export const AdminPools = () => {
                 </div>
               ) : (
                 <div className="text-center font-bold text-white">
-                  <a
-                    className="text-white"
-                    target="_blank"
-                    rel="noreferrer"
-                    href={pubKeyUrl(
-                      stakePool.stakePoolData.pubkey,
-                      environment.label
-                    )}
-                  >
-                    {shortPubKey(stakePool.stakePoolData.pubkey)}
-                  </a>
+                  {shortPubKey(stakePool.stakePoolData.pubkey)}
                 </div>
               )}
-              <div className="text-gray text-center">
-                <a
-                  className="text-xs text-gray-500"
-                  target="_blank"
-                  rel="noreferrer"
-                  href={pubKeyUrl(
-                    stakePool.stakePoolData.pubkey,
-                    environment.label
-                  )}
-                >
-                  {shortPubKey(stakePool.stakePoolData.pubkey)}
-                </a>
+              <div className="text-gray text-center text-xs text-gray-500">
+                {shortPubKey(stakePool.stakePoolData.pubkey)}
               </div>
               {stakePool.stakePoolMetadata?.imageUrl ? (
                 <img
@@ -101,7 +89,8 @@ export const AdminPools = () => {
               )}
             </div>
           ))}
-      </div>
-    </>
+        </div>
+      )}
+    </div>
   )
 }

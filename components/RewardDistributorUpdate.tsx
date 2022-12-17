@@ -43,7 +43,7 @@ const rewardDistributorSchema = Yup.object({
 
 const defaultValues = (
   rewardDistributorData: ReturnType<typeof useRewardDistributorData>['data']
-) => {
+): RewardDistributorForm => {
   return {
     rewardMintAddress: rewardDistributorData?.parsed?.rewardMint
       ? rewardDistributorData?.parsed.rewardMint.toString()
@@ -79,9 +79,7 @@ export function RewardDistributorUpdate() {
   const handleRewardDistributorCreate = useHandleRewardDistributorCreate()
   const handleRewardDistributorRemove = useHandleRewardDistributorRemove()
 
-  const initialValues: RewardDistributorForm = defaultValues(
-    rewardDistributorData
-  )
+  const initialValues = defaultValues(rewardDistributorData)
   const formState = useFormik({
     initialValues,
     onSubmit: () => {},
