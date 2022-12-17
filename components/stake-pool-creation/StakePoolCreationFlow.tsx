@@ -14,6 +14,7 @@ import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 import { useMemo, useState } from 'react'
 import type { Account, Mint } from 'spl-token-v3'
 import { getAccount, getMint } from 'spl-token-v3'
+import { useHandleCreatePool } from 'handlers/useHandleCreatePoolNew'
 
 import { MasterPanel } from '@/components/stake-pool-creation/master-panel/MasterPanel'
 import type { CreationForm } from '@/components/stake-pool-creation/Schema'
@@ -43,6 +44,7 @@ export const StakePoolCreationFlow = ({
 }: StakePoolCreationFlowProps) => {
   const { connection } = useEnvironmentCtx()
   const wallet = useWallet()
+  const handleCreatePool = useHandleCreatePool()
 
   const [currentStep, setCurrentStep] = useState(0)
   const [activeSlavePanelScreen, setActiveSlavePanelScreen] =
@@ -178,7 +180,7 @@ export const StakePoolCreationFlow = ({
     }
   }, [values.rewardMintAddress?.toString()])
 
-  if (poolCreationSuccess) {
+  if (handleCreatePool.isSuccess) {
     return (
       <div className="absolute top-0 left-0 right-0 bottom-0">
         <SuccessPanel />
@@ -195,6 +197,7 @@ export const StakePoolCreationFlow = ({
           setCurrentStep={setCurrentStep}
           setActiveSlavePanelScreen={setActiveSlavePanelScreen}
           formState={formState}
+          setPoolCreationSuccess={setPoolCreationSuccess}
         />
         <SlavePanel activeScreen={activeSlavePanelScreen} />
       </div>
