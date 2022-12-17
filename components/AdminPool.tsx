@@ -1,9 +1,10 @@
-import { shortPubKey } from '@cardinal/common'
+import { pubKeyUrl, shortPubKey } from '@cardinal/common'
 import { TabSelector } from 'common/TabSelector'
 import { useRewardDistributorData } from 'hooks/useRewardDistributorData'
 import { useStakePoolData } from 'hooks/useStakePoolData'
 import { useStakePoolId } from 'hooks/useStakePoolId'
 import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
+import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 import { useState } from 'react'
 
 import { AuthorizeMints } from './AuthorizeMints'
@@ -23,6 +24,7 @@ export type PANE_OPTIONS =
   | 'reward-funds'
 
 export const AdminStakePool = () => {
+  const { environment } = useEnvironmentCtx()
   const { data: config } = useStakePoolMetadata()
   const stakePoolId = useStakePoolId()
   const stakePool = useStakePoolData()
@@ -81,7 +83,14 @@ export const AdminStakePool = () => {
           className="text-4xl text-light-0"
           style={{ color: config?.colors?.fontColor }}
         >
-          {config?.displayName ?? shortPubKey(stakePoolId)}
+          <a
+            target="_blank"
+            className="transition hover:text-blue-500"
+            href={pubKeyUrl(stakePoolId, environment.label)}
+            rel="noreferrer"
+          >
+            {config?.displayName ?? shortPubKey(stakePoolId)}
+          </a>
         </div>
         {stakePool.data && <StakePoolImage />}
         <TabSelector<PANE_OPTIONS>
