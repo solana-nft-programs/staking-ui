@@ -8,13 +8,10 @@ export const AuthorizeMints = () => {
   const handleAuthorizeMints = useHandleAuthorizeMints()
   const handleDeuthorizeMints = useHandleDeauthorizeMints()
   return (
-    <div className="mt-5">
-      <label
-        className="mb-2 block text-xs font-bold uppercase tracking-wide text-gray-200"
-        htmlFor="require-authorization"
-      >
+    <div className="">
+      <div className="mb-2 block text-xs font-bold uppercase tracking-wide text-gray-200">
         Authorize access to specific mint
-      </label>
+      </div>
       <p className="mb-2 text-sm italic text-gray-300">
         Allow any specific mints access to the stake pool (separated by commas)
       </p>
@@ -40,7 +37,7 @@ export const AuthorizeMints = () => {
           setMintsToAuthorize(e.target.value)
         }}
       />
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-2">
         <AsyncButton
           loading={handleAuthorizeMints.isLoading}
           onClick={() =>
@@ -49,7 +46,7 @@ export const AuthorizeMints = () => {
             })
           }
           inlineLoader
-          className="w-max"
+          className="flex w-1/2 items-center justify-center"
         >
           Authorize Mints
         </AsyncButton>
@@ -61,7 +58,7 @@ export const AuthorizeMints = () => {
             })
           }
           inlineLoader
-          className="color-dark-4 w-max"
+          className="flex w-1/2 items-center justify-center bg-red-500 text-center hover:bg-red-600"
         >
           De-authorize Mints
         </AsyncButton>
