@@ -2,7 +2,7 @@ import classNames from 'classnames'
 
 import { ButtonColors, ButtonWidths } from '@/types/index'
 
-const { ORANGE, PURPLE, GREEN, BLUE, MAROON } = ButtonColors
+const { ORANGE, PURPLE, GREEN, BLUE, MAROON, TRANSPARENT } = ButtonColors
 
 const { NARROW, MID } = ButtonWidths
 
@@ -31,6 +31,7 @@ export const ButtonPrimary = ({
         disabled ? 'opacity-50' : '',
         {
           'flex items-center justify-center rounded-lg px-8 py-2': true,
+          'bg-opacity-0 text-gray-400': color === TRANSPARENT,
           'bg-orange-500 text-white': color === ORANGE,
           'bg-green-500 text-black': color === GREEN,
           'bg-purple-500 text-white': color === PURPLE,

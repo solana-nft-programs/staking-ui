@@ -22,6 +22,7 @@ import {
   SlavePanel,
   SlavePanelScreens,
 } from '@/components/stake-pool-creation/SlavePanel'
+import { SuccessPanel } from '@/components/stake-pool-creation/SuccessPanel'
 
 const { INTRO } = SlavePanelScreens
 
@@ -46,6 +47,8 @@ export const StakePoolCreationFlow = ({
   const [currentStep, setCurrentStep] = useState(0)
   const [activeSlavePanelScreen, setActiveSlavePanelScreen] =
     useState<SlavePanelScreens>(INTRO)
+
+  const [poolCreationSuccess, setPoolCreationSuccess] = useState(false)
 
   const initialValues: CreationForm = {
     requireCollections: (stakePoolData?.parsed.requiresCollections ?? []).map(
@@ -175,18 +178,26 @@ export const StakePoolCreationFlow = ({
     }
   }, [values.rewardMintAddress?.toString()])
 
-  return (
-    <div className="mb-8 flex w-full py-8 px-10">
-      <MasterPanel
-        type={type}
-        submitDisabled={submitDisabled}
-        mintInfo={mintInfo}
-        currentStep={currentStep}
-        setCurrentStep={setCurrentStep}
-        setActiveSlavePanelScreen={setActiveSlavePanelScreen}
-        formState={formState}
-      />
-      <SlavePanel activeScreen={activeSlavePanelScreen} />
-    </div>
-  )
+  if (poolCreationSuccess) {
+    return (
+      <div className="absolute top-0 left-0 right-0 bottom-0">
+        <SuccessPanel />
+      </div>
+    )
+  } else {
+    return (
+      <div className="mb-8 flex w-full py-8 px-10">
+        <MasterPanel
+          type={type}
+          submitDisabled={submitDisabled}
+          mintInfo={mintInfo}
+          currentStep={currentStep}
+          setCurrentStep={setCurrentStep}
+          setActiveSlavePanelScreen={setActiveSlavePanelScreen}
+          formState={formState}
+        />
+        <SlavePanel activeScreen={activeSlavePanelScreen} />
+      </div>
+    )
+  }
 }

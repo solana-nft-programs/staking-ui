@@ -24,8 +24,8 @@ export const HeaderSlim = () => {
   }, [router.asPath, tab])
 
   return (
-    <div className="w-full px-4 py-4">
-      <div className="flex min-h-[72px] flex-wrap items-center justify-center gap-4 rounded-xl bg-white bg-opacity-5 py-4 px-8 md:justify-between">
+    <div className="relative z-10 p-4">
+      <div className="absolute top-4 left-4 right-4 flex min-h-[72px] flex-wrap items-center justify-center gap-4 rounded-xl bg-white bg-opacity-5 py-4 px-8 md:justify-between">
         <div className="flex items-center gap-5">
           <div
             className="flex cursor-pointer items-center transition-opacity hover:opacity-60"
