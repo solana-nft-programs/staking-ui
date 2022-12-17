@@ -208,21 +208,22 @@ export const TimeBasedParameters = ({
           <ButtonDecrement
             className="mr-3"
             onClick={() => {
-              if (values.rewardDurationSeconds <= 0) return
+              if (values.maxRewardSecondsReceived <= 0) return
               const value =
                 maxRewardDurationUnitOfTime === 'seconds'
-                  ? values.rewardDurationSeconds - 1
+                  ? values.maxRewardSecondsReceived - 1
                   : maxRewardDurationUnitOfTime === 'day'
-                  ? values.rewardDurationSeconds - SECONDS_PER_DAY
-                  : values.rewardDurationSeconds - SECONDS_PER_HOUR
-              setFieldValue('rewardDurationSeconds', value)
-              if (!value || value < 0) setFieldValue('rewardDurationSeconds', 0)
+                  ? values.maxRewardSecondsReceived - SECONDS_PER_DAY
+                  : values.maxRewardSecondsReceived - SECONDS_PER_HOUR
+              setFieldValue('maxRewardSecondsReceived', value)
+              if (!value || value < 0)
+                setFieldValue('maxRewardSecondsReceived', 0)
             }}
           />
           <TextInput
             className="w-24 rounded-r-none text-center"
             value={String(
-              values.rewardDurationSeconds /
+              values.maxRewardSecondsReceived /
                 (maxRewardDurationUnitOfTime === 'seconds'
                   ? 1
                   : maxRewardDurationUnitOfTime === 'day'
@@ -231,7 +232,7 @@ export const TimeBasedParameters = ({
             )}
             onChange={(e) => {
               setFieldValue(
-                'rewardDurationSeconds',
+                'maxRewardSecondsReceived',
                 maxRewardDurationUnitOfTime === 'seconds'
                   ? Number(e.target.value)
                   : maxRewardDurationUnitOfTime === 'day'
@@ -250,12 +251,12 @@ export const TimeBasedParameters = ({
             className="ml-3"
             onClick={() => {
               setFieldValue(
-                'rewardDurationSeconds',
+                'maxRewardSecondsReceived',
                 maxRewardDurationUnitOfTime === 'seconds'
-                  ? values.rewardDurationSeconds + 1
+                  ? values.maxRewardSecondsReceived + 1
                   : maxRewardDurationUnitOfTime === 'day'
-                  ? values.rewardDurationSeconds + SECONDS_PER_DAY
-                  : values.rewardDurationSeconds + SECONDS_PER_HOUR
+                  ? values.maxRewardSecondsReceived + SECONDS_PER_DAY
+                  : values.maxRewardSecondsReceived + SECONDS_PER_HOUR
               )
             }}
           />

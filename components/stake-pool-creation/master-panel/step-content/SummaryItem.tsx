@@ -1,13 +1,17 @@
 import { tryPublicKey } from '@cardinal/common'
 import { PublicKey } from '@solana/web3.js'
+import { BN } from 'bn.js'
 import { ShortPubKeyUrl } from 'common/Pubkeys'
+import { formatMintNaturalAmountAsDecimal } from 'common/units'
 import { camelCaseToTitle } from 'common/utils'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 import { Fragment } from 'react'
+import type { Mint } from 'spl-token-v3'
 
 export type SummaryItemProps = {
   item: LabelKey
   value: string | string[]
+  mintInfo?: Mint
 }
 
 export enum LabelKey {
@@ -16,6 +20,9 @@ export enum LabelKey {
   requireCreators = 'requireCreators',
   rewardDistributorKind = 'rewardDistributorKind',
   rewardMintAddress = 'rewardMintAddress',
+  rewardAmount = 'rewardAmount',
+  rewardMintSupply = 'rewardMintSupply',
+  endDate = 'endDate',
 }
 
 const labels = {
@@ -24,9 +31,12 @@ const labels = {
   requireCreators: 'Allowed Creators',
   rewardDistributorKind: 'Reward Distribution',
   rewardMintAddress: 'Reward Mint Address',
+  rewardAmount: 'Reward Amount',
+  rewardMintSupply: 'Reward Mint Supply',
+  endDate: 'End Date',
 }
 
-export const SummaryItem = ({ item, value }: SummaryItemProps) => {
+export const SummaryItem = ({ item, value, mintInfo }: SummaryItemProps) => {
   const { environment } = useEnvironmentCtx()
 
   const formatPubKeys = (pubKeys: string[]) => {
@@ -35,6 +45,7 @@ export const SummaryItem = ({ item, value }: SummaryItemProps) => {
       return (
         <Fragment key={pubKey}>
           <ShortPubKeyUrl
+            className="text-base underline underline-offset-2"
             pubkey={new PublicKey(pubKey)}
             cluster={environment.label}
           ></ShortPubKeyUrl>
@@ -44,7 +55,11 @@ export const SummaryItem = ({ item, value }: SummaryItemProps) => {
     })
   }
 
-  const formatSpecialItems = (item: LabelKey, value: string | string[]) => {
+  const formatSpecialItems = (
+    item: LabelKey,
+    value: string | string[],
+    mintInfo?: Mint
+  ) => {
     if (
       item === LabelKey.requireCollections ||
       item === LabelKey.requireCreators
@@ -59,10 +74,24 @@ export const SummaryItem = ({ item, value }: SummaryItemProps) => {
       if (!tryPublicKey(value)) return 'N/A'
       return (
         <ShortPubKeyUrl
+          className="text-base underline underline-offset-2"
           pubkey={new PublicKey(value)}
           cluster={environment.label}
         ></ShortPubKeyUrl>
       )
+    }
+    if (item === LabelKey.endDate) {
+      return value ? new Date(value.toString()).toDateString() : ''
+    }
+    if (item === LabelKey.rewardAmount) {
+      return mintInfo
+        ? formatMintNaturalAmountAsDecimal(mintInfo, new BN(value.toString()))
+        : value
+    }
+    if (item === LabelKey.rewardMintSupply) {
+      return mintInfo
+        ? formatMintNaturalAmountAsDecimal(mintInfo, new BN(value.toString()))
+        : value
     }
   }
 
@@ -72,13 +101,16 @@ export const SummaryItem = ({ item, value }: SummaryItemProps) => {
         {item === LabelKey.rewardDistributorKind ||
         item === LabelKey.requireCollections ||
         item === LabelKey.rewardMintAddress ||
+        item === LabelKey.rewardAmount ||
+        item === LabelKey.endDate ||
+        item === LabelKey.rewardMintSupply ||
         item === LabelKey.requireCreators ? (
           <div className="flex">
             <span className="text-gray-500">
               <>{labels[item] ? labels[item] : camelCaseToTitle(item)}:</>
             </span>
             <span className="ml-2 text-gray-200">
-              {formatSpecialItems(item, value)}
+              {formatSpecialItems(item, value, mintInfo)}
             </span>
           </div>
         ) : (

@@ -1,4 +1,6 @@
+import { LoadingSpinner } from 'common/LoadingSpinner'
 import type { FormikHandlers, FormikState, FormikValues } from 'formik'
+import { useHandleCreatePool } from 'handlers/useHandleCreatePoolNew'
 import type { Dispatch, SetStateAction } from 'react'
 import { useEffect, useState } from 'react'
 import type { Mint } from 'spl-token-v3'
@@ -11,6 +13,8 @@ import { ButtonPrimary } from '@/components/UI/buttons/ButtonPrimary'
 import { BodyCopy } from '@/components/UI/typography/BodyCopy'
 import { HeadingPrimary } from '@/components/UI/typography/HeadingPrimary'
 import { ButtonWidths } from '@/types/index'
+
+import type { CreationForm } from '../Schema'
 
 export type MasterPanelProps = {
   submitDisabled: boolean
@@ -50,6 +54,7 @@ export const MasterPanel = ({
 }: MasterPanelProps) => {
   const [title, setTitle] = useState('')
   const [stepSubtitle, setStepSubtitle] = useState('')
+  const handleCreatePool = useHandleCreatePool()
 
   useEffect(() => {
     const title = stepTitles?.[currentStep]
@@ -93,11 +98,22 @@ export const MasterPanel = ({
           </ButtonPrimary>
         ) : (
           <ButtonPrimary
-            onClick={() => {}}
+            onClick={() => {
+              handleCreatePool.mutate({
+                values: formState.values as CreationForm,
+                mintInfo: mintInfo,
+              })
+            }}
             width={ButtonWidths.NARROW}
             disabled={submitDisabled}
           >
-            {type === 'create' ? 'Create Stake Pool' : 'Update Stake Pool'}
+            {handleCreatePool.isLoading ? (
+              <LoadingSpinner fill={'#FFF'} height="25px" />
+            ) : type === 'create' ? (
+              'Create Stake Pool'
+            ) : (
+              'Update Stake Pool'
+            )}
           </ButtonPrimary>
         )}
         {currentStep > 0 && (

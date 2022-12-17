@@ -24,10 +24,10 @@ export const RewardSupplyTipThree = () => {
         </BodyCopy>
         <BodyCopy textSize={SMALL}>
           For a 1x multiplier, enter value 100, for a 2x multiplier enter value
-          200 ... <br /> <br /> For decimal multipliers, work with the reward
-          distributor's multiplierDecimals. If you set multiplierDecimals = 1,
-          then for 1.5x multiplier, enter value 15 so that
-          value/10**multiplierDecimals = 15/10^1 = 1.5 <br /> <br />
+          200 ... <br /> <br /> For decimal multipliers, work with the
+          multiplierDecimals of the reward distributor. If you set
+          multiplierDecimals = 1, then for 1.5x multiplier, enter value 15 so
+          that value/10**multiplierDecimals = 15/10^1 = 1.5 <br /> <br />
           NOTE that for 1.5x, you could set multiplierDecimals = 2 and enter
           value 150, or multiplierDecimals = 3 and enter value 1500...
         </BodyCopy>

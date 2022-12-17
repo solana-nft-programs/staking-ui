@@ -49,7 +49,9 @@ export const StepContent = ({
           formState={formState}
         />
       )}
-      {currentStep === 4 && <Summary formState={formState} />}
+      {currentStep === 4 && (
+        <Summary mintInfo={mintInfo} formState={formState} />
+      )}
     </div>
   )
 }
