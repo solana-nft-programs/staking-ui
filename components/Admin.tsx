@@ -102,6 +102,7 @@ function Admin() {
                         <FlagIcon />
                       </div>
                       Setup your stake pool - all parameters are editable
+                      afterwards
                     </div>
                     <div className="flex w-full rounded-xl bg-gray-800 p-6">
                       <div className="mr-4">
@@ -113,7 +114,8 @@ function Admin() {
                       <div className="mr-4">
                         <SettingsIcon />
                       </div>
-                      Edit add reward distribution mechanisms after creation
+                      Add features and reward distribution mechanisms after
+                      creation
                     </div>
                   </div>
                 </div>

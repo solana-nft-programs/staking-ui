@@ -272,88 +272,95 @@ export function StakePoolUpdate({
           </span>
         </div>
       </div>
-      <div className="flex flex-wrap">
-        <div className="">
-          <FormFieldTitleInput
-            title={'Cooldown Period Seconds'}
-            description={
-              'Number of seconds to "cool down" (unstaked, but still in the pool) once user unstakes a mint'
-            }
-          />
-          <input
-            className="mb-3 block w-full appearance-none rounded border border-gray-500 bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800 focus:outline-none"
-            type="text"
-            placeholder={'0'}
-            name="cooldownPeriodSeconds"
-            value={values.cooldownPeriodSeconds}
-            onChange={handleChange}
-          />
-        </div>
-      </div>
-      <div className="flex flex-wrap">
-        <div className="">
-          <FormFieldTitleInput
-            title={'Minimum Stake Seconds'}
-            description={
-              'Number of seconds a mint has to stay in the pool once staked before being able to be unstaked'
-            }
-          />
-          <input
-            className="mb-3 block w-full appearance-none rounded border border-gray-500 bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800 focus:outline-none"
-            type="text"
-            placeholder={'0'}
-            name="minStakeSeconds"
-            value={values.minStakeSeconds}
-            onChange={handleChange}
-          />
-        </div>
-      </div>
-      <div className="flex flex-wrap">
-        <div className="">
-          <FormFieldTitleInput
-            title={'Pool End Date'}
-            description={
-              'End date for pool when staking is disabled but claiming rewards and unstaking is still enabled'
-            }
-          />
-          <input
-            className="mb-3 block w-full appearance-none rounded border border-gray-500 bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800 focus:outline-none"
-            type="date"
-            placeholder={'None'}
-            name="endDate"
-            value={values.endDate}
-            onChange={handleChange}
-          />
-        </div>
-      </div>
-      <div className="flex flex-wrap">
-        <div className="">
-          <label
-            className="mb-2 block text-xs font-bold uppercase tracking-wide text-gray-200"
-            htmlFor="require-authorization"
-          >
-            Reset on stake
-          </label>
-          <p className="mb-2 text-sm italic text-gray-300">
-            If selected, everytime a user stakes the stake timer will reset
-            rather than accumulate.
-          </p>
-          <input
-            className="mb-3 cursor-pointer"
-            id="reset-on-unstake"
-            type="checkbox"
-            name="resetOnStake"
-            checked={values.resetOnStake}
-            onChange={handleChange}
-          />{' '}
-          <span
-            className="my-auto cursor-pointer text-sm"
-            onClick={() => setFieldValue('resetOnStake', !values.resetOnStake)}
-          >
-            Reset on stake
-          </span>
-        </div>
-      </div>
+      {stakePool.data && (
+        <>
+          <div className="flex flex-wrap">
+            <div className="">
+              <FormFieldTitleInput
+                title={'Cooldown Period Seconds'}
+                description={
+                  'Number of seconds to "cool down" (unstaked, but still in the pool) once user unstakes a mint'
+                }
+              />
+              <input
+                className="mb-3 block w-full appearance-none rounded border border-gray-500 bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800 focus:outline-none"
+                type="text"
+                placeholder={'0'}
+                name="cooldownPeriodSeconds"
+                value={values.cooldownPeriodSeconds}
+                onChange={handleChange}
+              />
+            </div>
+          </div>
+          <div className="flex flex-wrap">
+            <div className="">
+              <FormFieldTitleInput
+                title={'Minimum Stake Seconds'}
+                description={
+                  'Number of seconds a mint has to stay in the pool once staked before being able to be unstaked'
+                }
+              />
+              <input
+                className="mb-3 block w-full appearance-none rounded border border-gray-500 bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800 focus:outline-none"
+                type="text"
+                placeholder={'0'}
+                name="minStakeSeconds"
+                value={values.minStakeSeconds}
+                onChange={handleChange}
+              />
+            </div>
+          </div>
+          <div className="flex flex-wrap">
+            <div className="">
+              <FormFieldTitleInput
+                title={'Pool End Date'}
+                description={
+                  'End date for pool when staking is disabled but claiming rewards and unstaking is still enabled'
+                }
+              />
+              <input
+                className="mb-3 block w-full appearance-none rounded border border-gray-500 bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800 focus:outline-none"
+                type="date"
+                placeholder={'None'}
+                name="endDate"
+                value={values.endDate}
+                onChange={handleChange}
+              />
+            </div>
+          </div>
+          <div className="flex flex-wrap">
+            <div className="">
+              <label
+                className="mb-2 block text-xs font-bold uppercase tracking-wide text-gray-200"
+                htmlFor="require-authorization"
+              >
+                Reset on stake
+              </label>
+              <p className="mb-2 text-sm italic text-gray-300">
+                If selected, everytime a user stakes the stake timer will reset
+                rather than accumulate.
+              </p>
+              <input
+                className="mb-3 cursor-pointer"
+                id="reset-on-unstake"
+                type="checkbox"
+                name="resetOnStake"
+                checked={values.resetOnStake}
+                onChange={handleChange}
+              />{' '}
+              <span
+                className="my-auto cursor-pointer text-sm"
+                onClick={() =>
+                  setFieldValue('resetOnStake', !values.resetOnStake)
+                }
+              >
+                Reset on stake
+              </span>
+            </div>
+          </div>
+        </>
+      )}
+
       <AsyncButton
         disabled={
           stakePool.data &&
@@ -373,7 +380,7 @@ export function StakePoolUpdate({
         inlineLoader
         className="mx-auto mt-4 flex w-full items-center justify-center text-center"
       >
-        {stakePool.data ? 'Update' : 'Create'}
+        {stakePool.data ? 'Update' : 'Get Started'}
       </AsyncButton>
     </div>
   )

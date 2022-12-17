@@ -269,11 +269,12 @@ export function RewardDistributorUpdate() {
       )}
       <AsyncButton
         disabled={
-          !mintInfo || rewardDistributorData
+          !mintInfo.data ||
+          (rewardDistributorData
             ? walletId?.toString() !==
               rewardDistributorData?.parsed.authority.toString()
             : walletId?.toString() !==
-              stakePool.data?.parsed.authority.toString()
+              stakePool.data?.parsed.authority.toString())
         }
         onClick={async () => {
           rewardDistributorData

@@ -103,7 +103,7 @@ export const useHandleStakePoolCreate2 = () => {
       },
       onError: (e) => {
         notify({
-          message: 'Failed to update pool',
+          message: 'Failed to create pool',
           description: handleError(e, `${e}`),
         })
       },
