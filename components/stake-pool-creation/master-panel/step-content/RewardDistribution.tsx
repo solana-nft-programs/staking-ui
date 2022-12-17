@@ -1,10 +1,14 @@
 import { InformationCircleIcon } from '@heroicons/react/24/outline'
+import { BN } from 'bn.js'
 import { notify } from 'common/Notification'
-import { tryFormatInput, tryParseInput } from 'common/units'
+import {
+  formatMintNaturalAmountAsDecimal,
+  tryFormatInput,
+  tryParseInput,
+} from 'common/units'
 import type { FormikHandlers, FormikState, FormikValues } from 'formik'
 import { useRewardDistributorData } from 'hooks/useRewardDistributorData'
 import type { Dispatch, SetStateAction } from 'react'
-import { useState } from 'react'
 import type { Mint } from 'spl-token-v3'
 
 import type { FlowType } from '@/components/stake-pool-creation/master-panel/step-content/StepContent'
@@ -40,8 +44,6 @@ export const RewardDistribution = ({
 
   const { setFieldValue, values, errors } = formState
   const rewardDistributor = useRewardDistributorData()
-  const [rewardAmountPerStakedToken, setRewardAmountPerStakedToken] =
-    useState('')
 
   return (
     <>
@@ -76,15 +78,20 @@ export const RewardDistribution = ({
             </div>
             <NumberInput
               placeholder="0.000"
-              value={rewardAmountPerStakedToken}
+              value={formatMintNaturalAmountAsDecimal(
+                mintInfo,
+                new BN(values.rewardAmount.toString())
+              )}
               onChange={(e) => {
-                setRewardAmountPerStakedToken(e.target.value)
                 setFieldValue(
                   'rewardAmount',
                   tryParseInput(
                     e.target.value,
                     mintInfo.decimals,
-                    rewardAmountPerStakedToken ?? ''
+                    formatMintNaturalAmountAsDecimal(
+                      mintInfo,
+                      new BN(values.rewardAmount.toString())
+                    ) ?? ''
                   )
                 )
               }}

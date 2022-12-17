@@ -97,7 +97,7 @@ export const StakePoolCreationFlow = ({
   })
   const { values, setFieldValue } = formState
 
-  const [submitDisabled, setSubmitDisabled] = useState<boolean>(true)
+  const [submitDisabled, setSubmitDisabled] = useState<boolean>(false)
   const [_processingMintAddress, setProcessingMintAddress] =
     useState<boolean>(false)
   const [mintInfo, setMintInfo] = useState<Mint>()
