@@ -24,7 +24,6 @@ export type MasterPanelProps = {
   setActiveSlavePanelScreen: Dispatch<SetStateAction<SlavePanelScreens>>
   formState: FormikHandlers & FormikState<FormikValues> & FormikValues
   type: FlowType
-  setPoolCreationSuccess: Dispatch<SetStateAction<boolean>>
 }
 
 const stepTitles = [
@@ -52,7 +51,6 @@ export const MasterPanel = ({
   setCurrentStep,
   setActiveSlavePanelScreen,
   type,
-  setPoolCreationSuccess,
 }: MasterPanelProps) => {
   const [title, setTitle] = useState('')
   const [stepSubtitle, setStepSubtitle] = useState('')

@@ -10,11 +10,11 @@ import { handleError } from 'common/errors'
 import { notify } from 'common/Notification'
 import { asWallet } from 'common/Wallets'
 import { useFormik } from 'formik'
+import { useHandleCreatePool } from 'handlers/useHandleCreatePoolNew'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 import { useMemo, useState } from 'react'
 import type { Account, Mint } from 'spl-token-v3'
 import { getAccount, getMint } from 'spl-token-v3'
-import { useHandleCreatePool } from 'handlers/useHandleCreatePoolNew'
 
 import { MasterPanel } from '@/components/stake-pool-creation/master-panel/MasterPanel'
 import type { CreationForm } from '@/components/stake-pool-creation/Schema'
@@ -49,8 +49,6 @@ export const StakePoolCreationFlow = ({
   const [currentStep, setCurrentStep] = useState(0)
   const [activeSlavePanelScreen, setActiveSlavePanelScreen] =
     useState<SlavePanelScreens>(INTRO)
-
-  const [poolCreationSuccess, setPoolCreationSuccess] = useState(false)
 
   const initialValues: CreationForm = {
     requireCollections: (stakePoolData?.parsed.requiresCollections ?? []).map(
@@ -197,7 +195,6 @@ export const StakePoolCreationFlow = ({
           setCurrentStep={setCurrentStep}
           setActiveSlavePanelScreen={setActiveSlavePanelScreen}
           formState={formState}
-          setPoolCreationSuccess={setPoolCreationSuccess}
         />
         <SlavePanel activeScreen={activeSlavePanelScreen} />
       </div>
