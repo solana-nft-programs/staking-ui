@@ -12,6 +12,8 @@ import { useRewardDistributorTokenAccount } from 'hooks/useRewardDistributorToke
 import { useRewardMintInfo } from 'hooks/useRewardMintInfo'
 import { useState } from 'react'
 
+import { TextInputIcon } from '../UI/inputs/TextInputIcon'
+
 export const ReclaimFunds = () => {
   const [reclaimAmount, setReclaimAmount] = useState<string>()
   const rewardMintInfo = useRewardMintInfo()
@@ -32,49 +34,39 @@ export const ReclaimFunds = () => {
         description={'Reclaim funds from this reward distributor'}
       />
       <div className="mb-5 flex flex-row gap-2">
-        <div
-          className={`flex flex-grow appearance-none justify-between rounded border border-gray-500 bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800`}
-        >
-          <input
-            className={`mr-5 w-full bg-transparent focus:outline-none`}
-            type="text"
-            placeholder={'1000000'}
-            value={tryFormatInput(
-              reclaimAmount,
-              rewardMintInfo.data?.mintInfo.decimals || 0,
-              '0'
-            )}
-            onChange={(e) => {
-              const value = Number(e.target.value)
-              if (Number.isNaN(value)) {
-                notify({
-                  message: `Invalid reclaim amount`,
-                  type: 'error',
-                })
-                return
-              }
-              setReclaimAmount(
-                tryParseInput(
-                  e.target.value,
-                  rewardMintInfo.data?.mintInfo.decimals || 0,
-                  reclaimAmount ?? ''
-                )
-              )
-            }}
-          />
-          {rewardDistributorTokenAccount.data && (
-            <div
-              className="flex h-full cursor-pointer items-center justify-center"
-              onClick={async () => {
-                setReclaimAmount(
-                  rewardDistributorTokenAccount.data?.amount.toString()
-                )
-              }}
-            >
-              Max
-            </div>
+        <TextInputIcon
+          className="flex w-auto flex-grow"
+          placeholder={'1000000'}
+          value={tryFormatInput(
+            reclaimAmount,
+            rewardMintInfo.data?.mintInfo.decimals || 0,
+            '0'
           )}
-        </div>
+          onChange={(e) => {
+            const value = Number(e.target.value)
+            if (Number.isNaN(value)) {
+              notify({
+                message: `Invalid reclaim amount`,
+                type: 'error',
+              })
+              return
+            }
+            setReclaimAmount(
+              tryParseInput(
+                e.target.value,
+                rewardMintInfo.data?.mintInfo.decimals || 0,
+                reclaimAmount ?? ''
+              )
+            )
+          }}
+          icon={!!rewardDistributorTokenAccount.data && 'Max'}
+          onIconClick={() =>
+            rewardDistributorTokenAccount.data &&
+            setReclaimAmount(
+              rewardDistributorTokenAccount.data?.amount.toString()
+            )
+          }
+        />
         <AsyncButton
           className="rounded-md px-3 py-1"
           loading={handleReclaimFunds.isLoading}
