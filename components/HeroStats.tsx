@@ -44,7 +44,7 @@ export const HeroStats: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({
       }}
     >
       <div className="flex flex-1 flex-col items-center justify-center">
-        <div className="text-lg text-medium-4">Total Staked</div>
+        <div className="text-lg text-medium-4" style={{ color: stakePoolMetadata?.colors?.fontColorTertiary }}>Total Staked</div>
         {!totalStaked.isFetched ? (
           <div className="h-6 w-10 animate-pulse rounded-md bg-border"></div>
         ) : (
@@ -63,7 +63,7 @@ export const HeroStats: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({
         <>
           <div className="mx-6 my-auto hidden h-10 w-[1px] bg-border md:flex"></div>
           <div className="flex flex-1 flex-col items-center justify-center">
-            <p className="text-lg text-medium-4">Percent Staked</p>
+            <p className="text-lg text-medium-4" style={{ color: stakePoolMetadata?.colors?.fontColorTertiary }}>Percent Staked</p>
             {!stakePoolEntries.data ? (
               <div className="h-6 w-10 animate-pulse rounded-md bg-border"></div>
             ) : (
@@ -86,7 +86,7 @@ export const HeroStats: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({
         <>
           <div className="mx-6 my-auto hidden h-10 w-[1px] bg-border md:flex"></div>
           <div className="flex flex-1 flex-col items-center justify-center">
-            <p className="text-lg text-medium-4">
+            <p className="text-lg text-medium-4" style={{ color: stakePoolMetadata?.colors?.fontColorTertiary }}>
               {rewardDistributorData.data.parsed?.maxRewardSecondsReceived?.eq(
                 new BN(1)
               )
@@ -133,7 +133,7 @@ export const HeroStats: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({
           </div>
           <div className="mx-6 my-auto hidden h-10 w-[1px] bg-border md:flex"></div>
           <div className="flex flex-1 flex-col items-center justify-center">
-            <p className="text-lg text-medium-4">Treasury Balance</p>
+            <p className="text-lg text-medium-4" style={{ color: stakePoolMetadata?.colors?.fontColorTertiary }}>Treasury Balance</p>
             {!rewardsRate.data ||
             !rewardMintInfo.data ||
             !rewardDistributorTokenAccountData.isFetched ? (
