@@ -26,7 +26,7 @@ import type { CreationForm } from '@/components/stake-pool-creation/Schema'
 import { useStakePoolData } from '../hooks/useStakePoolData'
 import { useEnvironmentCtx } from '../providers/EnvironmentProvider'
 
-export const useHandleCreatePool = () => {
+export const useHandleStakePoolCreate = () => {
   const wallet = asWallet(useWallet())
   const { connection, environment } = useEnvironmentCtx()
   const stakePool = useStakePoolData()

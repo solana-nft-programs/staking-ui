@@ -19,6 +19,8 @@ import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
 import Head from 'next/head'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 
+import { AdminStakePool } from '@/components/AdminPool'
+
 function Home() {
   const { environment } = useEnvironmentCtx()
   const stakePool = useStakePoolData()
@@ -27,6 +29,7 @@ function Home() {
   const { data: stakePoolMetadata } = useStakePoolMetadata()
   const handleUpdatePool = useHandleUpdatePool()
 
+  return <AdminStakePool />
   return (
     <div>
       <Head>

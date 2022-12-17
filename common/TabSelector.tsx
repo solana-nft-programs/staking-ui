@@ -10,7 +10,6 @@ type Option<T> = {
 }
 
 type Props<T> = {
-  colorized?: boolean
   placeholder?: string
   value?: Option<T>
   options: Option<T>[]
@@ -19,7 +18,6 @@ type Props<T> = {
 }
 
 export const TabSelector = <T,>({
-  colorized,
   defaultOption,
   value,
   onChange,

@@ -160,7 +160,7 @@ export const MintMultipliers = () => {
           })
         }
         inlineLoader
-        className="w-max"
+        className="flex items-center justify-center"
       >
         Set Multipliers
       </AsyncButton>
