@@ -28,8 +28,8 @@ function Home() {
         />
       </Head>
       <HeaderSlim />
-      <div className="flex-grow ">
-        <div className="container mx-auto flex w-full">
+      <div className="container mx-auto flex-grow px-6">
+        <div className="flex w-full">
           <div
             className="relative top-8 flex cursor-pointer items-center justify-center gap-2 text-2xl font-medium"
             onClick={() =>

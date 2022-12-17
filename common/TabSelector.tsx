@@ -34,7 +34,7 @@ export const TabSelector = <T,>({
   }, [value?.label])
 
   return (
-    <div className="flex rounded-lg border-[1px] border-border bg-dark-4">
+    <div className="flex flex-wrap items-center justify-center rounded-lg border-[1px] border-border bg-dark-4">
       {options.map((o, i) => (
         <Tooltip key={i} title={o.tooltip || ''}>
           <div

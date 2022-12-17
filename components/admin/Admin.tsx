@@ -35,7 +35,7 @@ function Admin() {
       </Head>
 
       <HeaderSlim />
-      <div className="container mx-auto w-full flex-grow">
+      <div className="container mx-auto w-full flex-grow px-6">
         <div className="mt-8 flex items-center justify-between">
           <div className="text-2xl font-medium">
             {

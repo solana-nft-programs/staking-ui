@@ -47,7 +47,7 @@ export const AdminPools = () => {
           No stake pools found
         </div>
       ) : (
-        <div className="grid grid-cols-3 gap-5 py-10">
+        <div className="grid-grid-cols-1 grid gap-5 py-10 md:grid-cols-3">
           {allPoolds.map((stakePool) => (
             <div
               key={stakePool.stakePoolData.pubkey.toString()}
