@@ -3,10 +3,10 @@ import type { Dispatch, SetStateAction } from 'react'
 import type { Mint } from 'spl-token-v3'
 
 import { Intro } from '@/components/stake-pool-creation/master-panel/Intro'
+import { AdditionalFeatures } from '@/components/stake-pool-creation/master-panel/step-content/AdditionalFeatures'
 import { Authorization } from '@/components/stake-pool-creation/master-panel/step-content/authorization/Authorization'
 import { RewardDistribution } from '@/components/stake-pool-creation/master-panel/step-content/RewardDistribution'
 import { Summary } from '@/components/stake-pool-creation/master-panel/step-content/Summary'
-import { TimeBasedParameters } from '@/components/stake-pool-creation/master-panel/step-content/TimeBasedParameters'
 import type { SlavePanelScreens } from '@/components/stake-pool-creation/SlavePanel'
 
 export type FlowType = 'create' | 'update'
@@ -44,7 +44,7 @@ export const StepContent = ({
         />
       )}
       {currentStep === 3 && (
-        <TimeBasedParameters
+        <AdditionalFeatures
           setActiveSlavePanelScreen={setActiveSlavePanelScreen}
           formState={formState}
         />

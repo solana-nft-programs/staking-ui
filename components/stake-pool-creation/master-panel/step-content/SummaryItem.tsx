@@ -64,24 +64,33 @@ export const SummaryItem = ({ item, value, mintInfo }: SummaryItemProps) => {
       item === LabelKey.requireCollections ||
       item === LabelKey.requireCreators
     ) {
-      if (!value || value.length < 1) return 'N/A'
+      if (!value || value.length < 1) return '-'
       return formatPubKeys(value as string[])
     }
     if (item === LabelKey.rewardDistributorKind) {
       return value === '1' ? 'Mint' : 'Transfer'
     }
     if (item === LabelKey.rewardMintAddress) {
-      if (!tryPublicKey(value)) return 'N/A'
+      if (!tryPublicKey(value)) return '-'
       return (
         <ShortPubKeyUrl
           className="text-base underline underline-offset-2"
           pubkey={new PublicKey(value)}
           cluster={environment.label}
-        ></ShortPubKeyUrl>
+        />
       )
     }
     if (item === LabelKey.endDate) {
-      return value ? new Date(value.toString()).toDateString() : ''
+      return value
+        ? new Date(value.toString()).toLocaleDateString([], {
+            day: '2-digit',
+            month: '2-digit',
+            year: '2-digit',
+            hour: '2-digit',
+            minute: '2-digit',
+            timeZoneName: 'short',
+          })
+        : '-'
     }
     if (item === LabelKey.rewardAmount) {
       return mintInfo
@@ -123,9 +132,7 @@ export const SummaryItem = ({ item, value, mintInfo }: SummaryItemProps) => {
                 {value ? 'Yes' : 'No'}
               </span>
             ) : (
-              <span className="ml-2 text-gray-200">
-                {value ? value : 'N/A'}
-              </span>
+              <span className="ml-2 text-gray-200">{value ? value : '-'}</span>
             )}
           </div>
         )}

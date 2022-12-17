@@ -130,7 +130,7 @@ export const StakePoolCreationFlow = ({
 
   useMemo(async () => {
     if (values.rewardMintAddress) {
-      if (!wallet?.connected) {
+      if (!wallet?.connected || !wallet.publicKey) {
         notify({
           message: `Wallet not connected`,
           type: 'error',
@@ -159,8 +159,8 @@ export const StakePoolCreationFlow = ({
             transaction,
             connection,
             mint,
-            wallet.publicKey!,
-            wallet.publicKey!,
+            wallet.publicKey,
+            wallet.publicKey,
             true
           )
           if (transaction.instructions.length > 0) {
@@ -192,10 +192,10 @@ export const StakePoolCreationFlow = ({
         setSubmitDisabled(true)
         if (values.rewardMintAddress.length > 0) {
           console.log(e)
-          notify({
-            message: `Invalid reward mint address: ${e}`,
-            type: 'error',
-          })
+          // notify({
+          //   message: `Invalid reward mint address: ${e}`,
+          //   type: 'error',
+          // })
         }
       } finally {
         setProcessingMintAddress(false)

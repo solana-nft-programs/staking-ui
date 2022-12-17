@@ -27,10 +27,10 @@ export type MasterPanelProps = {
 }
 
 const stepTitles = [
-  'Create your Staking Pool',
+  'Create Your Staking Pool',
   'Authorization',
-  'Reward distribution',
-  'Time-based parameters',
+  'Reward Distribution',
+  'Additional Features',
   'Summary',
 ]
 
@@ -38,7 +38,7 @@ const stepSubtitles = [
   'Thank you for your interest!',
   'Decide which NFT collections or coins will be staked.',
   'Specify the emission and source of rewards for stakers.',
-  'Introduce optional constraints for staking in your pool.',
+  'Enable optional features for staking in your pool.',
   'Customize the staking technology for your users.',
   'All steps completed. Please review the details of your Stake Pool below, before you hit the Create button.',
 ]

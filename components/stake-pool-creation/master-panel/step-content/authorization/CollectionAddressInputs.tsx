@@ -105,12 +105,10 @@ export const CollectionAddressInputs = ({
           )}
         </>
       ) : (
-        <div className="pb-6">
-          <ButtonLargeWithDottedOutline onClick={() => setDisplayInput(true)}>
-            <PlusIcon className="h-6 w-6" />
-            <div>Add address</div>
-          </ButtonLargeWithDottedOutline>
-        </div>
+        <ButtonLargeWithDottedOutline onClick={() => setDisplayInput(true)}>
+          <PlusIcon className="h-6 w-6" />
+          <div>Add address</div>
+        </ButtonLargeWithDottedOutline>
       )}
     </div>
   )

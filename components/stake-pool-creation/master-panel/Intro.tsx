@@ -23,7 +23,7 @@ export const Intro = () => {
           <div className="mr-4">
             <FlagIcon />
           </div>
-          Complete 6 simple steps
+          Complete 3 simple steps
         </div>
         <div className="flex w-full rounded-xl bg-gray-800 p-6">
           <div className="mr-4">

@@ -206,10 +206,8 @@ export function StakePoolForm({
           userAta = await getAccount(connection, mintAta)
         } catch (e) {
           notify({
-            message: handleError(
-              e,
-              `Failed to get user's associated token address for given mint: ${e}`
-            ),
+            message: `Failed to get user's associated token address`,
+            description: handleError(e, `${e}`),
             type: 'error',
           })
         }

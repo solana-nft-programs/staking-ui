@@ -12,10 +12,9 @@ export type SummaryProps = {
 export const Summary = ({ formState, mintInfo }: SummaryProps) => {
   const { values } = formState
   return (
-    <div className="max-h-[350px] overflow-y-scroll">
+    <div className="max-h-[500px] overflow-y-scroll">
       {Object.keys(values).map((item) => {
         const label = item as LabelKey
-
         return (
           <SummaryItem
             item={label}

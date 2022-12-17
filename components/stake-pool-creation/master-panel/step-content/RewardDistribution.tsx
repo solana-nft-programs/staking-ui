@@ -17,11 +17,6 @@ import { NumberInput } from '@/components/UI/inputs/NumberInput'
 import { TextInput } from '@/components/UI/inputs/TextInput'
 import { LabelText } from '@/components/UI/typography/LabelText'
 
-export enum RewardDistributionKind {
-  MINT = '1',
-  TRANSFER = '2',
-}
-
 export type RewardDistributionProps = {
   setActiveSlavePanelScreen: Dispatch<SetStateAction<SlavePanelScreens>>
   formState: FormikHandlers & FormikState<FormikValues> & FormikValues
@@ -46,8 +41,8 @@ export const RewardDistribution = ({
   const rewardDistributor = useRewardDistributorData()
 
   return (
-    <>
-      <div className="pb-6">
+    <div className="flex flex-col gap-6">
+      <div className="">
         <div className="mb-2 flex w-full items-center">
           <LabelText>Rewards mint address</LabelText>
           <InformationCircleIcon
@@ -58,7 +53,7 @@ export const RewardDistribution = ({
         <TextInput
           disabled={type === 'update' && rewardDistributor.data !== undefined}
           hasError={
-            values.rewardMintAddress !== '' && Boolean(errors.rewardMintAddress)
+            values.rewardMintAddress !== '' && !!errors.rewardMintAddress
           }
           value={values.rewardMintAddress}
           onChange={(e) => {
@@ -68,7 +63,7 @@ export const RewardDistribution = ({
       </div>
       {mintInfo && (
         <>
-          <div className="pb-6">
+          <div className="">
             <div className="mb-2 flex w-full items-center">
               <LabelText>Reward amount per staked token</LabelText>
               <InformationCircleIcon
@@ -97,7 +92,7 @@ export const RewardDistribution = ({
               }}
             />
           </div>
-          <div className="pb-6">
+          <div className="">
             <div className="mb-2 flex w-full items-center">
               <LabelText>Reward duration seconds</LabelText>
               <InformationCircleIcon
@@ -113,47 +108,95 @@ export const RewardDistribution = ({
               }}
             />
           </div>
-          <div className="mb-2 flex w-full items-center">
-            <LabelText>
-              Reward transfer amount{' '}
-              <span className="ml-1 text-gray-500">(optional)</span>
-            </LabelText>
-            <InformationCircleIcon
-              className="ml-1 h-6 w-6 cursor-pointer text-gray-400"
-              onClick={() => setActiveSlavePanelScreen(REWARD_DISTRIBUTION_3)}
-            />
-          </div>
-          <div className="relative mb-1">
-            <TextInput
-              disabled={
-                type === 'update' && rewardDistributor?.data !== undefined
-              }
-              value={tryFormatInput(
-                values.rewardMintSupply,
-                mintInfo.decimals,
-                values.rewardMintSupply ?? ''
-              )}
-              onChange={(e) => {
-                if (Number.isNaN(Number(e.target.value))) {
-                  notify({
-                    message: `Invalid transfer amount`,
-                    type: 'error',
-                  })
-                  return
+          <div className="">
+            <div className="mb-2 flex w-full items-center">
+              <LabelText>
+                Reward transfer amount
+                <span className="ml-1 text-gray-500">(optional)</span>
+              </LabelText>
+              <InformationCircleIcon
+                className="ml-1 h-6 w-6 cursor-pointer text-gray-400"
+                onClick={() => setActiveSlavePanelScreen(REWARD_DISTRIBUTION_3)}
+              />
+            </div>
+            <div className="relative">
+              <TextInput
+                disabled={
+                  type === 'update' && rewardDistributor?.data !== undefined
                 }
-                setFieldValue(
-                  'rewardMintSupply',
-                  tryParseInput(
-                    e.target.value,
-                    mintInfo.decimals,
-                    values.rewardMintSupply ?? ''
+                value={tryFormatInput(
+                  values.rewardMintSupply,
+                  mintInfo.decimals,
+                  values.rewardMintSupply ?? ''
+                )}
+                onChange={(e) => {
+                  if (Number.isNaN(Number(e.target.value))) {
+                    notify({
+                      message: `Invalid transfer amount`,
+                      type: 'error',
+                    })
+                    return
+                  }
+                  setFieldValue(
+                    'rewardMintSupply',
+                    tryParseInput(
+                      e.target.value,
+                      mintInfo.decimals,
+                      values.rewardMintSupply ?? ''
+                    )
                   )
-                )
-              }}
-            />
+                }}
+              />
+            </div>
+          </div>
+          <div className="flex gap-6">
+            <div className="w-1/2">
+              <div className="mb-2 flex w-full items-center">
+                <LabelText>
+                  Multiplier Decimals
+                  <span className="ml-1 text-gray-500">(optional)</span>
+                </LabelText>
+                <InformationCircleIcon
+                  onClick={() =>
+                    setActiveSlavePanelScreen(SlavePanelScreens.REWARD_SUPPLY_3)
+                  }
+                  className="ml-1 h-6 w-6 cursor-pointer text-gray-400"
+                />
+              </div>
+              <NumberInput
+                className="w-full"
+                placeholder="0"
+                value={values.multiplierDecimals}
+                onChange={(e) => {
+                  setFieldValue('multiplierDecimals', e.target.value)
+                }}
+              />
+            </div>
+            <div className="w-1/2">
+              <div className="mb-2 flex w-full items-center">
+                <LabelText>
+                  Default Multiplier
+                  <span className="ml-1 text-gray-500">(optional)</span>
+                </LabelText>
+                <InformationCircleIcon
+                  onClick={() =>
+                    setActiveSlavePanelScreen(SlavePanelScreens.REWARD_SUPPLY_3)
+                  }
+                  className="ml-1 h-6 w-6 cursor-pointer text-gray-400"
+                />
+              </div>
+              <NumberInput
+                className="w-full"
+                placeholder="1"
+                value={values.defaultMultiplier}
+                onChange={(e) => {
+                  setFieldValue('defaultMultiplier', e.target.value)
+                }}
+              />
+            </div>
           </div>
         </>
       )}
-    </>
+    </div>
   )
 }
