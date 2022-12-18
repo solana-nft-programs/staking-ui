@@ -44,25 +44,6 @@ export const useHandleStakePoolUpdate = () => {
         .map((c) => tryPublicKey(c))
         .filter((c) => c) as PublicKey[]
 
-      // format date
-      let dateInNum: number | undefined = new Date(
-        values.endDate?.toString() || ''
-      ).getTime()
-      if (dateInNum < Date.now()) {
-        dateInNum = undefined
-      }
-      const stakePoolParams = {
-        stakePoolId: stakePool.data.pubkey,
-        allowedCollections: collectionPublicKeys,
-        allowedCreators: creatorPublicKeys,
-        requiresAuthorization: values.requiresAuthorization,
-        resetOnStake: values.resetOnStake,
-        // overlayText: values.overlayText, // TODO
-        cooldownSeconds: values.cooldownPeriodSeconds,
-        minStakeSeconds: values.minStakeSeconds,
-        endDate: dateInNum ? new BN(dateInNum / 1000) : undefined,
-      }
-
       if (isStakePoolV2(stakePool.data.parsed)) {
         /////////////////// V1 ///////////////////
         const ix = await program.methods
@@ -81,8 +62,8 @@ export const useHandleStakePoolUpdate = () => {
             minStakeSeconds: values.minStakeSeconds
               ? Number(values.minStakeSeconds)
               : stakePool.data.parsed.minStakeSeconds,
-            endDate: values.endDate
-              ? new BN(values.endDate)
+            endDate: values.endDateSeconds
+              ? new BN(values.endDateSeconds)
               : stakePool.data.parsed.endDate,
             stakePaymentInfo: stakePool.data.parsed.stakePaymentInfo,
             unstakePaymentInfo: stakePool.data.parsed.unstakePaymentInfo,
@@ -98,15 +79,18 @@ export const useHandleStakePoolUpdate = () => {
       } else {
         /////////////////// V1 ///////////////////
         await withUpdateStakePool(transaction, connection, wallet, {
-          stakePoolId: stakePoolParams.stakePoolId,
-          requiresCollections: stakePoolParams.allowedCollections,
-          requiresCreators: stakePoolParams.allowedCreators,
-          requiresAuthorization: stakePoolParams.requiresAuthorization,
+          stakePoolId: stakePool.data.pubkey,
+          requiresCollections: collectionPublicKeys,
+          requiresCreators: creatorPublicKeys,
+          requiresAuthorization: values.requiresAuthorization,
           overlayText: '',
-          resetOnStake: stakePoolParams.resetOnStake,
-          cooldownSeconds: stakePoolParams.cooldownSeconds,
-          minStakeSeconds: stakePoolParams.minStakeSeconds,
-          endDate: stakePoolParams.endDate,
+          resetOnStake:
+            values.resetOnStake ?? stakePool.data.parsed.resetOnUnstake,
+          cooldownSeconds: values.cooldownPeriodSeconds,
+          minStakeSeconds: values.minStakeSeconds,
+          endDate: values.endDateSeconds
+            ? new BN(values.endDateSeconds)
+            : undefined,
           doubleOrResetEnabled: false, // TODO
         })
       }

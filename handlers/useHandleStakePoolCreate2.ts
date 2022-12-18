@@ -40,14 +40,6 @@ export const useHandleStakePoolCreate2 = () => {
         .map((c) => tryPublicKey(c))
         .filter((c) => c) as PublicKey[]
 
-      // format date
-      let dateInNum: number | undefined = new Date(
-        values.endDate?.toString() || ''
-      ).getTime()
-      if (dateInNum < Date.now()) {
-        dateInNum = undefined
-      }
-
       console.log(values)
       const transaction = new Transaction()
       const program = rewardsCenterProgram(connection, wallet)
@@ -63,7 +55,7 @@ export const useHandleStakePoolCreate2 = () => {
           resetOnUnstake: values.resetOnStake ?? false,
           cooldownSeconds: values.cooldownPeriodSeconds || null,
           minStakeSeconds: values.minStakeSeconds || null,
-          endDate: dateInNum ? new BN(dateInNum / 1000) : null,
+          endDate: values.endDateSeconds ? new BN(values.endDateSeconds) : null,
           stakePaymentInfo: DEFAULT_PAYMENT_INFO,
           unstakePaymentInfo: DEFAULT_PAYMENT_INFO,
         })

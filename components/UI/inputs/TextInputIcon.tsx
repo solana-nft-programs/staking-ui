@@ -34,7 +34,6 @@ export const TextInputIcon = ({
     >
       <input
         className={`mr-5 w-full bg-transparent focus:outline-none`}
-        type="text"
         onFocus={() => setFocus(true)}
         onBlur={() => setFocus(false)}
         autoComplete="off"

@@ -12,12 +12,10 @@ import { useWalletId } from 'hooks/useWalletId'
 import { useEffect } from 'react'
 import * as Yup from 'yup'
 
-import {
-  bnValidationTest,
-  publicKeyValidationTest,
-} from '../stake-pool-creation/Schema'
+import { publicKeyValidationTest } from '../stake-pool-creation/Schema'
 import { TextInput } from '../UI/inputs/TextInput'
 import { TextInputIcon } from '../UI/inputs/TextInputIcon'
+import { UnixSecondsInput } from '../UI/inputs/UnixSecondsInput'
 
 const stakePoolUpdateSchema = Yup.object({
   requireCollections: Yup.array()
@@ -42,9 +40,7 @@ const stakePoolUpdateSchema = Yup.object({
   resetOnStake: Yup.boolean(),
   cooldownPeriodSeconds: Yup.number().optional().min(0),
   minStakeSeconds: Yup.number().optional().min(0),
-  endDate: Yup.string()
-    .optional()
-    .test('is-valid-bn', 'Invalid endDate', bnValidationTest),
+  endDateSeconds: Yup.number().optional().min(0),
 })
 
 const defaultValues = (
@@ -62,11 +58,7 @@ const defaultValues = (
     resetOnStake: stakePoolData?.parsed?.resetOnUnstake ?? false,
     cooldownPeriodSeconds: stakePoolData?.parsed?.cooldownSeconds ?? 0,
     minStakeSeconds: stakePoolData?.parsed?.minStakeSeconds ?? 0,
-    endDate: stakePoolData?.parsed?.endDate
-      ? new Date(stakePoolData?.parsed.endDate.toNumber() * 1000)
-          .toISOString()
-          .split('T')[0]
-      : undefined,
+    endDateSeconds: stakePoolData?.parsed?.endDate?.toNumber() ?? 0,
   }
 }
 
@@ -254,13 +246,11 @@ export function StakePoolUpdate({
               'End date for pool when staking is disabled but claiming rewards and unstaking is still enabled'
             }
           />
-          <TextInput
+          <UnixSecondsInput
             type="datetime-local"
             placeholder={'None'}
-            value={values.endDate}
-            onChange={(e) => {
-              setFieldValue('endDate', e.target.value)
-            }}
+            handleChange={(v) => setFieldValue('endDateSeconds', v)}
+            value={values?.endDateSeconds}
           />
         </div>
       </div>
