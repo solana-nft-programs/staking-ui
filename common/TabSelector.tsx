@@ -1,3 +1,4 @@
+import { css } from '@emotion/react'
 import { useEffect, useState } from 'react'
 
 import { Tooltip } from './Tooltip'
@@ -10,7 +11,7 @@ type Option<T> = {
 }
 
 type Props<T> = {
-  colorized?: boolean
+  color?: string
   placeholder?: string
   value?: Option<T>
   options: Option<T>[]
@@ -19,11 +20,11 @@ type Props<T> = {
 }
 
 export const TabSelector = <T,>({
-  colorized,
   defaultOption,
   value,
   onChange,
   options = [],
+  color,
 }: Props<T>) => {
   const [internalValue, setInternalValue] = useState<Option<T> | undefined>(
     defaultOption
@@ -45,6 +46,11 @@ export const TabSelector = <T,>({
                 ? 'cursor-default opacity-25'
                 : 'cursor-pointer hover:text-primary'
             } ${internalValue?.value === o.value ? 'bg-dark-6' : ''}`}
+            css={css`
+              &:hover {
+                color: ${color} !important;
+              }
+            `}
             onClick={() => {
               if (o.disabled) return
               setInternalValue(o)

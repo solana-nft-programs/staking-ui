@@ -1,7 +1,7 @@
 import { usePoolAnalytics } from 'hooks/usePoolAnalytics'
 import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
 
-export const PoolAnalytics = () => {
+export const AttributeAnalytics = () => {
   const analytics = usePoolAnalytics()
   const { data: stakePoolMetadata } = useStakePoolMetadata()
   const data = analytics.data

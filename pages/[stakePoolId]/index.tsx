@@ -3,10 +3,12 @@ import { FooterSlim } from 'common/FooterSlim'
 import { Header } from 'common/Header'
 import { HeroLarge } from 'common/HeroLarge'
 import { Info } from 'common/Info'
+import { TabSelector } from 'common/TabSelector'
 import { contrastColorMode } from 'common/utils'
+import { AttributeAnalytics } from 'components/AttributeAnalytics'
 import { PerformanceStats } from 'components/PerformanceStats'
-import { PoolAnalytics } from 'components/PoolAnalytics'
 import { StakedTokens } from 'components/StakedTokens'
+import { StakePoolAnalysis } from 'components/StakePoolAnalysis'
 import { StakePoolNotice } from 'components/StakePoolNotice'
 import { UnstakedTokens } from 'components/UnstakedTokens'
 import { useRewardDistributorData } from 'hooks/useRewardDistributorData'
@@ -16,6 +18,26 @@ import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
 import { useUserRegion } from 'hooks/useUserRegion'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
+import { useState } from 'react'
+
+type PANE_OPTIONS = 'dashboard' | 'analytics'
+const paneTabs: {
+  label: React.ReactNode
+  value: PANE_OPTIONS
+  disabled?: boolean
+  tooltip?: string
+}[] = [
+  {
+    label: 'Dashboard',
+    value: 'dashboard',
+    tooltip: 'View your personal dashboard',
+  },
+  {
+    label: 'Analytics',
+    value: 'analytics',
+    tooltip: 'View analytics for this stake pool',
+  },
+]
 
 function StakePoolHome() {
   const router = useRouter()
@@ -23,6 +45,7 @@ function StakePoolHome() {
   const userRegion = useUserRegion()
   const rewardDistributorData = useRewardDistributorData()
   const stakedTokenDatas = useStakedTokenDatas()
+  const [pane, setPane] = useState<PANE_OPTIONS>('dashboard')
 
   const { data: stakePoolMetadata } = useStakePoolMetadata()
 
@@ -103,26 +126,47 @@ function StakePoolHome() {
         }}
       >
         <HeroLarge />
-        <PoolAnalytics />
-        {!!rewardDistributorData.data && !!stakedTokenDatas.data?.length && (
-          <Info
-            colorized
-            icon="performance"
-            header="Personal Charts"
-            description="View your recent performance"
-            style={{ color: stakePoolMetadata?.colors?.fontColor }}
-            content={
-              <div className="flex grow items-center justify-end">
-                <PerformanceStats />
-              </div>
-            }
+        <AttributeAnalytics />
+        <div className="flex justify-end">
+          <TabSelector<PANE_OPTIONS>
+            color={stakePoolMetadata?.colors?.secondary}
+            defaultOption={paneTabs[0]}
+            options={paneTabs}
+            value={paneTabs.find((p) => p.value === pane)}
+            onChange={(o) => {
+              setPane(o.value)
+            }}
           />
-        )}
-        <StakePoolNotice />
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-          <UnstakedTokens />
-          <StakedTokens />
         </div>
+        {
+          {
+            dashboard: (
+              <div className="flex flex-col gap-4">
+                {!!rewardDistributorData.data &&
+                  !!stakedTokenDatas.data?.length && (
+                    <Info
+                      colorized
+                      icon="performance"
+                      header="Personal Charts"
+                      description="View your recent performance"
+                      style={{ color: stakePoolMetadata?.colors?.fontColor }}
+                      content={
+                        <div className="flex grow items-center justify-end">
+                          <PerformanceStats />
+                        </div>
+                      }
+                    />
+                  )}
+                <StakePoolNotice />
+                <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                  <UnstakedTokens />
+                  <StakedTokens />
+                </div>
+              </div>
+            ),
+            analytics: <StakePoolAnalysis />,
+          }[pane]
+        }
       </div>
       {!stakePoolMetadata?.hideFooter ? (
         <Footer bgColor={stakePoolMetadata?.colors?.primary} />
