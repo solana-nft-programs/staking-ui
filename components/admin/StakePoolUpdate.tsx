@@ -2,6 +2,7 @@ import type { PublicKey } from '@solana/web3.js'
 import { AsyncButton } from 'common/Button'
 import { FormFieldTitleInput } from 'common/FormFieldInput'
 import { LoadingSpinner } from 'common/LoadingSpinner'
+import { SelectorBoolean } from 'common/SelectorBoolean'
 import { useFormik } from 'formik'
 import { useHandleStakePoolCreate2 } from 'handlers/useHandleStakePoolCreate2'
 import { useHandleStakePoolUpdate } from 'handlers/useHandleStakePoolUpdate'
@@ -205,27 +206,12 @@ export function StakePoolUpdate({
               'If selected, NFTs / specific mints can be arbitrarily authorized to enter the pool'
             }
           />
-          <input
-            className="cursor-pointer"
-            id="require-authorization"
-            type="checkbox"
-            name="requiresAuthorization"
-            checked={values.requiresAuthorization}
-            readOnly
-          />{' '}
-          <span
-            className="my-auto cursor-pointer text-sm"
-            onClick={() =>
-              setFieldValue(
-                'requiresAuthorization',
-                !values.requiresAuthorization
-              )
-            }
-          >
-            Authorize specific mints
-          </span>
+          <SelectorBoolean
+            handleChange={(v) => setFieldValue('requiresAuthorization', v)}
+          />
         </div>
       </div>
+      <div className="my-6 h-[1px] w-full bg-dark-3" />
       <div className="flex flex-wrap">
         <div className="w-full">
           <FormFieldTitleInput
@@ -279,27 +265,16 @@ export function StakePoolUpdate({
         </div>
       </div>
       <div className="flex flex-wrap">
-        <div className="">
+        <div className="w-full">
           <FormFieldTitleInput
             title={'Reset on stake'}
             description={
               'If selected, everytime a user stakes the stake timer will reset rather than accumulate.'
             }
           />
-          <input
-            className="cursor-pointer"
-            id="reset-on-unstake"
-            type="checkbox"
-            name="resetOnStake"
-            checked={values.resetOnStake}
-            readOnly
-          />{' '}
-          <span
-            className="my-auto cursor-pointer text-sm"
-            onClick={() => setFieldValue('resetOnStake', !values.resetOnStake)}
-          >
-            Reset on stake
-          </span>
+          <SelectorBoolean
+            handleChange={(v) => setFieldValue('resetOnStake', v)}
+          />
         </div>
       </div>
       <AsyncButton

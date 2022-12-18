@@ -35,16 +35,16 @@ export const AdminPools = () => {
   return (
     <div className="">
       {!walletId ? (
-        <div className="my-12 flex items-center justify-center text-gray-500">
-          Wallet not connected
+        <div className="my-16 flex items-center justify-center text-gray-500">
+          Wallet not connected...
         </div>
       ) : !stakePoolsByAuthority.isFetched ? (
-        <div className="my-12 flex items-center justify-center text-gray-500">
+        <div className="my-16 flex items-center justify-center text-gray-500">
           <LoadingSpinner />
         </div>
       ) : allPoolds.length === 0 ? (
-        <div className="my-12 flex items-center justify-center text-gray-500">
-          No stake pools found
+        <div className="my-16 flex items-center justify-center text-gray-500">
+          No stake pools found...
         </div>
       ) : (
         <div className="grid-grid-cols-1 grid gap-5 py-10 md:grid-cols-3">

@@ -2,6 +2,9 @@ import { ChevronDown } from 'assets/ChevronDown'
 import { ChevronRight } from 'assets/ChevronRight'
 import { GlyphSelectClear } from 'assets/GlyphSelectClear'
 import { useEffect, useRef, useState } from 'react'
+import { twMerge } from 'tailwind-merge'
+
+import { inputClassNames } from '@/components/UI/inputs/TextInput'
 
 type Option<T> = { label: string; value: T }
 type Props<T> = {
@@ -9,6 +12,7 @@ type Props<T> = {
   options: Option<T>[]
   className?: string
   disabled?: boolean
+  error?: boolean
   defaultOption?: Option<T>
   isClearable?: boolean
   onChange?: (arg?: Option<T>) => void
@@ -21,6 +25,7 @@ export const Selector = <T,>({
   placeholder = 'Select',
   defaultOption,
   disabled,
+  error,
   className,
   onChange,
   isClearable,
@@ -44,11 +49,12 @@ export const Selector = <T,>({
   return (
     <div className={`relative z-${z} text-base`} ref={ref}>
       <div
-        className={`relative z-${0} flex justify-between gap-2 rounded-lg bg-dark-4 p-2 text-lg outline outline-gray-600 transition-all focus:outline-orange-500 ${
-          disabled
-            ? 'cursor-default opacity-50'
-            : 'cursor-pointer hover:border-primary'
-        } ${className}`}
+        className={twMerge([
+          inputClassNames({ disabled, error }),
+          `relative z-${0} flex items-center justify-between`,
+          isOpen && 'bg-dark-4',
+          className,
+        ])}
         onClick={() => !disabled && setIsOpen((v) => !v)}
       >
         {value ? (
@@ -74,7 +80,7 @@ export const Selector = <T,>({
         </div>
       </div>
       <div
-        className={`absolute z-50 w-full rounded-md bg-dark-4 transition-all ${
+        className={`absolute z-50 w-full rounded-md bg-gray-800 transition-all ${
           isOpen ? 'h-auto opacity-100' : 'h-0 overflow-hidden opacity-0'
         }`}
       >

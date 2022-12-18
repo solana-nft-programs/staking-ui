@@ -1,13 +1,13 @@
 import { PlusIcon } from '@heroicons/react/24/solid'
+import { AsyncButton } from 'common/Button'
 import { HeaderSlim } from 'common/HeaderSlim'
+import { withCluster } from 'common/utils'
 import { statsNameMapping, useGlobalStats } from 'hooks/useGlobalStats'
 import { useRouter } from 'next/router'
-
-import { ButtonPrimary } from '@/components/UI/buttons/ButtonPrimary'
-
-import { ButtonWidths } from '../types'
+import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 
 export const MainHero = () => {
+  const { environment } = useEnvironmentCtx()
   const stats = useGlobalStats()
   const router = useRouter()
   return (
@@ -30,15 +30,14 @@ export const MainHero = () => {
             <div className="text-lg text-medium-3">
               Does your NFT collection or tokens need staking?
             </div>
-            <ButtonPrimary
+            <AsyncButton
               onClick={() => {
-                router.push('/admin')
+                router.push(withCluster('/admin', environment.label))
               }}
-              width={ButtonWidths.NARROW}
             >
               Create your pool
-              <PlusIcon className="ml-2 h-6 w-6" />
-            </ButtonPrimary>
+              <PlusIcon className="ml-2 h-5 w-5" />
+            </AsyncButton>
           </div>
           <div className="flex w-fit flex-wrap gap-3 rounded-xl border-[2px] border-border p-4">
             {statsNameMapping.map(({ displayName, key }) => (

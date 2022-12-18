@@ -1,4 +1,7 @@
+import { useState } from 'react'
 import { twMerge } from 'tailwind-merge'
+
+import { inputClassNames } from './TextInput'
 
 type Props = React.DetailedHTMLProps<
   React.InputHTMLAttributes<HTMLInputElement>,
@@ -19,19 +22,21 @@ export const TextInputIcon = ({
   className,
   ...props
 }: Props) => {
+  const [focus, setFocus] = useState(false)
   return (
     <div
       className={twMerge([
-        'flex w-full appearance-none items-center justify-between rounded bg-gray-700 py-3 px-4 text-gray-200 placeholder-gray-500 outline',
-        !disabled && error ? 'outline outline-red-500' : 'outline-gray-500',
-        !disabled && !error && 'focus:bg-gray-800', //focus:outline-orange-500
-        disabled && 'opacity-30',
+        inputClassNames({ disabled, error }),
+        'flex items-center',
+        focus && 'bg-dark-4',
         className,
       ])}
     >
       <input
         className={`mr-5 w-full bg-transparent focus:outline-none`}
         type="text"
+        onFocus={() => setFocus(true)}
+        onBlur={() => setFocus(false)}
         autoComplete="off"
         {...props}
       />

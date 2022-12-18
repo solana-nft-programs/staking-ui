@@ -1,3 +1,4 @@
+import { PlusIcon } from '@heroicons/react/24/solid'
 import { FlagIcon } from 'assets/icons/FlagIcon'
 import { GasPumpIcon } from 'assets/icons/GasPumpIcon'
 import { SettingsIcon } from 'assets/icons/SettingsIcon'
@@ -61,7 +62,8 @@ function Admin() {
                   className="px-6 py-2"
                   onClick={() => setPane('create')}
                 >
-                  Create +
+                  Add
+                  <PlusIcon className="ml-2 h-5 w-5" />
                 </AsyncButton>
               ),
             }[pane]
