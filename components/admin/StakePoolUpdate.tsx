@@ -4,7 +4,7 @@ import { FormFieldTitleInput } from 'common/FormFieldInput'
 import { LoadingSpinner } from 'common/LoadingSpinner'
 import { SelectorBoolean } from 'common/SelectorBoolean'
 import { useFormik } from 'formik'
-import { useHandleStakePoolCreate2 } from 'handlers/useHandleStakePoolCreate2'
+import { useHandleStakePoolCreate } from 'handlers/useHandleStakePoolCreate'
 import { useHandleStakePoolUpdate } from 'handlers/useHandleStakePoolUpdate'
 import { useStakePoolData } from 'hooks/useStakePoolData'
 import { useStakePoolId } from 'hooks/useStakePoolId'
@@ -73,7 +73,7 @@ export function StakePoolUpdate({
   const stakePooldId = useStakePoolId()
   const stakePool = useStakePoolData()
   const handleStakePoolUpdate = useHandleStakePoolUpdate()
-  const handleStakePoolCreate = useHandleStakePoolCreate2()
+  const handleStakePoolCreate = useHandleStakePoolCreate()
   const initialValues = defaultValues(stakePool.data)
   const formState = useFormik({
     initialValues,

@@ -9,7 +9,7 @@ import { handleError } from 'common/errors'
 import { notify } from 'common/Notification'
 import { asWallet } from 'common/Wallets'
 import { useFormik } from 'formik'
-import { useHandleStakePoolCreate } from 'handlers/useHandleStakePoolCreate'
+import { useHandleCreationForm } from 'handlers/useHandleCreationForm'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 import { useMemo, useState } from 'react'
 import type { Account, Mint } from 'spl-token-v3'
@@ -39,7 +39,7 @@ export const StakePoolCreationFlow = ({
 }: StakePoolCreationFlowProps) => {
   const { connection } = useEnvironmentCtx()
   const wallet = useWallet()
-  const handleStakePoolCreate = useHandleStakePoolCreate()
+  const handleCreationForm = useHandleCreationForm()
 
   const [currentStep, setCurrentStep] = useState(0)
   const [activeSlavePanelScreen, setActiveSlavePanelScreen] =
@@ -174,7 +174,7 @@ export const StakePoolCreationFlow = ({
     }
   }, [values.rewardMintAddress?.toString()])
 
-  if (handleStakePoolCreate.isSuccess) {
+  if (handleCreationForm.isSuccess) {
     return <SuccessPanel stakePoolId={stakePoolId} />
   }
   return (
@@ -188,7 +188,7 @@ export const StakePoolCreationFlow = ({
         setActiveSlavePanelScreen={setActiveSlavePanelScreen}
         formState={formState}
         handleSubmit={() =>
-          handleStakePoolCreate.mutate(
+          handleCreationForm.mutate(
             {
               values: formState.values,
               mintInfo: mintInfo,
@@ -198,7 +198,7 @@ export const StakePoolCreationFlow = ({
             }
           )
         }
-        isLoading={handleStakePoolCreate.isLoading}
+        isLoading={handleCreationForm.isLoading}
       />
       <SlavePanel activeScreen={activeSlavePanelScreen} />
     </div>
