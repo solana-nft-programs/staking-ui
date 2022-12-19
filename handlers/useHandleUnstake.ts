@@ -31,6 +31,7 @@ export const useHandleUnstake = (callback?: () => void) => {
     }): Promise<string[]> => {
       if (!stakePoolId) throw 'Stake pool not found'
       if (!stakePool || !stakePool.parsed) throw 'Stake pool not found'
+      if (tokenDatas.length <= 0) throw 'No tokens selected'
 
       const ataTx = new Transaction()
       if (rewardDistributorData.data && rewardDistributorData.data.parsed) {

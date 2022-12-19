@@ -162,16 +162,9 @@ export const StakedTokens = () => {
         <div className="flex flex-wrap gap-5">
           <Tooltip title={'Unstake will automatically claim reward for you.'}>
             <button
-              onClick={() => {
-                if (stakedSelected.length === 0) {
-                  notify({
-                    message: `No tokens selected`,
-                    type: 'error',
-                  })
-                } else {
-                  handleUnstake.mutate({ tokenDatas: stakedSelected })
-                }
-              }}
+              onClick={() =>
+                handleUnstake.mutate({ tokenDatas: stakedSelected })
+              }
               style={{
                 background:
                   stakePoolMetadata?.colors?.secondary || defaultSecondaryColor,

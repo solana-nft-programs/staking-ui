@@ -15,6 +15,7 @@ import { tryFormatInput, tryParseInput } from 'common/units'
 import { tryPublicKey } from 'common/utils'
 import { asWallet } from 'common/Wallets'
 import { useFormik } from 'formik'
+import { validPoolIdentifier } from 'handlers/useHandleCreatePool'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 import { useMemo, useState } from 'react'
 import type { Account, Mint } from 'spl-token-v3'
@@ -23,6 +24,13 @@ import * as Yup from 'yup'
 
 export const publicKeyValidationTest = (value: string | undefined): boolean => {
   return tryPublicKey(value) ? true : false
+}
+
+export const optionalPublicKeyValidationTest = (
+  value: string | undefined
+): boolean => {
+  if (!value || value.length === 0) return true
+  return publicKeyValidationTest(value)
 }
 
 export const bnValidationTest = (value: string | undefined): boolean => {
@@ -38,7 +46,11 @@ export const bnValidationTest = (value: string | undefined): boolean => {
 }
 
 const creationFormSchema = Yup.object({
-  // overlayText: Yup.string(),
+  identifier: Yup.string().test(
+    'url-safe',
+    'Invalid identifier',
+    (value: string | undefined) => validPoolIdentifier(value ?? '')
+  ),
   requireCollections: Yup.array()
     .of(
       Yup.string().test(
@@ -68,7 +80,7 @@ const creationFormSchema = Yup.object({
   rewardMintAddress: Yup.string().test(
     'is-public-key',
     'Invalid reward mint address',
-    publicKeyValidationTest
+    optionalPublicKeyValidationTest
   ),
   rewardAmount: Yup.string()
     .optional()
@@ -107,7 +119,7 @@ export function StakePoolForm({
   const { connection } = useEnvironmentCtx()
   const wallet = useWallet()
   const initialValues: CreationForm = {
-    // overlayText: stakePoolData?.parsed.overlayText ?? 'STAKED',
+    identifier: stakePoolData?.parsed?.identifier ?? undefined,
     requireCollections: (stakePoolData?.parsed?.allowedCollections ?? []).map(
       (pk) => pk.toString()
     ),
@@ -237,22 +249,24 @@ export function StakePoolForm({
 
   return (
     <form className="w-full max-w-lg">
-      {/* <div className="-mx-3 flex flex-wrap">
+      <div className="-mx-3 flex flex-wrap">
         <div className="mb-6 mt-4 w-full px-3 md:mb-0">
           <FormFieldTitleInput
-            title={'Overlay Text'}
-            description={'Text to display over the receipt'}
+            title={'Pool ID (cannot contain spaces)'}
+            description={'This will be used in the URL'}
           />
-          <input
+          <FormInput
             className="mb-3 block w-full appearance-none rounded border border-gray-500 bg-gray-700 py-3 px-4 leading-tight text-gray-200 placeholder-gray-500 focus:bg-gray-800 focus:outline-none"
             type="text"
-            placeholder={'STAKED'}
-            name="overlayText"
-            value={values.overlayText}
+            placeholder={'Pool ID'}
+            name="identifier"
+            disabled={type === 'update'}
+            value={values.identifier}
+            error={!!errors.identifier}
             onChange={handleChange}
           />
         </div>
-      </div> */}
+      </div>
       <div className="-mx-3 flex flex-wrap">
         <div className="mb-6 mt-4 w-full px-3 md:mb-0">
           <FormFieldTitleInput

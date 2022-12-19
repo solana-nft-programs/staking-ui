@@ -19,6 +19,9 @@ import { useMutation } from 'react-query'
 import { useStakePoolData } from '../hooks/useStakePoolData'
 import { useEnvironmentCtx } from '../providers/EnvironmentProvider'
 
+export const validPoolIdentifier = (value: string) =>
+  /^[a-zA-Z0-9_-]*$/.test(value)
+
 export const useHandleCreatePool = () => {
   const wallet = asWallet(useWallet())
   const { connection } = useEnvironmentCtx()
@@ -85,7 +88,9 @@ export const useHandleCreatePool = () => {
 
       const transaction = new Transaction()
       const program = rewardsCenterProgram(connection, wallet)
-      const identifier = `pool-name-${Math.random()}`
+      const identifier = values.identifier ?? ''
+      if (!validPoolIdentifier(identifier)) throw 'Invalid pool ID'
+
       const stakePoolId = findStakePoolId(identifier)
       const ix = await program.methods
         .initPool({
