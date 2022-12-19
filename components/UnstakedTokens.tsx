@@ -164,7 +164,7 @@ export const UnstakedTokens = () => {
             <p
               className={`font-normal ${
                 stakePoolMetadata?.colors?.fontColor
-                  ? `text-[${stakePoolMetadata?.colors?.fontColor}] opacity-50`
+                  ? `text-[${stakePoolMetadata?.colors?.fontColor}]`
                   : 'text-gray-400'
               }`}
             >

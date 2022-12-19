@@ -64,6 +64,7 @@ export type StakePoolMetadata = {
     fontColor?: string
     fontColorSecondary?: string
     backgroundSecondary?: string
+    fontColorTertiary?: string
   }
   // Disallow regions based on IP address
   disallowRegions?: { code: string; subdivision?: string }[]
@@ -2554,19 +2555,22 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     receiptType: ReceiptType.Original,
     tokenStandard: TokenStandard.NonFungible,
     styles: {
-      fontFamily: 'GTA',
+      fontFamily: 'SUP',
       fontWeight: 300,
     },
     colors: {
-      primary: '',
-      secondary: '#00D5FF',
-      backgroundSecondary: 'rgba(0, 0, 0, 0.59)',
-      fontColor: 'white',
+      primary: 'rgba(0, 0, 0, 0.41)',
+      secondary: '#ffcc15',
+      accent: 'rgba(0, 0, 0, 0)',
+      backgroundSecondary: '#181923',
+      fontColor: '#f5f7fa',
+      fontColorSecondary: 'black',
+      fontColorTertiary: '#ffcc15',
     },
     imageUrl:
-      'https://dustcity.world/assets/img/Header/logo.svg',
+      'https://i.ibb.co/JrtGLVg/finwhite.png',
     backgroundImage:
-      'https://i.ibb.co/WD0s2Xc/background-50102c46.jpg',
+      'https://i.ibb.co/TgWFYHL/image.jpg',
     maxStaked: 3333,
     links: [
       {
@@ -2599,20 +2603,23 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     tokenStandard: TokenStandard.NonFungible,
     // styles to apply to the whole stake pool
     styles: {
-      fontFamily: 'GTA',
+      fontFamily: 'SUP',
       fontWeight: 300,
     },
     // Colors object to style the stake page
     colors: {
-      primary: '',
-      secondary: '#532138',
-      backgroundSecondary: 'rgba(53, 109, 130, 0.8)',
-      fontColor: 'white',
+      primary: 'rgba(0, 0, 0, 0.41)',
+      secondary: '#ffcc15',
+      accent: 'rgba(0, 0, 0, 0)',
+      backgroundSecondary: '#181923',
+      fontColor: '#f5f7fa',
+      fontColorSecondary: 'black',
+      fontColorTertiary: '#ffcc15',
     },
     imageUrl:
       'https://arweave.net/z64F7Hk0nHfq-KZ9DgTBT3k7CiKfdyyyAqhC3T1TpkQ?ext=png',
       backgroundImage:
-      'https://i.ibb.co/bvp5KF2/43.jpg',
+      'https://i.ibb.co/TgWFYHL/image.jpg',
 
     // Website url if specified will be navigated to when the image in the header is clicked
     maxStaked: 7777,

@@ -159,7 +159,7 @@ export const StakedTokens = () => {
         </div>
       </div>
       <div className="mt-2 flex flex-row-reverse flex-wrap justify-between gap-5">
-        <div className="flex gap-5">
+        <div className="flex flex-wrap gap-5">
           <Tooltip title={'Unstake will automatically claim reward for you.'}>
             <button
               onClick={() => {

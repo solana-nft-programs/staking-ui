@@ -15,6 +15,10 @@
   font-family: GTA;
   src: url(../public/GTA.otf) format("opentype");
 }
+@font-face {
+  font-family: SUP;
+  src: url(../public/SUP.ttf) format("opentype");
+}
 body {
   font-family: SFHello, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
     Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',

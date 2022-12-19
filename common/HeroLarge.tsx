@@ -14,13 +14,13 @@ export const HeroLarge: React.FC = () => {
   return (
     <div className="relative flex w-full flex-wrap items-stretch justify-center gap-8 py-8 lg:flex-nowrap lg:justify-between lg:gap-24">
       <div
-        className="blur-4xl absolute left-8 top-52 -z-10 h-[120px] w-[400px] -rotate-[60deg] blur-[100px]"
+        className="blur-4xl invisible absolute -right-20 top-72 -z-10 h-[100px] w-[550px] -rotate-[60deg] blur-[120px] md:visible lg:visible xl:visible"
         css={css`
           background-color: ${config?.colors?.accent};
         `}
       />
       <div
-        className="blur-4xl absolute -right-20 top-72 -z-10 h-[100px] w-[550px] -rotate-[60deg] blur-[120px]"
+        className="blur-4xl invisible absolute -right-20 top-72 -z-10 h-[100px] w-[550px] -rotate-[60deg] blur-[120px] md:visible lg:visible xl:visible"
         css={css`
           background-color: ${config?.colors?.accent};
         `}
@@ -41,26 +41,6 @@ export const HeroLarge: React.FC = () => {
               } pool.`}
           </div>
           <StakePoolConfig />
-          {/* <div className="flex gap-4 text-light-0">
-            {config.socialLinks?.map(({ icon, link }, i) => {
-              return (
-                <a
-                  key={i}
-                  href={link}
-                  target="_blank"
-                  rel="noreferrer"
-                  className={`cursor-pointer text-xl text-light-0 transition-all duration-300 hover:text-primary`}
-                  css={css`
-                    &:hover {
-                      color: ${config.colors.accent} !important;
-                    }
-                  `}
-                >
-                  <SocialIcon iconKey={icon} />
-                </a>
-              )
-            })}
-          </div> */}
         </div>
         <HeroStats />
       </div>
