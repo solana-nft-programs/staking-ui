@@ -24,9 +24,8 @@ import { useQuery } from 'react-query'
 import { isStakePoolV2, useStakePoolData } from './useStakePoolData'
 
 export const useRewardDistributorData = () => {
-  const { data: stakePoolData } = useStakePoolData()
   const { connection } = useEnvironmentCtx()
-
+  const { data: stakePoolData } = useStakePoolData()
   return useQuery<
     Pick<IdlAccountData<'rewardDistributor'>, 'pubkey' | 'parsed'> | undefined
   >(

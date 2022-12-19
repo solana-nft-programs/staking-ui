@@ -269,8 +269,8 @@ export const useHandleUpdatePool = () => {
           type: 'success',
         })
         setTimeout(() => {
-          stakePool.refetch()
-          rewardDistributor.refetch()
+          stakePool.remove()
+          rewardDistributor.remove()
         }, 1000)
       },
       onError: (e) => {

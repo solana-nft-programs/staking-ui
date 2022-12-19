@@ -13,7 +13,7 @@ import { TOKEN_PROGRAM_ID } from 'spl-token-v3'
 import { isStakePoolV2, useStakePoolData } from '../hooks/useStakePoolData'
 import { useEnvironmentCtx } from '../providers/EnvironmentProvider'
 
-export const useHandleCloseRewardDistributor = () => {
+export const useHandleRewardDistributorRemove = () => {
   const wallet = asWallet(useWallet())
   const { connection } = useEnvironmentCtx()
   const stakePool = useStakePoolData()
@@ -72,6 +72,8 @@ export const useHandleCloseRewardDistributor = () => {
           txid,
           type: 'success',
         })
+        rewardDistributor.remove()
+        stakePool.refetch()
       },
       onError: (e) => {
         notify({

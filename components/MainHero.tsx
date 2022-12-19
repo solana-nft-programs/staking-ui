@@ -1,10 +1,13 @@
-import { GlyphPlus } from 'assets/GlyphPlus'
+import { PlusIcon } from '@heroicons/react/24/solid'
 import { AsyncButton } from 'common/Button'
 import { HeaderSlim } from 'common/HeaderSlim'
+import { withCluster } from 'common/utils'
 import { statsNameMapping, useGlobalStats } from 'hooks/useGlobalStats'
 import { useRouter } from 'next/router'
+import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 
 export const MainHero = () => {
+  const { environment } = useEnvironmentCtx()
   const stats = useGlobalStats()
   const router = useRouter()
   return (
@@ -29,11 +32,11 @@ export const MainHero = () => {
             </div>
             <AsyncButton
               onClick={() => {
-                router.push('/admin')
+                router.push(withCluster('/admin', environment.label))
               }}
             >
-              <>Create your pool</>
-              <GlyphPlus />
+              Create your pool
+              <PlusIcon className="ml-2 h-5 w-5" />
             </AsyncButton>
           </div>
           <div className="flex w-fit flex-wrap gap-3 rounded-xl border-[2px] border-border p-4">
