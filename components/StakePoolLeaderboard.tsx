@@ -9,7 +9,7 @@ import { useEffect, useState } from 'react'
 export const PAGE_SIZE = 10
 export const DEFAULT_PAGE: [number, number] = [2, 0]
 
-export const StakePoolAnalysis = () => {
+export const StakePoolLeaderboard = () => {
   const { connection } = useEnvironmentCtx()
   const stakePoolEntries = useStakePoolEntries()
   const { UTCNow } = useUTCNow()
@@ -84,7 +84,7 @@ export const StakePoolAnalysis = () => {
         <div className="flex w-full gap-4 rounded-xl bg-dark-4 px-8 py-2">
           <div className="flex-[4]">Wallet</div>
           <div className="flex-1">Staked Tokens</div>
-          <div className="flex-1 justify-end text-right">Total Stake Time</div>
+          <div className="flex-1 justify-end text-right">Stake Score</div>
         </div>
         <div className="flex flex-col">
           {!stakePoolEntries.isFetched ? (

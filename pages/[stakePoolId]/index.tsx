@@ -8,7 +8,7 @@ import { contrastColorMode } from 'common/utils'
 import { AttributeAnalytics } from 'components/AttributeAnalytics'
 import { PerformanceStats } from 'components/PerformanceStats'
 import { StakedTokens } from 'components/StakedTokens'
-import { StakePoolAnalysis } from 'components/StakePoolAnalysis'
+import { StakePoolLeaderboard } from 'components/StakePoolLeaderboard'
 import { StakePoolNotice } from 'components/StakePoolNotice'
 import { UnstakedTokens } from 'components/UnstakedTokens'
 import { useRewardDistributorData } from 'hooks/useRewardDistributorData'
@@ -20,7 +20,7 @@ import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
 
-type PANE_OPTIONS = 'dashboard' | 'analytics'
+type PANE_OPTIONS = 'dashboard' | 'leaderboard'
 const paneTabs: {
   label: React.ReactNode
   value: PANE_OPTIONS
@@ -33,9 +33,9 @@ const paneTabs: {
     tooltip: 'View your personal dashboard',
   },
   {
-    label: 'Analytics',
-    value: 'analytics',
-    tooltip: 'View analytics for this stake pool',
+    label: 'Leaderboard',
+    value: 'leaderboard',
+    tooltip: 'View top users in this pool',
   },
 ]
 
@@ -164,7 +164,7 @@ function StakePoolHome() {
                 </div>
               </div>
             ),
-            analytics: <StakePoolAnalysis />,
+            leaderboard: <StakePoolLeaderboard />,
           }[pane]
         }
       </div>
