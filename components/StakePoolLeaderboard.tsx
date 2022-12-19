@@ -84,7 +84,12 @@ export const StakePoolLeaderboard = () => {
   return (
     <div className="w-full overflow-x-scroll overflow-y-scroll rounded-xl border border-border p-4">
       <div className="flex w-full min-w-fit flex-col">
-        <div className="flex w-full gap-4 rounded-xl bg-dark-4 px-8 py-2">
+        <div
+          className="flex w-full gap-4 rounded-xl px-8 py-2"
+          style={{
+            background: config?.colors?.backgroundSecondary,
+          }}
+        >
           <div className="flex-[4]">Wallet</div>
           <div className="flex-1">Staked Tokens</div>
           <div className="flex-1 justify-end text-right">Stake Score</div>

@@ -1,3 +1,5 @@
+import { contrastify } from '@cardinal/common'
+import type { Interpolation, Theme } from '@emotion/react'
 import { css } from '@emotion/react'
 import { useEffect, useState } from 'react'
 
@@ -11,7 +13,11 @@ type Option<T> = {
 }
 
 type Props<T> = {
-  color?: string
+  colors?: {
+    background?: string
+    color?: string
+  }
+  outerCss?: Interpolation<Theme>
   placeholder?: string
   value?: Option<T>
   options: Option<T>[]
@@ -24,7 +30,7 @@ export const TabSelector = <T,>({
   value,
   onChange,
   options = [],
-  color,
+  colors,
 }: Props<T>) => {
   const [internalValue, setInternalValue] = useState<Option<T> | undefined>(
     defaultOption
@@ -37,7 +43,12 @@ export const TabSelector = <T,>({
   }, [value?.label])
 
   return (
-    <div className="flex rounded-lg border-[1px] border-border bg-dark-4">
+    <div
+      className="flex rounded-lg border-[1px] border-border bg-dark-4"
+      css={css`
+        background: ${colors?.background} !important;
+      `}
+    >
       {options.map((o, i) => (
         <Tooltip key={i} title={o.tooltip || ''}>
           <div
@@ -47,8 +58,13 @@ export const TabSelector = <T,>({
                 : 'cursor-pointer hover:text-primary'
             } ${internalValue?.value === o.value ? 'bg-dark-6' : ''}`}
             css={css`
+              color: ${colors?.background &&
+              contrastify(1, colors?.background)} !important;
+              background: ${internalValue?.value === o.value
+                ? colors?.background && contrastify(0.1, colors?.background)
+                : colors?.background} !important;
               &:hover {
-                color: ${color} !important;
+                color: ${colors?.color} !important;
               }
             `}
             onClick={() => {

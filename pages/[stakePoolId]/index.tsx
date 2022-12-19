@@ -129,7 +129,10 @@ function StakePoolHome() {
         <AttributeAnalytics />
         <div className="flex justify-end">
           <TabSelector<PANE_OPTIONS>
-            color={stakePoolMetadata?.colors?.secondary}
+            colors={{
+              background: stakePoolMetadata?.colors?.backgroundSecondary,
+              color: stakePoolMetadata?.colors?.secondary,
+            }}
             defaultOption={paneTabs[0]}
             options={paneTabs}
             value={paneTabs.find((p) => p.value === pane)}
