@@ -2798,4 +2798,48 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       fontColorSecondary: '#0d0d0d',
     },
   },
+  {
+    name: 'the-castle',
+    displayName: 'The Castle',
+    nameInHeader: true,
+    stakePoolAddress: new PublicKey('9af9HiyQ7EHjMNB14temaoKpViFD3D96o2MvBor7xxf3'),
+    description: 'Keep your King safe in his castle. You can stake and unstake at any time. $KING allows you to buy discord whitelist roles',
+    imageUrl: '/logos/the-castle-logo.jpg',
+    tokenStandard: TokenStandard.NonFungible,
+    receiptType: ReceiptType.Original,
+    hostname: 'staking.thekingscastle.io',
+    hideFooter: true,
+    websiteUrl: 'https://thekingscastle.io/',
+    maxStaked: 4444,
+    logoPadding: false,
+    colors: {
+      primary: '#33332f',
+      secondary: '#5c0404',
+      fontColor: '#FFF',
+      fontColorSecondary: '#FFF',
+      fontColorTertiary: '#FFF'
+    },
+    links: [
+      {
+        text: 'Discord',
+        value: 'https://discord.com/invite/castleking'
+      },
+      {
+        text: 'Twitter',
+        value: 'https://twitter.com/CastleTheKings'
+      },
+      {
+        text: 'Magic Eden',
+        value: 'https://magiceden.io/marketplace/the_kings'
+      },
+      {
+        text: 'Whitepaper',
+        value: 'https://whitepaper.thekingscastle.io/'
+      },
+      {
+        text: 'YourMajesty',
+        value: 'https://castle.thekingscastle.io/'
+      }
+    ]
+  }
 ]
