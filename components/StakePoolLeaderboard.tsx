@@ -2,6 +2,8 @@ import { DisplayAddress } from '@cardinal/namespaces-components'
 import type { PublicKey } from '@solana/web3.js'
 import { BN } from 'bn.js'
 import { useStakePoolEntries } from 'hooks/useStakePoolEntries'
+import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
+import { getLuminance } from 'polished'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 import { useUTCNow } from 'providers/UTCNowProvider'
 import { useEffect, useState } from 'react'
@@ -11,6 +13,7 @@ export const DEFAULT_PAGE: [number, number] = [2, 0]
 
 export const StakePoolLeaderboard = () => {
   const { connection } = useEnvironmentCtx()
+  const { data: config } = useStakePoolMetadata()
   const stakePoolEntries = useStakePoolEntries()
   const { UTCNow } = useUTCNow()
 
@@ -98,9 +101,12 @@ export const StakePoolLeaderboard = () => {
                   key={`${wallet.toString()}`}
                   className="flex w-full cursor-pointer gap-4 border-b border-border px-8 py-4 md:flex-row"
                 >
-                  <div className="flex h-[50px] flex-[4] items-center">
+                  <div className="flex h-[50px] flex-[4] items-center text-red-500">
                     <DisplayAddress
-                      dark
+                      dark={getLuminance(config?.colors?.primary ?? '') < 0.5}
+                      style={{
+                        color: config?.colors?.fontColor,
+                      }}
                       connection={connection}
                       address={wallet}
                     />

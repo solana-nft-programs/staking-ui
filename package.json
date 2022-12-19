@@ -45,7 +45,6 @@
     "@solana/buffer-layout": "^4.0.0",
     "@solana/qr-code-styling": "^1.6.0-beta.0",
     "@solana/spl-token": "^0.3.6",
-    "spl-token-v3": "npm:@solana/spl-token@0.3.6",
     "@solana/wallet-adapter-react": "^0.15.20",
     "@solana/wallet-adapter-react-ui": "^0.9.18",
     "@solana/wallet-adapter-wallets": "^0.19.5",
@@ -61,6 +60,7 @@
     "graphql": "^16.6.0",
     "jsbi": "^4.3.0",
     "next": "12.1.4",
+    "polished": "^4.2.2",
     "react": "18.0.0",
     "react-dom": "18.0.0",
     "react-hot-toast": "^2.2.0",
@@ -69,6 +69,7 @@
     "react-popper": "^2.3.0",
     "react-query": "^3.39.1",
     "react-select": "^5.2.2",
+    "spl-token-v3": "npm:@solana/spl-token@0.3.6",
     "yup": "^0.32.11"
   },
   "devDependencies": {
