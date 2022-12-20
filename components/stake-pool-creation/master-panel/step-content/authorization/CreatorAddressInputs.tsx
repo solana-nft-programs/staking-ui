@@ -1,11 +1,11 @@
-import { InformationCircleIcon, PlusIcon } from '@heroicons/react/24/outline'
-import { InformationCircleIcon as InformationCircleIconSolid } from '@heroicons/react/24/solid'
+import { PlusIcon } from '@heroicons/react/24/outline'
 import type { FormikHandlers, FormikState, FormikValues } from 'formik'
 import type { Dispatch, SetStateAction } from 'react'
 import { Fragment, useState } from 'react'
 
 import { SlavePanelScreens } from '@/components/stake-pool-creation/SlavePanel'
 import { ButtonLargeWithDottedOutline } from '@/components/UI/buttons/ButtonLargeWithDottedOutline'
+import { InfoTipButtons } from '@/components/UI/buttons/InfoTipButtons'
 import { TextInput } from '@/components/UI/inputs/TextInput'
 import { LabelText } from '@/components/UI/typography/LabelText'
 
@@ -32,14 +32,11 @@ export const CreatorAddressInputs = ({
     <div className="space-y-2">
       <div className="flex w-full items-center">
         <LabelText>Creator address</LabelText>
-        {activeSlavePanelScreen === AUTHORIZATION_1 ? (
-          <InformationCircleIconSolid className="ml-1 h-6 w-6 cursor-pointer rounded-full border border-orange-500 text-orange-500" />
-        ) : (
-          <InformationCircleIcon
-            className="ml-1 h-6 w-6 cursor-pointer text-gray-400"
-            onClick={() => setActiveSlavePanelScreen(AUTHORIZATION_1)}
-          />
-        )}
+        <InfoTipButtons
+          setActiveScreen={setActiveSlavePanelScreen}
+          screen={AUTHORIZATION_1}
+          activeScreen={activeSlavePanelScreen}
+        />
       </div>
       {displayInput || values.requireCreators.length > 0 ? (
         <>

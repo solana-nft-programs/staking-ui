@@ -1,10 +1,9 @@
-import { InformationCircleIcon } from '@heroicons/react/24/outline'
-import { InformationCircleIcon as InformationCircleIconSolid } from '@heroicons/react/24/solid'
 import type { FormikHandlers, FormikState, FormikValues } from 'formik'
 import type { Dispatch, SetStateAction } from 'react'
 import { useEffect, useState } from 'react'
 
 import { SlavePanelScreens } from '@/components/stake-pool-creation/SlavePanel'
+import { InfoTipButtons } from '@/components/UI/buttons/InfoTipButtons'
 import { SelectInput } from '@/components/UI/inputs/SelectInput'
 import { LabelText } from '@/components/UI/typography/LabelText'
 import { booleanOptions } from '@/types/index'
@@ -38,14 +37,11 @@ export const AccessAuthorityInputs = ({
     <div className="space-y-2 pt-4">
       <div className="flex w-full items-center">
         <LabelText>Mint list enabled?</LabelText>
-        {activeSlavePanelScreen === AUTHORIZATION_3 ? (
-          <InformationCircleIconSolid className="ml-1 h-6 w-6 cursor-pointer rounded-full border border-orange-500 text-orange-500" />
-        ) : (
-          <InformationCircleIcon
-            className="ml-1 h-6 w-6 cursor-pointer text-gray-400"
-            onClick={() => setActiveSlavePanelScreen(AUTHORIZATION_3)}
-          />
-        )}
+        <InfoTipButtons
+          setActiveScreen={setActiveSlavePanelScreen}
+          screen={AUTHORIZATION_3}
+          activeScreen={activeSlavePanelScreen}
+        />
       </div>
       <SelectInput
         className="mb-6 w-full"

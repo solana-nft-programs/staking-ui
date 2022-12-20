@@ -69,7 +69,7 @@ export const MasterPanel = ({
           setActiveSlavePanelScreen={setActiveSlavePanelScreen}
         />
       </div>
-      <div className="absolute bottom-10 left-0 right-0 h-20 bg-gradient-to-b from-transparent via-gray-900 to-gray-900" />
+      <div className="pointer-events-none absolute bottom-10 left-0 right-0 h-20 bg-gradient-to-b from-transparent via-gray-900 to-gray-900" />
       <div className="mt-16 flex items-center space-x-4 bg-opacity-0">
         {currentStep > 0 && (
           <ButtonPrimary
