@@ -9,11 +9,10 @@ const numberOfSteps = 3
 
 export const StepIndicator = ({ currentStep }: StepIndicatorProps) => {
   return (
-    <div className="relative flex w-full items-center justify-between py-2">
-      <div className="absolute w-full px-1">
+    <div className="relative flex w-full items-center justify-between p-3 py-6">
+      <div className="absolute w-full px-6">
         <HorizontalDivider />
       </div>
-      {}
       {[...Array(numberOfSteps)].map((_, index) => (
         <StepIndicatorBubble
           isPast={index + 1 < currentStep}

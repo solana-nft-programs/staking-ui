@@ -26,8 +26,8 @@ export const AdditionalFeatures = ({
   }
   const { values, setFieldValue } = formState
   return (
-    <div className="flex flex-col gap-6">
-      <div className="">
+    <div className="flex flex-col gap-6 pb-6">
+      <div>
         <div className="mb-2 flex w-full items-center">
           <LabelText>
             Minimum stake duration
@@ -48,7 +48,7 @@ export const AdditionalFeatures = ({
           handleChange={(v) => setFieldValue('minStakeSeconds', v)}
         />
       </div>
-      <div className="">
+      <div>
         <div className="mb-2 flex w-full items-center">
           <LabelText>
             Cooldown period
@@ -69,7 +69,7 @@ export const AdditionalFeatures = ({
           handleChange={(v) => setFieldValue('cooldownPeriodSeconds', v)}
         />
       </div>
-      <div className="">
+      <div>
         <div className="mb-2 flex w-full items-center">
           <LabelText>
             Reset on stake{' '}
@@ -91,7 +91,7 @@ export const AdditionalFeatures = ({
           options={booleanOptions}
         />
       </div>
-      <div className="">
+      <div>
         <div className="mb-2 flex w-full items-center">
           <LabelText>
             End date

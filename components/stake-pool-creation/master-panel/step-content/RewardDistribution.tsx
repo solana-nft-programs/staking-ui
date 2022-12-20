@@ -43,7 +43,7 @@ export const RewardDistribution = ({
   console.log(formState.values)
   return (
     <div className="flex flex-col gap-6">
-      <div className="">
+      <div>
         <div className="mb-2 flex w-full items-center">
           <LabelText>Rewards mint address</LabelText>
           <InformationCircleIcon
@@ -64,7 +64,7 @@ export const RewardDistribution = ({
       </div>
       {mintInfo && (
         <>
-          <div className="">
+          <div>
             <div className="mb-2 flex w-full items-center">
               <LabelText>Reward amount per staked token</LabelText>
               <InformationCircleIcon
@@ -93,7 +93,7 @@ export const RewardDistribution = ({
               }}
             />
           </div>
-          <div className="">
+          <div>
             <div className="mb-2 flex w-full items-center">
               <LabelText>Reward duration seconds</LabelText>
               <InformationCircleIcon
@@ -109,7 +109,7 @@ export const RewardDistribution = ({
               }}
             />
           </div>
-          <div className="">
+          <div>
             <div className="mb-2 flex w-full items-center">
               <LabelText>
                 Reward transfer amount
@@ -196,7 +196,7 @@ export const RewardDistribution = ({
               />
             </div>
           </div>
-          <div className="">
+          <div>
             <div className="mb-2 flex w-full items-center">
               <LabelText>
                 Maximum reward duration

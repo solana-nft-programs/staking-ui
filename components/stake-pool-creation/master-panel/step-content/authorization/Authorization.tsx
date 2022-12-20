@@ -16,7 +16,7 @@ export const Authorization = ({
   formState,
 }: AuthorizationProps) => {
   return (
-    <>
+    <div className="pb-6">
       <CreatorAddressInputs
         setActiveSlavePanelScreen={setActiveSlavePanelScreen}
         formState={formState}
@@ -29,6 +29,6 @@ export const Authorization = ({
         setActiveSlavePanelScreen={setActiveSlavePanelScreen}
         formState={formState}
       />
-    </>
+    </div>
   )
 }

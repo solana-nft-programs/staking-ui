@@ -178,7 +178,7 @@ export const StakePoolCreationFlow = ({
     return <SuccessPanel stakePoolId={stakePoolId} />
   }
   return (
-    <div className="mb-8 flex w-full py-8">
+    <div className="flex h-[85vh] min-h-[550px] py-8">
       <MasterPanel
         type={type}
         submitDisabled={submitDisabled}

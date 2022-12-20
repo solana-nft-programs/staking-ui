@@ -10,6 +10,7 @@ import { ButtonPrimary } from '@/components/UI/buttons/ButtonPrimary'
 import { BodyCopy } from '@/components/UI/typography/BodyCopy'
 import { HeadingPrimary } from '@/components/UI/typography/HeadingPrimary'
 import { ButtonWidths } from '@/types/index'
+import { StepIndicator } from '@/components/stake-pool-creation/master-panel/step-indicator/StepIndicator'
 
 export type MasterPanelProps = {
   submitDisabled: boolean
@@ -52,17 +53,20 @@ export const MasterPanel = ({
   type,
 }: MasterPanelProps) => {
   return (
-    <div className="w-2/5 space-y-2">
+    <div className="flex h-full w-full flex-1 flex-col space-y-2 px-2 lg:w-2/5">
       <HeadingPrimary>{stepTitles?.[currentStep]}</HeadingPrimary>
       <BodyCopy className="pb-2">{stepSubtitles?.[currentStep]}</BodyCopy>
-      <StepContent
-        type={type}
-        mintInfo={mintInfo}
-        formState={formState}
-        currentStep={currentStep}
-        setActiveSlavePanelScreen={setActiveSlavePanelScreen}
-      />
-      <div className="flex items-center space-x-4 py-8">
+      {currentStep > 0 && <StepIndicator currentStep={currentStep} />}
+      <div className="-mx-2 h-full overflow-y-auto px-2">
+        <StepContent
+          type={type}
+          mintInfo={mintInfo}
+          formState={formState}
+          currentStep={currentStep}
+          setActiveSlavePanelScreen={setActiveSlavePanelScreen}
+        />
+      </div>
+      <div className="flex items-center space-x-4 pt-2">
         {currentStep > 0 && (
           <ButtonPrimary
             onClick={() => setCurrentStep(currentStep - 1)}
