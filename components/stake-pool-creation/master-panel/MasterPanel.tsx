@@ -5,12 +5,12 @@ import type { Mint } from 'spl-token-v3'
 
 import type { FlowType } from '@/components/stake-pool-creation/master-panel/step-content/StepContent'
 import { StepContent } from '@/components/stake-pool-creation/master-panel/step-content/StepContent'
+import { StepIndicator } from '@/components/stake-pool-creation/master-panel/step-indicator/StepIndicator'
 import type { SlavePanelScreens } from '@/components/stake-pool-creation/SlavePanel'
 import { ButtonPrimary } from '@/components/UI/buttons/ButtonPrimary'
 import { BodyCopy } from '@/components/UI/typography/BodyCopy'
 import { HeadingPrimary } from '@/components/UI/typography/HeadingPrimary'
 import { ButtonWidths } from '@/types/index'
-import { StepIndicator } from '@/components/stake-pool-creation/master-panel/step-indicator/StepIndicator'
 
 export type MasterPanelProps = {
   submitDisabled: boolean
@@ -24,6 +24,8 @@ export type MasterPanelProps = {
   isLoading?: boolean
   activeSlavePanelScreen: SlavePanelScreens
 }
+
+const stepTitlesAbbreviated = ['Pool Info', 'Rewards', 'Features']
 
 const stepTitles = [
   'Create Your Staking Pool',
@@ -58,7 +60,14 @@ export const MasterPanel = ({
     <div className="relative flex h-full w-full flex-1 flex-col space-y-2 px-2 lg:w-2/5">
       <HeadingPrimary>{stepTitles?.[currentStep]}</HeadingPrimary>
       <BodyCopy className="pb-2">{stepSubtitles?.[currentStep]}</BodyCopy>
-      {currentStep > 0 && <StepIndicator currentStep={currentStep} />}
+      {currentStep > 0 && (
+        <StepIndicator
+          numberOfSteps={stepTitlesAbbreviated.length}
+          stepNames={stepTitlesAbbreviated}
+          currentStep={currentStep}
+          setCurrentStep={setCurrentStep}
+        />
+      )}
       <div className="-mx-2 h-full overflow-y-auto px-2">
         <StepContent
           type={type}

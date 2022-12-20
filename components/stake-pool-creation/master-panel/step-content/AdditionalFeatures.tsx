@@ -29,10 +29,7 @@ export const AdditionalFeatures = ({
     <div className="flex flex-col gap-6 pb-14">
       <div>
         <div className="mb-2 flex w-full items-center">
-          <LabelText>
-            Minimum stake duration
-            <span className="ml-1 text-gray-500">(optional)</span>
-          </LabelText>
+          <LabelText isOptional>Minimum stake duration</LabelText>
           <InformationCircleIcon
             className="ml-1 h-6 w-6 cursor-pointer text-gray-400"
             onClick={() =>
@@ -50,10 +47,7 @@ export const AdditionalFeatures = ({
       </div>
       <div>
         <div className="mb-2 flex w-full items-center">
-          <LabelText>
-            Cooldown period
-            <span className="ml-1 text-gray-500">(optional)</span>
-          </LabelText>
+          <LabelText isOptional>Cooldown period</LabelText>
           <InformationCircleIcon
             className="ml-1 h-6 w-6 cursor-pointer text-gray-400"
             onClick={() =>
@@ -71,10 +65,7 @@ export const AdditionalFeatures = ({
       </div>
       <div>
         <div className="mb-2 flex w-full items-center">
-          <LabelText>
-            Reset on stake{' '}
-            <span className="ml-1 text-gray-500">(optional)</span>
-          </LabelText>
+          <LabelText isOptional>Reset on stake</LabelText>
           <InformationCircleIcon
             className="ml-1 h-6 w-6 cursor-pointer text-gray-400"
             onClick={() =>
@@ -93,10 +84,7 @@ export const AdditionalFeatures = ({
       </div>
       <div>
         <div className="mb-2 flex w-full items-center">
-          <LabelText>
-            End date
-            <span className="ml-1 text-gray-500">(optional)</span>
-          </LabelText>
+          <LabelText isOptional>End date</LabelText>
           <InformationCircleIcon
             className="ml-1 h-6 w-6 cursor-pointer text-gray-400"
             onClick={() =>

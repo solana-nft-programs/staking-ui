@@ -114,6 +114,7 @@ export const StakePoolCreationFlow = ({
         const mint = new PublicKey(values.rewardMintAddress)
         const mintInfo = await getMint(connection, mint)
         setMintInfo(mintInfo)
+        console.log('mintInfo', mintInfo)
         setFieldValue('rewardAmount', 0)
         if (
           type === 'update' &&

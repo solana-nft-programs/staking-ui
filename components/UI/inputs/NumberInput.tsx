@@ -5,6 +5,7 @@ export type NumberInputProps = {
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void
   className?: string
   placeholder?: string
+  disabled?: boolean
 }
 
 export const NumberInput = ({
@@ -12,9 +13,11 @@ export const NumberInput = ({
   onChange,
   className,
   placeholder,
+  disabled,
 }: NumberInputProps) => {
   return (
     <input
+      disabled={disabled}
       placeholder={placeholder}
       onChange={onChange}
       type="text"
