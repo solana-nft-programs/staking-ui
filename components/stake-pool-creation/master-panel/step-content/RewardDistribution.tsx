@@ -1,4 +1,3 @@
-import { InformationCircleIcon } from '@heroicons/react/24/outline'
 import { BN } from 'bn.js'
 import { notify } from 'common/Notification'
 import {
@@ -13,6 +12,7 @@ import type { Mint } from 'spl-token-v3'
 
 import type { FlowType } from '@/components/stake-pool-creation/master-panel/step-content/StepContent'
 import { SlavePanelScreens } from '@/components/stake-pool-creation/SlavePanel'
+import { InfoTipButtons } from '@/components/UI/buttons/InfoTipButtons'
 import { DurationInput } from '@/components/UI/inputs/DurationInput'
 import { NumberInput } from '@/components/UI/inputs/NumberInput'
 import { TextInput } from '@/components/UI/inputs/TextInput'
@@ -23,6 +23,7 @@ export type RewardDistributionProps = {
   formState: FormikHandlers & FormikState<FormikValues> & FormikValues
   mintInfo?: Mint
   type: FlowType
+  activeSlavePanelScreen: SlavePanelScreens
 }
 
 export const RewardDistribution = ({
@@ -30,12 +31,15 @@ export const RewardDistribution = ({
   formState,
   mintInfo,
   type,
+  activeSlavePanelScreen,
 }: RewardDistributionProps) => {
   const {
     REWARD_SUPPLY_1,
     REWARD_SUPPLY_2,
+    REWARD_SUPPLY_3,
     REWARD_DISTRIBUTION_2,
     REWARD_DISTRIBUTION_3,
+    TIME_BASED_PARAMETERS_3,
   } = SlavePanelScreens
 
   const { setFieldValue, values, errors } = formState
@@ -46,9 +50,10 @@ export const RewardDistribution = ({
       <div>
         <div className="mb-2 flex w-full items-center">
           <LabelText isOptional>Rewards mint address</LabelText>
-          <InformationCircleIcon
-            className="ml-1 h-6 w-6 cursor-pointer text-gray-400"
-            onClick={() => setActiveSlavePanelScreen(REWARD_DISTRIBUTION_2)}
+          <InfoTipButtons
+            setActiveScreen={setActiveSlavePanelScreen}
+            screen={REWARD_DISTRIBUTION_2}
+            activeScreen={activeSlavePanelScreen}
           />
         </div>
         <TextInput
@@ -66,9 +71,10 @@ export const RewardDistribution = ({
         <div>
           <div className="mb-2 flex w-full items-center">
             <LabelText isOptional>Reward amount per staked token</LabelText>
-            <InformationCircleIcon
-              onClick={() => setActiveSlavePanelScreen(REWARD_SUPPLY_1)}
-              className="ml-1 h-6 w-6 cursor-pointer text-gray-400"
+            <InfoTipButtons
+              setActiveScreen={setActiveSlavePanelScreen}
+              screen={REWARD_SUPPLY_1}
+              activeScreen={activeSlavePanelScreen}
             />
           </div>
           <NumberInput
@@ -101,9 +107,10 @@ export const RewardDistribution = ({
         <div>
           <div className="mb-2 flex w-full items-center">
             <LabelText isOptional>Reward duration seconds</LabelText>
-            <InformationCircleIcon
-              onClick={() => setActiveSlavePanelScreen(REWARD_SUPPLY_2)}
-              className="ml-1 h-6 w-6 cursor-pointer text-gray-400"
+            <InfoTipButtons
+              setActiveScreen={setActiveSlavePanelScreen}
+              screen={REWARD_SUPPLY_2}
+              activeScreen={activeSlavePanelScreen}
             />
           </div>
           <NumberInput
@@ -117,9 +124,10 @@ export const RewardDistribution = ({
         <div>
           <div className="mb-2 flex w-full items-center">
             <LabelText isOptional>Reward transfer amount</LabelText>
-            <InformationCircleIcon
-              className="ml-1 h-6 w-6 cursor-pointer text-gray-400"
-              onClick={() => setActiveSlavePanelScreen(REWARD_DISTRIBUTION_3)}
+            <InfoTipButtons
+              setActiveScreen={setActiveSlavePanelScreen}
+              screen={REWARD_DISTRIBUTION_3}
+              activeScreen={activeSlavePanelScreen}
             />
           </div>
           <div className="relative">
@@ -162,11 +170,10 @@ export const RewardDistribution = ({
           <div className="w-1/2">
             <div className="mb-2 flex w-full items-center">
               <LabelText isOptional>Multiplier Decimals</LabelText>
-              <InformationCircleIcon
-                onClick={() =>
-                  setActiveSlavePanelScreen(SlavePanelScreens.REWARD_SUPPLY_3)
-                }
-                className="ml-1 h-6 w-6 cursor-pointer text-gray-400"
+              <InfoTipButtons
+                setActiveScreen={setActiveSlavePanelScreen}
+                screen={REWARD_SUPPLY_3}
+                activeScreen={activeSlavePanelScreen}
               />
             </div>
             <NumberInput
@@ -181,11 +188,10 @@ export const RewardDistribution = ({
           <div className="w-1/2">
             <div className="mb-2 flex w-full items-center">
               <LabelText isOptional>Default Multiplier</LabelText>
-              <InformationCircleIcon
-                onClick={() =>
-                  setActiveSlavePanelScreen(SlavePanelScreens.REWARD_SUPPLY_3)
-                }
-                className="ml-1 h-6 w-6 cursor-pointer text-gray-400"
+              <InfoTipButtons
+                setActiveScreen={setActiveSlavePanelScreen}
+                screen={REWARD_SUPPLY_3}
+                activeScreen={activeSlavePanelScreen}
               />
             </div>
             <NumberInput
@@ -201,13 +207,10 @@ export const RewardDistribution = ({
         <div>
           <div className="mb-2 flex w-full items-center">
             <LabelText isOptional>Maximum reward duration</LabelText>
-            <InformationCircleIcon
-              className="ml-1 h-6 w-6 cursor-pointer text-gray-400"
-              onClick={() =>
-                setActiveSlavePanelScreen(
-                  SlavePanelScreens.TIME_BASED_PARAMETERS_3
-                )
-              }
+            <InfoTipButtons
+              setActiveScreen={setActiveSlavePanelScreen}
+              screen={TIME_BASED_PARAMETERS_3}
+              activeScreen={activeSlavePanelScreen}
             />
           </div>
           <DurationInput

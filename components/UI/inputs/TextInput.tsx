@@ -18,8 +18,8 @@ export const inputClassNames = ({
   error?: boolean
 }) =>
   twMerge([
-    'w-full appearance-none rounded bg-gray-700 py-3 px-4 text-gray-200 placeholder-gray-500 outline',
-    !disabled && error ? 'outline-red-500' : 'outline-gray-500',
+    'w-full appearance-none rounded-lg bg-gray-800 py-3 px-4 text-gray-200 placeholder-gray-500 outline',
+    !disabled && error ? 'outline-red-500' : 'outline-gray-600',
     !disabled && !error && 'focus:bg-gray-800', //focus:outline-orange-500
     disabled && 'opacity-30',
   ])

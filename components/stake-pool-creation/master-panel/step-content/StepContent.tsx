@@ -34,8 +34,8 @@ export const StepContent = ({
       {currentStep === 1 && (
         <Authorization
           setActiveSlavePanelScreen={setActiveSlavePanelScreen}
-          formState={formState}
           activeSlavePanelScreen={activeSlavePanelScreen}
+          formState={formState}
         />
       )}
       {currentStep === 2 && (
@@ -44,6 +44,7 @@ export const StepContent = ({
           mintInfo={mintInfo}
           setActiveSlavePanelScreen={setActiveSlavePanelScreen}
           formState={formState}
+          activeSlavePanelScreen={activeSlavePanelScreen}
         />
       )}
       {currentStep === 3 && (
