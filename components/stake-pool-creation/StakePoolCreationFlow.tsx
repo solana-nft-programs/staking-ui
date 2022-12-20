@@ -180,6 +180,7 @@ export const StakePoolCreationFlow = ({
   return (
     <div className="flex h-[85vh] min-h-[550px] py-8">
       <MasterPanel
+        activeSlavePanelScreen={activeSlavePanelScreen}
         type={type}
         submitDisabled={submitDisabled}
         mintInfo={mintInfo}

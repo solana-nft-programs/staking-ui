@@ -22,6 +22,7 @@ export type MasterPanelProps = {
   type: FlowType
   handleSubmit: () => void
   isLoading?: boolean
+  activeSlavePanelScreen: SlavePanelScreens
 }
 
 const stepTitles = [
@@ -51,6 +52,7 @@ export const MasterPanel = ({
   handleSubmit,
   isLoading,
   type,
+  activeSlavePanelScreen,
 }: MasterPanelProps) => {
   return (
     <div className="relative flex h-full w-full flex-1 flex-col space-y-2 px-2 lg:w-2/5">
@@ -63,6 +65,7 @@ export const MasterPanel = ({
           mintInfo={mintInfo}
           formState={formState}
           currentStep={currentStep}
+          activeSlavePanelScreen={activeSlavePanelScreen}
           setActiveSlavePanelScreen={setActiveSlavePanelScreen}
         />
       </div>

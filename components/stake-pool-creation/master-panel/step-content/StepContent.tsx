@@ -17,6 +17,7 @@ export type StepContentProps = {
   formState: FormikHandlers & FormikState<FormikValues> & FormikValues
   mintInfo?: Mint
   type: FlowType
+  activeSlavePanelScreen: SlavePanelScreens
 }
 
 export const StepContent = ({
@@ -25,6 +26,7 @@ export const StepContent = ({
   formState,
   mintInfo,
   type,
+  activeSlavePanelScreen,
 }: StepContentProps) => {
   return (
     <div className="h-full">
@@ -33,6 +35,7 @@ export const StepContent = ({
         <Authorization
           setActiveSlavePanelScreen={setActiveSlavePanelScreen}
           formState={formState}
+          activeSlavePanelScreen={activeSlavePanelScreen}
         />
       )}
       {currentStep === 2 && (

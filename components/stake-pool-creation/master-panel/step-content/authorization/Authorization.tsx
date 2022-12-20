@@ -9,23 +9,28 @@ import type { SlavePanelScreens } from '@/components/stake-pool-creation/SlavePa
 export type AuthorizationProps = {
   setActiveSlavePanelScreen: Dispatch<SetStateAction<SlavePanelScreens>>
   formState: FormikHandlers & FormikState<FormikValues> & FormikValues
+  activeSlavePanelScreen: SlavePanelScreens
 }
 
 export const Authorization = ({
   setActiveSlavePanelScreen,
   formState,
+  activeSlavePanelScreen,
 }: AuthorizationProps) => {
   return (
     <div className="pb-14">
       <CreatorAddressInputs
+        activeSlavePanelScreen={activeSlavePanelScreen}
         setActiveSlavePanelScreen={setActiveSlavePanelScreen}
         formState={formState}
       />
       <CollectionAddressInputs
+        activeSlavePanelScreen={activeSlavePanelScreen}
         setActiveSlavePanelScreen={setActiveSlavePanelScreen}
         formState={formState}
       />
       <AccessAuthorityInputs
+        activeSlavePanelScreen={activeSlavePanelScreen}
         setActiveSlavePanelScreen={setActiveSlavePanelScreen}
         formState={formState}
       />
