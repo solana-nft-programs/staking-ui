@@ -11,7 +11,7 @@ import { asWallet } from 'common/Wallets'
 import { useFormik } from 'formik'
 import { useHandleCreationForm } from 'handlers/useHandleCreationForm'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import type { Account, Mint } from 'spl-token-v3'
 import { getAccount, getMint } from 'spl-token-v3'
 
@@ -24,13 +24,25 @@ import {
 } from '@/components/stake-pool-creation/SlavePanel'
 import { SuccessPanel } from '@/components/stake-pool-creation/SuccessPanel'
 
-const { INTRO } = SlavePanelScreens
+const {
+  INTRO,
+  AUTHORIZATION_1,
+  REWARD_DISTRIBUTION_2,
+  TIME_BASED_PARAMETERS_1,
+} = SlavePanelScreens
 
 export type StakePoolCreationFlowProps = {
   stakePoolData?: AccountData<StakePoolData>
   rewardDistributorData?: AccountData<RewardDistributorData>
   type?: 'update' | 'create'
 }
+
+const initialSlaveScreenPerStep = [
+  INTRO,
+  AUTHORIZATION_1,
+  REWARD_DISTRIBUTION_2,
+  TIME_BASED_PARAMETERS_1,
+]
 
 export const StakePoolCreationFlow = ({
   type = 'create',
@@ -175,9 +187,20 @@ export const StakePoolCreationFlow = ({
     }
   }, [values.rewardMintAddress?.toString()])
 
+  const autoSelectFirstSlaveScreen = () => {
+    if (!initialSlaveScreenPerStep[currentStep]) return
+    setActiveSlavePanelScreen(initialSlaveScreenPerStep[currentStep] || INTRO)
+  }
+
+  useEffect(() => {
+    console.log(currentStep)
+    autoSelectFirstSlaveScreen()
+  }, [currentStep])
+
   if (handleCreationForm.isSuccess) {
     return <SuccessPanel stakePoolId={stakePoolId} />
   }
+
   return (
     <div className="flex h-[85vh] min-h-[550px] py-8">
       <MasterPanel

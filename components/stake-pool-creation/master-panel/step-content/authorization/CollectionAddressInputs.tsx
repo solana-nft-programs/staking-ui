@@ -39,7 +39,7 @@ export const CollectionAddressInputs = ({
   return (
     <div className="space-y-2 pt-4">
       <div className="flex w-full items-center">
-        <LabelText>NFT collection address</LabelText>
+        <LabelText isOptional>NFT collection address</LabelText>
         <InfoTipButtons
           setActiveScreen={setActiveSlavePanelScreen}
           screen={AUTHORIZATION_2}

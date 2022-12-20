@@ -36,7 +36,7 @@ export const AccessAuthorityInputs = ({
   return (
     <div className="space-y-2 pt-4">
       <div className="flex w-full items-center">
-        <LabelText>Mint list enabled?</LabelText>
+        <LabelText isOptional>Mint list enabled?</LabelText>
         <InfoTipButtons
           setActiveScreen={setActiveSlavePanelScreen}
           screen={AUTHORIZATION_3}

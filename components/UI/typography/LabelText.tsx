@@ -5,13 +5,13 @@ import { OptionalLabelTag } from '@/components/UI/typography/OptionalLabelTag'
 export type LabelTextProps = {
   children: React.ReactNode
   className?: string
-  isOptional: boolean
+  isOptional?: boolean
 }
 
 export const LabelText = ({
   children,
   className,
-  isOptional,
+  isOptional = false,
 }: LabelTextProps) => {
   const combinedClasses = classNames(['text-gray-200 text-sm', className])
 

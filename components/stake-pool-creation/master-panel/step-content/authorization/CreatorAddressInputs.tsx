@@ -31,7 +31,7 @@ export const CreatorAddressInputs = ({
   return (
     <div className="space-y-2">
       <div className="flex w-full items-center">
-        <LabelText>Creator address</LabelText>
+        <LabelText isOptional>Creator address</LabelText>
         <InfoTipButtons
           setActiveScreen={setActiveSlavePanelScreen}
           screen={AUTHORIZATION_1}

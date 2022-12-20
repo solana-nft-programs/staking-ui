@@ -26,7 +26,7 @@ export const MultiplierInput = ({
   return (
     <div className="pb-6">
       <div className="mb-2 flex w-full items-center">
-        <LabelText>Multiplier for given mints</LabelText>
+        <LabelText isOptional>Multiplier for given mints</LabelText>
         <InformationCircleIcon
           className="ml-1 h-6 w-6 cursor-pointer text-gray-400"
           onClick={() => setActiveSlavePanelScreen(REWARD_SUPPLY_3)}
