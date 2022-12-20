@@ -26,7 +26,7 @@ export const AdditionalFeatures = ({
   }
   const { values, setFieldValue } = formState
   return (
-    <div className="flex flex-col gap-6 pb-6">
+    <div className="flex flex-col gap-6 pb-14">
       <div>
         <div className="mb-2 flex w-full items-center">
           <LabelText>

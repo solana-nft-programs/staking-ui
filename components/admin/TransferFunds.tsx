@@ -33,7 +33,6 @@ export const TransferFunds = () => {
       <div className="mb-5 flex flex-row gap-2">
         <BNInput
           className="flex w-auto flex-grow"
-          type="text"
           placeholder={'1000000'}
           value={tryFormatInput(
             transferAmount,

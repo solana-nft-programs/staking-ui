@@ -1,5 +1,4 @@
 import { ChevronDown } from 'assets/ChevronDown'
-import { ChevronRight } from 'assets/ChevronRight'
 import { GlyphSelectClear } from 'assets/GlyphSelectClear'
 import { useEffect, useRef, useState } from 'react'
 import { twMerge } from 'tailwind-merge'
@@ -47,7 +46,7 @@ export const Selector = <T,>({
   }, [ref])
 
   return (
-    <div className={`relative z-${z} text-base`} ref={ref}>
+    <div className={`relative z-${z} cursor-pointer text-base`} ref={ref}>
       <div
         className={twMerge([
           inputClassNames({ disabled, error }),
@@ -95,7 +94,6 @@ export const Selector = <T,>({
             }}
           >
             <div>{o.label}</div>
-            <ChevronRight />
           </div>
         ))}
       </div>

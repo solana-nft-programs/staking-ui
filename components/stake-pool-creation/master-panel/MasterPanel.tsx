@@ -53,7 +53,7 @@ export const MasterPanel = ({
   type,
 }: MasterPanelProps) => {
   return (
-    <div className="flex h-full w-full flex-1 flex-col space-y-2 px-2 lg:w-2/5">
+    <div className="relative flex h-full w-full flex-1 flex-col space-y-2 px-2 lg:w-2/5">
       <HeadingPrimary>{stepTitles?.[currentStep]}</HeadingPrimary>
       <BodyCopy className="pb-2">{stepSubtitles?.[currentStep]}</BodyCopy>
       {currentStep > 0 && <StepIndicator currentStep={currentStep} />}
@@ -66,7 +66,8 @@ export const MasterPanel = ({
           setActiveSlavePanelScreen={setActiveSlavePanelScreen}
         />
       </div>
-      <div className="flex items-center space-x-4 pt-2">
+      <div className="absolute bottom-10 left-0 right-0 h-20 bg-gradient-to-b from-transparent via-gray-900 to-gray-900" />
+      <div className="mt-16 flex items-center space-x-4 bg-opacity-0">
         {currentStep > 0 && (
           <ButtonPrimary
             onClick={() => setCurrentStep(currentStep - 1)}

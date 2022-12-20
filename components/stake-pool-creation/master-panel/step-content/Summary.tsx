@@ -12,7 +12,7 @@ export type SummaryProps = {
 export const Summary = ({ formState, mintInfo }: SummaryProps) => {
   const { values } = formState
   return (
-    <div className="pb-8">
+    <div className="pb-14">
       {Object.keys(values).map((item) => {
         const label = item as LabelKey
         return (
