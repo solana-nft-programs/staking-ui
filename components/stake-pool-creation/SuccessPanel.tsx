@@ -1,5 +1,8 @@
 import { ChevronLeftIcon } from '@heroicons/react/24/outline'
 import type { PublicKey } from '@solana/web3.js'
+import { HeaderSlim } from 'common/HeaderSlim'
+import { withCluster } from 'common/utils'
+import { useStakePoolsByAuthority } from 'hooks/useStakePoolsByAuthority'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
@@ -11,14 +14,14 @@ import { ButtonWidths } from '@/types/index'
 import { ButtonPrimary } from '../UI/buttons/ButtonPrimary'
 import { BodyCopy } from '../UI/typography/BodyCopy'
 import { HeadingPrimary } from '../UI/typography/HeadingPrimary'
-import { HeaderSlim } from 'common/HeaderSlim'
-import { withCluster } from 'common/utils'
 
 const { TRANSPARENT } = ButtonColors
 
 export const SuccessPanel = ({ stakePoolId }: { stakePoolId?: PublicKey }) => {
   const router = useRouter()
   const { environment } = useEnvironmentCtx()
+  const stakePoolsByAuthority = useStakePoolsByAuthority()
+
   return (
     <div className="absolute top-0 left-0 right-0 bottom-0 flex h-screen flex-col">
       <div className="relative flex h-full w-full flex-col overflow-clip rounded-2xl bg-black">
@@ -72,9 +75,10 @@ export const SuccessPanel = ({ stakePoolId }: { stakePoolId?: PublicKey }) => {
             <ButtonPrimary
               width={ButtonWidths.NARROW}
               className="mx-auto mt-6"
-              onClick={() =>
+              onClick={() => {
+                stakePoolsByAuthority.refetch()
                 router.push(withCluster('/admin', environment.label))
-              }
+              }}
             >
               Admin Portal
             </ButtonPrimary>
