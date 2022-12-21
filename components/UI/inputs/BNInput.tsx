@@ -1,4 +1,4 @@
-import { tryParseInput } from '@cardinal/common'
+import { tryFormatInput, tryParseInput } from '@cardinal/common'
 
 import { TextInput } from './TextInput'
 
@@ -15,7 +15,7 @@ export const BNInput = ({
   return (
     <TextInput
       {...props}
-      value={value}
+      value={tryFormatInput(value, decimals, value ?? '')}
       onChange={(e) => {
         const v = Number(e.target.value)
         if (Number.isNaN(v)) {

@@ -1,10 +1,5 @@
-import { BN } from 'bn.js'
 import { notify } from 'common/Notification'
-import {
-  formatMintNaturalAmountAsDecimal,
-  tryFormatInput,
-  tryParseInput,
-} from 'common/units'
+import { tryFormatInput, tryParseInput } from 'common/units'
 import type { FormikHandlers, FormikState, FormikValues } from 'formik'
 import { useRewardDistributorData } from 'hooks/useRewardDistributorData'
 import type { Dispatch, SetStateAction } from 'react'
@@ -13,6 +8,7 @@ import type { Mint } from 'spl-token-v3'
 import type { FlowType } from '@/components/stake-pool-creation/master-panel/step-content/StepContent'
 import { SlavePanelScreens } from '@/components/stake-pool-creation/SlavePanel'
 import { InfoTipButtons } from '@/components/UI/buttons/InfoTipButtons'
+import { BNInput } from '@/components/UI/inputs/BNInput'
 import { DurationInput } from '@/components/UI/inputs/DurationInput'
 import { TextInput } from '@/components/UI/inputs/TextInput'
 import { BodyCopy } from '@/components/UI/typography/BodyCopy'
@@ -81,30 +77,14 @@ export const RewardDistribution = ({
               activeScreen={activeSlavePanelScreen}
             />
           </div>
-          <TextInput
+          <BNInput
             placeholder="0.000"
+            hasError={!!errors.rewardAmount}
             disabled={!mintInfo}
-            value={
-              mintInfo
-                ? formatMintNaturalAmountAsDecimal(
-                    mintInfo,
-                    new BN(values.rewardAmount.toString())
-                  )
-                : ''
-            }
-            onChange={(e) => {
-              if (!mintInfo) return
-              setFieldValue(
-                'rewardAmount',
-                tryParseInput(
-                  e.target.value,
-                  mintInfo.decimals,
-                  formatMintNaturalAmountAsDecimal(
-                    mintInfo,
-                    new BN(values.rewardAmount.toString())
-                  ) ?? ''
-                )
-              )
+            decimals={mintInfo?.decimals}
+            value={values.rewardAmount}
+            handleChange={(v) => {
+              setFieldValue('rewardAmount', v)
             }}
           />
         </div>
