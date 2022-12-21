@@ -23,7 +23,7 @@ export const StepIndicatorBubble = ({
     >
       <div
         className={classNames([
-          'relative z-10 rounded-full',
+          'step-indicator-bubble relative z-10 rounded-full',
           isActive ? 'bg-white' : 'bg-gray-500',
           isPast ? 'h-3 w-3 bg-teal-500' : 'h-3 w-3',
         ])}
@@ -44,6 +44,9 @@ export const StepIndicatorBubble = ({
       <style>{`
         .step-indicator-bubble-wrapper:hover .step-name-text {
           color: #F2A93C; 
+        }
+        .step-indicator-bubble-wrapper:hover .step-indicator-bubble {
+          background-color: #F2A93C; 
         }
       `}</style>
     </div>
