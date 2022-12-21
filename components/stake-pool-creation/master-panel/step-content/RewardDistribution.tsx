@@ -1,5 +1,4 @@
 import { BN } from 'bn.js'
-
 import { formatMintNaturalAmountAsDecimal, tryParseInput } from 'common/units'
 import type { FormikHandlers, FormikState, FormikValues } from 'formik'
 import { useRewardDistributorData } from 'hooks/useRewardDistributorData'
@@ -35,7 +34,6 @@ export const RewardDistribution = ({
     REWARD_SUPPLY_2,
     REWARD_SUPPLY_3,
     REWARD_DISTRIBUTION_2,
-    REWARD_DISTRIBUTION_3,
     TIME_BASED_PARAMETERS_3,
   } = SlavePanelScreens
 

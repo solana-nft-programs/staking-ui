@@ -72,16 +72,6 @@ export const SuccessPanel = ({ stakePoolId }: { stakePoolId?: PublicKey }) => {
             >
               View Pool
             </ButtonPrimary>
-            <ButtonPrimary
-              width={ButtonWidths.NARROW}
-              className="mx-auto mt-6"
-              onClick={() => {
-                stakePoolsByAuthority.refetch()
-                router.push(withCluster('/admin', environment.label))
-              }}
-            >
-              Admin Portal
-            </ButtonPrimary>
           </div>
         </div>
         <div className="pointer-events-none -mt-16 flex w-full flex-col">

@@ -32,7 +32,7 @@ export const ButtonPrimary = ({
         {
           'flex items-center justify-center rounded-lg px-8 py-2': true,
           'bg-opacity-0 text-gray-400': color === TRANSPARENT,
-          'bg-orange-500 text-white': color === ORANGE,
+          'bg-orange-500 text-white hover:bg-orange-400': color === ORANGE,
           'bg-green-500 text-black': color === GREEN,
           'bg-purple-500 text-white': color === PURPLE,
           'bg-blue-500 text-black': color === BLUE,

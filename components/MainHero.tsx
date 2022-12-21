@@ -1,11 +1,13 @@
-import { ButtonPrimary } from '@/components/UI/buttons/ButtonPrimary'
-import { BodyCopy } from '@/components/UI/typography/BodyCopy'
-import { HeadingPrimary } from '@/components/UI/typography/HeadingPrimary'
+import { PlusIcon } from '@heroicons/react/24/solid'
 import { HeaderSlim } from 'common/HeaderSlim'
 import { withCluster } from 'common/utils'
 import { statsNameMapping, useGlobalStats } from 'hooks/useGlobalStats'
 import { useRouter } from 'next/router'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
+
+import { ButtonPrimary } from '@/components/UI/buttons/ButtonPrimary'
+import { BodyCopy } from '@/components/UI/typography/BodyCopy'
+import { HeadingPrimary } from '@/components/UI/typography/HeadingPrimary'
 
 export const MainHero = () => {
   const { environment } = useEnvironmentCtx()
@@ -30,15 +32,14 @@ export const MainHero = () => {
           <div className="flex items-center gap-2 lg:gap-6">
             <BodyCopy className="text-right">
               Does your NFT collection or tokens need staking?
-              <br />
-              {`Click "My Pools" to get started!`}
             </BodyCopy>
             <ButtonPrimary
               onClick={() => {
-                router.push(withCluster('/admin', environment.label))
+                router.push(withCluster('/admin/create', environment.label))
               }}
             >
-              My Pools
+              <PlusIcon className="mr-2 h-4 w-4" />
+              Create new pool
             </ButtonPrimary>
           </div>
           <div className="flex w-fit flex-wrap gap-3 rounded-xl border-[2px] border-border p-4">
