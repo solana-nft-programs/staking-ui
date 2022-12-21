@@ -4,7 +4,6 @@ import type { CompositionEvent, SyntheticEvent } from 'react'
 export type NumberInputProps = {
   value: string
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void
-  onKeyPress: (event: React.FocusEvent<HTMLInputElement>) => void
   className?: string
   placeholder?: string
   disabled?: boolean

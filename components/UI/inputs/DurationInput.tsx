@@ -69,15 +69,7 @@ export const DurationInput = ({
         disabled={disabled}
         className="rounded-r-none text-center"
         value={durationAmount ? String(durationAmount) : '-'}
-        onKeyPress={(e) => {
-          console.log(e.target.value)
-        }}
-        onChange={(e) => {
-          if (e.target.value === '-') {
-            console.log(e)
-          }
-          setDurationAmount(parseInt(e.target.value) || 0)
-        }}
+        onChange={(e) => setDurationAmount(parseInt(e.target.value) || 0)}
       />
       <Selector<DurationOption>
         disabled={disabled}
