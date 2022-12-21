@@ -1,6 +1,6 @@
 import type { FormikHandlers, FormikState, FormikValues } from 'formik'
 import type { Dispatch, SetStateAction } from 'react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { SlavePanelScreens } from '@/components/stake-pool-creation/SlavePanel'
 import { InfoTipButtons } from '@/components/UI/buttons/InfoTipButtons'
@@ -28,12 +28,18 @@ export const AdditionalFeatures = ({
   formState,
   activeSlavePanelScreen,
 }: AdditionalFeaturesProps) => {
-  const [resetOnStake, setResetOnStake] = useState('no')
+  const [resetOnStake, setResetOnStake] = useState('')
+  const { values, setFieldValue } = formState
+
   const handleResetOnStakeChange = (value: string) => {
     values.resetOnStake = !!(value === 'yes')
     setResetOnStake(value)
   }
-  const { values, setFieldValue } = formState
+
+  useEffect(() => {
+    setResetOnStake(values.resetOnStake ? 'yes' : 'no')
+  }, [values.resetOnStake])
+
   return (
     <div className="flex flex-col gap-6 pb-14">
       <div>

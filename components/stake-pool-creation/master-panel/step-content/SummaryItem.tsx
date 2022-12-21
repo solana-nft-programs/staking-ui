@@ -34,6 +34,8 @@ const labels = {
   rewardAmount: 'Reward Amount',
   rewardMintSupply: 'Reward Mint Supply',
   endDate: 'End Date',
+  maxRewardSecondsReceived: 'Maximum reward duration',
+  minStakeSeconds: 'Minimum stake duration',
 }
 
 export const SummaryItem = ({ item, value, mintInfo }: SummaryItemProps) => {
