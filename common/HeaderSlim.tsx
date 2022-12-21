@@ -3,7 +3,6 @@ import { useWallet } from '@solana/wallet-adapter-react'
 import { useWalletModal } from '@solana/wallet-adapter-react-ui'
 import { GlyphWallet } from 'assets/GlyphWallet'
 import { LogoTitled } from 'assets/LogoTitled'
-import { AsyncButton } from 'common/Button'
 import { withCluster } from 'common/utils'
 import { useRouter } from 'next/router'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
@@ -47,15 +46,14 @@ export const HeaderSlim = () => {
         <div className="flex-5 flex items-center justify-end gap-6">
           {wallet.connected && wallet.publicKey ? (
             <>
-              <AsyncButton
-                disabled={!wallet.connected}
-                className="rounded-md px-3 py-1"
+              <div
+                className="cursor-pointer text-gray-400 transition hover:text-light-0"
                 onClick={() => {
                   router.push(withCluster('/admin', environment.label))
                 }}
               >
-                <div className="text-xs">Admin</div>
-              </AsyncButton>
+                Admin
+              </div>
               <AccountConnect
                 dark={true}
                 connection={secondaryConnection}
