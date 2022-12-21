@@ -232,7 +232,7 @@ export const StakePoolCreationFlow = ({
         />
         <SlavePanel activeScreen={activeSlavePanelScreen} />
       </div>
-      <div className="fixed bottom-0 left-0 right-0 -mb-4 px-6">
+      <div className="pointer-events-none fixed bottom-0 left-0 right-0 -mb-4 px-6">
         <FooterSlim />
       </div>
     </>
