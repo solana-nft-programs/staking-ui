@@ -1,7 +1,9 @@
-import { NumberInput } from '@/components/UI/inputs/NumberInput'
 import { capitalizeFirstLetter } from '@cardinal/common'
+import type { SelectorPositions } from 'common/Selector'
 import { Selector } from 'common/Selector'
 import { useEffect, useState } from 'react'
+
+import { NumberInput } from '@/components/UI/inputs/NumberInput'
 
 import { ButtonDecrement } from '../buttons/ButtonDecrement'
 import { ButtonIncrement } from '../buttons/ButtonIncrement'
@@ -30,6 +32,7 @@ interface Props extends React.HTMLAttributes<HTMLDivElement> {
   disabled?: boolean
   durationData?: { [key in DurationOption]: number }
   handleChange?: (v: number) => void
+  selectorPosition?: SelectorPositions
 }
 
 export const DurationInput = ({
@@ -38,6 +41,7 @@ export const DurationInput = ({
   handleChange,
   defaultAmount = 1,
   durationData = DURATION_DATA,
+  selectorPosition,
 }: Props) => {
   const [durationAmount, setDurationAmount] = useState<number | null>(
     defaultAmount
@@ -71,6 +75,7 @@ export const DurationInput = ({
         disabled={disabled}
         className="rounded-l-none"
         onChange={(e) => setDurationOption(e?.value ?? 'days')}
+        position={selectorPosition}
         defaultOption={{
           value: durationOption,
           label: capitalizeFirstLetter(durationOption).substring(

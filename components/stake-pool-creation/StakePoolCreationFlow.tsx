@@ -126,7 +126,6 @@ export const StakePoolCreationFlow = ({
         const mint = new PublicKey(values.rewardMintAddress)
         const mintInfo = await getMint(connection, mint)
         setMintInfo(mintInfo)
-        console.log('mintInfo', mintInfo)
         setFieldValue('rewardAmount', 0)
         if (
           type === 'update' &&
@@ -176,10 +175,10 @@ export const StakePoolCreationFlow = ({
         setSubmitDisabled(true)
         if (values.rewardMintAddress.length > 0) {
           console.log(e)
-          // notify({
-          //   message: `Invalid reward mint address: ${e}`,
-          //   type: 'error',
-          // })
+          notify({
+            message: `Invalid reward mint address: ${e}`,
+            type: 'error',
+          })
         }
       } finally {
         setProcessingMintAddress(false)

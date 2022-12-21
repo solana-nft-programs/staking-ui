@@ -45,7 +45,7 @@ export const RewardDistribution = ({
 
   const { setFieldValue, values, errors } = formState
   const rewardDistributor = useRewardDistributorData()
-  console.log(formState.values)
+
   return (
     <div className="flex flex-col gap-6 pb-16">
       <div>
@@ -220,6 +220,7 @@ export const RewardDistribution = ({
             />
           </div>
           <DurationInput
+            selectorPosition="from-bottom"
             disabled={!mintInfo}
             defaultAmount={values.maxRewardSecondsReceived ?? null}
             defaultOption={'seconds'}

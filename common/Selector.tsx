@@ -1,9 +1,12 @@
 import { ChevronDown } from 'assets/ChevronDown'
 import { GlyphSelectClear } from 'assets/GlyphSelectClear'
+import classNames from 'classnames'
 import { useEffect, useRef, useState } from 'react'
 import { twMerge } from 'tailwind-merge'
 
 import { inputClassNames } from '@/components/UI/inputs/TextInput'
+
+export type SelectorPositions = 'from-top' | 'from-bottom'
 
 type Option<T> = { label: string; value: T }
 type Props<T> = {
@@ -17,7 +20,7 @@ type Props<T> = {
   onChange?: (arg?: Option<T>) => void
   colorized?: boolean
   highlight?: boolean
-  z?: number
+  position?: SelectorPositions
 }
 
 export const Selector = <T,>({
@@ -29,7 +32,7 @@ export const Selector = <T,>({
   onChange,
   isClearable,
   options = [],
-  z = 100,
+  position = 'from-top',
 }: Props<T>) => {
   const [isOpen, setIsOpen] = useState(false)
   const [value, setValue] = useState<Option<T> | undefined>(defaultOption)
@@ -46,11 +49,11 @@ export const Selector = <T,>({
   }, [ref])
 
   return (
-    <div className={`relative z-${z} cursor-pointer text-base`} ref={ref}>
+    <div className="z-100 relative cursor-pointer text-base" ref={ref}>
       <div
         className={twMerge([
           inputClassNames({ disabled, error }),
-          `relative z-${0} flex items-center justify-between`,
+          'relative z-0 flex items-center justify-between',
           isOpen && 'bg-dark-4',
           className,
         ])}
@@ -64,7 +67,7 @@ export const Selector = <T,>({
         <div className="flex items-center gap-1">
           {isClearable && value ? (
             <div
-              className={`opacity-80 hover:opacity-100`}
+              className="opacity-80 hover:opacity-100"
               onClick={(e) => {
                 e.stopPropagation()
                 setValue(undefined)
@@ -79,9 +82,11 @@ export const Selector = <T,>({
         </div>
       </div>
       <div
-        className={`absolute z-50 w-full rounded-md bg-gray-800 transition-all ${
-          isOpen ? 'h-auto opacity-100' : 'h-0 overflow-hidden opacity-0'
-        }`}
+        className={classNames([
+          'absolute z-50 -mb-1 w-full rounded-md bg-gray-800 outline outline-2 outline-gray-700 transition-all',
+          isOpen ? 'h-auto opacity-100' : 'h-0 overflow-hidden opacity-0',
+          position === 'from-top' ? 'top-0' : 'bottom-1',
+        ])}
       >
         {options.map((o) => (
           <div
