@@ -6,6 +6,7 @@ export type NumberInputProps = {
   className?: string
   placeholder?: string
   disabled?: boolean
+  hasError?: boolean
 }
 
 export const NumberInput = ({
@@ -14,6 +15,7 @@ export const NumberInput = ({
   className,
   placeholder,
   disabled,
+  hasError,
 }: NumberInputProps) => {
   return (
     <input
@@ -24,7 +26,13 @@ export const NumberInput = ({
       inputMode="numeric"
       value={value}
       className={classNames([
-        'w-full rounded-lg bg-gray-800 py-3 px-4 outline outline-gray-600 focus:outline-orange-500',
+        'w-full appearance-none rounded-lg bg-gray-800 py-3 px-4 outline outline-gray-700',
+        {
+          'outline-red-500': !disabled && hasError,
+          'focus:outline-orange-500': !disabled && !hasError,
+          'cursor-not-allowed bg-gray-500 opacity-30 placeholder:text-white':
+            disabled,
+        },
         className,
       ])}
     />
