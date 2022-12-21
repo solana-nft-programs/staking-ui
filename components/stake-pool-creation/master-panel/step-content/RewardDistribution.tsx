@@ -14,9 +14,10 @@ import type { FlowType } from '@/components/stake-pool-creation/master-panel/ste
 import { SlavePanelScreens } from '@/components/stake-pool-creation/SlavePanel'
 import { InfoTipButtons } from '@/components/UI/buttons/InfoTipButtons'
 import { DurationInput } from '@/components/UI/inputs/DurationInput'
-import { NumberInput } from '@/components/UI/inputs/NumberInput'
 import { TextInput } from '@/components/UI/inputs/TextInput'
+import { BodyCopy } from '@/components/UI/typography/BodyCopy'
 import { LabelText } from '@/components/UI/typography/LabelText'
+import { BodyTextSizes } from '@/types/index'
 
 export type RewardDistributionProps = {
   setActiveSlavePanelScreen: Dispatch<SetStateAction<SlavePanelScreens>>
@@ -66,6 +67,9 @@ export const RewardDistribution = ({
             setFieldValue('rewardMintAddress', e.target.value)
           }}
         />
+        <BodyCopy className="mt-2 italic" textSize={BodyTextSizes.SMALL}>
+          Enter a valid SPL token mint address to enable below form fields
+        </BodyCopy>
       </div>
       <>
         <div>
@@ -77,7 +81,7 @@ export const RewardDistribution = ({
               activeScreen={activeSlavePanelScreen}
             />
           </div>
-          <NumberInput
+          <TextInput
             placeholder="0.000"
             disabled={!mintInfo}
             value={
@@ -113,7 +117,8 @@ export const RewardDistribution = ({
               activeScreen={activeSlavePanelScreen}
             />
           </div>
-          <NumberInput
+          <TextInput
+            disabled={!mintInfo}
             placeholder="0"
             value={values.rewardDurationSeconds}
             onChange={(e) => {
@@ -130,41 +135,40 @@ export const RewardDistribution = ({
               activeScreen={activeSlavePanelScreen}
             />
           </div>
-          <div className="relative">
-            <TextInput
-              disabled={
-                !mintInfo ||
-                (type === 'update' && rewardDistributor?.data !== undefined)
-              }
-              value={
-                mintInfo
-                  ? tryFormatInput(
-                      values.rewardMintSupply,
-                      mintInfo.decimals,
-                      values.rewardMintSupply ?? ''
-                    )
-                  : ''
-              }
-              onChange={(e) => {
-                if (!mintInfo) return
-                if (Number.isNaN(Number(e.target.value))) {
-                  notify({
-                    message: `Invalid transfer amount`,
-                    type: 'error',
-                  })
-                  return
-                }
-                setFieldValue(
-                  'rewardMintSupply',
-                  tryParseInput(
-                    e.target.value,
+          <TextInput
+            placeholder="0"
+            disabled={
+              !mintInfo ||
+              (type === 'update' && rewardDistributor?.data !== undefined)
+            }
+            value={
+              mintInfo
+                ? tryFormatInput(
+                    values.rewardMintSupply,
                     mintInfo.decimals,
                     values.rewardMintSupply ?? ''
                   )
+                : ''
+            }
+            onChange={(e) => {
+              if (!mintInfo) return
+              if (Number.isNaN(Number(e.target.value))) {
+                notify({
+                  message: `Invalid transfer amount`,
+                  type: 'error',
+                })
+                return
+              }
+              setFieldValue(
+                'rewardMintSupply',
+                tryParseInput(
+                  e.target.value,
+                  mintInfo.decimals,
+                  values.rewardMintSupply ?? ''
                 )
-              }}
-            />
-          </div>
+              )
+            }}
+          />
         </div>
         <div className="flex gap-6">
           <div className="w-1/2">
@@ -176,7 +180,8 @@ export const RewardDistribution = ({
                 activeScreen={activeSlavePanelScreen}
               />
             </div>
-            <NumberInput
+            <TextInput
+              disabled={!mintInfo}
               className="w-full"
               placeholder="0"
               value={values.multiplierDecimals}
@@ -194,7 +199,8 @@ export const RewardDistribution = ({
                 activeScreen={activeSlavePanelScreen}
               />
             </div>
-            <NumberInput
+            <TextInput
+              disabled={!mintInfo}
               className="w-full"
               placeholder="1"
               value={values.defaultMultiplier}
@@ -214,6 +220,7 @@ export const RewardDistribution = ({
             />
           </div>
           <DurationInput
+            disabled={!mintInfo}
             defaultAmount={values.maxRewardSecondsReceived ?? null}
             defaultOption={'seconds'}
             handleChange={(v) => setFieldValue('maxRewardSecondsReceived', v)}

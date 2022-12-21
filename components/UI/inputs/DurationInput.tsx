@@ -1,10 +1,10 @@
+import { TextInput } from '@/components/UI/inputs/TextInput'
 import { capitalizeFirstLetter } from '@cardinal/common'
 import { Selector } from 'common/Selector'
 import { useEffect, useState } from 'react'
 
 import { ButtonDecrement } from '../buttons/ButtonDecrement'
 import { ButtonIncrement } from '../buttons/ButtonIncrement'
-import { NumberInput } from './NumberInput'
 
 export type DurationOption = 'seconds' | 'hours' | 'days' | 'weeks' | 'months'
 
@@ -53,14 +53,17 @@ export const DurationInput = ({
   }, [durationOption, durationAmount])
 
   return (
-    <div className="flex">
+    <div className="flex items-center">
       <ButtonDecrement
+        disabled={disabled}
         className="mr-3"
         onClick={() =>
           setDurationAmount(Math.max(0, (durationAmount ?? 0) - 1))
         }
       />
-      <NumberInput
+      <TextInput
+        disabled={disabled}
+        type="number"
         className="rounded-r-none text-center"
         value={durationAmount ? String(durationAmount) : '-'}
         onChange={(e) => setDurationAmount(parseInt(e.target.value) || 0)}
@@ -82,6 +85,7 @@ export const DurationInput = ({
         }))}
       />
       <ButtonIncrement
+        disabled={disabled}
         className="ml-3"
         onClick={() =>
           setDurationAmount(Math.max(0, (durationAmount ?? 0) + 1))

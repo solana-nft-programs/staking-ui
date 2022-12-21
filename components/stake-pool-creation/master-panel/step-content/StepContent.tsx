@@ -49,6 +49,7 @@ export const StepContent = ({
       )}
       {currentStep === 3 && (
         <AdditionalFeatures
+          activeSlavePanelScreen={activeSlavePanelScreen}
           setActiveSlavePanelScreen={setActiveSlavePanelScreen}
           formState={formState}
         />
