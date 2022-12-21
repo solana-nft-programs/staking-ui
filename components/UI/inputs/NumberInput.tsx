@@ -24,7 +24,7 @@ export const NumberInput = ({
       inputMode="numeric"
       value={value}
       className={classNames([
-        'w-full rounded-lg bg-gray-800 p-2 outline outline-gray-600 focus:outline-orange-500',
+        'w-full rounded-lg bg-gray-800 py-3 px-4 outline outline-gray-600 focus:outline-orange-500',
         className,
       ])}
     />

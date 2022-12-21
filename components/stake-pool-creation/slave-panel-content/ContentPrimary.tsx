@@ -43,7 +43,7 @@ export const ContentPrimary = ({ activeScreen }: ContentPrimaryProps) => {
   } = SlavePanelScreens
 
   return (
-    <div className="z-10 flex flex-col items-center">
+    <div className="z-10 overflow-y-auto py-8">
       {activeScreen === INTRO && <Intro />}
       {activeScreen === AUTHORIZATION_1 && <AuthorizationTipOne />}
       {activeScreen === AUTHORIZATION_2 && <AuthorizationTipTwo />}

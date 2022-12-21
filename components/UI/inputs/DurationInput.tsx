@@ -1,4 +1,4 @@
-import { TextInput } from '@/components/UI/inputs/TextInput'
+import { NumberInput } from '@/components/UI/inputs/NumberInput'
 import { capitalizeFirstLetter } from '@cardinal/common'
 import { Selector } from 'common/Selector'
 import { useEffect, useState } from 'react'
@@ -61,9 +61,8 @@ export const DurationInput = ({
           setDurationAmount(Math.max(0, (durationAmount ?? 0) - 1))
         }
       />
-      <TextInput
+      <NumberInput
         disabled={disabled}
-        type="number"
         className="rounded-r-none text-center"
         value={durationAmount ? String(durationAmount) : '-'}
         onChange={(e) => setDurationAmount(parseInt(e.target.value) || 0)}
