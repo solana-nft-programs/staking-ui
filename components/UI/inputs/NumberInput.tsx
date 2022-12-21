@@ -1,8 +1,10 @@
 import classNames from 'classnames'
+import type { CompositionEvent, SyntheticEvent } from 'react'
 
 export type NumberInputProps = {
   value: string
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void
+  onKeyPress: (event: React.FocusEvent<HTMLInputElement>) => void
   className?: string
   placeholder?: string
   disabled?: boolean
@@ -19,6 +21,11 @@ export const NumberInput = ({
 }: NumberInputProps) => {
   return (
     <input
+      onBeforeInput={(e: SyntheticEvent) => {
+        const event = e as CompositionEvent
+        // @ts-ignore
+        if (event.target.value === '-') event.target.value = ''
+      }}
       disabled={disabled}
       placeholder={placeholder}
       onChange={onChange}
