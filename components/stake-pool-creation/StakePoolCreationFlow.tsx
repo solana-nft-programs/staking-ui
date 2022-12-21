@@ -197,8 +197,8 @@ export const StakePoolCreationFlow = ({
     autoSelectFirstSlaveScreen()
   }, [currentStep])
 
-  return <SuccessPanel stakePoolId={stakePoolId} />
   if (handleCreationForm.isSuccess) {
+    return <SuccessPanel stakePoolId={stakePoolId} />
   }
 
   return (
