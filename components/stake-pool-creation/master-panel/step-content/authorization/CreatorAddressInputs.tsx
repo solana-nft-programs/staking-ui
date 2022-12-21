@@ -51,7 +51,18 @@ export const CreatorAddressInputs = ({
             />
           </div>
 
-          <div className="flex w-full justify-end">
+          <div className="flex w-full justify-end space-x-3">
+            {values.requireCreators.length <= 1 && (
+              <button
+                className="text-sm text-gray-400"
+                onClick={() => {
+                  setFieldValue(`requireCreators`, [])
+                  setDisplayInput(false)
+                }}
+              >
+                Cancel
+              </button>
+            )}
             <button
               className="text-sm text-orange-500"
               onClick={() =>

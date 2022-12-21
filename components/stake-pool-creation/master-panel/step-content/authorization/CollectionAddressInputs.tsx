@@ -60,7 +60,18 @@ export const CollectionAddressInputs = ({
               }}
             />
           </div>
-          <div className="flex w-full justify-end">
+          <div className="flex w-full justify-end space-x-3">
+            {values.requireCollections.length <= 1 && (
+              <button
+                className="text-sm text-gray-400"
+                onClick={() => {
+                  setFieldValue(`requireCollections`, [])
+                  setDisplayInput(false)
+                }}
+              >
+                Cancel
+              </button>
+            )}
             <button
               className="text-sm text-orange-500"
               onClick={() =>

@@ -112,6 +112,10 @@ export const StakePoolCreationFlow = ({
   const [_userRewardAmount, setUserRewardAmount] = useState<string>()
 
   useMemo(async () => {
+    if (!values.rewardMintAddress) {
+      setMintInfo(undefined)
+      return
+    }
     if (values.rewardMintAddress) {
       if (!wallet?.connected || !wallet.publicKey) {
         notify({

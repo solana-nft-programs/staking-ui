@@ -1,10 +1,6 @@
 import { BN } from 'bn.js'
-import { notify } from 'common/Notification'
-import {
-  formatMintNaturalAmountAsDecimal,
-  tryFormatInput,
-  tryParseInput,
-} from 'common/units'
+
+import { formatMintNaturalAmountAsDecimal, tryParseInput } from 'common/units'
 import type { FormikHandlers, FormikState, FormikValues } from 'formik'
 import { useRewardDistributorData } from 'hooks/useRewardDistributorData'
 import type { Dispatch, SetStateAction } from 'react'
@@ -123,50 +119,6 @@ export const RewardDistribution = ({
             value={values.rewardDurationSeconds}
             onChange={(e) => {
               setFieldValue('rewardDurationSeconds', e.target.value)
-            }}
-          />
-        </div>
-        <div>
-          <div className="mb-2 flex w-full items-center">
-            <LabelText isOptional>Reward transfer amount</LabelText>
-            <InfoTipButtons
-              setActiveScreen={setActiveSlavePanelScreen}
-              screen={REWARD_DISTRIBUTION_3}
-              activeScreen={activeSlavePanelScreen}
-            />
-          </div>
-          <TextInput
-            placeholder="0"
-            disabled={
-              !mintInfo ||
-              (type === 'update' && rewardDistributor?.data !== undefined)
-            }
-            value={
-              mintInfo
-                ? tryFormatInput(
-                    values.rewardMintSupply,
-                    mintInfo.decimals,
-                    values.rewardMintSupply ?? ''
-                  )
-                : ''
-            }
-            onChange={(e) => {
-              if (!mintInfo) return
-              if (Number.isNaN(Number(e.target.value))) {
-                notify({
-                  message: `Invalid transfer amount`,
-                  type: 'error',
-                })
-                return
-              }
-              setFieldValue(
-                'rewardMintSupply',
-                tryParseInput(
-                  e.target.value,
-                  mintInfo.decimals,
-                  values.rewardMintSupply ?? ''
-                )
-              )
             }}
           />
         </div>

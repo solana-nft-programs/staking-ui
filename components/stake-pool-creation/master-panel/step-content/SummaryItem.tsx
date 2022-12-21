@@ -107,6 +107,10 @@ export const SummaryItem = ({ item, value, mintInfo }: SummaryItemProps) => {
     }
   }
 
+  if (item === LabelKey.rewardMintSupply) {
+    return <></>
+  }
+
   return (
     <div className="w-full py-1" key={item}>
       <div className="flex w-full items-center justify-between rounded-xl bg-gray-800 p-6">
@@ -115,7 +119,6 @@ export const SummaryItem = ({ item, value, mintInfo }: SummaryItemProps) => {
         item === LabelKey.rewardMintAddress ||
         item === LabelKey.rewardAmount ||
         item === LabelKey.endDate ||
-        item === LabelKey.rewardMintSupply ||
         item === LabelKey.requireCreators ? (
           <div className="flex">
             <span className="text-gray-500">
