@@ -1,6 +1,7 @@
 import { PlusIcon } from '@heroicons/react/24/solid'
 import { FooterSlim } from 'common/FooterSlim'
 import { HeaderSlim } from 'common/HeaderSlim'
+import { withCluster } from 'common/utils'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
@@ -10,7 +11,6 @@ import { HeadingSecondary } from '@/components/UI/typography/HeadingSecondary'
 import { ButtonWidths } from '@/types/index'
 
 import { AdminPools } from './AdminPools'
-import { withCluster } from 'common/utils'
 
 function Admin() {
   const router = useRouter()
