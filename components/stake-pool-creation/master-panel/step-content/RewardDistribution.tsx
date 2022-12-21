@@ -82,11 +82,7 @@ export const RewardDistribution = ({
             hasError={!!errors.rewardAmount}
             disabled={!mintInfo}
             decimals={mintInfo?.decimals}
-            value={tryFormatInput(
-              values.rewardAmount,
-              mintInfo?.decimals,
-              values.rewardAmount ?? ''
-            )}
+            value={values.rewardAmount}
             handleChange={(v) => {
               setFieldValue('rewardAmount', v)
             }}
