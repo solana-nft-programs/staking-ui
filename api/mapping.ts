@@ -184,7 +184,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     hostname: 'staking.thelotus.io',
     websiteUrl: 'https://www.thelotus.io',
     stakePoolAddress: new PublicKey(
-      'GyAZpquChwHQbevevpYafzpNydmxLUpTtmo5oQyqEE8L'
+      'BeT8h9E5BcgcMBxF7Si5GSRuB6zHcSpFuMpp6uTcVRFN'
     ),
     receiptType: ReceiptType.Receipt,
   },
@@ -2559,10 +2559,8 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       fontColorSecondary: 'black',
       fontColorTertiary: '#ffcc15',
     },
-    imageUrl:
-      'https://i.ibb.co/JrtGLVg/finwhite.png',
-    backgroundImage:
-      'https://i.ibb.co/TgWFYHL/image.jpg',
+    imageUrl: 'https://i.ibb.co/JrtGLVg/finwhite.png',
+    backgroundImage: 'https://i.ibb.co/TgWFYHL/image.jpg',
     maxStaked: 3333,
     links: [
       {
@@ -2610,8 +2608,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     },
     imageUrl:
       'https://arweave.net/z64F7Hk0nHfq-KZ9DgTBT3k7CiKfdyyyAqhC3T1TpkQ?ext=png',
-      backgroundImage:
-      'https://i.ibb.co/TgWFYHL/image.jpg',
+    backgroundImage: 'https://i.ibb.co/TgWFYHL/image.jpg',
 
     // Website url if specified will be navigated to when the image in the header is clicked
     maxStaked: 7777,
