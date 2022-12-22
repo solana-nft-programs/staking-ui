@@ -183,18 +183,9 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     displayName: 'The Lotus',
     hostname: 'staking.thelotus.io',
     websiteUrl: 'https://www.thelotus.io',
-    hideFooter: true,
     stakePoolAddress: new PublicKey(
-      '4c4JF1m6hteH8F5iMN7nQYo8SfLPCJBNTeXFmjzt9C2J'
+      'GyAZpquChwHQbevevpYafzpNydmxLUpTtmo5oQyqEE8L'
     ),
-    description: 'The Lotus staking pool.',
-    imageUrl: '/logos/lotus.svg',
-    colors: {
-      primary: '#ffffff',
-      secondary: '#91B9FF',
-      accent: '#E9E1D1',
-      fontColor: '#303030',
-    },
     receiptType: ReceiptType.Receipt,
   },
   {
