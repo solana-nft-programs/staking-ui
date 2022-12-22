@@ -178,6 +178,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       'https://gateway.pinata.cloud/ipfs/QmdZ6eTjxUzCzguqdNBkYP5uMeHjjpkSgQg8512ozSUvff',
   },
   {
+    hidden: true,
     name: 'lotus',
     displayName: 'The Lotus',
     hostname: 'staking.thelotus.io',
