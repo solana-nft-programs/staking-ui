@@ -23,8 +23,6 @@ import type { CreationForm } from '@/components/stake-pool-creation/Schema'
 import { useStakePoolData } from '../hooks/useStakePoolData'
 import { useEnvironmentCtx } from '../providers/EnvironmentProvider'
 
-const VERSION = 1
-
 export const useHandleCreationForm = () => {
   const wallet = asWallet(useWallet())
   const { connection, environment } = useEnvironmentCtx()
@@ -34,8 +32,10 @@ export const useHandleCreationForm = () => {
   return useMutation(
     async ({
       values,
+      version = 2,
     }: {
       values: CreationForm
+      version?: 1 | 2
       mintInfo?: Mint
     }): Promise<[string, PublicKey]> => {
       if (!wallet || !wallet.publicKey) {
@@ -61,7 +61,7 @@ export const useHandleCreationForm = () => {
       if (endDateSeconds < Date.now() / 1000) {
         endDateSeconds = undefined
       }
-      if (VERSION === 1) {
+      if (version === 1) {
         /////////////////// V1 ///////////////////
         const [transaction, stakePoolId] = await createStakePool(
           connection,
