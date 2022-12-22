@@ -8,7 +8,6 @@ import { useRouter } from 'next/router'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 import { useEffect, useState } from 'react'
 
-import { AdminButton } from './AdminButton'
 import { Airdrop } from './Airdrop'
 import { ButtonSmall } from './ButtonSmall'
 import { asWallet } from './Wallets'
@@ -40,7 +39,6 @@ export const HeaderSlim = () => {
           {environment.label !== 'mainnet-beta' && (
             <div className="text-primary">{environment.label}</div>
           )}
-          <AdminButton />
           {environment.label !== 'mainnet-beta' && <Airdrop />}
         </div>
         <div className="flex-5 flex items-center justify-end gap-6">
