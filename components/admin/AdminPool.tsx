@@ -2,11 +2,14 @@ import { pubKeyUrl, shortPubKey } from '@cardinal/common'
 import type { PublicKey } from '@solana/web3.js'
 import { TabSelector } from 'common/TabSelector'
 import { useRewardDistributorData } from 'hooks/useRewardDistributorData'
+import { useRewardDistributorTokenAccount } from 'hooks/useRewardDistributorTokenAccount'
 import { useStakePoolData } from 'hooks/useStakePoolData'
 import { useStakePoolId } from 'hooks/useStakePoolId'
 import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 import { useState } from 'react'
+
+import { StakePoolBalance } from '@/components/admin/StakePoolBalance'
 
 import { AuthorizeMints } from '../AuthorizeMints'
 import { MintMultiplierLookup } from '../MintMultiplierLookup'
@@ -32,6 +35,7 @@ export const AdminStakePool = ({
   const { environment } = useEnvironmentCtx()
   const { data: config } = useStakePoolMetadata()
   const stakePoolId = useStakePoolId()
+  const rewardDistributorTokenAccountData = useRewardDistributorTokenAccount()
   const stakePool = useStakePoolData()
   const rewardDistributor = useRewardDistributorData()
   const [pane, setPane] = useState<PANE_OPTIONS>('stake-pool')
@@ -97,6 +101,7 @@ export const AdminStakePool = ({
             {config?.displayName ?? shortPubKey(stakePoolId)}
           </a>
         </div>
+        {stakePool.data && <StakePoolBalance setPane={setPane} />}
         {stakePool.data && <StakePoolImage />}
         <TabSelector<PANE_OPTIONS>
           defaultOption={paneTabs[0]}
