@@ -3,9 +3,12 @@ import { AsyncButton } from 'common/Button'
 import { FormFieldTitleInput } from 'common/FormFieldInput'
 import { LoadingSpinner } from 'common/LoadingSpinner'
 import { SelectorBoolean } from 'common/SelectorBoolean'
+import { Tooltip } from 'common/Tooltip'
 import { useFormik } from 'formik'
 import { useHandleStakePoolCreate } from 'handlers/useHandleStakePoolCreate'
+import { useHandleStakePoolRemove } from 'handlers/useHandleStakePoolRemove'
 import { useHandleStakePoolUpdate } from 'handlers/useHandleStakePoolUpdate'
+import { useRewardDistributorData } from 'hooks/useRewardDistributorData'
 import { useStakePoolData } from 'hooks/useStakePoolData'
 import { useStakePoolId } from 'hooks/useStakePoolId'
 import { useWalletId } from 'hooks/useWalletId'
@@ -74,6 +77,8 @@ export function StakePoolUpdate({
   const stakePool = useStakePoolData()
   const handleStakePoolUpdate = useHandleStakePoolUpdate()
   const handleStakePoolCreate = useHandleStakePoolCreate()
+  const handleStakePoolRemove = useHandleStakePoolRemove()
+  const rewardDistributor = useRewardDistributorData()
   const initialValues = defaultValues(stakePool.data)
   const formState = useFormik({
     initialValues,
@@ -87,6 +92,9 @@ export function StakePoolUpdate({
   }, [JSON.stringify(stakePool)])
 
   if (stakePooldId && !stakePool.isFetched) return <LoadingSpinner />
+
+  if (stakePool.isFetched && !stakePool.data)
+    return <div className="text-gray-400">No stake pool found</div>
   return (
     <div className="flex w-full flex-col gap-4">
       <div className="flex flex-wrap">
@@ -288,6 +296,31 @@ export function StakePoolUpdate({
       >
         {stakePool.data ? 'Update' : 'Get Started'}
       </AsyncButton>
+      {stakePool.data && (
+        <Tooltip title="Only can remove when 0 tokens are staked and reward distributor is closed">
+          <div>
+            <AsyncButton
+              disabled={
+                !stakePool.data ||
+                stakePool.data.parsed.totalStaked !== 0 ||
+                !rewardDistributor.isFetched ||
+                !!rewardDistributor.data ||
+                walletId?.toString() !==
+                  stakePool?.data.parsed.authority.toString()
+              }
+              colorized={false}
+              onClick={async () => {
+                handleStakePoolRemove.mutate()
+              }}
+              loading={handleStakePoolRemove.isLoading}
+              inlineLoader
+              className="flex w-full items-center justify-center bg-red-500 text-center hover:bg-red-600"
+            >
+              Remove
+            </AsyncButton>
+          </div>
+        </Tooltip>
+      )}
     </div>
   )
 }
