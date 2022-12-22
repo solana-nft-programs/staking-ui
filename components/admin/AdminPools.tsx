@@ -1,17 +1,17 @@
-import { AdminPoolList } from '@/components/admin/admin-pool-list/AdminPoolList'
-import { shortPubKey } from '@cardinal/common'
 import { LoadingSpinner } from 'common/LoadingSpinner'
-import { withCluster } from 'common/utils'
 import type { StakePool } from 'hooks/useAllStakePools'
 import { useStakePoolsByAuthority } from 'hooks/useStakePoolsByAuthority'
 import { useStakePoolsMetadatas } from 'hooks/useStakePoolsMetadata'
 import { useWalletId } from 'hooks/useWalletId'
-import { useRouter } from 'next/router'
-import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 
-export const AdminPools = () => {
+import { AdminPoolList } from '@/components/admin/admin-pool-list/AdminPoolList'
+
+export type AdminPoolProps = {
+  layoutType: 'list' | 'grid'
+}
+
+export const AdminPools = ({ layoutType }: AdminPoolProps) => {
   const walletId = useWalletId()
-  const { environment } = useEnvironmentCtx()
   const stakePoolsByAuthority = useStakePoolsByAuthority()
   const stakePoolsMetadata = useStakePoolsMetadatas(
     stakePoolsByAuthority.data?.map((s) => s.pubkey)
@@ -32,6 +32,7 @@ export const AdminPools = () => {
   )
 
   const allPools = stakePoolsWithMetadata.concat(stakePoolsWithoutMetadata)
+
   return (
     <div className="">
       {!walletId ? (
@@ -47,7 +48,7 @@ export const AdminPools = () => {
           No stake pools found...
         </div>
       ) : (
-        <AdminPoolList allPools={allPools} />
+        <AdminPoolList layoutType={layoutType} allPools={allPools} />
       )}
     </div>
   )

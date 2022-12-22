@@ -1,20 +1,19 @@
 import type { StakePool } from 'hooks/useAllStakePools'
 
-import { AdminPoolListItem } from '@/components/admin/admin-pool-list/AdminPoolListItem'
+import { GridView } from '@/components/admin/admin-pool-list/grid-view/GridView'
+import { ListView } from '@/components/admin/admin-pool-list/list-view/ListView'
 
 export type AdminPoolListProps = {
   allPools: StakePool[]
+  layoutType: 'list' | 'grid'
 }
 
-export const AdminPoolList = ({ allPools }: AdminPoolListProps) => {
-  return (
-    <div className="grid-grid-cols-1 grid gap-5 py-10 md:grid-cols-3">
-      {allPools.map((stakePool) => (
-        <AdminPoolListItem
-          key={stakePool.stakePoolData.pubkey.toString()}
-          stakePool={stakePool}
-        />
-      ))}
-    </div>
-  )
+export const AdminPoolList = ({ allPools, layoutType }: AdminPoolListProps) => {
+  switch (layoutType) {
+    case 'list':
+      return <ListView allPools={allPools} />
+    case 'grid':
+    default:
+      return <GridView allPools={allPools} />
+  }
 }

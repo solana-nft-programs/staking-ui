@@ -1,32 +1,15 @@
 import { shortPubKey } from '@cardinal/common'
-import { withCluster } from 'common/utils'
 import type { StakePool } from 'hooks/useAllStakePools'
-import { useRouter } from 'next/router'
-import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 
-export type AdminPoolListItemProps = {
+export type GridViewItemContentProps = {
   stakePool: StakePool
 }
 
-export const AdminPoolListItem = ({ stakePool }: AdminPoolListItemProps) => {
-  const router = useRouter()
-  const { environment } = useEnvironmentCtx()
-
+export const GridViewItemContent = ({
+  stakePool,
+}: GridViewItemContentProps) => {
   return (
-    <div
-      className="h-[300px] cursor-pointer rounded-lg bg-white bg-opacity-5 p-10 transition-all duration-100 hover:scale-[1.01]"
-      onClick={() => {
-        router.push(
-          withCluster(
-            `/admin/${
-              stakePool.stakePoolMetadata?.name ||
-              stakePool.stakePoolData.pubkey.toString()
-            }`,
-            environment.label
-          )
-        )
-      }}
-    >
+    <>
       {stakePool.stakePoolMetadata?.displayName ? (
         <div className="text-center font-bold">
           {stakePool.stakePoolMetadata?.displayName}
@@ -56,6 +39,6 @@ export const AdminPoolListItem = ({ stakePool }: AdminPoolListItemProps) => {
           </div>
         </div>
       )}
-    </div>
+    </>
   )
 }

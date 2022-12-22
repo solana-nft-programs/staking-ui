@@ -1,10 +1,13 @@
+import { ListBulletIcon, Squares2X2Icon } from '@heroicons/react/24/outline'
 import { PlusIcon } from '@heroicons/react/24/solid'
+import classNames from 'classnames'
 import { FooterSlim } from 'common/FooterSlim'
 import { HeaderSlim } from 'common/HeaderSlim'
 import { withCluster } from 'common/utils'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
+import { useState } from 'react'
 
 import { ButtonPrimary } from '@/components/UI/buttons/ButtonPrimary'
 import { HeadingSecondary } from '@/components/UI/typography/HeadingSecondary'
@@ -15,6 +18,7 @@ import { AdminPools } from './AdminPools'
 function Admin() {
   const router = useRouter()
   const { environment } = useEnvironmentCtx()
+  const [layoutType, setLayoutType] = useState<'list' | 'grid'>('list')
 
   return (
     <div className="flex min-h-screen flex-col">
@@ -33,17 +37,42 @@ function Admin() {
       <div className="container mx-auto w-full flex-grow px-6">
         <div className="mt-8 flex items-center justify-between">
           <HeadingSecondary>Your Stake Pools</HeadingSecondary>
-          <ButtonPrimary
-            width={ButtonWidths.NARROW}
-            onClick={() =>
-              router.push(withCluster(`/admin/create`, environment.label))
-            }
-          >
-            Add
-            <PlusIcon className="ml-2 h-5 w-5" />
-          </ButtonPrimary>
+          <div className="flex">
+            <button
+              onClick={() => setLayoutType('grid')}
+              className={classNames([
+                'mx-1.5 rounded-lg p-2 px-2.5 outline hover:bg-gray-800 hover:outline-orange-500 active:bg-black',
+                layoutType === 'grid'
+                  ? 'bg-black outline-orange-500'
+                  : 'bg-gray-700 outline-gray-600',
+              ])}
+            >
+              <Squares2X2Icon className="h-5 w-5 text-gray-300" />
+            </button>
+            <button
+              className={classNames([
+                'mx-1.5 rounded-lg p-2 px-2.5 outline hover:bg-gray-800 hover:outline-orange-500 active:bg-black',
+                layoutType === 'list'
+                  ? 'bg-black outline-orange-500'
+                  : 'bg-gray-700 outline-gray-600',
+              ])}
+              onClick={() => setLayoutType('list')}
+            >
+              <ListBulletIcon className="h-5 w-5 text-gray-300" />
+            </button>
+            <ButtonPrimary
+              className="ml-4"
+              width={ButtonWidths.NARROW}
+              onClick={() =>
+                router.push(withCluster(`/admin/create`, environment.label))
+              }
+            >
+              Add
+              <PlusIcon className="ml-2 h-5 w-5" />
+            </ButtonPrimary>
+          </div>
         </div>
-        <AdminPools />
+        <AdminPools layoutType={layoutType} />
       </div>
       <FooterSlim />
     </div>
