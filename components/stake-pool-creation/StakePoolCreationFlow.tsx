@@ -23,7 +23,6 @@ import {
   SlavePanelScreens,
 } from '@/components/stake-pool-creation/SlavePanel'
 import { SuccessPanel } from '@/components/stake-pool-creation/SuccessPanel'
-import { FooterSlim } from 'common/FooterSlim'
 
 const {
   INTRO,
@@ -206,35 +205,30 @@ export const StakePoolCreationFlow = ({
   }
 
   return (
-    <>
-      <div className="flex h-[85vh] min-h-[550px] py-8">
-        <MasterPanel
-          activeSlavePanelScreen={activeSlavePanelScreen}
-          type={type}
-          submitDisabled={submitDisabled}
-          mintInfo={mintInfo}
-          currentStep={currentStep}
-          setCurrentStep={setCurrentStep}
-          setActiveSlavePanelScreen={setActiveSlavePanelScreen}
-          formState={formState}
-          handleSubmit={() =>
-            handleCreationForm.mutate(
-              {
-                values: formState.values,
-                mintInfo: mintInfo,
-              },
-              {
-                onSuccess: ([, publicKey]) => setStakePoolId(publicKey),
-              }
-            )
-          }
-          isLoading={handleCreationForm.isLoading}
-        />
-        <SlavePanel activeScreen={activeSlavePanelScreen} />
-      </div>
-      <div className="pointer-events-none fixed bottom-0 left-0 right-0 -mb-4 px-6">
-        <FooterSlim />
-      </div>
-    </>
+    <div className="flex h-[85vh] min-h-[550px] py-8">
+      <MasterPanel
+        activeSlavePanelScreen={activeSlavePanelScreen}
+        type={type}
+        submitDisabled={submitDisabled}
+        mintInfo={mintInfo}
+        currentStep={currentStep}
+        setCurrentStep={setCurrentStep}
+        setActiveSlavePanelScreen={setActiveSlavePanelScreen}
+        formState={formState}
+        handleSubmit={() =>
+          handleCreationForm.mutate(
+            {
+              values: formState.values,
+              mintInfo: mintInfo,
+            },
+            {
+              onSuccess: ([, publicKey]) => setStakePoolId(publicKey),
+            }
+          )
+        }
+        isLoading={handleCreationForm.isLoading}
+      />
+      <SlavePanel activeScreen={activeSlavePanelScreen} />
+    </div>
   )
 }

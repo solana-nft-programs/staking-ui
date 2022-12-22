@@ -3,14 +3,13 @@ import { useWallet } from '@solana/wallet-adapter-react'
 import { useWalletModal } from '@solana/wallet-adapter-react-ui'
 import { GlyphWallet } from 'assets/GlyphWallet'
 import { LogoTitled } from 'assets/LogoTitled'
-import { withCluster } from 'common/utils'
 import { useRouter } from 'next/router'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 import { useEffect, useState } from 'react'
 
-import { AdminButton } from './AdminButton'
 import { Airdrop } from './Airdrop'
 import { ButtonSmall } from './ButtonSmall'
+import { withCluster } from './utils'
 import { asWallet } from './Wallets'
 
 export const HeaderSlim = () => {
@@ -40,28 +39,25 @@ export const HeaderSlim = () => {
           {environment.label !== 'mainnet-beta' && (
             <div className="text-primary">{environment.label}</div>
           )}
-          <AdminButton />
           {environment.label !== 'mainnet-beta' && <Airdrop />}
         </div>
         <div className="flex-5 flex items-center justify-end gap-6">
+          <div
+            className="cursor-pointer text-gray-400 transition hover:text-light-0"
+            onClick={() => {
+              router.push(withCluster('/admin', environment.label))
+            }}
+          >
+            Admin
+          </div>
           {wallet.connected && wallet.publicKey ? (
-            <>
-              <div
-                className="cursor-pointer text-gray-400 transition hover:text-light-0"
-                onClick={() => {
-                  router.push(withCluster('/admin', environment.label))
-                }}
-              >
-                Admin
-              </div>
-              <AccountConnect
-                dark={true}
-                connection={secondaryConnection}
-                environment={environment.label}
-                handleDisconnect={() => wallet.disconnect()}
-                wallet={asWallet(wallet)}
-              />
-            </>
+            <AccountConnect
+              dark={true}
+              connection={secondaryConnection}
+              environment={environment.label}
+              handleDisconnect={() => wallet.disconnect()}
+              wallet={asWallet(wallet)}
+            />
           ) : (
             <ButtonSmall
               className="text-xs"
