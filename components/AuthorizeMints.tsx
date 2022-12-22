@@ -1,17 +1,16 @@
 import { AsyncButton } from 'common/Button'
 import { FormFieldTitleInput } from 'common/FormFieldInput'
+import { TextInput } from 'components/UI/inputs/TextInput'
 import { useHandleAuthorizeMints } from 'handlers/useHandleAuthorizeMints'
 import { useHandleDeauthorizeMints } from 'handlers/useHandleDeauthorizeMints'
 import { useState } from 'react'
-
-import { TextInput } from './UI/inputs/TextInput'
 
 export const AuthorizeMints = () => {
   const [mintsToAuthorize, setMintsToAuthorize] = useState<string>('')
   const handleAuthorizeMints = useHandleAuthorizeMints()
   const handleDeuthorizeMints = useHandleDeauthorizeMints()
   return (
-    <div className="">
+    <div>
       <FormFieldTitleInput
         title={'Authorize access to specific mint'}
         description={

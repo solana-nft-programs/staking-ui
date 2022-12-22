@@ -1,15 +1,17 @@
-import { BodyCopy } from '@/components/UI/typography/BodyCopy'
 import { InformationCircleIcon } from '@heroicons/react/24/outline'
 import Image from 'next/image'
+
+import { BodyCopy } from '@/components/UI/typography/BodyCopy'
 
 export const AuthorizationTipOne = () => {
   return (
     <>
-      <div className="xl:pl-40">
+      <div className="pl-16 xl:pl-80">
         <Image
           src="/images/stake-pool-creation/authorization/tip-one.png"
-          height={800}
-          width={800}
+          height={600}
+          width={600}
+          layout="fixed"
           objectFit="contain"
         />
       </div>

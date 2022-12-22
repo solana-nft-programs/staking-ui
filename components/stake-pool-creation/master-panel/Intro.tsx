@@ -7,7 +7,7 @@ import { BodyCopy } from '@/components/UI/typography/BodyCopy'
 
 export const Intro = () => {
   return (
-    <>
+    <div className="pb-10">
       <BodyCopy>
         Adding utility like staking brings rewards for both the users and the
         NFT collection itself.
@@ -38,6 +38,6 @@ export const Intro = () => {
           Manage your Stake Pool after creation
         </div>
       </div>
-    </>
+    </div>
   )
 }

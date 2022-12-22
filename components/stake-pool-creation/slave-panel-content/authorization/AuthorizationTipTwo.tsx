@@ -6,11 +6,12 @@ import { BodyCopy } from '@/components/UI/typography/BodyCopy'
 export const AuthorizationTipTwo = () => {
   return (
     <>
-      <div className="xl:pr-40">
+      <div className="pr-16 xl:pr-80">
         <Image
           src="/images/stake-pool-creation/authorization/tip-two.png"
-          height={800}
-          width={800}
+          height={600}
+          width={600}
+          layout="fixed"
           objectFit="contain"
         />
       </div>

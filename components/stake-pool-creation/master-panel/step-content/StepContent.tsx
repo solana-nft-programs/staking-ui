@@ -9,8 +9,6 @@ import { RewardDistribution } from '@/components/stake-pool-creation/master-pane
 import { Summary } from '@/components/stake-pool-creation/master-panel/step-content/Summary'
 import type { SlavePanelScreens } from '@/components/stake-pool-creation/SlavePanel'
 
-import { StepIndicator } from '../step-indicator/StepIndicator'
-
 export type FlowType = 'create' | 'update'
 
 export type StepContentProps = {
@@ -19,6 +17,7 @@ export type StepContentProps = {
   formState: FormikHandlers & FormikState<FormikValues> & FormikValues
   mintInfo?: Mint
   type: FlowType
+  activeSlavePanelScreen: SlavePanelScreens
 }
 
 export const StepContent = ({
@@ -27,18 +26,15 @@ export const StepContent = ({
   formState,
   mintInfo,
   type,
+  activeSlavePanelScreen,
 }: StepContentProps) => {
   return (
-    <div className="min-h-[540px]">
-      {currentStep > 0 && (
-        <div className=" pb-16">
-          <StepIndicator currentStep={currentStep} />
-        </div>
-      )}
+    <div className="h-full">
       {currentStep === 0 && <Intro />}
       {currentStep === 1 && (
         <Authorization
           setActiveSlavePanelScreen={setActiveSlavePanelScreen}
+          activeSlavePanelScreen={activeSlavePanelScreen}
           formState={formState}
         />
       )}
@@ -48,10 +44,12 @@ export const StepContent = ({
           mintInfo={mintInfo}
           setActiveSlavePanelScreen={setActiveSlavePanelScreen}
           formState={formState}
+          activeSlavePanelScreen={activeSlavePanelScreen}
         />
       )}
       {currentStep === 3 && (
         <AdditionalFeatures
+          activeSlavePanelScreen={activeSlavePanelScreen}
           setActiveSlavePanelScreen={setActiveSlavePanelScreen}
           formState={formState}
         />

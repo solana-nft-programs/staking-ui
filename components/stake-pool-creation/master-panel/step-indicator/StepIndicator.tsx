@@ -3,22 +3,30 @@ import { HorizontalDivider } from '@/components/UI/HorizontalDivider'
 
 export type StepIndicatorProps = {
   currentStep: number
+  stepNames?: string[]
+  numberOfSteps: number
+  setCurrentStep: (step: number) => void
 }
 
-const numberOfSteps = 3
-
-export const StepIndicator = ({ currentStep }: StepIndicatorProps) => {
+export const StepIndicator = ({
+  currentStep,
+  stepNames,
+  numberOfSteps,
+  setCurrentStep,
+}: StepIndicatorProps) => {
   return (
-    <div className="relative flex w-full items-center justify-between py-2">
-      <div className="absolute w-full px-1">
+    <div className="relative flex w-full items-center justify-between px-8 py-6 pb-14">
+      <div className="absolute -ml-8 w-full px-8">
         <HorizontalDivider />
       </div>
-      {}
-      {[...Array(numberOfSteps)].map((_, index) => (
+      {[...Array(numberOfSteps)].map((_, i) => (
         <StepIndicatorBubble
-          isPast={index + 1 < currentStep}
-          isActive={index + 1 === currentStep}
-          key={index}
+          setCurrentStep={setCurrentStep}
+          stepIndex={i}
+          isPast={i + 1 < currentStep}
+          isActive={i + 1 === currentStep}
+          key={i}
+          stepName={stepNames?.[i] || ''}
         />
       ))}
     </div>

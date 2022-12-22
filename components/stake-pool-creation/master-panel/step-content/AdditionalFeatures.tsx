@@ -1,9 +1,9 @@
-import { InformationCircleIcon } from '@heroicons/react/24/outline'
 import type { FormikHandlers, FormikState, FormikValues } from 'formik'
 import type { Dispatch, SetStateAction } from 'react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { SlavePanelScreens } from '@/components/stake-pool-creation/SlavePanel'
+import { InfoTipButtons } from '@/components/UI/buttons/InfoTipButtons'
 import { DateInput } from '@/components/UI/inputs/DateInput'
 import { DurationInput } from '@/components/UI/inputs/DurationInput'
 import { SelectInput } from '@/components/UI/inputs/SelectInput'
@@ -13,33 +13,42 @@ import { booleanOptions } from '@/types/index'
 export type AdditionalFeaturesProps = {
   setActiveSlavePanelScreen: Dispatch<SetStateAction<SlavePanelScreens>>
   formState: FormikHandlers & FormikState<FormikValues> & FormikValues
+  activeSlavePanelScreen: SlavePanelScreens
 }
+
+const {
+  TIME_BASED_PARAMETERS_1,
+  TIME_BASED_PARAMETERS_2,
+  ADDITIONAL_STAKE_CONDITIONS_3,
+  TIME_BASED_PARAMETERS_4,
+} = SlavePanelScreens
 
 export const AdditionalFeatures = ({
   setActiveSlavePanelScreen,
   formState,
+  activeSlavePanelScreen,
 }: AdditionalFeaturesProps) => {
-  const [resetOnStake, setResetOnStake] = useState('no')
+  const [resetOnStake, setResetOnStake] = useState('')
+  const { values, setFieldValue } = formState
+
   const handleResetOnStakeChange = (value: string) => {
     values.resetOnStake = !!(value === 'yes')
     setResetOnStake(value)
   }
-  const { values, setFieldValue } = formState
+
+  useEffect(() => {
+    setResetOnStake(values.resetOnStake ? 'yes' : 'no')
+  }, [values.resetOnStake])
+
   return (
-    <div className="flex flex-col gap-6">
-      <div className="">
+    <div className="flex flex-col gap-6 pb-14">
+      <div>
         <div className="mb-2 flex w-full items-center">
-          <LabelText>
-            Minimum stake duration
-            <span className="ml-1 text-gray-500">(optional)</span>
-          </LabelText>
-          <InformationCircleIcon
-            className="ml-1 h-6 w-6 cursor-pointer text-gray-400"
-            onClick={() =>
-              setActiveSlavePanelScreen(
-                SlavePanelScreens.TIME_BASED_PARAMETERS_1
-              )
-            }
+          <LabelText isOptional>Minimum stake duration</LabelText>
+          <InfoTipButtons
+            setActiveScreen={setActiveSlavePanelScreen}
+            screen={TIME_BASED_PARAMETERS_1}
+            activeScreen={activeSlavePanelScreen}
           />
         </div>
         <DurationInput
@@ -48,19 +57,13 @@ export const AdditionalFeatures = ({
           handleChange={(v) => setFieldValue('minStakeSeconds', v)}
         />
       </div>
-      <div className="">
+      <div>
         <div className="mb-2 flex w-full items-center">
-          <LabelText>
-            Cooldown period
-            <span className="ml-1 text-gray-500">(optional)</span>
-          </LabelText>
-          <InformationCircleIcon
-            className="ml-1 h-6 w-6 cursor-pointer text-gray-400"
-            onClick={() =>
-              setActiveSlavePanelScreen(
-                SlavePanelScreens.TIME_BASED_PARAMETERS_2
-              )
-            }
+          <LabelText isOptional>Cooldown period</LabelText>
+          <InfoTipButtons
+            setActiveScreen={setActiveSlavePanelScreen}
+            screen={TIME_BASED_PARAMETERS_2}
+            activeScreen={activeSlavePanelScreen}
           />
         </div>
         <DurationInput
@@ -69,19 +72,13 @@ export const AdditionalFeatures = ({
           handleChange={(v) => setFieldValue('cooldownPeriodSeconds', v)}
         />
       </div>
-      <div className="">
+      <div>
         <div className="mb-2 flex w-full items-center">
-          <LabelText>
-            Reset on stake{' '}
-            <span className="ml-1 text-gray-500">(optional)</span>
-          </LabelText>
-          <InformationCircleIcon
-            className="ml-1 h-6 w-6 cursor-pointer text-gray-400"
-            onClick={() =>
-              setActiveSlavePanelScreen(
-                SlavePanelScreens.ADDITIONAL_STAKE_CONDITIONS_3
-              )
-            }
+          <LabelText isOptional>Reset on stake</LabelText>
+          <InfoTipButtons
+            setActiveScreen={setActiveSlavePanelScreen}
+            screen={ADDITIONAL_STAKE_CONDITIONS_3}
+            activeScreen={activeSlavePanelScreen}
           />
         </div>
         <SelectInput
@@ -91,19 +88,13 @@ export const AdditionalFeatures = ({
           options={booleanOptions}
         />
       </div>
-      <div className="">
+      <div>
         <div className="mb-2 flex w-full items-center">
-          <LabelText>
-            End date
-            <span className="ml-1 text-gray-500">(optional)</span>
-          </LabelText>
-          <InformationCircleIcon
-            className="ml-1 h-6 w-6 cursor-pointer text-gray-400"
-            onClick={() =>
-              setActiveSlavePanelScreen(
-                SlavePanelScreens.TIME_BASED_PARAMETERS_4
-              )
-            }
+          <LabelText isOptional>End date</LabelText>
+          <InfoTipButtons
+            setActiveScreen={setActiveSlavePanelScreen}
+            screen={TIME_BASED_PARAMETERS_4}
+            activeScreen={activeSlavePanelScreen}
           />
         </div>
         <DateInput

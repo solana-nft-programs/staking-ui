@@ -1,4 +1,4 @@
-import { tryFormatInput, tryPublicKey } from '@cardinal/common'
+import { tryPublicKey } from '@cardinal/common'
 import { AsyncButton } from 'common/Button'
 import { FormFieldTitleInput } from 'common/FormFieldInput'
 import { LoadingSpinner } from 'common/LoadingSpinner'
@@ -146,11 +146,7 @@ export function RewardDistributorUpdate() {
           disabled={!mintInfo.data}
           hasError={!!errors.rewardAmount}
           placeholder={'0'}
-          value={tryFormatInput(
-            values.rewardAmount,
-            mintInfo.data?.decimals,
-            values.rewardAmount ?? ''
-          )}
+          value={values.rewardAmount}
           decimals={mintInfo.data?.decimals}
           handleChange={(v) => setFieldValue('rewardAmount', v)}
         />

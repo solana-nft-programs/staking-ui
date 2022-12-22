@@ -1,4 +1,4 @@
-import { InformationCircleIcon, PlusIcon } from '@heroicons/react/24/outline'
+import { PlusIcon } from '@heroicons/react/24/outline'
 import type {
   FormikErrors,
   FormikHandlers,
@@ -10,10 +10,12 @@ import { Fragment, useState } from 'react'
 
 import { SlavePanelScreens } from '@/components/stake-pool-creation/SlavePanel'
 import { ButtonLargeWithDottedOutline } from '@/components/UI/buttons/ButtonLargeWithDottedOutline'
+import { InfoTipButtons } from '@/components/UI/buttons/InfoTipButtons'
 import { TextInput } from '@/components/UI/inputs/TextInput'
 import { LabelText } from '@/components/UI/typography/LabelText'
 
 export type CollectionAddressInputsProps = {
+  activeSlavePanelScreen: SlavePanelScreens
   setActiveSlavePanelScreen: Dispatch<SetStateAction<SlavePanelScreens>>
   formState: FormikHandlers &
     FormikState<FormikValues> &
@@ -22,6 +24,7 @@ export type CollectionAddressInputsProps = {
 }
 
 export const CollectionAddressInputs = ({
+  activeSlavePanelScreen,
   setActiveSlavePanelScreen,
   formState,
 }: CollectionAddressInputsProps) => {
@@ -36,10 +39,11 @@ export const CollectionAddressInputs = ({
   return (
     <div className="space-y-2 pt-4">
       <div className="flex w-full items-center">
-        <LabelText>NFT collection address</LabelText>
-        <InformationCircleIcon
-          className="ml-1 h-6 w-6 cursor-pointer text-gray-400"
-          onClick={() => setActiveSlavePanelScreen(AUTHORIZATION_2)}
+        <LabelText isOptional>NFT collection address</LabelText>
+        <InfoTipButtons
+          setActiveScreen={setActiveSlavePanelScreen}
+          screen={AUTHORIZATION_2}
+          activeScreen={activeSlavePanelScreen}
         />
       </div>
       {displayInput || values.requireCollections.length > 0 ? (
@@ -56,7 +60,18 @@ export const CollectionAddressInputs = ({
               }}
             />
           </div>
-          <div className="flex w-full justify-end">
+          <div className="flex w-full justify-end space-x-3">
+            {values.requireCollections.length <= 1 && (
+              <button
+                className="text-sm text-gray-400"
+                onClick={() => {
+                  setFieldValue(`requireCollections`, [])
+                  setDisplayInput(false)
+                }}
+              >
+                Cancel
+              </button>
+            )}
             <button
               className="text-sm text-orange-500"
               onClick={() =>

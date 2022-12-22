@@ -5,11 +5,13 @@ import { BodyCopy } from '@/components/UI/typography/BodyCopy'
 export const RewardSupplyTipTwo = () => {
   return (
     <>
-      <Image
-        src="/images/stake-pool-creation/reward-supply/reward-supply-two.png"
-        width={310}
-        height={420}
-      />
+      <div className="flex w-full justify-center">
+        <Image
+          src="/images/stake-pool-creation/reward-supply/reward-supply-two.png"
+          width={310}
+          height={420}
+        />
+      </div>
       <div className="mt-8 max-w-lg space-y-4 px-4">
         <BodyCopy>
           Specify the duration to stake a single natural amount of token (1 NFT
