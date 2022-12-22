@@ -32,7 +32,7 @@ function Admin() {
       <HeaderSlim />
       <div className="container mx-auto w-full flex-grow px-6">
         <div className="mt-8 flex items-center justify-between">
-          <HeadingSecondary>Your Stake Pool</HeadingSecondary>
+          <HeadingSecondary>Your Stake Pools</HeadingSecondary>
           <ButtonPrimary
             width={ButtonWidths.NARROW}
             onClick={() =>
