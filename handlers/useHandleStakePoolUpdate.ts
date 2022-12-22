@@ -45,7 +45,7 @@ export const useHandleStakePoolUpdate = () => {
         .filter((c) => c) as PublicKey[]
 
       if (isStakePoolV2(stakePool.data.parsed)) {
-        /////////////////// V1 ///////////////////
+        /////////////////// V2 ///////////////////
         const ix = await program.methods
           .updatePool({
             allowedCollections: collectionPublicKeys,

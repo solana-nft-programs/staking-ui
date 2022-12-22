@@ -196,7 +196,6 @@ export const StakePoolCreationFlow = ({
   }
 
   useEffect(() => {
-    console.log(currentStep)
     autoSelectFirstSlaveScreen()
   }, [currentStep])
 
