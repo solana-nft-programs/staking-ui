@@ -31,8 +31,8 @@ export const SlavePanel = ({
   activeScreen = SlavePanelScreens.INTRO,
 }: SlavePanelProps) => {
   return (
-    <div className="ml-8 flex w-3/5 flex-col">
-      <div className="relative flex h-full w-full flex-col items-center justify-center overflow-clip rounded-2xl bg-black py-16">
+    <div className="ml-8 hidden w-3/5 flex-col lg:flex ">
+      <div className="relative flex h-full w-full flex-col items-center justify-center overflow-clip rounded-2xl bg-black">
         <ContentPrimary activeScreen={activeScreen} />
         <FloatingBlurryBlob
           color={FloatingBlurryBlobColors.ORANGE}

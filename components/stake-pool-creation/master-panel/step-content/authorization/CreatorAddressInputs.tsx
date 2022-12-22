@@ -1,19 +1,22 @@
-import { InformationCircleIcon, PlusIcon } from '@heroicons/react/24/outline'
+import { PlusIcon } from '@heroicons/react/24/outline'
 import type { FormikHandlers, FormikState, FormikValues } from 'formik'
 import type { Dispatch, SetStateAction } from 'react'
 import { Fragment, useState } from 'react'
 
 import { SlavePanelScreens } from '@/components/stake-pool-creation/SlavePanel'
 import { ButtonLargeWithDottedOutline } from '@/components/UI/buttons/ButtonLargeWithDottedOutline'
+import { InfoTipButtons } from '@/components/UI/buttons/InfoTipButtons'
 import { TextInput } from '@/components/UI/inputs/TextInput'
 import { LabelText } from '@/components/UI/typography/LabelText'
 
 export type CreatorAddressInputsProps = {
+  activeSlavePanelScreen: SlavePanelScreens
   setActiveSlavePanelScreen: Dispatch<SetStateAction<SlavePanelScreens>>
   formState: FormikHandlers & FormikState<FormikValues> & FormikValues
 }
 
 export const CreatorAddressInputs = ({
+  activeSlavePanelScreen,
   setActiveSlavePanelScreen,
   formState,
 }: CreatorAddressInputsProps) => {
@@ -28,10 +31,11 @@ export const CreatorAddressInputs = ({
   return (
     <div className="space-y-2">
       <div className="flex w-full items-center">
-        <LabelText>Creator address</LabelText>
-        <InformationCircleIcon
-          className="ml-1 h-6 w-6 cursor-pointer text-gray-400"
-          onClick={() => setActiveSlavePanelScreen(AUTHORIZATION_1)}
+        <LabelText isOptional>Creator address</LabelText>
+        <InfoTipButtons
+          setActiveScreen={setActiveSlavePanelScreen}
+          screen={AUTHORIZATION_1}
+          activeScreen={activeSlavePanelScreen}
         />
       </div>
       {displayInput || values.requireCreators.length > 0 ? (
@@ -47,7 +51,18 @@ export const CreatorAddressInputs = ({
             />
           </div>
 
-          <div className="flex w-full justify-end">
+          <div className="flex w-full justify-end space-x-3">
+            {values.requireCreators.length <= 1 && (
+              <button
+                className="text-sm text-gray-400"
+                onClick={() => {
+                  setFieldValue(`requireCreators`, [])
+                  setDisplayInput(false)
+                }}
+              >
+                Cancel
+              </button>
+            )}
             <button
               className="text-sm text-orange-500"
               onClick={() =>

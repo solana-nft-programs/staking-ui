@@ -5,11 +5,13 @@ import { BodyCopy } from '@/components/UI/typography/BodyCopy'
 export const RewardSupplyTipOne = () => {
   return (
     <>
-      <Image
-        src="/images/stake-pool-creation/reward-supply/reward-supply-one.png"
-        width={310}
-        height={420}
-      />
+      <div className="flex w-full justify-center">
+        <Image
+          src="/images/stake-pool-creation/reward-supply/reward-supply-one.png"
+          width={310}
+          height={420}
+        />
+      </div>
       <div className="mt-8 max-w-lg space-y-4 px-4">
         <BodyCopy>
           Specify the amount of tokens to be distributed per duration staked,

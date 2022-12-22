@@ -1,11 +1,3 @@
-import { InformationCircleIcon } from '@heroicons/react/24/outline'
-import { BN } from 'bn.js'
-import { notify } from 'common/Notification'
-import {
-  formatMintNaturalAmountAsDecimal,
-  tryFormatInput,
-  tryParseInput,
-} from 'common/units'
 import type { FormikHandlers, FormikState, FormikValues } from 'formik'
 import { useRewardDistributorData } from 'hooks/useRewardDistributorData'
 import type { Dispatch, SetStateAction } from 'react'
@@ -13,16 +5,20 @@ import type { Mint } from 'spl-token-v3'
 
 import type { FlowType } from '@/components/stake-pool-creation/master-panel/step-content/StepContent'
 import { SlavePanelScreens } from '@/components/stake-pool-creation/SlavePanel'
+import { InfoTipButtons } from '@/components/UI/buttons/InfoTipButtons'
+import { BNInput } from '@/components/UI/inputs/BNInput'
 import { DurationInput } from '@/components/UI/inputs/DurationInput'
-import { NumberInput } from '@/components/UI/inputs/NumberInput'
 import { TextInput } from '@/components/UI/inputs/TextInput'
+import { BodyCopy } from '@/components/UI/typography/BodyCopy'
 import { LabelText } from '@/components/UI/typography/LabelText'
+import { BodyTextSizes } from '@/types/index'
 
 export type RewardDistributionProps = {
   setActiveSlavePanelScreen: Dispatch<SetStateAction<SlavePanelScreens>>
   formState: FormikHandlers & FormikState<FormikValues> & FormikValues
   mintInfo?: Mint
   type: FlowType
+  activeSlavePanelScreen: SlavePanelScreens
 }
 
 export const RewardDistribution = ({
@@ -30,25 +26,28 @@ export const RewardDistribution = ({
   formState,
   mintInfo,
   type,
+  activeSlavePanelScreen,
 }: RewardDistributionProps) => {
   const {
     REWARD_SUPPLY_1,
     REWARD_SUPPLY_2,
+    REWARD_SUPPLY_3,
     REWARD_DISTRIBUTION_2,
-    REWARD_DISTRIBUTION_3,
+    TIME_BASED_PARAMETERS_3,
   } = SlavePanelScreens
 
   const { setFieldValue, values, errors } = formState
   const rewardDistributor = useRewardDistributorData()
-  console.log(formState.values)
+
   return (
-    <div className="flex flex-col gap-6">
-      <div className="">
+    <div className="flex flex-col gap-6 pb-16">
+      <div>
         <div className="mb-2 flex w-full items-center">
-          <LabelText>Rewards mint address</LabelText>
-          <InformationCircleIcon
-            className="ml-1 h-6 w-6 cursor-pointer text-gray-400"
-            onClick={() => setActiveSlavePanelScreen(REWARD_DISTRIBUTION_2)}
+          <LabelText isOptional>Rewards mint address</LabelText>
+          <InfoTipButtons
+            setActiveScreen={setActiveSlavePanelScreen}
+            screen={REWARD_DISTRIBUTION_2}
+            activeScreen={activeSlavePanelScreen}
           />
         </div>
         <TextInput
@@ -61,164 +60,107 @@ export const RewardDistribution = ({
             setFieldValue('rewardMintAddress', e.target.value)
           }}
         />
+        <BodyCopy className="mt-2 italic" textSize={BodyTextSizes.SMALL}>
+          Enter a valid SPL token mint address to enable below form fields
+        </BodyCopy>
       </div>
-      {mintInfo && (
-        <>
-          <div className="">
-            <div className="mb-2 flex w-full items-center">
-              <LabelText>Reward amount per staked token</LabelText>
-              <InformationCircleIcon
-                onClick={() => setActiveSlavePanelScreen(REWARD_SUPPLY_1)}
-                className="ml-1 h-6 w-6 cursor-pointer text-gray-400"
-              />
-            </div>
-            <NumberInput
-              placeholder="0.000"
-              value={formatMintNaturalAmountAsDecimal(
-                mintInfo,
-                new BN(values.rewardAmount.toString())
-              )}
-              onChange={(e) => {
-                setFieldValue(
-                  'rewardAmount',
-                  tryParseInput(
-                    e.target.value,
-                    mintInfo.decimals,
-                    formatMintNaturalAmountAsDecimal(
-                      mintInfo,
-                      new BN(values.rewardAmount.toString())
-                    ) ?? ''
-                  )
-                )
-              }}
+      <>
+        <div>
+          <div className="mb-2 flex w-full items-center">
+            <LabelText isOptional>Reward amount per staked token</LabelText>
+            <InfoTipButtons
+              setActiveScreen={setActiveSlavePanelScreen}
+              screen={REWARD_SUPPLY_1}
+              activeScreen={activeSlavePanelScreen}
             />
           </div>
-          <div className="">
+          <BNInput
+            placeholder="0.000"
+            hasError={!!errors.rewardAmount}
+            disabled={!mintInfo}
+            decimals={mintInfo?.decimals}
+            value={values.rewardAmount}
+            handleChange={(v) => {
+              setFieldValue('rewardAmount', v)
+            }}
+          />
+        </div>
+        <div>
+          <div className="mb-2 flex w-full items-center">
+            <LabelText isOptional>Reward duration seconds</LabelText>
+            <InfoTipButtons
+              setActiveScreen={setActiveSlavePanelScreen}
+              screen={REWARD_SUPPLY_2}
+              activeScreen={activeSlavePanelScreen}
+            />
+          </div>
+          <TextInput
+            disabled={!mintInfo}
+            placeholder="0"
+            value={values.rewardDurationSeconds}
+            onChange={(e) => {
+              setFieldValue('rewardDurationSeconds', e.target.value)
+            }}
+          />
+        </div>
+        <div className="flex gap-6">
+          <div className="w-1/2">
             <div className="mb-2 flex w-full items-center">
-              <LabelText>Reward duration seconds</LabelText>
-              <InformationCircleIcon
-                onClick={() => setActiveSlavePanelScreen(REWARD_SUPPLY_2)}
-                className="ml-1 h-6 w-6 cursor-pointer text-gray-400"
+              <LabelText isOptional>Multiplier Decimals</LabelText>
+              <InfoTipButtons
+                setActiveScreen={setActiveSlavePanelScreen}
+                screen={REWARD_SUPPLY_3}
+                activeScreen={activeSlavePanelScreen}
               />
             </div>
-            <NumberInput
+            <TextInput
+              disabled={!mintInfo}
+              className="w-full"
               placeholder="0"
-              value={values.rewardDurationSeconds}
+              value={values.multiplierDecimals}
               onChange={(e) => {
-                setFieldValue('rewardDurationSeconds', e.target.value)
+                setFieldValue('multiplierDecimals', e.target.value)
               }}
             />
           </div>
-          <div className="">
+          <div className="w-1/2">
             <div className="mb-2 flex w-full items-center">
-              <LabelText>
-                Reward transfer amount
-                <span className="ml-1 text-gray-500">(optional)</span>
-              </LabelText>
-              <InformationCircleIcon
-                className="ml-1 h-6 w-6 cursor-pointer text-gray-400"
-                onClick={() => setActiveSlavePanelScreen(REWARD_DISTRIBUTION_3)}
+              <LabelText isOptional>Default Multiplier</LabelText>
+              <InfoTipButtons
+                setActiveScreen={setActiveSlavePanelScreen}
+                screen={REWARD_SUPPLY_3}
+                activeScreen={activeSlavePanelScreen}
               />
             </div>
-            <div className="relative">
-              <TextInput
-                disabled={
-                  type === 'update' && rewardDistributor?.data !== undefined
-                }
-                value={tryFormatInput(
-                  values.rewardMintSupply,
-                  mintInfo.decimals,
-                  values.rewardMintSupply ?? ''
-                )}
-                onChange={(e) => {
-                  if (Number.isNaN(Number(e.target.value))) {
-                    notify({
-                      message: `Invalid transfer amount`,
-                      type: 'error',
-                    })
-                    return
-                  }
-                  setFieldValue(
-                    'rewardMintSupply',
-                    tryParseInput(
-                      e.target.value,
-                      mintInfo.decimals,
-                      values.rewardMintSupply ?? ''
-                    )
-                  )
-                }}
-              />
-            </div>
-          </div>
-          <div className="flex gap-6">
-            <div className="w-1/2">
-              <div className="mb-2 flex w-full items-center">
-                <LabelText>
-                  Multiplier Decimals
-                  <span className="ml-1 text-gray-500">(optional)</span>
-                </LabelText>
-                <InformationCircleIcon
-                  onClick={() =>
-                    setActiveSlavePanelScreen(SlavePanelScreens.REWARD_SUPPLY_3)
-                  }
-                  className="ml-1 h-6 w-6 cursor-pointer text-gray-400"
-                />
-              </div>
-              <NumberInput
-                className="w-full"
-                placeholder="0"
-                value={values.multiplierDecimals}
-                onChange={(e) => {
-                  setFieldValue('multiplierDecimals', e.target.value)
-                }}
-              />
-            </div>
-            <div className="w-1/2">
-              <div className="mb-2 flex w-full items-center">
-                <LabelText>
-                  Default Multiplier
-                  <span className="ml-1 text-gray-500">(optional)</span>
-                </LabelText>
-                <InformationCircleIcon
-                  onClick={() =>
-                    setActiveSlavePanelScreen(SlavePanelScreens.REWARD_SUPPLY_3)
-                  }
-                  className="ml-1 h-6 w-6 cursor-pointer text-gray-400"
-                />
-              </div>
-              <NumberInput
-                className="w-full"
-                placeholder="1"
-                value={values.defaultMultiplier}
-                onChange={(e) => {
-                  setFieldValue('defaultMultiplier', e.target.value)
-                }}
-              />
-            </div>
-          </div>
-          <div className="">
-            <div className="mb-2 flex w-full items-center">
-              <LabelText>
-                Maximum reward duration
-                <span className="ml-1 text-gray-500">(optional)</span>
-              </LabelText>
-              <InformationCircleIcon
-                className="ml-1 h-6 w-6 cursor-pointer text-gray-400"
-                onClick={() =>
-                  setActiveSlavePanelScreen(
-                    SlavePanelScreens.TIME_BASED_PARAMETERS_3
-                  )
-                }
-              />
-            </div>
-            <DurationInput
-              defaultAmount={values.maxRewardSecondsReceived ?? null}
-              defaultOption={'seconds'}
-              handleChange={(v) => setFieldValue('maxRewardSecondsReceived', v)}
+            <TextInput
+              disabled={!mintInfo}
+              className="w-full"
+              placeholder="1"
+              value={values.defaultMultiplier}
+              onChange={(e) => {
+                setFieldValue('defaultMultiplier', e.target.value)
+              }}
             />
           </div>
-        </>
-      )}
+        </div>
+        <div>
+          <div className="mb-2 flex w-full items-center">
+            <LabelText isOptional>Maximum reward duration</LabelText>
+            <InfoTipButtons
+              setActiveScreen={setActiveSlavePanelScreen}
+              screen={TIME_BASED_PARAMETERS_3}
+              activeScreen={activeSlavePanelScreen}
+            />
+          </div>
+          <DurationInput
+            selectorPosition="from-bottom"
+            disabled={!mintInfo}
+            defaultAmount={values.maxRewardSecondsReceived ?? null}
+            defaultOption={'seconds'}
+            handleChange={(v) => setFieldValue('maxRewardSecondsReceived', v)}
+          />
+        </div>
+      </>
     </div>
   )
 }

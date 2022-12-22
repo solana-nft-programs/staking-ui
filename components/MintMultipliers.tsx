@@ -85,7 +85,7 @@ export const MintMultipliers = () => {
       <div className="flex flex-row gap-2">
         <TextInput
           className="w-1/6"
-          placeholder={'0'}
+          placeholder="0"
           onChange={(e) => {
             setFieldValue('multipliers[0]', e.target.value)
           }}
@@ -108,7 +108,7 @@ export const MintMultipliers = () => {
             <div key={i} className="mt-3 flex flex-row gap-2">
               <TextInput
                 className="w-1/6"
-                placeholder={'0'}
+                placeholder="0"
                 onChange={(e) => {
                   setFieldValue(`multipliers[${i}]`, e.target.value)
                 }}

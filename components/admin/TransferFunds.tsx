@@ -1,7 +1,6 @@
 import { RewardDistributorKind } from '@cardinal/staking/dist/cjs/programs/rewardDistributor'
 import { AsyncButton } from 'common/Button'
 import { FormFieldTitleInput } from 'common/FormFieldInput'
-import { tryFormatInput } from 'common/units'
 import { useHandleTransferFunds } from 'handlers/useHandleTransferFunds'
 import {
   isRewardDistributorV2,
@@ -33,13 +32,8 @@ export const TransferFunds = () => {
       <div className="mb-5 flex flex-row gap-2">
         <BNInput
           className="flex w-auto flex-grow"
-          type="text"
           placeholder={'1000000'}
-          value={tryFormatInput(
-            transferAmount,
-            rewardMintInfo.data?.mintInfo.decimals || 0,
-            '0'
-          )}
+          value={transferAmount}
           decimals={rewardMintInfo.data?.mintInfo.decimals}
           handleChange={(v) => setTransferAmount(v)}
         />

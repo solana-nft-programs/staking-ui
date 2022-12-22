@@ -33,7 +33,7 @@ export const RewardSupply = ({
     <>
       <div className="pb-6">
         <div className="mb-2 flex w-full items-center">
-          <LabelText>Reward amount per staked token</LabelText>
+          <LabelText isOptional>Reward amount per staked token</LabelText>
           <InformationCircleIcon
             onClick={() => setActiveSlavePanelScreen(REWARD_SUPPLY_1)}
             className="ml-1 h-6 w-6 cursor-pointer text-gray-400"
@@ -47,7 +47,7 @@ export const RewardSupply = ({
       </div>
       <div className="pb-6">
         <div className="mb-2 flex w-full items-center">
-          <LabelText>Reward generation rate</LabelText>
+          <LabelText isOptional>Reward generation rate</LabelText>
           <InformationCircleIcon
             onClick={() => setActiveSlavePanelScreen(REWARD_SUPPLY_2)}
             className="ml-1 h-6 w-6 cursor-pointer text-gray-400"
