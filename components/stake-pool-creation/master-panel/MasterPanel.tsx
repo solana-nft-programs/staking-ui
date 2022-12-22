@@ -73,19 +73,21 @@ export const MasterPanel = ({
           setCurrentStep={setCurrentStep}
         />
       )}
-      <div className="-mx-2 h-full overflow-y-auto px-2">
-        <StepContent
-          type={type}
-          mintInfo={mintInfo}
-          formState={formState}
-          currentStep={currentStep}
-          activeSlavePanelScreen={activeSlavePanelScreen}
-          setActiveSlavePanelScreen={setActiveSlavePanelScreen}
-        />
+      <div className="relative h-full overflow-y-auto">
+        <div className="-mx-2 h-full overflow-y-auto px-2">
+          <StepContent
+            type={type}
+            mintInfo={mintInfo}
+            formState={formState}
+            currentStep={currentStep}
+            activeSlavePanelScreen={activeSlavePanelScreen}
+            setActiveSlavePanelScreen={setActiveSlavePanelScreen}
+          />
+        </div>
+        <div className="pointer-events-none absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-b from-transparent via-gray-900 to-gray-900" />
       </div>
-      <div className="pointer-events-none absolute bottom-10 left-0 right-0 h-20 bg-gradient-to-b from-transparent via-gray-900 to-gray-900" />
       <div className="mt-16 flex items-center justify-between bg-opacity-0">
-        <div className="flex items-center space-x-4">
+        <div className="flex flex-wrap items-center gap-4">
           {currentStep > 0 && (
             <ButtonPrimary
               onClick={() => setCurrentStep(currentStep - 1)}
