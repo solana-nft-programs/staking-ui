@@ -9,6 +9,7 @@ import { useRef, useState } from 'react'
 import type { UseMutationResult } from 'react-query'
 
 import { UnstakedToken } from '@/components/token-staking/unstaked-tokens/UnstakedToken'
+import { DEFAULT_PAGE, PAGE_SIZE } from '@/components/token-staking/constants'
 
 export type UnstakedTokensProps = {
   showFungibleTokens: boolean
@@ -25,9 +26,6 @@ export type UnstakedTokensProps = {
     unknown
   >
 }
-
-export const PAGE_SIZE = 3
-export const DEFAULT_PAGE: [number, number] = [3, 0]
 
 export const UnstakedTokenList = ({
   showFungibleTokens,
