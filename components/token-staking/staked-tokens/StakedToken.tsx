@@ -11,7 +11,7 @@ import type { StakeEntryTokenData } from 'hooks/useStakedTokenDatas'
 import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 
-import { StakedStats } from './StakedStats'
+import { StakedStats } from '../../StakedStats'
 
 export const StakedToken = ({
   tk,
