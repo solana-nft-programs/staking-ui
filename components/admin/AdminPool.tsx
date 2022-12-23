@@ -2,11 +2,14 @@ import { pubKeyUrl, shortPubKey } from '@cardinal/common'
 import type { PublicKey } from '@solana/web3.js'
 import { TabSelector } from 'common/TabSelector'
 import { useRewardDistributorData } from 'hooks/useRewardDistributorData'
+import { useRewardDistributorTokenAccount } from 'hooks/useRewardDistributorTokenAccount'
 import { useStakePoolData } from 'hooks/useStakePoolData'
 import { useStakePoolId } from 'hooks/useStakePoolId'
 import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 import { useState } from 'react'
+
+import { StakePoolBalance } from '@/components/admin/StakePoolBalance'
 
 import { AuthorizeMints } from '../AuthorizeMints'
 import { MintMultiplierLookup } from '../MintMultiplierLookup'
@@ -16,6 +19,9 @@ import { ReclaimFunds } from './ReclaimFunds'
 import { RewardDistributorUpdate } from './RewardDistributorUpdate'
 import { StakePoolUpdate } from './StakePoolUpdate'
 import { TransferFunds } from './TransferFunds'
+import Image from 'next/image'
+import { LinkIcon } from '@heroicons/react/24/outline'
+import { withCluster } from 'common/utils'
 
 export type PANE_OPTIONS =
   | 'stake-pool'
@@ -32,6 +38,7 @@ export const AdminStakePool = ({
   const { environment } = useEnvironmentCtx()
   const { data: config } = useStakePoolMetadata()
   const stakePoolId = useStakePoolId()
+  const rewardDistributorTokenAccountData = useRewardDistributorTokenAccount()
   const stakePool = useStakePoolData()
   const rewardDistributor = useRewardDistributorData()
   const [pane, setPane] = useState<PANE_OPTIONS>('stake-pool')
@@ -88,15 +95,29 @@ export const AdminStakePool = ({
           className="text-4xl text-light-0"
           style={{ color: config?.colors?.fontColor }}
         >
+          {config?.displayName ?? shortPubKey(stakePoolId)}
+        </div>
+        <div className="flex space-x-3">
           <a
             target="_blank"
             className="transition hover:text-blue-500"
             href={pubKeyUrl(stakePoolId, environment.label)}
             rel="noreferrer"
           >
-            {config?.displayName ?? shortPubKey(stakePoolId)}
+            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gray-700 outline outline-gray-700 hover:outline-orange-500">
+              <Image src="/logos/solana-explorer.png" width={12} height={12} />
+            </div>
+          </a>
+          <a
+            className="transition hover:text-blue-500"
+            href={withCluster(`/${stakePoolId}`, environment.label)}
+          >
+            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gray-700 outline outline-gray-700 hover:outline-orange-500">
+              <LinkIcon className="h-4 w-4 text-gray-400" />
+            </div>
           </a>
         </div>
+        {stakePool.data && <StakePoolBalance setPane={setPane} />}
         {stakePool.data && <StakePoolImage />}
         <TabSelector<PANE_OPTIONS>
           defaultOption={paneTabs[0]}
