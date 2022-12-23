@@ -1,7 +1,6 @@
 import { ReceiptType } from '@cardinal/staking/dist/cjs/programs/stakePool'
 import { Tooltip } from '@mui/material'
 import { defaultSecondaryColor, TokenStandard } from 'api/mapping'
-import { contrastify } from 'common/colors'
 import { LoadingSpinner } from 'common/LoadingSpinner'
 import { notify } from 'common/Notification'
 import { RefreshButton } from 'common/RefreshButton'
@@ -11,19 +10,14 @@ import type { AllowedTokenData } from 'hooks/useAllowedTokenDatas'
 import { useAllowedTokenDatas } from 'hooks/useAllowedTokenDatas'
 import { isStakePoolV2, useStakePoolData } from 'hooks/useStakePoolData'
 import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { FaInfoCircle } from 'react-icons/fa'
 
-import { UnstakedToken } from './UnstakedToken'
-
-export const PAGE_SIZE = 3
-export const DEFAULT_PAGE: [number, number] = [3, 0]
+import { UnstakedTokenList } from '@/components/token-staking/unstaked-tokens/UnstakedTokenList'
 
 export const UnstakedTokens = () => {
   const { data: stakePoolData } = useStakePoolData()
   const { data: stakePoolMetadata } = useStakePoolMetadata()
-  const [pageNum, setPageNum] = useState<[number, number]>(DEFAULT_PAGE)
-  const ref = useRef<HTMLDivElement | null>(null)
 
   const [unstakedSelected, setUnstakedSelected] = useState<AllowedTokenData[]>(
     []
@@ -43,55 +37,6 @@ export const UnstakedTokens = () => {
     stakePoolMetadata?.receiptType &&
       setReceiptType(stakePoolMetadata?.receiptType)
   }, [stakePoolMetadata?.name])
-
-  const selectUnstakedToken = (tk: AllowedTokenData, targetValue?: string) => {
-    if (handleStake.isLoading) return
-    const amount = Number(targetValue)
-    if ((tk.tokenAccount?.parsed.tokenAmount.amount ?? 0) > 1) {
-      let newUnstakedSelected = unstakedSelected.filter(
-        (data) =>
-          data.tokenAccount?.parsed.mint.toString() !==
-          tk.tokenAccount?.parsed.mint.toString()
-      )
-      if (targetValue && targetValue?.length > 0 && !amount) {
-        notify({
-          message: 'Please enter a valid amount',
-          type: 'error',
-        })
-      } else if (targetValue) {
-        tk.amountToStake = targetValue.toString()
-        newUnstakedSelected = [...newUnstakedSelected, tk]
-        setUnstakedSelected(newUnstakedSelected)
-        return
-      }
-      setUnstakedSelected(
-        unstakedSelected.filter(
-          (data) =>
-            data.tokenAccount?.parsed.mint.toString() !==
-            tk.tokenAccount?.parsed.mint.toString()
-        )
-      )
-    } else {
-      if (isUnstakedTokenSelected(tk)) {
-        setUnstakedSelected(
-          unstakedSelected.filter(
-            (data) =>
-              data.tokenAccount?.parsed.mint.toString() !==
-              tk.tokenAccount?.parsed.mint.toString()
-          )
-        )
-      } else {
-        setUnstakedSelected([...unstakedSelected, tk])
-      }
-    }
-  }
-
-  const isUnstakedTokenSelected = (tk: AllowedTokenData) =>
-    unstakedSelected.some(
-      (utk) =>
-        utk.tokenAccount?.parsed.mint.toString() ===
-        tk.tokenAccount?.parsed.mint.toString()
-    )
 
   return (
     <div
@@ -133,77 +78,13 @@ export const UnstakedTokens = () => {
         </div>
       </div>
       <div className="my-3 flex-auto overflow-auto">
-        <div
-          className="relative my-auto mb-4 h-[60vh] overflow-y-auto overflow-x-hidden rounded-md bg-white bg-opacity-5 p-5"
-          style={{
-            background:
-              stakePoolMetadata?.colors?.backgroundSecondary &&
-              contrastify(0.05, stakePoolMetadata?.colors?.backgroundSecondary),
-          }}
-          ref={ref}
-          onScroll={() => {
-            if (ref.current) {
-              const { scrollTop, scrollHeight, clientHeight } = ref.current
-              if (scrollHeight - scrollTop <= clientHeight * 1.1) {
-                setPageNum(([n, prevScrollHeight]) => {
-                  return prevScrollHeight !== scrollHeight
-                    ? [n + 1, scrollHeight]
-                    : [n, prevScrollHeight]
-                })
-              }
-            }
-          }}
-        >
-          {!allowedTokenDatas.isFetched ? (
-            <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-              <div className="aspect-square animate-pulse rounded-lg bg-white bg-opacity-5 p-10"></div>
-              <div className="aspect-square animate-pulse rounded-lg bg-white bg-opacity-5 p-10"></div>
-              <div className="aspect-square animate-pulse rounded-lg bg-white bg-opacity-5 p-10"></div>
-            </div>
-          ) : (allowedTokenDatas.data || []).length === 0 ? (
-            <p
-              className={`font-normal ${
-                stakePoolMetadata?.colors?.fontColor
-                  ? `text-[${stakePoolMetadata?.colors?.fontColor}]`
-                  : 'text-gray-400'
-              }`}
-            >
-              No allowed tokens found in wallet.
-            </p>
-          ) : (
-            <div
-              className={'grid grid-cols-1 gap-4 lg:grid-cols-2 xl:grid-cols-3'}
-            >
-              {(stakePoolMetadata?.notFound
-                ? []
-                : allowedTokenDatas.data?.slice(0, PAGE_SIZE * pageNum[0]) ?? []
-              )
-                .filter((tk) => {
-                  if (
-                    stakePoolData?.parsed &&
-                    isStakePoolV2(stakePoolData?.parsed)
-                  ) {
-                    if ((tk.tokenAccount?.parsed.tokenAmount.amount ?? 0) > 1) {
-                      return false
-                    }
-                  }
-                  return true
-                })
-                .map((tk) => (
-                  <UnstakedToken
-                    key={tk?.tokenAccount?.pubkey.toBase58()}
-                    tk={tk}
-                    receiptType={receiptType}
-                    select={(tk, amount) => selectUnstakedToken(tk, amount)}
-                    selected={isUnstakedTokenSelected(tk)}
-                    loading={
-                      handleStake.isLoading && isUnstakedTokenSelected(tk)
-                    }
-                  />
-                ))}
-            </div>
-          )}
-        </div>
+        <UnstakedTokenList
+          setUnstakedSelected={setUnstakedSelected}
+          unstakedSelected={unstakedSelected}
+          showFungibleTokens={showFungibleTokens}
+          receiptType={receiptType}
+          handleStake={handleStake}
+        />
       </div>
 
       <div className="mt-2 flex flex-col items-center justify-between gap-5 md:flex-row">
@@ -250,7 +131,7 @@ export const UnstakedTokens = () => {
             </div>
           </Tooltip>
         ) : (
-          <div></div>
+          <></>
         )}
         <div className="flex gap-5">
           <Tooltip title="Click on tokens to select them">
