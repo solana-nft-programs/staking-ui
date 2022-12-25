@@ -75,6 +75,7 @@ export const Header = () => {
               stakePoolMetadata &&
               stakePoolMetadata.links?.map((link) => (
                 <a
+                target="_blank"
                   key={link.value}
                   href={link.value}
                   className="cursor-pointer transition-all hover:opacity-80"

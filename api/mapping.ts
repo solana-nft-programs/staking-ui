@@ -2572,6 +2572,10 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
         value: 'https://twitter.com/DustCityNFT',
       },
       {
+        text: 'Discord',
+        value: 'https://discord.com/invite/dustcity',
+      },
+      {
         text: 'MagicEden',
         value: 'https://magiceden.io/marketplace/dustcity',
       },
@@ -2608,8 +2612,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     },
     imageUrl:
       'https://arweave.net/z64F7Hk0nHfq-KZ9DgTBT3k7CiKfdyyyAqhC3T1TpkQ?ext=png',
-      backgroundImage:
-      'https://i.ibb.co/TgWFYHL/image.jpg',
+    backgroundImage: 'https://i.ibb.co/TgWFYHL/image.jpg',
 
     // Website url if specified will be navigated to when the image in the header is clicked
     maxStaked: 7777,
@@ -2621,6 +2624,10 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       {
         text: 'Twitter',
         value: 'https://twitter.com/DustCityNFT',
+      },
+      {
+        text: 'Discord',
+        value: 'https://discord.com/invite/dustcity',
       },
       {
         text: 'MagicEden',
