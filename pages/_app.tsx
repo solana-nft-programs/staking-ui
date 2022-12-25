@@ -13,6 +13,7 @@ import {
   FractalWalletAdapter,
   GlowWalletAdapter,
   LedgerWalletAdapter,
+  MathWalletAdapter,
   PhantomWalletAdapter,
   SlopeWalletAdapter,
   SolflareWalletAdapter,
@@ -38,6 +39,7 @@ export const queryClient = new QueryClient({
     queries: {
       refetchOnWindowFocus: false,
       refetchOnMount: false,
+      retry: false,
     },
   },
 })
@@ -75,6 +77,7 @@ const App = ({
       new FractalWalletAdapter(),
       new GlowWalletAdapter({ network }),
       new LedgerWalletAdapter(),
+      new MathWalletAdapter(),
       new TorusWalletAdapter({ params: { network, showTorusButton: false } }),
     ],
     [network]

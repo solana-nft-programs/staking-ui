@@ -4,7 +4,6 @@ import { useWalletModal } from '@solana/wallet-adapter-react-ui'
 import { GlyphWallet } from 'assets/GlyphWallet'
 import { useStakePoolId } from 'hooks/useStakePoolId'
 import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
-import { useRouter } from 'next/router'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 
 import { Airdrop } from './Airdrop'
@@ -13,7 +12,6 @@ import { contrastColorMode } from './utils'
 import { asWallet } from './Wallets'
 
 export const Header = () => {
-  const router = useRouter()
   const { environment, secondaryConnection } = useEnvironmentCtx()
   const wallet = useWallet()
   const walletModal = useWalletModal()

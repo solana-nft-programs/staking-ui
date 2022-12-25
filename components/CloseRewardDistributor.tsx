@@ -1,10 +1,10 @@
 import { AsyncButton } from 'common/Button'
-import { useHandleCloseRewardDistributor } from 'handlers/useHandleCloseRewardDistributor'
+import { useHandleRewardDistributorRemove } from 'handlers/useHandleRewardDistributorRemove'
 import { useRewardDistributorData } from 'hooks/useRewardDistributorData'
 
 export const CloseRewardDistributor = () => {
   const rewardDistributor = useRewardDistributorData()
-  const closeRewardDistributor = useHandleCloseRewardDistributor()
+  const rewardDistributorRemove = useHandleRewardDistributorRemove()
   if (!rewardDistributor.data) {
     return <></>
   }
@@ -19,9 +19,9 @@ export const CloseRewardDistributor = () => {
       <div className="mb-5 flex flex-row">
         <AsyncButton
           className="ml-5 rounded-md px-3 py-1"
-          loading={closeRewardDistributor.isLoading}
+          loading={rewardDistributorRemove.isLoading}
           inlineLoader
-          onClick={() => closeRewardDistributor.mutate()}
+          onClick={() => rewardDistributorRemove.mutate()}
         >
           <div className="text-xs">Delete Reward Distributor</div>
         </AsyncButton>

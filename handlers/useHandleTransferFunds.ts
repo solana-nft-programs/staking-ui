@@ -66,14 +66,14 @@ export const useHandleTransferFunds = () => {
     {
       onSuccess: (txid) => {
         notify({
-          message: `Successfully reclaimed funds from pool`,
+          message: `Successfully transferred funds to pool`,
           txid,
           type: 'success',
         })
       },
       onError: (e) => {
         notify({
-          message: 'Failed to reclaim funds from pool',
+          message: 'Failed to transfer funds to pool',
           description: `${e}`,
         })
       },

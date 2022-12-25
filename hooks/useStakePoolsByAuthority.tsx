@@ -96,7 +96,6 @@ export const useStakePoolsByAuthority = () => {
       ).map((e) => {
         return { pubkey: e.publicKey, parsed: e.account }
       })
-      console.log([...stakePoolsV1, ...stakePoolsV2])
       return [...stakePoolsV1, ...stakePoolsV2]
     },
     {

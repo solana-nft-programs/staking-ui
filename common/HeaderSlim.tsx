@@ -9,6 +9,7 @@ import { useEffect, useState } from 'react'
 
 import { Airdrop } from './Airdrop'
 import { ButtonSmall } from './ButtonSmall'
+import { withCluster } from './utils'
 import { asWallet } from './Wallets'
 
 export const HeaderSlim = () => {
@@ -36,13 +37,19 @@ export const HeaderSlim = () => {
             <LogoTitled className="inline-block h-6" />
           </div>
           {environment.label !== 'mainnet-beta' && (
-            <>
-              <div className="text-primary">{environment.label}</div>
-              <Airdrop />
-            </>
+            <div className="text-primary">{environment.label}</div>
           )}
+          {environment.label !== 'mainnet-beta' && <Airdrop />}
         </div>
         <div className="flex-5 flex items-center justify-end gap-6">
+          <div
+            className="cursor-pointer text-gray-400 transition hover:text-light-0"
+            onClick={() => {
+              router.push(withCluster('/admin', environment.label))
+            }}
+          >
+            Admin
+          </div>
           {wallet.connected && wallet.publicKey ? (
             <AccountConnect
               dark={true}

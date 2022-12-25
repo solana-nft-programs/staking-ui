@@ -178,22 +178,14 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       'https://gateway.pinata.cloud/ipfs/QmdZ6eTjxUzCzguqdNBkYP5uMeHjjpkSgQg8512ozSUvff',
   },
   {
+    hidden: true,
     name: 'lotus',
     displayName: 'The Lotus',
-    hostname: 'staking.thelotus.io',
+    hostname: 'legendary.thelotus.io',
     websiteUrl: 'https://www.thelotus.io',
-    hideFooter: true,
     stakePoolAddress: new PublicKey(
-      '4c4JF1m6hteH8F5iMN7nQYo8SfLPCJBNTeXFmjzt9C2J'
+      'BeT8h9E5BcgcMBxF7Si5GSRuB6zHcSpFuMpp6uTcVRFN'
     ),
-    description: 'The Lotus staking pool.',
-    imageUrl: '/logos/lotus.svg',
-    colors: {
-      primary: '#ffffff',
-      secondary: '#91B9FF',
-      accent: '#E9E1D1',
-      fontColor: '#303030',
-    },
     receiptType: ReceiptType.Receipt,
   },
   {
@@ -2567,10 +2559,8 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       fontColorSecondary: 'black',
       fontColorTertiary: '#ffcc15',
     },
-    imageUrl:
-      'https://i.ibb.co/JrtGLVg/finwhite.png',
-    backgroundImage:
-      'https://i.ibb.co/TgWFYHL/image.jpg',
+    imageUrl: 'https://i.ibb.co/JrtGLVg/finwhite.png',
+    backgroundImage: 'https://i.ibb.co/TgWFYHL/image.jpg',
     maxStaked: 3333,
     links: [
       {
