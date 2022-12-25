@@ -1,6 +1,8 @@
 import { DisplayAddress } from '@cardinal/namespaces-components'
+import { InformationCircleIcon } from '@heroicons/react/24/outline'
 import type { PublicKey } from '@solana/web3.js'
 import { BN } from 'bn.js'
+import { Tooltip } from 'common/Tooltip'
 import { useStakePoolEntries } from 'hooks/useStakePoolEntries'
 import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
 import { getLuminance } from 'polished'
@@ -92,11 +94,18 @@ export const StakePoolLeaderboard = () => {
         >
           <div className="flex-[4]">Wallet</div>
           <div className="flex-1">Staked Tokens</div>
-          <div className="flex-1 justify-end text-right">Stake Score</div>
+          <div className="flex flex-1 cursor-pointer items-center justify-end text-right">
+            <Tooltip title="Total milliseconds staked">
+              <div className="flex items-center gap-1">
+                Stake Score{' '}
+                <InformationCircleIcon className="inline-block h-5 w-5" />
+              </div>
+            </Tooltip>
+          </div>
         </div>
         <div className="flex flex-col">
           {!stakePoolEntries.isFetched ? (
-            <div className="h-4 w-full animate-pulse bg-border"></div>
+            <div className="mt-4 h-8 w-full animate-pulse rounded-lg bg-border"></div>
           ) : (
             Object.values(analysisPerWallet)
               .sort((a, b) => b.totalStakeSeconds - a.totalStakeSeconds)
