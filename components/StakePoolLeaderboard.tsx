@@ -106,9 +106,13 @@ export const StakePoolLeaderboard = () => {
                   key={`${wallet.toString()}`}
                   className="flex w-full cursor-pointer gap-4 border-b border-border px-8 py-4 md:flex-row"
                 >
-                  <div className="flex h-[50px] flex-[4] items-center text-red-500">
+                  <div className="flex h-[50px] flex-[4] items-center">
                     <DisplayAddress
-                      dark={getLuminance(config?.colors?.primary ?? '') < 0.5}
+                      dark={
+                        config?.colors?.primary
+                          ? getLuminance(config?.colors?.primary) < 0.5
+                          : true
+                      }
                       style={{
                         color: config?.colors?.fontColor,
                       }}
