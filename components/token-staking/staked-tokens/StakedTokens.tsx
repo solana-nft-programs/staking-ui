@@ -1,4 +1,3 @@
-import { StakedTokenList } from '@/components/token-staking/staked-tokens/StakedTokenList'
 import { Tooltip } from '@mui/material'
 import { BN } from '@project-serum/anchor'
 import { defaultSecondaryColor } from 'api/mapping'
@@ -13,6 +12,8 @@ import type { StakeEntryTokenData } from 'hooks/useStakedTokenDatas'
 import { useStakedTokenDatas } from 'hooks/useStakedTokenDatas'
 import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
 import { useState } from 'react'
+
+import { StakedTokenList } from '@/components/token-staking/staked-tokens/StakedTokenList'
 
 export const StakedTokens = () => {
   const { data: stakePoolMetadata } = useStakePoolMetadata()

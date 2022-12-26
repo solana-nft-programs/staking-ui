@@ -1,15 +1,15 @@
 import type { ReceiptType } from '@cardinal/staking/dist/cjs/programs/stakePool'
-import { contrastify } from 'common/colors'
 import { notify } from 'common/Notification'
 import type { AllowedTokenData } from 'hooks/useAllowedTokenDatas'
 import { useAllowedTokenDatas } from 'hooks/useAllowedTokenDatas'
 import { isStakePoolV2, useStakePoolData } from 'hooks/useStakePoolData'
 import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
-import { useRef, useState } from 'react'
+import { useState } from 'react'
 import type { UseMutationResult } from 'react-query'
 
-import { UnstakedToken } from '@/components/token-staking/unstaked-tokens/UnstakedToken'
 import { DEFAULT_PAGE, PAGE_SIZE } from '@/components/token-staking/constants'
+import { TokenListWrapper } from '@/components/token-staking/TokenListWrapper'
+import { UnstakedToken } from '@/components/token-staking/unstaked-tokens/UnstakedToken'
 
 export type UnstakedTokensProps = {
   showFungibleTokens: boolean
@@ -36,7 +36,6 @@ export const UnstakedTokenList = ({
 }: UnstakedTokensProps) => {
   const { data: stakePoolMetadata } = useStakePoolMetadata()
   const { data: stakePoolData } = useStakePoolData()
-  const ref = useRef<HTMLDivElement | null>(null)
   const [pageNum, setPageNum] = useState<[number, number]>(DEFAULT_PAGE)
   const allowedTokenDatas = useAllowedTokenDatas(showFungibleTokens)
 
@@ -90,29 +89,9 @@ export const UnstakedTokenList = ({
   }
 
   return (
-    <div
-      className="relative my-auto mb-4 h-[60vh] overflow-y-auto overflow-x-hidden rounded-md bg-white bg-opacity-5 p-5"
-      style={{
-        background:
-          stakePoolMetadata?.colors?.backgroundSecondary &&
-          contrastify(0.05, stakePoolMetadata?.colors?.backgroundSecondary),
-      }}
-      ref={ref}
-      onScroll={() => {
-        if (ref.current) {
-          const { scrollTop, scrollHeight, clientHeight } = ref.current
-          if (scrollHeight - scrollTop <= clientHeight * 1.1) {
-            setPageNum(([n, prevScrollHeight]) => {
-              return prevScrollHeight !== scrollHeight
-                ? [n + 1, scrollHeight]
-                : [n, prevScrollHeight]
-            })
-          }
-        }
-      }}
-    >
+    <TokenListWrapper setPageNum={setPageNum}>
       {!allowedTokenDatas.isFetched ? (
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+        <div className="grid grid-cols-1 gap-4 xl:grid-cols-2">
           <div className="aspect-square animate-pulse rounded-lg bg-white bg-opacity-5 p-10"></div>
           <div className="aspect-square animate-pulse rounded-lg bg-white bg-opacity-5 p-10"></div>
           <div className="aspect-square animate-pulse rounded-lg bg-white bg-opacity-5 p-10"></div>
@@ -128,7 +107,7 @@ export const UnstakedTokenList = ({
           No allowed tokens found in wallet.
         </p>
       ) : (
-        <div className={'grid grid-cols-1 gap-4 lg:grid-cols-2 xl:grid-cols-3'}>
+        <div className={'grid grid-cols-1 gap-4 xl:grid-cols-2'}>
           {(stakePoolMetadata?.notFound
             ? []
             : allowedTokenDatas.data?.slice(0, PAGE_SIZE * pageNum[0]) ?? []
@@ -156,6 +135,6 @@ export const UnstakedTokenList = ({
             ))}
         </div>
       )}
-    </div>
+    </TokenListWrapper>
   )
 }
