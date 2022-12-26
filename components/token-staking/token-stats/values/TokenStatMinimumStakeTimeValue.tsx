@@ -4,7 +4,7 @@ import { useStakePoolData } from 'hooks/useStakePoolData'
 import { useUTCNow } from 'providers/UTCNowProvider'
 import { FaCheck } from 'react-icons/fa'
 
-export const TokenStatMinTimeValue = ({
+export const TokenStatMinimumStakeTimeValue = ({
   tokenData,
 }: {
   tokenData: StakeEntryTokenData
@@ -13,7 +13,7 @@ export const TokenStatMinTimeValue = ({
   const { UTCNow } = useUTCNow()
 
   if (
-    !tokenData.stakeEntry?.parsed.cooldownStartSeconds ||
+    !tokenData.stakeEntry?.parsed.lastStakedAt ||
     !stakePool?.parsed.minStakeSeconds
   ) {
     return <></>

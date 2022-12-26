@@ -1,6 +1,7 @@
 import { DisplayAddress } from '@cardinal/namespaces-components'
 import { useWallet } from '@solana/wallet-adapter-react'
 import { defaultSecondaryColor } from 'api/mapping'
+import classNames from 'classnames'
 import { LoadingSpinner } from 'common/LoadingSpinner'
 import { QuickActions } from 'common/QuickActions'
 import {
@@ -17,6 +18,7 @@ import { TokenStatBoostBadge } from '@/components/token-staking/token-stats/UI/T
 import { TokenStatNextRewardBadge } from '@/components/token-staking/token-stats/UI/TokenStatNextRewardBadge'
 
 import { StakedStats } from './StakedStats'
+import { TokenStatCooldownBadge } from '@/components/token-staking/token-stats/UI/TokenStatCooldownBadge'
 
 export const StakedToken = ({
   tk,
@@ -46,9 +48,17 @@ export const StakedToken = ({
   return (
     <div key={tk?.stakeEntry?.pubkey.toBase58()}>
       <div
-        className="relative flex cursor-pointer flex-col rounded-xl"
+        className={classNames([
+          'relative flex cursor-pointer flex-col rounded-xl outline outline-4',
+          {
+            'shadow-lg outline-orange-500':
+              selected && !stakePoolMetadata?.colors?.secondary,
+            'outline-gray-700': !selected,
+          },
+        ])}
         onClick={() => select(tk)}
         style={{
+          outlineColor: selected ? stakePoolMetadata?.colors?.secondary : '',
           boxShadow: selected
             ? `0px 0px 20px ${
                 stakePoolMetadata?.colors?.secondary || '#FFFFFF'
@@ -105,8 +115,14 @@ export const StakedToken = ({
               className={`w-full grow animate-pulse rounded-t-xl bg-white bg-opacity-5 `}
             />
           )}
-          <TokenStatBoostBadge tokenData={tk} />
-          <TokenStatNextRewardBadge tokenData={tk} />
+          <div className="absolute top-2 left-2 flex w-1/2 flex-wrap space-y-0.5">
+            <TokenStatNextRewardBadge tokenData={tk} />
+            <TokenStatCooldownBadge tokenData={tk} />
+          </div>
+          <TokenStatBoostBadge
+            className="absolute left-2 bottom-6"
+            tokenData={tk}
+          />
         </div>
         <div
           className={`flex-col rounded-b-xl p-2 ${
@@ -145,18 +161,6 @@ export const StakedToken = ({
             </button>
           </div>
         </div>
-        {selected && (
-          <div
-            className={`absolute top-2 left-2`}
-            style={{
-              height: '10px',
-              width: '10px',
-              backgroundColor: stakePoolMetadata?.colors?.primary || '#FFFFFF',
-              borderRadius: '50%',
-              display: 'inline-block',
-            }}
-          />
-        )}
       </div>
     </div>
   )

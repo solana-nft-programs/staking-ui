@@ -118,6 +118,7 @@ export const UnstakedTokenList = ({
             })
             .map((tk) => (
               <UnstakedToken
+                handleStake={handleStake}
                 key={tk?.tokenAccount?.pubkey.toBase58()}
                 tk={tk}
                 receiptType={receiptType}
