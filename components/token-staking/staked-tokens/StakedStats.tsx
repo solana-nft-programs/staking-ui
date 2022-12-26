@@ -1,4 +1,3 @@
-import { getExpirationString, secondstoDuration } from '@cardinal/common'
 import { BN } from '@project-serum/anchor'
 import {
   formatAmountAsDecimal,
@@ -11,13 +10,13 @@ import { useRewards } from 'hooks/useRewards'
 import { useRewardsRate } from 'hooks/useRewardsRate'
 import type { StakeEntryTokenData } from 'hooks/useStakedTokenDatas'
 import { useStakePoolData } from 'hooks/useStakePoolData'
-import { useUTCNow } from 'providers/UTCNowProvider'
-import { FaCheck } from 'react-icons/fa'
 
 import { StakedStatWrapper } from '@/components/token-staking/staked-tokens/StakedStatWrapper'
+import { TokenStatCooldownValue } from '@/components/token-staking/token-stats/values/TokenStatCooldownValue'
+import { TokenStatMinTimeValue } from '@/components/token-staking/token-stats/values/TokenStatMinTimeValue'
+import { TokenStatNextRewardValue } from '@/components/token-staking/token-stats/values/TokenStatNextRewardValue'
 
 export function StakedStats({ tokenData }: { tokenData: StakeEntryTokenData }) {
-  const { UTCNow } = useUTCNow()
   const rewardMintInfo = useRewardMintInfo()
   const mintInfo = useMintInfo(
     tokenData.stakeEntry?.parsed?.amount.gt(new BN(1))
@@ -94,11 +93,10 @@ export function StakedStats({ tokenData }: { tokenData: StakeEntryTokenData }) {
                 <StakedStatWrapper>
                   <span>Next Rewards:</span>
                   <span>
-                    {secondstoDuration(
-                      rewards.data.rewardMap[
-                        tokenData.stakeEntry?.pubkey.toString() || ''
-                      ]?.nextRewardsIn.toNumber() || 0
-                    )}
+                    <TokenStatNextRewardValue
+                      tokenData={tokenData}
+                      rewardsData={rewards.data}
+                    />
                   </span>
                 </StakedStatWrapper>
               )}
@@ -109,18 +107,7 @@ export function StakedStats({ tokenData }: { tokenData: StakeEntryTokenData }) {
           <StakedStatWrapper>
             <span>Cooldown:</span>
             <span className="text-right">
-              {tokenData.stakeEntry?.parsed.cooldownStartSeconds.toNumber() +
-                stakePool.parsed.cooldownSeconds -
-                UTCNow >
-              0 ? (
-                getExpirationString(
-                  tokenData.stakeEntry?.parsed.cooldownStartSeconds.toNumber() +
-                    stakePool.parsed.cooldownSeconds,
-                  UTCNow
-                )
-              ) : (
-                <FaCheck />
-              )}
+              <TokenStatCooldownValue tokenData={tokenData} />
             </span>
           </StakedStatWrapper>
         )}
@@ -129,18 +116,7 @@ export function StakedStats({ tokenData }: { tokenData: StakeEntryTokenData }) {
           <StakedStatWrapper>
             <span>Min Time:</span>
             <span className="text-right">
-              {tokenData.stakeEntry?.parsed.lastStakedAt.toNumber() +
-                stakePool.parsed.minStakeSeconds -
-                UTCNow >
-              0 ? (
-                getExpirationString(
-                  tokenData.stakeEntry?.parsed.lastStakedAt.toNumber() +
-                    stakePool.parsed.minStakeSeconds,
-                  UTCNow
-                )
-              ) : (
-                <FaCheck />
-              )}
+              <TokenStatMinTimeValue tokenData={tokenData} />
             </span>
           </StakedStatWrapper>
         )}
