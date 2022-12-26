@@ -1,3 +1,4 @@
+import { TokenWrapper } from '@/components/token-staking/TokenWrapper'
 import type { ReceiptType } from '@cardinal/staking/dist/cjs/programs/stakePool'
 import { BN } from '@project-serum/anchor'
 import { defaultSecondaryColor } from 'api/mapping'
@@ -43,17 +44,7 @@ export const UnstakedToken = ({
       key={tk.tokenAccount?.pubkey.toString()}
       className="relative mx-auto min-w-full"
     >
-      <div
-        className="relative cursor-pointer rounded-xl"
-        onClick={() => select(tk)}
-        style={{
-          boxShadow: selected
-            ? `0px 0px 20px ${
-                stakePoolMetadata?.colors?.secondary || '#FFFFFF'
-              }`
-            : '',
-        }}
-      >
+      <TokenWrapper token={tk} selected={selected} select={select}>
         {loading && (
           <div className="absolute top-0 left-0 z-10 flex h-full w-full justify-center rounded-xl bg-black bg-opacity-80 align-middle text-white">
             <div className="my-auto flex">
@@ -155,7 +146,7 @@ export const UnstakedToken = ({
             </button>
           </div>
         </div>
-      </div>
+      </TokenWrapper>
     </div>
   )
 }

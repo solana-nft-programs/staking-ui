@@ -1,13 +1,13 @@
 import { DisplayAddress } from '@cardinal/namespaces-components'
 import { useWallet } from '@solana/wallet-adapter-react'
 import { defaultSecondaryColor } from 'api/mapping'
-import classNames from 'classnames'
 import { LoadingSpinner } from 'common/LoadingSpinner'
 import { QuickActions } from 'common/QuickActions'
 import {
   getImageFromTokenData,
   getNameFromTokenData,
 } from 'common/tokenDataUtils'
+import type { AllowedTokenData } from 'hooks/useAllowedTokenDatas'
 import { useMintMetadata } from 'hooks/useMintMetadata'
 import type { StakeEntryTokenData } from 'hooks/useStakedTokenDatas'
 import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
@@ -15,10 +15,11 @@ import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 import type { UseMutationResult } from 'react-query'
 
 import { TokenStatBoostBadge } from '@/components/token-staking/token-stats/UI/TokenStatBoostBadge'
+import { TokenStatCooldownBadge } from '@/components/token-staking/token-stats/UI/TokenStatCooldownBadge'
 import { TokenStatNextRewardBadge } from '@/components/token-staking/token-stats/UI/TokenStatNextRewardBadge'
+import { TokenWrapper } from '@/components/token-staking/TokenWrapper'
 
 import { StakedStats } from './StakedStats'
-import { TokenStatCooldownBadge } from '@/components/token-staking/token-stats/UI/TokenStatCooldownBadge'
 
 export const StakedToken = ({
   tk,
@@ -32,7 +33,7 @@ export const StakedToken = ({
   selected: boolean
   loadingUnstake: boolean
   loadingClaim: boolean
-  select: (tokenData: StakeEntryTokenData) => void
+  select: (tokenData: AllowedTokenData, amount?: string) => void
   handleUnstake: UseMutationResult<
     string[],
     unknown,
@@ -47,25 +48,7 @@ export const StakedToken = ({
 
   return (
     <div key={tk?.stakeEntry?.pubkey.toBase58()}>
-      <div
-        className={classNames([
-          'relative flex cursor-pointer flex-col rounded-xl outline outline-4',
-          {
-            'shadow-lg outline-orange-500':
-              selected && !stakePoolMetadata?.colors?.secondary,
-            'outline-gray-700': !selected,
-          },
-        ])}
-        onClick={() => select(tk)}
-        style={{
-          outlineColor: selected ? stakePoolMetadata?.colors?.secondary : '',
-          boxShadow: selected
-            ? `0px 0px 20px ${
-                stakePoolMetadata?.colors?.secondary || '#FFFFFF'
-              }`
-            : '',
-        }}
-      >
+      <TokenWrapper token={tk} selected={selected} select={select}>
         {(loadingClaim || loadingUnstake) && (
           <div>
             <div className="absolute top-0 left-0 z-10 flex h-full w-full justify-center rounded-lg bg-black bg-opacity-80 align-middle text-white">
@@ -161,7 +144,7 @@ export const StakedToken = ({
             </button>
           </div>
         </div>
-      </div>
+      </TokenWrapper>
     </div>
   )
 }
