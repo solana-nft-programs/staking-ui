@@ -1122,25 +1122,49 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
   },
   {
     name: 'onespace',
-    displayName: 'ONESPACE',
+    displayName: 'ONESPACE NFT STAKING',
     stakePoolAddress: new PublicKey(
       'FBTqpPynmDdVsYP4eep6pJonwMsFoVhaXcCpah3yYLZY'
     ),
     websiteUrl: 'https://1space.me/',
     receiptType: ReceiptType.Original,
+    tokenStandard: TokenStandard.NonFungible,
     hostname: 'stake.1space.me',
     hideFooter: true,
-    logoPadding: true,
-    imageUrl: 'https://1space.me/images/os-logo-white.jpeg',
-    maxStaked: 399,
+    imageUrl: 'https://1space.me/images/logo-new-main-heroes_02.png',
+    maxStaked: 700,
     links: [
       {
-        text: 'ONEHERO NFT',
+        text: 'HOME',
+        value: 'https://1space.me/',
+      },
+      {
+        text: 'BUY / SELL',
+        value: 'https://1space.me/#token',
+      },
+      {
+        text: 'FARMS',
+        value: 'https://raydium.io/farms/?tab=Ecosystem&farmid=C7KtyxWPukyvkxWFybuDDd92ofG2jZa9vFjAfhY7ymQt',
+      },
+      {
+        text: 'SWAP',
+        value: 'https://app.1space.me/',
+      },
+      {
+        text: 'TRADING',
+        value: 'https://dex.1space.me/',
+      },
+      {
+        text: 'TOKEN STAKING',
+        value: 'https://coinstake.1space.me/',
+      },
+      {
+        text: 'NFT COLLECTION',
         value: 'https://nft.1space.me/',
       },
       {
-        text: 'MINT',
-        value: 'https://nft.1space.me/#mint',
+        text: 'DOCS',
+        value: 'https://docs.1space.me/',
       },
     ],
     styles: {
@@ -1149,7 +1173,65 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     },
     colors: {
       primary: '#121429',
-      secondary: '#00b7ff',
+      secondary: '#519ef7',
+      accent: '#2b3645',
+      fontColor: '#FFFFFF',
+    },
+  },
+  {
+    name: 'onespace-1sp',
+    displayName: 'ONESPACE 1SP STAKING',
+    stakePoolAddress: new PublicKey(
+      '33cp8KDrzJpJDDRTSyTght2FuXCbUDmAiecFRw8qgem4'
+    ),
+    websiteUrl: 'https://1space.me/',
+    receiptType: ReceiptType.Original,
+    tokenStandard: TokenStandard.Fungible,
+    hostname: 'coinstake.1space.me',
+    hideFooter: true,
+    imageUrl: 'https://1space.me/images/stake-spaceman1.png',
+    
+    links: [
+      {
+        text: 'HOME',
+        value: 'https://1space.me/',
+      },
+      {
+        text: 'BUY / SELL',
+        value: 'https://1space.me/#token',
+      },
+      {
+        text: 'FARMS',
+        value: 'https://raydium.io/farms/?tab=Ecosystem&farmid=C7KtyxWPukyvkxWFybuDDd92ofG2jZa9vFjAfhY7ymQt',
+      },
+      {
+        text: 'SWAP',
+        value: 'https://app.1space.me/',
+      },
+      {
+        text: 'TRADING',
+        value: 'https://dex.1space.me/',
+      },
+      {
+        text: 'NFT STAKING',
+        value: 'https://stake.1space.me/',
+      },
+      {
+        text: 'NFT COLLECTION',
+        value: 'https://nft.1space.me/',
+      },
+      {
+        text: 'DOCS',
+        value: 'https://docs.1space.me/',
+      },
+    ],
+    styles: {
+      fontFamily: 'Industry, sans-serif',
+      fontWeight: 400,
+    },
+    colors: {
+      primary: '#121429',
+      secondary: '#519ef7',
       accent: '#2b3645',
       fontColor: '#FFFFFF',
     },
