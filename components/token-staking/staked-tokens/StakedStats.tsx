@@ -1,7 +1,7 @@
 import { StakedStatWrapper } from '@/components/token-staking/staked-tokens/StakedStatWrapper'
+import { TokenStatBoost } from '@/components/token-staking/token-stats/TokenStatBoost'
 import { getExpirationString, secondstoDuration } from '@cardinal/common'
 import { BN } from '@project-serum/anchor'
-import { PublicKey } from '@solana/web3.js'
 import { useMintInfo } from 'hooks/useMintInfo'
 import { FaCheck } from 'react-icons/fa'
 
@@ -10,7 +10,6 @@ import {
   formatMintNaturalAmountAsDecimal,
 } from '../../../common/units'
 import { useRewardDistributorData } from '../../../hooks/useRewardDistributorData'
-import { useRewardEntries } from '../../../hooks/useRewardEntries'
 import { useRewardMintInfo } from '../../../hooks/useRewardMintInfo'
 import { useRewards } from '../../../hooks/useRewards'
 import { useRewardsRate } from '../../../hooks/useRewardsRate'
@@ -27,8 +26,8 @@ export function StakedStats({ tokenData }: { tokenData: StakeEntryTokenData }) {
       : undefined
   )
   const rewardDistributorData = useRewardDistributorData()
+
   const { data: stakePool } = useStakePoolData()
-  const rewardEntries = useRewardEntries()
   const rewardsRate = useRewardsRate()
   const rewards = useRewards()
 
@@ -54,22 +53,7 @@ export function StakedStats({ tokenData }: { tokenData: StakeEntryTokenData }) {
         <StakedStatWrapper>
           <span>Boost:</span>
           <span className="text-right">
-            {(rewardDistributorData.data?.parsed?.multiplierDecimals !==
-              undefined &&
-              formatAmountAsDecimal(
-                rewardDistributorData.data?.parsed.multiplierDecimals || 0,
-                rewardEntries.data
-                  ? rewardEntries.data.find((entry) =>
-                      entry.parsed?.stakeEntry.equals(
-                        tokenData.stakeEntry?.pubkey || PublicKey.default
-                      )
-                    )?.parsed?.multiplier ||
-                      rewardDistributorData.data.parsed.defaultMultiplier
-                  : rewardDistributorData.data.parsed.defaultMultiplier,
-                rewardDistributorData.data.parsed.multiplierDecimals
-              ).toString()) ||
-              1}
-            x
+            <TokenStatBoost tokenData={tokenData} />x
           </span>
         </StakedStatWrapper>
       )}
