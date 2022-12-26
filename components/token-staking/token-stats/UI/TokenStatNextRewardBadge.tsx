@@ -5,13 +5,17 @@ import { useEffect, useState } from 'react'
 
 import { hasNextRewards } from '@/components/token-staking/token-stats/utils'
 import { TokenStatNextRewardValue } from '@/components/token-staking/token-stats/values/TokenStatNextRewardValue'
+import { Badge } from '@/components/UI/Badge'
 
-export interface TokenStatNextRewardBadgeProps {
+export interface TokenStatNextRewardBadgeProps
+  extends React.HTMLAttributes<HTMLDivElement> {
   tokenData: StakeEntryTokenData
+  className?: string
 }
 
 export const TokenStatNextRewardBadge = ({
   tokenData,
+  className,
 }: TokenStatNextRewardBadgeProps) => {
   const [showBadge, setShowBadge] = useState(false)
 
@@ -31,11 +35,11 @@ export const TokenStatNextRewardBadge = ({
   if (!showBadge) return <></>
 
   return (
-    <div className="absolute top-2 left-2 flex items-center space-x-2 rounded-lg bg-gray-800 p-1 px-2 text-sm">
+    <Badge className={className}>
       <div className="text-xs">🎁</div>
       <div>
         <TokenStatNextRewardValue tokenData={tokenData} />
       </div>
-    </div>
+    </Badge>
   )
 }

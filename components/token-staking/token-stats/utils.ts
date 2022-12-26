@@ -1,4 +1,7 @@
-import type { IdlAccountData } from '@cardinal/rewards-center'
+import type {
+  CardinalRewardsCenter,
+  IdlAccountData,
+} from '@cardinal/rewards-center'
 import { PublicKey } from '@solana/web3.js'
 import type BN from 'bn.js'
 import { BN as BigNumber } from 'bn.js'
@@ -50,7 +53,7 @@ export const hasBoost = ({
   return boost > 1
 }
 
-interface RewardArgs {
+export interface RewardArgs {
   rewardsData:
     | {
         rewardMap: {
@@ -73,4 +76,41 @@ export const hasNextRewards = ({
     rewardsData.rewardMap[tokenData.stakeEntry?.pubkey.toString() || ''] &&
     rewardDistributorData?.parsed.rewardDurationSeconds.gte(new BigNumber(60))
   return !!hasRewards
+}
+
+export interface MinimumStakeTimeArgs {
+  tokenData: StakeEntryTokenData
+  stakePool:
+    | Pick<
+        IdlAccountData<'stakePool', CardinalRewardsCenter>,
+        'pubkey' | 'parsed'
+      >
+    | undefined
+}
+
+export const hasMinimumStakeTime = ({
+  tokenData,
+  stakePool,
+}: MinimumStakeTimeArgs) => {
+  const has =
+    tokenData.stakeEntry?.parsed.cooldownStartSeconds ||
+    stakePool?.parsed.minStakeSeconds
+  return !!has
+}
+
+export interface CooldownArgs {
+  tokenData: StakeEntryTokenData
+  stakePool:
+    | Pick<
+        IdlAccountData<'stakePool', CardinalRewardsCenter>,
+        'pubkey' | 'parsed'
+      >
+    | undefined
+}
+
+export const hasCooldown = ({ tokenData, stakePool }: CooldownArgs) => {
+  const has =
+    tokenData.stakeEntry?.parsed.cooldownStartSeconds ||
+    stakePool?.parsed.cooldownSeconds
+  return !!has
 }

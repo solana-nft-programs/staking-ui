@@ -5,13 +5,16 @@ import { useCallback, useEffect, useState } from 'react'
 
 import { calculateBoost } from '@/components/token-staking/token-stats/utils'
 import { TokenStatBoostValue } from '@/components/token-staking/token-stats/values/TokenStatBoostValue'
+import { Badge } from '@/components/UI/Badge'
 
 export interface TokenStatBoostBadgeProps {
   tokenData: StakeEntryTokenData
+  className?: string
 }
 
 export const TokenStatBoostBadge = ({
   tokenData,
+  className,
 }: TokenStatBoostBadgeProps) => {
   const { data: rewardDistributorData } = useRewardDistributorData()
   const { data: rewardEntriesData } = useRewardEntries()
@@ -31,7 +34,7 @@ export const TokenStatBoostBadge = ({
   useEffect(() => {
     const boostAmount = calculateBoostAsString()
 
-    if (Number(boostAmount) !== 1) {
+    if (Number(boostAmount) === 1) {
       setHasBoost(true)
     }
   }, [
@@ -44,10 +47,10 @@ export const TokenStatBoostBadge = ({
   if (!hasBoost) return <></>
 
   return (
-    <div className="absolute bottom-6 left-2 flex items-center rounded-lg bg-gray-800 p-1 px-2 text-sm">
+    <Badge className={className}>
       <div className="text-xs">🔥</div>
       <div>&nbsp;Boost&nbsp;</div>
       <TokenStatBoostValue tokenData={tokenData} />x
-    </div>
+    </Badge>
   )
 }

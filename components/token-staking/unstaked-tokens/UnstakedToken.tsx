@@ -1,5 +1,6 @@
 import type { ReceiptType } from '@cardinal/staking/dist/cjs/programs/stakePool'
 import { BN } from '@project-serum/anchor'
+import { defaultSecondaryColor } from 'api/mapping'
 import { LoadingSpinner } from 'common/LoadingSpinner'
 import { QuickActions } from 'common/QuickActions'
 import {
@@ -10,6 +11,7 @@ import { formatAmountAsDecimal } from 'common/units'
 import type { AllowedTokenData } from 'hooks/useAllowedTokenDatas'
 import { useMintMetadata } from 'hooks/useMintMetadata'
 import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
+import type { UseMutationResult } from 'react-query'
 
 export const UnstakedToken = ({
   tk,
@@ -17,12 +19,22 @@ export const UnstakedToken = ({
   receiptType,
   loading,
   select,
+  handleStake,
 }: {
   tk: AllowedTokenData
   receiptType: ReceiptType
   selected: boolean
   loading: boolean
   select: (tokenData: AllowedTokenData, amount?: string) => void
+  handleStake: UseMutationResult<
+    string[],
+    unknown,
+    {
+      tokenDatas: AllowedTokenData[]
+      receiptType?: ReceiptType | undefined
+    },
+    unknown
+  >
 }) => {
   const { data: stakePoolMetadata } = useStakePoolMetadata()
   const mintMetadata = useMintMetadata(tk)
@@ -88,8 +100,11 @@ export const UnstakedToken = ({
             background: stakePoolMetadata?.colors?.backgroundSecondary,
           }}
         >
-          <div className="max-w-[120px] truncate font-semibold">
+          <div className="truncate px-2 text-xl font-bold">
             {getNameFromTokenData(tk, mintMetadata?.data)}
+          </div>
+          <div className="truncate font-semibold">
+            {tk.tokenListData?.symbol}
           </div>
           {tk.tokenAccount &&
             tk.tokenAccount?.parsed.tokenAmount.amount > 1 && (
@@ -119,20 +134,28 @@ export const UnstakedToken = ({
                 </div>
               </div>
             )}
+          <div className="flex p-2">
+            <button
+              style={{
+                background:
+                  stakePoolMetadata?.colors?.secondary || defaultSecondaryColor,
+                color:
+                  stakePoolMetadata?.colors?.fontColorSecondary ||
+                  stakePoolMetadata?.colors?.fontColor,
+              }}
+              className="flex-grow rounded-lg p-2 transition-all hover:scale-[1.03]"
+              onClick={() => {
+                handleStake.mutate({
+                  tokenDatas: [tk],
+                  receiptType,
+                })
+              }}
+            >
+              Stake
+            </button>
+          </div>
         </div>
       </div>
-      {selected && (
-        <div
-          className={`absolute top-2 left-2`}
-          style={{
-            height: '10px',
-            width: '10px',
-            backgroundColor: stakePoolMetadata?.colors?.primary || '#FFFFFF',
-            borderRadius: '50%',
-            display: 'inline-block',
-          }}
-        />
-      )}
     </div>
   )
 }
