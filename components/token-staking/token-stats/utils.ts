@@ -1,9 +1,12 @@
 import type { IdlAccountData } from '@cardinal/rewards-center'
 import { PublicKey } from '@solana/web3.js'
+import type BN from 'bn.js'
+import { BN as BigNumber } from 'bn.js'
 import { formatAmountAsDecimal } from 'common/units'
+import type { useRewardDistributorData } from 'hooks/useRewardDistributorData'
 import type { StakeEntryTokenData } from 'hooks/useStakedTokenDatas'
 
-export interface calculateBoostArgs {
+export interface BoostArgs {
   rewardDistributorData: Pick<
     IdlAccountData<'rewardDistributor'>,
     'pubkey' | 'parsed'
@@ -18,7 +21,7 @@ export const calculateBoost = ({
   rewardDistributorData,
   rewardEntriesData,
   tokenData,
-}: calculateBoostArgs) => {
+}: BoostArgs) => {
   return formatAmountAsDecimal(
     rewardDistributorData?.parsed.multiplierDecimals || 0,
     rewardEntriesData
@@ -36,7 +39,7 @@ export const hasBoost = ({
   rewardDistributorData,
   rewardEntriesData,
   tokenData,
-}: calculateBoostArgs) => {
+}: BoostArgs) => {
   const boost = Number(
     calculateBoost({
       rewardDistributorData,
@@ -45,4 +48,29 @@ export const hasBoost = ({
     })
   )
   return boost > 1
+}
+
+interface RewardArgs {
+  rewardsData:
+    | {
+        rewardMap: {
+          [stakeEntryId: string]: { claimableRewards: BN; nextRewardsIn: BN }
+        }
+        claimableRewards: BN
+      }
+    | undefined
+  rewardDistributorData: ReturnType<typeof useRewardDistributorData>['data']
+  tokenData: StakeEntryTokenData
+}
+
+export const hasNextRewards = ({
+  rewardsData,
+  rewardDistributorData,
+  tokenData,
+}: RewardArgs) => {
+  const hasRewards =
+    rewardsData &&
+    rewardsData.rewardMap[tokenData.stakeEntry?.pubkey.toString() || ''] &&
+    rewardDistributorData?.parsed.rewardDurationSeconds.gte(new BigNumber(60))
+  return !!hasRewards
 }
