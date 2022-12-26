@@ -1,14 +1,14 @@
 import { useWallet } from '@solana/wallet-adapter-react'
-import { contrastify } from 'common/colors'
 import { useHandleClaimRewards } from 'handlers/useHandleClaimRewards'
 import type { StakeEntryTokenData } from 'hooks/useStakedTokenDatas'
 import { useStakedTokenDatas } from 'hooks/useStakedTokenDatas'
 import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
-import { useRef, useState } from 'react'
+import { useState } from 'react'
 import type { UseMutationResult } from 'react-query'
 
 import { DEFAULT_PAGE, PAGE_SIZE } from '@/components/token-staking/constants'
 import { StakedToken } from '@/components/token-staking/staked-tokens/StakedToken'
+import { TokenListWrapper } from '@/components/token-staking/TokenListWrapper'
 
 export type StakedTokenListProps = {
   stakedSelected: StakeEntryTokenData[]
@@ -26,7 +26,6 @@ export const StakedTokenList = ({
   setStakedSelected,
   handleUnstake,
 }: StakedTokenListProps) => {
-  const ref = useRef<HTMLDivElement | null>(null)
   const [pageNum, setPageNum] = useState<[number, number]>(DEFAULT_PAGE)
   const stakedTokenDatas = useStakedTokenDatas()
   const handleClaimRewards = useHandleClaimRewards()
@@ -62,29 +61,9 @@ export const StakedTokenList = ({
     }
   }
   return (
-    <div
-      className="relative my-auto mb-4 h-[60vh] overflow-y-auto overflow-x-hidden rounded-md bg-white bg-opacity-5 p-5"
-      style={{
-        background:
-          stakePoolMetadata?.colors?.backgroundSecondary &&
-          contrastify(0.05, stakePoolMetadata?.colors?.backgroundSecondary),
-      }}
-      ref={ref}
-      onScroll={() => {
-        if (ref.current) {
-          const { scrollTop, scrollHeight, clientHeight } = ref.current
-          if (scrollHeight - scrollTop <= clientHeight * 1.1) {
-            setPageNum(([n, prevScrollHeight]) => {
-              return prevScrollHeight !== scrollHeight
-                ? [n + 1, scrollHeight]
-                : [n, prevScrollHeight]
-            })
-          }
-        }
-      }}
-    >
+    <TokenListWrapper setPageNum={setPageNum}>
       {!stakedTokenDatas.isFetched ? (
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
           <div className="aspect-square animate-pulse rounded-lg bg-white bg-opacity-5 p-10"></div>
           <div className="aspect-square animate-pulse rounded-lg bg-white bg-opacity-5 p-10"></div>
           <div className="aspect-square animate-pulse rounded-lg bg-white bg-opacity-5 p-10"></div>
@@ -100,13 +79,33 @@ export const StakedTokenList = ({
           No tokens currently staked.
         </p>
       ) : (
-        <div className={'grid grid-cols-1 gap-4 lg:grid-cols-2 xl:grid-cols-3'}>
+        <div className="grid grid-cols-1 gap-4 xl:grid-cols-3">
           {!stakePoolMetadata?.notFound &&
             stakedTokenDatas.data &&
             stakedTokenDatas.data
               .slice(0, PAGE_SIZE * pageNum[0])
               .map((tk) => (
                 <StakedToken
+                  handleUnstake={handleUnstake}
+                  key={tk?.stakeEntry?.pubkey.toBase58()}
+                  tk={tk}
+                  select={(tk) => selectStakedToken(tk)}
+                  selected={isStakedTokenSelected(tk)}
+                  loadingClaim={
+                    handleClaimRewards.isLoading && isStakedTokenSelected(tk)
+                  }
+                  loadingUnstake={
+                    handleUnstake.isLoading && isStakedTokenSelected(tk)
+                  }
+                />
+              ))}
+          {!stakePoolMetadata?.notFound &&
+            stakedTokenDatas.data &&
+            stakedTokenDatas.data
+              .slice(0, PAGE_SIZE * pageNum[0])
+              .map((tk) => (
+                <StakedToken
+                  handleUnstake={handleUnstake}
                   key={tk?.stakeEntry?.pubkey.toBase58()}
                   tk={tk}
                   select={(tk) => selectStakedToken(tk)}
@@ -121,6 +120,6 @@ export const StakedTokenList = ({
               ))}
         </div>
       )}
-    </div>
+    </TokenListWrapper>
   )
 }

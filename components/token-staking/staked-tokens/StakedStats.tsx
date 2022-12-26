@@ -1,3 +1,4 @@
+import { StakedStatWrapper } from '@/components/token-staking/staked-tokens/StakedStatWrapper'
 import { getExpirationString, secondstoDuration } from '@cardinal/common'
 import { BN } from '@project-serum/anchor'
 import { PublicKey } from '@solana/web3.js'
@@ -7,15 +8,15 @@ import { FaCheck } from 'react-icons/fa'
 import {
   formatAmountAsDecimal,
   formatMintNaturalAmountAsDecimal,
-} from '../common/units'
-import { useRewardDistributorData } from '../hooks/useRewardDistributorData'
-import { useRewardEntries } from '../hooks/useRewardEntries'
-import { useRewardMintInfo } from '../hooks/useRewardMintInfo'
-import { useRewards } from '../hooks/useRewards'
-import { useRewardsRate } from '../hooks/useRewardsRate'
-import type { StakeEntryTokenData } from '../hooks/useStakedTokenDatas'
-import { useStakePoolData } from '../hooks/useStakePoolData'
-import { useUTCNow } from '../providers/UTCNowProvider'
+} from '../../../common/units'
+import { useRewardDistributorData } from '../../../hooks/useRewardDistributorData'
+import { useRewardEntries } from '../../../hooks/useRewardEntries'
+import { useRewardMintInfo } from '../../../hooks/useRewardMintInfo'
+import { useRewards } from '../../../hooks/useRewards'
+import { useRewardsRate } from '../../../hooks/useRewardsRate'
+import type { StakeEntryTokenData } from '../../../hooks/useStakedTokenDatas'
+import { useStakePoolData } from '../../../hooks/useStakePoolData'
+import { useUTCNow } from '../../../providers/UTCNowProvider'
 
 export function StakedStats({ tokenData }: { tokenData: StakeEntryTokenData }) {
   const { UTCNow } = useUTCNow()
@@ -32,11 +33,11 @@ export function StakedStats({ tokenData }: { tokenData: StakeEntryTokenData }) {
   const rewards = useRewards()
 
   return (
-    <div className="mt-2">
+    <div className="flex flex-wrap items-center space-y-1 p-2">
       {tokenData.stakeEntry &&
         tokenData.stakeEntry.parsed?.amount.gt(new BN(1)) &&
         rewardMintInfo.data && (
-          <div className="flex w-full flex-row justify-between text-xs font-semibold">
+          <StakedStatWrapper>
             <span>Amount:</span>
             <span className="text-right">
               {mintInfo.data
@@ -47,10 +48,10 @@ export function StakedStats({ tokenData }: { tokenData: StakeEntryTokenData }) {
                   )
                 : 1}
             </span>
-          </div>
+          </StakedStatWrapper>
         )}
       {tokenData.stakeEntry?.pubkey && (
-        <div className="flex w-full flex-row justify-between text-xs font-semibold">
+        <StakedStatWrapper>
           <span>Boost:</span>
           <span className="text-right">
             {(rewardDistributorData.data?.parsed?.multiplierDecimals !==
@@ -70,7 +71,7 @@ export function StakedStats({ tokenData }: { tokenData: StakeEntryTokenData }) {
               1}
             x
           </span>
-        </div>
+        </StakedStatWrapper>
       )}
       {rewardDistributorData.data &&
         rewardDistributorData.data.parsed?.rewardDurationSeconds &&
@@ -79,8 +80,8 @@ export function StakedStats({ tokenData }: { tokenData: StakeEntryTokenData }) {
         ) && (
           <>
             {tokenData.stakeEntry && rewardMintInfo.data && (
-              <div className="flex w-full flex-row justify-between text-xs font-semibold">
-                <span>Daily:</span>
+              <StakedStatWrapper>
+                <span>Reward rate:</span>
                 <span className="text-right">
                   {formatAmountAsDecimal(
                     rewardMintInfo.data.mintInfo.decimals,
@@ -88,12 +89,13 @@ export function StakedStats({ tokenData }: { tokenData: StakeEntryTokenData }) {
                       tokenData.stakeEntry.pubkey.toString()
                     ]?.dailyRewards || new BN(0), // max of 5 decimals
                     Math.min(rewardMintInfo.data.mintInfo.decimals, 5)
-                  )}
+                  )}{' '}
+                  / day
                 </span>
-              </div>
+              </StakedStatWrapper>
             )}
             {tokenData.stakeEntry && rewardMintInfo.data && (
-              <div className="flex w-full flex-row justify-between text-xs font-semibold">
+              <StakedStatWrapper>
                 <span>Claim:</span>
                 <span className="text-right">
                   {formatMintNaturalAmountAsDecimal(
@@ -105,7 +107,7 @@ export function StakedStats({ tokenData }: { tokenData: StakeEntryTokenData }) {
                     Math.min(rewardMintInfo.data.mintInfo.decimals, 5)
                   ).toLocaleString()}
                 </span>
-              </div>
+              </StakedStatWrapper>
             )}
             {rewards.data &&
               rewards.data.rewardMap[
@@ -114,7 +116,7 @@ export function StakedStats({ tokenData }: { tokenData: StakeEntryTokenData }) {
               rewardDistributorData.data?.parsed.rewardDurationSeconds.gte(
                 new BN(60)
               ) && (
-                <div className="flex w-full flex-row justify-between text-xs font-semibold">
+                <StakedStatWrapper>
                   <span>Next Rewards:</span>
                   <span>
                     {secondstoDuration(
@@ -123,13 +125,13 @@ export function StakedStats({ tokenData }: { tokenData: StakeEntryTokenData }) {
                       ]?.nextRewardsIn.toNumber() || 0
                     )}
                   </span>
-                </div>
+                </StakedStatWrapper>
               )}
           </>
         )}
       {!!tokenData.stakeEntry?.parsed?.cooldownStartSeconds &&
         !!stakePool?.parsed?.cooldownSeconds && (
-          <div className="flex w-full flex-row items-center justify-between text-xs font-semibold">
+          <StakedStatWrapper>
             <span>Cooldown:</span>
             <span className="text-right">
               {tokenData.stakeEntry?.parsed.cooldownStartSeconds.toNumber() +
@@ -145,11 +147,11 @@ export function StakedStats({ tokenData }: { tokenData: StakeEntryTokenData }) {
                 <FaCheck />
               )}
             </span>
-          </div>
+          </StakedStatWrapper>
         )}
       {!!stakePool?.parsed?.minStakeSeconds &&
         !!tokenData.stakeEntry?.parsed?.lastStakedAt && (
-          <div className="flex w-full flex-row items-center justify-between text-xs font-semibold">
+          <StakedStatWrapper>
             <span>Min Time:</span>
             <span className="text-right">
               {tokenData.stakeEntry?.parsed.lastStakedAt.toNumber() +
@@ -165,7 +167,7 @@ export function StakedStats({ tokenData }: { tokenData: StakeEntryTokenData }) {
                 <FaCheck />
               )}
             </span>
-          </div>
+          </StakedStatWrapper>
         )}
     </div>
   )

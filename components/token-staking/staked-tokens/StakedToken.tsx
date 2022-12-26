@@ -1,5 +1,6 @@
 import { DisplayAddress } from '@cardinal/namespaces-components'
 import { useWallet } from '@solana/wallet-adapter-react'
+import { defaultSecondaryColor } from 'api/mapping'
 import { LoadingSpinner } from 'common/LoadingSpinner'
 import { QuickActions } from 'common/QuickActions'
 import {
@@ -10,8 +11,9 @@ import { useMintMetadata } from 'hooks/useMintMetadata'
 import type { StakeEntryTokenData } from 'hooks/useStakedTokenDatas'
 import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
+import type { UseMutationResult } from 'react-query'
 
-import { StakedStats } from '../../StakedStats'
+import { StakedStats } from './StakedStats'
 
 export const StakedToken = ({
   tk,
@@ -19,22 +21,26 @@ export const StakedToken = ({
   loadingUnstake,
   loadingClaim,
   select,
+  handleUnstake,
 }: {
   tk: StakeEntryTokenData
   selected: boolean
   loadingUnstake: boolean
   loadingClaim: boolean
   select: (tokenData: StakeEntryTokenData) => void
+  handleUnstake: UseMutationResult<
+    string[],
+    unknown,
+    { tokenDatas: StakeEntryTokenData[] },
+    unknown
+  >
 }) => {
   const wallet = useWallet()
   const { connection } = useEnvironmentCtx()
   const { data: stakePoolMetadata } = useStakePoolMetadata()
   const mintMetadata = useMintMetadata(tk)
   return (
-    <div
-      key={tk?.stakeEntry?.pubkey.toBase58()}
-      className="relative mx-auto min-w-full"
-    >
+    <div key={tk?.stakeEntry?.pubkey.toBase58()}>
       <div
         className="relative flex cursor-pointer flex-col rounded-xl"
         onClick={() => select(tk)}
@@ -78,15 +84,18 @@ export const StakedToken = ({
           selectUnstakedToken={() => {}}
           selectStakedToken={select}
         />
-        <div className="aspect-square w-full grow overflow-hidden rounded-t-xl">
+        <div className="relative aspect-square w-full grow overflow-hidden rounded-t-xl">
           {mintMetadata.isFetched &&
           getImageFromTokenData(tk, mintMetadata.data) ? (
-            <img
-              loading="lazy"
-              className={`w-full rounded-t-xl object-contain`}
-              src={getImageFromTokenData(tk, mintMetadata?.data)}
-              alt={getNameFromTokenData(tk, mintMetadata?.data)}
-            />
+            <>
+              <img
+                loading="lazy"
+                className={`absolute w-full rounded-t-xl object-contain`}
+                src={getImageFromTokenData(tk, mintMetadata?.data)}
+                alt={getNameFromTokenData(tk, mintMetadata?.data)}
+              />
+              <div className="absolute top-[90%] left-0 right-0 -bottom-2 bg-gradient-to-b from-transparent via-gray-700 to-gray-700" />
+            </>
           ) : (
             <div
               className={`w-full grow animate-pulse rounded-t-xl bg-white bg-opacity-5 `}
@@ -107,10 +116,28 @@ export const StakedToken = ({
             background: stakePoolMetadata?.colors?.backgroundSecondary,
           }}
         >
+          <div className="truncate px-2 text-xl font-bold">
+            {getNameFromTokenData(tk, mintMetadata?.data)}
+          </div>
           <div className="truncate font-semibold">
             {tk.tokenListData?.symbol}
           </div>
           <StakedStats tokenData={tk} />
+          <div className="flex p-2">
+            <button
+              style={{
+                background:
+                  stakePoolMetadata?.colors?.secondary || defaultSecondaryColor,
+                color:
+                  stakePoolMetadata?.colors?.fontColorSecondary ||
+                  stakePoolMetadata?.colors?.fontColor,
+              }}
+              className="flex-grow rounded-lg p-2 transition-all hover:scale-[1.03]"
+              onClick={() => handleUnstake.mutate({ tokenDatas: [tk] })}
+            >
+              Unstake
+            </button>
+          </div>
         </div>
         {selected && (
           <div
