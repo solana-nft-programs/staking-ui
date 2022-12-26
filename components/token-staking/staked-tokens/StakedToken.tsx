@@ -13,6 +13,8 @@ import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 import type { UseMutationResult } from 'react-query'
 
+import { TokenStatBoostBadge } from '@/components/token-staking/token-stats/UI/TokenStatBoostBadge'
+
 import { StakedStats } from './StakedStats'
 
 export const StakedToken = ({
@@ -39,6 +41,7 @@ export const StakedToken = ({
   const { connection } = useEnvironmentCtx()
   const { data: stakePoolMetadata } = useStakePoolMetadata()
   const mintMetadata = useMintMetadata(tk)
+
   return (
     <div key={tk?.stakeEntry?.pubkey.toBase58()}>
       <div
@@ -101,6 +104,7 @@ export const StakedToken = ({
               className={`w-full grow animate-pulse rounded-t-xl bg-white bg-opacity-5 `}
             />
           )}
+          <TokenStatBoostBadge tokenData={tk} />
         </div>
         <div
           className={`flex-col rounded-b-xl p-2 ${

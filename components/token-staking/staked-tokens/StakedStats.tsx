@@ -1,9 +1,9 @@
-import { StakedStatWrapper } from '@/components/token-staking/staked-tokens/StakedStatWrapper'
-import { TokenStatBoost } from '@/components/token-staking/token-stats/TokenStatBoost'
 import { getExpirationString, secondstoDuration } from '@cardinal/common'
 import { BN } from '@project-serum/anchor'
 import { useMintInfo } from 'hooks/useMintInfo'
 import { FaCheck } from 'react-icons/fa'
+
+import { StakedStatWrapper } from '@/components/token-staking/staked-tokens/StakedStatWrapper'
 
 import {
   formatAmountAsDecimal,
@@ -32,7 +32,7 @@ export function StakedStats({ tokenData }: { tokenData: StakeEntryTokenData }) {
   const rewards = useRewards()
 
   return (
-    <div className="flex flex-wrap items-center space-y-1 p-2">
+    <div className="flex flex-wrap items-center space-y-0.5 p-2">
       {tokenData.stakeEntry &&
         tokenData.stakeEntry.parsed?.amount.gt(new BN(1)) &&
         rewardMintInfo.data && (
@@ -49,14 +49,6 @@ export function StakedStats({ tokenData }: { tokenData: StakeEntryTokenData }) {
             </span>
           </StakedStatWrapper>
         )}
-      {tokenData.stakeEntry?.pubkey && (
-        <StakedStatWrapper>
-          <span>Boost:</span>
-          <span className="text-right">
-            <TokenStatBoost tokenData={tokenData} />x
-          </span>
-        </StakedStatWrapper>
-      )}
       {rewardDistributorData.data &&
         rewardDistributorData.data.parsed?.rewardDurationSeconds &&
         rewardDistributorData.data.parsed?.rewardDurationSeconds.gt(
