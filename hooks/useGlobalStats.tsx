@@ -1,50 +1,68 @@
-import type { AccountData } from '@cardinal/common'
-import type { StatsEntryData } from '@cardinal/stats/dist/cjs/programs/cardinalStats'
+import { ApolloClient, gql, InMemoryCache } from '@apollo/client'
 import { getStatsEntry } from '@cardinal/stats/dist/cjs/programs/cardinalStats'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 import { useQuery } from 'react-query'
 
-import { useStakePoolId } from './useStakePoolId'
-
 export const useGlobalStats = () => {
-  const { secondaryConnection } = useEnvironmentCtx()
-  const stakePoolId = useStakePoolId()
+  const { connection } = useEnvironmentCtx()
+  const index = new ApolloClient({
+    uri: 'https://index.cardinal.so/v1/graphql',
+    cache: new InMemoryCache({ resultCaching: false }),
+  })
+
   return useQuery<
     | {
-        [name: string]: { data: AccountData<StatsEntryData> }
+        [name in GlobalStatsId]: { value: number }
       }
     | undefined
-  >(
-    ['useStats', stakePoolId?.toString()],
-    async () => {
-      const statsNames = [
-        'total-active-stake-entries',
-        'total-active-staked-tokens',
-        'total-stake-pools',
-      ]
-      const statsData = await Promise.all(
-        statsNames.map((name) => getStatsEntry(secondaryConnection, name))
-      )
-      return statsData.reduce(
-        (acc, stat) => {
-          const displayName = statsNameMapping.find(
-            (mapp) => mapp.key === stat.parsed.name
-          )!.displayName
-          acc[displayName] = { data: stat }
-          return acc
-        },
-        {} as {
-          [name: string]: { data: AccountData<StatsEntryData> }
-        }
-      )
-    },
-    {
-      refetchInterval: 3000,
+  >(['useGlobalStats'], async () => {
+    const [queryResult, statsEntry] = await Promise.all([
+      index.query({
+        query: gql`
+          query GetTokenManagers {
+            q1: acc_vpw38d6rgx7qv1vnrlqo_aggregate(
+              where: {
+                lastStaker: { _neq: "11111111111111111111111111111111" }
+              }
+            ) {
+              aggregate {
+                count
+              }
+            }
+            q2: acc_k0u6qbqshnoizi7cayzl_aggregate {
+              aggregate {
+                count
+              }
+            }
+          }
+        `,
+      }),
+      getStatsEntry(connection, 'total-active-staked-tokens'),
+    ])
+    const queryData = queryResult.data as {
+      q1?: { aggregate?: { count?: number } }
+      q2?: { aggregate?: { count?: number } }
     }
-  )
+    return {
+      'total-active-staked-tokens': {
+        value: Number(statsEntry.parsed.value ?? 0),
+      },
+      'total-active-stake-entries': {
+        value: queryData.q1?.aggregate?.count ?? 0,
+      },
+      'total-stake-pools': { value: queryData.q2?.aggregate?.count ?? 0 },
+    }
+  })
 }
 
-export const statsNameMapping = [
+export type GlobalStatsId =
+  | 'total-active-staked-tokens'
+  | 'total-active-stake-entries'
+  | 'total-stake-pools'
+export const statsNameMapping: {
+  key: GlobalStatsId
+  displayName: string
+}[] = [
   {
     key: 'total-active-staked-tokens',
     displayName: 'Total Staked Tokens',

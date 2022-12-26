@@ -7,7 +7,6 @@ import {
   compareStakePools,
   percentStaked,
   poolId,
-  totalStaked,
   useStakePoolEntryCounts,
 } from 'hooks/useStakePoolEntryCounts'
 import { useRouter } from 'next/router'
@@ -30,7 +29,7 @@ export const CollectionsGrid = ({ configs }: { configs?: StakePool[] }) => {
           <Card skeleton header={<></>} />
         </>
       ) : (
-        configs
+        [...configs]
           .sort((a, b) =>
             compareStakePools(a, b, stakePoolEntryCounts.data ?? {})
           )
@@ -96,7 +95,7 @@ export const CollectionsGrid = ({ configs }: { configs?: StakePool[] }) => {
                     <Stats
                       stats={[
                         {
-                          header: 'Percent Staked',
+                          header: 'Total Staked',
                           value: (
                             <div className="mt-1 h-5 w-12 animate-pulse rounded-md bg-border" />
                           ),
@@ -105,9 +104,15 @@ export const CollectionsGrid = ({ configs }: { configs?: StakePool[] }) => {
                     />
                   ) : stakePoolEntryCounts.data &&
                     stakePoolEntryCounts.data[poolId(config)] &&
-                    config.stakePoolMetadata?.maxStaked ? (
+                    !!config.stakePoolMetadata?.maxStaked ? (
                     <Stats
                       stats={[
+                        {
+                          header: 'Total Staked',
+                          value: (
+                            stakePoolEntryCounts.data[poolId(config)] ?? 0
+                          ).toLocaleString(),
+                        },
                         {
                           header: 'Percent Staked',
                           value: (
@@ -120,22 +125,17 @@ export const CollectionsGrid = ({ configs }: { configs?: StakePool[] }) => {
                       ]}
                     />
                   ) : (
-                    stakePoolEntryCounts.data &&
-                    stakePoolEntryCounts.data[poolId(config)] && (
-                      <Stats
-                        stats={[
-                          {
-                            header: 'Total Staked',
-                            value: (
-                              totalStaked(
-                                config.stakePoolMetadata,
-                                stakePoolEntryCounts.data ?? {}
-                              ) ?? 0
-                            ).toLocaleString(),
-                          },
-                        ]}
-                      />
-                    )
+                    <Stats
+                      stats={[
+                        {
+                          header: 'Total Staked',
+                          value: (
+                            (stakePoolEntryCounts.data ?? {})[poolId(config)] ??
+                            0
+                          ).toLocaleString(),
+                        },
+                      ]}
+                    />
                   )}
                 </div>
               }

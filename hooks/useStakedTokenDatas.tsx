@@ -1,14 +1,15 @@
 import { getBatchedMultipleAccounts } from '@cardinal/common'
-import type { AccountData } from '@cardinal/stake-pool'
-import type { StakeEntryData } from '@cardinal/staking/dist/cjs/programs/stakePool'
-import { getStakeEntriesForUser } from '@cardinal/staking/dist/cjs/programs/stakePool/accounts'
+import type { IdlAccountData } from '@cardinal/rewards-center'
 import * as metaplex from '@metaplex-foundation/mpl-token-metadata'
+import { useWallet } from '@solana/wallet-adapter-react'
 import type { Connection, PublicKey } from '@solana/web3.js'
+import { fetchStakeEntriesForUser } from 'api/fetchStakeEntry'
+import { asWallet } from 'common/Wallets'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 import { useQuery } from 'react-query'
 
 import * as useAllowedTokenDatas from './useAllowedTokenDatas'
-import { useStakePoolId } from './useStakePoolId'
+import { useStakePoolData } from './useStakePoolData'
 import type { TokenListData } from './useTokenList'
 import { useTokenList } from './useTokenList'
 import { useWalletIds } from './useWalletIds'
@@ -16,24 +17,30 @@ import { useWalletIds } from './useWalletIds'
 export type StakeEntryTokenData = {
   tokenListData?: TokenListData
   metaplexData?: { pubkey: PublicKey; data: metaplex.MetadataData } | null
-  stakeEntry: AccountData<StakeEntryData> | null | undefined
+  stakeEntry:
+    | Pick<IdlAccountData<'stakeEntry'>, 'pubkey' | 'parsed'>
+    | null
+    | undefined
 }
 
 export async function getStakeEntryDatas(
   connection: Connection,
-  stakePoolId: PublicKey,
+  wallet: Parameters<typeof fetchStakeEntriesForUser>[1],
+  stakePoolData: Pick<IdlAccountData<'stakePool'>, 'pubkey' | 'parsed'>,
   userId: PublicKey
 ): Promise<StakeEntryTokenData[]> {
   const stakeEntries = (
-    await getStakeEntriesForUser(connection, userId)
-  ).filter((entry) => entry.parsed.pool.toString() === stakePoolId.toString())
+    await fetchStakeEntriesForUser(connection, wallet, stakePoolData, userId)
+  ).filter(
+    (entry) => entry.parsed?.pool.toString() === stakePoolData.pubkey.toString()
+  )
 
   const metaplexIds = await Promise.all(
     stakeEntries.map(
       async (stakeEntry) =>
         (
           await metaplex.MetadataProgram.findMetadataAccount(
-            stakeEntry.parsed.originalMint
+            stakeEntry.parsed!.stakeMint
           )
         )[0]
     )
@@ -70,23 +77,37 @@ export async function getStakeEntryDatas(
 }
 
 export const useStakedTokenDatas = () => {
-  const stakePoolId = useStakePoolId()
   const walletIds = useWalletIds()
+  const wallet = useWallet()
   const tokenList = useTokenList()
   const { secondaryConnection } = useEnvironmentCtx()
+  const { data: stakePoolData } = useStakePoolData()
+
   return useQuery<StakeEntryTokenData[] | undefined>(
     [
       useAllowedTokenDatas.TOKEN_DATAS_KEY,
       'stakedTokenDatas',
-      stakePoolId?.toString(),
+      stakePoolData?.pubkey?.toString(),
       walletIds.join(','),
       tokenList?.data?.length,
     ],
     async () => {
-      if (!stakePoolId || !walletIds || walletIds.length <= 0) return
+      if (
+        !stakePoolData?.pubkey ||
+        !walletIds ||
+        walletIds.length <= 0 ||
+        !stakePoolData ||
+        !stakePoolData.parsed
+      )
+        return
       const stakeEntryDataGroups = await Promise.all(
         walletIds.map((walletId) =>
-          getStakeEntryDatas(secondaryConnection, stakePoolId, walletId)
+          getStakeEntryDatas(
+            secondaryConnection,
+            asWallet(wallet),
+            stakePoolData,
+            walletId
+          )
         )
       )
       const tokenDatas = stakeEntryDataGroups.flat()
@@ -95,7 +116,7 @@ export const useStakedTokenDatas = () => {
         try {
           tokenListData = tokenList.data?.find(
             (t) =>
-              t.address === tokenData.stakeEntry?.parsed.originalMint.toString()
+              t.address === tokenData.stakeEntry?.parsed?.stakeMint.toString()
           )
         } catch (e) {}
 
@@ -114,6 +135,9 @@ export const useStakedTokenDatas = () => {
       }, [] as StakeEntryTokenData[])
       return hydratedTokenDatas
     },
-    { enabled: tokenList.isFetched && !!stakePoolId && walletIds.length > 0 }
+    {
+      enabled:
+        tokenList.isFetched && !!stakePoolData?.pubkey && walletIds.length > 0,
+    }
   )
 }

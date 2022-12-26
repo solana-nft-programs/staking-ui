@@ -1,10 +1,10 @@
 import { getBatchedMultipleAccounts } from '@cardinal/common'
 import * as metaplex from '@metaplex-foundation/mpl-token-metadata'
-import * as spl from '@solana/spl-token'
 import type { AccountInfo, ParsedAccountData } from '@solana/web3.js'
 import { PublicKey } from '@solana/web3.js'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 import { useQuery } from 'react-query'
+import { TOKEN_PROGRAM_ID } from 'spl-token-v3'
 
 import type { TokenListData } from './useTokenList'
 import { useTokenList } from './useTokenList'
@@ -28,7 +28,7 @@ export const useUserTokenDatas = () => {
     async () => {
       const allTokenAccounts =
         await secondaryConnection.getParsedTokenAccountsByOwner(walletId!, {
-          programId: spl.TOKEN_PROGRAM_ID,
+          programId: TOKEN_PROGRAM_ID,
         })
 
       const tokenAccounts = allTokenAccounts.value

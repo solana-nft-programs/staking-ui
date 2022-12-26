@@ -26,7 +26,7 @@ export const GlyphPerformance: React.FC<Props> = ({ color }: Props) => (
       />
       <path
         d="M25 25V43H43"
-        fill={color ?? 'white'}
+        stroke={color ?? 'white'}
         strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"

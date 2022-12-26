@@ -9,6 +9,7 @@ import { Toggle } from 'common/Toggle'
 import { useHandleStake } from 'handlers/useHandleStake'
 import type { AllowedTokenData } from 'hooks/useAllowedTokenDatas'
 import { useAllowedTokenDatas } from 'hooks/useAllowedTokenDatas'
+import { isStakePoolV2, useStakePoolData } from 'hooks/useStakePoolData'
 import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
 import { useEffect, useRef, useState } from 'react'
 import { FaInfoCircle } from 'react-icons/fa'
@@ -19,6 +20,7 @@ export const PAGE_SIZE = 3
 export const DEFAULT_PAGE: [number, number] = [3, 0]
 
 export const UnstakedTokens = () => {
+  const { data: stakePoolData } = useStakePoolData()
   const { data: stakePoolMetadata } = useStakePoolMetadata()
   const [pageNum, setPageNum] = useState<[number, number]>(DEFAULT_PAGE)
   const ref = useRef<HTMLDivElement | null>(null)
@@ -45,11 +47,11 @@ export const UnstakedTokens = () => {
   const selectUnstakedToken = (tk: AllowedTokenData, targetValue?: string) => {
     if (handleStake.isLoading) return
     const amount = Number(targetValue)
-    if (tk.tokenAccount?.account.data.parsed.info.tokenAmount.amount > 1) {
+    if ((tk.tokenAccount?.parsed.tokenAmount.amount ?? 0) > 1) {
       let newUnstakedSelected = unstakedSelected.filter(
         (data) =>
-          data.tokenAccount?.account.data.parsed.info.mint.toString() !==
-          tk.tokenAccount?.account.data.parsed.info.mint.toString()
+          data.tokenAccount?.parsed.mint.toString() !==
+          tk.tokenAccount?.parsed.mint.toString()
       )
       if (targetValue && targetValue?.length > 0 && !amount) {
         notify({
@@ -65,8 +67,8 @@ export const UnstakedTokens = () => {
       setUnstakedSelected(
         unstakedSelected.filter(
           (data) =>
-            data.tokenAccount?.account.data.parsed.info.mint.toString() !==
-            tk.tokenAccount?.account.data.parsed.info.mint.toString()
+            data.tokenAccount?.parsed.mint.toString() !==
+            tk.tokenAccount?.parsed.mint.toString()
         )
       )
     } else {
@@ -74,8 +76,8 @@ export const UnstakedTokens = () => {
         setUnstakedSelected(
           unstakedSelected.filter(
             (data) =>
-              data.tokenAccount?.account.data.parsed.info.mint.toString() !==
-              tk.tokenAccount?.account.data.parsed.info.mint.toString()
+              data.tokenAccount?.parsed.mint.toString() !==
+              tk.tokenAccount?.parsed.mint.toString()
           )
         )
       } else {
@@ -87,8 +89,8 @@ export const UnstakedTokens = () => {
   const isUnstakedTokenSelected = (tk: AllowedTokenData) =>
     unstakedSelected.some(
       (utk) =>
-        utk.tokenAccount?.account.data.parsed.info.mint.toString() ===
-        tk.tokenAccount?.account.data.parsed.info.mint.toString()
+        utk.tokenAccount?.parsed.mint.toString() ===
+        tk.tokenAccount?.parsed.mint.toString()
     )
 
   return (
@@ -116,16 +118,18 @@ export const UnstakedTokens = () => {
             dataUpdatdAtMs={allowedTokenDatas.dataUpdatedAt}
             handleClick={() => allowedTokenDatas.refetch()}
           />
-          {!stakePoolMetadata?.tokenStandard && (
-            <button
-              onClick={() => {
-                setShowFungibleTokens(!showFungibleTokens)
-              }}
-              className="text-md inline-block rounded-md bg-white bg-opacity-5 px-4 py-1 hover:bg-opacity-10"
-            >
-              {showFungibleTokens ? 'Show NFTs' : 'Show FTs'}
-            </button>
-          )}
+          {stakePoolData?.parsed &&
+            !stakePoolMetadata?.tokenStandard &&
+            !isStakePoolV2(stakePoolData?.parsed) && (
+              <button
+                onClick={() => {
+                  setShowFungibleTokens(!showFungibleTokens)
+                }}
+                className="text-md inline-block rounded-md bg-white bg-opacity-5 px-4 py-1 hover:bg-opacity-10"
+              >
+                {showFungibleTokens ? 'Show NFTs' : 'Show FTs'}
+              </button>
+            )}
         </div>
       </div>
       <div className="my-3 flex-auto overflow-auto">
@@ -160,7 +164,7 @@ export const UnstakedTokens = () => {
             <p
               className={`font-normal ${
                 stakePoolMetadata?.colors?.fontColor
-                  ? `text-[${stakePoolMetadata?.colors?.fontColor}] opacity-50`
+                  ? `text-[${stakePoolMetadata?.colors?.fontColor}]`
                   : 'text-gray-400'
               }`}
             >
@@ -173,23 +177,39 @@ export const UnstakedTokens = () => {
               {(stakePoolMetadata?.notFound
                 ? []
                 : allowedTokenDatas.data?.slice(0, PAGE_SIZE * pageNum[0]) ?? []
-              ).map((tk) => (
-                <UnstakedToken
-                  key={tk?.tokenAccount?.pubkey.toBase58()}
-                  tk={tk}
-                  receiptType={receiptType}
-                  select={(tk, amount) => selectUnstakedToken(tk, amount)}
-                  selected={isUnstakedTokenSelected(tk)}
-                  loading={handleStake.isLoading && isUnstakedTokenSelected(tk)}
-                />
-              ))}
+              )
+                .filter((tk) => {
+                  if (
+                    stakePoolData?.parsed &&
+                    isStakePoolV2(stakePoolData?.parsed)
+                  ) {
+                    if ((tk.tokenAccount?.parsed.tokenAmount.amount ?? 0) > 1) {
+                      return false
+                    }
+                  }
+                  return true
+                })
+                .map((tk) => (
+                  <UnstakedToken
+                    key={tk?.tokenAccount?.pubkey.toBase58()}
+                    tk={tk}
+                    receiptType={receiptType}
+                    select={(tk, amount) => selectUnstakedToken(tk, amount)}
+                    selected={isUnstakedTokenSelected(tk)}
+                    loading={
+                      handleStake.isLoading && isUnstakedTokenSelected(tk)
+                    }
+                  />
+                ))}
             </div>
           )}
         </div>
       </div>
 
       <div className="mt-2 flex flex-col items-center justify-between gap-5 md:flex-row">
-        {!stakePoolMetadata?.receiptType ? (
+        {!stakePoolMetadata?.receiptType &&
+        stakePoolData?.parsed &&
+        !isStakePoolV2(stakePoolData?.parsed) ? (
           <Tooltip
             title={
               receiptType === ReceiptType.Original

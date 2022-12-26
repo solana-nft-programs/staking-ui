@@ -38,7 +38,7 @@ export const StakedTokens = () => {
   const selectStakedToken = (tk: StakeEntryTokenData) => {
     if (handleUnstake.isLoading) return
     if (
-      tk.stakeEntry?.parsed.lastStaker.toString() !==
+      tk.stakeEntry?.parsed?.lastStaker.toString() !==
       wallet.publicKey?.toString()
     ) {
       return
@@ -59,8 +59,8 @@ export const StakedTokens = () => {
   const isStakedTokenSelected = (tk: StakeEntryTokenData) =>
     stakedSelected.some(
       (stk) =>
-        stk.stakeEntry?.parsed.originalMint.toString() ===
-        tk.stakeEntry?.parsed.originalMint.toString()
+        stk.stakeEntry?.parsed?.stakeMint.toString() ===
+        tk.stakeEntry?.parsed?.stakeMint.toString()
     )
 
   return (
@@ -159,7 +159,7 @@ export const StakedTokens = () => {
         </div>
       </div>
       <div className="mt-2 flex flex-row-reverse flex-wrap justify-between gap-5">
-        <div className="flex gap-5">
+        <div className="flex flex-wrap gap-5">
           <Tooltip title={'Unstake will automatically claim reward for you.'}>
             <button
               onClick={() => {

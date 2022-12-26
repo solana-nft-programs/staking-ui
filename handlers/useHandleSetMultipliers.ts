@@ -2,32 +2,38 @@ import {
   tryGetAccount,
   withFindOrInitAssociatedTokenAccount,
 } from '@cardinal/common'
+import {
+  findRewardEntryId as findRewardEntryIdV2,
+  findStakeEntryId,
+  rewardsCenterProgram,
+} from '@cardinal/rewards-center'
 import { executeTransaction, handleError } from '@cardinal/staking'
-import { getRewardEntry } from '@cardinal/staking/dist/cjs/programs/rewardDistributor/accounts'
 import { findRewardEntryId } from '@cardinal/staking/dist/cjs/programs/rewardDistributor/pda'
 import {
   withInitRewardEntry,
   withUpdateRewardEntry,
 } from '@cardinal/staking/dist/cjs/programs/rewardDistributor/transaction'
-import { getStakeEntry } from '@cardinal/staking/dist/cjs/programs/stakePool/accounts'
 import { withInitStakeEntry } from '@cardinal/staking/dist/cjs/programs/stakePool/transaction'
 import { findStakeEntryIdFromMint } from '@cardinal/staking/dist/cjs/programs/stakePool/utils'
 import { BN } from '@project-serum/anchor'
 import { useWallet } from '@solana/wallet-adapter-react'
-import { PublicKey, Transaction } from '@solana/web3.js'
+import { PublicKey, SystemProgram, Transaction } from '@solana/web3.js'
+import { fetchRewardEntry } from 'api/fetchRewardEntry'
+import { fetchStakeEntry } from 'api/fetchStakeEntry'
 import { notify } from 'common/Notification'
 import { asWallet } from 'common/Wallets'
 import { useRewardDistributorData } from 'hooks/useRewardDistributorData'
 import { useMutation } from 'react-query'
 
-import { useStakePoolData } from '../hooks/useStakePoolData'
+import { isStakePoolV2, useStakePoolData } from '../hooks/useStakePoolData'
 import { useEnvironmentCtx } from '../providers/EnvironmentProvider'
 
 export const useHandleSetMultipliers = () => {
-  const wallet = asWallet(useWallet())
+  const walletContextWallet = useWallet()
+  const wallet = asWallet(walletContextWallet)
   const { connection } = useEnvironmentCtx()
-  const stakePool = useStakePoolData()
-  const rewardDistributor = useRewardDistributorData()
+  const { data: stakePoolData } = useStakePoolData()
+  const { data: rewardDistributorData } = useRewardDistributorData()
 
   return useMutation(
     async ({
@@ -38,8 +44,8 @@ export const useHandleSetMultipliers = () => {
       multipliers: (string | undefined)[] | undefined
     }): Promise<void> => {
       if (!wallet) throw 'Wallet not found'
-      if (!stakePool.data) throw 'No stake pool found'
-      if (!rewardDistributor.data) throw 'No reward distributor found'
+      if (!stakePoolData || !stakePoolData.parsed) throw 'No stake pool found'
+      if (!rewardDistributorData) throw 'No reward distributor found'
       if (!multiplierMints) throw 'Invalid multiplier mints'
       if (!multipliers) throw 'Invalid multipliers'
       if (multipliers.length !== multiplierMints.length) {
@@ -50,6 +56,7 @@ export const useHandleSetMultipliers = () => {
         return
       }
 
+      const program = rewardsCenterProgram(connection, wallet)
       if (multiplierMints.toString() === [''].toString()) multiplierMints = []
       if (multipliers.toString() === [''].toString()) multipliers = []
       const pubKeysToSetMultiplier = []
@@ -77,12 +84,16 @@ export const useHandleSetMultipliers = () => {
         const transaction = new Transaction()
 
         const mintId = pubKeysToSetMultiplier[i]!
-        const [stakeEntryId] = await findStakeEntryIdFromMint(
-          connection,
-          wallet.publicKey!,
-          stakePool.data.pubkey,
-          mintId
-        )
+        const stakeEntryId = isStakePoolV2(stakePoolData.parsed)
+          ? findStakeEntryId(stakePoolData.pubkey, mintId, wallet.publicKey)
+          : (
+              await findStakeEntryIdFromMint(
+                connection,
+                wallet.publicKey!,
+                stakePoolData.pubkey,
+                mintId
+              )
+            )[0]
         await withFindOrInitAssociatedTokenAccount(
           transaction,
           connection,
@@ -93,43 +104,93 @@ export const useHandleSetMultipliers = () => {
         )
 
         const stakeEntry = await tryGetAccount(() =>
-          getStakeEntry(connection, stakeEntryId)
+          fetchStakeEntry(
+            connection,
+            wallet,
+            stakePoolData,
+            mintId,
+            false // TODO change for fungible
+          )
         )
         if (!stakeEntry) {
-          await withInitStakeEntry(transaction, connection, wallet, {
-            stakePoolId: stakePool.data.pubkey,
-            originalMintId: mintId,
-          })
+          if (isStakePoolV2(stakePoolData.parsed)) {
+            const ix = await program.methods
+              .initEntry(wallet.publicKey)
+              .accounts({
+                stakeEntry: stakeEntryId,
+                stakePool: stakePoolData.pubkey,
+                stakeMint: mintId,
+                payer: wallet.publicKey,
+                systemProgram: SystemProgram.programId,
+              })
+              .instruction()
+            transaction.add(ix)
+          } else {
+            await withInitStakeEntry(transaction, connection, wallet, {
+              stakePoolId: stakePoolData.pubkey,
+              originalMintId: mintId,
+            })
+          }
           notify({
             message: `Initializing stake entry`,
             type: 'info',
           })
         }
 
-        const [rewardEntryId] = await findRewardEntryId(
-          rewardDistributor.data.pubkey,
-          stakeEntryId
-        )
+        const rewardEntryId = isStakePoolV2(stakePoolData.parsed)
+          ? findRewardEntryIdV2(rewardDistributorData.pubkey, stakeEntryId)
+          : (
+              await findRewardEntryId(
+                rewardDistributorData.pubkey,
+                stakeEntryId
+              )
+            )[0]
         const rewardEntry = await tryGetAccount(() =>
-          getRewardEntry(connection, rewardEntryId)
+          fetchRewardEntry(connection, rewardDistributorData, stakeEntryId)
         )
         if (!rewardEntry) {
-          await withInitRewardEntry(transaction, connection, wallet, {
-            stakeEntryId,
-            rewardDistributorId: rewardDistributor.data.pubkey,
-          })
+          if (isStakePoolV2(stakePoolData.parsed)) {
+            const ix = await program.methods
+              .initRewardEntry()
+              .accounts({
+                rewardEntry: rewardEntryId,
+                stakeEntry: stakeEntryId,
+                rewardDistributor: rewardDistributorData.pubkey,
+                payer: wallet.publicKey,
+                systemProgram: SystemProgram.programId,
+              })
+              .instruction()
+            transaction.add(ix)
+          } else {
+            await withInitRewardEntry(transaction, connection, wallet, {
+              stakeEntryId,
+              rewardDistributorId: rewardDistributorData.pubkey,
+            })
+          }
           notify({
             message: `Initializing reward entry`,
             type: 'info',
           })
         }
 
-        await withUpdateRewardEntry(transaction, connection, wallet, {
-          stakePoolId: stakePool.data.pubkey,
-          rewardDistributorId: rewardDistributor.data.pubkey,
-          stakeEntryId: stakeEntryId,
-          multiplier: new BN(multipliers[i]!),
-        })
+        if (isStakePoolV2(stakePoolData.parsed)) {
+          const ix = await program.methods
+            .updateRewardEntry({ multiplier: new BN(multipliers[i]!) })
+            .accounts({
+              rewardEntry: rewardEntryId,
+              rewardDistributor: rewardDistributorData.pubkey,
+              authority: wallet.publicKey,
+            })
+            .instruction()
+          transaction.add(ix)
+        } else {
+          await withUpdateRewardEntry(transaction, connection, wallet, {
+            stakePoolId: stakePoolData.pubkey,
+            rewardDistributorId: rewardDistributorData.pubkey,
+            stakeEntryId: stakeEntryId,
+            multiplier: new BN(multipliers[i]!),
+          })
+        }
         notify({
           message: `Updating multipler`,
           type: 'info',
