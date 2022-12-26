@@ -8,9 +8,9 @@ import type { UseMutationResult } from 'react-query'
 
 import { DEFAULT_PAGE, PAGE_SIZE } from '@/components/token-staking/constants'
 import { StakedToken } from '@/components/token-staking/staked-tokens/StakedToken'
-import { TokenListWrapper } from '@/components/token-staking/TokenListView'
-import { TokenListLoader } from '@/components/token-staking/TokenListLoader'
-import { TokenListEmptyState } from '@/components/token-staking/TokenListEmptyState'
+import { TokenListEmptyState } from '@/components/token-staking/token-list/TokenListEmptyState'
+import { TokenListLoader } from '@/components/token-staking/token-list/TokenListLoader'
+import { TokenListWrapper } from '@/components/token-staking/token-list/TokenListWrapper'
 
 export type StakedTokenListProps = {
   stakedSelected: StakeEntryTokenData[]
@@ -73,25 +73,6 @@ export const StakedTokenList = ({
         />
       ) : (
         <div className="grid grid-cols-1 gap-4 xl:grid-cols-2">
-          {!stakePoolMetadata?.notFound &&
-            stakedTokenDatas.data &&
-            stakedTokenDatas.data
-              .slice(0, PAGE_SIZE * pageNum[0])
-              .map((tk) => (
-                <StakedToken
-                  handleUnstake={handleUnstake}
-                  key={tk?.stakeEntry?.pubkey.toBase58()}
-                  tk={tk}
-                  select={(tk) => selectStakedToken(tk)}
-                  selected={isStakedTokenSelected(tk)}
-                  loadingClaim={
-                    handleClaimRewards.isLoading && isStakedTokenSelected(tk)
-                  }
-                  loadingUnstake={
-                    handleUnstake.isLoading && isStakedTokenSelected(tk)
-                  }
-                />
-              ))}
           {!stakePoolMetadata?.notFound &&
             stakedTokenDatas.data &&
             stakedTokenDatas.data

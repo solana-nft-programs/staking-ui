@@ -8,10 +8,10 @@ import { useState } from 'react'
 import type { UseMutationResult } from 'react-query'
 
 import { DEFAULT_PAGE, PAGE_SIZE } from '@/components/token-staking/constants'
-import { TokenListWrapper } from '@/components/token-staking/TokenListView'
+import { TokenListEmptyState } from '@/components/token-staking/token-list/TokenListEmptyState'
+import { TokenListLoader } from '@/components/token-staking/token-list/TokenListLoader'
+import { TokenListWrapper } from '@/components/token-staking/token-list/TokenListWrapper'
 import { UnstakedToken } from '@/components/token-staking/unstaked-tokens/UnstakedToken'
-import { TokenListLoader } from '@/components/token-staking/TokenListLoader'
-import { TokenListEmptyState } from '@/components/token-staking/TokenListEmptyState'
 
 export type UnstakedTokensProps = {
   showFungibleTokens: boolean

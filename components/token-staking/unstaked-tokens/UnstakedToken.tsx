@@ -43,14 +43,12 @@ export const UnstakedToken = ({
         }}
       >
         {loading && (
-          <div>
-            <div className="absolute top-0 left-0 z-10 flex h-full w-full justify-center rounded-xl bg-black bg-opacity-80 align-middle text-white">
-              <div className="my-auto flex">
-                <span className="mr-2">
-                  <LoadingSpinner height="20px" />
-                </span>
-                Staking token...
-              </div>
+          <div className="absolute top-0 left-0 z-10 flex h-full w-full justify-center rounded-xl bg-black bg-opacity-80 align-middle text-white">
+            <div className="my-auto flex">
+              <span className="mr-2">
+                <LoadingSpinner height="20px" />
+              </span>
+              Staking token...
             </div>
           </div>
         )}
