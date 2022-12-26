@@ -14,6 +14,7 @@ import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 import type { UseMutationResult } from 'react-query'
 
 import { TokenStatBoostBadge } from '@/components/token-staking/token-stats/UI/TokenStatBoostBadge'
+import { TokenStatNextRewardBadge } from '@/components/token-staking/token-stats/UI/TokenStatNextRewardBadge'
 
 import { StakedStats } from './StakedStats'
 
@@ -105,6 +106,7 @@ export const StakedToken = ({
             />
           )}
           <TokenStatBoostBadge tokenData={tk} />
+          <TokenStatNextRewardBadge tokenData={tk} />
         </div>
         <div
           className={`flex-col rounded-b-xl p-2 ${

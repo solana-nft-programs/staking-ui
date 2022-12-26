@@ -12,6 +12,7 @@ import type { StakeEntryTokenData } from 'hooks/useStakedTokenDatas'
 import { useStakePoolData } from 'hooks/useStakePoolData'
 
 import { StakedStatWrapper } from '@/components/token-staking/staked-tokens/StakedStatWrapper'
+import { hasNextRewards } from '@/components/token-staking/token-stats/utils'
 import { TokenStatCooldownValue } from '@/components/token-staking/token-stats/values/TokenStatCooldownValue'
 import { TokenStatMinTimeValue } from '@/components/token-staking/token-stats/values/TokenStatMinTimeValue'
 import { TokenStatNextRewardValue } from '@/components/token-staking/token-stats/values/TokenStatNextRewardValue'
@@ -83,23 +84,18 @@ export function StakedStats({ tokenData }: { tokenData: StakeEntryTokenData }) {
                 </span>
               </StakedStatWrapper>
             )}
-            {rewards.data &&
-              rewards.data.rewardMap[
-                tokenData.stakeEntry?.pubkey.toString() || ''
-              ] &&
-              rewardDistributorData.data?.parsed.rewardDurationSeconds.gte(
-                new BN(60)
-              ) && (
-                <StakedStatWrapper>
-                  <span>Next Rewards:</span>
-                  <span>
-                    <TokenStatNextRewardValue
-                      tokenData={tokenData}
-                      rewardsData={rewards.data}
-                    />
-                  </span>
-                </StakedStatWrapper>
-              )}
+            {hasNextRewards({
+              rewardsData: rewards.data,
+              rewardDistributorData: rewardDistributorData.data,
+              tokenData,
+            }) && (
+              <StakedStatWrapper>
+                <span>Next Rewards:</span>
+                <span>
+                  <TokenStatNextRewardValue tokenData={tokenData} />
+                </span>
+              </StakedStatWrapper>
+            )}
           </>
         )}
       {!!tokenData.stakeEntry?.parsed?.cooldownStartSeconds &&
