@@ -1,11 +1,10 @@
-import type { StakeEntryTokenData } from 'hooks/useStakedTokenDatas'
-
-import { TokenStatBoostValue } from '@/components/token-staking/token-stats/TokenStatBoostValue'
 import { useRewardDistributorData } from 'hooks/useRewardDistributorData'
 import { useRewardEntries } from 'hooks/useRewardEntries'
-import { useEffect, useState } from 'react'
-import { formatAmountAsDecimal } from 'common/units'
-import { PublicKey } from '@solana/web3.js'
+import type { StakeEntryTokenData } from 'hooks/useStakedTokenDatas'
+import { useCallback, useEffect, useState } from 'react'
+
+import { calculateBoost } from '@/components/token-staking/token-stats/utils'
+import { TokenStatBoostValue } from '@/components/token-staking/token-stats/values/TokenStatBoostValue'
 
 export interface TokenStatBoostBadgeProps {
   tokenData: StakeEntryTokenData
@@ -14,33 +13,33 @@ export interface TokenStatBoostBadgeProps {
 export const TokenStatBoostBadge = ({
   tokenData,
 }: TokenStatBoostBadgeProps) => {
-  const rewardDistributorData = useRewardDistributorData()
-  const rewardEntries = useRewardEntries()
+  const { data: rewardDistributorData } = useRewardDistributorData()
+  const { data: rewardEntriesData } = useRewardEntries()
   const [hasBoost, setHasBoost] = useState(false)
 
-  useEffect(() => {
-    if (rewardDistributorData.data?.parsed?.multiplierDecimals === undefined)
-      return
+  const calculateBoostAsString = useCallback(() => {
+    if (rewardDistributorData?.parsed?.multiplierDecimals === undefined)
+      return '1'
 
-    if (
-      Number(
-        formatAmountAsDecimal(
-          rewardDistributorData.data?.parsed.multiplierDecimals || 0,
-          rewardEntries.data
-            ? rewardEntries.data.find((entry) =>
-                entry.parsed?.stakeEntry.equals(
-                  tokenData.stakeEntry?.pubkey || PublicKey.default
-                )
-              )?.parsed?.multiplier ||
-                rewardDistributorData.data.parsed.defaultMultiplier
-            : rewardDistributorData.data.parsed.defaultMultiplier,
-          rewardDistributorData.data.parsed.multiplierDecimals
-        )
-      ) !== 1
-    ) {
+    return calculateBoost({
+      rewardDistributorData,
+      rewardEntriesData,
+      tokenData,
+    })
+  }, [rewardDistributorData, rewardEntriesData, tokenData])
+
+  useEffect(() => {
+    const boostAmount = calculateBoostAsString()
+
+    if (Number(boostAmount) !== 1) {
       setHasBoost(true)
     }
-  }, [rewardDistributorData, rewardEntries, tokenData])
+  }, [
+    calculateBoostAsString,
+    rewardDistributorData,
+    rewardEntriesData,
+    tokenData,
+  ])
 
   if (!hasBoost) return <></>
 
