@@ -8,7 +8,9 @@ import type { UseMutationResult } from 'react-query'
 
 import { DEFAULT_PAGE, PAGE_SIZE } from '@/components/token-staking/constants'
 import { StakedToken } from '@/components/token-staking/staked-tokens/StakedToken'
-import { TokenListWrapper } from '@/components/token-staking/TokenListWrapper'
+import { TokenListWrapper } from '@/components/token-staking/TokenListView'
+import { TokenListLoader } from '@/components/token-staking/TokenListLoader'
+import { TokenListEmptyState } from '@/components/token-staking/TokenListEmptyState'
 
 export type StakedTokenListProps = {
   stakedSelected: StakeEntryTokenData[]
@@ -63,23 +65,14 @@ export const StakedTokenList = ({
   return (
     <TokenListWrapper setPageNum={setPageNum}>
       {!stakedTokenDatas.isFetched ? (
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-          <div className="aspect-square animate-pulse rounded-lg bg-white bg-opacity-5 p-10"></div>
-          <div className="aspect-square animate-pulse rounded-lg bg-white bg-opacity-5 p-10"></div>
-          <div className="aspect-square animate-pulse rounded-lg bg-white bg-opacity-5 p-10"></div>
-        </div>
+        <TokenListLoader />
       ) : stakedTokenDatas.data?.length === 0 ? (
-        <p
-          className={`font-normal ${
-            stakePoolMetadata?.colors?.fontColor
-              ? ''
-              : 'text-gray-400 opacity-50'
-          }`}
-        >
-          No tokens currently staked.
-        </p>
+        <TokenListEmptyState
+          fontColor={stakePoolMetadata?.colors?.fontColor}
+          message="No tokens currently staked."
+        />
       ) : (
-        <div className="grid grid-cols-1 gap-4 xl:grid-cols-3">
+        <div className="grid grid-cols-1 gap-4 xl:grid-cols-2">
           {!stakePoolMetadata?.notFound &&
             stakedTokenDatas.data &&
             stakedTokenDatas.data

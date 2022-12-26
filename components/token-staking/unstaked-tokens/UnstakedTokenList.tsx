@@ -8,8 +8,10 @@ import { useState } from 'react'
 import type { UseMutationResult } from 'react-query'
 
 import { DEFAULT_PAGE, PAGE_SIZE } from '@/components/token-staking/constants'
-import { TokenListWrapper } from '@/components/token-staking/TokenListWrapper'
+import { TokenListWrapper } from '@/components/token-staking/TokenListView'
 import { UnstakedToken } from '@/components/token-staking/unstaked-tokens/UnstakedToken'
+import { TokenListLoader } from '@/components/token-staking/TokenListLoader'
+import { TokenListEmptyState } from '@/components/token-staking/TokenListEmptyState'
 
 export type UnstakedTokensProps = {
   showFungibleTokens: boolean
@@ -91,21 +93,12 @@ export const UnstakedTokenList = ({
   return (
     <TokenListWrapper setPageNum={setPageNum}>
       {!allowedTokenDatas.isFetched ? (
-        <div className="grid grid-cols-1 gap-4 xl:grid-cols-2">
-          <div className="aspect-square animate-pulse rounded-lg bg-white bg-opacity-5 p-10"></div>
-          <div className="aspect-square animate-pulse rounded-lg bg-white bg-opacity-5 p-10"></div>
-          <div className="aspect-square animate-pulse rounded-lg bg-white bg-opacity-5 p-10"></div>
-        </div>
+        <TokenListLoader />
       ) : (allowedTokenDatas.data || []).length === 0 ? (
-        <p
-          className={`font-normal ${
-            stakePoolMetadata?.colors?.fontColor
-              ? `text-[${stakePoolMetadata?.colors?.fontColor}]`
-              : 'text-gray-400'
-          }`}
-        >
-          No allowed tokens found in wallet.
-        </p>
+        <TokenListEmptyState
+          fontColor={stakePoolMetadata?.colors?.fontColor}
+          message="No allowed tokens found in wallet."
+        />
       ) : (
         <div className={'grid grid-cols-1 gap-4 xl:grid-cols-2'}>
           {(stakePoolMetadata?.notFound
