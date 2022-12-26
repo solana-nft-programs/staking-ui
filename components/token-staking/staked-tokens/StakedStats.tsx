@@ -1,21 +1,20 @@
 import { getExpirationString, secondstoDuration } from '@cardinal/common'
 import { BN } from '@project-serum/anchor'
-import { useMintInfo } from 'hooks/useMintInfo'
-import { FaCheck } from 'react-icons/fa'
-
-import { StakedStatWrapper } from '@/components/token-staking/staked-tokens/StakedStatWrapper'
-
 import {
   formatAmountAsDecimal,
   formatMintNaturalAmountAsDecimal,
-} from '../../../common/units'
-import { useRewardDistributorData } from '../../../hooks/useRewardDistributorData'
-import { useRewardMintInfo } from '../../../hooks/useRewardMintInfo'
-import { useRewards } from '../../../hooks/useRewards'
-import { useRewardsRate } from '../../../hooks/useRewardsRate'
-import type { StakeEntryTokenData } from '../../../hooks/useStakedTokenDatas'
-import { useStakePoolData } from '../../../hooks/useStakePoolData'
-import { useUTCNow } from '../../../providers/UTCNowProvider'
+} from 'common/units'
+import { useMintInfo } from 'hooks/useMintInfo'
+import { useRewardDistributorData } from 'hooks/useRewardDistributorData'
+import { useRewardMintInfo } from 'hooks/useRewardMintInfo'
+import { useRewards } from 'hooks/useRewards'
+import { useRewardsRate } from 'hooks/useRewardsRate'
+import type { StakeEntryTokenData } from 'hooks/useStakedTokenDatas'
+import { useStakePoolData } from 'hooks/useStakePoolData'
+import { useUTCNow } from 'providers/UTCNowProvider'
+import { FaCheck } from 'react-icons/fa'
+
+import { StakedStatWrapper } from '@/components/token-staking/staked-tokens/StakedStatWrapper'
 
 export function StakedStats({ tokenData }: { tokenData: StakeEntryTokenData }) {
   const { UTCNow } = useUTCNow()

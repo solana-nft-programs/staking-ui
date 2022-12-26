@@ -31,3 +31,18 @@ export const calculateBoost = ({
     rewardDistributorData.parsed.multiplierDecimals
   )
 }
+
+export const hasBoost = ({
+  rewardDistributorData,
+  rewardEntriesData,
+  tokenData,
+}: calculateBoostArgs) => {
+  const boost = Number(
+    calculateBoost({
+      rewardDistributorData,
+      rewardEntriesData,
+      tokenData,
+    })
+  )
+  return boost > 1
+}
