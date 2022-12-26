@@ -4,11 +4,13 @@ import { useRewardDistributorData } from 'hooks/useRewardDistributorData'
 import { useRewardEntries } from 'hooks/useRewardEntries'
 import type { StakeEntryTokenData } from 'hooks/useStakedTokenDatas'
 
-export interface TokenStatBoostProps {
+export interface TokenStatBoostValueProps {
   tokenData: StakeEntryTokenData
 }
 
-export const TokenStatBoost = ({ tokenData }: TokenStatBoostProps) => {
+export const TokenStatBoostValue = ({
+  tokenData,
+}: TokenStatBoostValueProps) => {
   const rewardDistributorData = useRewardDistributorData()
   const rewardEntries = useRewardEntries()
 
