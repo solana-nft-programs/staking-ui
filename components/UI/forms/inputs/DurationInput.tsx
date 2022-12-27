@@ -1,11 +1,11 @@
 import { capitalizeFirstLetter } from '@cardinal/common'
-import type { SelectorPositions } from 'common/Selector'
-import { Selector } from 'common/Selector'
 import { useEffect, useState } from 'react'
 
 import { ButtonDecrement } from '@/components/UI/buttons/ButtonDecrement'
 import { ButtonIncrement } from '@/components/UI/buttons/ButtonIncrement'
 import { NumberInput } from '@/components/UI/forms/inputs/NumberInput'
+import type { SelectorPositions } from '@/components/UI/forms/inputs/Selector'
+import { Selector } from '@/components/UI/forms/inputs/Selector'
 
 export type DurationOption = 'seconds' | 'hours' | 'days' | 'weeks' | 'months'
 

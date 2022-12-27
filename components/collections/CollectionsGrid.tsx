@@ -1,5 +1,4 @@
 import { css } from '@emotion/react'
-import { Card } from 'common/Card'
 import { Stats } from 'common/Stats'
 import { shortPubKey } from 'common/utils'
 import type { StakePool } from 'hooks/useAllStakePools'
@@ -13,6 +12,8 @@ import { useRouter } from 'next/router'
 import { transparentize } from 'polished'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 
+import { CollectionCard } from '@/components/collections/CollectionCard'
+
 export const CollectionsGrid = ({ configs }: { configs?: StakePool[] }) => {
   const router = useRouter()
   const { environment } = useEnvironmentCtx()
@@ -21,12 +22,12 @@ export const CollectionsGrid = ({ configs }: { configs?: StakePool[] }) => {
     <div className="grid grid-cols-1 flex-wrap gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
       {!configs ? (
         <>
-          <Card skeleton header={<></>} />
-          <Card skeleton header={<></>} />
-          <Card skeleton header={<></>} />
-          <Card skeleton header={<></>} />
-          <Card skeleton header={<></>} />
-          <Card skeleton header={<></>} />
+          <CollectionCard skeleton header={<></>} />
+          <CollectionCard skeleton header={<></>} />
+          <CollectionCard skeleton header={<></>} />
+          <CollectionCard skeleton header={<></>} />
+          <CollectionCard skeleton header={<></>} />
+          <CollectionCard skeleton header={<></>} />
         </>
       ) : (
         [...configs]
@@ -34,7 +35,7 @@ export const CollectionsGrid = ({ configs }: { configs?: StakePool[] }) => {
             compareStakePools(a, b, stakePoolEntryCounts.data ?? {})
           )
           .map((config) => (
-            <Card
+            <CollectionCard
               key={config.stakePoolMetadata?.displayName}
               className="cursor-pointer transition-colors"
               css={css`

@@ -13,7 +13,7 @@ interface Props extends React.HTMLAttributes<HTMLDivElement> {
   className?: string
 }
 
-export const Card: React.FC<Props> = ({
+export const CollectionCard: React.FC<Props> = ({
   header,
   subHeader,
   badges,
