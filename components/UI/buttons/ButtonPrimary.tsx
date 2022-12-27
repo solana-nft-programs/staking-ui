@@ -13,7 +13,7 @@ interface Props extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   color?: ButtonColors
   className?: string
   width?: ButtonWidths
-  style: React.CSSProperties
+  style?: React.CSSProperties
 }
 
 export const ButtonPrimary = ({
