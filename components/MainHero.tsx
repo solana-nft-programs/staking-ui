@@ -7,7 +7,7 @@ import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 
 import { BodyCopy } from '@/components/UI/typography/BodyCopy'
 import { HeadingPrimary } from '@/components/UI/typography/HeadingPrimary'
-import { ButtonPrimary } from '@/components/UI/buttons/ButtonPrimary'
+import { ButtonPrimary } from '@/components/UI/buttons/base/ButtonPrimary'
 
 export const MainHero = () => {
   const { environment } = useEnvironmentCtx()

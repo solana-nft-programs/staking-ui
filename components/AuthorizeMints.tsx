@@ -4,7 +4,7 @@ import { useHandleAuthorizeMints } from 'handlers/useHandleAuthorizeMints'
 import { useHandleDeauthorizeMints } from 'handlers/useHandleDeauthorizeMints'
 import { useState } from 'react'
 
-import { ButtonPrimary } from '@/components/UI/buttons/ButtonPrimary'
+import { ButtonPrimary } from '@/components/UI/buttons/base/ButtonPrimary'
 
 export const AuthorizeMints = () => {
   const [mintsToAuthorize, setMintsToAuthorize] = useState<string>('')

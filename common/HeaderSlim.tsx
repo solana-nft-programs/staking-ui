@@ -3,12 +3,12 @@ import { useWallet } from '@solana/wallet-adapter-react'
 import { useWalletModal } from '@solana/wallet-adapter-react-ui'
 import { GlyphWallet } from 'assets/GlyphWallet'
 import { LogoTitled } from 'assets/LogoTitled'
+import { ButtonAirdrop } from 'components/UI/buttons/ButtonAirdrop'
 import { useRouter } from 'next/router'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 import { useEffect, useState } from 'react'
 
-import { Airdrop } from './Airdrop'
-import { ButtonSmall } from './ButtonSmall'
+import { ButtonSmall } from 'components/UI/buttons/base/ButtonSmall'
 import { withCluster } from './utils'
 import { asWallet } from './Wallets'
 
@@ -39,7 +39,7 @@ export const HeaderSlim = () => {
           {environment.label !== 'mainnet-beta' && (
             <div className="text-primary">{environment.label}</div>
           )}
-          {environment.label !== 'mainnet-beta' && <Airdrop />}
+          {environment.label !== 'mainnet-beta' && <ButtonAirdrop />}
         </div>
         <div className="flex-5 flex items-center justify-end gap-6">
           <div

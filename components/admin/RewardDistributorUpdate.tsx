@@ -12,7 +12,7 @@ import { useWalletId } from 'hooks/useWalletId'
 import { useEffect } from 'react'
 import * as Yup from 'yup'
 
-import { ButtonPrimary } from '@/components/UI/buttons/ButtonPrimary'
+import { ButtonPrimary } from '@/components/UI/buttons/base/ButtonPrimary'
 
 import {
   bnValidationTest,

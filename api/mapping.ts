@@ -2,7 +2,7 @@ import { ReceiptType } from '@cardinal/staking/dist/cjs/programs/stakePool'
 import { PublicKey } from '@solana/web3.js'
 import type { CSSProperties } from 'react'
 
-import type { AirdropMetadata } from '../common/Airdrop'
+import type { ButtonAirdropMetadata } from '../components/UI/buttons/ButtonAirdrop'
 
 export enum TokenStandard {
   // Fungible, can have more than 1
@@ -85,7 +85,7 @@ export type StakePoolMetadata = {
   // Links to show at the top right of the page
   links?: { text: string; value: string }[]
   // On devnet when you click the airdrop button on this page it will clone NFTs with this metadata and airdrop to the user. These will not contain verified creators
-  airdrops?: AirdropMetadata[]
+  airdrops?: ButtonAirdropMetadata[]
   // Analytics to show at the top of stake pool. supports trait based analytics and overall tokens data
   analytics?: Analytic[]
 }

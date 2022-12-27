@@ -6,7 +6,7 @@ import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 
-import { ButtonPrimary } from '@/components/UI/buttons/ButtonPrimary'
+import { ButtonPrimary } from '@/components/UI/buttons/base/ButtonPrimary'
 import FloatingBlurryBlob from '@/components/UI/FloatingBlurryBlob'
 import { BodyCopy } from '@/components/UI/typography/BodyCopy'
 import { HeadingPrimary } from '@/components/UI/typography/HeadingPrimary'

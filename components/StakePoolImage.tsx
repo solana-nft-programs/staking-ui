@@ -1,5 +1,6 @@
-import { ButtonSmall } from 'common/ButtonSmall'
 import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
+
+import { ButtonSmall } from '@/components/UI/buttons/base/ButtonSmall'
 
 export const StakePoolImage = () => {
   const { data: config } = useStakePoolMetadata()

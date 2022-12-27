@@ -10,7 +10,7 @@ import type { FlowType } from '@/components/stake-pool-creation/master-panel/ste
 import { StepContent } from '@/components/stake-pool-creation/master-panel/step-content/StepContent'
 import { StepIndicator } from '@/components/stake-pool-creation/master-panel/step-indicator/StepIndicator'
 import type { SlavePanelScreens } from '@/components/stake-pool-creation/SlavePanel'
-import { ButtonPrimary } from '@/components/UI/buttons/ButtonPrimary'
+import { ButtonPrimary } from '@/components/UI/buttons/base/ButtonPrimary'
 import { BodyCopy } from '@/components/UI/typography/BodyCopy'
 import { HeadingPrimary } from '@/components/UI/typography/HeadingPrimary'
 

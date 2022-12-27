@@ -1,10 +1,11 @@
 import { GlyphBrowse } from 'assets/GlyphBrowse'
-import { ButtonSmall } from 'common/ButtonSmall'
 import { TabSelector } from 'common/TabSelector'
 import type { StakePool } from 'hooks/useAllStakePools'
 import { useEffect, useRef, useState } from 'react'
 import { AiOutlineMenu } from 'react-icons/ai'
 import { BiChevronDown, BiChevronUp } from 'react-icons/bi'
+
+import { ButtonSmall } from '@/components/UI/buttons/base/ButtonSmall'
 
 import { CollectionsGrid } from './CollectionsGrid'
 import { CollectionsList } from './CollectionsList'

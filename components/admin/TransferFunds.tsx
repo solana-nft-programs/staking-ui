@@ -8,7 +8,7 @@ import {
 import { useRewardMintInfo } from 'hooks/useRewardMintInfo'
 import { useState } from 'react'
 
-import { ButtonPrimary } from '@/components/UI/buttons/ButtonPrimary'
+import { ButtonPrimary } from '@/components/UI/buttons/base/ButtonPrimary'
 
 import { BNInput } from '../UI/inputs/BNInput'
 

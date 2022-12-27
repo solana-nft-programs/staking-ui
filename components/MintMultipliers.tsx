@@ -4,7 +4,7 @@ import { useHandleSetMultipliers } from 'handlers/useHandleSetMultipliers'
 import { useRewardDistributorData } from 'hooks/useRewardDistributorData'
 import * as Yup from 'yup'
 
-import { ButtonPrimary } from '@/components/UI/buttons/ButtonPrimary'
+import { ButtonPrimary } from '@/components/UI/buttons/base/ButtonPrimary'
 
 import { publicKeyValidationTest } from './stake-pool-creation/Schema'
 import { TextInput } from './UI/inputs/TextInput'

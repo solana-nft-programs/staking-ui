@@ -1,4 +1,4 @@
-import { ButtonPrimary } from '@/components/UI/buttons/ButtonPrimary'
+import { ButtonPrimary } from '@/components/UI/buttons/base/ButtonPrimary'
 import { useHandleRewardDistributorRemove } from 'handlers/useHandleRewardDistributorRemove'
 import { useRewardDistributorData } from 'hooks/useRewardDistributorData'
 

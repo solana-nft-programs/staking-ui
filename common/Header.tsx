@@ -2,12 +2,13 @@ import { AccountConnect } from '@cardinal/namespaces-components'
 import { useWallet } from '@solana/wallet-adapter-react'
 import { useWalletModal } from '@solana/wallet-adapter-react-ui'
 import { GlyphWallet } from 'assets/GlyphWallet'
+import { ButtonAirdrop } from 'components/UI/buttons/ButtonAirdrop'
 import { useStakePoolId } from 'hooks/useStakePoolId'
 import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 
-import { Airdrop } from './Airdrop'
-import { ButtonSmall } from './ButtonSmall'
+import { ButtonPrimary } from '@/components/UI/buttons/base/ButtonPrimary'
+
 import { contrastColorMode } from './utils'
 import { asWallet } from './Wallets'
 
@@ -63,7 +64,7 @@ export const Header = () => {
           )}
           {environment.label !== 'mainnet-beta' ? (
             <div className="mt-0.5">
-              <Airdrop />
+              <ButtonAirdrop />
             </div>
           ) : (
             ''
@@ -98,7 +99,8 @@ export const Header = () => {
               wallet={asWallet(wallet)}
             />
           ) : (
-            <ButtonSmall
+            <ButtonPrimary
+              color="TRANSPARENT"
               className="text-xs"
               onClick={() => walletModal.setVisible(true)}
             >
@@ -106,7 +108,7 @@ export const Header = () => {
                 <GlyphWallet />
                 <div className="text-white">Connect wallet</div>
               </>
-            </ButtonSmall>
+            </ButtonPrimary>
           )}
         </div>
       </div>

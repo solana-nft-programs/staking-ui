@@ -17,23 +17,27 @@ import { useWallet } from '@solana/wallet-adapter-react'
 import type { Connection } from '@solana/web3.js'
 import { Keypair, LAMPORTS_PER_SOL, Transaction } from '@solana/web3.js'
 import { notify } from 'common/Notification'
-import { ButtonPrimary } from '@/components/UI/buttons/ButtonPrimary'
+import { asWallet } from 'common/Wallets'
 import { useAllowedTokenDatas } from 'hooks/useAllowedTokenDatas'
 import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 
-import { asWallet } from './Wallets'
+import { ButtonPrimary } from '@/components/UI/buttons/base/ButtonPrimary'
 
-export type AirdropMetadata = { name: string; symbol: string; uri: string }
+export type ButtonAirdropMetadata = {
+  name: string
+  symbol: string
+  uri: string
+}
 
 export async function airdropNFT(
   connection: Connection,
   wallet: Wallet,
-  airdropMetadatas: AirdropMetadata[]
+  airdropMetadatas: ButtonAirdropMetadata[]
 ): Promise<string> {
   const transaction = new Transaction()
   const randInt = Math.round(Math.random() * (airdropMetadatas.length - 1))
-  const metadata: AirdropMetadata | undefined = airdropMetadatas[randInt]
+  const metadata: ButtonAirdropMetadata | undefined = airdropMetadatas[randInt]
   if (!metadata) throw new Error('No configured airdrops found')
 
   const mintKeypair = Keypair.generate()
@@ -103,7 +107,7 @@ export async function airdropNFT(
   return txid
 }
 
-export const Airdrop = () => {
+export const ButtonAirdrop = () => {
   const { connection } = useEnvironmentCtx()
   const wallet = useWallet()
   const allowedTokenDatas = useAllowedTokenDatas(true)

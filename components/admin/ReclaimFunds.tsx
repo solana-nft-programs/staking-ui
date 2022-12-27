@@ -1,5 +1,5 @@
 import { RewardDistributorKind } from '@cardinal/staking/dist/cjs/programs/rewardDistributor'
-import { ButtonPrimary } from '@/components/UI/buttons/ButtonPrimary'
+import { ButtonPrimary } from '@/components/UI/buttons/base/ButtonPrimary'
 import { FormFieldTitleInput } from 'common/FormFieldInput'
 import { notify } from 'common/Notification'
 import { tryFormatInput, tryParseInput } from 'common/units'

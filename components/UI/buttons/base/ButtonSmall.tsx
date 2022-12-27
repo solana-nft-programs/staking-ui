@@ -1,9 +1,8 @@
 import { css } from '@emotion/react'
+import { LoadingSpinner } from 'common/LoadingSpinner'
 import { useState } from 'react'
 
-import { LoadingSpinner } from './LoadingSpinner'
-
-export interface Props extends React.HTMLAttributes<HTMLDivElement> {
+export interface Props extends React.HTMLAttributes<HTMLButtonElement> {
   children: JSX.Element | string
   className?: string
   loading?: boolean
@@ -22,7 +21,7 @@ export const ButtonSmall: React.FC<Props> = ({
 }: Props) => {
   const [loadingClick, setLoadingClick] = useState(false)
   return (
-    <div
+    <button
       {...props}
       className={`flex items-center justify-center gap-1 rounded-xl border-[0px] border-border bg-white bg-opacity-10 px-3 py-2 transition-all ${className} ${
         disabled
@@ -43,6 +42,6 @@ export const ButtonSmall: React.FC<Props> = ({
       }}
     >
       {loadingClick || loading ? <LoadingSpinner height="25px" /> : children}
-    </div>
+    </button>
   )
 }
