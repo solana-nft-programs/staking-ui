@@ -34,7 +34,7 @@ export const TokenStatBoostBadge = ({
   useEffect(() => {
     const boostAmount = calculateBoostAsString()
 
-    if (Number(boostAmount) === 1) {
+    if (Number(boostAmount) !== 1) {
       setHasBoost(true)
     }
   }, [
