@@ -3,7 +3,8 @@ import { FooterSlim } from 'common/FooterSlim'
 import { useAllStakePools } from 'hooks/useAllStakePools'
 import Head from 'next/head'
 
-import { CollectionsView } from './CollectionsView'
+import { CollectionsView } from '@/components/collections/CollectionsView'
+
 import { MainHero } from './MainHero'
 
 function Homepage() {

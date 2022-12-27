@@ -3,10 +3,9 @@ import type { SelectorPositions } from 'common/Selector'
 import { Selector } from 'common/Selector'
 import { useEffect, useState } from 'react'
 
-import { NumberInput } from '@/components/UI/inputs/NumberInput'
-
-import { ButtonDecrement } from '../buttons/ButtonDecrement'
-import { ButtonIncrement } from '../buttons/ButtonIncrement'
+import { ButtonDecrement } from '@/components/UI/buttons/ButtonDecrement'
+import { ButtonIncrement } from '@/components/UI/buttons/ButtonIncrement'
+import { NumberInput } from '@/components/UI/forms/inputs/NumberInput'
 
 export type DurationOption = 'seconds' | 'hours' | 'days' | 'weeks' | 'months'
 

@@ -4,7 +4,7 @@ import classNames from 'classnames/dedupe'
 import { useEffect, useRef, useState } from 'react'
 import { twMerge } from 'tailwind-merge'
 
-import { inputClassNames } from '@/components/UI/inputs/TextInput'
+import { inputClassNames } from '@/components/UI/forms/inputs/TextInput'
 
 export type SelectorPositions = 'from-top' | 'from-bottom'
 

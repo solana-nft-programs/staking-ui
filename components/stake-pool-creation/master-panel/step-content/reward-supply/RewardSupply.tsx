@@ -7,8 +7,8 @@ import { MultiplierInputs } from '@/components/stake-pool-creation/master-panel/
 import { SlavePanelScreens } from '@/components/stake-pool-creation/SlavePanel'
 import { ButtonDecrement } from '@/components/UI/buttons/ButtonDecrement'
 import { ButtonIncrement } from '@/components/UI/buttons/ButtonIncrement'
-import { NumberInput } from '@/components/UI/inputs/NumberInput'
-import { SelectInput } from '@/components/UI/inputs/SelectInput'
+import { NumberInput } from '@/components/UI/forms/inputs/NumberInput'
+import { SelectInput } from '@/components/UI/forms/inputs/SelectInput'
 import { LabelText } from '@/components/UI/typography/LabelText'
 import { unitsOfTime } from '@/constants/index'
 

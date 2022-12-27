@@ -6,7 +6,7 @@ import { Fragment, useState } from 'react'
 import { SlavePanelScreens } from '@/components/stake-pool-creation/SlavePanel'
 import { ButtonLargeWithDottedOutline } from '@/components/UI/buttons/ButtonLargeWithDottedOutline'
 import { InfoTipButtons } from '@/components/UI/buttons/InfoTipButtons'
-import { TextInput } from '@/components/UI/inputs/TextInput'
+import { TextInput } from '@/components/UI/forms/inputs/TextInput'
 import { LabelText } from '@/components/UI/typography/LabelText'
 
 export type CreatorAddressInputsProps = {

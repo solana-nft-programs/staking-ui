@@ -4,7 +4,7 @@ import type { Dispatch, SetStateAction } from 'react'
 import { SlavePanelScreens } from '@/components/stake-pool-creation/SlavePanel'
 import { ButtonDecrement } from '@/components/UI/buttons/ButtonDecrement'
 import { ButtonIncrement } from '@/components/UI/buttons/ButtonIncrement'
-import { TextInput } from '@/components/UI/inputs/TextInput'
+import { TextInput } from '@/components/UI/forms/inputs/TextInput'
 import { LabelText } from '@/components/UI/typography/LabelText'
 
 export type MultiplierInputProps = {

@@ -9,7 +9,7 @@ import {
 import { useRouter } from 'next/router'
 import { transparentize } from 'polished'
 
-import { PercentStaked } from './PercentStaked'
+import { PercentStaked } from '../PercentStaked'
 
 export const CollectionsList = ({ configs }: { configs?: StakePool[] }) => {
   const router = useRouter()

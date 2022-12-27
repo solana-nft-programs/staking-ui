@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 
 import { SlavePanelScreens } from '@/components/stake-pool-creation/SlavePanel'
 import { InfoTipButtons } from '@/components/UI/buttons/InfoTipButtons'
-import { SelectInput } from '@/components/UI/inputs/SelectInput'
+import { SelectInput } from '@/components/UI/forms/inputs/SelectInput'
 import { LabelText } from '@/components/UI/typography/LabelText'
 import { booleanOptions } from '@/types/index'
 

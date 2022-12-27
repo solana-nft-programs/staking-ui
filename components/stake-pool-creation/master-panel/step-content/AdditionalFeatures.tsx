@@ -4,9 +4,9 @@ import { useEffect, useState } from 'react'
 
 import { SlavePanelScreens } from '@/components/stake-pool-creation/SlavePanel'
 import { InfoTipButtons } from '@/components/UI/buttons/InfoTipButtons'
-import { DateInput } from '@/components/UI/inputs/DateInput'
-import { DurationInput } from '@/components/UI/inputs/DurationInput'
-import { SelectInput } from '@/components/UI/inputs/SelectInput'
+import { DateInput } from '@/components/UI/forms/inputs/DateInput'
+import { DurationInput } from '@/components/UI/forms/inputs/DurationInput'
+import { SelectInput } from '@/components/UI/forms/inputs/SelectInput'
 import { LabelText } from '@/components/UI/typography/LabelText'
 import { booleanOptions } from '@/types/index'
 

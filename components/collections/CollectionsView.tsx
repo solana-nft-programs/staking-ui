@@ -5,10 +5,9 @@ import { useEffect, useRef, useState } from 'react'
 import { AiOutlineMenu } from 'react-icons/ai'
 import { BiChevronDown, BiChevronUp } from 'react-icons/bi'
 
+import { CollectionsGrid } from '@/components/collections/CollectionsGrid'
+import { CollectionsList } from '@/components/collections/CollectionsList'
 import { ButtonSmall } from '@/components/UI/buttons/base/ButtonSmall'
-
-import { CollectionsGrid } from './CollectionsGrid'
-import { CollectionsList } from './CollectionsList'
 
 type VIEW_OPTIONS = 'grid' | 'list'
 const VIEW_TABS: {
