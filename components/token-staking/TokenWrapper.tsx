@@ -1,10 +1,9 @@
 import classNames from 'classnames'
 import type { AllowedTokenData } from 'hooks/useAllowedTokenDatas'
-import type { StakeEntryTokenData } from 'hooks/useStakedTokenDatas'
 import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
 
 export interface TokenWrapperProps {
-  select: (tokenData: StakeEntryTokenData | AllowedTokenData) => void
+  select: (tokenData: any) => void
   selected: boolean
   children: React.ReactNode
   token: AllowedTokenData

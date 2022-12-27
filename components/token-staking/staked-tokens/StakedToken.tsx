@@ -4,21 +4,20 @@ import { defaultSecondaryColor } from 'api/mapping'
 import { LoadingSpinner } from 'common/LoadingSpinner'
 import { QuickActions } from 'common/QuickActions'
 import { getNameFromTokenData } from 'common/tokenDataUtils'
-import type { AllowedTokenData } from 'hooks/useAllowedTokenDatas'
 import { useMintMetadata } from 'hooks/useMintMetadata'
 import type { StakeEntryTokenData } from 'hooks/useStakedTokenDatas'
 import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 import type { UseMutationResult } from 'react-query'
 
+import { TokenImage } from '@/components/token-staking/token/TokenImage'
+import { TokenImageWrapper } from '@/components/token-staking/token/TokenImageWrapper'
 import { TokenStatBoostBadge } from '@/components/token-staking/token-stats/UI/TokenStatBoostBadge'
 import { TokenStatCooldownBadge } from '@/components/token-staking/token-stats/UI/TokenStatCooldownBadge'
 import { TokenStatNextRewardBadge } from '@/components/token-staking/token-stats/UI/TokenStatNextRewardBadge'
 import { TokenWrapper } from '@/components/token-staking/TokenWrapper'
 
 import { StakedStats } from './StakedStats'
-import { TokenImage } from '@/components/token-staking/token/TokenImage'
-import { TokenImageWrapper } from '@/components/token-staking/token/TokenImageWrapper'
 
 export const StakedToken = ({
   tk,
@@ -32,7 +31,7 @@ export const StakedToken = ({
   selected: boolean
   loadingUnstake: boolean
   loadingClaim: boolean
-  select: (tokenData: AllowedTokenData, amount?: string) => void
+  select: (tokenData: StakeEntryTokenData, amount?: string) => void
   handleUnstake: UseMutationResult<
     string[],
     unknown,
