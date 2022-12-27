@@ -1,4 +1,4 @@
-import classNames from 'classnames'
+import classNames from 'classnames/dedupe'
 import { twMerge } from 'tailwind-merge'
 
 type Props = React.DetailedHTMLProps<

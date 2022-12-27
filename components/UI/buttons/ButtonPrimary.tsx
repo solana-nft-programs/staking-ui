@@ -1,51 +1,100 @@
-import classNames from 'classnames'
+import { css } from '@emotion/react'
+import classNames from 'classnames/dedupe'
+import { contrastify } from 'common/colors'
+import { LoadingSpinner } from 'common/LoadingSpinner'
+import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
+import { useState } from 'react'
 
-import { ButtonColors, ButtonWidths } from '@/types/index'
-
-const { ORANGE, PURPLE, GREEN, BLUE, MAROON, TRANSPARENT } = ButtonColors
-
-const { NARROW, MID } = ButtonWidths
-
-interface Props extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  disabled?: boolean
-  children: React.ReactNode
-  onClick: () => void
-  color?: ButtonColors
-  className?: string
-  width?: ButtonWidths
-  style?: React.CSSProperties
+export type ButtonPrimary = {
+  buttonWidths: 'NARROW' | 'MID'
+  buttonColors: 'ORANGE' | 'TRANSPARENT'
 }
 
-export const ButtonPrimary = ({
-  disabled,
+export interface ButtonPrimaryProps
+  extends React.HTMLAttributes<HTMLButtonElement> {
+  children: React.ReactNode
+  icon?: JSX.Element
+  count?: number
+  className?: string
+  disabled?: boolean
+  loading?: boolean
+  inlineLoader?: boolean
+  loader?: React.ReactElement
+  width?: ButtonPrimary['buttonWidths']
+  color?: ButtonPrimary['buttonColors']
+  colorized?: boolean
+}
+
+export const ButtonPrimary: React.FC<ButtonPrimaryProps> = ({
   children,
-  color = ORANGE,
   onClick,
   className,
-  width = MID,
-  style,
-}: Props) => {
+  disabled,
+  loading,
+  inlineLoader,
+  loader,
+  color = 'ORANGE',
+  width = 'MID',
+  colorized = true,
+  ...rest
+}: ButtonPrimaryProps) => {
+  const [loadingClick, setLoadingClick] = useState(false)
+  const { data: stakePoolMetadata } = useStakePoolMetadata()
+  const loaderElement = loader || (
+    <LoadingSpinner height="15" className="flex items-center justify-center" />
+  )
+
   return (
     <button
-      disabled={disabled}
-      className={classNames(className, [
-        width === NARROW ? 'w-auto' : `min-w-[230px]`,
-        disabled ? 'opacity-50' : '',
+      {...rest}
+      className={classNames([
+        'flex items-center justify-center rounded-lg px-8 py-2 transition-colors',
         {
-          'flex items-center justify-center rounded-lg px-8 py-2': true,
-          'bg-opacity-0 text-gray-400': color === TRANSPARENT,
-          'bg-orange-500 text-white transition hover:bg-primary-hover':
-            color === ORANGE,
-          'bg-green-500 text-black': color === GREEN,
-          'bg-purple-500 text-white': color === PURPLE,
-          'bg-blue-500 text-black': color === BLUE,
-          'bg-red-800 text-white': color === MAROON,
+          'w-auto': width === 'NARROW',
+          'min-w-[230px]': width === 'MID',
+          'cursor-default opacity-50': disabled,
+          'cursor-pointer bg-orange-500 text-white hover:bg-primary-hover':
+            !disabled && color === 'ORANGE',
+          'cursor-pointer bg-transparent text-gray-400':
+            !disabled && color === 'TRANSPARENT',
         },
+        className,
       ])}
-      style={style}
-      onClick={onClick}
+      css={
+        colorized &&
+        css`
+          background: ${stakePoolMetadata?.colors?.secondary} !important;
+          color: ${stakePoolMetadata?.colors?.secondary &&
+          contrastify(1, stakePoolMetadata?.colors?.secondary)} !important;
+          &:hover {
+            background: ${!disabled &&
+            stakePoolMetadata?.colors?.secondary &&
+            contrastify(0.05, stakePoolMetadata?.colors?.secondary)} !important;
+          }
+        `
+      }
+      onClick={async (e) => {
+        if (!onClick || disabled) return
+        try {
+          setLoadingClick(true)
+          await onClick(e)
+        } finally {
+          setLoadingClick(false)
+        }
+      }}
     >
-      {children}
+      {loading || loadingClick ? (
+        inlineLoader ? (
+          <div className="flex items-center justify-center gap-2">
+            {loaderElement}
+            {children}
+          </div>
+        ) : (
+          loaderElement
+        )
+      ) : (
+        children
+      )}
     </button>
   )
 }

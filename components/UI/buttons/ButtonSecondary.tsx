@@ -1,4 +1,4 @@
-import classNames from 'classnames'
+import classNames from 'classnames/dedupe'
 
 import { MINIMUM_BUTTON_WIDTH_IN_PX } from '@/constants/index'
 import { ButtonColors } from '@/types/index'

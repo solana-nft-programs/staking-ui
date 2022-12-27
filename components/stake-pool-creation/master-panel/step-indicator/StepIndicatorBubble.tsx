@@ -1,5 +1,5 @@
 import { CheckIcon } from '@heroicons/react/24/solid'
-import classNames from 'classnames'
+import classNames from 'classnames/dedupe'
 
 export type StepIndicatorBubbleProps = {
   isActive: boolean

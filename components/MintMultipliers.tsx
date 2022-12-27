@@ -1,9 +1,10 @@
-import { AsyncButton } from 'common/Button'
 import { FormFieldTitleInput } from 'common/FormFieldInput'
 import { useFormik } from 'formik'
 import { useHandleSetMultipliers } from 'handlers/useHandleSetMultipliers'
 import { useRewardDistributorData } from 'hooks/useRewardDistributorData'
 import * as Yup from 'yup'
+
+import { ButtonPrimary } from '@/components/UI/buttons/ButtonPrimary'
 
 import { publicKeyValidationTest } from './stake-pool-creation/Schema'
 import { TextInput } from './UI/inputs/TextInput'
@@ -133,7 +134,7 @@ export const MintMultipliers = () => {
             </div>
           )
       )}
-      <AsyncButton
+      <ButtonPrimary
         loading={handleSetMultipliers.isLoading}
         onClick={() =>
           handleSetMultipliers.mutate({
@@ -145,7 +146,7 @@ export const MintMultipliers = () => {
         className="mt-3 flex items-center justify-center"
       >
         Set Multipliers
-      </AsyncButton>
+      </ButtonPrimary>
     </div>
   )
 }

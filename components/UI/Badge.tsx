@@ -1,4 +1,4 @@
-import classNames from 'classnames'
+import classNames from 'classnames/dedupe'
 
 export interface BadgeProps extends React.HTMLAttributes<HTMLDivElement> {
   className?: string

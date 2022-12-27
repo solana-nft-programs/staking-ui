@@ -17,11 +17,11 @@ import { useWallet } from '@solana/wallet-adapter-react'
 import type { Connection } from '@solana/web3.js'
 import { Keypair, LAMPORTS_PER_SOL, Transaction } from '@solana/web3.js'
 import { notify } from 'common/Notification'
+import { ButtonPrimary } from '@/components/UI/buttons/ButtonPrimary'
 import { useAllowedTokenDatas } from 'hooks/useAllowedTokenDatas'
 import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 
-import { AsyncButton } from './Button'
 import { asWallet } from './Wallets'
 
 export type AirdropMetadata = { name: string; symbol: string; uri: string }
@@ -110,7 +110,7 @@ export const Airdrop = () => {
   const { data: stakePoolMetadata } = useStakePoolMetadata()
 
   return (
-    <AsyncButton
+    <ButtonPrimary
       disabled={!wallet.connected}
       className="rounded-md px-3 py-1"
       onClick={async () => {
@@ -129,7 +129,7 @@ export const Airdrop = () => {
       }}
     >
       <div className="text-xs">Airdrop</div>
-    </AsyncButton>
+    </ButtonPrimary>
   )
 }
 
@@ -139,7 +139,7 @@ export const AirdropSol = () => {
   const allowedTokenDatas = useAllowedTokenDatas(true)
 
   return (
-    <AsyncButton
+    <ButtonPrimary
       disabled={!wallet.connected}
       onClick={async () => {
         if (!wallet.connected) return
@@ -153,7 +153,7 @@ export const AirdropSol = () => {
       }}
     >
       Faucet
-    </AsyncButton>
+    </ButtonPrimary>
   )
 }
 

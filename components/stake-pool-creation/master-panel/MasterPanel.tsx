@@ -13,7 +13,6 @@ import type { SlavePanelScreens } from '@/components/stake-pool-creation/SlavePa
 import { ButtonPrimary } from '@/components/UI/buttons/ButtonPrimary'
 import { BodyCopy } from '@/components/UI/typography/BodyCopy'
 import { HeadingPrimary } from '@/components/UI/typography/HeadingPrimary'
-import { ButtonWidths } from '@/types/index'
 
 export type MasterPanelProps = {
   submitDisabled: boolean
@@ -91,7 +90,7 @@ export const MasterPanel = ({
           {currentStep > 0 && (
             <ButtonPrimary
               onClick={() => setCurrentStep(currentStep - 1)}
-              width={ButtonWidths.NARROW}
+              width="NARROW"
             >
               Previous
             </ButtonPrimary>
@@ -99,14 +98,14 @@ export const MasterPanel = ({
           {currentStep < stepTitles.length - 1 ? (
             <ButtonPrimary
               onClick={() => setCurrentStep(currentStep + 1)}
-              width={ButtonWidths.NARROW}
+              width="NARROW"
             >
               {currentStep === 0 ? 'Start' : 'Next'}
             </ButtonPrimary>
           ) : (
             <ButtonPrimary
               onClick={() => handleSubmit()}
-              width={ButtonWidths.NARROW}
+              width="NARROW"
               disabled={submitDisabled}
             >
               {isLoading ? (

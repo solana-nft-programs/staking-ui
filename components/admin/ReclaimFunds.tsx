@@ -1,5 +1,5 @@
 import { RewardDistributorKind } from '@cardinal/staking/dist/cjs/programs/rewardDistributor'
-import { AsyncButton } from 'common/Button'
+import { ButtonPrimary } from '@/components/UI/buttons/ButtonPrimary'
 import { FormFieldTitleInput } from 'common/FormFieldInput'
 import { notify } from 'common/Notification'
 import { tryFormatInput, tryParseInput } from 'common/units'
@@ -67,7 +67,7 @@ export const ReclaimFunds = () => {
             )
           }
         />
-        <AsyncButton
+        <ButtonPrimary
           className="rounded-md px-3 py-1"
           loading={handleReclaimFunds.isLoading}
           inlineLoader
@@ -78,7 +78,7 @@ export const ReclaimFunds = () => {
           }
         >
           Reclaim Funds
-        </AsyncButton>
+        </ButtonPrimary>
       </div>
     </div>
   )

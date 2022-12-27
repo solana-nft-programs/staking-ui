@@ -1,5 +1,4 @@
 import type { PublicKey } from '@solana/web3.js'
-import { AsyncButton } from 'common/Button'
 import { FormFieldTitleInput } from 'common/FormFieldInput'
 import { LoadingSpinner } from 'common/LoadingSpinner'
 import { SelectorBoolean } from 'common/SelectorBoolean'
@@ -11,6 +10,8 @@ import { useStakePoolId } from 'hooks/useStakePoolId'
 import { useWalletId } from 'hooks/useWalletId'
 import { useEffect } from 'react'
 import * as Yup from 'yup'
+
+import { ButtonPrimary } from '@/components/UI/buttons/ButtonPrimary'
 
 import { publicKeyValidationTest } from '../stake-pool-creation/Schema'
 import { TextInput } from '../UI/inputs/TextInput'
@@ -267,7 +268,7 @@ export function StakePoolUpdate({
           />
         </div>
       </div>
-      <AsyncButton
+      <ButtonPrimary
         disabled={
           stakePool.data &&
           walletId?.toString() !== stakePool.data?.parsed.authority.toString()
@@ -287,7 +288,7 @@ export function StakePoolUpdate({
         className="mx-auto mt-4 flex w-full items-center justify-center text-center"
       >
         {stakePool.data ? 'Update' : 'Get Started'}
-      </AsyncButton>
+      </ButtonPrimary>
     </div>
   )
 }

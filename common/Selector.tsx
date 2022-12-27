@@ -1,6 +1,6 @@
 import { ChevronDown } from 'assets/ChevronDown'
 import { GlyphSelectClear } from 'assets/GlyphSelectClear'
-import classNames from 'classnames'
+import classNames from 'classnames/dedupe'
 import { useEffect, useRef, useState } from 'react'
 import { twMerge } from 'tailwind-merge'
 

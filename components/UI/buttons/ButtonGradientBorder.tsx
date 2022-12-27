@@ -1,4 +1,4 @@
-import classNames from 'classnames'
+import classNames from 'classnames/dedupe'
 
 import { ButtonGradientBorderColors } from '@/types/colors'
 

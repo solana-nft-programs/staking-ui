@@ -2,25 +2,19 @@ import { ChevronLeftIcon } from '@heroicons/react/24/outline'
 import type { PublicKey } from '@solana/web3.js'
 import { HeaderSlim } from 'common/HeaderSlim'
 import { withCluster } from 'common/utils'
-import { useStakePoolsByAuthority } from 'hooks/useStakePoolsByAuthority'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 
+import { ButtonPrimary } from '@/components/UI/buttons/ButtonPrimary'
 import FloatingBlurryBlob from '@/components/UI/FloatingBlurryBlob'
-import { ButtonColors, FloatingBlurryBlobColors } from '@/types/colors'
-import { ButtonWidths } from '@/types/index'
-
-import { ButtonPrimary } from '../UI/buttons/ButtonPrimary'
-import { BodyCopy } from '../UI/typography/BodyCopy'
-import { HeadingPrimary } from '../UI/typography/HeadingPrimary'
-
-const { TRANSPARENT } = ButtonColors
+import { BodyCopy } from '@/components/UI/typography/BodyCopy'
+import { HeadingPrimary } from '@/components/UI/typography/HeadingPrimary'
+import { FloatingBlurryBlobColors } from '@/types/colors'
 
 export const SuccessPanel = ({ stakePoolId }: { stakePoolId?: PublicKey }) => {
   const router = useRouter()
   const { environment } = useEnvironmentCtx()
-  const stakePoolsByAuthority = useStakePoolsByAuthority()
 
   return (
     <div className="absolute top-0 left-0 right-0 bottom-0 flex h-screen flex-col">
@@ -43,10 +37,10 @@ export const SuccessPanel = ({ stakePoolId }: { stakePoolId?: PublicKey }) => {
           rotation={40}
         />
         <ButtonPrimary
-          color={TRANSPARENT}
+          color="TRANSPARENT"
           onClick={() => router.push('/')}
           className="absolute top-28 left-16 pt-8 hover:text-orange-500"
-          width={ButtonWidths.NARROW}
+          width="NARROW"
         >
           <ChevronLeftIcon className="mr-2 h-4 w-4" />
           <div>Back to staking</div>
@@ -62,7 +56,7 @@ export const SuccessPanel = ({ stakePoolId }: { stakePoolId?: PublicKey }) => {
         <div className="flex justify-center">
           <div className="flex space-x-4">
             <ButtonPrimary
-              width={ButtonWidths.NARROW}
+              width="NARROW"
               className="mx-auto mt-6"
               onClick={() =>
                 router.push(

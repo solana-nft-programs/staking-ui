@@ -1,9 +1,10 @@
-import { AsyncButton } from 'common/Button'
 import { FormFieldTitleInput } from 'common/FormFieldInput'
 import { TextInput } from 'components/UI/inputs/TextInput'
 import { useHandleAuthorizeMints } from 'handlers/useHandleAuthorizeMints'
 import { useHandleDeauthorizeMints } from 'handlers/useHandleDeauthorizeMints'
 import { useState } from 'react'
+
+import { ButtonPrimary } from '@/components/UI/buttons/ButtonPrimary'
 
 export const AuthorizeMints = () => {
   const [mintsToAuthorize, setMintsToAuthorize] = useState<string>('')
@@ -44,7 +45,7 @@ export const AuthorizeMints = () => {
         }}
       />
       <div className="mt-3 flex items-center gap-2">
-        <AsyncButton
+        <ButtonPrimary
           loading={handleAuthorizeMints.isLoading}
           onClick={() =>
             handleAuthorizeMints.mutate({
@@ -55,8 +56,8 @@ export const AuthorizeMints = () => {
           className="flex w-1/2 items-center justify-center"
         >
           Authorize Mints
-        </AsyncButton>
-        <AsyncButton
+        </ButtonPrimary>
+        <ButtonPrimary
           loading={handleDeuthorizeMints.isLoading}
           onClick={() =>
             handleDeuthorizeMints.mutate({
@@ -67,7 +68,7 @@ export const AuthorizeMints = () => {
           className="flex w-1/2 items-center justify-center bg-red-500 text-center hover:bg-red-600"
         >
           De-authorize Mints
-        </AsyncButton>
+        </ButtonPrimary>
       </div>
     </div>
   )

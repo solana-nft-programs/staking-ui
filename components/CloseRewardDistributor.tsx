@@ -1,4 +1,4 @@
-import { AsyncButton } from 'common/Button'
+import { ButtonPrimary } from '@/components/UI/buttons/ButtonPrimary'
 import { useHandleRewardDistributorRemove } from 'handlers/useHandleRewardDistributorRemove'
 import { useRewardDistributorData } from 'hooks/useRewardDistributorData'
 
@@ -17,14 +17,14 @@ export const CloseRewardDistributor = () => {
         Delete Reward Distributor
       </label>
       <div className="mb-5 flex flex-row">
-        <AsyncButton
+        <ButtonPrimary
           className="ml-5 rounded-md px-3 py-1"
           loading={rewardDistributorRemove.isLoading}
           inlineLoader
           onClick={() => rewardDistributorRemove.mutate()}
         >
           <div className="text-xs">Delete Reward Distributor</div>
-        </AsyncButton>
+        </ButtonPrimary>
       </div>
     </div>
   )

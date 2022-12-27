@@ -1,5 +1,4 @@
 import { tryPublicKey } from '@cardinal/common'
-import { AsyncButton } from 'common/Button'
 import { FormFieldTitleInput } from 'common/FormFieldInput'
 import { LoadingSpinner } from 'common/LoadingSpinner'
 import { useFormik } from 'formik'
@@ -12,6 +11,8 @@ import { useStakePoolData } from 'hooks/useStakePoolData'
 import { useWalletId } from 'hooks/useWalletId'
 import { useEffect } from 'react'
 import * as Yup from 'yup'
+
+import { ButtonPrimary } from '@/components/UI/buttons/ButtonPrimary'
 
 import {
   bnValidationTest,
@@ -215,7 +216,7 @@ export function RewardDistributorUpdate() {
           handleChange={(v) => setFieldValue('defaultMultiplier', v)}
         />
       </div>
-      <AsyncButton
+      <ButtonPrimary
         disabled={
           !mintInfo.data ||
           (rewardDistributorData
@@ -237,10 +238,10 @@ export function RewardDistributorUpdate() {
         className="mx-auto mt-4 flex w-full items-center justify-center text-center"
       >
         {rewardDistributorData ? 'Update' : 'Add'}
-      </AsyncButton>
+      </ButtonPrimary>
       {rewardDistributorData && (
         <>
-          <AsyncButton
+          <ButtonPrimary
             disabled={
               !rewardDistributorData ||
               walletId?.toString() !==
@@ -255,7 +256,7 @@ export function RewardDistributorUpdate() {
             className="flex w-full items-center justify-center bg-red-500 text-center hover:bg-red-600"
           >
             Remove
-          </AsyncButton>
+          </ButtonPrimary>
         </>
       )}
     </div>

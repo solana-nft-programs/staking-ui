@@ -5,9 +5,9 @@ import { statsNameMapping, useGlobalStats } from 'hooks/useGlobalStats'
 import { useRouter } from 'next/router'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 
-import { ButtonPrimary } from '@/components/UI/buttons/ButtonPrimary'
 import { BodyCopy } from '@/components/UI/typography/BodyCopy'
 import { HeadingPrimary } from '@/components/UI/typography/HeadingPrimary'
+import { ButtonPrimary } from '@/components/UI/buttons/ButtonPrimary'
 
 export const MainHero = () => {
   const { environment } = useEnvironmentCtx()

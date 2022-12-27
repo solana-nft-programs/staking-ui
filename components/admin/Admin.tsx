@@ -8,7 +8,6 @@ import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 
 import { ButtonPrimary } from '@/components/UI/buttons/ButtonPrimary'
 import { HeadingSecondary } from '@/components/UI/typography/HeadingSecondary'
-import { ButtonWidths } from '@/types/index'
 
 import { AdminPools } from './AdminPools'
 
@@ -34,7 +33,7 @@ function Admin() {
         <div className="mt-8 flex items-center justify-between">
           <HeadingSecondary>Your Stake Pools</HeadingSecondary>
           <ButtonPrimary
-            width={ButtonWidths.NARROW}
+            width="NARROW"
             onClick={() =>
               router.push(withCluster(`/admin/create`, environment.label))
             }

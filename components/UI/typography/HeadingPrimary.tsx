@@ -1,4 +1,4 @@
-import classNames from 'classnames'
+import classNames from 'classnames/dedupe'
 import { HeadingElements, HeadingTextSizes } from 'types/index'
 
 type Props = {

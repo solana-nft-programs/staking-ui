@@ -1,4 +1,4 @@
-import classnames from 'classnames'
+import classnames from 'classnames/dedupe'
 
 import { FloatingBlurryBlobColors } from '@/types/index'
 

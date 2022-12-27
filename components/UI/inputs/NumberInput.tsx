@@ -1,4 +1,4 @@
-import classNames from 'classnames'
+import classNames from 'classnames/dedupe'
 import type { CompositionEvent, SyntheticEvent } from 'react'
 
 export type NumberInputProps = {
