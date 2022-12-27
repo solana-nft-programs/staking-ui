@@ -3,10 +3,7 @@ import { useWallet } from '@solana/wallet-adapter-react'
 import { defaultSecondaryColor } from 'api/mapping'
 import { LoadingSpinner } from 'common/LoadingSpinner'
 import { QuickActions } from 'common/QuickActions'
-import {
-  getImageFromTokenData,
-  getNameFromTokenData,
-} from 'common/tokenDataUtils'
+import { getNameFromTokenData } from 'common/tokenDataUtils'
 import type { AllowedTokenData } from 'hooks/useAllowedTokenDatas'
 import { useMintMetadata } from 'hooks/useMintMetadata'
 import type { StakeEntryTokenData } from 'hooks/useStakedTokenDatas'
@@ -20,6 +17,8 @@ import { TokenStatNextRewardBadge } from '@/components/token-staking/token-stats
 import { TokenWrapper } from '@/components/token-staking/TokenWrapper'
 
 import { StakedStats } from './StakedStats'
+import { TokenImage } from '@/components/token-staking/token/TokenImage'
+import { TokenImageWrapper } from '@/components/token-staking/token/TokenImageWrapper'
 
 export const StakedToken = ({
   tk,
@@ -81,23 +80,8 @@ export const StakedToken = ({
           selectUnstakedToken={() => {}}
           selectStakedToken={select}
         />
-        <div className="relative aspect-square w-full grow overflow-hidden rounded-t-xl">
-          {mintMetadata.isFetched &&
-          getImageFromTokenData(tk, mintMetadata.data) ? (
-            <>
-              <img
-                loading="lazy"
-                className={`absolute w-full rounded-t-xl object-contain`}
-                src={getImageFromTokenData(tk, mintMetadata?.data)}
-                alt={getNameFromTokenData(tk, mintMetadata?.data)}
-              />
-              <div className="absolute top-[90%] left-0 right-0 -bottom-2 bg-gradient-to-b from-transparent via-gray-700 to-gray-700" />
-            </>
-          ) : (
-            <div
-              className={`w-full grow animate-pulse rounded-t-xl bg-white bg-opacity-5 `}
-            />
-          )}
+        <TokenImageWrapper>
+          <TokenImage token={tk} />
           <div className="absolute top-2 left-2 flex w-1/2 flex-wrap space-y-0.5">
             <TokenStatNextRewardBadge tokenData={tk} />
             <TokenStatCooldownBadge tokenData={tk} />
@@ -106,7 +90,8 @@ export const StakedToken = ({
             className="absolute left-2 bottom-6"
             tokenData={tk}
           />
-        </div>
+        </TokenImageWrapper>
+
         <div
           className={`flex-col rounded-b-xl p-2 ${
             stakePoolMetadata?.colors?.fontColor

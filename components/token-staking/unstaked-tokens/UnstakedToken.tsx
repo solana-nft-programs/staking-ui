@@ -1,18 +1,18 @@
-import { TokenWrapper } from '@/components/token-staking/TokenWrapper'
 import type { ReceiptType } from '@cardinal/staking/dist/cjs/programs/stakePool'
 import { BN } from '@project-serum/anchor'
 import { defaultSecondaryColor } from 'api/mapping'
 import { LoadingSpinner } from 'common/LoadingSpinner'
 import { QuickActions } from 'common/QuickActions'
-import {
-  getImageFromTokenData,
-  getNameFromTokenData,
-} from 'common/tokenDataUtils'
+import { getNameFromTokenData } from 'common/tokenDataUtils'
 import { formatAmountAsDecimal } from 'common/units'
 import type { AllowedTokenData } from 'hooks/useAllowedTokenDatas'
 import { useMintMetadata } from 'hooks/useMintMetadata'
 import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
 import type { UseMutationResult } from 'react-query'
+
+import { TokenImage } from '@/components/token-staking/token/TokenImage'
+import { TokenWrapper } from '@/components/token-staking/TokenWrapper'
+import { TokenImageWrapper } from '@/components/token-staking/token/TokenImageWrapper'
 
 export const UnstakedToken = ({
   tk,
@@ -61,21 +61,9 @@ export const UnstakedToken = ({
           selectUnstakedToken={select}
           selectStakedToken={() => {}}
         />
-        <div className="aspect-square w-full grow overflow-hidden rounded-t-xl">
-          {mintMetadata.isFetched &&
-          getImageFromTokenData(tk, mintMetadata.data) ? (
-            <img
-              loading="lazy"
-              className={`w-full rounded-t-xl object-contain`}
-              src={getImageFromTokenData(tk, mintMetadata.data)}
-              alt={getNameFromTokenData(tk, mintMetadata?.data)}
-            />
-          ) : (
-            <div
-              className={`w-full grow animate-pulse rounded-t-xl bg-white bg-opacity-5 `}
-            />
-          )}
-        </div>
+        <TokenImageWrapper>
+          <TokenImage token={tk} />
+        </TokenImageWrapper>
 
         <div
           className={`flex-col rounded-b-xl p-2 ${
@@ -91,12 +79,14 @@ export const UnstakedToken = ({
             background: stakePoolMetadata?.colors?.backgroundSecondary,
           }}
         >
-          <div className="truncate px-2 text-xl font-bold">
+          <div className="mb-2 truncate px-2 text-xl font-bold">
             {getNameFromTokenData(tk, mintMetadata?.data)}
           </div>
-          <div className="truncate font-semibold">
-            {tk.tokenListData?.symbol}
-          </div>
+          {!!tk.tokenListData?.symbol && (
+            <div className="mb-2 truncate font-semibold">
+              {tk.tokenListData?.symbol}
+            </div>
+          )}
           {tk.tokenAccount &&
             tk.tokenAccount?.parsed.tokenAmount.amount > 1 && (
               <div className="mt-2">
