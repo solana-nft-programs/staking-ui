@@ -41,30 +41,30 @@ export const RewardDistribution = ({
 
   return (
     <div className="flex flex-col gap-6 pb-16">
-      <div>
-        <div className="mb-2 flex w-full items-center">
-          <LabelText isOptional>Rewards mint address</LabelText>
-          <InfoTipButtons
-            setActiveScreen={setActiveSlavePanelScreen}
-            screen={REWARD_DISTRIBUTION_2}
-            activeScreen={activeSlavePanelScreen}
-          />
-        </div>
-        <TextInput
-          disabled={type === 'update' && rewardDistributor.data !== undefined}
-          hasError={
-            values.rewardMintAddress !== '' && !!errors.rewardMintAddress
-          }
-          value={values.rewardMintAddress}
-          onChange={(e) => {
-            setFieldValue('rewardMintAddress', e.target.value)
-          }}
-        />
-        <BodyCopy className="mt-2 italic" textSize={BodyTextSizes.SMALL}>
-          Enter a valid SPL token mint address to enable below form fields
-        </BodyCopy>
-      </div>
       <>
+        <div className="px-0.5">
+          <div className="mb-2 flex w-full items-center">
+            <LabelText isOptional>Rewards mint address</LabelText>
+            <InfoTipButtons
+              setActiveScreen={setActiveSlavePanelScreen}
+              screen={REWARD_DISTRIBUTION_2}
+              activeScreen={activeSlavePanelScreen}
+            />
+          </div>
+          <TextInput
+            disabled={type === 'update' && rewardDistributor.data !== undefined}
+            hasError={
+              values.rewardMintAddress !== '' && !!errors.rewardMintAddress
+            }
+            value={values.rewardMintAddress}
+            onChange={(e) => {
+              setFieldValue('rewardMintAddress', e.target.value)
+            }}
+          />
+          <BodyCopy className="mt-2 italic" textSize={BodyTextSizes.SMALL}>
+            Enter a valid SPL token mint address to enable below form fields
+          </BodyCopy>
+        </div>
         <div>
           <div className="mb-2 flex w-full items-center">
             <LabelText isOptional>Reward amount per staked token</LabelText>

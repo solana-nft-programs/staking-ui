@@ -20,7 +20,7 @@ export const SelectInput = ({
       value={value}
       onChange={(e) => setValue(e.target.value)}
       className={classNames([
-        'rounded-lg bg-gray-800 px-2 py-[10px] outline outline-gray-600 focus:outline-orange-500',
+        'flex rounded-lg bg-gray-800 px-2 py-[10px] outline outline-gray-600 focus:outline-orange-500',
         className,
       ])}
     >

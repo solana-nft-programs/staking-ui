@@ -41,7 +41,7 @@ export const AdditionalFeatures = ({
   }, [values.resetOnStake])
 
   return (
-    <div className="flex flex-col gap-6 pb-14">
+    <div className="flex flex-col gap-6 px-1 pb-14">
       <div>
         <div className="mb-2 flex w-full items-center">
           <LabelText isOptional>Minimum stake duration</LabelText>

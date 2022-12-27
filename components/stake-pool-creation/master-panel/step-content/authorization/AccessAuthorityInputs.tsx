@@ -34,7 +34,7 @@ export const AccessAuthorityInputs = ({
   }, [values.requiresAuthorization])
 
   return (
-    <div className="space-y-2 pt-4">
+    <div className="space-y-2 px-0.5 pt-4">
       <div className="flex w-full items-center">
         <LabelText isOptional>Mint list enabled?</LabelText>
         <InfoTipButtons
