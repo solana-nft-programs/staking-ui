@@ -1,4 +1,4 @@
-import { Selector } from 'components/UI/forms/inputs/Selector'
+import { Selector } from '@/components/UI/forms/inputs/selector/Selector'
 
 export const SelectorBoolean = ({
   handleChange,

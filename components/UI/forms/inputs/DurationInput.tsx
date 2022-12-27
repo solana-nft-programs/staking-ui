@@ -4,8 +4,8 @@ import { useEffect, useState } from 'react'
 import { ButtonDecrement } from '@/components/UI/buttons/ButtonDecrement'
 import { ButtonIncrement } from '@/components/UI/buttons/ButtonIncrement'
 import { NumberInput } from '@/components/UI/forms/inputs/NumberInput'
-import type { SelectorPositions } from '@/components/UI/forms/inputs/Selector'
-import { Selector } from '@/components/UI/forms/inputs/Selector'
+import type { SelectorPositions } from '@/components/UI/forms/inputs/selector/Selector'
+import { Selector } from '@/components/UI/forms/inputs/selector/Selector'
 
 export type DurationOption = 'seconds' | 'hours' | 'days' | 'weeks' | 'months'
 
