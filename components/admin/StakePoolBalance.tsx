@@ -2,7 +2,7 @@ import { PlusCircleIcon } from '@heroicons/react/24/outline'
 import type { Dispatch, SetStateAction } from 'react'
 
 import type { PANE_OPTIONS } from '@/components/admin/AdminPool'
-import { TreasuryBalance } from '@/components/stats/TreasuryBalance'
+import { TreasuryBalance } from '@/components/hero-stats/TreasuryBalance'
 import { BodyCopy } from '@/components/UI/typography/BodyCopy'
 
 export type StakePoolBalanceProps = {
