@@ -1,5 +1,4 @@
 import { tryPublicKey } from '@cardinal/common'
-import { FormFieldTitleInput } from 'common/FormFieldInput'
 import { LoadingSpinner } from 'common/LoadingSpinner'
 import { useFormik } from 'formik'
 import { useHandleRewardDistributorCreate } from 'handlers/useHandleRewardDistributorCreate'
@@ -13,14 +12,15 @@ import { useEffect } from 'react'
 import * as Yup from 'yup'
 
 import { ButtonPrimary } from '@/components/UI/buttons/base/ButtonPrimary'
+import { FormFieldTitleInput } from '@/components/UI/forms/FormFieldInput'
+import { BNInput } from '@/components/UI/forms/inputs/BNInput'
+import { TextInput } from '@/components/UI/forms/inputs/TextInput'
 
 import {
   bnValidationTest,
   optionalBnValidationTest,
   publicKeyValidationTest,
 } from '../stake-pool-creation/Schema'
-import { BNInput } from '../UI/inputs/BNInput'
-import { TextInput } from '../UI/inputs/TextInput'
 
 const rewardDistributorSchema = Yup.object({
   rewardMintAddress: Yup.string().test(

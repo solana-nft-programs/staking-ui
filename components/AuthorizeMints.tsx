@@ -1,10 +1,10 @@
-import { FormFieldTitleInput } from 'common/FormFieldInput'
-import { TextInput } from 'components/UI/inputs/TextInput'
+import { TextInput } from 'components/UI/forms/inputs/TextInput'
 import { useHandleAuthorizeMints } from 'handlers/useHandleAuthorizeMints'
 import { useHandleDeauthorizeMints } from 'handlers/useHandleDeauthorizeMints'
 import { useState } from 'react'
 
 import { ButtonPrimary } from '@/components/UI/buttons/base/ButtonPrimary'
+import { FormFieldTitleInput } from '@/components/UI/forms/FormFieldInput'
 
 export const AuthorizeMints = () => {
   const [mintsToAuthorize, setMintsToAuthorize] = useState<string>('')

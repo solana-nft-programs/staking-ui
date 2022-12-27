@@ -3,12 +3,12 @@ import { useWallet } from '@solana/wallet-adapter-react'
 import { useWalletModal } from '@solana/wallet-adapter-react-ui'
 import { GlyphWallet } from 'assets/GlyphWallet'
 import { LogoTitled } from 'assets/LogoTitled'
+import { ButtonSmall } from 'components/UI/buttons/base/ButtonSmall'
 import { ButtonAirdrop } from 'components/UI/buttons/ButtonAirdrop'
 import { useRouter } from 'next/router'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 import { useEffect, useState } from 'react'
 
-import { ButtonSmall } from 'components/UI/buttons/base/ButtonSmall'
 import { withCluster } from './utils'
 import { asWallet } from './Wallets'
 

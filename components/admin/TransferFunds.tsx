@@ -1,5 +1,4 @@
 import { RewardDistributorKind } from '@cardinal/staking/dist/cjs/programs/rewardDistributor'
-import { FormFieldTitleInput } from 'common/FormFieldInput'
 import { useHandleTransferFunds } from 'handlers/useHandleTransferFunds'
 import {
   isRewardDistributorV2,
@@ -9,8 +8,8 @@ import { useRewardMintInfo } from 'hooks/useRewardMintInfo'
 import { useState } from 'react'
 
 import { ButtonPrimary } from '@/components/UI/buttons/base/ButtonPrimary'
-
-import { BNInput } from '../UI/inputs/BNInput'
+import { FormFieldTitleInput } from '@/components/UI/forms/FormFieldInput'
+import { BNInput } from '@/components/UI/forms/inputs/BNInput'
 
 export const TransferFunds = () => {
   const [transferAmount, setTransferAmount] = useState<string>()

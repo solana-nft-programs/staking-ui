@@ -1,5 +1,4 @@
 import type { PublicKey } from '@solana/web3.js'
-import { FormFieldTitleInput } from 'common/FormFieldInput'
 import { LoadingSpinner } from 'common/LoadingSpinner'
 import { SelectorBoolean } from 'common/SelectorBoolean'
 import { useFormik } from 'formik'
@@ -12,11 +11,12 @@ import { useEffect } from 'react'
 import * as Yup from 'yup'
 
 import { ButtonPrimary } from '@/components/UI/buttons/base/ButtonPrimary'
+import { FormFieldTitleInput } from '@/components/UI/forms/FormFieldInput'
+import { TextInput } from '@/components/UI/forms/inputs/TextInput'
+import { TextInputIcon } from '@/components/UI/forms/inputs/TextInputIcon'
+import { UnixSecondsInput } from '@/components/UI/forms/inputs/UnixSecondsInput'
 
 import { publicKeyValidationTest } from '../stake-pool-creation/Schema'
-import { TextInput } from '../UI/inputs/TextInput'
-import { TextInputIcon } from '../UI/inputs/TextInputIcon'
-import { UnixSecondsInput } from '../UI/inputs/UnixSecondsInput'
 
 const stakePoolUpdateSchema = Yup.object({
   requireCollections: Yup.array()

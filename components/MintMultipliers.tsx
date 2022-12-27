@@ -1,14 +1,14 @@
-import { FormFieldTitleInput } from 'common/FormFieldInput'
 import { useFormik } from 'formik'
 import { useHandleSetMultipliers } from 'handlers/useHandleSetMultipliers'
 import { useRewardDistributorData } from 'hooks/useRewardDistributorData'
 import * as Yup from 'yup'
 
 import { ButtonPrimary } from '@/components/UI/buttons/base/ButtonPrimary'
+import { FormFieldTitleInput } from '@/components/UI/forms/FormFieldInput'
+import { TextInput } from '@/components/UI/forms/inputs/TextInput'
+import { TextInputIcon } from '@/components/UI/forms/inputs/TextInputIcon'
 
 import { publicKeyValidationTest } from './stake-pool-creation/Schema'
-import { TextInput } from './UI/inputs/TextInput'
-import { TextInputIcon } from './UI/inputs/TextInputIcon'
 
 const multiplierFormSchema = Yup.object({
   multipliers: Yup.array().of(Yup.string()),

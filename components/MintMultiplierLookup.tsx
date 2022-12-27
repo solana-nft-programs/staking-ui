@@ -1,8 +1,9 @@
-import { FormFieldTitleInput } from 'common/FormFieldInput'
 import { LoadingSpinner } from 'common/LoadingSpinner'
-import { TextInput } from 'components/UI/inputs/TextInput'
+import { TextInput } from 'components/UI/forms/inputs/TextInput'
 import { useMintMultiplier } from 'hooks/useMintMultiplier'
 import { useState } from 'react'
+
+import { FormFieldTitleInput } from '@/components/UI/forms/FormFieldInput'
 
 export const MintMultiplierLookup = () => {
   const [mintLookupId, setMintLookupId] = useState<string>('')
