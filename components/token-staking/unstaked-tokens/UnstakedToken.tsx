@@ -11,7 +11,7 @@ import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
 import type { UseMutationResult } from 'react-query'
 
 import { TokenImage } from '@/components/token-staking/token/TokenImage'
-import { TokenWrapper } from '@/components/token-staking/TokenWrapper'
+import { TokenWrapper } from '@/components/token-staking/token/TokenWrapper'
 import { TokenImageWrapper } from '@/components/token-staking/token/TokenImageWrapper'
 
 export const UnstakedToken = ({
