@@ -1,8 +1,29 @@
 import { getExpirationString } from '@cardinal/common'
+import type {
+  CardinalRewardsCenter,
+  IdlAccountData,
+} from '@cardinal/rewards-center'
 import type { StakeEntryTokenData } from 'hooks/useStakedTokenDatas'
 import { useStakePoolData } from 'hooks/useStakePoolData'
 import { useUTCNow } from 'providers/UTCNowProvider'
 import { FaCheck } from 'react-icons/fa'
+
+export interface CooldownArgs {
+  tokenData: StakeEntryTokenData
+  stakePool:
+    | Pick<
+        IdlAccountData<'stakePool', CardinalRewardsCenter>,
+        'pubkey' | 'parsed'
+      >
+    | undefined
+}
+
+export const hasCooldown = ({ tokenData, stakePool }: CooldownArgs) => {
+  const has =
+    tokenData.stakeEntry?.parsed.cooldownStartSeconds ||
+    stakePool?.parsed.cooldownSeconds
+  return !!has
+}
 
 export const TokenStatCooldownValue = ({
   tokenData,

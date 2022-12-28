@@ -1,8 +1,10 @@
 import type { StakeEntryTokenData } from 'hooks/useStakedTokenDatas'
 import { useStakePoolData } from 'hooks/useStakePoolData'
 
-import { hasCooldown } from '@/components/token-staking/token-stats/utils'
-import { TokenStatCooldownValue } from '@/components/token-staking/token-stats/values/TokenStatCooldownValue'
+import {
+  hasCooldown,
+  TokenStatCooldownValue,
+} from '@/components/token-staking/token-stats/values/TokenStatCooldownValue'
 import { Badge } from '@/components/UI/Badge'
 
 export interface TokenStatCooldownBadgeProps {

@@ -2,8 +2,10 @@ import { useRewardDistributorData } from 'hooks/useRewardDistributorData'
 import { useRewards } from 'hooks/useRewards'
 import type { StakeEntryTokenData } from 'hooks/useStakedTokenDatas'
 
-import { hasNextRewards } from '@/components/token-staking/token-stats/utils'
-import { TokenStatNextRewardValue } from '@/components/token-staking/token-stats/values/TokenStatNextRewardValue'
+import {
+  hasNextRewards,
+  TokenStatNextRewardValue,
+} from '@/components/token-staking/token-stats/values/TokenStatNextRewardValue'
 import { Badge } from '@/components/UI/Badge'
 
 export interface TokenStatNextRewardBadgeProps
