@@ -34,11 +34,15 @@ export const TokenStatTimeBadge = ({
   if (!showBadge) return <></>
 
   return (
-    <Badge className={className}>
-      <div className="text-xs">🔒</div>
-      <div>
-        <TokenStatMinimumStakeTimeValue tokenData={tokenData} />
-      </div>
-    </Badge>
+    <>
+      {hasMinimumStakeTime({ tokenData, stakePool }) && (
+        <Badge className={className}>
+          <div className="text-xs">🔒</div>
+          <div>
+            <TokenStatMinimumStakeTimeValue tokenData={tokenData} />
+          </div>
+        </Badge>
+      )}
+    </>
   )
 }
