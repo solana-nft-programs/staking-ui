@@ -1,15 +1,21 @@
 import { DisplayAddress } from '@cardinal/namespaces-components'
 import { useWallet } from '@solana/wallet-adapter-react'
+import { defaultSecondaryColor } from 'api/mapping'
 import { LoadingSpinner } from 'common/LoadingSpinner'
 import { QuickActions } from 'common/QuickActions'
-import {
-  getImageFromTokenData,
-  getNameFromTokenData,
-} from 'common/tokenDataUtils'
+import { getNameFromTokenData } from 'common/tokenDataUtils'
 import { useMintMetadata } from 'hooks/useMintMetadata'
 import type { StakeEntryTokenData } from 'hooks/useStakedTokenDatas'
 import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
+import type { UseMutationResult } from 'react-query'
+
+import { TokenImage } from '@/components/token-staking/token/TokenImage'
+import { TokenImageWrapper } from '@/components/token-staking/token/TokenImageWrapper'
+import { TokenStatBoostBadge } from '@/components/token-staking/token-stats/UI/TokenStatBoostBadge'
+import { TokenStatCooldownBadge } from '@/components/token-staking/token-stats/UI/TokenStatCooldownBadge'
+import { TokenStatNextRewardBadge } from '@/components/token-staking/token-stats/UI/TokenStatNextRewardBadge'
+import { TokenWrapper } from '@/components/token-staking/token/TokenWrapper'
 
 import { StakedStats } from './StakedStats'
 
@@ -19,33 +25,28 @@ export const StakedToken = ({
   loadingUnstake,
   loadingClaim,
   select,
+  handleUnstake,
 }: {
   tk: StakeEntryTokenData
   selected: boolean
   loadingUnstake: boolean
   loadingClaim: boolean
-  select: (tokenData: StakeEntryTokenData) => void
+  select: (tokenData: StakeEntryTokenData, amount?: string) => void
+  handleUnstake: UseMutationResult<
+    string[],
+    unknown,
+    { tokenDatas: StakeEntryTokenData[] },
+    unknown
+  >
 }) => {
   const wallet = useWallet()
   const { connection } = useEnvironmentCtx()
   const { data: stakePoolMetadata } = useStakePoolMetadata()
   const mintMetadata = useMintMetadata(tk)
+
   return (
-    <div
-      key={tk?.stakeEntry?.pubkey.toBase58()}
-      className="relative mx-auto min-w-full"
-    >
-      <div
-        className="relative flex cursor-pointer flex-col rounded-xl"
-        onClick={() => select(tk)}
-        style={{
-          boxShadow: selected
-            ? `0px 0px 20px ${
-                stakePoolMetadata?.colors?.secondary || '#FFFFFF'
-              }`
-            : '',
-        }}
-      >
+    <div key={tk?.stakeEntry?.pubkey.toBase58()}>
+      <TokenWrapper token={tk} selected={selected} select={select}>
         {(loadingClaim || loadingUnstake) && (
           <div>
             <div className="absolute top-0 left-0 z-10 flex h-full w-full justify-center rounded-lg bg-black bg-opacity-80 align-middle text-white">
@@ -78,21 +79,18 @@ export const StakedToken = ({
           selectUnstakedToken={() => {}}
           selectStakedToken={select}
         />
-        <div className="aspect-square w-full grow overflow-hidden rounded-t-xl">
-          {mintMetadata.isFetched &&
-          getImageFromTokenData(tk, mintMetadata.data) ? (
-            <img
-              loading="lazy"
-              className={`w-full rounded-t-xl object-contain`}
-              src={getImageFromTokenData(tk, mintMetadata?.data)}
-              alt={getNameFromTokenData(tk, mintMetadata?.data)}
-            />
-          ) : (
-            <div
-              className={`w-full grow animate-pulse rounded-t-xl bg-white bg-opacity-5 `}
-            />
-          )}
-        </div>
+        <TokenImageWrapper>
+          <TokenImage token={tk} />
+          <div className="absolute top-2 left-2 flex w-1/2 flex-wrap space-y-0.5">
+            <TokenStatNextRewardBadge tokenData={tk} />
+            <TokenStatCooldownBadge tokenData={tk} />
+          </div>
+          <TokenStatBoostBadge
+            className="absolute left-2 bottom-6"
+            tokenData={tk}
+          />
+        </TokenImageWrapper>
+
         <div
           className={`flex-col rounded-b-xl p-2 ${
             stakePoolMetadata?.colors?.fontColor
@@ -107,24 +105,30 @@ export const StakedToken = ({
             background: stakePoolMetadata?.colors?.backgroundSecondary,
           }}
         >
+          <div className="truncate px-2 text-xl font-bold">
+            {getNameFromTokenData(tk, mintMetadata?.data)}
+          </div>
           <div className="truncate font-semibold">
             {tk.tokenListData?.symbol}
           </div>
           <StakedStats tokenData={tk} />
+          <div className="flex p-2">
+            <button
+              style={{
+                background:
+                  stakePoolMetadata?.colors?.secondary || defaultSecondaryColor,
+                color:
+                  stakePoolMetadata?.colors?.fontColorSecondary ||
+                  stakePoolMetadata?.colors?.fontColor,
+              }}
+              className="flex-grow rounded-lg p-2 transition-all hover:scale-[1.03]"
+              onClick={() => handleUnstake.mutate({ tokenDatas: [tk] })}
+            >
+              Unstake
+            </button>
+          </div>
         </div>
-        {selected && (
-          <div
-            className={`absolute top-2 left-2`}
-            style={{
-              height: '10px',
-              width: '10px',
-              backgroundColor: stakePoolMetadata?.colors?.primary || '#FFFFFF',
-              borderRadius: '50%',
-              display: 'inline-block',
-            }}
-          />
-        )}
-      </div>
+      </TokenWrapper>
     </div>
   )
 }

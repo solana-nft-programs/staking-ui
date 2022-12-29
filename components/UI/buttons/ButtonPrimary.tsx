@@ -6,13 +6,14 @@ const { ORANGE, PURPLE, GREEN, BLUE, MAROON, TRANSPARENT } = ButtonColors
 
 const { NARROW, MID } = ButtonWidths
 
-type Props = {
+interface Props extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   disabled?: boolean
   children: React.ReactNode
   onClick: () => void
   color?: ButtonColors
   className?: string
   width?: ButtonWidths
+  style?: React.CSSProperties
 }
 
 export const ButtonPrimary = ({
@@ -22,6 +23,7 @@ export const ButtonPrimary = ({
   onClick,
   className,
   width = MID,
+  style,
 }: Props) => {
   return (
     <button
@@ -40,6 +42,7 @@ export const ButtonPrimary = ({
           'bg-red-800 text-white': color === MAROON,
         },
       ])}
+      style={style}
       onClick={onClick}
     >
       {children}
