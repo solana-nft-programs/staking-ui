@@ -7,10 +7,8 @@ import { TabSelector } from 'common/TabSelector'
 import { contrastColorMode } from 'common/utils'
 import { AttributeAnalytics } from 'components/AttributeAnalytics'
 import { PerformanceStats } from 'components/PerformanceStats'
-import { StakedTokens } from '@/components/token-staking/staked-tokens/StakedTokens'
 import { StakePoolLeaderboard } from 'components/StakePoolLeaderboard'
 import { StakePoolNotice } from 'components/StakePoolNotice'
-import { UnstakedTokens } from '@/components/token-staking/unstaked-tokens/UnstakedTokens'
 import { useRewardDistributorData } from 'hooks/useRewardDistributorData'
 import { useStakedTokenDatas } from 'hooks/useStakedTokenDatas'
 import { useStakePoolData } from 'hooks/useStakePoolData'
@@ -19,6 +17,9 @@ import { useUserRegion } from 'hooks/useUserRegion'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
+
+import { StakedTokens } from '@/components/token-staking/staked-tokens/StakedTokens'
+import { UnstakedTokens } from '@/components/token-staking/unstaked-tokens/UnstakedTokens'
 
 type PANE_OPTIONS = 'dashboard' | 'leaderboard'
 const paneTabs: {
@@ -76,7 +77,7 @@ function StakePoolHome() {
         }}
       >
         <Header />
-        <div className="max flex grow items-center justify-center">
+        <div className="flex grow items-center justify-center">
           <div className="w-[600px] max-w-[95vw] rounded-xl bg-black bg-opacity-50 p-10 text-center">
             <div className="text-2xl font-bold">
               Users from Country ({userRegion.data?.countryName}) are not

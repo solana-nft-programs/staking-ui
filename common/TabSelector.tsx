@@ -40,6 +40,7 @@ export const TabSelector = <T,>({
     value?.label &&
       value?.label !== internalValue?.label &&
       setInternalValue(value)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [value?.label])
 
   return (

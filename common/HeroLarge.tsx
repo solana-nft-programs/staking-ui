@@ -7,6 +7,7 @@ import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
 import { StakePoolImage } from '@/components/StakePoolImage'
 
 import { HeroStats } from '../components/hero-stats/HeroStats'
+import { FeeInfo } from '@/components/FeeInfo'
 
 export const HeroLarge: React.FC = () => {
   const stakePoolId = useStakePoolId()
@@ -41,6 +42,7 @@ export const HeroLarge: React.FC = () => {
               } pool.`}
           </div>
           <StakePoolConfig />
+          <FeeInfo />
         </div>
         <HeroStats />
       </div>

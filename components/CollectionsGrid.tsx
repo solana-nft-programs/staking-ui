@@ -3,6 +3,7 @@ import { Card } from 'common/Card'
 import { Stats } from 'common/Stats'
 import { shortPubKey } from 'common/utils'
 import type { StakePool } from 'hooks/useAllStakePools'
+import { isStakePoolV2 } from 'hooks/useStakePoolData'
 import {
   compareStakePools,
   percentStaked,
@@ -17,6 +18,7 @@ export const CollectionsGrid = ({ configs }: { configs?: StakePool[] }) => {
   const router = useRouter()
   const { environment } = useEnvironmentCtx()
   const stakePoolEntryCounts = useStakePoolEntryCounts()
+
   return (
     <div className="grid grid-cols-1 flex-wrap gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
       {!configs ? (
@@ -138,6 +140,19 @@ export const CollectionsGrid = ({ configs }: { configs?: StakePool[] }) => {
                     />
                   )}
                 </div>
+              }
+              content={
+                <>
+                  {config.stakePoolData?.parsed && (
+                    <div className="flex justify-end text-xs text-gray-400">
+                      <div className="overflow-hidden text-ellipsis whitespace-nowrap">
+                        {isStakePoolV2(config.stakePoolData?.parsed)
+                          ? 'V2'
+                          : 'V1'}
+                      </div>
+                    </div>
+                  )}
+                </>
               }
             />
           ))
