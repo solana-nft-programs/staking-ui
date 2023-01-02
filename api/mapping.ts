@@ -2871,7 +2871,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
         value: 'https://twitter.com/SolEddaRity',
       },
       {
-        text: 'MagicEden',
+        text: 'Discord',
         value: 'https://discord.gg/soleddarity',
       },
     ],
