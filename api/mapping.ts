@@ -2876,13 +2876,17 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       },
     ],
   },
-{
+  {
     name: 'hyperion',
     displayName: 'Hyperion Staking',
     nameInHeader: true,
-    stakePoolAddress: new PublicKey('6ZKWsXn9QHnubteRE6v4UcnMddkzJAhRkWfWVEhFKiMd'),
-    description: 'Earn HyperX by staking your Hyperion Drifters, You can stake/unstake anytime. Drifters earn 1 HyperX per day',
-    imageUrl: 'https://bafkreicwj2xovhs4h6h4rqdxfvjw3snmtaawlt4wifjnubx5n73ebszrvu.ipfs.nftstorage.link/',
+    stakePoolAddress: new PublicKey(
+      '6ZKWsXn9QHnubteRE6v4UcnMddkzJAhRkWfWVEhFKiMd'
+    ),
+    description:
+      'Earn HyperX by staking your Hyperion Drifters, You can stake/unstake anytime. Drifters earn 1 HyperX per day',
+    imageUrl:
+      'https://bafkreicwj2xovhs4h6h4rqdxfvjw3snmtaawlt4wifjnubx5n73ebszrvu.ipfs.nftstorage.link/',
     tokenStandard: TokenStandard.NonFungible,
     receiptType: ReceiptType.Original,
     hostname: 'staking.hyperionnft.co.uk',
@@ -2895,23 +2899,21 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       secondary: '#FB671A',
       fontColor: '#FFF',
       fontColorSecondary: '#FFF',
-      fontColorTertiary: '#FFF'
+      fontColorTertiary: '#FFF',
     },
     links: [
       {
         text: 'Discord',
-        value: 'http://discord.gg/fzbrfcyaMf'
+        value: 'http://discord.gg/fzbrfcyaMf',
       },
       {
         text: 'Twitter',
-        value: 'https://twitter.com/nft_hyperion'
+        value: 'https://twitter.com/nft_hyperion',
       },
       {
         text: 'Magic Eden',
-        value: 'https://magiceden.io/marketplace/hyperion'
+        value: 'https://magiceden.io/marketplace/hyperion',
       },
-    
-    ]
-  }
-
+    ],
+  },
 ]
