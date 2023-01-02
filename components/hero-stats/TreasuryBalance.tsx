@@ -9,13 +9,12 @@ import { useRewardDistributorTokenAccount } from 'hooks/useRewardDistributorToke
 import { useRewardMintInfo } from 'hooks/useRewardMintInfo'
 import { useRewardsRate } from 'hooks/useRewardsRate'
 import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
-import { useEffect } from 'react'
 
-export type TreasuryBalanceProps = React.HTMLAttributes<HTMLDivElement> & {
+export type Props = React.HTMLAttributes<HTMLDivElement> & {
   className?: string
 }
 
-export const TreasuryBalance = ({ className }: TreasuryBalanceProps) => {
+export const TreasuryBalance = ({ className }: Props) => {
   const rewardsRate = useRewardsRate()
   const rewardDistributorData = useRewardDistributorData()
   const rewardMintInfo = useRewardMintInfo()
@@ -27,10 +26,6 @@ export const TreasuryBalance = ({ className }: TreasuryBalanceProps) => {
       rewardDistributorTokenAccountData.data?.amount.toString() || 0
     ).eq(new BN(0))
   }
-
-  useEffect(() => {
-    rewardDistributorTokenAccountData.refetch()
-  }, [rewardDistributorTokenAccountData])
 
   return (
     <>
