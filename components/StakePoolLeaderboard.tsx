@@ -95,7 +95,7 @@ export const StakePoolLeaderboard = () => {
           <div className="flex-[4]">Wallet</div>
           <div className="flex-1">Staked Tokens</div>
           <div className="flex flex-1 cursor-pointer items-center justify-end text-right">
-            <Tooltip title="Total milliseconds staked">
+            <Tooltip title="1 point for every 1000 seconds staked">
               <div className="flex items-center gap-1">
                 Stake Score{' '}
                 <InformationCircleIcon className="inline-block h-5 w-5" />
