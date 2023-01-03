@@ -2891,7 +2891,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     receiptType: ReceiptType.Original,
     hostname: 'staking.hyperionnft.co.uk',
     hideFooter: true,
-    websiteUrl: 'staking.hyperionnft.co.uk',
+    websiteUrl: 'www.hyperionnft.co.uk',
     maxStaked: 5888,
     logoPadding: false,
     colors: {
