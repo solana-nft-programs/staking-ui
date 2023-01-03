@@ -1,4 +1,4 @@
-# Cardinal Staking UI
+e# Cardinal Staking UI
 
 This repository hosts the UI inteface that powers **https://stake.cardinal.so** for staking NFTs on Solana.
 
@@ -26,8 +26,8 @@ Pools by default will have no metadata. View the section titled "Customizing you
 
 ```typescript
 export type StakePoolParams {
-    requiresCollections?: PublicKey[];
-    requiresCreators?: PublicKey[];
+    allowedCollections?: PublicKey[];
+    allowedCreators?: PublicKey[];
     requiresAuthorization?: boolean;
     overlayText?: string;
     imageUri?: string;
