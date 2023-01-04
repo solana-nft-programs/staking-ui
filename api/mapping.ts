@@ -1237,6 +1237,70 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       accent: '#2b3645',
       fontColor: '#FFFFFF',
     },
+    backgroundImage:
+    'https://i.ibb.co/KzLDpfX/Home-background.png',
+  },
+  {
+    name: 'spaceman',
+    displayName: 'SPACEMAN NFT STAKING',
+    stakePoolAddress: new PublicKey(
+      'AYtjirk6EJMSXNwkbteoGqu8hZbbGkzw3hUvmfHALkP3'
+    ),
+    websiteUrl: 'https://1space.me/',
+    receiptType: ReceiptType.Original,
+    tokenStandard: TokenStandard.NonFungible,
+    hostname: 'spaceman-stake.1space.me',
+    hideFooter: true,
+    imageUrl: 'https://1space.me/images/logo-new-main-heroes_02.png',
+    maxStaked: 700,
+    links: [
+      {
+        text: 'HOME',
+        value: 'https://1space.me/',
+      },
+      {
+        text: 'BUY / SELL',
+        value: 'https://1space.me/#token',
+      },
+      {
+        text: 'FARMS',
+        value: 'https://raydium.io/farms/?tab=Ecosystem&farmid=C7KtyxWPukyvkxWFybuDDd92ofG2jZa9vFjAfhY7ymQt',
+      },
+      {
+        text: 'SWAP',
+        value: 'https://app.1space.me/',
+      },
+      {
+        text: 'TRADING',
+        value: 'https://dex.1space.me/',
+      },
+      {
+        text: 'TOKEN STAKING',
+        value: 'https://coinstake.1space.me/',
+      },
+      {
+        text: 'NFT COLLECTION',
+        value: 'https://nft.1space.me/',
+      },
+      {
+        text: 'DOCS',
+        value: 'https://docs.1space.me/',
+      },
+    ],
+    styles: {
+      fontFamily: 'Industry, sans-serif',
+      fontWeight: 400,
+    },
+    colors: {
+      primary: '#121429',
+      secondary: '#519ef7',
+      accent: '#2b3645',
+      fontColor: '#FFFFFF',
+    },
+
+    backgroundImage:
+    'https://i.ibb.co/KzLDpfX/Home-background.png',
+
   },
   {
     name: 'trust-in-pat',
