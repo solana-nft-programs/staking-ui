@@ -2882,4 +2882,122 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       fontColorSecondary: '#0d0d0d',
     },
   },
+  {
+    name: 'the-castle',
+    displayName: 'The Castle',
+    nameInHeader: true,
+    stakePoolAddress: new PublicKey(
+      '9af9HiyQ7EHjMNB14temaoKpViFD3D96o2MvBor7xxf3'
+    ),
+    description:
+      'Keep your King safe in his castle. You can stake and unstake at any time. $KING allows you to buy discord whitelist roles',
+    imageUrl: '/logos/the-castle-logo.jpg',
+    tokenStandard: TokenStandard.NonFungible,
+    receiptType: ReceiptType.Original,
+    hostname: 'staking.thekingscastle.io',
+    hideFooter: true,
+    websiteUrl: 'https://thekingscastle.io/',
+    maxStaked: 4444,
+    logoPadding: false,
+    colors: {
+      primary: '#33332f',
+      secondary: '#5c0404',
+      fontColor: '#FFF',
+      fontColorSecondary: '#FFF',
+      fontColorTertiary: '#FFF',
+    },
+    links: [
+      {
+        text: 'Discord',
+        value: 'https://discord.com/invite/castleking',
+      },
+      {
+        text: 'Twitter',
+        value: 'https://twitter.com/CastleTheKings',
+      },
+      {
+        text: 'Magic Eden',
+        value: 'https://magiceden.io/marketplace/the_kings',
+      },
+      {
+        text: 'Whitepaper',
+        value: 'https://whitepaper.thekingscastle.io/',
+      },
+      {
+        text: 'YourMajesty',
+        value: 'https://castle.thekingscastle.io/',
+      },
+    ],
+  },
+  {
+    name: 'supportive-dudes',
+    displayName: 'Supportive Dudes',
+    description:
+      'Stake your dudes to earn rewards from various reward mechanisms including $EDD, merchandise, redeemable rewards by the Supportive Dudes pool!',
+    nameInHeader: true,
+    stakePoolAddress: new PublicKey(
+      '9gkXb3eciDNbxqe9NZpFUbwh7QnmFb3HU3tVtxA4pwUR'
+    ),
+    contrastHomepageBkg: true,
+    hideFooter: true,
+    hideAllowedTokens: true,
+    receiptType: ReceiptType.Original,
+    tokenStandard: TokenStandard.NonFungible,
+    imageUrl: '/logos/supportive-dudes.png',
+    maxStaked: 3300,
+    colors: {
+      primary: '#000000',
+      secondary: '#878ce0',
+    },
+    links: [
+      {
+        text: 'Twitter',
+        value: 'https://twitter.com/SolEddaRity',
+      },
+      {
+        text: 'Discord',
+        value: 'https://discord.gg/soleddarity',
+      },
+    ],
+  },
+  {
+    name: 'hyperion',
+    displayName: 'Hyperion Staking',
+    nameInHeader: true,
+    stakePoolAddress: new PublicKey(
+      '6ZKWsXn9QHnubteRE6v4UcnMddkzJAhRkWfWVEhFKiMd'
+    ),
+    description:
+      'Earn HyperX by staking your Hyperion Drifters, You can stake/unstake anytime. Drifters earn 1 HyperX per day',
+    imageUrl:
+      'https://bafkreicwj2xovhs4h6h4rqdxfvjw3snmtaawlt4wifjnubx5n73ebszrvu.ipfs.nftstorage.link/',
+    tokenStandard: TokenStandard.NonFungible,
+    receiptType: ReceiptType.Original,
+    hostname: 'staking.hyperionnft.co.uk',
+    hideFooter: true,
+    websiteUrl: 'www.hyperionnft.co.uk',
+    maxStaked: 5888,
+    logoPadding: false,
+    colors: {
+      primary: '#0E3A49',
+      secondary: '#FB671A',
+      fontColor: '#FFF',
+      fontColorSecondary: '#FFF',
+      fontColorTertiary: '#FFF',
+    },
+    links: [
+      {
+        text: 'Discord',
+        value: 'http://discord.gg/fzbrfcyaMf',
+      },
+      {
+        text: 'Twitter',
+        value: 'https://twitter.com/nft_hyperion',
+      },
+      {
+        text: 'Magic Eden',
+        value: 'https://magiceden.io/marketplace/hyperion',
+      },
+    ],
+  },
 ]

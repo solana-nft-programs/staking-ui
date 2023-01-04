@@ -6,7 +6,7 @@ import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
 
 import { StakePoolImage } from '@/components/StakePoolImage'
 
-import { HeroStats } from '../components/HeroStats'
+import { HeroStats } from '../components/hero-stats/HeroStats'
 
 export const HeroLarge: React.FC = () => {
   const stakePoolId = useStakePoolId()

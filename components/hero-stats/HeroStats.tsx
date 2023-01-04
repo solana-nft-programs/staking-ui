@@ -5,8 +5,8 @@ import { useStakePoolMaxStaked } from 'hooks/useStakePoolMaxStaked'
 import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
 import { useStakePoolTotalStaked } from 'hooks/useStakePoolTotalStaked'
 
-import { RewardsRate } from '@/components/stats/RewardsRate'
-import { TreasuryBalance } from '@/components/stats/TreasuryBalance'
+import { RewardsRate } from '@/components/hero-stats/RewardsRate'
+import { TreasuryBalance } from '@/components/hero-stats/TreasuryBalance'
 
 export const HeroStats: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({
   className,
