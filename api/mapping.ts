@@ -105,6 +105,28 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
   //     secondary: 'rgb(157,120,138, 0.6)',
   //   },
   // },
+	{
+    name: 'particlesnft',
+    displayName: 'ParticlesNFT',
+    stakePoolAddress: new PublicKey(
+      'CQq4qfsM6D7zdw6pnGSo3FZ1LhNAvdMU1f3dRkH5cXKs'
+    ),
+		websiteUrl: 'https://www.particlesnft.io/',
+		nameInHeader: true,
+    description: 'ParticlesNFT staking',
+		hideFooter: true,
+    imageUrl: 'https://i.imgur.com/W8Lo4lY.png',
+		links: [
+      {
+        text: 'Buy Now',
+        value: 'https://magiceden.io/marketplace/particles_nft',
+      },
+    ],
+    colors: {
+      primary: 'rgb(54,21,38,0.9)',
+      secondary: 'rgb(157,120,138, 0.6)',
+    },
+  },
   {
     name: 'bearmarketbeavers',
     displayName: 'Bear Market Beavers',
