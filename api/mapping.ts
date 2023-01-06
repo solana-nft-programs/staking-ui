@@ -2889,9 +2889,9 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       'https://bafkreicwj2xovhs4h6h4rqdxfvjw3snmtaawlt4wifjnubx5n73ebszrvu.ipfs.nftstorage.link/',
     tokenStandard: TokenStandard.NonFungible,
     receiptType: ReceiptType.Original,
-    hostname: 'staking.hyperionnft.co.uk',
+    hostname: 'staking.hyperionnft.io',
     hideFooter: true,
-    websiteUrl: 'www.hyperionnft.co.uk',
+    websiteUrl: 'hyperionnft.io',
     maxStaked: 5888,
     logoPadding: false,
     colors: {
