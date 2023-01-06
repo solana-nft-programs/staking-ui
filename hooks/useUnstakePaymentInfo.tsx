@@ -7,7 +7,7 @@ import { useStakePoolData } from 'hooks/useStakePoolData'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 import { useQuery } from 'react-query'
 
-export const useStakePaymentInfo = () => {
+export const useUnstakePaymentInfo = () => {
   const { data: rewardDistributorData } = useRewardDistributorData()
 
   const { connection } = useEnvironmentCtx()
@@ -22,25 +22,20 @@ export const useStakePaymentInfo = () => {
       }
     | undefined
   >(
-    ['useStakePaymentInfo', rewardMintInfo?.data?.mintInfo.address.toString()],
+    [
+      'useUnstakePaymentInfo',
+      rewardMintInfo?.data?.mintInfo.address.toString(),
+    ],
     async () => {
       if (!rewardDistributorData?.parsed || !rewardMintInfo?.data) return
       if (!stakePoolData) throw 'No stake pool found'
       const paymentInfoData = await fetchIdlAccount(
         connection,
-        stakePoolData.parsed.stakePaymentInfo,
+        stakePoolData.parsed.unstakePaymentInfo,
         'paymentInfo'
       )
 
       if (!paymentInfoData?.parsed) return
-
-      // console.log('stakepoolInfo', stakePoolData.parsed)
-      // console.log('paymentInfoData', paymentInfoData.parsed)
-      // console.log('rewardMintInfo', rewardMintInfo.data.mintInfo)
-      // console.log(
-      //   'paymentInfoData.parsed.paymentAmount',
-      //   rewardMintInfo.data.mintInfo.address
-      // )
 
       const amount = formatMintNaturalAmountAsDecimal(
         rewardMintInfo.data.mintInfo,

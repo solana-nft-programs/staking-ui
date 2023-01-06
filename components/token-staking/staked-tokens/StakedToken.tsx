@@ -12,10 +12,10 @@ import type { UseMutationResult } from 'react-query'
 
 import { TokenImage } from '@/components/token-staking/token/TokenImage'
 import { TokenImageWrapper } from '@/components/token-staking/token/TokenImageWrapper'
+import { TokenWrapper } from '@/components/token-staking/token/TokenWrapper'
 import { TokenStatBoostBadge } from '@/components/token-staking/token-stats/UI/TokenStatBoostBadge'
 import { TokenStatCooldownBadge } from '@/components/token-staking/token-stats/UI/TokenStatCooldownBadge'
 import { TokenStatNextRewardBadge } from '@/components/token-staking/token-stats/UI/TokenStatNextRewardBadge'
-import { TokenWrapper } from '@/components/token-staking/token/TokenWrapper'
 
 import { StakedStats } from './StakedStats'
 

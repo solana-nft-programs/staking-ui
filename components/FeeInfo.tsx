@@ -1,11 +1,20 @@
+import {
+  ArrowDownOnSquareIcon,
+  ArrowUpOnSquareIcon,
+  TagIcon,
+} from '@heroicons/react/24/outline'
 import { Tooltip } from 'common/Tooltip'
+import { useClaimRewardsPaymentInfo } from 'hooks/useClaimRewardsPaymentInfo'
 import { useStakePaymentInfo } from 'hooks/useStakePaymentInfo'
 import { isStakePoolV2, useStakePoolData } from 'hooks/useStakePoolData'
+import { useUnstakePaymentInfo } from 'hooks/useUnstakePaymentInfo'
 import { BsFillCreditCardFill, BsFillInfoCircleFill } from 'react-icons/bs'
 
 export const FeeInfo: React.FC = () => {
   const { data: stakePool } = useStakePoolData()
-  const { data: paymentInfoData } = useStakePaymentInfo()
+  const { data: claimRewardsPaymentInfoData } = useClaimRewardsPaymentInfo()
+  const { data: unstakePaymentInfoData } = useUnstakePaymentInfo()
+  const { data: stakePaymentInfoData } = useStakePaymentInfo()
 
   return (
     <div className="flex space-x-8">
@@ -39,15 +48,29 @@ export const FeeInfo: React.FC = () => {
         </div>
       )}
       {!!stakePool?.parsed && isStakePoolV2(stakePool.parsed) && (
-        <div className="flex flex-row items-center justify-center gap-2">
-          <BsFillCreditCardFill className="text-medium-4" />
-          <div className="text-medium-4">Fee: </div>
-          <>{JSON.stringify(paymentInfoData?.amount)}</>
-          {/* {JSON.stringify(stakePool.parsed.unstakePaymentInfo)}
-          {JSON.stringify(stakePool.parsed.stakePaymentInfo)}
-          {JSON.stringify(
-            rewardDistributorData?.parsed.claimRewardsPaymentInfo
-          )} */}
+        <div className="flex flex-row items-center justify-center gap-8">
+          <div className="flex items-center gap-2">
+            <TagIcon className="h-5 w-5 text-medium-4" />
+            <div className="text-medium-4">Reward Claim Fee: </div>
+            {claimRewardsPaymentInfoData?.amount
+              ? Number(claimRewardsPaymentInfoData?.amount)
+              : undefined}{' '}
+            SOL
+          </div>
+          <div className="flex items-center gap-2">
+            <ArrowUpOnSquareIcon className="h-5 w-5 text-medium-4" />
+            <div className="text-medium-4">Unstake Fee: </div>
+            {unstakePaymentInfoData?.formattedAmountWithSymbol
+              ? unstakePaymentInfoData?.formattedAmountWithSymbol
+              : undefined}
+          </div>
+          <div className="flex items-center gap-2">
+            <ArrowDownOnSquareIcon className="h-5 w-5 text-medium-4" />
+            <div className="text-medium-4">Stake Fee: </div>
+            {stakePaymentInfoData?.formattedAmountWithSymbol
+              ? stakePaymentInfoData?.formattedAmountWithSymbol
+              : undefined}
+          </div>
         </div>
       )}
     </div>
