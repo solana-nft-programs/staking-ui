@@ -34,14 +34,6 @@ export const useStakePaymentInfo = () => {
 
       if (!paymentInfoData?.parsed) return
 
-      // console.log('stakepoolInfo', stakePoolData.parsed)
-      // console.log('paymentInfoData', paymentInfoData.parsed)
-      // console.log('rewardMintInfo', rewardMintInfo.data.mintInfo)
-      // console.log(
-      //   'paymentInfoData.parsed.paymentAmount',
-      //   rewardMintInfo.data.mintInfo.address
-      // )
-
       const amount = formatMintNaturalAmountAsDecimal(
         rewardMintInfo.data.mintInfo,
         paymentInfoData.parsed.paymentAmount,

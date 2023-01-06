@@ -1,6 +1,6 @@
 import { fetchIdlAccount } from '@cardinal/rewards-center'
 import type { BN } from '@project-serum/anchor'
-import { SOLANA_TOKEN_MINT } from 'api/constants'
+import { SOLANA_TOKEN_MINT_ADDRESS } from 'api/constants'
 import { formatMintNaturalAmountAsDecimal } from 'common/units'
 import { useRewardDistributorData } from 'hooks/useRewardDistributorData'
 import { useRewardMintInfo } from 'hooks/useRewardMintInfo'
@@ -43,7 +43,8 @@ export const useClaimRewardsPaymentInfo = () => {
         return
 
       const isSol =
-        claimRewardsPaymentInfo.parsed.paymentMint === SOLANA_TOKEN_MINT
+        claimRewardsPaymentInfo.parsed.paymentMint.toString() ===
+        SOLANA_TOKEN_MINT_ADDRESS
 
       const symbol = isSol
         ? 'SOL'
@@ -70,7 +71,7 @@ export const useClaimRewardsPaymentInfo = () => {
       return {
         naturalAmount: claimRewardsPaymentInfo.parsed.paymentAmount,
         amount,
-        formattedAmountWithSymbol: `${amount} ${symbol}`,
+        formattedAmountWithSymbol: `${Number(amount)} ${symbol}`,
       }
     }
   )

@@ -52,10 +52,9 @@ export const FeeInfo: React.FC = () => {
           <div className="flex items-center gap-2">
             <TagIcon className="h-5 w-5 text-medium-4" />
             <div className="text-medium-4">Reward Claim Fee: </div>
-            {claimRewardsPaymentInfoData?.amount
-              ? Number(claimRewardsPaymentInfoData?.amount)
-              : undefined}{' '}
-            SOL
+            {claimRewardsPaymentInfoData?.formattedAmountWithSymbol
+              ? claimRewardsPaymentInfoData?.formattedAmountWithSymbol
+              : undefined}
           </div>
           <div className="flex items-center gap-2">
             <ArrowUpOnSquareIcon className="h-5 w-5 text-medium-4" />
