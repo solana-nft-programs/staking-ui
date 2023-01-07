@@ -105,6 +105,28 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
   //     secondary: 'rgb(157,120,138, 0.6)',
   //   },
   // },
+	{
+    name: 'particlesnft',
+    displayName: 'ParticlesNFT',
+    stakePoolAddress: new PublicKey(
+      'CQq4qfsM6D7zdw6pnGSo3FZ1LhNAvdMU1f3dRkH5cXKs'
+    ),
+		websiteUrl: 'https://www.particlesnft.io/',
+		nameInHeader: true,
+    description: 'Stake your particles NFT to earn $OOO',
+		hideFooter: true,
+    imageUrl: '/logos/particles-shining-logo.gif',
+		links: [
+      {
+        text: 'Buy Now',
+        value: 'https://magiceden.io/marketplace/particles_nft',
+      },
+    ],
+    colors: {
+      primary: '#0d0d0d',
+      secondary: '#595959',
+    },
+  },
   {
     name: 'bearmarketbeavers',
     displayName: 'Bear Market Beavers',
@@ -3037,9 +3059,9 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       'https://bafkreicwj2xovhs4h6h4rqdxfvjw3snmtaawlt4wifjnubx5n73ebszrvu.ipfs.nftstorage.link/',
     tokenStandard: TokenStandard.NonFungible,
     receiptType: ReceiptType.Original,
-    hostname: 'staking.hyperionnft.co.uk',
+    hostname: 'staking.hyperionnft.io',
     hideFooter: true,
-    websiteUrl: 'www.hyperionnft.co.uk',
+    websiteUrl: 'hyperionnft.io',
     maxStaked: 5888,
     logoPadding: false,
     colors: {
