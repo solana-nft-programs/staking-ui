@@ -113,9 +113,9 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     ),
 		websiteUrl: 'https://www.particlesnft.io/',
 		nameInHeader: true,
-    description: 'ParticlesNFT staking',
+    description: 'Stake your particles NFT to earn $OOO',
 		hideFooter: true,
-    imageUrl: 'https://i.imgur.com/W8Lo4lY.png',
+    imageUrl: '/logos/particles-shining-logo.gif',
 		links: [
       {
         text: 'Buy Now',
