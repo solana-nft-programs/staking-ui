@@ -246,6 +246,19 @@
     polished "^4.2.2"
     tslib "^2.4.0"
 
+"@cardinal/common@^5.0.7":
+  version "5.0.7"
+  resolved "https://registry.yarnpkg.com/@cardinal/common/-/common-5.0.7.tgz#f225b9eb4a8e7d780a14d80a1c0ba4c495be2d06"
+  integrity sha512-7sZDczfvNFq9uSiYO94Mfjhf8GIk/644xTFawNtCau127GBK2BBsu06TEGLwfELc9dc0b22g4MWQJC0yoU90ow==
+  dependencies:
+    "@project-serum/anchor" "^0.25.0"
+    "@solana/buffer-layout" "^4.0.0"
+    "@solana/spl-token" "^0.3.5"
+    "@solana/web3.js" "^1.66.2"
+    bignumber.js "^9.1.0"
+    polished "^4.2.2"
+    tslib "^2.4.0"
+
 "@cardinal/creator-standard@^2.1.11", "@cardinal/creator-standard@^2.1.7":
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/@cardinal/creator-standard/-/creator-standard-2.2.0.tgz#23e08508edc94bebbfdc0b161cd6eb1a1ae82d49"

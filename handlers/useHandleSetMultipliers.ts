@@ -2,6 +2,7 @@ import {
   tryGetAccount,
   withFindOrInitAssociatedTokenAccount,
 } from '@cardinal/common'
+import { findMintMetadataId } from '@cardinal/creator-standard/dist/cjs/pda'
 import {
   findRewardEntryId as findRewardEntryIdV2,
   findStakeEntryId,
@@ -114,14 +115,16 @@ export const useHandleSetMultipliers = () => {
         )
         if (!stakeEntry) {
           if (isStakePoolV2(stakePoolData.parsed)) {
+            const metadataId = findMintMetadataId(mintId)
             const ix = await program.methods
               .initEntry(wallet.publicKey)
-              .accounts({
+              .accountsStrict({
                 stakeEntry: stakeEntryId,
                 stakePool: stakePoolData.pubkey,
                 stakeMint: mintId,
                 payer: wallet.publicKey,
                 systemProgram: SystemProgram.programId,
+                stakeMintMetadata: metadataId,
               })
               .instruction()
             transaction.add(ix)
@@ -152,7 +155,7 @@ export const useHandleSetMultipliers = () => {
           if (isStakePoolV2(stakePoolData.parsed)) {
             const ix = await program.methods
               .initRewardEntry()
-              .accounts({
+              .accountsStrict({
                 rewardEntry: rewardEntryId,
                 stakeEntry: stakeEntryId,
                 rewardDistributor: rewardDistributorData.pubkey,
@@ -176,7 +179,7 @@ export const useHandleSetMultipliers = () => {
         if (isStakePoolV2(stakePoolData.parsed)) {
           const ix = await program.methods
             .updateRewardEntry({ multiplier: new BN(multipliers[i]!) })
-            .accounts({
+            .accountsStrict({
               rewardEntry: rewardEntryId,
               rewardDistributor: rewardDistributorData.pubkey,
               authority: wallet.publicKey,
