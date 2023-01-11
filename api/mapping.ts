@@ -3084,5 +3084,33 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
         value: 'https://magiceden.io/marketplace/hyperion',
       },
     ],
+    
+  },
+  {
+    name: 'Solana Mcs staking',
+    displayName: 'SOLANA MCS STAKING',
+    nameInHeader: true,
+    stakePoolAddress: new PublicKey(
+      'HBsam1w2i35vUVfg7ZdngqFQ8m9vmJEhTmn3VAkgmYhM'
+    ),
+    description:
+      'Official staking pool for solana mcs NFT collection',
+    imageUrl: 'https://pbs.twimg.com/profile_images/1597210461665206273/qt3OgPGt_400x400.jpg',
+    tokenStandard: TokenStandard.NonFungible,
+    receiptType: ReceiptType.Original,
+    hostname: 'staking.solanamcs.com',
+    hideFooter: true,
+    websiteUrl: 'https://solanamcs.com/',
+    maxStaked: 666,
+    logoPadding: false,
+    colors: {
+      primary: '#ffffff',
+      secondary: '#e06666',
+      fontColor: '#444444',
+      fontColorSecondary: '#ffffff',
+      fontColorTertiary: '#444444',
+    },
+    
   },
 ]
+
