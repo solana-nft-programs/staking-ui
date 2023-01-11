@@ -3098,7 +3098,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     imageUrl: 'https://pbs.twimg.com/profile_images/1597210461665206273/qt3OgPGt_400x400.jpg',
     tokenStandard: TokenStandard.NonFungible,
     receiptType: ReceiptType.Original,
-    hostname: 'staking.solanamcs.com',
+    hostname: 'stake.solanamcs.com',
     hideFooter: true,
     websiteUrl: 'https://solanamcs.com/',
     maxStaked: 666,
