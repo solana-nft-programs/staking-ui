@@ -287,6 +287,46 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     receiptType: ReceiptType.Original,
   },
   {
+    name: 'goodskellas',
+    displayName: 'Good Skellas',
+    hostname: 'stake.goodskellas.xyz',
+    stakePoolAddress: new PublicKey(
+      'FqBj7uVDHfy6cDDoihX3cQSCmV347SoFXUtvUe5auMQ8'
+    ),
+    websiteUrl: 'https://www.goodskellas.xyz/',
+    nameInHeader: true,
+    description: 'Stake your Skellas NFT to earn $BONES',
+    hideFooter: true,
+    imageUrl: 'https://i.imgur.com/cjJDaD8.png',
+    backgroundImage:'https://i.imgur.com/aXFVc4C.png',
+    links: [
+      {
+        text: 'Website',
+        value: 'https://www.goodskellas.xyz/',
+      },
+      {
+        text: 'Twitter',
+        value: 'https://twitter.com/goodskellas',
+      },
+      {
+        text: 'MagicEden',
+        value: 'https://magiceden.io/marketplace/goodskellas',
+      },
+    ],
+    styles: {
+      fontFamily: 'Franklin Gothic Medium',
+      fontWeight: 300,
+      backgroundSize: 'cover',
+      backgroundPosition: 'center',
+    },
+    colors: {
+      primary: '#000000',
+      secondary: '#9399CB',
+      accent: '#9399CB',
+      fontColor: '#FFFFFF',
+    }
+  },
+  {
     name: 'shadiesstandard',
     displayName: 'SHADIES STANDARD STAKING',
     stakePoolAddress: new PublicKey(
