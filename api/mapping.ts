@@ -3101,7 +3101,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     hostname: 'staking.hyperionnft.io',
     hideFooter: true,
     websiteUrl: 'hyperionnft.io',
-    maxStaked: 5888,
+    maxStaked: 3500,
     logoPadding: false,
     colors: {
       primary: '#0E3A49',
