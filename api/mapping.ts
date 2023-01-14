@@ -3152,5 +3152,44 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     },
     
   },
+  {
+    name: 'howly',
+    displayName: 'Howly Finance',
+    nameInHeader: true,
+    stakePoolAddress: new PublicKey(
+      '6Jdwgq81o8r5bUiFiAEeoXzYBXXDAG1mKDKYsZdZVBW9'
+    ),
+    description:
+      'First meme coin and nft powered defi on solana. Giving free access for the whole howly ecosystem with exclusive perks and privileges',
+    imageUrl: 'https://bafybeigipwtmn2yckmgrf7k6x7un454j73qlifexhew72445um2zkbzuoi.ipfs.nftstorage.link/collection.jpg',
+    tokenStandard: TokenStandard.NonFungible,
+    receiptType: ReceiptType.Original,
+    hostname: 'staking.howlynft.xyz',
+    hideFooter: true,
+    websiteUrl: 'https://howlynft.xyz/',
+    maxStaked: 2500,
+    logoPadding: false,
+    colors: {
+      primary: '#474554',
+      secondary: '#00E6FF',
+      fontColor: '#54ECC4',
+      fontColorSecondary: '#474554',
+      fontColorTertiary: '#fff',
+    },
+    links: [
+      {
+        text: 'Discord',
+        value: 'https://discord.gg/howlyfinance',
+      },
+      {
+        text: 'Twitter',
+        value: 'https://twitter.com/howly_finance',
+      },
+      {
+        text: 'Magic Eden',
+        value: 'https://magiceden.io/marketplace/howly',
+      },
+    ],
+  },
 ]
 
