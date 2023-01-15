@@ -11,6 +11,8 @@ import Image from 'next/image'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 import { useState } from 'react'
 
+import { AdvancedConfigForm } from '@/components/admin/AdvancedConfigForm'
+
 import { AuthorizeMints } from '../AuthorizeMints'
 import { MintMultiplierLookup } from '../MintMultiplierLookup'
 import { MintMultipliers } from '../MintMultipliers'
@@ -29,6 +31,7 @@ export type PANE_OPTIONS =
   | 'reward-multipliers'
   | 'reward-funds'
   | 'snapshot'
+  | 'advanced-config'
 
 export const AdminStakePool = ({
   onSuccess,
@@ -93,6 +96,11 @@ export const AdminStakePool = ({
         ? `Enabled once pool is created to receive snapshot of staked tokens`
         : `Tool to get pool's snapshot of staked tokens`,
     },
+    {
+      label: <div className="flex items-center gap-2">Config</div>,
+      value: 'advanced-config',
+      tooltip: 'Set advanced configuration settings',
+    },
   ]
 
   return (
@@ -156,6 +164,11 @@ export const AdminStakePool = ({
             snapshot: (
               <div className="w-full">
                 <Snapshot />
+              </div>
+            ),
+            'advanced-config': (
+              <div className="w-full">
+                <AdvancedConfigForm />
               </div>
             ),
           }[pane]
