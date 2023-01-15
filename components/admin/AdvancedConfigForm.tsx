@@ -9,10 +9,13 @@ import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
 import * as Yup from 'yup'
 
 import { TextInput } from '@/components/UI/inputs/TextInput'
+import { SelectorBoolean } from 'common/SelectorBoolean'
+import { publicKeyValidationTest } from '@/components/stake-pool-creation/Schema'
 
 const defaultValues = (stakePoolData: StakePoolMetadata) => {
   return {
     ...stakePoolData,
+    stakePoolAddress: stakePoolData.stakePoolAddress?.toString() || undefined,
   }
 }
 
@@ -20,7 +23,11 @@ const validationSchema = Yup.object({
   name: Yup.string().required(),
   displayName: Yup.string().required(),
   nameInHeader: Yup.string(),
-  stakePoolAddress: Yup.number().required(),
+  stakePoolAddress: Yup.string().test(
+    'is-public-key',
+    'Invalid reward mint address',
+    publicKeyValidationTest
+  ),
   description: Yup.string(),
   receiptType: Yup.number(),
   tokenStandard: Yup.number(),
@@ -101,22 +108,72 @@ export const AdvancedConfigForm = ({
   const { values, errors, setFieldValue, setValues } = formState
 
   return (
-    <div className="w-full">
-      <FormFieldTitleInput
-        title={'Name'}
-        description={
-          ' Name of this stake pool used as an id. Should be in lower-case kebab-case since it is used in the URL as /{name}'
-        }
-      />
-      <TextInput
-        disabled={false}
-        hasError={!!values.name && values.name !== '' && !!errors.name}
-        placeholder={'Enter name'}
-        value={values.name}
-        onChange={(e) => {
-          setFieldValue('name', e.target.value)
-        }}
-      />
+    <div className="w-full space-y-8">
+      <div className="w-full">
+        <FormFieldTitleInput
+          title={'Name'}
+          description={
+            'Name of this stake pool used as an id. Should be in lower-case kebab-case since it is used in the URL as /{name}'
+          }
+        />
+        <TextInput
+          disabled={false}
+          hasError={!!values.name && values.name !== '' && !!errors.name}
+          placeholder={'Enter name'}
+          value={values.name}
+          onChange={(e) => {
+            setFieldValue('name', e.target.value)
+          }}
+        />
+      </div>
+      <div className="full">
+        <FormFieldTitleInput
+          title={'Display Name'}
+          description={
+            'Display name to be displayed in the header. Often the same as name but with capital letters and spaces'
+          }
+        />
+        <TextInput
+          disabled={false}
+          hasError={
+            !!values.displayName &&
+            values.displayName !== '' &&
+            !!errors.displayName
+          }
+          placeholder={'Enter display name'}
+          value={values.displayName}
+          onChange={(e) => {
+            setFieldValue('displayName', e.target.value)
+          }}
+        />
+      </div>
+      <div className="full">
+        <FormFieldTitleInput
+          title={'Name in Header'}
+          description={'Whether or not to show name in header'}
+        />
+        <SelectorBoolean
+          handleChange={(v) => setFieldValue('nameInHeader', v)}
+        />
+      </div>
+      <div className="full">
+        <FormFieldTitleInput
+          title={'Stake pool address'}
+          description={'Publickey for this stake pool'}
+        />
+        <TextInput
+          hasError={
+            !!values.stakePoolAddress &&
+            values.stakePoolAddress !== '' &&
+            !!errors.stakePoolAddress
+          }
+          placeholder={'Enter publickey'}
+          value={values.stakePoolAddress}
+          onChange={(e) => {
+            setFieldValue('stakePoolAddress', e.target.value)
+          }}
+        />
+      </div>
     </div>
   )
 }
