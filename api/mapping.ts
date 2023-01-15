@@ -3124,7 +3124,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
         value: 'https://magiceden.io/marketplace/hyperion',
       },
     ],
-    
+
   },
   {
     name: 'Solana Mcs staking',
@@ -3150,7 +3150,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       fontColorSecondary: '#ffffff',
       fontColorTertiary: '#444444',
     },
-    
+
   },
   {
     name: 'howly',
@@ -3191,5 +3191,41 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       },
     ],
   },
+  {
+    name: 'forest_gemmys',
+    displayName: 'Forest Gemmys',
+    nameInHeader: true,
+    stakePoolAddress: new PublicKey(
+      '5xCCp3y57oRDjgK6RKhkHUKzYyo4dzW8qp1eV12CATg7'
+    ),
+    description:
+      'Come frolic with the Forest Gemmys! The first Gemmy limited edition series.',
+    imageUrl: 'https://creator-hub-prod.s3.us-east-2.amazonaws.com/forest_gemmys_pfp_1667238440811.png',
+    tokenStandard: TokenStandard.NonFungible,
+    receiptType: ReceiptType.Original,
+    hideFooter: true,
+    websiteUrl: 'https://www.gemmy.club/',
+    maxStaked: 1298,
+    logoPadding: false,
+    colors: {
+      primary: '#7D89D8',
+      secondary: '##131418',
+      accent: '#2a393a',
+      fontColor: '#FFFFFF',
+    },
+    links: [
+      {
+        text: 'Discord',
+        value: 'https://discord.com/invite/NChtPhqrQC',
+      },
+      {
+        text: 'Twitter',
+        value: 'https://twitter.com/GemmyClub',
+      },
+      {
+        text: 'Magic Eden',
+        value: 'https://magiceden.io/marketplace/forest_gemmys',
+      },
+    ],
+  },
 ]
-
