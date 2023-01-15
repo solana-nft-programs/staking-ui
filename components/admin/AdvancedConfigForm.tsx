@@ -12,12 +12,71 @@ import { TextInput } from '@/components/UI/inputs/TextInput'
 
 const defaultValues = (stakePoolData: StakePoolMetadata) => {
   return {
-    name: stakePoolData.name,
+    ...stakePoolData,
   }
 }
 
 const validationSchema = Yup.object({
   name: Yup.string().required(),
+  displayName: Yup.string().required(),
+  nameInHeader: Yup.string(),
+  stakePoolAddress: Yup.number().required(),
+  description: Yup.string(),
+  receiptType: Yup.number(),
+  tokenStandard: Yup.number(),
+  hidden: Yup.boolean(),
+  notFound: Yup.boolean(),
+  hostname: Yup.string(),
+  hideFooter: Yup.boolean(),
+  redirect: Yup.string(),
+  hideAllowedTokens: Yup.boolean(),
+  // styles is a stringified JSON object
+  styles: Yup.string(),
+  contrastHomepageBkg: Yup.boolean(),
+  colors: Yup.object({
+    primary: Yup.string().required(),
+    secondary: Yup.string().required(),
+    accent: Yup.string(),
+    fontColor: Yup.string(),
+    fontColorSecondary: Yup.string(),
+    backgroundSecondary: Yup.string(),
+    fontColorTertiary: Yup.string(),
+  }),
+  disallowRegions: Yup.array().of(Yup.string()),
+  logoPadding: Yup.boolean(),
+  socialLinks: Yup.array(),
+  imageUrl: Yup.string(),
+  secondaryImageUrl: Yup.string(),
+  backgroundImage: Yup.string(),
+  websiteUrl: Yup.string(),
+  maxStaked: Yup.number(),
+  links: Yup.array().of(
+    Yup.object({
+      text: Yup.string().required(),
+      value: Yup.string().required(),
+    })
+  ),
+  airdrops: Yup.array().of(
+    Yup.object({
+      name: Yup.string().required(),
+      symbol: Yup.string().required(),
+      uri: Yup.string().required(),
+    })
+  ),
+  analytics: Yup.array().of(
+    Yup.object({
+      metadata: Yup.object({
+        key: Yup.string().required(),
+        type: Yup.string().required(),
+        totals: Yup.array().of(
+          Yup.object({
+            key: Yup.string().required(),
+            value: Yup.number().required(),
+          })
+        ),
+      }),
+    })
+  ),
 })
 
 export const AdvancedConfigForm = ({
