@@ -1,16 +1,18 @@
+import { ReceiptType } from '@cardinal/staking/dist/cjs/programs/stakePool'
 import type { PublicKey } from '@solana/web3.js'
 import type { StakePoolMetadata } from 'api/mapping'
 import { FormFieldTitleInput } from 'common/FormFieldInput'
 import { LoadingSpinner } from 'common/LoadingSpinner'
+import { SelectorBoolean } from 'common/SelectorBoolean'
 import { useFormik } from 'formik'
 import { useStakePoolData } from 'hooks/useStakePoolData'
 import { useStakePoolId } from 'hooks/useStakePoolId'
 import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
 import * as Yup from 'yup'
 
-import { TextInput } from '@/components/UI/inputs/TextInput'
-import { SelectorBoolean } from 'common/SelectorBoolean'
 import { publicKeyValidationTest } from '@/components/stake-pool-creation/Schema'
+import { SelectInput } from '@/components/UI/inputs/SelectInput'
+import { TextInput } from '@/components/UI/inputs/TextInput'
 
 const defaultValues = (stakePoolData: StakePoolMetadata) => {
   return {
@@ -29,7 +31,7 @@ const validationSchema = Yup.object({
     publicKeyValidationTest
   ),
   description: Yup.string(),
-  receiptType: Yup.number(),
+  receiptType: Yup.string(),
   tokenStandard: Yup.number(),
   hidden: Yup.boolean(),
   notFound: Yup.boolean(),
@@ -172,6 +174,42 @@ export const AdvancedConfigForm = ({
           onChange={(e) => {
             setFieldValue('stakePoolAddress', e.target.value)
           }}
+        />
+      </div>
+      <div className="full">
+        <FormFieldTitleInput
+          title={'Description'}
+          description={'Description for this stake pool'}
+        />
+        <TextInput
+          hasError={
+            !!values.description &&
+            values.description !== '' &&
+            !!errors.description
+          }
+          placeholder={'Enter description'}
+          value={values.description}
+          onChange={(e) => {
+            setFieldValue('description', e.target.value)
+          }}
+        />
+      </div>
+      <div className="full">
+        <FormFieldTitleInput
+          title={'Receipt Type'}
+          description={
+            'Default receipt type. Setting this will remove the option for the user to choose which receipt type to use'
+          }
+        />
+        <SelectInput
+          className="w-full"
+          value={String(values.receiptType) || ''}
+          setValue={(v) => setFieldValue('receiptType', v)}
+          options={[
+            { label: 'Original', value: String(ReceiptType.Original) },
+            { label: 'Receipt', value: String(ReceiptType.Receipt) },
+            { label: 'None', value: String(ReceiptType.None) },
+          ]}
         />
       </div>
     </div>
