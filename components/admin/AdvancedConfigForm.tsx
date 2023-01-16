@@ -1,6 +1,7 @@
 import { ReceiptType } from '@cardinal/staking/dist/cjs/programs/stakePool'
 import type { PublicKey } from '@solana/web3.js'
 import type { StakePoolMetadata } from 'api/mapping'
+import { TokenStandard } from 'api/mapping'
 import { FormFieldTitleInput } from 'common/FormFieldInput'
 import { LoadingSpinner } from 'common/LoadingSpinner'
 import { SelectorBoolean } from 'common/SelectorBoolean'
@@ -196,7 +197,7 @@ export const AdvancedConfigForm = ({
       </div>
       <div className="full">
         <FormFieldTitleInput
-          title={'Receipt Type'}
+          title={'Receipt type'}
           description={
             'Default receipt type. Setting this will remove the option for the user to choose which receipt type to use'
           }
@@ -212,6 +213,91 @@ export const AdvancedConfigForm = ({
           ]}
         />
       </div>
+      <div className="full">
+        <FormFieldTitleInput
+          title={'Token standard'}
+          description={
+            'Default empty. Setting this will tell the UI to only show tokens of that standard. Supports fungible or non-fungible'
+          }
+        />
+        <SelectInput
+          className="w-full"
+          value={String(values.tokenStandard) || ''}
+          setValue={(v) => setFieldValue('tokenStandard', v)}
+          options={[
+            { label: 'Fungible', value: String(TokenStandard.Fungible) },
+            { label: 'Non-fungible', value: String(TokenStandard.NonFungible) },
+            { label: 'None', value: String(TokenStandard.None) },
+          ]}
+        />
+      </div>
+      <div className="full">
+        <FormFieldTitleInput
+          title={'Hidden'}
+          description={'Optional config to hide this pool from the main page'}
+        />
+        <SelectorBoolean handleChange={(v) => setFieldValue('hidden', v)} />
+      </div>
+      <div className="full">
+        <FormFieldTitleInput
+          title={'Not found'}
+          description={'Optional config to disable finding this pool'}
+        />
+        <SelectorBoolean handleChange={(v) => setFieldValue('notFound', v)} />
+      </div>
+      <div className="full">
+        <FormFieldTitleInput
+          title={'Hostname'}
+          description={'Optional hostname to remap'}
+        />
+        <TextInput
+          disabled={false}
+          hasError={
+            !!values.hostname && values.hostname !== '' && !!errors.hostname
+          }
+          placeholder={'Enter hostname'}
+          value={values.hostname}
+          onChange={(e) => {
+            setFieldValue('hostname', e.target.value)
+          }}
+        />
+      </div>
+      <div className="full">
+        <FormFieldTitleInput
+          title={'Hide footer'}
+          description={'Optional config to disable finding this pool'}
+        />
+        <SelectorBoolean handleChange={(v) => setFieldValue('notFound', v)} />
+      </div>
+      <div className="full">
+        <FormFieldTitleInput
+          title={'Redirect url'}
+          description={
+            'Optional config to link redirect to page when you click on this pool'
+          }
+        />
+        <TextInput
+          disabled={false}
+          hasError={
+            !!values.redirect && values.redirect !== '' && !!errors.redirect
+          }
+          placeholder={'Enter redirect url'}
+          value={values.redirect}
+          onChange={(e) => {
+            setFieldValue('redirect', e.target.value)
+          }}
+        />
+      </div>
+      <div className="full">
+        <FormFieldTitleInput
+          title={'Hide allowed tokens'}
+          description={'Hide allowed tokens style'}
+        />
+        <SelectorBoolean
+          handleChange={(v) => setFieldValue('hideAllowedTokens', v)}
+        />
+      </div>
+      {/* Styles? */}
     </div>
   )
 }
