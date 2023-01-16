@@ -548,6 +548,46 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     },
   },
   {
+    name: 'spaceboys',
+    displayName: 'Space Boys',
+    hostname: 'stake.spaceboys.xyz',
+    stakePoolAddress: new PublicKey(
+      'EchAuMJeaVhbitnEns7QPYh2mFqxWFY8QsQmchn4LRVz'
+    ),
+    nameInHeader: true,
+    description: 'Stake your Space Boy to earn $SPACE',
+    hideFooter: true,
+    imageUrl: "https://i.imgur.com/baGSXKZ.png",
+    links: [
+      {
+        text: 'Buy Now',
+        value: 'https://magiceden.io/marketplace/spaceboys',
+      },
+      {
+        text: 'Twitter',
+        value: 'https://twitter.com/SpaceBoysNFT',
+      },
+      {
+        text: 'Discord',
+        value: 'https://discord.gg/yhVWzGbEkc',
+      },
+    ],
+    colors: {
+      primary: '#00dbda',
+      secondary: '#000000',
+      accent: '#f248a7',
+      fontColor: '#00dbda',
+      fontColorSecondary: '#00dbda',
+    },
+    styles: {
+      fontFamily: 'Industry, sans-serif',
+      fontWeight: 500,
+      backgroundSize: 'cover',
+    },
+    backgroundImage:
+      'https://i.imgur.com/Zuj545m.png',
+  },
+  {
     name: 'META',
     displayName: 'META collections',
     stakePoolAddress: new PublicKey(
