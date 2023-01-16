@@ -76,7 +76,10 @@ export const useHandleUnstake = (callback?: () => void) => {
                   connection,
                   wallet,
                   stakePool.parsed?.identifier,
-                  [{ mintId: token.stakeEntry.parsed?.stakeMint }]
+                  [{ mintId: token.stakeEntry.parsed?.stakeMint }],
+                  rewardDistributorData.data
+                    ? [rewardDistributorData.data?.pubkey]
+                    : undefined
                 ) // TODO Handle fungible
                 if (txs[0]) {
                   unstakeTx = txs[0]
