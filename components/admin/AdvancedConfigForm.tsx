@@ -9,8 +9,9 @@ import { useFormik } from 'formik'
 import { useStakePoolData } from 'hooks/useStakePoolData'
 import { useStakePoolId } from 'hooks/useStakePoolId'
 import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
-import * as Yup from 'yup'
 import { HexColorPicker } from 'react-colorful'
+import validateColor from 'validate-color'
+import * as Yup from 'yup'
 
 import { publicKeyValidationTest } from '@/components/stake-pool-creation/Schema'
 import { SelectInput } from '@/components/UI/inputs/SelectInput'
@@ -23,6 +24,39 @@ const defaultValues = (stakePoolData: StakePoolMetadata) => {
     stakePoolAddress: stakePoolData.stakePoolAddress?.toString() || undefined,
   }
 }
+
+const colorOptions = [
+  {
+    label: 'Primary',
+    value: 'primary',
+    description: 'Primary color',
+  },
+  {
+    label: 'Secondary',
+    value: 'secondary',
+    description: 'Secondary color',
+  },
+  {
+    label: 'Accent',
+    value: 'accent',
+    description: 'Accent color',
+  },
+  {
+    label: 'Font',
+    value: 'fontColor',
+    description: 'Font color',
+  },
+  {
+    label: 'Secondary font',
+    value: 'fontColorSecondary',
+    description: 'Secondary font color',
+  },
+  {
+    label: 'Secondary background',
+    value: 'backgroundSecondary',
+    description: 'Secondary background color',
+  },
+] as const
 
 const validationSchema = Yup.object({
   name: Yup.string().required(),
@@ -46,13 +80,64 @@ const validationSchema = Yup.object({
   styles: Yup.string(),
   contrastHomepageBkg: Yup.boolean(),
   colors: Yup.object({
-    primary: Yup.string().required(),
-    secondary: Yup.string().required(),
-    accent: Yup.string(),
-    fontColor: Yup.string(),
-    fontColorSecondary: Yup.string(),
-    backgroundSecondary: Yup.string(),
-    fontColorTertiary: Yup.string(),
+    primary: Yup.string()
+      .required()
+      .test('is-color', 'Invalid color', (value) => {
+        return (
+          (value !== undefined && validateColor(value)) ||
+          validateColor(`#${value}`)
+        )
+      }),
+    secondary: Yup.string()
+      .required()
+      .test('is-color', 'Invalid color', (value) => {
+        return (
+          (value !== undefined && validateColor(value)) ||
+          validateColor(`#${value}`)
+        )
+      }),
+    accent: Yup.string().test('is-color', 'Invalid color', (value) => {
+      return (
+        (value !== undefined && validateColor(value)) ||
+        validateColor(`#${value}`)
+      )
+    }),
+    fontColor: Yup.string().test('is-color', 'Invalid color', (value) => {
+      return (
+        (value !== undefined && validateColor(value)) ||
+        validateColor(`#${value}`)
+      )
+    }),
+    fontColorSecondary: Yup.string().test(
+      'is-color',
+      'Invalid color',
+      (value) => {
+        return (
+          (value !== undefined && validateColor(value)) ||
+          validateColor(`#${value}`)
+        )
+      }
+    ),
+    backgroundSecondary: Yup.string().test(
+      'is-color',
+      'Invalid color',
+      (value) => {
+        return (
+          (value !== undefined && validateColor(value)) ||
+          validateColor(`#${value}`)
+        )
+      }
+    ),
+    fontColorTertiary: Yup.string().test(
+      'is-color',
+      'Invalid color',
+      (value) => {
+        return (
+          (value !== undefined && validateColor(value)) ||
+          validateColor(`#${value}`)
+        )
+      }
+    ),
   }),
   disallowRegions: Yup.array().of(Yup.string()),
   logoPadding: Yup.boolean(),
@@ -99,9 +184,11 @@ export const AdvancedConfigForm = ({
   const stakePooldId = useStakePoolId()
   const stakePool = useStakePoolData()
   const stakePoolMetadata = useStakePoolMetadata()
-  const initialValues = defaultValues(
-    stakePoolMetadata?.data ?? ({} as StakePoolMetadata)
-  )
+  const initialValues = stakePoolMetadata?.data
+    ? defaultValues({
+        ...stakePoolMetadata.data,
+      })
+    : defaultValues({} as StakePoolMetadata)
 
   const formState = useFormik({
     initialValues,
@@ -111,6 +198,13 @@ export const AdvancedConfigForm = ({
 
   if (stakePooldId && !stakePool.isFetched) return <LoadingSpinner />
   const { values, errors, setFieldValue, setValues } = formState
+
+  const handleColorChange = (color: string, value: string) => {
+    // if (color.length !== 7 || color[0] !== '#') {
+    //   return
+    // }
+    setFieldValue(`colors.${value}`, color)
+  }
 
   return (
     <div className="w-full space-y-8">
@@ -301,26 +395,35 @@ export const AdvancedConfigForm = ({
       </div>
       {/* Styles? */}
       <HeadingSecondary>Colors</HeadingSecondary>
-      <div className="full mx-auto flex flex-wrap">
-        <div className="space-y-2">
-          <FormFieldTitleInput
-            title={'Primary color'}
-            description={'Primary color for this pool'}
-          />
-          <HexColorPicker
-            color={values.colors?.primary}
-            onChange={(color) => setFieldValue('colors.primary', color)}
-          />
-          <TextInput
-            disabled={false}
-            hasError={
-              !!values.hostname && values.hostname !== '' && !!errors.hostname
-            }
-            placeholder={'Enter color hex code'}
-            value={values.colors?.primary}
-            onChange={(color) => setFieldValue('colors.primary', color)}
-          />
-        </div>
+      <div className="full mx-auto flex flex-wrap justify-around space-x-4">
+        {colorOptions.map(({ label, value, description }) => (
+          <div key={value} className="flex flex-col py-8">
+            <FormFieldTitleInput title={label} description={description} />
+            <div className="mb-3 self-center">
+              <HexColorPicker
+                color={values.colors?.[value] || undefined}
+                onChange={(color) => setFieldValue(`colors.${value}`, color)}
+              />
+            </div>
+            <div className="self-center">
+              <TextInput
+                disabled={false}
+                hasError={
+                  !!values.colors?.[value] &&
+                  values.colors?.[value] !== '' &&
+                  !!errors.colors?.[value as keyof typeof errors.colors]
+                }
+                placeholder={'Enter color hex code'}
+                value={values.colors?.[value]}
+                onChange={(e) =>
+                  e.target.value[0] === '#'
+                    ? handleColorChange(e.target.value, value)
+                    : handleColorChange(`#${e.target.value}`, value)
+                }
+              />
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   )

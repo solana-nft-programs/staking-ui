@@ -76,6 +76,7 @@
     "spl-token-v3": "npm:@solana/spl-token@0.3.6",
     "tailwind-merge": "^1.8.0",
     "tweetnacl": "^1.0.3",
+    "validate-color": "^2.2.1",
     "yup": "^0.32.11"
   },
   "devDependencies": {
