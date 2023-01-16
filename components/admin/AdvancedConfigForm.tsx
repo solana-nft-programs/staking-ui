@@ -10,10 +10,12 @@ import { useStakePoolData } from 'hooks/useStakePoolData'
 import { useStakePoolId } from 'hooks/useStakePoolId'
 import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
 import * as Yup from 'yup'
+import { HexColorPicker } from 'react-colorful'
 
 import { publicKeyValidationTest } from '@/components/stake-pool-creation/Schema'
 import { SelectInput } from '@/components/UI/inputs/SelectInput'
 import { TextInput } from '@/components/UI/inputs/TextInput'
+import { HeadingSecondary } from '@/components/UI/typography/HeadingSecondary'
 
 const defaultValues = (stakePoolData: StakePoolMetadata) => {
   return {
@@ -298,6 +300,28 @@ export const AdvancedConfigForm = ({
         />
       </div>
       {/* Styles? */}
+      <HeadingSecondary>Colors</HeadingSecondary>
+      <div className="full mx-auto flex flex-wrap">
+        <div className="space-y-2">
+          <FormFieldTitleInput
+            title={'Primary color'}
+            description={'Primary color for this pool'}
+          />
+          <HexColorPicker
+            color={values.colors?.primary}
+            onChange={(color) => setFieldValue('colors.primary', color)}
+          />
+          <TextInput
+            disabled={false}
+            hasError={
+              !!values.hostname && values.hostname !== '' && !!errors.hostname
+            }
+            placeholder={'Enter color hex code'}
+            value={values.colors?.primary}
+            onChange={(color) => setFieldValue('colors.primary', color)}
+          />
+        </div>
+      </div>
     </div>
   )
 }

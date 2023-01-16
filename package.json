@@ -65,6 +65,7 @@
     "next": "12.1.4",
     "polished": "^4.2.2",
     "react": "18.0.0",
+    "react-colorful": "^5.6.1",
     "react-dom": "18.0.0",
     "react-hot-toast": "^2.2.0",
     "react-icons": "^4.3.1",
