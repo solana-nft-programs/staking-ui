@@ -157,7 +157,7 @@ export const useHandleStake = (callback?: () => void) => {
               message: `Failed to stake token ${token?.tokenAccount?.parsed.mint}`,
               description: `${e}`,
               type: 'error',
-            })
+          })
             return null
           }
         })
