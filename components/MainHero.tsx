@@ -3,7 +3,6 @@ import { HeaderSlim } from 'common/HeaderSlim'
 import { withCluster } from 'common/utils'
 import { useAllStakePools } from 'hooks/useAllStakePools'
 import { useStat } from 'hooks/useStat'
-import { useTotalStakeEntries } from 'hooks/useTotalStakeEntries'
 import { useRouter } from 'next/router'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 
@@ -14,7 +13,6 @@ import { HeadingPrimary } from '@/components/UI/typography/HeadingPrimary'
 export const MainHero = () => {
   const { environment } = useEnvironmentCtx()
   const allStakePools = useAllStakePools()
-  const totalStakeEntries = useTotalStakeEntries()
   const totalStakedTokens = useStat('total-active-staked-tokens')
   const router = useRouter()
   return (
@@ -62,15 +60,24 @@ export const MainHero = () => {
             <div className="flex items-center gap-2">
               <div className="text-medium-3">Total Staked NFTs</div>
               <div className="text-light-0">
-                {totalStakeEntries.data ? (
-                  totalStakeEntries.data.toLocaleString('en-US')
+                {allStakePools.data ? (
+                  (
+                    allStakePools.data.stakePoolsWithMetadata.reduce(
+                      (acc, a) => acc + a.stakePoolData.parsed.totalStaked,
+                      0
+                    ) +
+                    allStakePools.data.stakePoolsWithoutMetadata.reduce(
+                      (acc, a) => acc + a.stakePoolData.parsed.totalStaked,
+                      0
+                    )
+                  ).toLocaleString('en-US')
                 ) : (
                   <div className="mt-[1px] h-5 w-12 animate-pulse rounded-md bg-border" />
                 )}
               </div>
             </div>
             <div className="flex items-center gap-2">
-              <div className="text-medium-3">Total Stake Pool</div>
+              <div className="text-medium-3">Total Stake Pools</div>
               <div className="text-light-0">
                 {allStakePools.data ? (
                   (
