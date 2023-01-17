@@ -5,9 +5,9 @@ export const Snapshot = () => {
   const handlePoolSnaphsot = useHandlePoolSnapshot()
 
   function downloadSnapshot() {
-    let body = `Total Staked Tokens, ${handlePoolSnaphsot.data?.length}\n\nMint Address, Staker Address\n`
+    let body = `Total Staked Tokens,${handlePoolSnaphsot.data?.length}\n\nMint Address,Staker Address\n`
     handlePoolSnaphsot.data?.forEach((data) => {
-      body += `${data.parsed.stakeMint.toString()}, ${data.parsed.lastStaker.toString()}\n`
+      body += `${data.parsed.stakeMint.toString()},${data.parsed.lastStaker.toString()}\n`
     })
     const element = document.createElement('a')
     element.setAttribute(
