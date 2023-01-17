@@ -1,12 +1,15 @@
+import type { IdlAccountData } from '@cardinal/rewards-center'
 import { AsyncButton } from 'common/Button'
 import { useHandlePoolSnapshot } from 'handlers/useHandlePoolSnapshot'
 
 export const Snapshot = () => {
   const handlePoolSnaphsot = useHandlePoolSnapshot()
 
-  function downloadSnapshot() {
-    let body = `Total Staked Tokens,${handlePoolSnaphsot.data?.length}\n\nMint Address,Staker Address\n`
-    handlePoolSnaphsot.data?.forEach((data) => {
+  function downloadSnapshot(
+    data: Pick<IdlAccountData<'stakeEntry'>, 'pubkey' | 'parsed'>[]
+  ) {
+    let body = `Total Staked Tokens,${data.length}\n\nMint Address,Staker Address\n`
+    data.forEach((data) => {
       body += `${data.parsed.stakeMint.toString()},${data.parsed.lastStaker.toString()}\n`
     })
     const element = document.createElement('a')
@@ -35,8 +38,10 @@ export const Snapshot = () => {
         inlineLoader
         onClick={async () => {
           handlePoolSnaphsot.mutate(undefined, {
-            onSuccess: () => {
-              downloadSnapshot()
+            onSuccess: (
+              data: Pick<IdlAccountData<'stakeEntry'>, 'pubkey' | 'parsed'>[]
+            ) => {
+              downloadSnapshot(data)
             },
           })
         }}

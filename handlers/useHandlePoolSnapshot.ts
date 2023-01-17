@@ -18,7 +18,7 @@ export const useHandlePoolSnapshot = () => {
 
   return useMutation(
     async (): Promise<
-      Pick<IdlAccountData<'stakeEntry'>, 'pubkey' | 'parsed'>[] | undefined
+      Pick<IdlAccountData<'stakeEntry'>, 'pubkey' | 'parsed'>[]
     > => {
       if (!wallet) throw 'Wallet not found'
       if (!stakePool.data || !stakePool.data.parsed) throw 'No stake pool found'
