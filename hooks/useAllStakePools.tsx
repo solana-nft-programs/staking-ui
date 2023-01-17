@@ -59,8 +59,10 @@ export const useAllStakePools = () => {
     | undefined
   >(['useAllStakePools'], async () => {
     const program = rewardsCenterProgram(connection, asWallet(wallet))
-    const stakePoolsV1 = await getAllStakePools(connection)
-    const stakePoolsV2 = await program.account.stakePool.all()
+    const [stakePoolsV1, stakePoolsV2] = await Promise.all([
+      getAllStakePools(connection),
+      program.account.stakePool.all(),
+    ])
     const allStakePoolDatas = [
       ...stakePoolsV1.map((pool) => {
         return {
