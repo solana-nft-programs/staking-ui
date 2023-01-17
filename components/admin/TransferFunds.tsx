@@ -38,7 +38,7 @@ export const TransferFunds = () => {
           handleChange={(v) => setTransferAmount(v)}
         />
         <AsyncButton
-          className="rounded-md px-3 py-2"
+          className="rounded-md px-3"
           loading={handleTransferFunds.isLoading}
           inlineLoader
           onClick={() =>

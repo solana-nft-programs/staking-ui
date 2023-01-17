@@ -46,7 +46,7 @@ export const Snapshot = () => {
           })
         }}
       >
-        <div className="text-sm">Get Snapshot</div>
+        <div>Get Snapshot</div>
       </AsyncButton>
     </div>
   )
