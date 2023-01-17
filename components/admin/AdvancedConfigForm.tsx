@@ -395,7 +395,7 @@ export const AdvancedConfigForm = ({
       </div>
       {/* Styles? */}
       <HeadingSecondary>Colors</HeadingSecondary>
-      <div className="full mx-auto flex flex-wrap justify-around space-x-4">
+      <div className="full mx-auto -mt-4 flex flex-wrap justify-around space-x-4">
         {colorOptions.map(({ label, value, description }) => (
           <div key={value} className="flex flex-col py-8">
             <FormFieldTitleInput title={label} description={description} />
