@@ -1,8 +1,12 @@
+import { ButtonPrimary } from '@/components/UI/buttons/ButtonPrimary'
+import ButtonSecondary from '@/components/UI/buttons/ButtonSecondary'
+import { ButtonColors } from '@/types/colors'
 import { AccountConnect } from '@cardinal/namespaces-components'
 import { useWallet } from '@solana/wallet-adapter-react'
 import { useWalletModal } from '@solana/wallet-adapter-react-ui'
 import { GlyphWallet } from 'assets/GlyphWallet'
 import { LogoTitled } from 'assets/LogoTitled'
+import { useModal } from 'hooks/useModal'
 import { useRouter } from 'next/router'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 import { useEffect, useState } from 'react'
@@ -12,17 +16,61 @@ import { ButtonSmall } from './ButtonSmall'
 import { withCluster } from './utils'
 import { asWallet } from './Wallets'
 
+const { ORANGE } = ButtonColors
+
 export const HeaderSlim = () => {
   const router = useRouter()
   const wallet = useWallet()
   const walletModal = useWalletModal()
   const { secondaryConnection, environment } = useEnvironmentCtx()
   const [tab, setTab] = useState<string>('browse')
+  const { showModal, onDismiss } = useModal()
 
   useEffect(() => {
     const anchor = router.asPath.split('#')[1]
     if (anchor !== tab) setTab(anchor || 'browse')
   }, [router.asPath, tab])
+
+  const showConnectWalletModal = () => {
+    showModal(
+      <div className="space-y-8 rounded-xl bg-gray-900 p-12 shadow-2xl">
+        <div className="flex w-full items-center justify-center py-6">
+          <img
+            className={`max-h-28 rounded-xl fill-red-600`}
+            src={'/cardinal-crosshair.svg'}
+            alt="Cardinal logo"
+          />
+        </div>
+        <div className="p-2 text-xl leading-8">
+          By connecting your wallet and using Cardinal services, you agree to
+          our{' '}
+          <a href="/terms" className="text-orange-500 underline">
+            Terms of Service
+          </a>{' '}
+          and{' '}
+          <a href="/privacy" className="text-orange-500 underline">
+            Privacy Policy
+          </a>
+          .
+        </div>
+        <div className="-mx-1 flex w-full justify-around space-x-4">
+          <ButtonSecondary onClick={onDismiss} color={ORANGE}>
+            Cancel
+          </ButtonSecondary>
+          <ButtonPrimary
+            onClick={() => {
+              onDismiss()
+              setTimeout(() => {
+                walletModal.setVisible(true)
+              })
+            }}
+          >
+            Accept
+          </ButtonPrimary>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className="w-full px-4 py-4">
@@ -61,7 +109,7 @@ export const HeaderSlim = () => {
           ) : (
             <ButtonSmall
               className="text-xs"
-              onClick={() => walletModal.setVisible(true)}
+              onClick={() => showConnectWalletModal()}
             >
               <>
                 <GlyphWallet />

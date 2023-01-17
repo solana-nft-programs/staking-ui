@@ -31,6 +31,7 @@ import { UTCNowProvider } from 'providers/UTCNowProvider'
 import { useMemo } from 'react'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import { ReactQueryDevtools } from 'react-query/devtools'
+import { ModalProvider } from 'hooks/useModal'
 
 require('@solana/wallet-adapter-react-ui/styles.css')
 
@@ -89,13 +90,15 @@ const App = ({
           <WalletProvider autoConnect wallets={wallets}>
             <WalletIdentityProvider>
               <WalletModalProvider>
-                <QueryClientProvider client={queryClient}>
-                  <>
-                    <ToastContainer />
-                    <Component {...pageProps} />
-                    <ReactQueryDevtools initialIsOpen={false} />
-                  </>
-                </QueryClientProvider>
+                <ModalProvider>
+                  <QueryClientProvider client={queryClient}>
+                    <>
+                      <ToastContainer />
+                      <Component {...pageProps} />
+                      <ReactQueryDevtools initialIsOpen={false} />
+                    </>
+                  </QueryClientProvider>
+                </ModalProvider>
               </WalletModalProvider>
             </WalletIdentityProvider>
           </WalletProvider>
