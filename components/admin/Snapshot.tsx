@@ -5,16 +5,16 @@ export const Snapshot = () => {
   const handlePoolSnaphsot = useHandlePoolSnapshot()
 
   function downloadSnapshot() {
-    let body = `Total Staked Tokens: ${handlePoolSnaphsot.data?.length}\nFormat (Mint Address: Staker)\n\n`
+    let body = `Total Staked Tokens, ${handlePoolSnaphsot.data?.length}\n\nMint Address, Staker Address\n`
     handlePoolSnaphsot.data?.forEach((data) => {
-      body += `${data.parsed.stakeMint.toString()}: ${data.parsed.lastStaker.toString()}\n`
+      body += `${data.parsed.stakeMint.toString()}, ${data.parsed.lastStaker.toString()}\n`
     })
     const element = document.createElement('a')
     element.setAttribute(
       'href',
       'data:text/plain;charset=utf-8,' + encodeURIComponent(body)
     )
-    element.setAttribute('download', 'snapshot.txt')
+    element.setAttribute('download', 'snapshot.csv')
 
     element.style.display = 'none'
     document.body.appendChild(element)
