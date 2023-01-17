@@ -33,7 +33,10 @@ export const CollectionsGrid = ({ configs }: { configs?: StakePool[] }) => {
           .sort((a, b) => compareStakePools(a, b))
           .map((config) => (
             <Card
-              key={config.stakePoolMetadata?.displayName}
+              key={
+                config.stakePoolData.pubkey.toString() ||
+                config.stakePoolMetadata?.name
+              }
               className="cursor-pointer transition-colors"
               css={css`
                 &:hover {
