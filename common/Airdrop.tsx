@@ -1,11 +1,10 @@
-import { createMintTx } from '@cardinal/common'
+import { createMintTx, executeTransaction } from '@cardinal/common'
 import { createInitMintManagerInstruction } from '@cardinal/creator-standard/dist/cjs/generated'
 import {
   findMintManagerId,
   findMintMetadataId,
   findRulesetId,
 } from '@cardinal/creator-standard/dist/cjs/pda'
-import { executeTransaction } from '@cardinal/staking'
 import {
   CreateMetadataV2,
   Creator,
@@ -90,8 +89,7 @@ export async function airdropNFT(
     initMintManagerIx,
   ]
 
-  const txid = await executeTransaction(connection, wallet, transaction, {
-    confirmOptions: { commitment: 'confirmed' },
+  const txid = await executeTransaction(connection, transaction, wallet, {
     signers: [mintKeypair],
   })
   console.log(

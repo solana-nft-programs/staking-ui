@@ -1,6 +1,8 @@
-import { withFindOrInitAssociatedTokenAccount } from '@cardinal/common'
+import {
+  executeTransaction,
+  withFindOrInitAssociatedTokenAccount,
+} from '@cardinal/common'
 import { rewardsCenterProgram } from '@cardinal/rewards-center'
-import { executeTransaction } from '@cardinal/staking'
 import { withCloseRewardDistributor } from '@cardinal/staking/dist/cjs/programs/rewardDistributor/transaction'
 import { useWallet } from '@solana/wallet-adapter-react'
 import { Transaction } from '@solana/web3.js'
@@ -63,7 +65,7 @@ export const useHandleRewardDistributorRemove = () => {
           stakePoolId: stakePool.data.pubkey,
         })
       }
-      return executeTransaction(connection, wallet, transaction, {})
+      return executeTransaction(connection, transaction, wallet, {})
     },
     {
       onSuccess: (txid) => {
