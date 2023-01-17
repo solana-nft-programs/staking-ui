@@ -15,6 +15,38 @@ export type StakePool = {
   stakePoolData: Pick<IdlAccountData<'stakePool'>, 'pubkey' | 'parsed'>
 }
 
+export const percentStaked = (stakePool: StakePool, minimum = 0) => {
+  return stakePool.stakePoolMetadata?.maxStaked &&
+    stakePool.stakePoolMetadata?.maxStaked > minimum
+    ? ((stakePool.stakePoolData.parsed.totalStaked ?? 0) * 100) /
+        stakePool.stakePoolMetadata?.maxStaked
+    : undefined
+}
+
+export const totalStaked = (stakePool: StakePool) => {
+  return stakePool.stakePoolData.parsed.totalStaked ?? 0
+}
+
+export const compareStakePools = (a: StakePool, b: StakePool) => {
+  const pctAMin = percentStaked(a, 100)
+  const pctA = percentStaked(a)
+  const pctBMin = percentStaked(b, 100)
+  const pctB = percentStaked(b)
+  const totalA = totalStaked(a)
+  const totalB = totalStaked(b)
+  return pctAMin && pctBMin
+    ? pctBMin - pctAMin
+    : pctAMin
+    ? -1
+    : pctBMin
+    ? 1
+    : pctA
+    ? -1
+    : pctB
+    ? 1
+    : totalB - totalA
+}
+
 export const useAllStakePools = () => {
   const { connection } = useEnvironmentCtx()
   const wallet = useWallet()
