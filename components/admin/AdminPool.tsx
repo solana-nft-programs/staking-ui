@@ -17,6 +17,7 @@ import { MintMultipliers } from '../MintMultipliers'
 import { StakePoolImage } from '../StakePoolImage'
 import { ReclaimFunds } from './ReclaimFunds'
 import { RewardDistributorUpdate } from './RewardDistributorUpdate'
+import { Snapshot } from './Snapshot'
 import { StakePoolBalance } from './StakePoolBalance'
 import { StakePoolUpdate } from './StakePoolUpdate'
 import { TransferFunds } from './TransferFunds'
@@ -27,6 +28,7 @@ export type PANE_OPTIONS =
   | 'reward-distributor'
   | 'reward-multipliers'
   | 'reward-funds'
+  | 'snapshot'
 
 export const AdminStakePool = ({
   onSuccess,
@@ -82,6 +84,14 @@ export const AdminStakePool = ({
       tooltip: !rewardDistributor.data
         ? 'Only applicable for stake pools that have reward distribution'
         : 'Manage reward distributor funds',
+    },
+    {
+      label: <div className="flex items-center gap-2">Snapshot</div>,
+      value: 'snapshot',
+      disabled: !stakePool.data,
+      tooltip: !stakePool.data
+        ? `Enabled once pool is created to receive snapshot of staked tokens`
+        : `Tool to get pool's snapshot of staked tokens`,
     },
   ]
 
@@ -141,6 +151,11 @@ export const AdminStakePool = ({
               <div className="w-full">
                 <ReclaimFunds />
                 <TransferFunds />
+              </div>
+            ),
+            snapshot: (
+              <div className="w-full">
+                <Snapshot />
               </div>
             ),
           }[pane]
