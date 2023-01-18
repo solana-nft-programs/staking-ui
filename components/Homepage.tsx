@@ -12,8 +12,12 @@ function Homepage() {
   return (
     <div className="bg-dark-5">
       <Head>
-        <title>Cardinal Staking UI</title>
-        <meta name="description" content="Cardinal Staking UI" />
+        <title>Cardinal Staking</title>
+        <meta name="title" content="NFT Staking on Solana" />
+        <meta
+          name="description"
+          content="Launch staking for your NFT collection on Solana with reward distribution"
+        />
         <meta name="image" content="https://stake.cardinal.so/preview.png" />
         <link rel="icon" href={'/favicon.ico'} />
         <script
