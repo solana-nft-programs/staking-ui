@@ -17,10 +17,12 @@ import { publicKeyValidationTest } from '@/components/stake-pool-creation/Schema
 import { SelectInput } from '@/components/UI/inputs/SelectInput'
 import { TextInput } from '@/components/UI/inputs/TextInput'
 import { HeadingSecondary } from '@/components/UI/typography/HeadingSecondary'
+import { NumberInput } from '@/components/UI/inputs/NumberInput'
 
 const defaultValues = (stakePoolData: StakePoolMetadata) => {
   return {
     ...stakePoolData,
+    socialLinks: stakePoolData.socialLinks || [],
     stakePoolAddress: stakePoolData.stakePoolAddress?.toString() || undefined,
   }
 }
@@ -76,7 +78,6 @@ const validationSchema = Yup.object({
   hideFooter: Yup.boolean(),
   redirect: Yup.string(),
   hideAllowedTokens: Yup.boolean(),
-  // styles is a stringified JSON object
   styles: Yup.string(),
   contrastHomepageBkg: Yup.boolean(),
   colors: Yup.object({
@@ -139,9 +140,14 @@ const validationSchema = Yup.object({
       }
     ),
   }),
-  disallowRegions: Yup.array().of(Yup.string()),
+  disallowRegions: Yup.array().of(
+    Yup.object({
+      code: Yup.string().required(),
+      subdivisions: Yup.string(),
+    })
+  ),
   logoPadding: Yup.boolean(),
-  socialLinks: Yup.array(),
+  socialLinks: Yup.array().of(Yup.string()),
   imageUrl: Yup.string(),
   secondaryImageUrl: Yup.string(),
   backgroundImage: Yup.string(),
@@ -186,6 +192,7 @@ export const AdvancedConfigForm = ({
   const stakePoolMetadata = useStakePoolMetadata()
   const initialValues = stakePoolMetadata?.data
     ? defaultValues({
+        disallowRegions: stakePoolMetadata?.data?.disallowRegions || [],
         ...stakePoolMetadata.data,
       })
     : defaultValues({} as StakePoolMetadata)
@@ -198,13 +205,6 @@ export const AdvancedConfigForm = ({
 
   if (stakePooldId && !stakePool.isFetched) return <LoadingSpinner />
   const { values, errors, setFieldValue, setValues } = formState
-
-  const handleColorChange = (color: string, value: string) => {
-    // if (color.length !== 7 || color[0] !== '#') {
-    //   return
-    // }
-    setFieldValue(`colors.${value}`, color)
-  }
 
   return (
     <div className="w-full space-y-8">
@@ -225,7 +225,7 @@ export const AdvancedConfigForm = ({
           }}
         />
       </div>
-      <div className="full">
+      <div>
         <FormFieldTitleInput
           title={'Display Name'}
           description={
@@ -246,7 +246,7 @@ export const AdvancedConfigForm = ({
           }}
         />
       </div>
-      <div className="full">
+      <div>
         <FormFieldTitleInput
           title={'Name in Header'}
           description={'Whether or not to show name in header'}
@@ -255,7 +255,7 @@ export const AdvancedConfigForm = ({
           handleChange={(v) => setFieldValue('nameInHeader', v)}
         />
       </div>
-      <div className="full">
+      <div>
         <FormFieldTitleInput
           title={'Stake pool address'}
           description={'Publickey for this stake pool'}
@@ -273,7 +273,7 @@ export const AdvancedConfigForm = ({
           }}
         />
       </div>
-      <div className="full">
+      <div>
         <FormFieldTitleInput
           title={'Description'}
           description={'Description for this stake pool'}
@@ -291,7 +291,7 @@ export const AdvancedConfigForm = ({
           }}
         />
       </div>
-      <div className="full">
+      <div>
         <FormFieldTitleInput
           title={'Receipt type'}
           description={
@@ -309,7 +309,7 @@ export const AdvancedConfigForm = ({
           ]}
         />
       </div>
-      <div className="full">
+      <div>
         <FormFieldTitleInput
           title={'Token standard'}
           description={
@@ -327,21 +327,21 @@ export const AdvancedConfigForm = ({
           ]}
         />
       </div>
-      <div className="full">
+      <div>
         <FormFieldTitleInput
           title={'Hidden'}
           description={'Optional config to hide this pool from the main page'}
         />
         <SelectorBoolean handleChange={(v) => setFieldValue('hidden', v)} />
       </div>
-      <div className="full">
+      <div>
         <FormFieldTitleInput
           title={'Not found'}
           description={'Optional config to disable finding this pool'}
         />
         <SelectorBoolean handleChange={(v) => setFieldValue('notFound', v)} />
       </div>
-      <div className="full">
+      <div>
         <FormFieldTitleInput
           title={'Hostname'}
           description={'Optional hostname to remap'}
@@ -358,14 +358,14 @@ export const AdvancedConfigForm = ({
           }}
         />
       </div>
-      <div className="full">
+      <div>
         <FormFieldTitleInput
           title={'Hide footer'}
           description={'Optional config to disable finding this pool'}
         />
         <SelectorBoolean handleChange={(v) => setFieldValue('notFound', v)} />
       </div>
-      <div className="full">
+      <div>
         <FormFieldTitleInput
           title={'Redirect url'}
           description={
@@ -384,7 +384,7 @@ export const AdvancedConfigForm = ({
           }}
         />
       </div>
-      <div className="full">
+      <div>
         <FormFieldTitleInput
           title={'Hide allowed tokens'}
           description={'Hide allowed tokens style'}
@@ -393,7 +393,15 @@ export const AdvancedConfigForm = ({
           handleChange={(v) => setFieldValue('hideAllowedTokens', v)}
         />
       </div>
-      {/* Styles? */}
+      <div>
+        <FormFieldTitleInput
+          title={'Contrast homepage background'}
+          description={'Whether or not to contrast the background'}
+        />
+        <SelectorBoolean
+          handleChange={(v) => setFieldValue('contrastHomepageBkg', v)}
+        />
+      </div>
       <HeadingSecondary>Colors</HeadingSecondary>
       <div className="full mx-auto -mt-4 flex flex-wrap justify-around space-x-4">
         {colorOptions.map(({ label, value, description }) => (
@@ -415,15 +423,123 @@ export const AdvancedConfigForm = ({
                 }
                 placeholder={'Enter color hex code'}
                 value={values.colors?.[value]}
-                onChange={(e) =>
-                  e.target.value[0] === '#'
-                    ? handleColorChange(e.target.value, value)
-                    : handleColorChange(`#${e.target.value}`, value)
+                onChange={({ target }) =>
+                  target.value[0] === '#'
+                    ? setFieldValue(`colors.${value}`, target.value)
+                    : setFieldValue(`colors.${value}`, `#${target.value}`)
                 }
               />
             </div>
           </div>
         ))}
+      </div>
+      <div className="mt-8 space-y-8">
+        <div>
+          <FormFieldTitleInput
+            title={'Logo padding'}
+            description={'If the logo should be displayed with paddding'}
+          />
+          <SelectorBoolean
+            handleChange={(v) => setFieldValue('logoPadding', v)}
+          />
+        </div>
+        <div>
+          <FormFieldTitleInput
+            title={'Image url'}
+            description={
+              'Image url to be used as the icon in the pool selector and the header'
+            }
+          />
+          <TextInput
+            disabled={false}
+            hasError={
+              !!values.imageUrl && values.imageUrl !== '' && !!errors.imageUrl
+            }
+            placeholder={'Ente url'}
+            value={values.imageUrl}
+            onChange={(e) => {
+              setFieldValue('imageUrl', e.target.value)
+            }}
+          />
+        </div>
+        <div>
+          <FormFieldTitleInput
+            title={'Secondary image url'}
+            description={
+              'Secondary image url to be used next to the icon in the pool selector and the header'
+            }
+          />
+          <TextInput
+            disabled={false}
+            hasError={
+              !!values.secondaryImageUrl &&
+              values.secondaryImageUrl !== '' &&
+              !!errors.secondaryImageUrl
+            }
+            placeholder={'Ente url'}
+            value={values.secondaryImageUrl}
+            onChange={(e) => {
+              setFieldValue('secondaryImageUrl', e.target.value)
+            }}
+          />
+        </div>
+        <div>
+          <FormFieldTitleInput
+            title={'Background image url'}
+            description={'Background image for the pool'}
+          />
+          <TextInput
+            disabled={false}
+            hasError={
+              !!values.backgroundImage &&
+              values.backgroundImage !== '' &&
+              !!errors.backgroundImage
+            }
+            placeholder={'Ente url'}
+            value={values.backgroundImage}
+            onChange={(e) => {
+              setFieldValue('backgroundImage', e.target.value)
+            }}
+          />
+        </div>
+        <div>
+          <FormFieldTitleInput
+            title={'Website url'}
+            description={
+              'Website url. If specified, will be navigated to when the image in the header is clicked'
+            }
+          />
+          <TextInput
+            disabled={false}
+            hasError={
+              !!values.websiteUrl &&
+              values.websiteUrl !== '' &&
+              !!errors.websiteUrl
+            }
+            placeholder={'Ente url'}
+            value={values.websiteUrl}
+            onChange={(e) => {
+              setFieldValue('websiteUrl', e.target.value)
+            }}
+          />
+        </div>
+        <div>
+          <FormFieldTitleInput
+            title={'Max staked'}
+            description={
+              'Max staked is used to compute percentage of total staked'
+            }
+          />
+          <NumberInput
+            disabled={false}
+            hasError={!!values.maxStaked && !!errors.maxStaked}
+            placeholder={'Enter max staked amount'}
+            value={values.maxStaked ? String(values.maxStaked) : ''}
+            onChange={(e) => {
+              setFieldValue('maxStaked', e.target.value)
+            }}
+          />
+        </div>
       </div>
     </div>
   )

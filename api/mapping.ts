@@ -71,7 +71,7 @@ export type StakePoolMetadata = {
   // If the logo should be displayed with paddding
   logoPadding?: boolean
   // Optional social links
-  socialLinks?: []
+  socialLinks?: string[]
   // Image url to be used as the icon in the pool selector and the header
   imageUrl?: string
   // Secondary image url to be used next to the icon in the pool selector and the header
@@ -3199,20 +3199,19 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       'HBsam1w2i35vUVfg7ZdngqFQ8m9vmJEhTmn3VAkgmYhM'
     ),
     description: 'Official staking pool for solana mcs NFT collection',
-
+    imageUrl:
+      'https://pbs.twimg.com/profile_images/1597210461665206273/qt3OgPGt_400x400.jpg',
+    tokenStandard: TokenStandard.NonFungible,
     receiptType: ReceiptType.Original,
     websiteUrl: 'https://www.solanamcs.com',
     hostname: 'stake.solanamcs.com',
     hideFooter: true,
-    imageUrl:
-      'https://cdn.discordapp.com/attachments/1049342092880654417/1049348814017933372/GOGOgo.png',
     styles: {
       fontFamily: 'serif',
       fontWeight: 500,
     },
     backgroundImage:
       'https://cdn.discordapp.com/attachments/989483399477604404/1024694267282726942/ReliefBlackBackground.jpg',
-    tokenStandard: TokenStandard.NonFungible,
     hideAllowedTokens: true,
     colors: {
       primary: '#000000',
@@ -3222,16 +3221,6 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       fontColorSecondary: '#000000',
       backgroundSecondary: '#000000',
     },
-    links: [
-      {
-        text: 'Homepage',
-        value: 'https://solanamcs.com',
-      },
-      {
-        text: 'Discord',
-        value: 'https://discord.gg/rt5qrB6DE3',
-      },
-    ],
   },
   {
     name: 'howly',
@@ -3241,7 +3230,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       '9A95mxSKUt4eFmX87JC18HKmg8NweLNF299ArK45kie7'
     ),
     description:
-      'A collection of 2500 NFTs, which gives free access and privileges for using multiple tools on solana ecosystem.',
+      'First meme coin and nft powered defi on solana. Giving free access for the whole howly ecosystem with exclusive perks and privileges',
     imageUrl:
       'https://bafybeigipwtmn2yckmgrf7k6x7un454j73qlifexhew72445um2zkbzuoi.ipfs.nftstorage.link/collection.jpg',
     tokenStandard: TokenStandard.NonFungible,
