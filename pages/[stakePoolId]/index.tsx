@@ -1,3 +1,4 @@
+import type { StakePoolMetadata } from 'api/mapping'
 import { Footer } from 'common/Footer'
 import { FooterSlim } from 'common/FooterSlim'
 import { Header } from 'common/Header'
@@ -7,10 +8,8 @@ import { TabSelector } from 'common/TabSelector'
 import { contrastColorMode } from 'common/utils'
 import { AttributeAnalytics } from 'components/AttributeAnalytics'
 import { PerformanceStats } from 'components/PerformanceStats'
-import { StakedTokens } from '@/components/token-staking/staked-tokens/StakedTokens'
 import { StakePoolLeaderboard } from 'components/StakePoolLeaderboard'
 import { StakePoolNotice } from 'components/StakePoolNotice'
-import { UnstakedTokens } from '@/components/token-staking/unstaked-tokens/UnstakedTokens'
 import { useRewardDistributorData } from 'hooks/useRewardDistributorData'
 import { useStakedTokenDatas } from 'hooks/useStakedTokenDatas'
 import { useStakePoolData } from 'hooks/useStakePoolData'
@@ -19,6 +18,9 @@ import { useUserRegion } from 'hooks/useUserRegion'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
+
+import { StakedTokens } from '@/components/token-staking/staked-tokens/StakedTokens'
+import { UnstakedTokens } from '@/components/token-staking/unstaked-tokens/UnstakedTokens'
 
 type PANE_OPTIONS = 'dashboard' | 'leaderboard'
 const paneTabs: {
@@ -39,7 +41,9 @@ const paneTabs: {
   },
 ]
 
-function StakePoolHome() {
+function StakePoolHome(props: {
+  fetchedStakePoolData: StakePoolMetadata | null
+}) {
   const router = useRouter()
   const { isFetched: stakePoolLoaded } = useStakePoolData()
   const userRegion = useUserRegion()
@@ -54,16 +58,39 @@ function StakePoolHome() {
     return <></>
   }
 
-  if (stakePoolMetadata?.disallowRegions && !userRegion.isFetched) {
+  if (
+    !stakePoolLoaded ||
+    (stakePoolMetadata?.disallowRegions && !userRegion.isFetched)
+  ) {
     return (
       <>
         <Head>
-          <title>Cardinal NFT Staking</title>
-          <meta name="title" content="NFT Staking on Solana" />
-
+          <title>
+            {props.fetchedStakePoolData?.displayName?.replace(' Staking', '') +
+              ' Staking' ?? 'Cardinal NFT Staking'}
+          </title>
+          {props.fetchedStakePoolData?.displayName?.replace(' Staking', '') +
+            ' Staking' ?? 'Cardinal NFT Staking'}
+          <meta
+            name="title"
+            content={
+              props.fetchedStakePoolData?.displayName?.replace(
+                ' Staking',
+                ''
+              ) ?? 'NFT Staking on Solana'
+            }
+          />
           <meta
             name="description"
-            content={'Stake your NFTs powered by Cardinal Staking'}
+            content={
+              'Stake your ' +
+                props.fetchedStakePoolData?.displayName?.replace(
+                  ' Staking',
+                  ''
+                ) +
+                ' powered by Cardinal Staking' ??
+              'Stake your NFTs powered by Cardinal Staking'
+            }
           />
           <meta name="image" content="https://stake.cardinal.so/preview.png" />
           <meta
@@ -72,7 +99,7 @@ function StakePoolHome() {
           />
           <link
             rel="icon"
-            href={stakePoolMetadata?.imageUrl ?? `/favicon.ico`}
+            href={props.fetchedStakePoolData?.imageUrl ?? `/favicon.ico`}
           />
           <script
             defer
