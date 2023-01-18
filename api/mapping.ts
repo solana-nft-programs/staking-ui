@@ -3268,4 +3268,42 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       },
     ],
   },
+  {
+    name: 'two rewards',
+    displayName: 'two rewards',
+    nameInHeader: true,
+    stakePoolAddress: new PublicKey(
+      '8xnC5wbXAgXoDghKGWTuxbw76U7HAHAwRuU3AKKovGif'
+    ),
+    description:
+      'Stake Collection Proof',
+    imageUrl: 'https://bafybeiehzl5pc5gf4rdlg44bcxzalouhoovwdixdxzeszdmqbyh5nerxj4.ipfs.nftstorage.link/pixelTree.PNG',
+    tokenStandard: TokenStandard.NonFungible,
+    receiptType: ReceiptType.Original,
+    hideFooter: true,
+    hostname: 'https://tworewards.vercel.app/',
+    websiteUrl: 'https://tworewards.vercel.app/',
+    maxStaked: 5,
+    logoPadding: false,
+    colors: {
+      primary: 'black',
+      secondary: 'gray',
+      accent: 'white',
+      fontColor: 'white',
+    },
+    links: [
+      {
+        text: 'Discord',
+        value: 'https://discord.com/',
+      },
+      {
+        text: 'Twitter',
+        value: 'https://twitter.com/',
+      },
+      {
+        text: 'Magic Eden',
+        value: 'https://magiceden.io/',
+      },
+    ],
+  },
 ]
