@@ -19,6 +19,7 @@ function Homepage() {
           content="Launch staking for your NFT collection on Solana with reward distribution"
         />
         <meta name="image" content="https://stake.cardinal.so/preview.png" />
+        <meta name="og:image" content="https://stake.cardinal.so/preview.png" />
         <link rel="icon" href={'/favicon.ico'} />
         <script
           defer
