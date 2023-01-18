@@ -1,7 +1,7 @@
 import { ReceiptType } from '@cardinal/staking/dist/cjs/programs/stakePool'
-import type { PublicKey } from '@solana/web3.js'
 import type { StakePoolMetadata } from 'api/mapping'
 import { TokenStandard } from 'api/mapping'
+import { AsyncButton } from 'common/Button'
 import { FormFieldTitleInput } from 'common/FormFieldInput'
 import { LoadingSpinner } from 'common/LoadingSpinner'
 import { SelectorBoolean } from 'common/SelectorBoolean'
@@ -14,10 +14,10 @@ import validateColor from 'validate-color'
 import * as Yup from 'yup'
 
 import { publicKeyValidationTest } from '@/components/stake-pool-creation/Schema'
+import { NumberInput } from '@/components/UI/inputs/NumberInput'
 import { SelectInput } from '@/components/UI/inputs/SelectInput'
 import { TextInput } from '@/components/UI/inputs/TextInput'
 import { HeadingSecondary } from '@/components/UI/typography/HeadingSecondary'
-import { NumberInput } from '@/components/UI/inputs/NumberInput'
 
 const defaultValues = (stakePoolData: StakePoolMetadata) => {
   return {
@@ -182,11 +182,7 @@ const validationSchema = Yup.object({
   ),
 })
 
-export const AdvancedConfigForm = ({
-  onSuccess,
-}: {
-  onSuccess?: (p: PublicKey | undefined) => void
-}) => {
+export const AdvancedConfigForm = () => {
   const stakePooldId = useStakePoolId()
   const stakePool = useStakePoolData()
   const stakePoolMetadata = useStakePoolMetadata()
@@ -204,7 +200,7 @@ export const AdvancedConfigForm = ({
   })
 
   if (stakePooldId && !stakePool.isFetched) return <LoadingSpinner />
-  const { values, errors, setFieldValue, setValues } = formState
+  const { values, errors, setFieldValue } = formState
 
   return (
     <div className="w-full space-y-8">
@@ -540,6 +536,16 @@ export const AdvancedConfigForm = ({
             }}
           />
         </div>
+        <AsyncButton
+          // loading={handleAdvancedConfig.isLoading}
+          onClick={() => {
+            console.log('values', values)
+          }}
+          inlineLoader
+          className="flex w-full items-center justify-center bg-primary py-2 px-4 text-center text-white hover:bg-opacity-80"
+        >
+          Save Config
+        </AsyncButton>
       </div>
     </div>
   )
