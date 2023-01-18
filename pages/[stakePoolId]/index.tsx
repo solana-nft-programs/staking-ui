@@ -74,7 +74,7 @@ function StakePoolHome(props: { stakePoolMetadataName: string | null }) {
               props.stakePoolMetadataName
                 ? 'Stake your ' +
                   props.stakePoolMetadataName.replace(' Staking', '') +
-                  ' powered by Cardinal Staking'
+                  ' NFTs powered by Cardinal Staking'
                 : 'Stake your Solana NFTs powered by Cardinal Staking'
             }
           />
@@ -157,7 +157,7 @@ function StakePoolHome(props: { stakePoolMetadataName: string | null }) {
           content={
             'Stake your ' +
               stakePoolMetadata?.displayName +
-              ' powered by Cardinal Staking' ??
+              ' NFTs powered by Cardinal Staking' ??
             'Stake your NFTs powered by Cardinal Staking'
           }
         />
