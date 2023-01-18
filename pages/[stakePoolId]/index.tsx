@@ -51,6 +51,7 @@ function StakePoolHome(props: { stakePoolMetadataName: string | null }) {
   const stakePoolDisplayName = props.stakePoolMetadataName
     ? props.stakePoolMetadataName.replace(' Staking', '') + ' Staking'
     : 'Cardinal NFT Staking'
+  console.log('stakePoolDisplayName', stakePoolDisplayName)
 
   const { data: stakePoolMetadata } = useStakePoolMetadata()
 
@@ -140,25 +141,16 @@ function StakePoolHome(props: { stakePoolMetadataName: string | null }) {
       }}
     >
       <Head>
-        <title>
-          {stakePoolMetadata?.displayName.replace(' Staking', '') +
-            ' Staking' ?? 'Cardinal NFT Staking'}
-        </title>
-        {stakePoolMetadata?.displayName + ' Staking' ?? 'Cardinal NFT Staking'}
-        <meta
-          name="title"
-          content={
-            stakePoolMetadata?.displayName.replace(' Staking', '') +
-              ' Staking' ?? 'NFT Staking on Solana'
-          }
-        />
+        <title>{stakePoolDisplayName}</title>
+        <meta name="title" content={stakePoolDisplayName} />
         <meta
           name="description"
           content={
-            'Stake your ' +
-              stakePoolMetadata?.displayName +
-              ' NFTs powered by Cardinal Staking' ??
-            'Stake your NFTs powered by Cardinal Staking'
+            props.stakePoolMetadataName
+              ? 'Stake your ' +
+                props.stakePoolMetadataName.replace(' Staking', '') +
+                ' NFTs powered by Cardinal Staking'
+              : 'Stake your Solana NFTs powered by Cardinal Staking'
           }
         />
         <meta name="image" content="https://stake.cardinal.so/preview.png" />

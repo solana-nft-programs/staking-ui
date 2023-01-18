@@ -1,8 +1,5 @@
 import { getExpirationString } from '@cardinal/common'
-import type {
-  CardinalRewardsCenter,
-  IdlAccountData,
-} from '@cardinal/rewards-center'
+import type { IdlAccountData } from '@cardinal/rewards-center'
 import type { StakeEntryTokenData } from 'hooks/useStakedTokenDatas'
 import { useStakePoolData } from 'hooks/useStakePoolData'
 import { useUTCNow } from 'providers/UTCNowProvider'
@@ -10,12 +7,7 @@ import { FaCheck } from 'react-icons/fa'
 
 export interface MinimumStakeTimeArgs {
   tokenData: StakeEntryTokenData
-  stakePool:
-    | Pick<
-        IdlAccountData<'stakePool', CardinalRewardsCenter>,
-        'pubkey' | 'parsed'
-      >
-    | undefined
+  stakePool: Pick<IdlAccountData<'stakePool'>, 'pubkey' | 'parsed'> | undefined
 }
 
 export const hasMinimumStakeTime = ({
