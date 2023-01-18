@@ -58,7 +58,48 @@ function StakePoolHome() {
     !stakePoolLoaded ||
     (stakePoolMetadata?.disallowRegions && !userRegion.isFetched)
   ) {
-    return <></>
+    return (
+      <>
+        <Head>
+          <title>
+            {stakePoolMetadata?.displayName.replace(' Staking', '') +
+              ' Staking' ?? 'Cardinal NFT Staking'}
+          </title>
+          {stakePoolMetadata?.displayName + ' Staking' ??
+            'Cardinal NFT Staking'}
+          <meta
+            name="title"
+            content={
+              stakePoolMetadata?.displayName.replace(' Staking', '') +
+                ' Staking' ?? 'NFT Staking on Solana'
+            }
+          />
+          <meta
+            name="description"
+            content={
+              'Stake your ' +
+                stakePoolMetadata?.displayName +
+                ' powered by Cardinal Staking' ??
+              'Stake your NFTs powered by Cardinal Staking'
+            }
+          />
+          <meta name="image" content="https://stake.cardinal.so/preview.png" />
+          <meta
+            name="og:image"
+            content="https://stake.cardinal.so/preview.png"
+          />
+          <link
+            rel="icon"
+            href={stakePoolMetadata?.imageUrl ?? `/favicon.ico`}
+          />
+          <script
+            defer
+            data-domain="stake.cardinal.so"
+            src="https://plausible.io/js/plausible.js"
+          ></script>
+        </Head>
+      </>
+    )
   }
 
   if (
@@ -105,15 +146,15 @@ function StakePoolHome() {
     >
       <Head>
         <title>
-          {stakePoolMetadata?.displayName + ' Staking' ??
-            'Cardinal NFT Staking'}
+          {stakePoolMetadata?.displayName.replace(' Staking', '') +
+            ' Staking' ?? 'Cardinal NFT Staking'}
         </title>
         {stakePoolMetadata?.displayName + ' Staking' ?? 'Cardinal NFT Staking'}
         <meta
           name="title"
           content={
-            stakePoolMetadata?.displayName + ' Staking' ??
-            'NFT Staking on Solana'
+            stakePoolMetadata?.displayName.replace(' Staking', '') +
+              ' Staking' ?? 'NFT Staking on Solana'
           }
         />
         <meta
@@ -126,6 +167,7 @@ function StakePoolHome() {
           }
         />
         <meta name="image" content="https://stake.cardinal.so/preview.png" />
+        <meta name="og:image" content="https://stake.cardinal.so/preview.png" />
         <link rel="icon" href={stakePoolMetadata?.imageUrl ?? `/favicon.ico`} />
         <script
           defer
