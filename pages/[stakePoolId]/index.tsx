@@ -105,9 +105,10 @@ function StakePoolHome() {
     >
       <Head>
         <title>
-          {stakePoolMetadata?.displayName + ' Staking' ?? 'Cardinal Staking'}
+          {stakePoolMetadata?.displayName + ' Staking' ??
+            'Cardinal NFT Staking'}
         </title>
-        {stakePoolMetadata?.displayName + ' Staking' ?? 'Cardinal Staking'}
+        {stakePoolMetadata?.displayName + ' Staking' ?? 'Cardinal NFT Staking'}
         <meta
           name="title"
           content={
