@@ -2821,6 +2821,10 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
         value: 'https://twitter.com/DustCityNFT',
       },
       {
+        text: 'Discord',
+        value: 'https://discord.com/invite/dustcity',
+      },
+      {
         text: 'MagicEden',
         value: 'https://magiceden.io/marketplace/dustcity',
       },
@@ -2869,6 +2873,10 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       {
         text: 'Twitter',
         value: 'https://twitter.com/DustCityNFT',
+      },
+      {
+        text: 'Discord',
+        value: 'https://discord.com/invite/dustcity',
       },
       {
         text: 'MagicEden',
