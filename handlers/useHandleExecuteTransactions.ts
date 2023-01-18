@@ -4,9 +4,10 @@ import { sendAndConfirmRawTransaction } from '@solana/web3.js'
 import { notify } from 'common/Notification'
 import { asWallet } from 'common/Wallets'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
+import type { Dispatch, SetStateAction } from 'react'
 import { useMutation } from 'react-query'
 
-const BATCH_SIZE = 100
+const BATCH_SIZE = 50
 
 export const chunkArray = (arr: any[], size: number): any[][] =>
   arr.length > size
@@ -19,40 +20,54 @@ export const useHandleExecuteTransactions = () => {
   return useMutation(
     async ({
       transactions,
+      setFailedTxs,
     }: {
       transactions: Transaction[]
+      setFailedTxs: Dispatch<SetStateAction<Transaction[]>>
     }): Promise<(string | null)[]> => {
-      const chunks = chunkArray(transactions, BATCH_SIZE)
-      const allTxids = []
-      for (let i = 0; i < chunks.length; i++) {
-        const txs = chunks[i]!
+      if (!wallet.publicKey) throw 'Wallet is not connected'
+      let allTxids = []
+      const failedTxs: Transaction[] = []
+
+      const unsignedChunks = chunkArray(transactions, BATCH_SIZE)
+      const unsignedTransactions: Transaction[] = []
+      for (let i = 0; i < unsignedChunks.length; i++) {
+        const txs = unsignedChunks[i]!
         const recentBlockhash = (await connection.getRecentBlockhash('max'))
           .blockhash
         for (const tx of txs) {
           tx.feePayer = wallet.publicKey
           tx.recentBlockhash = recentBlockhash
         }
-        await wallet.signAllTransactions(txs)
+        unsignedTransactions.push(...txs)
+      }
+
+      const signedTransactions = await wallet.signAllTransactions(
+        unsignedTransactions
+      )
+
+      const signedChunks = chunkArray(signedTransactions, BATCH_SIZE)
+      for (let i = 0; i < signedChunks.length; i++) {
+        const txs = signedChunks[i]!
         const txids = await Promise.all(
-          txs.map((tx, j) =>
-            sendAndConfirmRawTransaction(connection, tx.serialize(), {
-              commitment: 'confirmed',
-            }).catch((e) => {
-              notify({
-                message: `${'Failed transaction'} ${j + i * BATCH_SIZE}/${
-                  transactions.length
-                }`,
-                description: `Transaction failed: ${e}`,
-                txid: '',
-                type: 'error',
-              })
-              return null
-            })
-          )
+          txs.map(async (tx) => {
+            try {
+              const txid = await sendAndConfirmRawTransaction(
+                connection,
+                tx.serialize()
+              )
+              return txid
+            } catch (e) {
+              failedTxs.push(tx)
+              console.log('e', e)
+            }
+          })
         )
         allTxids.push(...txids)
       }
 
+      setFailedTxs(failedTxs)
+      allTxids = allTxids.filter((x): x is string => x !== undefined)
       notify({
         message: `${'Successful transactions'} ${
           allTxids.filter((txid) => !!txid).length

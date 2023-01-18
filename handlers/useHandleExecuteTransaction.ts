@@ -15,7 +15,7 @@ export const useHandleExecuteTransaction = () => {
         .blockhash
       transaction.feePayer = wallet.publicKey
       transaction.recentBlockhash = recentBlockhash
-      await wallet.signTransaction(transaction)
+      transaction = await wallet.signTransaction(transaction)
       const txid = await sendAndConfirmRawTransaction(
         connection,
         transaction.serialize(),

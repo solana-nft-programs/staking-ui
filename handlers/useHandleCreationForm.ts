@@ -1,11 +1,11 @@
-import { tryPublicKey } from '@cardinal/common'
+import { executeTransaction, tryPublicKey } from '@cardinal/common'
 import {
   DEFAULT_PAYMENT_INFO,
   findRewardDistributorId,
   findStakePoolId,
   rewardsCenterProgram,
 } from '@cardinal/rewards-center'
-import { createStakePool, executeTransaction } from '@cardinal/staking'
+import { createStakePool } from '@cardinal/staking'
 import { RewardDistributorKind } from '@cardinal/staking/dist/cjs/programs/rewardDistributor'
 import { withInitRewardDistributor } from '@cardinal/staking/dist/cjs/programs/rewardDistributor/transaction'
 import { BN } from '@coral-xyz/anchor'
@@ -113,8 +113,8 @@ export const useHandleCreationForm = () => {
         }
         const txid = await executeTransaction(
           connection,
-          wallet,
           transaction,
+          wallet,
           {}
         )
         return [txid, stakePoolId]
@@ -180,8 +180,8 @@ export const useHandleCreationForm = () => {
         }
         const txid = await executeTransaction(
           connection,
-          wallet,
           transaction,
+          wallet,
           {}
         )
         return [txid, stakePoolId]

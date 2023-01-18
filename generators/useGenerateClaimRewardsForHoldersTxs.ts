@@ -26,15 +26,14 @@ export const useGenerateClaimRewardsForHoldersTxs = () => {
   const rewardMintInfo = useRewardMintInfo()
 
   const batchSize = 4
-  const parallelTransactions = 20
+  const parallelTransactions = 100
 
   return useMutation(
     async (): Promise<Transaction[]> => {
-      if (!wallet) throw 'Wallet not found'
+      if (!wallet.publicKey) throw 'Wallet is not connected'
       if (!stakePool.data || !stakePool.data.parsed || !stakePool.data.pubkey)
         throw 'No stake pool found'
-      if (!rewardDistributor.data || !rewardDistributor.data.parsed)
-        throw 'No reward distributor found'
+      if (!rewardDistributor.data) throw 'No reward distributor found'
       if (!rewardMintInfo.data) throw 'No reward mint info found'
 
       let stakeEntriesV1: AccountData<StakeEntryData>[] = []
@@ -54,6 +53,7 @@ export const useGenerateClaimRewardsForHoldersTxs = () => {
           stakePool.data.pubkey
         )
       }
+
       console.log(
         `Estimated SOL needed to claim rewards for ${
           [...stakeEntriesV1, ...stakeEntriesV2].length
@@ -62,7 +62,7 @@ export const useGenerateClaimRewardsForHoldersTxs = () => {
         'SOL'
       )
 
-      let transactions: Transaction[] = []
+      const transactions: Transaction[] = []
       if (isStakePoolV2(stakePool.data.parsed)) {
         const chunkedEntries = chunkArray(stakeEntriesV2, batchSize)
         const batchedChunks = chunkArray(chunkedEntries, parallelTransactions)
@@ -71,6 +71,7 @@ export const useGenerateClaimRewardsForHoldersTxs = () => {
           console.log(`> ${i + 1}/ ${batchedChunks.length}`)
           await Promise.all(
             chunk.map(async (entries) => {
+              const transaction = new Transaction()
               const txs = await claimRewards(
                 connection,
                 wallet,
@@ -79,9 +80,11 @@ export const useGenerateClaimRewardsForHoldersTxs = () => {
                   return {
                     mintId: entry.parsed.stakeMint,
                   }
-                })
+                }),
+                [rewardDistributor.data!.pubkey]
               )
-              transactions = [...transactions, ...txs]
+              transaction.instructions = txs.map((tx) => tx.instructions).flat()
+              transactions.push(transaction)
             })
           )
         }
@@ -92,14 +95,14 @@ export const useGenerateClaimRewardsForHoldersTxs = () => {
           const chunk = batchedChunks[i]!
           console.log(`> ${i + 1}/ ${batchedChunks.length}`)
           await Promise.all(
-            chunk.map(async (entries, index) => {
+            chunk.map(async (entries) => {
               const transaction = new Transaction()
               for (let j = 0; j < entries.length; j++) {
                 console.log(`>> ${j + 1}/ ${entries.length}`)
                 const stakeEntryData = entries[j]!
                 withUpdateTotalStakeSeconds(transaction, connection, wallet, {
                   stakeEntryId: stakeEntryData.pubkey,
-                  lastStaker: wallet.publicKey,
+                  lastStaker: stakeEntryData.parsed.lastStaker,
                 })
                 await withClaimRewards(transaction, connection, wallet, {
                   stakePoolId: stakePool.data!.pubkey,
@@ -108,7 +111,9 @@ export const useGenerateClaimRewardsForHoldersTxs = () => {
                   payer: wallet.publicKey,
                 })
               }
-              transactions.push(transaction)
+              if (transaction.instructions.length !== 0) {
+                transactions.push(transaction)
+              }
             })
           )
         }
@@ -129,7 +134,10 @@ export const useGenerateClaimRewardsForHoldersTxs = () => {
         }
       },
       onError: (e) => {
-        notify({ message: 'Failed to stake', description: `${e}` })
+        notify({
+          message: 'Failed to generate transactions',
+          description: `${e}`,
+        })
       },
     }
   )
