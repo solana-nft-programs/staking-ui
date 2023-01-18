@@ -246,7 +246,7 @@
     polished "^4.2.2"
     tslib "^2.4.0"
 
-"@cardinal/common@^6.0.1":
+"@cardinal/common@^6.0.0", "@cardinal/common@^6.0.1":
   version "6.0.1"
   resolved "https://registry.yarnpkg.com/@cardinal/common/-/common-6.0.1.tgz#cc7c84eb97111d8d78ab398111c036a1c338177e"
   integrity sha512-7V3SGE2U0x8jYbVN7mTBdkSZdFcF27dnwPtlpkZ8vpFLjHMSDFc3t+Wjfk4NsZM9O+y+U5KRA3xxKNXs+qFFdw==
@@ -352,18 +352,17 @@
     "@solana/spl-token" "^0.1.8"
     "@solana/web3.js" "^1.66.2"
 
-"@cardinal/rewards-center@^2.2.2":
-  version "2.2.2"
-  resolved "https://registry.yarnpkg.com/@cardinal/rewards-center/-/rewards-center-2.2.2.tgz#5a2b8399388678ce20868e993ebbb576b99fb11e"
-  integrity sha512-fQRLu1jSCJ1pJ7SkEj8x+sLMPsCQpWi5W8OXRd8c7oRG/sFCgQaZ8sclsphriRdyWcKoKbXOg0Wgs9NktrP1lw==
+"@cardinal/rewards-center@^2.5.1":
+  version "2.5.1"
+  resolved "https://registry.yarnpkg.com/@cardinal/rewards-center/-/rewards-center-2.5.1.tgz#df7f3af3ac15eb8eb5f0eaeef3dfe9ac629cf06f"
+  integrity sha512-plNvMRUZU+uIeA8UTihDn2APufVL3N+PqCqizRedTVX0wQA3TEWQmSHk/EGXY6XhY8V9Lg9OmdoggNRVoMrdog==
   dependencies:
-    "@cardinal/common" "^4.0.1"
+    "@cardinal/common" "^6.0.0"
     "@cardinal/creator-standard" "^2.1.11"
-    "@metaplex-foundation/rustbin" "^0.3.1"
-    "@project-serum/anchor" "0.25.0"
+    "@coral-xyz/anchor" "0.26.0"
+    "@solana/spl-token" "^0.3.6"
     "@solana/web3.js" "^1.66.2"
     bn.js "^5.2.0"
-    js-sha256 "^0.9.0"
 
 "@cardinal/staking@^1.13.1":
   version "1.13.1"
@@ -429,7 +428,7 @@
     eventemitter3 "^4.0.7"
     uuid "^8.3.2"
 
-"@coral-xyz/anchor@^0.26.0":
+"@coral-xyz/anchor@0.26.0", "@coral-xyz/anchor@^0.26.0":
   version "0.26.0"
   resolved "https://registry.yarnpkg.com/@coral-xyz/anchor/-/anchor-0.26.0.tgz#c8e4f7177e93441afd030f22d777d54d0194d7d1"
   integrity sha512-PxRl+wu5YyptWiR9F2MBHOLLibm87Z4IMUBPreX+DYBtPM+xggvcPi0KAN7+kIL4IrIhXI8ma5V0MCXxSN1pHg==
@@ -1194,7 +1193,7 @@
     snake-case "^3.0.4"
     toml "^3.0.0"
 
-"@project-serum/anchor@0.25.0", "@project-serum/anchor@^0.25.0":
+"@project-serum/anchor@^0.25.0":
   version "0.25.0"
   resolved "https://registry.yarnpkg.com/@project-serum/anchor/-/anchor-0.25.0.tgz#88ee4843336005cf5a64c80636ce626f0996f503"
   integrity sha512-E6A5Y/ijqpfMJ5psJvbw0kVTzLZFUcOFgs6eSM2M2iWE1lVRF18T6hWZVNl6zqZsoz98jgnNHtVGJMs+ds9A7A==
