@@ -3281,7 +3281,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     tokenStandard: TokenStandard.NonFungible,
     receiptType: ReceiptType.Original,
     hideFooter: true,
-    hostname: 'https://tworewards.vercel.app/',
+    hostname: '',
     websiteUrl: '',
     maxStaked: 5,
     logoPadding: false,
