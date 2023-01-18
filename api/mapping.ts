@@ -3281,7 +3281,6 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     tokenStandard: TokenStandard.NonFungible,
     receiptType: ReceiptType.Original,
     hideFooter: true,
-    hostname: '',
     websiteUrl: '',
     maxStaked: 5,
     logoPadding: false,
