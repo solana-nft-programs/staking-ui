@@ -109,7 +109,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     name: 'Geexolotls',
     displayName: 'Geexolotls',
     stakePoolAddress: new PublicKey(
-      'F8TNRmVz4DJgUFnkmotAq2rLAoFWLu8kBRXPgX44pWoi'
+      'EbBWEuvFi6cQumxBVVkHvdJhhhWxQrCWMCWDCzPJmWn2'
     ),
     websiteUrl: 'https://www.geexolotls.com/',
     hostname: 'stake.geexolotls.com',
@@ -126,7 +126,11 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     colors: {
       primary: '#09014A',
      secondary: '#ff18d0',
+     
+     accent: '#ff18d0'
    },
+   backgroundImage:
+      'https://www.geexolotls.com/images/bg.jpg',
   },
   {
     name: 'particlesnft',
