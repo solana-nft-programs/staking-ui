@@ -14,10 +14,7 @@ function Homepage() {
       <Head>
         <title>Cardinal Staking UI</title>
         <meta name="description" content="Cardinal Staking UI" />
-        <meta
-          name="image"
-          content="https://stake.cardinal.so/assets/images/preview.png"
-        />
+        <meta name="image" content="https://stake.cardinal.so/preview.png" />
         <link rel="icon" href={'/favicon.ico'} />
         <script
           defer
