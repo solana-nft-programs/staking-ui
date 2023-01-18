@@ -54,34 +54,16 @@ function StakePoolHome() {
     return <></>
   }
 
-  if (
-    !stakePoolLoaded ||
-    (stakePoolMetadata?.disallowRegions && !userRegion.isFetched)
-  ) {
+  if (stakePoolMetadata?.disallowRegions && !userRegion.isFetched) {
     return (
       <>
         <Head>
-          <title>
-            {stakePoolMetadata?.displayName.replace(' Staking', '') +
-              ' Staking' ?? 'Cardinal NFT Staking'}
-          </title>
-          {stakePoolMetadata?.displayName + ' Staking' ??
-            'Cardinal NFT Staking'}
-          <meta
-            name="title"
-            content={
-              stakePoolMetadata?.displayName.replace(' Staking', '') +
-                ' Staking' ?? 'NFT Staking on Solana'
-            }
-          />
+          <title>Cardinal NFT Staking</title>
+          <meta name="title" content="NFT Staking on Solana" />
+
           <meta
             name="description"
-            content={
-              'Stake your ' +
-                stakePoolMetadata?.displayName +
-                ' powered by Cardinal Staking' ??
-              'Stake your NFTs powered by Cardinal Staking'
-            }
+            content={'Stake your NFTs powered by Cardinal Staking'}
           />
           <meta name="image" content="https://stake.cardinal.so/preview.png" />
           <meta
