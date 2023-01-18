@@ -1,4 +1,4 @@
-import type { StakePoolMetadata } from 'api/mapping'
+import { stakePoolMetadatas } from 'api/mapping'
 import { Footer } from 'common/Footer'
 import { FooterSlim } from 'common/FooterSlim'
 import { Header } from 'common/Header'
@@ -41,15 +41,16 @@ const paneTabs: {
   },
 ]
 
-function StakePoolHome(props: {
-  fetchedStakePoolData: StakePoolMetadata | null
-}) {
+function StakePoolHome(props: { stakePoolMetadataName: string | null }) {
   const router = useRouter()
   const { isFetched: stakePoolLoaded } = useStakePoolData()
   const userRegion = useUserRegion()
   const rewardDistributorData = useRewardDistributorData()
   const stakedTokenDatas = useStakedTokenDatas()
   const [pane, setPane] = useState<PANE_OPTIONS>('dashboard')
+  const stakePoolDisplayName = props.stakePoolMetadataName
+    ? props.stakePoolMetadataName.replace(' Staking', '') + ' Staking'
+    : 'Cardinal NFT Staking'
 
   const { data: stakePoolMetadata } = useStakePoolMetadata()
 
@@ -65,31 +66,16 @@ function StakePoolHome(props: {
     return (
       <>
         <Head>
-          <title>
-            {props.fetchedStakePoolData?.displayName?.replace(' Staking', '') +
-              ' Staking' ?? 'Cardinal NFT Staking'}
-          </title>
-          {props.fetchedStakePoolData?.displayName?.replace(' Staking', '') +
-            ' Staking' ?? 'Cardinal NFT Staking'}
-          <meta
-            name="title"
-            content={
-              props.fetchedStakePoolData?.displayName?.replace(
-                ' Staking',
-                ''
-              ) ?? 'NFT Staking on Solana'
-            }
-          />
+          <title>{stakePoolDisplayName}</title>
+          <meta name="title" content={stakePoolDisplayName} />
           <meta
             name="description"
             content={
-              'Stake your ' +
-                props.fetchedStakePoolData?.displayName?.replace(
-                  ' Staking',
-                  ''
-                ) +
-                ' powered by Cardinal Staking' ??
-              'Stake your NFTs powered by Cardinal Staking'
+              props.stakePoolMetadataName
+                ? 'Stake your ' +
+                  props.stakePoolMetadataName.replace(' Staking', '') +
+                  ' powered by Cardinal Staking'
+                : 'Stake your Solana NFTs powered by Cardinal Staking'
             }
           />
           <meta name="image" content="https://stake.cardinal.so/preview.png" />
@@ -99,7 +85,7 @@ function StakePoolHome(props: {
           />
           <link
             rel="icon"
-            href={props.fetchedStakePoolData?.imageUrl ?? `/favicon.ico`}
+            href={stakePoolMetadata?.imageUrl ?? `/favicon.ico`}
           />
           <script
             defer
@@ -249,6 +235,20 @@ function StakePoolHome(props: {
       )}
     </div>
   )
+}
+
+export async function getServerSideProps(context: {
+  params: { stakePoolId: string }
+}) {
+  const stakePoolId = context.params.stakePoolId
+  if (!stakePoolId) return { props: { stakePoolMetadataName: null } }
+  const stakePoolMetadata = stakePoolMetadatas.find(
+    (p) =>
+      p.name === stakePoolId.toString() ||
+      p.stakePoolAddress.toString() === stakePoolId.toString()
+  )
+  if (!stakePoolMetadata) return { props: { stakePoolMetadataName: null } }
+  return { props: { stakePoolMetadataName: stakePoolMetadata?.displayName } }
 }
 
 export default StakePoolHome

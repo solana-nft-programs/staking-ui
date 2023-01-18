@@ -5,15 +5,7 @@ import StakePoolHome from './[stakePoolId]'
 
 function Home() {
   const { stakePoolMetadata } = useStakePoolMetadataCtx()
-  return (
-    <div>
-      {stakePoolMetadata ? (
-        <StakePoolHome fetchedStakePoolData={stakePoolMetadata} />
-      ) : (
-        <Homepage />
-      )}
-    </div>
-  )
+  return <div>{stakePoolMetadata ? <StakePoolHome /> : <Homepage />}</div>
 }
 
 export default Home
