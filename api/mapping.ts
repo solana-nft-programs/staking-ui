@@ -3269,8 +3269,8 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     ],
   },
   {
-    name: 'tworewards',
-    displayName: 'tworewards',
+    name: 'twoRewards',
+    displayName: 'two rewards',
     nameInHeader: true,
     stakePoolAddress: new PublicKey(
       '8xnC5wbXAgXoDghKGWTuxbw76U7HAHAwRuU3AKKovGif'
@@ -3282,7 +3282,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     receiptType: ReceiptType.Original,
     hideFooter: true,
     hostname: 'https://tworewards.vercel.app/',
-    websiteUrl: 'https://discord.com/',
+    websiteUrl: '',
     maxStaked: 5,
     logoPadding: false,
     colors: {
