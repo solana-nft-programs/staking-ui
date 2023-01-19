@@ -298,7 +298,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     description: 'Stake your Skellas NFT to earn $BONES',
     hideFooter: true,
     imageUrl: 'https://i.imgur.com/cjJDaD8.png',
-    backgroundImage:'https://i.imgur.com/aXFVc4C.png',
+    backgroundImage: 'https://i.imgur.com/aXFVc4C.png',
     links: [
       {
         text: 'Website',
@@ -324,7 +324,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       secondary: '#9399CB',
       accent: '#9399CB',
       fontColor: '#FFFFFF',
-    }
+    },
   },
   {
     name: 'shadiesstandard',
@@ -557,7 +557,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     nameInHeader: true,
     description: 'Stake your Space Boy to earn $SPACE',
     hideFooter: true,
-    imageUrl: "https://i.imgur.com/baGSXKZ.png",
+    imageUrl: 'https://i.imgur.com/baGSXKZ.png',
     links: [
       {
         text: 'Buy Now',
@@ -584,8 +584,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       fontWeight: 500,
       backgroundSize: 'cover',
     },
-    backgroundImage:
-      'https://i.imgur.com/Zuj545m.png',
+    backgroundImage: 'https://i.imgur.com/Zuj545m.png',
   },
   {
     name: 'META',
@@ -3164,7 +3163,6 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
         value: 'https://magiceden.io/marketplace/hyperion',
       },
     ],
-
   },
   {
     name: 'Solana Mcs staking',
@@ -3173,9 +3171,9 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     stakePoolAddress: new PublicKey(
       'HBsam1w2i35vUVfg7ZdngqFQ8m9vmJEhTmn3VAkgmYhM'
     ),
-    description:
-      'Official staking pool for solana mcs NFT collection',
-    imageUrl: 'https://pbs.twimg.com/profile_images/1597210461665206273/qt3OgPGt_400x400.jpg',
+    description: 'Official staking pool for solana mcs NFT collection',
+    imageUrl:
+      'https://pbs.twimg.com/profile_images/1597210461665206273/qt3OgPGt_400x400.jpg',
     tokenStandard: TokenStandard.NonFungible,
     receiptType: ReceiptType.Original,
     hostname: 'stake.solanamcs.com',
@@ -3190,7 +3188,6 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       fontColorSecondary: '#ffffff',
       fontColorTertiary: '#444444',
     },
-
   },
   {
     name: 'howly',
@@ -3201,7 +3198,8 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     ),
     description:
       'First meme coin and nft powered defi on solana. Giving free access for the whole howly ecosystem with exclusive perks and privileges',
-    imageUrl: 'https://bafybeigipwtmn2yckmgrf7k6x7un454j73qlifexhew72445um2zkbzuoi.ipfs.nftstorage.link/collection.jpg',
+    imageUrl:
+      'https://bafybeigipwtmn2yckmgrf7k6x7un454j73qlifexhew72445um2zkbzuoi.ipfs.nftstorage.link/collection.jpg',
     tokenStandard: TokenStandard.NonFungible,
     receiptType: ReceiptType.Original,
     hostname: 'staking.howlynft.xyz',
@@ -3240,7 +3238,8 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     ),
     description:
       'Come frolic with the Forest Gemmys! The first Gemmy limited edition series.',
-    imageUrl: 'https://creator-hub-prod.s3.us-east-2.amazonaws.com/forest_gemmys_pfp_1667238440811.png',
+    imageUrl:
+      'https://creator-hub-prod.s3.us-east-2.amazonaws.com/forest_gemmys_pfp_1667238440811.png',
     tokenStandard: TokenStandard.NonFungible,
     receiptType: ReceiptType.Original,
     hideFooter: true,
@@ -3275,9 +3274,9 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     stakePoolAddress: new PublicKey(
       '8xnC5wbXAgXoDghKGWTuxbw76U7HAHAwRuU3AKKovGif'
     ),
-    description:
-      'Fronkme reward token staking',
-    imageUrl: 'https://bafybeidq25hbteb2lzh4uaqez5ir7jx4sdgihscm4gaefqf4kllebwdi7q.ipfs.nftstorage.link/WhatsApp%20Image%202023-01-17%20at%2010.40.25%20AM.jpeg',
+    description: 'Fronkme reward token staking',
+    imageUrl:
+      'https://bafybeidq25hbteb2lzh4uaqez5ir7jx4sdgihscm4gaefqf4kllebwdi7q.ipfs.nftstorage.link/WhatsApp%20Image%202023-01-17%20at%2010.40.25%20AM.jpeg',
     tokenStandard: TokenStandard.NonFungible,
     receiptType: ReceiptType.Original,
     hideFooter: true,
@@ -3302,6 +3301,38 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       {
         text: 'Magic Eden',
         value: 'https://magiceden.io/',
+      },
+    ],
+  },
+  {
+    name: 'pixel-dudes',
+    displayName: 'Pixel Dudes',
+    description:
+      'Stake your dudes to earn rewards from various reward mechanisms including $EDD, merchandise, redeemable rewards by the Pixel Dudes pool!',
+    nameInHeader: true,
+    stakePoolAddress: new PublicKey(
+      'F2tzjza3o6qWoyL9ufTG5K5zpTiAm5GebqsFYbB1cKxx'
+    ),
+    contrastHomepageBkg: true,
+    hideFooter: true,
+    hideAllowedTokens: true,
+    receiptType: ReceiptType.Original,
+    tokenStandard: TokenStandard.NonFungible,
+    imageUrl:
+      'https://nftstorage.link/ipfs/bafybeifmfxptuitrwzj7eeef4h3mbqx4uhk7yaok5vzyvgmhlaefvxw7li/1500.gif',
+    maxStaked: 4000,
+    colors: {
+      primary: '#000000',
+      secondary: '#878ce0',
+    },
+    links: [
+      {
+        text: 'Twitter',
+        value: 'https://twitter.com/SolEddaRity',
+      },
+      {
+        text: 'Discord',
+        value: 'https://discord.gg/soleddarity',
       },
     ],
   },
