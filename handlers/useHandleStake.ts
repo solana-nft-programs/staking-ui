@@ -105,7 +105,7 @@ export const useHandleStake = (callback?: () => void) => {
               )[0]
           )
         )
-        const stakeEntries = await getStakeEntries(connection, stakeEntryIds)
+        let stakeEntries = await getStakeEntries(connection, stakeEntryIds)
 
         ///////////// init stake mints /////////////
         const initTxs: { tx: Transaction; signers: Signer[] }[] = []
@@ -117,7 +117,7 @@ export const useHandleStake = (callback?: () => void) => {
               (s) => s?.parsed?.originalMint.toString() === mintId.toString()
             )
             if (!stakeEntry) {
-              withInitStakeEntry(transaction, connection, wallet, {
+              await withInitStakeEntry(transaction, connection, wallet, {
                 stakePoolId,
                 originalMintId: mintId,
               })
@@ -153,6 +153,7 @@ export const useHandleStake = (callback?: () => void) => {
               },
             }
           )
+          stakeEntries = await getStakeEntries(connection, stakeEntryIds)
         }
 
         ///////////// stake v1 /////////////
@@ -163,7 +164,7 @@ export const useHandleStake = (callback?: () => void) => {
               (s) => s?.parsed?.originalMint.toString() === mintId.toString()
             )
             if (!stakeEntry) {
-              withInitStakeEntry(transaction, connection, wallet, {
+              await withInitStakeEntry(transaction, connection, wallet, {
                 stakePoolId: stakePoolId,
                 originalMintId: mintId,
               })
