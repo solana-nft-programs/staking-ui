@@ -58,7 +58,8 @@ export const useHandleUnstake = (callback?: () => void) => {
                 !stakePool.parsed.minStakeSeconds
               ) {
                 notify({
-                  message: `Cooldown period will be initiated for ${token.metaplexData?.data.data.name} unless minimum stake period unsatisfied`,
+                  message: `Cooldown period will be initiated for ${token.metaplexData?.data.data.name}`,
+                  description: 'Unless minimum stake period unsatisfied',
                   type: 'info',
                 })
                 coolDown = true

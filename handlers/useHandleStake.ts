@@ -1,15 +1,21 @@
 import { stake as stakeV2 } from '@cardinal/rewards-center'
-import { createStakeEntryAndStakeMint, stake } from '@cardinal/staking'
 import { ReceiptType } from '@cardinal/staking/dist/cjs/programs/stakePool'
+import { getStakeEntries } from '@cardinal/staking/dist/cjs/programs/stakePool/accounts'
+import { findStakeEntryId } from '@cardinal/staking/dist/cjs/programs/stakePool/pda'
+import {
+  withClaimReceiptMint,
+  withInitStakeEntry,
+  withInitStakeMint,
+  withStake,
+} from '@cardinal/staking/dist/cjs/programs/stakePool/transaction'
 import { BN } from '@project-serum/anchor'
 import { useWallet } from '@solana/wallet-adapter-react'
-import type { Signer, Transaction } from '@solana/web3.js'
-import { PublicKey } from '@solana/web3.js'
+import type { Signer } from '@solana/web3.js'
+import { Keypair, PublicKey, Transaction } from '@solana/web3.js'
 import { executeAllTransactions } from 'api/utils'
 import { notify } from 'common/Notification'
 import { parseMintNaturalAmountFromDecimal } from 'common/units'
 import { asWallet } from 'common/Wallets'
-import { useStakedTokenDatas } from 'hooks/useStakedTokenDatas'
 import { isStakePoolV2, useStakePoolData } from 'hooks/useStakePoolData'
 import { useMutation, useQueryClient } from 'react-query'
 
@@ -18,12 +24,56 @@ import { TOKEN_DATAS_KEY } from '../hooks/useAllowedTokenDatas'
 import { useStakePoolId } from '../hooks/useStakePoolId'
 import { useEnvironmentCtx } from '../providers/EnvironmentProvider'
 
+const stakeInfosFromTokenData = (tokenDatas: AllowedTokenData[]) => {
+  return tokenDatas
+    .map((tokenData) => {
+      try {
+        return stakeInfoFromTokenData(tokenData)
+      } catch (e) {
+        console.log({
+          message: `Failed to stake token ${tokenData?.tokenAccount?.parsed.mint}`,
+          description: `${e}`,
+          type: 'error',
+        })
+        return null
+      }
+    })
+    .filter((tk): tk is ReturnType<typeof stakeInfoFromTokenData> => !!tk)
+}
+
+const stakeInfoFromTokenData = (tokenData: AllowedTokenData) => {
+  if (!tokenData.tokenAccount) throw 'Token account invalid'
+  if (
+    tokenData.tokenAccount?.parsed.tokenAmount.amount > 1 &&
+    !tokenData.amountToStake
+  ) {
+    throw new Error('Invalid amount chosen for token')
+  }
+  const mintId = new PublicKey(tokenData.tokenAccount?.parsed.mint)
+  const amount = tokenData?.amountToStake
+    ? new BN(
+        tokenData?.amountToStake &&
+        tokenData.tokenAccount.parsed.tokenAmount.amount > 1
+          ? parseMintNaturalAmountFromDecimal(
+              tokenData?.amountToStake,
+              tokenData.tokenAccount.parsed.tokenAmount.decimals
+            ).toString()
+          : 1
+      )
+    : undefined
+  return {
+    tokenAccountId: tokenData.tokenAccount.pubkey,
+    mintId,
+    amount,
+    fungible: (amount?.toNumber() || 0) > 1,
+  }
+}
+
 export const useHandleStake = (callback?: () => void) => {
   const wallet = asWallet(useWallet())
   const { connection } = useEnvironmentCtx()
   const queryClient = useQueryClient()
   const stakePoolId = useStakePoolId()
-  const stakedTokenDatas = useStakedTokenDatas()
   const { data: stakePoolData } = useStakePoolData()
 
   return useMutation(
@@ -36,42 +86,60 @@ export const useHandleStake = (callback?: () => void) => {
     }): Promise<string[]> => {
       if (!wallet) throw 'Wallet not connected'
       if (!stakePoolId) throw 'Stake pool not found'
-      if (!stakePoolData || !stakePoolData.parsed)
-        throw 'Stake pool data not found'
+      if (!stakePoolData?.parsed) throw 'Stake pool data not found'
       if (tokenDatas.length <= 0) throw 'No tokens selected'
-      const initTxs: { tx: Transaction; signers: Signer[] }[] = []
 
+      let txs: Transaction[] = []
       if (!isStakePoolV2(stakePoolData.parsed)) {
-        for (let i = 0; i < tokenDatas.length; i++) {
-          try {
-            const token = tokenDatas[i]!
-            if (!token.tokenAccount) throw 'Token account invalid'
-            if (receiptType === ReceiptType.Receipt) {
-              console.log('Creating stake entry and stake mint...')
-              const [initTx, , stakeMintKeypair] =
-                await createStakeEntryAndStakeMint(connection, wallet, {
-                  stakePoolId: stakePoolId,
-                  originalMintId: new PublicKey(token.tokenAccount.parsed.mint),
-                })
-              if (initTx.instructions.length > 0) {
-                initTxs.push({
-                  tx: initTx,
-                  signers: stakeMintKeypair ? [stakeMintKeypair] : [],
-                })
+        const stakeInfos = stakeInfosFromTokenData(tokenDatas)
+        const stakeEntryIds = await Promise.all(
+          stakeInfos.map(
+            async ({ mintId, fungible }) =>
+              (
+                await findStakeEntryId(
+                  wallet.publicKey,
+                  stakePoolId,
+                  mintId,
+                  fungible
+                )
+              )[0]
+          )
+        )
+        let stakeEntries = await getStakeEntries(connection, stakeEntryIds)
+
+        ///////////// init stake mints /////////////
+        const initTxs: { tx: Transaction; signers: Signer[] }[] = []
+        if (receiptType === ReceiptType.Receipt) {
+          for (let i = 0; i < stakeInfos.length; i++) {
+            const { mintId } = stakeInfos[i]!
+            const transaction = new Transaction()
+            const stakeEntry = stakeEntries?.find(
+              (s) => s?.parsed?.originalMint.toString() === mintId.toString()
+            )
+            if (!stakeEntry) {
+              await withInitStakeEntry(transaction, connection, wallet, {
+                stakePoolId,
+                originalMintId: mintId,
+              })
+            }
+            let stakeMintKeypair: Keypair | undefined
+            if (!stakeEntry?.parsed.stakeMint) {
+              stakeMintKeypair = Keypair.generate()
+              await withInitStakeMint(transaction, connection, wallet, {
+                stakePoolId: stakePoolId,
+                stakeEntryId: stakeEntryIds[i]!,
+                originalMintId: mintId,
+                stakeMintKeypair,
+                name: `POOl${stakePoolData.parsed.identifier.toString()} RECEIPT`,
+                symbol: `POOl${stakePoolData.parsed.identifier.toString()}`,
+              })
+              if (transaction.instructions.length > 0) {
+                initTxs.push({ tx: transaction, signers: [stakeMintKeypair] })
               }
             }
-          } catch (e) {
-            notify({
-              message: `Failed to stake token ${tokenDatas[i]?.tokenAccount?.parsed.mint}`,
-              description: `${e}`,
-              type: 'error',
-            })
           }
         }
-      }
-
-      if (initTxs.length > 0) {
-        try {
+        if (initTxs.length > 0) {
           await executeAllTransactions(
             connection,
             wallet,
@@ -80,89 +148,62 @@ export const useHandleStake = (callback?: () => void) => {
               signers: initTxs.map(({ signers }) => signers),
               throwIndividualError: true,
               notificationConfig: {
-                message: `Successfully staked`,
-                description: 'Stake progress will now dynamically update',
+                message: `Successfully initialized stake entries`,
+                description: 'Staking now in progress',
               },
             }
           )
-        } catch (e) {}
-      }
+          stakeEntries = await getStakeEntries(connection, stakeEntryIds)
+        }
 
-      const txs: (Transaction | null)[] = await Promise.all(
-        tokenDatas.map(async (token) => {
-          try {
-            if (!token.tokenAccount) throw 'Token account invalid'
-            if (
-              token.tokenAccount?.parsed.tokenAmount.amount > 1 &&
-              !token.amountToStake
-            ) {
-              throw new Error('Invalid amount chosen for token')
-            }
-
-            const mint = token.tokenAccount?.parsed.mint
-            const stakedToken = stakedTokenDatas.data?.find(
-              (s) => s.stakeEntry?.parsed?.stakeMint.toString() === mint
+        ///////////// stake v1 /////////////
+        txs = await Promise.all(
+          stakeInfos.map(async ({ mintId, tokenAccountId, amount }, i) => {
+            const transaction = new Transaction()
+            const stakeEntry = stakeEntries?.find(
+              (s) => s?.parsed?.originalMint.toString() === mintId.toString()
             )
-            if (
-              stakedToken &&
-              stakedToken.stakeEntry?.parsed?.amount.gt(new BN(0))
-            ) {
-              throw 'Fungible tokens already staked in the pool. Staked tokens need to be unstaked and then restaked together with the new tokens.'
-            }
-
-            const amount = token?.amountToStake
-              ? new BN(
-                  token?.amountToStake &&
-                  token.tokenAccount.parsed.tokenAmount.amount > 1
-                    ? parseMintNaturalAmountFromDecimal(
-                        token?.amountToStake,
-                        token.tokenAccount.parsed.tokenAmount.decimals
-                      ).toString()
-                    : 1
-                )
-              : undefined
-            if (isStakePoolV2(stakePoolData.parsed!)) {
-              if (!stakePoolData.parsed || !stakePoolData.parsed.identifier)
-                throw 'No stake pool parsed data found'
-              const txs = await stakeV2(
-                connection,
-                wallet,
-                stakePoolData.parsed.identifier,
-                [
-                  {
-                    mintId: new PublicKey(mint),
-                    fungible: (amount?.toNumber() || 0) > 1,
-                  },
-                ]
-              )
-              return txs[0] ?? null // TODO limit to one for now
-            } else {
-              return stake(connection, wallet, {
+            if (!stakeEntry) {
+              await withInitStakeEntry(transaction, connection, wallet, {
                 stakePoolId: stakePoolId,
-                receiptType:
-                  (!amount ||
-                    (amount &&
-                      amount.eq(new BN(1)) &&
-                      receiptType === ReceiptType.Receipt)) &&
-                  receiptType !== ReceiptType.None
-                    ? receiptType
-                    : undefined,
-                originalMintId: new PublicKey(mint),
-                userOriginalMintTokenAccountId: token.tokenAccount.pubkey,
-                amount: amount,
+                originalMintId: mintId,
               })
             }
-          } catch (e) {
-            console.log({
-              message: `Failed to stake token ${token?.tokenAccount?.parsed.mint}`,
-              description: `${e}`,
-              type: 'error',
+            await withStake(transaction, connection, wallet, {
+              stakePoolId: stakePoolId,
+              originalMintId: mintId,
+              userOriginalMintTokenAccountId: tokenAccountId,
+              amount: amount,
+            })
+            if (receiptType && receiptType !== ReceiptType.None) {
+              const receiptMintId =
+                receiptType === ReceiptType.Receipt
+                  ? stakeEntry?.parsed.stakeMint
+                  : mintId
+              if (!receiptMintId) {
+                throw 'Stake entry has no stake mint. Initialize stake mint first.'
+              }
+              await withClaimReceiptMint(transaction, connection, wallet, {
+                stakePoolId: stakePoolId,
+                stakeEntryId: stakeEntryIds[i]!,
+                originalMintId: mintId,
+                receiptMintId: receiptMintId,
+                receiptType: receiptType,
+              })
+            }
+            return transaction
           })
-            return null
-          }
-        })
-      )
-
+        )
+      } else {
+        ///////////// stake v2 /////////////
+        const stakeInfos = stakeInfosFromTokenData(tokenDatas)
+        txs = await stakeV2(
+          connection,
+          wallet,
+          stakePoolData.parsed.identifier,
+          stakeInfos
+        )
+      }
       await executeAllTransactions(
         connection,
         wallet,
