@@ -1,4 +1,3 @@
-import { ReceiptType } from '@cardinal/staking/dist/cjs/programs/stakePool'
 import type { StakePoolMetadata } from 'api/mapping'
 import { TokenStandard } from 'api/mapping'
 import { AsyncButton } from 'common/Button'
