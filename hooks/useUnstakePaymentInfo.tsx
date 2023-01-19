@@ -1,6 +1,4 @@
 import { fetchIdlAccount } from '@cardinal/rewards-center'
-import type { BN } from '@project-serum/anchor'
-import { formatMintNaturalAmountAsDecimal } from 'common/units'
 import { useRewardDistributorData } from 'hooks/useRewardDistributorData'
 import { useRewardMintInfo } from 'hooks/useRewardMintInfo'
 import { useStakePoolData } from 'hooks/useStakePoolData'
@@ -14,14 +12,7 @@ export const useUnstakePaymentInfo = () => {
   const rewardMintInfo = useRewardMintInfo()
   const { data: stakePoolData } = useStakePoolData()
 
-  return useQuery<
-    | {
-        naturalAmount: BN
-        amount: string
-        formattedAmountWithSymbol: string
-      }
-    | undefined
-  >(
+  return useQuery<any | undefined>(
     [
       'useUnstakePaymentInfo',
       rewardMintInfo?.data?.mintInfo.address.toString(),
@@ -37,19 +28,7 @@ export const useUnstakePaymentInfo = () => {
 
       if (!paymentInfoData?.parsed) return
 
-      const amount = formatMintNaturalAmountAsDecimal(
-        rewardMintInfo.data.mintInfo,
-        paymentInfoData.parsed.paymentAmount,
-        rewardMintInfo.data.mintInfo.decimals
-      )
-
-      return {
-        naturalAmount: paymentInfoData.parsed.paymentAmount,
-        amount,
-        formattedAmountWithSymbol: `${Number(amount)} ${
-          rewardMintInfo.data.tokenListData?.symbol
-        }`,
-      }
+      return paymentInfoData
     }
   )
 }

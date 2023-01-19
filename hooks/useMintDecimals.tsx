@@ -1,5 +1,6 @@
 import { PublicKey } from '@solana/web3.js'
 import { useMintInfo } from 'hooks/useMintInfo'
+import { useEffect, useState } from 'react'
 import { useQuery } from 'react-query'
 
 export const useMintDecimals = (mint: PublicKey | undefined) => {
@@ -11,17 +12,25 @@ export const useMintDecimals = (mint: PublicKey | undefined) => {
     return mint?.toString() === PublicKey.default.toString()
   }
 
+  const [mintDecimals, setMintDecimals] = useState<number | undefined>(
+    undefined
+  )
+
+  useEffect(() => {
+    if (!mint || !mintInfo) return
+    console.log('mintInfo', mintInfo)
+    setMintDecimals(mintInfo.decimals)
+  }, [mint, mintInfo])
+
   return useQuery<number | undefined>(
     ['useRewardMintInfo', mint?.toString()],
     async () => {
       if (!mint) return
-
       if (isSol()) return 9
-
-      return mintInfo?.decimals
+      return mintDecimals
     },
     {
-      enabled: !!mint, // make sure u have mintInfo.isFetched as a boolean for whether useMintDEcimals is enabled
+      enabled: !!mintInfo, // make sure u have mintInfo.isFetched as a boolean for whether useMintDecimals is enabled
     }
   )
 }
