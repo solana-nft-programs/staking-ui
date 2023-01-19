@@ -106,6 +106,33 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
   //   },
   // },
   {
+    name: 'Geexolotls',
+    displayName: 'Geexolotls',
+    stakePoolAddress: new PublicKey(
+      'HXFEErx8h7BWhtBJFUFypuXvC2k22Seo7EWtEfzUKN4h'
+    ),
+    websiteUrl: 'https://www.geexolotls.com/',
+    hostname: 'stake.geexolotls.com',
+    nameInHeader: true,
+    description: 'Stake your Geexolotls to earn $Neon',
+    hideFooter: true,
+    imageUrl: '/logos/geexolotls_logo.png',
+    links: [
+     {
+        text: 'Buy Now',
+       value: 'https://magiceden.io/marketplace/geexolotls',
+      },
+    ],
+    colors: {
+      primary: '#09014A',
+     secondary: '#ff18d0',
+     
+     accent: '#ff18d0'
+   },
+   backgroundImage:
+      'https://www.geexolotls.com/images/bg.jpg',
+  },
+  {
     name: 'particlesnft',
     displayName: 'ParticlesNFT',
     stakePoolAddress: new PublicKey(
@@ -3265,43 +3292,6 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       {
         text: 'Magic Eden',
         value: 'https://magiceden.io/marketplace/forest_gemmys',
-      },
-    ],
-  },
-  {
-    name: 'Fronkme',
-    displayName: 'Fronkme Staking',
-    nameInHeader: true,
-    stakePoolAddress: new PublicKey(
-      '8xnC5wbXAgXoDghKGWTuxbw76U7HAHAwRuU3AKKovGif'
-    ),
-    description:
-      'Fronkme reward token staking',
-    imageUrl: 'https://bafybeidq25hbteb2lzh4uaqez5ir7jx4sdgihscm4gaefqf4kllebwdi7q.ipfs.nftstorage.link/WhatsApp%20Image%202023-01-17%20at%2010.40.25%20AM.jpeg',
-    tokenStandard: TokenStandard.NonFungible,
-    receiptType: ReceiptType.Original,
-    hideFooter: true,
-    websiteUrl: '',
-    maxStaked: 5,
-    logoPadding: false,
-    colors: {
-      primary: 'black',
-      secondary: 'gray',
-      accent: 'white',
-      fontColor: 'white',
-    },
-    links: [
-      {
-        text: 'Discord',
-        value: 'https://discord.com/',
-      },
-      {
-        text: 'Twitter',
-        value: 'https://twitter.com/',
-      },
-      {
-        text: 'Magic Eden',
-        value: 'https://magiceden.io/',
       },
     ],
   },
