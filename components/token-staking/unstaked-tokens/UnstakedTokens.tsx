@@ -156,7 +156,7 @@ export const UnstakedTokens = () => {
                   stakePoolMetadata?.colors?.fontColorSecondary ||
                   stakePoolMetadata?.colors?.fontColor,
               }}
-              className="my-auto flex rounded-md px-4 py-2 hover:scale-[1.03]"
+              className="my-auto flex items-center justify-center rounded-md px-4 py-2 hover:scale-[1.03]"
             >
               <span className="mr-1 inline-block">
                 {handleStake.isLoading && (
