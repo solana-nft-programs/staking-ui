@@ -1,20 +1,26 @@
-import {
-  ArrowDownOnSquareIcon,
-  ArrowUpOnSquareIcon,
-  TagIcon,
-} from '@heroicons/react/24/outline'
 import { Tooltip } from 'common/Tooltip'
 import { useClaimRewardsPaymentInfo } from 'hooks/useClaimRewardsPaymentInfo'
-import { useStakePaymentInfo } from 'hooks/useStakePaymentInfo'
+import { useMintDecimals } from 'hooks/useMintDecimals'
 import { isStakePoolV2, useStakePoolData } from 'hooks/useStakePoolData'
-import { useUnstakePaymentInfo } from 'hooks/useUnstakePaymentInfo'
+import { useEffect } from 'react'
 import { BsFillCreditCardFill, BsFillInfoCircleFill } from 'react-icons/bs'
 
 export const FeeInfo: React.FC = () => {
   const { data: stakePool } = useStakePoolData()
   const { data: claimRewardsPaymentInfoData } = useClaimRewardsPaymentInfo()
-  const { data: unstakePaymentInfoData } = useUnstakePaymentInfo()
-  const { data: stakePaymentInfoData } = useStakePaymentInfo()
+  // const { data: unstakePaymentInfoData } = useUnstakePaymentInfo()
+  // const { data: stakePaymentInfoData } = useStakePaymentInfo()
+  const { data: mintDecimals } = useMintDecimals(
+    claimRewardsPaymentInfoData?.parsed
+      ? claimRewardsPaymentInfoData.parsed.paymentMint
+      : undefined
+  )
+
+  useEffect(() => {
+    console.log('claimRewardsPaymentInfoData', claimRewardsPaymentInfoData)
+
+    console.log('mintDecimals', mintDecimals)
+  }, [claimRewardsPaymentInfoData, mintDecimals])
 
   return (
     <div className="flex space-x-8">
@@ -47,9 +53,10 @@ export const FeeInfo: React.FC = () => {
           </a>
         </div>
       )}
+      {JSON.stringify(mintDecimals)}
       {!!stakePool?.parsed && isStakePoolV2(stakePool.parsed) && (
         <div className="flex flex-row items-center justify-center gap-8">
-          <div className="flex items-center gap-2">
+          {/* <div className="flex items-center gap-2">
             <TagIcon className="h-5 w-5 text-medium-4" />
             <div className="text-medium-4">Reward Claim Fee: </div>
             {claimRewardsPaymentInfoData?.formattedAmountWithSymbol
@@ -69,7 +76,7 @@ export const FeeInfo: React.FC = () => {
             {stakePaymentInfoData?.formattedAmountWithSymbol
               ? stakePaymentInfoData?.formattedAmountWithSymbol
               : undefined}
-          </div>
+          </div> */}
         </div>
       )}
     </div>
