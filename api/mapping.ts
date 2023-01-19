@@ -50,8 +50,6 @@ export type StakePoolMetadata = {
   hideFooter?: boolean
   // Optional config to link redirect to page when you click on this pool
   redirect?: string
-  // Hide allowed tokens style
-  hideAllowedTokens?: boolean
   // styles to apply to the whole stake pool
   styles?: CSSProperties
   // Contrast homepage background
@@ -168,7 +166,6 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     description: 'Stake your Handsome Beavers at the Dam to earn $BBALLS',
     receiptType: ReceiptType.Original,
     tokenStandard: TokenStandard.NonFungible,
-    hideAllowedTokens: true,
     hideFooter: true,
     styles: {
       fontFamily: 'Paralucent',
@@ -204,7 +201,6 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     nameInHeader: true,
     receiptType: ReceiptType.Original,
     tokenStandard: TokenStandard.NonFungible,
-    hideAllowedTokens: true,
     hideFooter: true,
     styles: {
       fontFamily: 'Industry, sans-serif',
@@ -403,7 +399,6 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     backgroundImage:
       'https://cdn.discordapp.com/attachments/989483399477604404/1024694267282726942/ReliefBlackBackground.jpg',
     tokenStandard: TokenStandard.NonFungible,
-    hideAllowedTokens: true,
     colors: {
       primary: '#000000',
       secondary: '#FFFFFF',
@@ -844,7 +839,6 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     maxStaked: 3910,
     imageUrl: 'https://arweave.net/HpdUi39S2ixPus6cU74LeoXaKwWcxezIUTQkvVV9XKs',
     tokenStandard: TokenStandard.NonFungible,
-    hideAllowedTokens: true,
     colors: {
       primary: '#000000',
       secondary: '#803499',
@@ -866,7 +860,6 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     maxStaked: 4991, // update with collection size
     imageUrl: '/logos/rogue-sharks.svg',
     tokenStandard: TokenStandard.NonFungible,
-    hideAllowedTokens: true,
     styles: {
       fontFamily: 'Industry, sans-serif',
       fontWeight: 500,
@@ -1101,7 +1094,6 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       'https://p4e5f2irximos56xgqy7o57rowpbovspcht4ao6o5vxoevg4geoq.arweave.net/fwnS6RG6GOl31zQx93fxdZ4XVk8R58A7zu1u4lTcMR0',
     maxStaked: 4444,
     tokenStandard: TokenStandard.NonFungible,
-    hideAllowedTokens: true,
     colors: {
       primary: '#2d0c65',
       secondary: '#ed69fa',
@@ -1121,7 +1113,6 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       'https://pq3boxq5w7tjxfmtl2hra72jkpmbswwmi66d3dz464isnsoqoq.arweave.net/fDYXXh235puVk16PEH9JU9gZWsxHvD2PP-PcRJsnQdA',
     maxStaked: 2000,
     tokenStandard: TokenStandard.NonFungible,
-    hideAllowedTokens: true,
     styles: {
       fontFamily: 'Paralucent',
     },
@@ -1143,7 +1134,6 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       'https://zm3lmtsddpfcnybf2dohyvv3zecbol5voddwqba7ocx66zjdaq3q.arweave.net/yza2TkMbyibgJdDcfFa7yQQXL7Vwx2gEH3Cv72UjBDc',
     maxStaked: 10,
     tokenStandard: TokenStandard.NonFungible,
-    hideAllowedTokens: true,
     styles: {
       fontFamily: 'Paralucent',
     },
@@ -1184,7 +1174,6 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     imageUrl:
       'https://shdw-drive.genesysgo.net/4B5uhQo61B8JrutW1EXYhedw8uycMWE8JVmw1onbLjTh/Dlogo.svg',
     tokenStandard: TokenStandard.NonFungible,
-    hideAllowedTokens: false,
     hidden: false,
     styles: {
       fontFamily: 'Industry, sans-serif',
@@ -1211,7 +1200,6 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     imageUrl:
       'https://v4pnvyuwfsaiymwlmqr4mvemptw2lmqyrwmilxg2prlw7qrqf3qq.arweave.net/rx7a4pYsgIwyy2QjxlSMfO2lshiNmIXc2nxXb8IwLuE?ext=gif',
     tokenStandard: TokenStandard.NonFungible,
-    hideAllowedTokens: false,
     hidden: false,
     styles: {
       fontFamily: 'anton',
@@ -1235,7 +1223,6 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     maxStaked: 300, // update with collection size
     imageUrl: 'https://i.ibb.co/fxZqZWR/lossy-compressed-3.gif',
     tokenStandard: TokenStandard.NonFungible,
-    hideAllowedTokens: false,
     hidden: false,
     styles: {
       fontFamily: 'anton',
@@ -1549,7 +1536,6 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     imageUrl: '/logos/rebellion-bots.jpeg',
     secondaryImageUrl: '/logos/secondary-rebellion-bots.png',
     tokenStandard: TokenStandard.NonFungible,
-    hideAllowedTokens: true,
     styles: {
       fontFamily: 'Industry, sans-serif',
       fontWeight: 500,
@@ -1631,7 +1617,6 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     websiteUrl: 'https://www.hoa.house/',
     receiptType: ReceiptType.Original,
     tokenStandard: TokenStandard.NonFungible,
-    hideAllowedTokens: true,
     nameInHeader: true,
     maxStaked: 7777,
     imageUrl: '/logos/parcl.png',
@@ -1651,7 +1636,6 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     websiteUrl: 'https://parcl.co/',
     receiptType: ReceiptType.None,
     tokenStandard: TokenStandard.Fungible,
-    hideAllowedTokens: true,
     nameInHeader: true,
     imageUrl: '/logos/parcl-san-francisco.png',
     backgroundImage: '/logos/parcl-bg.png',
@@ -1696,7 +1680,6 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     websiteUrl: 'https://parcl.co/',
     receiptType: ReceiptType.None,
     tokenStandard: TokenStandard.Fungible,
-    hideAllowedTokens: true,
     nameInHeader: true,
     imageUrl: '/logos/parcl-miami.png',
     backgroundImage: '/logos/parcl-bg.png',
@@ -1741,7 +1724,6 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     websiteUrl: 'https://parcl.co/',
     receiptType: ReceiptType.None,
     tokenStandard: TokenStandard.Fungible,
-    hideAllowedTokens: true,
     nameInHeader: true,
     imageUrl: '/logos/parcl-los-angeles.png',
     backgroundImage: '/logos/parcl-bg.png',
@@ -1786,7 +1768,6 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     websiteUrl: 'https://parcl.co/',
     receiptType: ReceiptType.None,
     tokenStandard: TokenStandard.Fungible,
-    hideAllowedTokens: true,
     nameInHeader: true,
     imageUrl: '/logos/parcl-manhattan.png',
     backgroundImage: '/logos/parcl-bg.png',
@@ -1832,7 +1813,6 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     websiteUrl: 'https://parcl.co/',
     receiptType: ReceiptType.None,
     tokenStandard: TokenStandard.Fungible,
-    hideAllowedTokens: true,
     nameInHeader: true,
     imageUrl: '/logos/parcl-brooklyn.png',
     backgroundImage: '/logos/parcl-bg.png',
@@ -1877,7 +1857,6 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     websiteUrl: 'https://parcl.co/',
     receiptType: ReceiptType.None,
     tokenStandard: TokenStandard.Fungible,
-    hideAllowedTokens: true,
     nameInHeader: true,
     imageUrl: '/logos/parcl-phoenix.png',
     backgroundImage: '/logos/parcl-bg.png',
@@ -2179,7 +2158,6 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     ),
     receiptType: ReceiptType.Original,
     tokenStandard: TokenStandard.NonFungible,
-    hideAllowedTokens: true,
     // styles to apply to the whole stake pool
     styles: {
       fontFamily: 'Industry, sans-serif',
@@ -2236,7 +2214,6 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     maxStaked: 500,
     receiptType: ReceiptType.Original,
     tokenStandard: TokenStandard.NonFungible,
-    hideAllowedTokens: true,
     links: [
       {
         text: 'Discord',
@@ -2274,7 +2251,6 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     backgroundImage:
       'https://raw.githubusercontent.com/Steamland/images/main/harvesting_background.png',
     tokenStandard: TokenStandard.NonFungible,
-    hideAllowedTokens: true,
     colors: {
       primary: '#1A1A1D',
       secondary: '#9e333f',
@@ -2299,7 +2275,6 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
 
     receiptType: ReceiptType.Original,
     tokenStandard: TokenStandard.NonFungible,
-    hideAllowedTokens: true,
     links: [
       {
         text: 'Discord',
@@ -2336,7 +2311,6 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     ),
     hostname: 'staking.pixely00ts.xyz',
     hideFooter: true,
-    hideAllowedTokens: true,
     websiteUrl: 'https://www.pixely00ts.xyz/',
     receiptType: ReceiptType.Original,
     tokenStandard: TokenStandard.NonFungible,
@@ -2442,7 +2416,6 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       fontWeight: 500,
     },
     tokenStandard: TokenStandard.NonFungible,
-    hideAllowedTokens: true,
     colors: {
       // primary: '#2d0c65',
       //secondary: '#ed69fa',
@@ -2463,7 +2436,6 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     ),
     hostname: 'vaults.metacreed.com',
     hideFooter: true,
-    hideAllowedTokens: true,
     websiteUrl: 'https://www.metacreed.com/',
     receiptType: ReceiptType.Original,
     tokenStandard: TokenStandard.NonFungible,
@@ -2520,7 +2492,6 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     description: 'Stake your GnarAF DAO Card to earn $GNAR',
     receiptType: ReceiptType.Original,
     tokenStandard: TokenStandard.NonFungible,
-    hideAllowedTokens: true,
     hideFooter: true,
     styles: {
       fontFamily: 'Paralucent',
@@ -2586,7 +2557,6 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     backgroundImage:
       'https://raw.githubusercontent.com/Steamland/images/main/harvesting_background.png',
     tokenStandard: TokenStandard.NonFungible,
-    hideAllowedTokens: true,
     colors: {
       primary: '#1A1A1D',
       secondary: '#9e333f',
@@ -2610,7 +2580,6 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
 
     receiptType: ReceiptType.Original,
     tokenStandard: TokenStandard.NonFungible,
-    hideAllowedTokens: true,
     links: [
       {
         text: 'Discord',
@@ -2700,7 +2669,6 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     maxStaked: 777,
     receiptType: ReceiptType.Original,
     tokenStandard: TokenStandard.NonFungible,
-    hideAllowedTokens: true,
     links: [
       {
         text: 'Discord',
@@ -2730,7 +2698,6 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     maxStaked: 777,
     receiptType: ReceiptType.Original,
     tokenStandard: TokenStandard.NonFungible,
-    hideAllowedTokens: true,
     links: [
       {
         text: 'Discord',
@@ -2757,7 +2724,6 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     ),
     hostname: 'stake-soundfamily.herokuapp.com',
     hideFooter: true,
-    hideAllowedTokens: true,
     websiteUrl: 'https://catchtherecord.com/',
     receiptType: ReceiptType.Original,
     tokenStandard: TokenStandard.NonFungible,
@@ -2817,7 +2783,6 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     contrastHomepageBkg: true,
     hostname: 'staking.dustcity.world',
     hideFooter: true,
-    hideAllowedTokens: true,
     websiteUrl: 'staking.dustcity.world',
     receiptType: ReceiptType.Original,
     tokenStandard: TokenStandard.NonFungible,
@@ -2862,7 +2827,6 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     contrastHomepageBkg: true,
     hostname: 'rektville.dustcity.world',
     hideFooter: true,
-    hideAllowedTokens: true,
     websiteUrl: 'rektville.dustcity.world',
     receiptType: ReceiptType.Original,
     tokenStandard: TokenStandard.NonFungible,
@@ -3018,7 +2982,6 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     nameInHeader: true,
     receiptType: ReceiptType.Original,
     tokenStandard: TokenStandard.NonFungible,
-    hideAllowedTokens: true,
     hideFooter: true,
     contrastHomepageBkg: false,
     styles: {
@@ -3056,7 +3019,6 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     maxStaked: 10000,
     nameInHeader: true,
     tokenStandard: TokenStandard.NonFungible,
-    hideAllowedTokens: true,
     hideFooter: true,
     links: [
       {
@@ -3131,7 +3093,6 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     ),
     contrastHomepageBkg: true,
     hideFooter: true,
-    hideAllowedTokens: true,
     receiptType: ReceiptType.Original,
     tokenStandard: TokenStandard.NonFungible,
     imageUrl: '/logos/supportive-dudes.png',
@@ -3212,7 +3173,6 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     },
     backgroundImage:
       'https://cdn.discordapp.com/attachments/989483399477604404/1024694267282726942/ReliefBlackBackground.jpg',
-    hideAllowedTokens: true,
     colors: {
       primary: '#000000',
       secondary: '#FFFFFF',
@@ -3307,9 +3267,9 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     stakePoolAddress: new PublicKey(
       '8xnC5wbXAgXoDghKGWTuxbw76U7HAHAwRuU3AKKovGif'
     ),
-    description: 'Fronkme reward token staking',
+    description: 'Stake Collection Proof',
     imageUrl:
-      'https://bafybeidq25hbteb2lzh4uaqez5ir7jx4sdgihscm4gaefqf4kllebwdi7q.ipfs.nftstorage.link/WhatsApp%20Image%202023-01-17%20at%2010.40.25%20AM.jpeg',
+      'https://bafybeiehzl5pc5gf4rdlg44bcxzalouhoovwdixdxzeszdmqbyh5nerxj4.ipfs.nftstorage.link/pixelTree.PNG',
     tokenStandard: TokenStandard.NonFungible,
     receiptType: ReceiptType.Original,
     hideFooter: true,
@@ -3348,7 +3308,6 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     ),
     contrastHomepageBkg: true,
     hideFooter: true,
-    hideAllowedTokens: true,
     receiptType: ReceiptType.Original,
     tokenStandard: TokenStandard.NonFungible,
     imageUrl:
