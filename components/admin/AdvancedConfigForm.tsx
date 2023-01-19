@@ -4,11 +4,13 @@ import { AsyncButton } from 'common/Button'
 import { FormFieldTitleInput } from 'common/FormFieldInput'
 import { LoadingSpinner } from 'common/LoadingSpinner'
 import { SelectorBoolean } from 'common/SelectorBoolean'
+import { Tooltip } from 'common/Tooltip'
 import { useFormik } from 'formik'
 import { useStakePoolData } from 'hooks/useStakePoolData'
 import { useStakePoolId } from 'hooks/useStakePoolId'
 import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
 import { HexColorPicker } from 'react-colorful'
+import { BsFillInfoCircleFill } from 'react-icons/bs'
 import validateColor from 'validate-color'
 import * as Yup from 'yup'
 
@@ -204,12 +206,16 @@ export const AdvancedConfigForm = () => {
   return (
     <div className="w-full space-y-8">
       <div className="w-full">
-        <FormFieldTitleInput
-          title={'Name'}
-          description={
-            'Name of this stake pool used as an id. Should be in lower-case kebab-case since it is used in the URL as /{name}'
-          }
-        />
+        <div className="flex">
+          <div>
+            <FormFieldTitleInput
+              title={'Name'}
+              description={
+                'Name of this stake pool used as an id. Should be in lower-case kebab-case since it is used in the URL as /{name}'
+              }
+            />
+          </div>
+        </div>
         <TextInput
           disabled={false}
           hasError={!!values.name && values.name !== '' && !!errors.name}
@@ -295,7 +301,26 @@ export const AdvancedConfigForm = () => {
       </div>
       <div>
         <FormFieldTitleInput
-          title={'Hostname'}
+          title={
+            <div className="flex items-center">
+              <div>Hostname</div>
+              <Tooltip
+                title={
+                  <div>
+                    Set the following record on your DNS provider:
+                    <br />
+                    <br />
+                    Type NAME CNAME <br />
+                    CNAME [your subdomain] cname.vercel-dns.com
+                  </div>
+                }
+              >
+                <div className="ml-2 flex cursor-pointer flex-row items-center justify-center gap-2">
+                  <BsFillInfoCircleFill className="text-medium-3" />
+                </div>
+              </Tooltip>
+            </div>
+          }
           description={'Optional hostname to remap'}
         />
         <TextInput
