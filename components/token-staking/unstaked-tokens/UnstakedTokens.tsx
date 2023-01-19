@@ -176,7 +176,11 @@ export const UnstakedTokens = () => {
           <Tooltip title="Attempt to stake all tokens at once">
             <button
               onClick={() => {
-                setUnstakedSelected(allowedTokenDatas.data || [])
+                setUnstakedSelected(
+                  unstakedSelected.length > 0
+                    ? []
+                    : allowedTokenDatas.data || []
+                )
               }}
               style={{
                 background:
@@ -187,7 +191,9 @@ export const UnstakedTokens = () => {
               }}
               className="my-auto flex cursor-pointer rounded-md px-4 py-2 hover:scale-[1.03]"
             >
-              <span className="my-auto">Select All</span>
+              <span className="my-auto">
+                {unstakedSelected.length > 0 ? 'Unselect All' : 'Select All'}
+              </span>
             </button>
           </Tooltip>
         </div>
