@@ -10,6 +10,7 @@ import type { AllowedTokenData } from 'hooks/useAllowedTokenDatas'
 import { useAllowedTokenDatas } from 'hooks/useAllowedTokenDatas'
 import { isStakePoolV2, useStakePoolData } from 'hooks/useStakePoolData'
 import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
+import { useTokenAccounts } from 'hooks/useTokenAccounts'
 import { useEffect, useState } from 'react'
 import { FaInfoCircle } from 'react-icons/fa'
 
@@ -26,6 +27,7 @@ export const UnstakedTokens = () => {
     ReceiptType.Original
   )
   const [showFungibleTokens, setShowFungibleTokens] = useState(false)
+  const tokenAccounts = useTokenAccounts()
   const allowedTokenDatas = useAllowedTokenDatas(showFungibleTokens)
   const handleStake = useHandleStake(() => setUnstakedSelected([]))
 
@@ -59,9 +61,14 @@ export const UnstakedTokens = () => {
         <div className="flex flex-row items-center justify-center">
           <RefreshButton
             colorized
-            isFetching={allowedTokenDatas.isFetching}
-            dataUpdatdAtMs={allowedTokenDatas.dataUpdatedAt}
-            handleClick={() => allowedTokenDatas.refetch()}
+            isFetching={
+              tokenAccounts.isFetching || allowedTokenDatas.isFetching
+            }
+            dataUpdatdAtMs={Math.max(
+              tokenAccounts.dataUpdatedAt,
+              allowedTokenDatas.dataUpdatedAt
+            )}
+            handleClick={() => tokenAccounts.refetch()}
           />
           {stakePoolData?.parsed &&
             !stakePoolMetadata?.tokenStandard &&

@@ -30,6 +30,7 @@ export const useHandleUnstake = (callback?: () => void) => {
       tokenDatas: StakeEntryTokenData[]
     }): Promise<string[]> => {
       if (!stakePoolId) throw 'Stake pool not found'
+      if (!wallet.publicKey) throw 'Wallet not connected'
       if (!stakePool || !stakePool.parsed) throw 'Stake pool not found'
 
       const ataTx = new Transaction()
@@ -39,8 +40,8 @@ export const useHandleUnstake = (callback?: () => void) => {
           ataTx,
           connection,
           rewardDistributorData.data.parsed.rewardMint,
-          wallet.publicKey!,
-          wallet.publicKey!
+          wallet.publicKey,
+          wallet.publicKey
         )
       }
 
