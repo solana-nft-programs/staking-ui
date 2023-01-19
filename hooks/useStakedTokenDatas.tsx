@@ -18,9 +18,7 @@ export type StakeEntryTokenData = {
   tokenListData?: TokenListData
   metaplexData?: { pubkey: PublicKey; data: metaplex.MetadataData } | null
   stakeEntry:
-    | (Pick<IdlAccountData<'stakeEntry'>, 'pubkey' | 'parsed'> & {
-        receiptMint?: PublicKey
-      })
+    | Pick<IdlAccountData<'stakeEntry'>, 'pubkey' | 'parsed'>
     | null
     | undefined
 }
