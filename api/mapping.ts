@@ -3269,19 +3269,18 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     ],
   },
   {
-    name: 'twoRewards',
-    displayName: 'two rewards',
+    name: 'Fronkme',
+    displayName: 'Fronkme Staking',
     nameInHeader: true,
     stakePoolAddress: new PublicKey(
       '8xnC5wbXAgXoDghKGWTuxbw76U7HAHAwRuU3AKKovGif'
     ),
     description:
-      'Stake Collection Proof',
-    imageUrl: 'https://bafybeiehzl5pc5gf4rdlg44bcxzalouhoovwdixdxzeszdmqbyh5nerxj4.ipfs.nftstorage.link/pixelTree.PNG',
+      'Fronkme reward token staking',
+    imageUrl: 'https://bafybeidq25hbteb2lzh4uaqez5ir7jx4sdgihscm4gaefqf4kllebwdi7q.ipfs.nftstorage.link/WhatsApp%20Image%202023-01-17%20at%2010.40.25%20AM.jpeg',
     tokenStandard: TokenStandard.NonFungible,
     receiptType: ReceiptType.Original,
     hideFooter: true,
-    hostname: 'https://tworewards.vercel.app/',
     websiteUrl: '',
     maxStaked: 5,
     logoPadding: false,
