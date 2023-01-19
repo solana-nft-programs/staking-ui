@@ -253,24 +253,6 @@ export const AdvancedConfigForm = () => {
       </div>
       <div>
         <FormFieldTitleInput
-          title={'Stake pool address'}
-          description={'Publickey for this stake pool'}
-        />
-        <TextInput
-          hasError={
-            !!values.stakePoolAddress &&
-            values.stakePoolAddress !== '' &&
-            !!errors.stakePoolAddress
-          }
-          placeholder={'Enter publickey'}
-          value={values.stakePoolAddress}
-          onChange={(e) => {
-            setFieldValue('stakePoolAddress', e.target.value)
-          }}
-        />
-      </div>
-      <div>
-        <FormFieldTitleInput
           title={'Description'}
           description={'Description for this stake pool'}
         />
@@ -285,24 +267,6 @@ export const AdvancedConfigForm = () => {
           onChange={(e) => {
             setFieldValue('description', e.target.value)
           }}
-        />
-      </div>
-      <div>
-        <FormFieldTitleInput
-          title={'Receipt type'}
-          description={
-            'Default receipt type. Setting this will remove the option for the user to choose which receipt type to use'
-          }
-        />
-        <SelectInput
-          className="w-full"
-          value={String(values.receiptType) || ''}
-          setValue={(v) => setFieldValue('receiptType', v)}
-          options={[
-            { label: 'Original', value: String(ReceiptType.Original) },
-            { label: 'Receipt', value: String(ReceiptType.Receipt) },
-            { label: 'None', value: String(ReceiptType.None) },
-          ]}
         />
       </div>
       <div>
@@ -322,13 +286,6 @@ export const AdvancedConfigForm = () => {
             { label: 'None', value: String(TokenStandard.None) },
           ]}
         />
-      </div>
-      <div>
-        <FormFieldTitleInput
-          title={'Hidden'}
-          description={'Optional config to hide this pool from the main page'}
-        />
-        <SelectorBoolean handleChange={(v) => setFieldValue('hidden', v)} />
       </div>
       <div>
         <FormFieldTitleInput
@@ -378,15 +335,6 @@ export const AdvancedConfigForm = () => {
           onChange={(e) => {
             setFieldValue('redirect', e.target.value)
           }}
-        />
-      </div>
-      <div>
-        <FormFieldTitleInput
-          title={'Hide allowed tokens'}
-          description={'Hide allowed tokens style'}
-        />
-        <SelectorBoolean
-          handleChange={(v) => setFieldValue('hideAllowedTokens', v)}
         />
       </div>
       <div>
