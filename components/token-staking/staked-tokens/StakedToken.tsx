@@ -12,10 +12,10 @@ import type { UseMutationResult } from 'react-query'
 
 import { TokenImage } from '@/components/token-staking/token/TokenImage'
 import { TokenImageWrapper } from '@/components/token-staking/token/TokenImageWrapper'
+import { TokenWrapper } from '@/components/token-staking/token/TokenWrapper'
 import { TokenStatBoostBadge } from '@/components/token-staking/token-stats/UI/TokenStatBoostBadge'
 import { TokenStatCooldownBadge } from '@/components/token-staking/token-stats/UI/TokenStatCooldownBadge'
 import { TokenStatNextRewardBadge } from '@/components/token-staking/token-stats/UI/TokenStatNextRewardBadge'
-import { TokenWrapper } from '@/components/token-staking/token/TokenWrapper'
 
 import { StakedStats } from './StakedStats'
 
@@ -122,7 +122,11 @@ export const StakedToken = ({
                   stakePoolMetadata?.colors?.fontColor,
               }}
               className="flex-grow rounded-lg p-2 transition-all hover:scale-[1.03]"
-              onClick={() => handleUnstake.mutate({ tokenDatas: [tk] })}
+              onClick={(e) => {
+                e.stopPropagation()
+                !selected && select(tk)
+                handleUnstake.mutate({ tokenDatas: [tk] })
+              }}
             >
               Unstake
             </button>
