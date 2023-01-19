@@ -75,7 +75,8 @@ export const useHandleClaimRewards = () => {
                   ],
                   rewardDistributorData.data
                     ? [rewardDistributorData.data.pubkey]
-                    : []
+                    : [],
+                  true
                 )
               } else {
                 claimTxs = [

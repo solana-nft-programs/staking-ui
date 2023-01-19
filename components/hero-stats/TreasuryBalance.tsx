@@ -7,16 +7,13 @@ import {
 } from 'hooks/useRewardDistributorData'
 import { useRewardDistributorTokenAccount } from 'hooks/useRewardDistributorTokenAccount'
 import { useRewardMintInfo } from 'hooks/useRewardMintInfo'
-import { useRewardsRate } from 'hooks/useRewardsRate'
 import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
-import { useEffect } from 'react'
 
-export type TreasuryBalanceProps = React.HTMLAttributes<HTMLDivElement> & {
+export type Props = React.HTMLAttributes<HTMLDivElement> & {
   className?: string
 }
 
-export const TreasuryBalance = ({ className }: TreasuryBalanceProps) => {
-  const rewardsRate = useRewardsRate()
+export const TreasuryBalance = ({ className }: Props) => {
   const rewardDistributorData = useRewardDistributorData()
   const rewardMintInfo = useRewardMintInfo()
   const { data: stakePoolMetadata } = useStakePoolMetadata()
@@ -28,14 +25,9 @@ export const TreasuryBalance = ({ className }: TreasuryBalanceProps) => {
     ).eq(new BN(0))
   }
 
-  useEffect(() => {
-    rewardDistributorTokenAccountData.refetch()
-  }, [rewardDistributorTokenAccountData])
-
   return (
     <>
-      {!rewardsRate.data ||
-      !rewardMintInfo.data ||
+      {!rewardMintInfo.data ||
       !rewardDistributorData.data ||
       !rewardDistributorTokenAccountData.isFetched ? (
         <div className="h-6 w-10 animate-pulse rounded-md bg-border"></div>

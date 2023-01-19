@@ -122,7 +122,11 @@ export const StakedToken = ({
                   stakePoolMetadata?.colors?.fontColor,
               }}
               className="flex-grow rounded-lg p-2 transition-all hover:scale-[1.03]"
-              onClick={() => handleUnstake.mutate({ tokenDatas: [tk] })}
+              onClick={(e) => {
+                e.stopPropagation()
+                !selected && select(tk)
+                handleUnstake.mutate({ tokenDatas: [tk] })
+              }}
             >
               Unstake
             </button>

@@ -1,15 +1,15 @@
 import { pubKeyUrl, shortPubKey } from '@cardinal/common'
+import { LinkIcon } from '@heroicons/react/24/outline'
 import type { PublicKey } from '@solana/web3.js'
 import { TabSelector } from 'common/TabSelector'
+import { withCluster } from 'common/utils'
 import { useRewardDistributorData } from 'hooks/useRewardDistributorData'
-import { useRewardDistributorTokenAccount } from 'hooks/useRewardDistributorTokenAccount'
 import { useStakePoolData } from 'hooks/useStakePoolData'
 import { useStakePoolId } from 'hooks/useStakePoolId'
 import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
+import Image from 'next/image'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 import { useState } from 'react'
-
-import { StakePoolBalance } from '@/components/admin/StakePoolBalance'
 
 import { AuthorizeMints } from '../AuthorizeMints'
 import { MintMultiplierLookup } from '../MintMultiplierLookup'
@@ -17,11 +17,10 @@ import { MintMultipliers } from '../MintMultipliers'
 import { StakePoolImage } from '../StakePoolImage'
 import { ReclaimFunds } from './ReclaimFunds'
 import { RewardDistributorUpdate } from './RewardDistributorUpdate'
+import { Snapshot } from './Snapshot'
+import { StakePoolBalance } from './StakePoolBalance'
 import { StakePoolUpdate } from './StakePoolUpdate'
 import { TransferFunds } from './TransferFunds'
-import Image from 'next/image'
-import { LinkIcon } from '@heroicons/react/24/outline'
-import { withCluster } from 'common/utils'
 
 export type PANE_OPTIONS =
   | 'stake-pool'
@@ -29,6 +28,7 @@ export type PANE_OPTIONS =
   | 'reward-distributor'
   | 'reward-multipliers'
   | 'reward-funds'
+  | 'snapshot'
 
 export const AdminStakePool = ({
   onSuccess,
@@ -38,7 +38,6 @@ export const AdminStakePool = ({
   const { environment } = useEnvironmentCtx()
   const { data: config } = useStakePoolMetadata()
   const stakePoolId = useStakePoolId()
-  const rewardDistributorTokenAccountData = useRewardDistributorTokenAccount()
   const stakePool = useStakePoolData()
   const rewardDistributor = useRewardDistributorData()
   const [pane, setPane] = useState<PANE_OPTIONS>('stake-pool')
@@ -85,6 +84,14 @@ export const AdminStakePool = ({
       tooltip: !rewardDistributor.data
         ? 'Only applicable for stake pools that have reward distribution'
         : 'Manage reward distributor funds',
+    },
+    {
+      label: <div className="flex items-center gap-2">Snapshot</div>,
+      value: 'snapshot',
+      disabled: !stakePool.data,
+      tooltip: !stakePool.data
+        ? `Enabled once pool is created to receive snapshot of staked tokens`
+        : `Tool to get pool's snapshot of staked tokens`,
     },
   ]
 
@@ -144,6 +151,11 @@ export const AdminStakePool = ({
               <div className="w-full">
                 <ReclaimFunds />
                 <TransferFunds />
+              </div>
+            ),
+            snapshot: (
+              <div className="w-full">
+                <Snapshot />
               </div>
             ),
           }[pane]

@@ -1,6 +1,8 @@
 import type { AccountData } from '@cardinal/common'
-import { withFindOrInitAssociatedTokenAccount } from '@cardinal/common'
-import { executeTransaction } from '@cardinal/staking'
+import {
+  executeTransaction,
+  withFindOrInitAssociatedTokenAccount,
+} from '@cardinal/common'
 import type { RewardDistributorData } from '@cardinal/staking/dist/cjs/programs/rewardDistributor'
 import type { StakePoolData } from '@cardinal/staking/dist/cjs/programs/stakePool'
 import { useWallet } from '@solana/wallet-adapter-react'
@@ -153,8 +155,8 @@ export const StakePoolCreationFlow = ({
           if (transaction.instructions.length > 0) {
             await executeTransaction(
               connection,
-              asWallet(wallet),
               transaction,
+              asWallet(wallet),
               {}
             )
           }

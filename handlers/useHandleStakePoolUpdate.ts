@@ -1,6 +1,5 @@
-import { tryPublicKey } from '@cardinal/common'
+import { executeTransaction, tryPublicKey } from '@cardinal/common'
 import { rewardsCenterProgram } from '@cardinal/rewards-center'
-import { executeTransaction } from '@cardinal/staking'
 import { withUpdateStakePool } from '@cardinal/staking/dist/cjs/programs/stakePool/transaction'
 import { BN } from '@project-serum/anchor'
 import { useWallet } from '@solana/wallet-adapter-react'
@@ -95,7 +94,7 @@ export const useHandleStakePoolUpdate = () => {
         })
       }
 
-      return executeTransaction(connection, wallet, transaction, {})
+      return executeTransaction(connection, transaction, wallet, {})
     },
     {
       onSuccess: (txid) => {

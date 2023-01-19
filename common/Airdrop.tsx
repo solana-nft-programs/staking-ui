@@ -1,11 +1,10 @@
-import { withCreateMint } from '@cardinal/common'
+import { createMintTx, executeTransaction } from '@cardinal/common'
 import { createInitMintManagerInstruction } from '@cardinal/creator-standard/dist/cjs/generated'
 import {
   findMintManagerId,
   findMintMetadataId,
   findRulesetId,
 } from '@cardinal/creator-standard/dist/cjs/pda'
-import { executeTransaction } from '@cardinal/staking'
 import {
   CreateMetadataV2,
   Creator,
@@ -15,7 +14,7 @@ import {
 import type { Wallet } from '@saberhq/solana-contrib'
 import { useWallet } from '@solana/wallet-adapter-react'
 import type { Connection } from '@solana/web3.js'
-import { Keypair, LAMPORTS_PER_SOL, Transaction } from '@solana/web3.js'
+import { Keypair, LAMPORTS_PER_SOL } from '@solana/web3.js'
 import { notify } from 'common/Notification'
 import { useAllowedTokenDatas } from 'hooks/useAllowedTokenDatas'
 import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
@@ -31,18 +30,15 @@ export async function airdropNFT(
   wallet: Wallet,
   airdropMetadatas: AirdropMetadata[]
 ): Promise<string> {
-  const transaction = new Transaction()
   const randInt = Math.round(Math.random() * (airdropMetadatas.length - 1))
   const metadata: AirdropMetadata | undefined = airdropMetadatas[randInt]
   if (!metadata) throw new Error('No configured airdrops found')
 
   const mintKeypair = Keypair.generate()
-  const [holderTokenAccountId] = await withCreateMint(
-    transaction,
+  const [transaction, holderTokenAccountId] = await createMintTx(
     connection,
-    wallet,
-    wallet.publicKey,
-    mintKeypair.publicKey
+    mintKeypair.publicKey,
+    wallet.publicKey
   )
 
   const masterEditionMetadataId = await Metadata.getPDA(mintKeypair.publicKey)
@@ -93,8 +89,7 @@ export async function airdropNFT(
     initMintManagerIx,
   ]
 
-  const txid = await executeTransaction(connection, wallet, transaction, {
-    confirmOptions: { commitment: 'confirmed' },
+  const txid = await executeTransaction(connection, transaction, wallet, {
     signers: [mintKeypair],
   })
   console.log(

@@ -37,23 +37,27 @@ export const executeAllTransactions = async (
     tx.feePayer = wallet.publicKey
     tx.recentBlockhash = recentBlockhash
   }
-  await wallet.signAllTransactions(transactions)
+  const signedTransactions = await wallet.signAllTransactions(transactions)
 
   let txIds: string[] = []
   if (preTx) {
+    const signedPreTx = signedTransactions[0]!
     const txid = await sendAndConfirmRawTransaction(
       connection,
-      preTx.serialize(),
+      signedPreTx.serialize(),
       config.confirmOptions
     )
     txIds.push(txid)
   }
 
+  const filteredSignedTransactions = preTx
+    ? signedTransactions.slice(1, signedTransactions.length)
+    : signedTransactions
   txIds = [
     ...txIds,
     ...(
       await Promise.all(
-        txs.map(async (tx, index) => {
+        filteredSignedTransactions.map(async (tx, index) => {
           try {
             if (
               config.signers &&

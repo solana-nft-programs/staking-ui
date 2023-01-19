@@ -29,7 +29,7 @@ export const StepContent = ({
   activeSlavePanelScreen,
 }: StepContentProps) => {
   return (
-    <div className="h-full">
+    <div className="mx-2 h-full">
       {currentStep === 0 && <Intro />}
       {currentStep === 1 && (
         <Authorization

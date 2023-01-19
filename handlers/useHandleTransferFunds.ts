@@ -1,5 +1,7 @@
-import { withFindOrInitAssociatedTokenAccount } from '@cardinal/common'
-import { executeTransaction } from '@cardinal/staking'
+import {
+  executeTransaction,
+  withFindOrInitAssociatedTokenAccount,
+} from '@cardinal/common'
 import { useWallet } from '@solana/wallet-adapter-react'
 import { Transaction } from '@solana/web3.js'
 import { notify } from 'common/Notification'
@@ -61,7 +63,7 @@ export const useHandleTransferFunds = () => {
         )
       )
 
-      return executeTransaction(connection, wallet, transaction, {})
+      return executeTransaction(connection, transaction, wallet, {})
     },
     {
       onSuccess: (txid) => {

@@ -1,6 +1,9 @@
-import { findAta, withFindOrInitAssociatedTokenAccount } from '@cardinal/common'
+import {
+  executeTransaction,
+  findAta,
+  withFindOrInitAssociatedTokenAccount,
+} from '@cardinal/common'
 import { rewardsCenterProgram } from '@cardinal/rewards-center'
-import { executeTransaction } from '@cardinal/staking'
 import { withReclaimFunds } from '@cardinal/staking/dist/cjs/programs/rewardDistributor/transaction'
 import { BN } from '@project-serum/anchor'
 import { useWallet } from '@solana/wallet-adapter-react'
@@ -64,7 +67,7 @@ export const useHandleReclaimFunds = () => {
           amount: new BN(reclaimAmount || 0),
         })
       }
-      return executeTransaction(connection, wallet, transaction, {})
+      return executeTransaction(connection, transaction, wallet, {})
     },
     {
       onSuccess: (txid) => {
