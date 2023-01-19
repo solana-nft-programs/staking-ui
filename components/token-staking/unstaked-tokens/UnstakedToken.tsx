@@ -11,8 +11,8 @@ import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
 import type { UseMutationResult } from 'react-query'
 
 import { TokenImage } from '@/components/token-staking/token/TokenImage'
-import { TokenWrapper } from '@/components/token-staking/token/TokenWrapper'
 import { TokenImageWrapper } from '@/components/token-staking/token/TokenImageWrapper'
+import { TokenWrapper } from '@/components/token-staking/token/TokenWrapper'
 
 export const UnstakedToken = ({
   tk,
@@ -125,7 +125,9 @@ export const UnstakedToken = ({
                   stakePoolMetadata?.colors?.fontColor,
               }}
               className="flex-grow rounded-lg p-2 transition-all hover:scale-[1.03]"
-              onClick={() => {
+              onClick={(e) => {
+                e.stopPropagation()
+                !selected && select(tk)
                 handleStake.mutate({
                   tokenDatas: [tk],
                   receiptType,
