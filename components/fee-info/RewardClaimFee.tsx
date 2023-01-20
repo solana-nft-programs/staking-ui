@@ -36,7 +36,10 @@ export const RewardClaimFee: React.FC = () => {
                   claimRewardsPaymentMintDecimals
                 )}
             </div>
-            <>{`$${claimRewardsPaymentMintSymbol}`}</>
+            <>
+              {!!claimRewardsPaymentMintSymbol &&
+                `$${claimRewardsPaymentMintSymbol}`}
+            </>
           </div>
         )}
     </>

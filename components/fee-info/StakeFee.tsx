@@ -37,7 +37,7 @@ export const StakeFee: React.FC = () => {
                   stakePaymentMintDecimals
                 )}
             </div>
-            <>{`$${stakePaymentMintSymbol}`}</>
+            <>{!!stakePaymentMintSymbol && `$${stakePaymentMintSymbol}`}</>
           </div>
         )}
     </>

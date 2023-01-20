@@ -26,21 +26,19 @@ export const UnstakeFee: React.FC = () => {
       {!!stakePool.isFetched &&
         stakePool?.data?.parsed &&
         isStakePoolV2(stakePool.data.parsed) && (
-          <>
-            <div className="flex items-center gap-2">
-              <ArrowUpOnSquareIcon className="h-5 w-5 text-medium-4" />
-              <div className="text-medium-4">Unstake Fee:</div>
-              <div>
-                {!!unstakePaymentMintDecimals &&
-                  formatAmountAsDecimal(
-                    unstakePaymentMintDecimals,
-                    new BN(unstakePaymentInfo.data.parsed.paymentAmount),
-                    unstakePaymentMintDecimals
-                  )}
-              </div>
-              <>{`$${unstakePaymentMintSymbol}`}</>
+          <div className="flex items-center gap-2">
+            <ArrowUpOnSquareIcon className="h-5 w-5 text-medium-4" />
+            <div className="text-medium-4">Unstake Fee:</div>
+            <div>
+              {!!unstakePaymentMintDecimals &&
+                formatAmountAsDecimal(
+                  unstakePaymentMintDecimals,
+                  new BN(unstakePaymentInfo.data.parsed.paymentAmount),
+                  unstakePaymentMintDecimals
+                )}
             </div>
-          </>
+            <>{!!unstakePaymentMintSymbol && `$${unstakePaymentMintSymbol}`}</>
+          </div>
         )}
     </>
   )

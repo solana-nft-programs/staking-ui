@@ -8,7 +8,7 @@ export const PoolVersionIndicator: React.FC = () => {
   return (
     <>
       {!!stakePool.isFetched && stakePool?.data?.parsed && (
-        <div>
+        <div className="flex items-center gap-2">
           <Tooltip
             title={`This is the version of the stake pool protocol that this stake pool is using. Each version handles fees differently.`}
           >
