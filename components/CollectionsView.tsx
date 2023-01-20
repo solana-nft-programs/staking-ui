@@ -42,7 +42,7 @@ export const CollectionsView = ({
       window.scrollTo({
         behavior: 'smooth',
         top: (ref.current?.offsetTop ?? 0) - 50,
-      }), 
+      }),
     [view]
   )
   return (
@@ -85,7 +85,7 @@ export const CollectionsView = ({
         </div>
       ) : (
         <div>
-          <CollectionsGrid configs={configs?.slice(0, 12)} />
+          <CollectionsGrid configs={configs} />
           <div className="mt-3 flex items-center justify-center text-xl">
             <ButtonSmall onClick={() => setView('list')}>
               <div className="flex items-center px-2">

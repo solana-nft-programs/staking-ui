@@ -21,7 +21,7 @@ export const getMintfromTokenData = (
   tokenData: AllowedTokenData | StakeEntryTokenData
 ) => {
   return (
-    ('stakeEntry' in tokenData && tokenData.stakeEntry?.parsed.originalMint) ||
+    ('stakeEntry' in tokenData && tokenData.stakeEntry?.parsed?.stakeMint) ||
     tryPublicKey(tokenData.metaplexData?.data.mint) ||
     tryPublicKey(tokenData.tokenListData?.address)
   )

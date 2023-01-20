@@ -59,20 +59,31 @@ const additionalMints = [
     name: 'Miami',
     symbol: 'MIA',
   },
+  {
+    address: '4Up16GyRmybEEDfaCsDszkzkvtWgoKDtS4cUyBEjvPBM',
+    chainId: 101,
+    name: 'Vandal City Vault',
+    symbol: 'VAULT',
+    verified: true,
+    decimals: 9,
+    logoURI:
+      'https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/4Up16GyRmybEEDfaCsDszkzkvtWgoKDtS4cUyBEjvPBM/logo.png',
+    tags: ['gaming-token', 'social-token'],
+  },
 ]
 
 export const useTokenList = () => {
   return useQuery<TokenListData[] | undefined>(
     ['useTokenList'],
     async () => {
-      return await fetch(
-        'https://raw.githubusercontent.com/solana-labs/token-list/main/src/tokens/solana.tokenlist.json'
-      )
+      return await fetch('https://token-list-api.solana.cloud/v1/list')
         .then((response) => response.json())
-        .then((data) => [...data['tokens'], ...additionalMints])
+        .then((data) => {
+          return [...additionalMints, ...data['content']]
+        })
     },
     {
-      retry: 2,
+      retry: false,
     }
   )
 }

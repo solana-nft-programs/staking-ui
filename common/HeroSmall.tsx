@@ -1,7 +1,7 @@
 import { shortPubKey } from '@cardinal/namespaces-components'
 import { useStakePoolId } from 'hooks/useStakePoolId'
 
-import { HeroStats } from '../components/HeroStats'
+import { HeroStats } from '../components/hero-stats/HeroStats'
 
 export const HeroSmall: React.FC = () => {
   const stakePoolId = useStakePoolId()

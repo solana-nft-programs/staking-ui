@@ -64,6 +64,7 @@ export type StakePoolMetadata = {
     fontColor?: string
     fontColorSecondary?: string
     backgroundSecondary?: string
+    fontColorTertiary?: string
   }
   // Disallow regions based on IP address
   disallowRegions?: { code: string; subdivision?: string }[]
@@ -105,6 +106,28 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
   //   },
   // },
   {
+    name: 'particlesnft',
+    displayName: 'ParticlesNFT',
+    stakePoolAddress: new PublicKey(
+      'CQq4qfsM6D7zdw6pnGSo3FZ1LhNAvdMU1f3dRkH5cXKs'
+    ),
+    websiteUrl: 'https://www.particlesnft.io/',
+    nameInHeader: true,
+    description: 'Stake your particles NFT to earn $OOO',
+    hideFooter: true,
+    imageUrl: '/logos/particles-shining-logo.gif',
+    links: [
+      {
+        text: 'Buy Now',
+        value: 'https://magiceden.io/marketplace/particles_nft',
+      },
+    ],
+    colors: {
+      primary: '#0d0d0d',
+      secondary: '#595959',
+    },
+  },
+  {
     name: 'bearmarketbeavers',
     displayName: 'Bear Market Beavers',
     stakePoolAddress: new PublicKey(
@@ -123,7 +146,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     styles: {
       fontFamily: 'Paralucent',
       fontWeight: 500,
-      backgroundSize: '100% auto'
+      backgroundSize: '100% auto',
     },
     links: [
       {
@@ -140,7 +163,6 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     },
     backgroundImage:
       'https://gateway.pinata.cloud/ipfs/QmYiRZFYsm3xKw6pD82LChvKZaEH2pdWqzvKzsotDjuRGj',
-  
   },
   {
     name: 'metatattooclub',
@@ -160,7 +182,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     styles: {
       fontFamily: 'Industry, sans-serif',
       fontWeight: 500,
-      backgroundSize: '100% auto'
+      backgroundSize: '100% auto',
     },
     links: [
       {
@@ -176,26 +198,17 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     },
     backgroundImage:
       'https://gateway.pinata.cloud/ipfs/QmdZ6eTjxUzCzguqdNBkYP5uMeHjjpkSgQg8512ozSUvff',
-  
   },
   {
+    hidden: true,
     name: 'lotus',
     displayName: 'The Lotus',
-    hostname: 'staking.thelotus.io',
+    hostname: 'legendary.thelotus.io',
     websiteUrl: 'https://www.thelotus.io',
-    hideFooter: true,
     stakePoolAddress: new PublicKey(
-      '4c4JF1m6hteH8F5iMN7nQYo8SfLPCJBNTeXFmjzt9C2J'
+      'BeT8h9E5BcgcMBxF7Si5GSRuB6zHcSpFuMpp6uTcVRFN'
     ),
-    description: 'The Lotus staking pool.',
-    imageUrl: '/logos/lotus.svg',
-    colors: {
-      primary: '#ffffff',
-      secondary: '#91B9FF',
-      accent: '#E9E1D1',
-      fontColor: '#303030',
-    },
-    receiptType: ReceiptType.Receipt
+    receiptType: ReceiptType.Receipt,
   },
   {
     name: 'portals',
@@ -272,6 +285,46 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     },
     // maxStaked: ,
     receiptType: ReceiptType.Original,
+  },
+  {
+    name: 'goodskellas',
+    displayName: 'Good Skellas',
+    hostname: 'stake.goodskellas.xyz',
+    stakePoolAddress: new PublicKey(
+      'FqBj7uVDHfy6cDDoihX3cQSCmV347SoFXUtvUe5auMQ8'
+    ),
+    websiteUrl: 'https://www.goodskellas.xyz/',
+    nameInHeader: true,
+    description: 'Stake your Skellas NFT to earn $BONES',
+    hideFooter: true,
+    imageUrl: 'https://i.imgur.com/cjJDaD8.png',
+    backgroundImage: 'https://i.imgur.com/aXFVc4C.png',
+    links: [
+      {
+        text: 'Website',
+        value: 'https://www.goodskellas.xyz/',
+      },
+      {
+        text: 'Twitter',
+        value: 'https://twitter.com/goodskellas',
+      },
+      {
+        text: 'MagicEden',
+        value: 'https://magiceden.io/marketplace/goodskellas',
+      },
+    ],
+    styles: {
+      fontFamily: 'Franklin Gothic Medium',
+      fontWeight: 300,
+      backgroundSize: 'cover',
+      backgroundPosition: 'center',
+    },
+    colors: {
+      primary: '#000000',
+      secondary: '#9399CB',
+      accent: '#9399CB',
+      fontColor: '#FFFFFF',
+    },
   },
   {
     name: 'shadiesstandard',
@@ -493,6 +546,45 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       accent: '#2a393a',
       fontColor: '#FFFFFF',
     },
+  },
+  {
+    name: 'spaceboys',
+    displayName: 'Space Boys',
+    hostname: 'stake.spaceboys.xyz',
+    stakePoolAddress: new PublicKey(
+      'EchAuMJeaVhbitnEns7QPYh2mFqxWFY8QsQmchn4LRVz'
+    ),
+    nameInHeader: true,
+    description: 'Stake your Space Boy to earn $SPACE',
+    hideFooter: true,
+    imageUrl: 'https://i.imgur.com/baGSXKZ.png',
+    links: [
+      {
+        text: 'Buy Now',
+        value: 'https://magiceden.io/marketplace/spaceboys',
+      },
+      {
+        text: 'Twitter',
+        value: 'https://twitter.com/SpaceBoysNFT',
+      },
+      {
+        text: 'Discord',
+        value: 'https://discord.gg/yhVWzGbEkc',
+      },
+    ],
+    colors: {
+      primary: '#00dbda',
+      secondary: '#000000',
+      accent: '#f248a7',
+      fontColor: '#00dbda',
+      fontColorSecondary: '#00dbda',
+    },
+    styles: {
+      fontFamily: 'Industry, sans-serif',
+      fontWeight: 500,
+      backgroundSize: 'cover',
+    },
+    backgroundImage: 'https://i.imgur.com/Zuj545m.png',
   },
   {
     name: 'META',
@@ -1131,25 +1223,50 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
   },
   {
     name: 'onespace',
-    displayName: 'ONESPACE',
+    displayName: 'ONESPACE NFT STAKING',
     stakePoolAddress: new PublicKey(
       'FBTqpPynmDdVsYP4eep6pJonwMsFoVhaXcCpah3yYLZY'
     ),
     websiteUrl: 'https://1space.me/',
     receiptType: ReceiptType.Original,
+    tokenStandard: TokenStandard.NonFungible,
     hostname: 'stake.1space.me',
     hideFooter: true,
-    logoPadding: true,
-    imageUrl: 'https://1space.me/images/os-logo-white.jpeg',
-    maxStaked: 300,
+    imageUrl: 'https://1space.me/images/logo-new-main-heroes_02.png',
+    maxStaked: 700,
     links: [
       {
-        text: 'ONEHERO NFT',
+        text: 'HOME',
+        value: 'https://1space.me/',
+      },
+      {
+        text: 'BUY / SELL',
+        value: 'https://1space.me/#token',
+      },
+      {
+        text: 'FARMS',
+        value:
+          'https://raydium.io/farms/?tab=Ecosystem&farmid=C7KtyxWPukyvkxWFybuDDd92ofG2jZa9vFjAfhY7ymQt',
+      },
+      {
+        text: 'SWAP',
+        value: 'https://app.1space.me/',
+      },
+      {
+        text: 'TRADING',
+        value: 'https://dex.1space.me/',
+      },
+      {
+        text: 'TOKEN STAKING',
+        value: 'https://coinstake.1space.me/',
+      },
+      {
+        text: 'NFT COLLECTION',
         value: 'https://nft.1space.me/',
       },
       {
-        text: 'MINT',
-        value: 'https://nft.1space.me/#mint',
+        text: 'DOCS',
+        value: 'https://docs.1space.me/',
       },
     ],
     styles: {
@@ -1158,10 +1275,132 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     },
     colors: {
       primary: '#121429',
-      secondary: '#00b7ff',
+      secondary: '#519ef7',
       accent: '#2b3645',
       fontColor: '#FFFFFF',
     },
+    backgroundImage: 'https://i.ibb.co/KzLDpfX/Home-background.png',
+  },
+  {
+    name: 'onespace-1sp',
+    displayName: 'ONESPACE 1SP STAKING',
+    stakePoolAddress: new PublicKey(
+      '33cp8KDrzJpJDDRTSyTght2FuXCbUDmAiecFRw8qgem4'
+    ),
+    websiteUrl: 'https://1space.me/',
+    receiptType: ReceiptType.Original,
+    tokenStandard: TokenStandard.Fungible,
+    hostname: 'coinstake.1space.me',
+    hideFooter: true,
+    imageUrl: 'https://1space.me/images/stake-spaceman1.png',
+
+    links: [
+      {
+        text: 'HOME',
+        value: 'https://1space.me/',
+      },
+      {
+        text: 'BUY / SELL',
+        value: 'https://1space.me/#token',
+      },
+      {
+        text: 'FARMS',
+        value:
+          'https://raydium.io/farms/?tab=Ecosystem&farmid=C7KtyxWPukyvkxWFybuDDd92ofG2jZa9vFjAfhY7ymQt',
+      },
+      {
+        text: 'SWAP',
+        value: 'https://app.1space.me/',
+      },
+      {
+        text: 'TRADING',
+        value: 'https://dex.1space.me/',
+      },
+      {
+        text: 'NFT STAKING',
+        value: 'https://stake.1space.me/',
+      },
+      {
+        text: 'NFT COLLECTION',
+        value: 'https://nft.1space.me/',
+      },
+      {
+        text: 'DOCS',
+        value: 'https://docs.1space.me/',
+      },
+    ],
+    styles: {
+      fontFamily: 'Industry, sans-serif',
+      fontWeight: 400,
+    },
+    colors: {
+      primary: '#121429',
+      secondary: '#519ef7',
+      accent: '#2b3645',
+      fontColor: '#FFFFFF',
+    },
+    backgroundImage: 'https://i.ibb.co/KzLDpfX/Home-background.png',
+  },
+  {
+    name: 'spaceman',
+    displayName: 'SPACEMAN NFT STAKING',
+    stakePoolAddress: new PublicKey(
+      'AYtjirk6EJMSXNwkbteoGqu8hZbbGkzw3hUvmfHALkP3'
+    ),
+    websiteUrl: 'https://1space.me/',
+    receiptType: ReceiptType.Original,
+    tokenStandard: TokenStandard.NonFungible,
+    hostname: 'spaceman-stake.1space.me',
+    hideFooter: true,
+    imageUrl: 'https://1space.me/images/logo-new-main-heroes_02.png',
+    maxStaked: 700,
+    links: [
+      {
+        text: 'HOME',
+        value: 'https://1space.me/',
+      },
+      {
+        text: 'BUY / SELL',
+        value: 'https://1space.me/#token',
+      },
+      {
+        text: 'FARMS',
+        value:
+          'https://raydium.io/farms/?tab=Ecosystem&farmid=C7KtyxWPukyvkxWFybuDDd92ofG2jZa9vFjAfhY7ymQt',
+      },
+      {
+        text: 'SWAP',
+        value: 'https://app.1space.me/',
+      },
+      {
+        text: 'TRADING',
+        value: 'https://dex.1space.me/',
+      },
+      {
+        text: 'TOKEN STAKING',
+        value: 'https://coinstake.1space.me/',
+      },
+      {
+        text: 'NFT COLLECTION',
+        value: 'https://nft.1space.me/',
+      },
+      {
+        text: 'DOCS',
+        value: 'https://docs.1space.me/',
+      },
+    ],
+    styles: {
+      fontFamily: 'Industry, sans-serif',
+      fontWeight: 400,
+    },
+    colors: {
+      primary: '#121429',
+      secondary: '#519ef7',
+      accent: '#2b3645',
+      fontColor: '#FFFFFF',
+    },
+
+    backgroundImage: 'https://i.ibb.co/KzLDpfX/Home-background.png',
   },
   {
     name: 'trust-in-pat',
@@ -2236,19 +2475,19 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       },
       {
         text: 'Buy MetaMercs',
-        value: 'https://hyperspace.xyz/collection/4Wo6Yuv9Den1DHuv8GmFDhA8cwGa28ToaXRwLwCRUqAX',  
+        value:
+          'https://hyperspace.xyz/collection/4Wo6Yuv9Den1DHuv8GmFDhA8cwGa28ToaXRwLwCRUqAX',
       },
     ],
   },
-    {
-  name: 'gnarafdao',
+  {
+    name: 'gnarafdao',
     displayName: 'GnarAF DAO',
     stakePoolAddress: new PublicKey(
       '3hdpn7vkfASdzWvqrLgT83TZLNWdhkG3C1LeubWk7RRZ'
     ),
     websiteUrl: 'https://bobbyrabbits.com/#/GnarAFDAO',
-    imageUrl:
-      'https://arweave.net/H-9FITsB2SdPfJXhYq2QWMMSi7SG4LA_0MHbNnN_zN8',
+    imageUrl: 'https://arweave.net/H-9FITsB2SdPfJXhYq2QWMMSi7SG4LA_0MHbNnN_zN8',
     maxStaked: 3333,
     nameInHeader: true,
     description: 'Stake your GnarAF DAO Card to earn $GNAR',
@@ -2259,7 +2498,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     styles: {
       fontFamily: 'Paralucent',
       fontWeight: 500,
-      backgroundSize: '100% auto'
+      backgroundSize: '100% auto',
     },
     links: [
       {
@@ -2272,30 +2511,829 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       secondary: '#fad141',
       accent: '#672394',
       fontColor: '#e8e6d9',
-    }
+    },
   },
 
-{    name: 'thepolarians',
-displayName: 'The Polarians',
-stakePoolAddress: new PublicKey(
-  'HSLsc3fyHYyBjTnSPSGyyxubcGdtw4ih8odTcHturZrU'
-  ),
-websiteUrl: 'https://twitter.com/polariansnft',
-receiptType: ReceiptType.Original,
-maxStaked: 2400, // update with collection size
-imageUrl: 'https://dl.airtable.com/.attachments/4267ccfa3ec6b022948a23376955d686/ad374799/polarproject500x500.gif',
-tokenStandard: TokenStandard.NonFungible,
-styles: {
-  fontFamily: 'Player One',
-  fontWeight: 500,
-},
-description: 'Stake your Polarians NFT to earn $CRYSTAL.',
-colors: {
-  primary: '#383838',
-  secondary: '#4D4DFF',
-  accent: '#4D4DFF',
-  fontColor: '#FFFFFF',
-  fontColorSecondary: '#FFFFFF',
-}
-}
+  {
+    name: 'thepolarians',
+    displayName: 'The Polarians',
+    stakePoolAddress: new PublicKey(
+      'HSLsc3fyHYyBjTnSPSGyyxubcGdtw4ih8odTcHturZrU'
+    ),
+    websiteUrl: 'https://twitter.com/polariansnft',
+    receiptType: ReceiptType.Original,
+    maxStaked: 2400, // update with collection size
+    imageUrl:
+      'https://dl.airtable.com/.attachments/4267ccfa3ec6b022948a23376955d686/ad374799/polarproject500x500.gif',
+    tokenStandard: TokenStandard.NonFungible,
+    styles: {
+      fontFamily: 'Player One',
+      fontWeight: 500,
+    },
+    description: 'Stake your Polarians NFT to earn $CRYSTAL.',
+    colors: {
+      primary: '#383838',
+      secondary: '#4D4DFF',
+      accent: '#4D4DFF',
+      fontColor: '#4D4DFF',
+      fontColorSecondary: '#FFFFFF',
+    },
+  },
+  {
+    name: 'steamland',
+    displayName: 'Harvesting - Steamland',
+    stakePoolAddress: new PublicKey(
+      '5n9G7o9ZZFmfx4dcbd4HgNYcGWFiQ2wGKaKHYT8bWDf7'
+    ),
+    contrastHomepageBkg: true,
+    maxStaked: 2222,
+    receiptType: ReceiptType.Original,
+    websiteUrl: 'https://steamland.io',
+    hostname: 'harvest.steamland.io',
+    imageUrl:
+      'https://raw.githubusercontent.com/Steamland/images/main/harvest_logo.png',
+    styles: {
+      fontFamily: 'Industry, sans-serif',
+      fontWeight: 500,
+    },
+    backgroundImage:
+      'https://raw.githubusercontent.com/Steamland/images/main/harvesting_background.png',
+    tokenStandard: TokenStandard.NonFungible,
+    hideAllowedTokens: true,
+    colors: {
+      primary: '#1A1A1D',
+      secondary: '#9e333f',
+      accent: '#313063',
+      fontColor: '#FFFFFF',
+      fontColorSecondary: '#FFFFFF',
+      backgroundSecondary: '#4E4E50',
+    },
+  },
+  {
+    name: 'rejected y00ts club',
+    displayName: 'RYC staking',
+    stakePoolAddress: new PublicKey(
+      '7YPHMXpiFAMSeGpxYE66aGPH6UUJGe6samYhzKiEpEqR'
+    ),
+    websiteUrl: 'https://twitter.com/rejected_y00ts',
+    imageUrl:
+      'https://bafybeiex3lqiug7djuyl2vws47syaji6of7calc67tt3we4ps4nz5kbpnq.ipfs.nftstorage.link/',
+    backgroundImage: '',
+    maxStaked: 6969,
+
+    receiptType: ReceiptType.Original,
+    tokenStandard: TokenStandard.NonFungible,
+    hideAllowedTokens: true,
+    links: [
+      {
+        text: 'Discord',
+        value: 'https://discord.gg/gfdcAyrcn9',
+      },
+      {
+        text: 'Twitter',
+        value: 'https://twitter.com/Rejected_y00ts',
+      },
+      {
+        text: 'Magic Eden',
+        value: 'https://magiceden.io/marketplace/rejected_y00ts_club_',
+      },
+    ],
+    styles: {
+      fontFamily: 'Industry, sans-serif',
+      fontWeight: 500,
+    },
+    colors: {
+      primary: '#120d18',
+      secondary: '#e42575',
+      accent: '#33273f',
+      fontColor: '#e61f57',
+      fontColorSecondary: '#000000',
+      backgroundSecondary: '#120d18',
+    },
+  },
+  {
+    name: 'Degen Strays Club',
+    displayName: 'Cave of Treasure',
+    nameInHeader: true,
+    stakePoolAddress: new PublicKey(
+      'HM4KxPucFiFzJBr1saM1n7Hd4HhkLnp9FQXWaGv6gh5s'
+    ),
+    description: 'Stake your Strays, earn $STRYS',
+    hideFooter: true,
+    receiptType: ReceiptType.Receipt,
+    tokenStandard: TokenStandard.NonFungible,
+    // styles to apply to the whole stake pool
+    styles: {
+      fontFamily: 'Lato',
+      fontWeight: 700,
+      objectPosition: 'center',
+    },
+    // Colors object to style the stake page
+    colors: {
+      primary: '#372554',
+      secondary: '#372554',
+      backgroundSecondary: 'rgb(24 24 24 / 50%)',
+      fontColor: '#EEEEEE',
+    },
+    imageUrl:
+      'https://user-images.githubusercontent.com/107280738/206711148-a12b5066-9bcb-4866-b83f-e27ee088c9b1.png',
+    // Background image for poolq
+    backgroundImage:
+      'https://user-images.githubusercontent.com/107280738/202006912-0e534e82-e3c7-47d6-9a1b-9c47f12bf1c6.jpg',
+
+    // Website url if specified will be navigated to when the image in the header is clicked
+    links: [
+      {
+        text: 'Twitter',
+        value: 'https://twitter.com/modcatsclub',
+      },
+      {
+        text: 'Discord',
+        value: 'https://discord.com/invite/modcatsclub',
+      },
+      {
+        text: 'Magic Eden',
+        value: 'https://magiceden.io/creators/modcatsclub',
+      },
+      {
+        text: 'Stray Store',
+        value: 'https://straystore.modcatsclub.xyz',
+      },
+    ],
+  },
+  {
+    name: 'BioHumans ',
+    displayName: 'BioHumans ',
+    stakePoolAddress: new PublicKey(
+      '7yFb4AQfz88mZzuQVSkCQZzLoA8UEVK8ySHmpHKnGqa2'
+    ),
+    websiteUrl: 'https://t.co/QIAhGtpiaU',
+    imageUrl:
+      'https://raw.githubusercontent.com/conqueror1234/crypto/main/logo.png',
+    maxStaked: 777,
+    receiptType: ReceiptType.Original,
+    tokenStandard: TokenStandard.NonFungible,
+    hideAllowedTokens: true,
+    links: [
+      {
+        text: 'Discord',
+        value: 'https://discord.gg/KNgBrWVYCW',
+      },
+      {
+        text: 'Buy',
+        value: 'https://magiceden.io/marketplace/biohumans',
+      },
+    ],
+    colors: {
+      primary: '#000000',
+      secondary: '#f5050d',
+      accent: '#990505',
+      fontColor: '#FFFFFF',
+    },
+  },
+  {
+    name: 'BioHumans ',
+    displayName: 'BioHumans ',
+    stakePoolAddress: new PublicKey(
+      '2iA21TAv7JBmRGTKeRHrSdb8FaPxzEgn8kfVbTd6AkGY'
+    ),
+    websiteUrl: 'https://t.co/QIAhGtpiaU',
+    imageUrl:
+      'https://raw.githubusercontent.com/conqueror1234/crypto/main/logo.png',
+    maxStaked: 777,
+    receiptType: ReceiptType.Original,
+    tokenStandard: TokenStandard.NonFungible,
+    hideAllowedTokens: true,
+    links: [
+      {
+        text: 'Discord',
+        value: 'https://discord.gg/KNgBrWVYCW',
+      },
+      {
+        text: 'Buy',
+        value: 'https://magiceden.io/marketplace/biohumans',
+      },
+    ],
+    colors: {
+      primary: '#000000',
+      secondary: '#f5050d',
+      accent: '#990505',
+      fontColor: '#FFFFFF',
+    },
+  },
+  {
+    name: 'Sound Family DAO',
+    displayName: 'Sound Family DAO Staking',
+    nameInHeader: true,
+    stakePoolAddress: new PublicKey(
+      'BGnayVs2xtEjzR42Kdq7vXnmRSjBqP9byP4xkmsmF23f'
+    ),
+    hostname: 'stake-soundfamily.herokuapp.com',
+    hideFooter: true,
+    hideAllowedTokens: true,
+    websiteUrl: 'https://catchtherecord.com/',
+    receiptType: ReceiptType.Original,
+    tokenStandard: TokenStandard.NonFungible,
+    imageUrl:
+      'https://d10j3mvrs1suex.cloudfront.net/u/389084/dfd7e4a38cd6b8d454e6536fc377b590e440a03f/original/1-5kjpeg.jpg/!!/meta%3AeyJzcmNCdWNrZXQiOiJiemdsZmlsZXMifQ%3D%3D.jpg',
+    maxStaked: 1080,
+    backgroundImage:
+      'https://d10j3mvrs1suex.cloudfront.net/u/389084/86550f1f3714d5199d6d46331a51e0ea1c6e8986/original/old-paper-texture-in-square-frame-for-cover-art-grungy-frame-in-black-background-can-be-used-to-replicate-the-aged-and-worn-look-for-your-creative-design-free-photo.jpg/!!/meta%3AeyJzcmNCdWNrZXQiOiJiemdsZmlsZXMifQ%3D%3D.jpg',
+    description:
+      'Stake your The Art of Field Recording, Mic The Art and fun-Sound Family DAO NFTs to earn $SREC.',
+    colors: {
+      primary: '#5c4b18',
+      secondary: '#d9faf7',
+      accent: '#362304',
+      fontColor: '#edb63e',
+      fontColorSecondary: '#963315',
+    },
+    links: [
+      {
+        text: 'HOME',
+        value: 'https://catchtherecord.com/the-art-of-field-recording',
+      },
+      {
+        text: 'SITE',
+        value: 'https://catchtherecord.com/',
+      },
+      {
+        text: 'MINT 1',
+        value: 'https://the-art-of-field-recording.club',
+      },
+      {
+        text: 'MINT 2',
+        value: 'https://the-art-of-field-recording.club',
+      },
+      {
+        text: 'BUY',
+        value:
+          'https://magiceden.io/marketplace/k8XrthqoADqQqY5sLo4gPk3t8tHWuyWJsqJT13AiZqv',
+      },
+      {
+        text: 'TWITTER',
+        value: 'https://twitter.com/field_recording',
+      },
+      {
+        text: 'DISCORD',
+        value: 'https://discord.gg/WEU9W5Ew9q',
+      },
+    ],
+  },
+  {
+    name: 'DustCityStaking',
+    displayName: 'Dust City Staking',
+    nameInHeader: true,
+    stakePoolAddress: new PublicKey(
+      '6NsLz577nf9eRSfXtH18rDdJHik3PePpKwVVLPrXPtWx'
+    ),
+    contrastHomepageBkg: true,
+    hostname: 'staking.dustcity.world',
+    hideFooter: true,
+    hideAllowedTokens: true,
+    websiteUrl: 'staking.dustcity.world',
+    receiptType: ReceiptType.Original,
+    tokenStandard: TokenStandard.NonFungible,
+    styles: {
+      fontFamily: 'SUP',
+      fontWeight: 300,
+    },
+    colors: {
+      primary: 'rgba(0, 0, 0, 0.41)',
+      secondary: '#ffcc15',
+      accent: 'rgba(0, 0, 0, 0)',
+      backgroundSecondary: '#181923',
+      fontColor: '#f5f7fa',
+      fontColorSecondary: 'black',
+      fontColorTertiary: '#ffcc15',
+    },
+    imageUrl: 'https://i.ibb.co/JrtGLVg/finwhite.png',
+    backgroundImage: 'https://i.ibb.co/TgWFYHL/image.jpg',
+    maxStaked: 3333,
+    links: [
+      {
+        text: 'Website',
+        value: 'https://dustcity.world/',
+      },
+      {
+        text: 'Twitter',
+        value: 'https://twitter.com/DustCityNFT',
+      },
+      {
+        text: 'MagicEden',
+        value: 'https://magiceden.io/marketplace/dustcity',
+      },
+    ],
+  },
+  {
+    name: 'RektvilleStaking',
+    displayName: 'Rektville Staking',
+    nameInHeader: true,
+    stakePoolAddress: new PublicKey(
+      'ENPEvNwSMxN6K63YwDMirSVnd9TUisDkY6cuPZiN7unS'
+    ),
+    contrastHomepageBkg: true,
+    hostname: 'rektville.dustcity.world',
+    hideFooter: true,
+    hideAllowedTokens: true,
+    websiteUrl: 'rektville.dustcity.world',
+    receiptType: ReceiptType.Original,
+    tokenStandard: TokenStandard.NonFungible,
+    // styles to apply to the whole stake pool
+    styles: {
+      fontFamily: 'SUP',
+      fontWeight: 300,
+    },
+    // Colors object to style the stake page
+    colors: {
+      primary: 'rgba(0, 0, 0, 0.41)',
+      secondary: '#ffcc15',
+      accent: 'rgba(0, 0, 0, 0)',
+      backgroundSecondary: '#181923',
+      fontColor: '#f5f7fa',
+      fontColorSecondary: 'black',
+      fontColorTertiary: '#ffcc15',
+    },
+    imageUrl:
+      'https://arweave.net/z64F7Hk0nHfq-KZ9DgTBT3k7CiKfdyyyAqhC3T1TpkQ?ext=png',
+    backgroundImage: 'https://i.ibb.co/TgWFYHL/image.jpg',
+
+    // Website url if specified will be navigated to when the image in the header is clicked
+    maxStaked: 7777,
+    links: [
+      {
+        text: 'Website',
+        value: 'https://dustcity.world/',
+      },
+      {
+        text: 'Twitter',
+        value: 'https://twitter.com/DustCityNFT',
+      },
+      {
+        text: 'MagicEden',
+        value: 'https://magiceden.io/marketplace/rektville',
+      },
+    ],
+  },
+  {
+    name: 'Honored Strays',
+    displayName: 'VIP Lounge',
+    nameInHeader: true,
+    stakePoolAddress: new PublicKey(
+      '5fFECqpAuECrwm2S6avLLm1dtvT53H4pWn5QwG96mR64'
+    ),
+    description: 'Stake your Strays, earn $STRYS',
+    hideFooter: true,
+    receiptType: ReceiptType.Receipt,
+    tokenStandard: TokenStandard.NonFungible,
+    // styles to apply to the whole stake pool
+    styles: {
+      fontFamily: 'Lato',
+      fontWeight: 700,
+      objectPosition: 'center',
+    },
+    // Colors object to style the stake page
+    colors: {
+      primary: '#372554',
+      secondary: '#372554',
+      backgroundSecondary: 'rgb(24 24 24 / 50%)',
+      fontColor: '#EEEEEE',
+    },
+    imageUrl:
+      'https://user-images.githubusercontent.com/107280738/206711148-a12b5066-9bcb-4866-b83f-e27ee088c9b1.png',
+    // Background image for poolq
+    backgroundImage:
+      'https://user-images.githubusercontent.com/107280738/202006912-0e534e82-e3c7-47d6-9a1b-9c47f12bf1c6.jpg',
+
+    // Website url if specified will be navigated to when the image in the header is clicked
+    links: [
+      {
+        text: 'Twitter',
+        value: 'https://twitter.com/modcatsclub',
+      },
+      {
+        text: 'Discord',
+        value: 'https://discord.com/invite/modcatsclub',
+      },
+      {
+        text: 'Magic Eden',
+        value: 'https://magiceden.io/creators/modcatsclub',
+      },
+      {
+        text: 'Stray Store',
+        value: 'https://straystore.modcatsclub.xyz',
+      },
+    ],
+  },
+  {
+    name: 'Mod Cats Club',
+    displayName: 'Pot of Gold',
+    nameInHeader: true,
+    stakePoolAddress: new PublicKey(
+      '8RwHHTxfSHhcj1VQ5NZstx4JkTwWWiLvjzG2tthttk4s'
+    ),
+    description: 'Stake your Strays, earn $STRYS',
+    hideFooter: true,
+    receiptType: ReceiptType.Receipt,
+    tokenStandard: TokenStandard.NonFungible,
+    // styles to apply to the whole stake pool
+    styles: {
+      fontFamily: 'Lato',
+      fontWeight: 800,
+      objectPosition: 'center',
+    },
+    // Colors object to style the stake page
+    colors: {
+      primary: '#372554',
+      secondary: '#372554',
+      backgroundSecondary: 'rgb(24 24 24 / 50%)',
+      fontColor: '#EEEEEE',
+    },
+    imageUrl:
+      'https://user-images.githubusercontent.com/107280738/206711148-a12b5066-9bcb-4866-b83f-e27ee088c9b1.png',
+    // Background image for poolq
+    backgroundImage:
+      'https://user-images.githubusercontent.com/107280738/202006912-0e534e82-e3c7-47d6-9a1b-9c47f12bf1c6.jpg',
+
+    // Website url if specified will be navigated to when the image in the header is clicked
+    links: [
+      {
+        text: 'Twitter',
+        value: 'https://twitter.com/modcatsclub',
+      },
+      {
+        text: 'Discord',
+        value: 'https://discord.com/invite/modcatsclub',
+      },
+      {
+        text: 'Magic Eden',
+        value: 'https://magiceden.io/creators/modcatsclub',
+      },
+      {
+        text: 'Stray Store',
+        value: 'https://straystore.modcatsclub.xyz',
+      },
+    ],
+  },
+  {
+    name: 'dwa',
+    displayName: 'Bweed Bakery',
+    hostname: 'stake.duckzwitattitudes.com',
+    description: 'Stake your D.W.A to earn $Bweed',
+    stakePoolAddress: new PublicKey(
+      'EAhYUAhAiGKuRzb6Sc249SM4DjCxQtsTzTqgogx6HYmM'
+    ),
+    websiteUrl: 'https://duckzwitattitudes.com',
+    imageUrl:
+      'https://raw.githubusercontent.com/WildyPixel/dwa_img/main/logo2.png',
+    //  'https://www.arweave.net/DWKkkbbOi5x6MJhgulQ6FwcXh-emrcaqg8cjTx5j0PI?ext=png',
+    maxStaked: 1500,
+    nameInHeader: true,
+    receiptType: ReceiptType.Original,
+    tokenStandard: TokenStandard.NonFungible,
+    hideAllowedTokens: true,
+    hideFooter: true,
+    contrastHomepageBkg: false,
+    styles: {
+      fontFamily: 'Industry, sans-serif',
+      fontWeight: 500,
+      backgroundSize: '100% auto',
+    },
+    links: [
+      {
+        text: 'Buy Now',
+        value: 'https://mint.duckzwitattitudes.com',
+      },
+    ],
+    colors: {
+      primary: '#000000',
+      secondary: '#a40b11',
+      accent: '#a40b11',
+      fontColor: '#FFFFFF',
+      fontColorSecondary: '#ffffff',
+      backgroundSecondary: '#222222',
+    },
+    backgroundImage:
+      'https://raw.githubusercontent.com/WildyPixel/dwa_img/main/bg2.jpeg',
+  },
+  {
+    name: 'vandals',
+    displayName: 'Vandals',
+    description:
+      'Train your Vandals to earn $VAULT. You can stake and unstake at any time. $VAULT is a a reward mechanism for Vandals holders to show to reward those who train the hardest.',
+    stakePoolAddress: new PublicKey(
+      'ndu643uUkFBt4YbXgHEfstkU25eEe4kDLjTD5uziEKx'
+    ),
+    websiteUrl: 'https://twitter.com/VandalCityCorp',
+    imageUrl: '/logos/vandals.png',
+    maxStaked: 10000,
+    nameInHeader: true,
+    tokenStandard: TokenStandard.NonFungible,
+    hideAllowedTokens: true,
+    hideFooter: true,
+    links: [
+      {
+        text: 'Buy Now',
+        value:
+          'https://hyperspace.xyz/collection/H5yBW4TwrUqKqpJZ436UnL9YUDBdvn27gzs8WGNKSARE',
+      },
+    ],
+    colors: {
+      primary: '#0d0d0d',
+      secondary: '#CCCCCC',
+      fontColor: '#ffffff',
+      accent: '#666666',
+      fontColorSecondary: '#0d0d0d',
+    },
+  },
+  {
+    name: 'the-castle',
+    displayName: 'The Castle',
+    nameInHeader: true,
+    stakePoolAddress: new PublicKey(
+      '9af9HiyQ7EHjMNB14temaoKpViFD3D96o2MvBor7xxf3'
+    ),
+    description:
+      'Keep your King safe in his castle. You can stake and unstake at any time. $KING allows you to buy discord whitelist roles',
+    imageUrl: '/logos/the-castle-logo.jpg',
+    tokenStandard: TokenStandard.NonFungible,
+    receiptType: ReceiptType.Original,
+    hostname: 'staking.thekingscastle.io',
+    hideFooter: true,
+    websiteUrl: 'https://thekingscastle.io/',
+    maxStaked: 4444,
+    logoPadding: false,
+    colors: {
+      primary: '#33332f',
+      secondary: '#5c0404',
+      fontColor: '#FFF',
+      fontColorSecondary: '#FFF',
+      fontColorTertiary: '#FFF',
+    },
+    links: [
+      {
+        text: 'Discord',
+        value: 'https://discord.com/invite/castleking',
+      },
+      {
+        text: 'Twitter',
+        value: 'https://twitter.com/CastleTheKings',
+      },
+      {
+        text: 'Magic Eden',
+        value: 'https://magiceden.io/marketplace/the_kings',
+      },
+      {
+        text: 'Whitepaper',
+        value: 'https://whitepaper.thekingscastle.io/',
+      },
+      {
+        text: 'YourMajesty',
+        value: 'https://castle.thekingscastle.io/',
+      },
+    ],
+  },
+  {
+    name: 'supportive-dudes',
+    displayName: 'Supportive Dudes',
+    description:
+      'Stake your dudes to earn rewards from various reward mechanisms including $EDD, merchandise, redeemable rewards by the Supportive Dudes pool!',
+    nameInHeader: true,
+    stakePoolAddress: new PublicKey(
+      '9gkXb3eciDNbxqe9NZpFUbwh7QnmFb3HU3tVtxA4pwUR'
+    ),
+    contrastHomepageBkg: true,
+    hideFooter: true,
+    hideAllowedTokens: true,
+    receiptType: ReceiptType.Original,
+    tokenStandard: TokenStandard.NonFungible,
+    imageUrl: '/logos/supportive-dudes.png',
+    maxStaked: 3300,
+    colors: {
+      primary: '#000000',
+      secondary: '#878ce0',
+    },
+    links: [
+      {
+        text: 'Twitter',
+        value: 'https://twitter.com/SolEddaRity',
+      },
+      {
+        text: 'Discord',
+        value: 'https://discord.gg/soleddarity',
+      },
+    ],
+  },
+  {
+    name: 'hyperion',
+    displayName: 'Hyperion Staking',
+    nameInHeader: true,
+    stakePoolAddress: new PublicKey(
+      '6ZKWsXn9QHnubteRE6v4UcnMddkzJAhRkWfWVEhFKiMd'
+    ),
+    description:
+      'Earn HyperX by staking your Hyperion Drifters, You can stake/unstake anytime. Drifters earn 1 HyperX per day',
+    imageUrl:
+      'https://bafkreicwj2xovhs4h6h4rqdxfvjw3snmtaawlt4wifjnubx5n73ebszrvu.ipfs.nftstorage.link/',
+    tokenStandard: TokenStandard.NonFungible,
+    receiptType: ReceiptType.Original,
+    hostname: 'staking.hyperionnft.io',
+    hideFooter: true,
+    websiteUrl: 'hyperionnft.io',
+    maxStaked: 3500,
+    logoPadding: false,
+    colors: {
+      primary: '#0E3A49',
+      secondary: '#FB671A',
+      fontColor: '#FFF',
+      fontColorSecondary: '#FFF',
+      fontColorTertiary: '#FFF',
+    },
+    links: [
+      {
+        text: 'Discord',
+        value: 'http://discord.gg/fzbrfcyaMf',
+      },
+      {
+        text: 'Twitter',
+        value: 'https://twitter.com/nft_hyperion',
+      },
+      {
+        text: 'Magic Eden',
+        value: 'https://magiceden.io/marketplace/hyperion',
+      },
+    ],
+  },
+  {
+    name: 'Solana Mcs staking',
+    displayName: 'SOLANA MCS STAKING',
+    nameInHeader: true,
+    stakePoolAddress: new PublicKey(
+      'HBsam1w2i35vUVfg7ZdngqFQ8m9vmJEhTmn3VAkgmYhM'
+    ),
+    description: 'Official staking pool for solana mcs NFT collection',
+    imageUrl:
+      'https://pbs.twimg.com/profile_images/1597210461665206273/qt3OgPGt_400x400.jpg',
+    tokenStandard: TokenStandard.NonFungible,
+    receiptType: ReceiptType.Original,
+    hostname: 'stake.solanamcs.com',
+    hideFooter: true,
+    websiteUrl: 'https://solanamcs.com/',
+    maxStaked: 666,
+    logoPadding: false,
+    colors: {
+      primary: '#ffffff',
+      secondary: '#e06666',
+      fontColor: '#444444',
+      fontColorSecondary: '#ffffff',
+      fontColorTertiary: '#444444',
+    },
+  },
+  {
+    name: 'howly',
+    displayName: 'Howly Finance',
+    nameInHeader: true,
+    stakePoolAddress: new PublicKey(
+      '6Jdwgq81o8r5bUiFiAEeoXzYBXXDAG1mKDKYsZdZVBW9'
+    ),
+    description:
+      'First meme coin and nft powered defi on solana. Giving free access for the whole howly ecosystem with exclusive perks and privileges',
+    imageUrl:
+      'https://bafybeigipwtmn2yckmgrf7k6x7un454j73qlifexhew72445um2zkbzuoi.ipfs.nftstorage.link/collection.jpg',
+    tokenStandard: TokenStandard.NonFungible,
+    receiptType: ReceiptType.Original,
+    hostname: 'staking.howlynft.xyz',
+    hideFooter: true,
+    websiteUrl: 'https://howlynft.xyz/',
+    maxStaked: 2500,
+    logoPadding: false,
+    colors: {
+      primary: '#474554',
+      secondary: '#00E6FF',
+      fontColor: '#54ECC4',
+      fontColorSecondary: '#474554',
+      fontColorTertiary: '#fff',
+    },
+    links: [
+      {
+        text: 'Discord',
+        value: 'https://discord.gg/howlyfinance',
+      },
+      {
+        text: 'Twitter',
+        value: 'https://twitter.com/howly_finance',
+      },
+      {
+        text: 'Magic Eden',
+        value: 'https://magiceden.io/marketplace/howly',
+      },
+    ],
+  },
+  {
+    name: 'forest_gemmys',
+    displayName: 'Forest Gemmys',
+    nameInHeader: true,
+    stakePoolAddress: new PublicKey(
+      '5xCCp3y57oRDjgK6RKhkHUKzYyo4dzW8qp1eV12CATg7'
+    ),
+    description:
+      'Come frolic with the Forest Gemmys! The first Gemmy limited edition series.',
+    imageUrl:
+      'https://creator-hub-prod.s3.us-east-2.amazonaws.com/forest_gemmys_pfp_1667238440811.png',
+    tokenStandard: TokenStandard.NonFungible,
+    receiptType: ReceiptType.Original,
+    hideFooter: true,
+    websiteUrl: 'https://www.gemmy.club/',
+    maxStaked: 1298,
+    logoPadding: false,
+    colors: {
+      primary: '#7D89D8',
+      secondary: '##131418',
+      accent: '#2a393a',
+      fontColor: '#FFFFFF',
+    },
+    links: [
+      {
+        text: 'Discord',
+        value: 'https://discord.com/invite/NChtPhqrQC',
+      },
+      {
+        text: 'Twitter',
+        value: 'https://twitter.com/GemmyClub',
+      },
+      {
+        text: 'Magic Eden',
+        value: 'https://magiceden.io/marketplace/forest_gemmys',
+      },
+    ],
+  },
+  {
+    name: 'Fronkme',
+    displayName: 'Fronkme Staking',
+    nameInHeader: true,
+    stakePoolAddress: new PublicKey(
+      '8xnC5wbXAgXoDghKGWTuxbw76U7HAHAwRuU3AKKovGif'
+    ),
+    description: 'Fronkme reward token staking',
+    imageUrl:
+      'https://bafybeidq25hbteb2lzh4uaqez5ir7jx4sdgihscm4gaefqf4kllebwdi7q.ipfs.nftstorage.link/WhatsApp%20Image%202023-01-17%20at%2010.40.25%20AM.jpeg',
+    tokenStandard: TokenStandard.NonFungible,
+    receiptType: ReceiptType.Original,
+    hideFooter: true,
+    websiteUrl: '',
+    maxStaked: 5,
+    logoPadding: false,
+    colors: {
+      primary: 'black',
+      secondary: 'gray',
+      accent: 'white',
+      fontColor: 'white',
+    },
+    links: [
+      {
+        text: 'Discord',
+        value: 'https://discord.com/',
+      },
+      {
+        text: 'Twitter',
+        value: 'https://twitter.com/',
+      },
+      {
+        text: 'Magic Eden',
+        value: 'https://magiceden.io/',
+      },
+    ],
+  },
+  {
+    name: 'pixel-dudes',
+    displayName: 'Pixel Dudes',
+    description:
+      'Stake your dudes to earn rewards from various reward mechanisms including $EDD, merchandise, redeemable rewards by the Pixel Dudes pool!',
+    nameInHeader: true,
+    stakePoolAddress: new PublicKey(
+      'F2tzjza3o6qWoyL9ufTG5K5zpTiAm5GebqsFYbB1cKxx'
+    ),
+    contrastHomepageBkg: true,
+    hideFooter: true,
+    hideAllowedTokens: true,
+    receiptType: ReceiptType.Original,
+    tokenStandard: TokenStandard.NonFungible,
+    imageUrl:
+      'https://nftstorage.link/ipfs/bafybeifmfxptuitrwzj7eeef4h3mbqx4uhk7yaok5vzyvgmhlaefvxw7li/1500.gif',
+    maxStaked: 4000,
+    colors: {
+      primary: '#000000',
+      secondary: '#878ce0',
+    },
+    links: [
+      {
+        text: 'Twitter',
+        value: 'https://twitter.com/SolEddaRity',
+      },
+      {
+        text: 'Discord',
+        value: 'https://discord.gg/soleddarity',
+      },
+    ],
+  },
 ]

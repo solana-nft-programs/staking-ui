@@ -9,7 +9,7 @@ export const Stats = ({
         <div key={stat.header} className="flex w-full justify-center">
           <div
             key={`${stat.header}-${stat.value}`}
-            className={`flex w-full flex-col items-center gap-[2px] text-medium-4`}
+            className={`flex w-full flex-col items-center text-medium-4`}
           >
             <div>{stat.header}</div>
             <div className="text-light-0">{stat.value}</div>

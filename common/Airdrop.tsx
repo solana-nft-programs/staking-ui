@@ -1,18 +1,20 @@
-import { withCreateMint } from '@cardinal/common'
-import { executeTransaction } from '@cardinal/staking'
+import { createMintTx, executeTransaction } from '@cardinal/common'
+import { createInitMintManagerInstruction } from '@cardinal/creator-standard/dist/cjs/generated'
 import {
-  CreateMasterEditionV3,
+  findMintManagerId,
+  findMintMetadataId,
+  findRulesetId,
+} from '@cardinal/creator-standard/dist/cjs/pda'
+import {
   CreateMetadataV2,
   Creator,
   DataV2,
-  MasterEdition,
   Metadata,
 } from '@metaplex-foundation/mpl-token-metadata'
-import { BN } from '@project-serum/anchor'
 import type { Wallet } from '@saberhq/solana-contrib'
 import { useWallet } from '@solana/wallet-adapter-react'
 import type { Connection } from '@solana/web3.js'
-import { Keypair, LAMPORTS_PER_SOL, Transaction } from '@solana/web3.js'
+import { Keypair, LAMPORTS_PER_SOL } from '@solana/web3.js'
 import { notify } from 'common/Notification'
 import { useAllowedTokenDatas } from 'hooks/useAllowedTokenDatas'
 import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
@@ -28,23 +30,18 @@ export async function airdropNFT(
   wallet: Wallet,
   airdropMetadatas: AirdropMetadata[]
 ): Promise<string> {
-  const transaction = new Transaction()
   const randInt = Math.round(Math.random() * (airdropMetadatas.length - 1))
   const metadata: AirdropMetadata | undefined = airdropMetadatas[randInt]
   if (!metadata) throw new Error('No configured airdrops found')
 
-  const masterEditionMint = Keypair.generate()
-  const [_masterEditionTokenAccountId] = await withCreateMint(
-    transaction,
+  const mintKeypair = Keypair.generate()
+  const [transaction, holderTokenAccountId] = await createMintTx(
     connection,
-    wallet,
-    wallet.publicKey,
-    masterEditionMint.publicKey
+    mintKeypair.publicKey,
+    wallet.publicKey
   )
 
-  const masterEditionMetadataId = await Metadata.getPDA(
-    masterEditionMint.publicKey
-  )
+  const masterEditionMetadataId = await Metadata.getPDA(mintKeypair.publicKey)
   const metadataTx = new CreateMetadataV2(
     { feePayer: wallet.publicKey },
     {
@@ -65,41 +62,38 @@ export async function airdropNFT(
         uses: null,
       }),
       updateAuthority: wallet.publicKey,
-      mint: masterEditionMint.publicKey,
+      mint: mintKeypair.publicKey,
       mintAuthority: wallet.publicKey,
     }
   )
 
-  const masterEditionId = await MasterEdition.getPDA(
-    masterEditionMint.publicKey
-  )
-  const masterEditionTx = new CreateMasterEditionV3(
-    {
-      feePayer: wallet.publicKey,
-      recentBlockhash: (await connection.getRecentBlockhash('max')).blockhash,
-    },
-    {
-      edition: masterEditionId,
-      metadata: masterEditionMetadataId,
-      updateAuthority: wallet.publicKey,
-      mint: masterEditionMint.publicKey,
-      mintAuthority: wallet.publicKey,
-      maxSupply: new BN(1),
-    }
-  )
+  // init mint manager
+  const rulesetId = findRulesetId()
+  const mintManagerId = findMintManagerId(mintKeypair.publicKey)
+  const mintMetadataId = findMintMetadataId(mintKeypair.publicKey)
+
+  const initMintManagerIx = createInitMintManagerInstruction({
+    mintManager: mintManagerId,
+    mintMetadata: mintMetadataId,
+    mint: mintKeypair.publicKey,
+    ruleset: rulesetId,
+    holderTokenAccount: holderTokenAccountId,
+    tokenAuthority: wallet.publicKey,
+    authority: wallet.publicKey,
+    payer: wallet.publicKey,
+  })
 
   transaction.instructions = [
     ...transaction.instructions,
     ...metadataTx.instructions,
-    ...masterEditionTx.instructions,
+    initMintManagerIx,
   ]
 
-  const txid = await executeTransaction(connection, wallet, transaction, {
-    confirmOptions: { commitment: 'confirmed' },
-    signers: [masterEditionMint],
+  const txid = await executeTransaction(connection, transaction, wallet, {
+    signers: [mintKeypair],
   })
   console.log(
-    `Master edition (${masterEditionId.toString()}) created with metadata (${masterEditionMetadataId.toString()})`
+    `CCS token (${mintKeypair.publicKey.toString()}) created with metadata (${masterEditionMetadataId.toString()})`
   )
   return txid
 }

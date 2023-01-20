@@ -1,4 +1,5 @@
 import { BN } from '@project-serum/anchor'
+import { AsyncButton } from 'common/Button'
 import { LoadingSpinner } from 'common/LoadingSpinner'
 import {
   formatAmountAsDecimal,
@@ -44,7 +45,7 @@ export const PerformanceStats: React.FC<
           >
             {new Date(
               (stakedTokenDatas.data
-                .map((s) => s.stakeEntry?.parsed.lastStakedAt.toNumber())
+                .map((s) => s.stakeEntry?.parsed?.lastStakedAt.toNumber())
                 .sort()
                 .slice(-1)[0] ?? 0) * 1000
             ).toLocaleDateString('en-US', {
@@ -59,7 +60,7 @@ export const PerformanceStats: React.FC<
       </div>
       <div className="flex flex-row items-center justify-center gap-2">
         <p className="text-lg text-medium-4">
-          {rewardDistributorData.data.parsed.maxRewardSecondsReceived?.eq(
+          {rewardDistributorData.data.parsed?.maxRewardSecondsReceived?.eq(
             new BN(1)
           )
             ? '1x Claim:'
@@ -87,7 +88,7 @@ export const PerformanceStats: React.FC<
               }}
               target="_blank"
               href={pubKeyUrl(
-                rewardDistributorData.data.parsed.rewardMint,
+                rewardDistributorData.data.parsed?.rewardMint,
                 environment.label
               )}
               rel="noreferrer"
@@ -96,7 +97,7 @@ export const PerformanceStats: React.FC<
                 rewardMintInfo.data.metaplexMintData?.data.symbol ||
                 '???'}
             </a>{' '}
-            {rewardDistributorData.data.parsed.maxRewardSecondsReceived?.eq(
+            {rewardDistributorData.data.parsed?.maxRewardSecondsReceived?.eq(
               new BN(1)
             )
               ? ''
@@ -125,7 +126,7 @@ export const PerformanceStats: React.FC<
         )}
       </div>
       <div className="flex items-center justify-center">
-        <button
+        <AsyncButton
           onClick={async () =>
             handleClaimRewards.mutate({
               tokenDatas: stakedTokenDatas.data ?? [],
@@ -137,20 +138,22 @@ export const PerformanceStats: React.FC<
               stakePoolMetadata?.colors?.fontColorSecondary ||
               stakePoolMetadata?.colors?.fontColor,
           }}
-          className="flex items-center gap-2 rounded-md px-4 py-2 hover:scale-[1.03]"
+          className="flex items-center gap-2 rounded-md px-4 py-2"
         >
-          {handleClaimRewards.isLoading && (
-            <LoadingSpinner
-              fill={
-                stakePoolMetadata?.colors?.fontColor
-                  ? stakePoolMetadata?.colors?.fontColor
-                  : '#FFF'
-              }
-              height="20px"
-            />
-          )}
-          <div>Claim</div>
-        </button>
+          <>
+            {handleClaimRewards.isLoading && (
+              <LoadingSpinner
+                fill={
+                  stakePoolMetadata?.colors?.fontColor
+                    ? stakePoolMetadata?.colors?.fontColor
+                    : '#FFF'
+                }
+                height="20px"
+              />
+            )}
+            <div>Claim</div>
+          </>
+        </AsyncButton>
       </div>
     </div>
   )

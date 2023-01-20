@@ -1,10 +1,15 @@
 import { getRewardMap } from '@cardinal/staking'
 import { RewardDistributorKind } from '@cardinal/staking/dist/cjs/programs/rewardDistributor'
 import { BN } from '@project-serum/anchor'
+import { rewardEntryDataToV1 } from 'api/fetchRewardEntry'
+import { stakeEntryDataToV1 } from 'api/fetchStakeEntry'
 import { useUTCNow } from 'providers/UTCNowProvider'
 import { useQuery } from 'react-query'
 
-import { useRewardDistributorData } from './useRewardDistributorData'
+import {
+  rewardDistributorDataToV1,
+  useRewardDistributorData,
+} from './useRewardDistributorData'
 import { useRewardDistributorTokenAccount } from './useRewardDistributorTokenAccount'
 import { useRewardEntries } from './useRewardEntries'
 import { useRewardMintInfo } from './useRewardMintInfo'
@@ -41,8 +46,9 @@ export const useRewards = () => {
           stakedTokenDatas &&
           rewardEntries &&
           rewardDistributorData &&
+          rewardDistributorTokenAccount &&
           rewardMintInfo &&
-          (rewardDistributorData?.parsed.kind === RewardDistributorKind.Mint ||
+          (rewardDistributorData?.parsed?.kind === RewardDistributorKind.Mint ||
             !!rewardDistributorTokenAccount)
         )
       ) {
@@ -54,23 +60,28 @@ export const useRewards = () => {
         .map((tk) => tk.stakeEntry!)
 
       return getRewardMap(
-        stakeEntries,
-        rewardEntries,
-        rewardDistributorData,
-        rewardDistributorData.parsed.kind === RewardDistributorKind.Mint
-          ? rewardMintInfo?.mintInfo.supply
-          : rewardDistributorTokenAccount!.amount,
+        stakeEntries.map((entry) => {
+          return {
+            pubkey: entry.pubkey,
+            parsed: stakeEntryDataToV1(entry.parsed!),
+          }
+        }),
+        rewardEntries.map((entry) => {
+          return {
+            pubkey: entry.pubkey,
+            parsed: rewardEntryDataToV1(entry.parsed!),
+          }
+        }),
+        rewardDistributorDataToV1(rewardDistributorData),
+        rewardDistributorData.parsed?.kind === RewardDistributorKind.Mint
+          ? new BN(rewardMintInfo?.mintInfo.supply.toString())
+          : new BN(rewardDistributorTokenAccount.amount.toString()),
         UTCNow
       )
     },
     {
       keepPreviousData: true,
-      enabled:
-        !!stakedTokenDatas &&
-        !!rewardEntries &&
-        !!rewardDistributorData &&
-        (rewardDistributorData?.parsed.kind === RewardDistributorKind.Mint ||
-          !!rewardDistributorTokenAccount),
+      enabled: !!stakedTokenDatas && !!rewardEntries && !!rewardDistributorData,
     }
   )
 }

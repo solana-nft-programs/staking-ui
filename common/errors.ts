@@ -1,4 +1,8 @@
 import {
+  REWARDS_CENTER_ADDRESS,
+  REWARDS_CENTER_IDL,
+} from '@cardinal/rewards-center'
+import {
   REWARD_DISTRIBUTOR_ADDRESS,
   REWARD_DISTRIBUTOR_IDL,
 } from '@cardinal/staking/dist/cjs/programs/rewardDistributor'
@@ -236,7 +240,7 @@ export const NATIVE_ERRORS: ErrorCode[] = [
   {
     code: '3012',
     message:
-      'AccountNotInitialized: The program expected this account to be already initialized',
+      'Account not found. This likely means you have no funds to pay for this action.',
   },
   {
     code: '3013',
@@ -275,6 +279,7 @@ export const handleError = (
     programIdls: [
       { programId: STAKE_POOL_ADDRESS, idl: STAKE_POOL_IDL },
       { programId: REWARD_DISTRIBUTOR_ADDRESS, idl: REWARD_DISTRIBUTOR_IDL },
+      { programId: REWARDS_CENTER_ADDRESS, idl: REWARDS_CENTER_IDL },
     ],
     additionalErrors: NATIVE_ERRORS,
   }
@@ -306,11 +311,7 @@ export const handleError = (
       },
     ],
     ...[
-      ...programIdls.map(({ idl, programId }) => ({
-        // match program on any log that includes programId and 'failed'
-        programMatch: logs?.some(
-          (l) => l.includes(programId.toString()) && l.includes('failed')
-        ),
+      ...programIdls.map(({ idl }) => ({
         errorMatch: idl.errors?.find(
           (err) =>
             // message includes error
@@ -341,9 +342,7 @@ export const handleError = (
     ],
   ]
 
-  console.log('Matched errors:')
-  matchedErrors.map((e) => console.log(e.errorMatch, e.programMatch))
-
+  console.log('Matched errors:', matchedErrors)
   return (
     matchedErrors.find((e) => e.programMatch && e.errorMatch)?.errorMatch ||
     matchedErrors.find((e) => e.errorMatch)?.errorMatch ||

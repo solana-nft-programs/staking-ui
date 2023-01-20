@@ -84,7 +84,7 @@ export const Info: React.FC<Props> = ({
         </div>
         <div className="flex flex-col">
           <div>{header}</div>
-          <div>{description}</div>
+          <div className="text-sm opacity-75">{description}</div>
         </div>
       </div>
       {content}

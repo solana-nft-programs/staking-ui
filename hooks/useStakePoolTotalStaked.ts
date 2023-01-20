@@ -1,13 +1,13 @@
-import * as splToken from '@solana/spl-token'
-import { Keypair } from '@solana/web3.js'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 import { useQuery } from 'react-query'
+import { getMint } from 'spl-token-v3'
 
 import { useStakePoolEntries } from './useStakePoolEntries'
 
 export const useStakePoolTotalStaked = () => {
   const { connection } = useEnvironmentCtx()
   const stakePoolEntries = useStakePoolEntries()
+
   return useQuery<number>(
     [
       'useStakePoolTotalStaked',
@@ -21,24 +21,18 @@ export const useStakePoolTotalStaked = () => {
       const mintToDecimals: { mint: string; decimals: number }[] = []
       for (const entry of stakePoolEntries.data) {
         try {
-          if (entry.parsed.amount.toNumber() > 1) {
+          if (entry.parsed?.amount && entry.parsed?.amount.toNumber() > 1) {
             let decimals = 0
             const match = mintToDecimals.find(
-              (m) => m.mint === entry.parsed.originalMint.toString()
+              (m) => m.mint === entry.parsed?.stakeMint.toString()
             )
             if (match) {
               decimals = match.decimals
             } else {
-              const mint = new splToken.Token(
-                connection,
-                entry.parsed.originalMint,
-                splToken.TOKEN_PROGRAM_ID,
-                Keypair.generate()
-              )
-              const mintInfo = await mint.getMintInfo()
+              const mintInfo = await getMint(connection, entry.parsed.stakeMint)
               decimals = mintInfo.decimals
               mintToDecimals.push({
-                mint: entry.parsed.originalMint.toString(),
+                mint: entry.parsed.stakeMint.toString(),
                 decimals: decimals,
               })
             }

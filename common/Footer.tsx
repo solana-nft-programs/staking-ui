@@ -19,7 +19,7 @@ export const Footer = ({
 }) => {
   return (
     <div
-      className="mt-10 px-10 pt-5 md:px-32"
+      className="px-10 md:px-32"
       style={{
         background: darken(0.03, bgColor),
       }}
