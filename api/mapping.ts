@@ -3177,7 +3177,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     imageUrl: 'https://i.ibb.co/L648WCk/Screenshot-from-2023-01-20-20-35-55.png',
     tokenStandard: TokenStandard.NonFungible,
     receiptType: ReceiptType.Original,
-    hostname: 'staking.solanamcs.com',
+    hostname: 'stake.solanamcs.com',
     hideFooter: true,
     styles: {
       fontFamily: 'Industry, sans-serif',
