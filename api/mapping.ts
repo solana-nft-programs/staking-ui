@@ -3163,6 +3163,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
         value: 'https://magiceden.io/marketplace/hyperion',
       },
     ],
+    
   },
   {
     name: 'Solana Mcs staking',
@@ -3171,24 +3172,32 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     stakePoolAddress: new PublicKey(
       'HBsam1w2i35vUVfg7ZdngqFQ8m9vmJEhTmn3VAkgmYhM'
     ),
-    description: 'Official staking pool for solana mcs NFT collection',
-    imageUrl:
-      'https://pbs.twimg.com/profile_images/1597210461665206273/qt3OgPGt_400x400.jpg',
+    description:
+      'Official staking pool for solana mcs NFT collection',
+    imageUrl: 'https://i.ibb.co/L648WCk/Screenshot-from-2023-01-20-20-35-55.png',
     tokenStandard: TokenStandard.NonFungible,
     receiptType: ReceiptType.Original,
     hostname: 'stake.solanamcs.com',
     hideFooter: true,
+    styles: {
+      fontFamily: 'Industry, sans-serif',
+      fontWeight: 666,
+      backgroundSize: '36% auto',
+    },
+    
     websiteUrl: 'https://solanamcs.com/',
     maxStaked: 666,
     logoPadding: false,
     colors: {
-      primary: '#ffffff',
-      secondary: '#e06666',
-      fontColor: '#444444',
+      primary: '#e06666',
+      secondary: '#191970',
+      fontColor: '#191970',
       fontColorSecondary: '#ffffff',
-      fontColorTertiary: '#444444',
+      fontColorTertiary: '#ffffff',
     },
-  },
+    backgroundImage:
+      'https://cdn.discordapp.com/attachments/894736995090300979/1066104285970059324/gigigigi.jpg',
+    },
   {
     name: 'howly',
     displayName: 'Howly Finance',
@@ -3359,3 +3368,4 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
    },
 },
 ]
+
