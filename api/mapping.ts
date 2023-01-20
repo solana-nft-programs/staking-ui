@@ -3336,4 +3336,26 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       },
     ],
   },
+  {
+    name: 'Devil Bots',
+    displayName: 'DEVIL BOTS STAKING',
+    stakePoolAddress: new PublicKey(
+     'Fkk1D46RjHP2jtjcHCYRbGcTweEARewb5XqHBTTvyNdm'
+    ),
+    websiteUrl: 'https://twitter.com/DevilBotNFT',
+    receiptType: ReceiptType.Original,
+    maxStaked: 1666, // update with collection size
+    imageUrl: 'https://creator-hub-prod.s3.us-east-2.amazonaws.com/devil_bots_pfp_1669315048275.gif',
+    tokenStandard: TokenStandard.NonFungible,
+    hostname: 'https://stake.cardinal.so/DevilBots',
+    description:
+     'Official staking pool for the Devil Bots NFT collection',
+    colors: {
+    primary: '#313131',
+    secondary: '#734242',
+    fontColor: '#AA0000',
+    fontColorSecondary: '#950000',
+    fontColorTertiary: '#7F1B1B',
+   },
+},
 ]
