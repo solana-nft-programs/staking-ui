@@ -1,7 +1,8 @@
 import { PlusIcon } from '@heroicons/react/24/solid'
 import { HeaderSlim } from 'common/HeaderSlim'
 import { withCluster } from 'common/utils'
-import { statsNameMapping, useGlobalStats } from 'hooks/useGlobalStats'
+import { useAllStakePools } from 'hooks/useAllStakePools'
+import { useStat } from 'hooks/useStat'
 import { useRouter } from 'next/router'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 
@@ -11,7 +12,8 @@ import { HeadingPrimary } from '@/components/UI/typography/HeadingPrimary'
 
 export const MainHero = () => {
   const { environment } = useEnvironmentCtx()
-  const stats = useGlobalStats()
+  const allStakePools = useAllStakePools()
+  const totalStakedTokens = useStat('total-active-staked-tokens')
   const router = useRouter()
   return (
     <div className="relative z-0 text-sm">
@@ -43,18 +45,50 @@ export const MainHero = () => {
             </ButtonPrimary>
           </div>
           <div className="flex w-fit flex-wrap gap-3 rounded-xl border-[2px] border-border p-4">
-            {statsNameMapping.map(({ displayName, key }) => (
-              <div className="flex items-center gap-2" key={key}>
-                <div className="text-medium-3">{displayName}</div>
-                <div className="text-light-0">
-                  {stats.data && stats.data[key] ? (
-                    Number(stats.data[key]!.value).toLocaleString('en-US')
-                  ) : (
-                    <div className="mt-[1px] h-5 w-12 animate-pulse rounded-md bg-border" />
-                  )}
-                </div>
+            <div className="flex items-center gap-2">
+              <div className="text-medium-3">Total Staked Tokens</div>
+              <div className="text-light-0">
+                {totalStakedTokens.data?.parsed ? (
+                  Number(totalStakedTokens.data?.parsed.value).toLocaleString(
+                    'en-US'
+                  )
+                ) : (
+                  <div className="mt-[1px] h-5 w-12 animate-pulse rounded-md bg-border" />
+                )}
               </div>
-            ))}
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="text-medium-3">Total Staked NFTs</div>
+              <div className="text-light-0">
+                {allStakePools.data ? (
+                  (
+                    allStakePools.data.stakePoolsWithMetadata.reduce(
+                      (acc, a) => acc + a.stakePoolData.parsed.totalStaked,
+                      0
+                    ) +
+                    allStakePools.data.stakePoolsWithoutMetadata.reduce(
+                      (acc, a) => acc + a.stakePoolData.parsed.totalStaked,
+                      0
+                    )
+                  ).toLocaleString('en-US')
+                ) : (
+                  <div className="mt-[1px] h-5 w-12 animate-pulse rounded-md bg-border" />
+                )}
+              </div>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="text-medium-3">Total Stake Pools</div>
+              <div className="text-light-0">
+                {allStakePools.data ? (
+                  (
+                    allStakePools.data.stakePoolsWithMetadata.length +
+                    allStakePools.data.stakePoolsWithoutMetadata.length
+                  ).toLocaleString('en-US')
+                ) : (
+                  <div className="mt-[1px] h-5 w-12 animate-pulse rounded-md bg-border" />
+                )}
+              </div>
+            </div>
           </div>
         </div>
       </div>

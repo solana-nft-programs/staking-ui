@@ -287,6 +287,46 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     receiptType: ReceiptType.Original,
   },
   {
+    name: 'goodskellas',
+    displayName: 'Good Skellas',
+    hostname: 'stake.goodskellas.xyz',
+    stakePoolAddress: new PublicKey(
+      'FqBj7uVDHfy6cDDoihX3cQSCmV347SoFXUtvUe5auMQ8'
+    ),
+    websiteUrl: 'https://www.goodskellas.xyz/',
+    nameInHeader: true,
+    description: 'Stake your Skellas NFT to earn $BONES',
+    hideFooter: true,
+    imageUrl: 'https://i.imgur.com/cjJDaD8.png',
+    backgroundImage: 'https://i.imgur.com/aXFVc4C.png',
+    links: [
+      {
+        text: 'Website',
+        value: 'https://www.goodskellas.xyz/',
+      },
+      {
+        text: 'Twitter',
+        value: 'https://twitter.com/goodskellas',
+      },
+      {
+        text: 'MagicEden',
+        value: 'https://magiceden.io/marketplace/goodskellas',
+      },
+    ],
+    styles: {
+      fontFamily: 'Franklin Gothic Medium',
+      fontWeight: 300,
+      backgroundSize: 'cover',
+      backgroundPosition: 'center',
+    },
+    colors: {
+      primary: '#000000',
+      secondary: '#9399CB',
+      accent: '#9399CB',
+      fontColor: '#FFFFFF',
+    },
+  },
+  {
     name: 'shadiesstandard',
     displayName: 'SHADIES STANDARD STAKING',
     stakePoolAddress: new PublicKey(
@@ -506,6 +546,45 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       accent: '#2a393a',
       fontColor: '#FFFFFF',
     },
+  },
+  {
+    name: 'spaceboys',
+    displayName: 'Space Boys',
+    hostname: 'stake.spaceboys.xyz',
+    stakePoolAddress: new PublicKey(
+      'EchAuMJeaVhbitnEns7QPYh2mFqxWFY8QsQmchn4LRVz'
+    ),
+    nameInHeader: true,
+    description: 'Stake your Space Boy to earn $SPACE',
+    hideFooter: true,
+    imageUrl: 'https://i.imgur.com/baGSXKZ.png',
+    links: [
+      {
+        text: 'Buy Now',
+        value: 'https://magiceden.io/marketplace/spaceboys',
+      },
+      {
+        text: 'Twitter',
+        value: 'https://twitter.com/SpaceBoysNFT',
+      },
+      {
+        text: 'Discord',
+        value: 'https://discord.gg/yhVWzGbEkc',
+      },
+    ],
+    colors: {
+      primary: '#00dbda',
+      secondary: '#000000',
+      accent: '#f248a7',
+      fontColor: '#00dbda',
+      fontColorSecondary: '#00dbda',
+    },
+    styles: {
+      fontFamily: 'Industry, sans-serif',
+      fontWeight: 500,
+      backgroundSize: 'cover',
+    },
+    backgroundImage: 'https://i.imgur.com/Zuj545m.png',
   },
   {
     name: 'META',
@@ -3061,7 +3140,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     hostname: 'staking.hyperionnft.io',
     hideFooter: true,
     websiteUrl: 'hyperionnft.io',
-    maxStaked: 5888,
+    maxStaked: 3500,
     logoPadding: false,
     colors: {
       primary: '#0E3A49',
@@ -3112,5 +3191,199 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     },
     
   },
+  {
+    name: 'Solana Mcs staking',
+    displayName: 'SOLANA MCS STAKING',
+    nameInHeader: true,
+    stakePoolAddress: new PublicKey(
+      'HBsam1w2i35vUVfg7ZdngqFQ8m9vmJEhTmn3VAkgmYhM'
+    ),
+    description: 'Official staking pool for solana mcs NFT collection',
+    imageUrl:
+      'https://pbs.twimg.com/profile_images/1597210461665206273/qt3OgPGt_400x400.jpg',
+    tokenStandard: TokenStandard.NonFungible,
+    receiptType: ReceiptType.Original,
+    hostname: 'stake.solanamcs.com',
+    hideFooter: true,
+    websiteUrl: 'https://solanamcs.com/',
+    maxStaked: 666,
+    logoPadding: false,
+    colors: {
+      primary: '#ffffff',
+      secondary: '#e06666',
+      fontColor: '#444444',
+      fontColorSecondary: '#ffffff',
+      fontColorTertiary: '#444444',
+    },
+  },
+  {
+    name: 'howly',
+    displayName: 'Howly Finance',
+    nameInHeader: true,
+    stakePoolAddress: new PublicKey(
+      '6Jdwgq81o8r5bUiFiAEeoXzYBXXDAG1mKDKYsZdZVBW9'
+    ),
+    description:
+      'First meme coin and nft powered defi on solana. Giving free access for the whole howly ecosystem with exclusive perks and privileges',
+    imageUrl:
+      'https://bafybeigipwtmn2yckmgrf7k6x7un454j73qlifexhew72445um2zkbzuoi.ipfs.nftstorage.link/collection.jpg',
+    tokenStandard: TokenStandard.NonFungible,
+    receiptType: ReceiptType.Original,
+    hostname: 'staking.howlynft.xyz',
+    hideFooter: true,
+    websiteUrl: 'https://howlynft.xyz/',
+    maxStaked: 2500,
+    logoPadding: false,
+    colors: {
+      primary: '#474554',
+      secondary: '#00E6FF',
+      fontColor: '#54ECC4',
+      fontColorSecondary: '#474554',
+      fontColorTertiary: '#fff',
+    },
+    links: [
+      {
+        text: 'Discord',
+        value: 'https://discord.gg/howlyfinance',
+      },
+      {
+        text: 'Twitter',
+        value: 'https://twitter.com/howly_finance',
+      },
+      {
+        text: 'Magic Eden',
+        value: 'https://magiceden.io/marketplace/howly',
+      },
+    ],
+  },
+  {
+    name: 'forest_gemmys',
+    displayName: 'Forest Gemmys',
+    nameInHeader: true,
+    stakePoolAddress: new PublicKey(
+      '5xCCp3y57oRDjgK6RKhkHUKzYyo4dzW8qp1eV12CATg7'
+    ),
+    description:
+      'Come frolic with the Forest Gemmys! The first Gemmy limited edition series.',
+    imageUrl:
+      'https://creator-hub-prod.s3.us-east-2.amazonaws.com/forest_gemmys_pfp_1667238440811.png',
+    tokenStandard: TokenStandard.NonFungible,
+    receiptType: ReceiptType.Original,
+    hideFooter: true,
+    websiteUrl: 'https://www.gemmy.club/',
+    maxStaked: 1298,
+    logoPadding: false,
+    colors: {
+      primary: '#7D89D8',
+      secondary: '##131418',
+      accent: '#2a393a',
+      fontColor: '#FFFFFF',
+    },
+    links: [
+      {
+        text: 'Discord',
+        value: 'https://discord.com/invite/NChtPhqrQC',
+      },
+      {
+        text: 'Twitter',
+        value: 'https://twitter.com/GemmyClub',
+      },
+      {
+        text: 'Magic Eden',
+        value: 'https://magiceden.io/marketplace/forest_gemmys',
+      },
+    ],
+  },
+  {
+    name: 'Fronkme',
+    displayName: 'Fronkme Staking',
+    nameInHeader: true,
+    stakePoolAddress: new PublicKey(
+      '8xnC5wbXAgXoDghKGWTuxbw76U7HAHAwRuU3AKKovGif'
+    ),
+    description: 'Fronkme reward token staking',
+    imageUrl:
+      'https://bafybeidq25hbteb2lzh4uaqez5ir7jx4sdgihscm4gaefqf4kllebwdi7q.ipfs.nftstorage.link/WhatsApp%20Image%202023-01-17%20at%2010.40.25%20AM.jpeg',
+    tokenStandard: TokenStandard.NonFungible,
+    receiptType: ReceiptType.Original,
+    hideFooter: true,
+    websiteUrl: '',
+    maxStaked: 5,
+    logoPadding: false,
+    colors: {
+      primary: 'black',
+      secondary: 'gray',
+      accent: 'white',
+      fontColor: 'white',
+    },
+    links: [
+      {
+        text: 'Discord',
+        value: 'https://discord.com/',
+      },
+      {
+        text: 'Twitter',
+        value: 'https://twitter.com/',
+      },
+      {
+        text: 'Magic Eden',
+        value: 'https://magiceden.io/',
+      },
+    ],
+  },
+  {
+    name: 'pixel-dudes',
+    displayName: 'Pixel Dudes',
+    description:
+      'Stake your dudes to earn rewards from various reward mechanisms including $EDD, merchandise, redeemable rewards by the Pixel Dudes pool!',
+    nameInHeader: true,
+    stakePoolAddress: new PublicKey(
+      'F2tzjza3o6qWoyL9ufTG5K5zpTiAm5GebqsFYbB1cKxx'
+    ),
+    contrastHomepageBkg: true,
+    hideFooter: true,
+    hideAllowedTokens: true,
+    receiptType: ReceiptType.Original,
+    tokenStandard: TokenStandard.NonFungible,
+    imageUrl:
+      'https://nftstorage.link/ipfs/bafybeifmfxptuitrwzj7eeef4h3mbqx4uhk7yaok5vzyvgmhlaefvxw7li/1500.gif',
+    maxStaked: 4000,
+    colors: {
+      primary: '#000000',
+      secondary: '#878ce0',
+    },
+    links: [
+      {
+        text: 'Twitter',
+        value: 'https://twitter.com/SolEddaRity',
+      },
+      {
+        text: 'Discord',
+        value: 'https://discord.gg/soleddarity',
+      },
+    ],
+  },
+  {
+    name: 'DevilBots',
+    displayName: 'DEVIL BOTS STAKING',
+    stakePoolAddress: new PublicKey(
+     'Fkk1D46RjHP2jtjcHCYRbGcTweEARewb5XqHBTTvyNdm'
+    ),
+    websiteUrl: 'https://twitter.com/DevilBotNFT',
+    receiptType: ReceiptType.Original,
+    maxStaked: 1666, // update with collection size
+    imageUrl: 'https://creator-hub-prod.s3.us-east-2.amazonaws.com/devil_bots_pfp_1669315048275.gif',
+    tokenStandard: TokenStandard.NonFungible,
+    hostname: 'https://stake.cardinal.so/DevilBots',
+    description:
+     'Official staking pool for the Devil Bots NFT collection',
+    colors: {
+    primary: '#313131',
+    secondary: '#734242',
+    fontColor: '#AA0000',
+    fontColorSecondary: '#950000',
+    fontColorTertiary: '#7F1B1B',
+   },
+},
 ]
 

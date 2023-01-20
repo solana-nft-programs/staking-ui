@@ -30,6 +30,7 @@ export const useHandleUnstake = (callback?: () => void) => {
       tokenDatas: StakeEntryTokenData[]
     }): Promise<string[]> => {
       if (!stakePoolId) throw 'Stake pool not found'
+      if (!wallet.publicKey) throw 'Wallet not connected'
       if (!stakePool || !stakePool.parsed) throw 'Stake pool not found'
 
       const ataTx = new Transaction()
@@ -39,8 +40,8 @@ export const useHandleUnstake = (callback?: () => void) => {
           ataTx,
           connection,
           rewardDistributorData.data.parsed.rewardMint,
-          wallet.publicKey!,
-          wallet.publicKey!
+          wallet.publicKey,
+          wallet.publicKey
         )
       }
 
@@ -58,7 +59,8 @@ export const useHandleUnstake = (callback?: () => void) => {
                 !stakePool.parsed.minStakeSeconds
               ) {
                 notify({
-                  message: `Cooldown period will be initiated for ${token.metaplexData?.data.data.name} unless minimum stake period unsatisfied`,
+                  message: `Cooldown period will be initiated for ${token.metaplexData?.data.data.name}`,
+                  description: 'Unless minimum stake period unsatisfied',
                   type: 'info',
                 })
                 coolDown = true
@@ -76,7 +78,10 @@ export const useHandleUnstake = (callback?: () => void) => {
                   connection,
                   wallet,
                   stakePool.parsed?.identifier,
-                  [{ mintId: token.stakeEntry.parsed?.stakeMint }]
+                  [{ mintId: token.stakeEntry.parsed?.stakeMint }],
+                  rewardDistributorData.data
+                    ? [rewardDistributorData.data?.pubkey]
+                    : undefined
                 ) // TODO Handle fungible
                 if (txs[0]) {
                   unstakeTx = txs[0]

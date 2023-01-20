@@ -1,8 +1,8 @@
+import { executeTransaction } from '@cardinal/common'
 import {
   findStakeAuthorizationRecordId,
   rewardsCenterProgram,
 } from '@cardinal/rewards-center'
-import { executeTransaction } from '@cardinal/staking'
 import { withAuthorizeStakeEntry } from '@cardinal/staking/dist/cjs/programs/stakePool/transaction'
 import { useWallet } from '@solana/wallet-adapter-react'
 import { PublicKey, SystemProgram, Transaction } from '@solana/web3.js'
@@ -70,7 +70,7 @@ export const useHandleAuthorizeMints = () => {
           )
         }
 
-        await executeTransaction(connection, wallet, transaction, {
+        await executeTransaction(connection, transaction, wallet, {
           silent: false,
           signers: [],
         })

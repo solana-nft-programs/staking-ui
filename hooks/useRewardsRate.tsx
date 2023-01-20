@@ -98,7 +98,11 @@ export const useRewardsRate = () => {
             rewardDistributorDataToV1(rewardDistributorData),
             {
               pubkey: stakeEntry.pubkey,
-              parsed: stakeEntryDataToV1(stakeEntry.parsed),
+              parsed: {
+                ...stakeEntryDataToV1(stakeEntry.parsed),
+                totalStakeSeconds:
+                  rewardEntry?.parsed.rewardSecondsReceived ?? new BN(0),
+              },
             },
             rewardEntry
               ? {

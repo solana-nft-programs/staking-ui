@@ -85,7 +85,7 @@ export const StakedTokens = () => {
                   stakePoolMetadata?.colors?.fontColorSecondary ||
                   stakePoolMetadata?.colors?.fontColor,
               }}
-              className="my-auto flex rounded-md px-4 py-2 hover:scale-[1.03]"
+              className="my-auto flex items-center justify-center rounded-md px-4 py-2 hover:scale-[1.03]"
             >
               <span className="mr-1 inline-block">
                 {handleUnstake.isLoading && (
@@ -105,7 +105,9 @@ export const StakedTokens = () => {
           <Tooltip title="Attempt to unstake all tokens at once">
             <button
               onClick={() => {
-                setStakedSelected(stakedTokenDatas.data || [])
+                setStakedSelected(
+                  stakedSelected.length > 0 ? [] : stakedTokenDatas.data || []
+                )
               }}
               style={{
                 background:
@@ -116,7 +118,10 @@ export const StakedTokens = () => {
               }}
               className="my-auto flex cursor-pointer rounded-md px-4 py-2 hover:scale-[1.03]"
             >
-              <span className="my-auto">Select All</span>
+              <span className="my-auto">
+                {' '}
+                {stakedSelected.length > 0 ? 'Unselect All' : 'Select All'}
+              </span>
             </button>
           </Tooltip>
         </div>
@@ -145,7 +150,7 @@ export const StakedTokens = () => {
                     stakePoolMetadata?.colors?.fontColorSecondary ||
                     stakePoolMetadata?.colors?.fontColor,
                 }}
-                className="my-auto flex rounded-md px-4 py-2 hover:scale-[1.03]"
+                className="my-auto flex items-center justify-center rounded-md px-4 py-2 hover:scale-[1.03]"
               >
                 <span className="mr-1 inline-block">
                   {handleClaimRewards.isLoading && (

@@ -114,6 +114,7 @@ export const useAllowedTokenDatas = (showFungibleTokens: boolean) => {
       stakePool.data?.pubkey.toString(),
       walletId?.toString(),
       showFungibleTokens,
+      allTokenAccounts.data?.map((tk) => JSON.stringify(tk)).join(','),
       tokenList.data?.length,
       stakeAuthorizations.data?.length ?? 0,
     ],

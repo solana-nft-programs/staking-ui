@@ -10,6 +10,7 @@ import type { AllowedTokenData } from 'hooks/useAllowedTokenDatas'
 import { useAllowedTokenDatas } from 'hooks/useAllowedTokenDatas'
 import { isStakePoolV2, useStakePoolData } from 'hooks/useStakePoolData'
 import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
+import { useTokenAccounts } from 'hooks/useTokenAccounts'
 import { useEffect, useState } from 'react'
 import { FaInfoCircle } from 'react-icons/fa'
 
@@ -26,6 +27,7 @@ export const UnstakedTokens = () => {
     ReceiptType.Original
   )
   const [showFungibleTokens, setShowFungibleTokens] = useState(false)
+  const tokenAccounts = useTokenAccounts()
   const allowedTokenDatas = useAllowedTokenDatas(showFungibleTokens)
   const handleStake = useHandleStake(() => setUnstakedSelected([]))
 
@@ -59,9 +61,14 @@ export const UnstakedTokens = () => {
         <div className="flex flex-row items-center justify-center">
           <RefreshButton
             colorized
-            isFetching={allowedTokenDatas.isFetching}
-            dataUpdatdAtMs={allowedTokenDatas.dataUpdatedAt}
-            handleClick={() => allowedTokenDatas.refetch()}
+            isFetching={
+              tokenAccounts.isFetching || allowedTokenDatas.isFetching
+            }
+            dataUpdatdAtMs={Math.max(
+              tokenAccounts.dataUpdatedAt,
+              allowedTokenDatas.dataUpdatedAt
+            )}
+            handleClick={() => tokenAccounts.refetch()}
           />
           {stakePoolData?.parsed &&
             !stakePoolMetadata?.tokenStandard &&
@@ -156,7 +163,7 @@ export const UnstakedTokens = () => {
                   stakePoolMetadata?.colors?.fontColorSecondary ||
                   stakePoolMetadata?.colors?.fontColor,
               }}
-              className="my-auto flex rounded-md px-4 py-2 hover:scale-[1.03]"
+              className="my-auto flex items-center justify-center rounded-md px-4 py-2 hover:scale-[1.03]"
             >
               <span className="mr-1 inline-block">
                 {handleStake.isLoading && (
@@ -176,7 +183,11 @@ export const UnstakedTokens = () => {
           <Tooltip title="Attempt to stake all tokens at once">
             <button
               onClick={() => {
-                setUnstakedSelected(allowedTokenDatas.data || [])
+                setUnstakedSelected(
+                  unstakedSelected.length > 0
+                    ? []
+                    : allowedTokenDatas.data || []
+                )
               }}
               style={{
                 background:
@@ -187,7 +198,9 @@ export const UnstakedTokens = () => {
               }}
               className="my-auto flex cursor-pointer rounded-md px-4 py-2 hover:scale-[1.03]"
             >
-              <span className="my-auto">Select All</span>
+              <span className="my-auto">
+                {unstakedSelected.length > 0 ? 'Unselect All' : 'Select All'}
+              </span>
             </button>
           </Tooltip>
         </div>

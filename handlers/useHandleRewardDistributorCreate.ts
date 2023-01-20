@@ -1,9 +1,9 @@
+import { executeTransaction } from '@cardinal/common'
 import {
   DEFAULT_PAYMENT_INFO,
   findRewardDistributorId,
   rewardsCenterProgram,
 } from '@cardinal/rewards-center'
-import { executeTransaction } from '@cardinal/staking'
 import { withInitRewardDistributor } from '@cardinal/staking/dist/cjs/programs/rewardDistributor/transaction'
 import { BN } from '@project-serum/anchor'
 import { useWallet } from '@solana/wallet-adapter-react'
@@ -96,7 +96,7 @@ export const useHandleRewardDistributorCreate = () => {
         })
       }
 
-      return executeTransaction(connection, wallet, transaction, {})
+      return executeTransaction(connection, transaction, wallet, {})
     },
     {
       onSuccess: (txid) => {
