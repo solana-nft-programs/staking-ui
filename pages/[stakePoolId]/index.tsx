@@ -51,7 +51,6 @@ function StakePoolHome(props: { stakePoolMetadataName: string | null }) {
   const stakePoolDisplayName = props.stakePoolMetadataName
     ? props.stakePoolMetadataName.replace(' Staking', '') + ' Staking'
     : 'Cardinal NFT Staking'
-  console.log('stakePoolDisplayName', stakePoolDisplayName)
 
   const { data: stakePoolMetadata } = useStakePoolMetadata()
 

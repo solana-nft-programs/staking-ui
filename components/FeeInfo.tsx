@@ -1,44 +1,60 @@
+import {
+  ArrowDownOnSquareIcon,
+  ArrowUpOnSquareIcon,
+  TagIcon,
+} from '@heroicons/react/24/solid'
+import { BN } from '@project-serum/anchor'
 import { Tooltip } from 'common/Tooltip'
+import { formatAmountAsDecimal } from 'common/units'
 import { useClaimRewardsPaymentInfo } from 'hooks/useClaimRewardsPaymentInfo'
 import { useMintDecimals } from 'hooks/useMintDecimals'
+import { useMintSymbol } from 'hooks/useMintSymbol'
+import { useStakePaymentInfo } from 'hooks/useStakePaymentInfo'
 import { isStakePoolV2, useStakePoolData } from 'hooks/useStakePoolData'
-import { useEffect } from 'react'
+import { useUnstakePaymentInfo } from 'hooks/useUnstakePaymentInfo'
 import { BsFillCreditCardFill, BsFillInfoCircleFill } from 'react-icons/bs'
 
 export const FeeInfo: React.FC = () => {
   const { data: stakePool } = useStakePoolData()
-  const { data: claimRewardsPaymentInfo } = useClaimRewardsPaymentInfo()
-  // const { data: unstakePaymentInfo } = useUnstakePaymentInfo()
-  // const { data: stakePaymentInfo } = useStakePaymentInfo()
-  const { data: claimRewardsPaymentMintDecimals } = useMintDecimals(
-    claimRewardsPaymentInfo?.parsed
-      ? claimRewardsPaymentInfo.parsed.paymentMint
+
+  const claimRewardsPaymentInfo = useClaimRewardsPaymentInfo()
+  const { data: claimRewardsPaymentMintSymbol } = useMintSymbol(
+    claimRewardsPaymentInfo.isFetched
+      ? claimRewardsPaymentInfo?.data?.parsed?.paymentMint
       : undefined
   )
-  // const { data: unstakePaymentMintDecimals } = useMintDecimals(
-  //   unstakePaymentInfo?.parsed
-  //     ? claimRewardsPaymentInfo.parsed.paymentMint
-  //     : undefined
-  // )
-  // const { data: stakePaymentMintDecimals } = useMintDecimals(
-  //   stakePaymentInfo?.parsed
-  //     ? claimRewardsPaymentInfo.parsed.paymentMint
-  //     : undefined
-  // )
+  const { data: claimRewardsPaymentMintDecimals } = useMintDecimals(
+    claimRewardsPaymentInfo.isFetched
+      ? claimRewardsPaymentInfo?.data?.parsed?.paymentMint
+      : undefined
+  )
 
-  useEffect(() => {
-    console.log(
-      'claimRewardsPaymentMintDecimals',
-      claimRewardsPaymentMintDecimals
-    )
-    // console.log('unstakePaymentMintDecimals', unstakePaymentMintDecimals)
-    // console.log('stakePaymentMintDecimals', stakePaymentMintDecimals)
+  const stakePaymentInfo = useStakePaymentInfo()
+  const { data: stakePaymentMintSymbol } = useMintSymbol(
+    stakePaymentInfo.isFetched
+      ? stakePaymentInfo?.data?.parsed?.paymentMint
+      : undefined
+  )
+  const { data: stakePaymentMintDecimals } = useMintDecimals(
+    stakePaymentInfo.isFetched
+      ? stakePaymentInfo?.data?.parsed?.paymentMint
+      : undefined
+  )
 
-    console.log('mintDecimals', claimRewardsPaymentMintDecimals)
-  }, [claimRewardsPaymentInfo, claimRewardsPaymentMintDecimals])
+  const unstakePaymentInfo = useUnstakePaymentInfo()
+  const { data: unstakePaymentMintSymbol } = useMintSymbol(
+    unstakePaymentInfo.isFetched
+      ? unstakePaymentInfo?.data?.parsed?.paymentMint
+      : undefined
+  )
+  const { data: unstakePaymentMintDecimals } = useMintDecimals(
+    unstakePaymentInfo.isFetched
+      ? unstakePaymentInfo?.data?.parsed?.paymentMint
+      : undefined
+  )
 
   return (
-    <div className="flex space-x-8">
+    <div className="flex flex-wrap space-x-8">
       {!!stakePool?.parsed && (
         <div>
           <Tooltip
@@ -46,7 +62,7 @@ export const FeeInfo: React.FC = () => {
           >
             <div className="flex cursor-pointer flex-row items-center justify-center gap-2">
               <BsFillInfoCircleFill className="text-medium-4" />
-              <div className="text-medium-4">Protocol version: </div>
+              <div className="text-medium-4">Protocol: </div>
               <div className="text-light-1">
                 {isStakePoolV2(stakePool.parsed) ? 'V2' : 'V1'}
               </div>
@@ -69,29 +85,47 @@ export const FeeInfo: React.FC = () => {
         </div>
       )}
       {!!stakePool?.parsed && isStakePoolV2(stakePool.parsed) && (
-        <div className="flex flex-row items-center justify-center gap-8">
-          {/* <div className="flex items-center gap-2">
+        <>
+          <div className="flex items-center gap-2">
             <TagIcon className="h-5 w-5 text-medium-4" />
             <div className="text-medium-4">Reward Claim Fee: </div>
-            {claimRewardsPaymentInfo?.formattedAmountWithSymbol
-              ? claimRewardsPaymentInfo?.formattedAmountWithSymbol
-              : undefined}
+            <div>
+              {!!claimRewardsPaymentMintDecimals &&
+                formatAmountAsDecimal(
+                  claimRewardsPaymentMintDecimals,
+                  new BN(claimRewardsPaymentInfo.data.parsed.paymentAmount),
+                  claimRewardsPaymentMintDecimals
+                )}
+            </div>
+            <>{`$${claimRewardsPaymentMintSymbol}`}</>
           </div>
           <div className="flex items-center gap-2">
             <ArrowUpOnSquareIcon className="h-5 w-5 text-medium-4" />
-            <div className="text-medium-4">Unstake Fee: </div>
-            {unstakePaymentInfo?.formattedAmountWithSymbol
-              ? unstakePaymentInfo?.formattedAmountWithSymbol
-              : undefined}
+            <div className="text-medium-4">Unstake Fee:</div>
+            <div>
+              {!!unstakePaymentMintDecimals &&
+                formatAmountAsDecimal(
+                  unstakePaymentMintDecimals,
+                  new BN(unstakePaymentInfo.data.parsed.paymentAmount),
+                  unstakePaymentMintDecimals
+                )}
+            </div>
+            <>{`$${unstakePaymentMintSymbol}`}</>
           </div>
           <div className="flex items-center gap-2">
             <ArrowDownOnSquareIcon className="h-5 w-5 text-medium-4" />
-            <div className="text-medium-4">Stake Fee: </div>
-            {stakePaymentInfo?.formattedAmountWithSymbol
-              ? stakePaymentInfo?.formattedAmountWithSymbol
-              : undefined}
-          </div> */}
-        </div>
+            <div className="text-medium-4">Stake Fee:</div>
+            <div>
+              {!!stakePaymentMintDecimals &&
+                formatAmountAsDecimal(
+                  stakePaymentMintDecimals,
+                  new BN(stakePaymentInfo.data.parsed.paymentAmount),
+                  stakePaymentMintDecimals
+                )}
+            </div>
+            <>{`$${stakePaymentMintSymbol}`}</>
+          </div>
+        </>
       )}
     </div>
   )
