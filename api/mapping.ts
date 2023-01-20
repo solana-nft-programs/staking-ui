@@ -3337,7 +3337,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     ],
   },
   {
-    name: 'Devil Bots',
+    name: 'DevilBots',
     displayName: 'DEVIL BOTS STAKING',
     stakePoolAddress: new PublicKey(
      'Fkk1D46RjHP2jtjcHCYRbGcTweEARewb5XqHBTTvyNdm'
