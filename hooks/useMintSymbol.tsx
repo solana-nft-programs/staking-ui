@@ -16,7 +16,7 @@ export const useMintSymbol = (mint: PublicKey | undefined) => {
       const token = await tokenList?.data?.find((token) => {
         return token.address === mint.toString()
       })
-      console.log('token.symbol', token?.symbol)
+
       return token?.symbol
     },
     {

@@ -12,7 +12,6 @@ export const useMintInfo = (mint: PublicKey | undefined) => {
     ['useRewardMintInfo', mint?.toString()],
     async () => {
       if (!mint) return
-      console.log('mint', mint.toString())
       if (isSol) {
         const mint: Mint = {
           address: PublicKey.default,
