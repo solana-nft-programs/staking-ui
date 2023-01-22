@@ -3166,38 +3166,50 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     
   },
   {
-    name: 'Solana Mcs staking',
-    displayName: 'SOLANA MCS STAKING',
+    name: 'SOLANA MCS',
+    displayName: 'SMCS Staking',
     nameInHeader: true,
     stakePoolAddress: new PublicKey(
       'HBsam1w2i35vUVfg7ZdngqFQ8m9vmJEhTmn3VAkgmYhM'
     ),
     description:
       'Official staking pool for solana mcs NFT collection',
-    imageUrl: 'https://i.ibb.co/L648WCk/Screenshot-from-2023-01-20-20-35-55.png',
-    tokenStandard: TokenStandard.NonFungible,
+
+
     receiptType: ReceiptType.Original,
+    websiteUrl: 'https://www.solanamcs.com',
     hostname: 'stake.solanamcs.com',
     hideFooter: true,
+    imageUrl:
+      'https://cdn.discordapp.com/attachments/1049342092880654417/1049348814017933372/GOGOgo.png',
     styles: {
-      fontFamily: 'Industry, sans-serif',
-      fontWeight: 666,
-      backgroundSize: '36% auto',
-    },
-    
-    websiteUrl: 'https://solanamcs.com/',
-    maxStaked: 666,
-    logoPadding: false,
-    colors: {
-      primary: '#e06666',
-      secondary: '#191970',
-      fontColor: '#191970',
-      fontColorSecondary: '#ffffff',
-      fontColorTertiary: '#ffffff',
+      fontFamily: 'serif',
+      fontWeight: 500,
     },
     backgroundImage:
-      'https://cdn.discordapp.com/attachments/894736995090300979/1066104285970059324/gigigigi.jpg',
+      'https://cdn.discordapp.com/attachments/989483399477604404/1024694267282726942/ReliefBlackBackground.jpg',
+    tokenStandard: TokenStandard.NonFungible,
+    hideAllowedTokens: true,
+    colors: {
+      primary: '#000000',
+      secondary: '#FFFFFF',
+      accent: '#000000',
+      fontColor: '#FFFFFF',
+      fontColorSecondary: '#000000',
+      backgroundSecondary: '#000000',
     },
+    links: [
+      {
+        text: 'Homepage',
+        value: 'https://solanamcs.com',
+      },
+      {
+        text: 'Discord',
+        value: 'https://discord.gg/rt5qrB6DE3',
+      },
+    ],
+    
+  },
   {
     name: 'howly',
     displayName: 'Howly Finance',
