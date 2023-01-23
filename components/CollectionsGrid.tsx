@@ -9,6 +9,7 @@ import {
   totalStaked,
   useAllStakePools,
 } from 'hooks/useAllStakePools'
+import { isStakePoolV2 } from 'hooks/useStakePoolData'
 import { useRouter } from 'next/router'
 import { transparentize } from 'polished'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
@@ -16,6 +17,7 @@ import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 export const CollectionsGrid = ({ configs }: { configs?: StakePool[] }) => {
   const router = useRouter()
   const { environment } = useEnvironmentCtx()
+
   const stakePools = useAllStakePools()
   return (
     <div className="grid grid-cols-1 flex-wrap gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
@@ -129,6 +131,19 @@ export const CollectionsGrid = ({ configs }: { configs?: StakePool[] }) => {
                     />
                   )}
                 </div>
+              }
+              content={
+                <>
+                  {config.stakePoolData?.parsed && (
+                    <div className="flex justify-end text-xs text-gray-400">
+                      <div className="overflow-hidden text-ellipsis whitespace-nowrap">
+                        {isStakePoolV2(config.stakePoolData?.parsed)
+                          ? 'V2'
+                          : 'V1'}
+                      </div>
+                    </div>
+                  )}
+                </>
               }
             />
           ))

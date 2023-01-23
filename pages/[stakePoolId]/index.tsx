@@ -51,7 +51,6 @@ function StakePoolHome(props: { stakePoolMetadataName: string | null }) {
   const stakePoolDisplayName = props.stakePoolMetadataName
     ? props.stakePoolMetadataName.replace(' Staking', '') + ' Staking'
     : 'Cardinal NFT Staking'
-  console.log('stakePoolDisplayName', stakePoolDisplayName)
 
   const { data: stakePoolMetadata } = useStakePoolMetadata()
 
@@ -113,7 +112,7 @@ function StakePoolHome(props: { stakePoolMetadataName: string | null }) {
         }}
       >
         <Header />
-        <div className="max flex grow items-center justify-center">
+        <div className="flex grow items-center justify-center">
           <div className="w-[600px] max-w-[95vw] rounded-xl bg-black bg-opacity-50 p-10 text-center">
             <div className="text-2xl font-bold">
               Users from Country ({userRegion.data?.countryName}) are not

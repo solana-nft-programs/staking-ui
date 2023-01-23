@@ -42,7 +42,7 @@ export const StakePoolConfig: React.FC<
       {!!stakePool?.parsed?.minStakeSeconds &&
         stakePool?.parsed.minStakeSeconds !== 0 && (
           <Tooltip
-            title={`Tokens must be staking for this minimum duration before unstaking or claiming rewards`}
+            title={`Tokens must be staked for this minimum duration before unstaking or claiming rewards`}
           >
             <div className="flex cursor-pointer flex-row items-center justify-center gap-2">
               <BsFillInfoCircleFill className="text-medium-4" />
