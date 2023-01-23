@@ -352,10 +352,10 @@
     "@solana/spl-token" "^0.1.8"
     "@solana/web3.js" "^1.66.2"
 
-"@cardinal/rewards-center@^2.5.1":
-  version "2.5.1"
-  resolved "https://registry.yarnpkg.com/@cardinal/rewards-center/-/rewards-center-2.5.1.tgz#df7f3af3ac15eb8eb5f0eaeef3dfe9ac629cf06f"
-  integrity sha512-plNvMRUZU+uIeA8UTihDn2APufVL3N+PqCqizRedTVX0wQA3TEWQmSHk/EGXY6XhY8V9Lg9OmdoggNRVoMrdog==
+"@cardinal/rewards-center@^2.5.2":
+  version "2.5.2"
+  resolved "https://registry.yarnpkg.com/@cardinal/rewards-center/-/rewards-center-2.5.2.tgz#cecae1b2030c7c9d35d827a5b493c7c7e8b4b917"
+  integrity sha512-RZOPnEopj9Tg5RWKvLFo1P3QuB3LU3+cvvhChCJ+bzhGJG0BBC6VrHUJEwxOjFqPUEoz1ipbeYpGdrOUxGdDsQ==
   dependencies:
     "@cardinal/common" "^6.0.0"
     "@cardinal/creator-standard" "^2.1.11"
