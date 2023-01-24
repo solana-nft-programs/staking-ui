@@ -3215,12 +3215,11 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     displayName: 'Howly Finance',
     nameInHeader: true,
     stakePoolAddress: new PublicKey(
-      '6Jdwgq81o8r5bUiFiAEeoXzYBXXDAG1mKDKYsZdZVBW9'
+      '9A95mxSKUt4eFmX87JC18HKmg8NweLNF299ArK45kie7'
     ),
     description:
-      'First meme coin and nft powered defi on solana. Giving free access for the whole howly ecosystem with exclusive perks and privileges',
-    imageUrl:
-      'https://bafybeigipwtmn2yckmgrf7k6x7un454j73qlifexhew72445um2zkbzuoi.ipfs.nftstorage.link/collection.jpg',
+      'A collection of 2500 NFTs, which gives free access and privileges for using multiple tools on solana ecosystem.',
+    imageUrl: 'https://bafybeigipwtmn2yckmgrf7k6x7un454j73qlifexhew72445um2zkbzuoi.ipfs.nftstorage.link/collection.jpg',
     tokenStandard: TokenStandard.NonFungible,
     receiptType: ReceiptType.Original,
     hostname: 'staking.howlynft.xyz',
@@ -3242,7 +3241,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       },
       {
         text: 'Twitter',
-        value: 'https://twitter.com/howly_finance',
+        value: 'https://twitter.com/howlyfinance',
       },
       {
         text: 'Magic Eden',
