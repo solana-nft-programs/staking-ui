@@ -3163,7 +3163,6 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
         value: 'https://magiceden.io/marketplace/hyperion',
       },
     ],
-    
   },
   {
     name: 'SOLANA MCS',
@@ -3172,9 +3171,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     stakePoolAddress: new PublicKey(
       'HBsam1w2i35vUVfg7ZdngqFQ8m9vmJEhTmn3VAkgmYhM'
     ),
-    description:
-      'Official staking pool for solana mcs NFT collection',
-
+    description: 'Official staking pool for solana mcs NFT collection',
 
     receiptType: ReceiptType.Original,
     websiteUrl: 'https://www.solanamcs.com',
@@ -3208,7 +3205,6 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
         value: 'https://discord.gg/rt5qrB6DE3',
       },
     ],
-    
   },
   {
     name: 'howly',
@@ -3219,7 +3215,8 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     ),
     description:
       'A collection of 2500 NFTs, which gives free access and privileges for using multiple tools on solana ecosystem.',
-    imageUrl: 'https://bafybeigipwtmn2yckmgrf7k6x7un454j73qlifexhew72445um2zkbzuoi.ipfs.nftstorage.link/collection.jpg',
+    imageUrl:
+      'https://bafybeigipwtmn2yckmgrf7k6x7un454j73qlifexhew72445um2zkbzuoi.ipfs.nftstorage.link/collection.jpg',
     tokenStandard: TokenStandard.NonFungible,
     receiptType: ReceiptType.Original,
     hostname: 'staking.howlynft.xyz',
@@ -3360,50 +3357,52 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     name: 'DevilBots',
     displayName: 'DEVIL BOTS STAKING',
     stakePoolAddress: new PublicKey(
-     'Fkk1D46RjHP2jtjcHCYRbGcTweEARewb5XqHBTTvyNdm'
+      'Fkk1D46RjHP2jtjcHCYRbGcTweEARewb5XqHBTTvyNdm'
     ),
     websiteUrl: 'https://twitter.com/DevilBotNFT',
     receiptType: ReceiptType.Original,
     maxStaked: 1666, // update with collection size
-    imageUrl: 'https://creator-hub-prod.s3.us-east-2.amazonaws.com/devil_bots_pfp_1669315048275.gif',
+    imageUrl:
+      'https://creator-hub-prod.s3.us-east-2.amazonaws.com/devil_bots_pfp_1669315048275.gif',
     tokenStandard: TokenStandard.NonFungible,
     hostname: 'https://stake.cardinal.so/DevilBots',
-    description:
-     'Official staking pool for the Devil Bots NFT collection',
+    description: 'Official staking pool for the Devil Bots NFT collection',
     colors: {
-    primary: '#313131',
-    secondary: '#734242',
-    fontColor: '#AA0000',
-    fontColorSecondary: '#950000',
-    fontColorTertiary: '#7F1B1B',
-   },
-},
-{
-  // Name of this stake pool used as an id. Should be in lower-case kebab-case since it is used in the URL as /{name}
-// https://www.theserverside.com/blog/Coffee-Talk-Java-News-Stories-and-Opinions/Why-you-should-make-kebab-case-a-URL-naming-convention-best-practice
-name: 'meta-tune-club',
-// Display name to be displayed in the header. Often the same as name but with capital letters and spaces
-displayName: 'Meta Tune Club',
-// Publickey for this stake pool
-stakePoolAddress: new PublicKey(
-  '6NL1Dw5bEPSFDdFMPuZiYzDQdUXLF84VUZzK5D6v4Jg1'
-),
-description:"Meta Tune Coin is designed to pay back homeowners for good maintenance practices. Period.  Use with a Meta Tune Provider near you.",
-// Optional hostname to remap -- SEE NOTE BELOW
-tokenStandard: TokenStandard.NonFungible,
-receiptType: ReceiptType.Original,
-// Image url to be used as the icon in the pool selector and the header
-imageUrl: 'https://pics.io/preview/63d16fe8806723001367ccfb/thumbnail',
-// Background banner image for pool
-backgroundBannerImageUrl: 'https://pics.io/preview/63c831842363a900137e35f7/thumbnail',
-// Website url if specified will be navigated to when the image in the header is clicked
-websiteUrl: 'https://www.themetatune.com/',
-maxStaked: 38,
-// Links to show at the top right of the page
-links: [
-  { text: 'Discord', value: 'https://discord.gg/RubtUTnHkw' },
-  { text: 'Twitter', value: 'https://twitter.com/metatuneclub'},
-{ text: 'Magic Eden', value: 'https://magiceden.io/marketplace/meta_tune_club'}]
-},
+      primary: '#313131',
+      secondary: '#734242',
+      fontColor: '#AA0000',
+      fontColorSecondary: '#950000',
+      fontColorTertiary: '#7F1B1B',
+    },
+  },
+  {
+    // Name of this stake pool used as an id. Should be in lower-case kebab-case since it is used in the URL as /{name}
+    // https://www.theserverside.com/blog/Coffee-Talk-Java-News-Stories-and-Opinions/Why-you-should-make-kebab-case-a-URL-naming-convention-best-practice
+    name: 'meta-tune-club',
+    // Display name to be displayed in the header. Often the same as name but with capital letters and spaces
+    displayName: 'Meta Tune Club',
+    // Publickey for this stake pool
+    stakePoolAddress: new PublicKey(
+      '6NL1Dw5bEPSFDdFMPuZiYzDQdUXLF84VUZzK5D6v4Jg1'
+    ),
+    description:
+      'Meta Tune Coin is designed to pay back homeowners for good maintenance practices. Period.  Use with a Meta Tune Provider near you.',
+    // Optional hostname to remap -- SEE NOTE BELOW
+    tokenStandard: TokenStandard.NonFungible,
+    receiptType: ReceiptType.Original,
+    // Image url to be used as the icon in the pool selector and the header
+    imageUrl: 'https://pics.io/preview/63d16fe8806723001367ccfb/thumbnail',
+    // Website url if specified will be navigated to when the image in the header is clicked
+    websiteUrl: 'https://www.themetatune.com/',
+    maxStaked: 38,
+    // Links to show at the top right of the page
+    links: [
+      { text: 'Discord', value: 'https://discord.gg/RubtUTnHkw' },
+      { text: 'Twitter', value: 'https://twitter.com/metatuneclub' },
+      {
+        text: 'Magic Eden',
+        value: 'https://magiceden.io/marketplace/meta_tune_club',
+      },
+    ],
+  },
 ]
-
