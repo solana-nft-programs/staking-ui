@@ -3394,9 +3394,9 @@ description:"Meta Tune Coin is designed to pay back homeowners for good maintena
 tokenStandard: TokenStandard.NonFungible,
 receiptType: ReceiptType.Original,
 // Image url to be used as the icon in the pool selector and the header
-imageUrl: 'https://pics.io/preview/63c831842363a900137e35f7/thumbnail',
+imageUrl: 'https://pics.io/preview/63d16fe8806723001367ccfb/thumbnail',
 // Background banner image for pool
-backgroundBannerImageUrl?: 'https://www.themetatune.com/',
+backgroundBannerImageUrl: 'https://pics.io/preview/63c831842363a900137e35f7/thumbnail',
 // Website url if specified will be navigated to when the image in the header is clicked
 websiteUrl: 'https://www.themetatune.com/',
 maxStaked: 38,
