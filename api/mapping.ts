@@ -3378,5 +3378,32 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     fontColorTertiary: '#7F1B1B',
    },
 },
+{
+  // Name of this stake pool used as an id. Should be in lower-case kebab-case since it is used in the URL as /{name}
+// https://www.theserverside.com/blog/Coffee-Talk-Java-News-Stories-and-Opinions/Why-you-should-make-kebab-case-a-URL-naming-convention-best-practice
+name: 'meta-tune-club',
+// Display name to be displayed in the header. Often the same as name but with capital letters and spaces
+displayName: 'Meta Tune Club',
+// Publickey for this stake pool
+stakePoolAddress: new PublicKey(
+  '6NL1Dw5bEPSFDdFMPuZiYzDQdUXLF84VUZzK5D6v4Jg1'
+),
+description:"Meta Tune Coin is designed to pay back homeowners for good maintenance practices. Period.  Use with a Meta Tune Provider near you.",
+// Optional hostname to remap -- SEE NOTE BELOW
+tokenStandard: TokenStandard.NonFungible,
+receiptType: ReceiptType.Original,
+// Image url to be used as the icon in the pool selector and the header
+imageUrl: 'https://pics.io/preview/63d16fe8806723001367ccfb/thumbnail',
+// Background banner image for pool
+backgroundBannerImageUrl: 'https://pics.io/preview/63c831842363a900137e35f7/thumbnail',
+// Website url if specified will be navigated to when the image in the header is clicked
+websiteUrl: 'https://www.themetatune.com/',
+maxStaked: 38,
+// Links to show at the top right of the page
+links: [
+  { text: 'Discord', value: 'https://discord.gg/RubtUTnHkw' },
+  { text: 'Twitter', value: 'https://twitter.com/metatuneclub'},
+{ text: 'Magic Eden', value: 'https://magiceden.io/marketplace/meta_tune_club'}]
+},
 ]
 
