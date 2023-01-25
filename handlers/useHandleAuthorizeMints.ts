@@ -72,7 +72,6 @@ export const useHandleAuthorizeMints = () => {
 
         await executeTransaction(connection, transaction, wallet, {
           silent: false,
-          signers: [],
         })
         notify({
           message: `Successfully authorized ${i + 1}/${
