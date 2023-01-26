@@ -25,6 +25,7 @@
   "dependencies": {
     "@apollo/client": "^3.6.9",
     "@cardinal/common": "^6.0.1",
+    "@cardinal/configs": "^1.2.0",
     "@cardinal/namespaces-components": "^4.1.31",
     "@cardinal/rewards-center": "^2.5.2",
     "@cardinal/staking": "^1.13.1",

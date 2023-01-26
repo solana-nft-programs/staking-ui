@@ -6,6 +6,7 @@ import { LoadingSpinner } from 'common/LoadingSpinner'
 import { SelectorBoolean } from 'common/SelectorBoolean'
 import { Tooltip } from 'common/Tooltip'
 import { useFormik } from 'formik'
+import { useHandlePoolConfig } from 'handlers/useHandlePoolConfig'
 import { useStakePoolData } from 'hooks/useStakePoolData'
 import { useStakePoolId } from 'hooks/useStakePoolId'
 import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
@@ -184,6 +185,7 @@ const validationSchema = Yup.object({
 })
 
 export const AdvancedConfigForm = () => {
+  const handlePoolConfig = useHandlePoolConfig()
   const stakePooldId = useStakePoolId()
   const stakePool = useStakePoolData()
   const stakePoolMetadata = useStakePoolMetadata()
@@ -509,9 +511,9 @@ export const AdvancedConfigForm = () => {
           />
         </div>
         <AsyncButton
-          // loading={handleAdvancedConfig.isLoading}
+          loading={handlePoolConfig.isLoading}
           onClick={() => {
-            console.log('values', values)
+            handlePoolConfig.mutate({ config: JSON.stringify(values) })
           }}
           inlineLoader
           className="flex w-full items-center justify-center bg-primary py-2 px-4 text-center text-white hover:bg-opacity-80"
