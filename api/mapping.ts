@@ -3426,7 +3426,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     tokenStandard: TokenStandard.NonFungible,
     receiptType: ReceiptType.Original,
     // Image url to be used as the icon in the pool selector and the header
-    imageUrl: 'https://pics.io/preview/63d16fe8806723001367ccfb/thumbnail',
+    imageUrl: 'https://bafybeifxyklvwpfpel2ck6hyzudiwsa2xt4brhfwb2pemtxsetsp4zocwe.ipfs.nftstorage.link/',
     // Website url if specified will be navigated to when the image in the header is clicked
     websiteUrl: 'https://www.themetatune.com/',
     maxStaked: 38,
