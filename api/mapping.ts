@@ -3376,6 +3376,41 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     },
   },
   {
+    name: 'ScalpGang',
+    displayName: 'Scalp Gang',
+    stakePoolAddress: new PublicKey(
+      '2js8aAATzV5u4qzGqpTjKYBuxEXZK2KJoMJYNNpEoERb'
+    ),
+    websiteUrl: 'https://www.scalp-gang.com',
+    nameInHeader: true,
+    description: "Scalp Empire Nestor Edition, Trading Apes Gang and TAG Raffle NFT staking",
+    hideFooter: true,
+    imageUrl: 'https://scalp-metadata.s3.eu-central-1.amazonaws.com/gang/logo_discord.png',
+    logoPadding: false,
+    links: [
+      {
+        text: 'Scalp Empire',
+        value: 'https://www.scalp-empire.com'
+      },
+      {
+        text: 'Scalp Gang Raffles',
+        value: 'https://raffles.scalp-gang.com'
+      },
+      {
+        text: 'Discord',
+        value: 'https://discord.gg/scalpgang'
+      }
+    ],
+    colors: {
+      primary: '#12263f',
+      secondary: '#2c7be5',
+      backgroundSecondary: '#152e4d'
+    },
+    maxStaked: 3328,
+    receiptType: ReceiptType.Original,
+    tokenStandard: TokenStandard.NonFungible,
+  },
+  {
     // Name of this stake pool used as an id. Should be in lower-case kebab-case since it is used in the URL as /{name}
     // https://www.theserverside.com/blog/Coffee-Talk-Java-News-Stories-and-Opinions/Why-you-should-make-kebab-case-a-URL-naming-convention-best-practice
     name: 'meta-tune-club',
