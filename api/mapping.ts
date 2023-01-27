@@ -3450,7 +3450,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       'dabloons is a viral meme currency.',
     tokenStandard: TokenStandard.NonFungible,
     receiptType: ReceiptType.Original,
-    imageUrl: 'https://bafybeifxyklvwpfpel2ck6hyzudiwsa2xt4brhfwb2pemtxsetsp4zocwe.ipfs.nftstorage.link/',
+    imageUrl: 'https://nftstorage.link/ipfs/bafkreicdbk4dreaunyq7t3c4yx5hfdpz7w5gmownc7j4x745pembfezoy4',
     websiteUrl: 'https://www.dabloons.town/',
     maxStaked: 10000,
     links: [
