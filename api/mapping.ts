@@ -3440,4 +3440,26 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       },
     ],
   },
+  {
+    name: 'dabloons',
+    displayName: 'dabloons',
+    stakePoolAddress: new PublicKey(
+      'Deoogx369ZNvrr6HBHw19mookHyFtWGL2g8zzPi924bo'
+    ),
+    description:
+      'dabloons is a viral meme currency.',
+    tokenStandard: TokenStandard.NonFungible,
+    receiptType: ReceiptType.Original,
+    imageUrl: 'https://bafybeifxyklvwpfpel2ck6hyzudiwsa2xt4brhfwb2pemtxsetsp4zocwe.ipfs.nftstorage.link/',
+    websiteUrl: 'https://www.dabloons.town/',
+    maxStaked: 10000,
+    links: [
+      { text: 'Discord', value: 'https://discord.gg/nHXPqfHPjm' },
+      { text: 'Twitter', value: 'https://twitter.com/dabloonsNFT' },
+      {
+        text: 'Magic Eden',
+        value: 'https://magiceden.io/marketplace/da_bloons',
+      },
+    ],
+  },
 ]
