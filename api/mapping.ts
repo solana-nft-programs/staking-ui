@@ -112,7 +112,6 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       '6LGoJWDEQWGQQ6s2oZWbLqRGfjLbyrzVUtLcXDKc5hED'
     ),
     websiteUrl: 'https://www.geexolotls.com/',
-    hostname: 'www.geexolotls.com/staking',
     nameInHeader: true,
     description: 'Stake your Geexolotls to earn $Neon',
     hideFooter: true,
