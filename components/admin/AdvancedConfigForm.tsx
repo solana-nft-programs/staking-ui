@@ -24,8 +24,6 @@ import { HeadingSecondary } from '@/components/UI/typography/HeadingSecondary'
 const defaultValues = (stakePoolData: StakePoolMetadata) => {
   return {
     ...stakePoolData,
-    socialLinks: stakePoolData.socialLinks || [],
-    stakePoolAddress: stakePoolData.stakePoolAddress?.toString() || undefined,
   }
 }
 
@@ -513,7 +511,9 @@ export const AdvancedConfigForm = () => {
         <AsyncButton
           loading={handlePoolConfig.isLoading}
           onClick={() => {
-            handlePoolConfig.mutate({ config: JSON.stringify(values) })
+            handlePoolConfig.mutate({
+              config: values,
+            })
           }}
           inlineLoader
           className="flex w-full items-center justify-center bg-primary py-2 px-4 text-center text-white hover:bg-opacity-80"
