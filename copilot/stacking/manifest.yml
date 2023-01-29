@@ -12,7 +12,7 @@ image:
   # For additional overrides: https://aws.github.io/copilot-cli/docs/manifest/rd-web-service/#image-build
   build: Dockerfile
   # Port exposed through your container to route traffic to it.
-  port: 3000
+  port: 80
 
 # http:
 #   healthcheck:
@@ -26,6 +26,7 @@ image:
 cpu: 1024
 # Amount of memory in MiB used by the task.
 memory: 2048
+count: dev-envs
 
 # Connect your App Runner service to your environment's VPC.
 # network:
