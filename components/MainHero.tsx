@@ -27,7 +27,7 @@ export const MainHero = () => {
             Lock your NFTs or tokens to earn rewards from various reward
             mechanisms including
             <br />
-            tokens, merchandise, redeemable rewards, referral tokens and more.
+            tokens, merchandise, redeemable rewards, referral tokens and more...
           </div>
         </div>
         <div className="flex flex-col items-end justify-end gap-5 ">
