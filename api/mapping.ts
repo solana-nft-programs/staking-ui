@@ -109,10 +109,10 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     name: 'Geexolotls',
     displayName: 'Geexolotls',
     stakePoolAddress: new PublicKey(
-      'HXFEErx8h7BWhtBJFUFypuXvC2k22Seo7EWtEfzUKN4h'
+      '6LGoJWDEQWGQQ6s2oZWbLqRGfjLbyrzVUtLcXDKc5hED'
     ),
     websiteUrl: 'https://www.geexolotls.com/',
-    hostname: 'stake.geexolotls.com',
+    hostname: 'https://www.geexolotls.com/staking',
     nameInHeader: true,
     description: 'Stake your Geexolotls to earn $Neon',
     hideFooter: true,
