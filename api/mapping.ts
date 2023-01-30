@@ -106,6 +106,33 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
   //   },
   // },
   {
+    name: 'Geexolotls',
+    displayName: 'Geexolotls',
+    stakePoolAddress: new PublicKey(
+      '6LGoJWDEQWGQQ6s2oZWbLqRGfjLbyrzVUtLcXDKc5hED'
+    ),
+    websiteUrl: 'https://www.geexolotls.com/',
+    hostname: 'https://www.geexolotls.com/staking',
+    nameInHeader: true,
+    description: 'Stake your Geexolotls to earn $Neon',
+    hideFooter: true,
+    imageUrl: '/logos/geexolotls_logo.png',
+    links: [
+     {
+        text: 'Buy Now',
+       value: 'https://magiceden.io/marketplace/geexolotls',
+      },
+    ],
+    colors: {
+      primary: '#09014A',
+     secondary: '#ff18d0',
+     
+     accent: '#ff18d0'
+   },
+   backgroundImage:
+      'https://www.geexolotls.com/images/bg.jpg',
+  },
+  {
     name: 'particlesnft',
     displayName: 'ParticlesNFT',
     stakePoolAddress: new PublicKey(
