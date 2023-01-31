@@ -1,5 +1,4 @@
 import { ReceiptType } from '@cardinal/staking/dist/cjs/programs/stakePool'
-import { PublicKey } from '@solana/web3.js'
 import type { CSSProperties } from 'react'
 
 import type { AirdropMetadata } from '../common/Airdrop'
@@ -33,7 +32,7 @@ export type StakePoolMetadata = {
   // Whether or not to show name in header, defaults false
   nameInHeader?: boolean
   // Publickey for this stake pool
-  stakePoolAddress: PublicKey
+  stakePoolAddress: string
   // Description for this stake pool
   description?: string
   // Default receipt type. Setting this will remove the option for the user to choose which receipt type to use
@@ -94,9 +93,8 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
   // {
   //   name: 'cardinal',
   //   displayName: 'Cardinal',
-  //   stakePoolAddress: new PublicKey(
-  //     'AxHiaxZeoDsyjD8Eyj5tQtrajkxYk5xebEK1QNQ1LSE7'
-  //   ),
+  //   stakePoolAddress:
+  //     'AxHiaxZeoDsyjD8Eyj5tQtrajkxYk5xebEK1QNQ1LSE7',
   //   imageUrl: '/logo-colored.png',
   //   colors: {
   //     primary: 'rgb(54,21,38,0.9)',
@@ -106,9 +104,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
   {
     name: 'Geexolotls',
     displayName: 'Geexolotls',
-    stakePoolAddress: new PublicKey(
-      '6LGoJWDEQWGQQ6s2oZWbLqRGfjLbyrzVUtLcXDKc5hED'
-    ),
+    stakePoolAddress: '6LGoJWDEQWGQQ6s2oZWbLqRGfjLbyrzVUtLcXDKc5hED',
     websiteUrl: 'https://www.geexolotls.com/',
     hostname: 'https://www.geexolotls.com/staking',
     nameInHeader: true,
@@ -116,26 +112,23 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     hideFooter: true,
     imageUrl: '/logos/geexolotls_logo.png',
     links: [
-     {
+      {
         text: 'Buy Now',
-       value: 'https://magiceden.io/marketplace/geexolotls',
+        value: 'https://magiceden.io/marketplace/geexolotls',
       },
     ],
     colors: {
       primary: '#09014A',
-     secondary: '#ff18d0',
-     
-     accent: '#ff18d0'
-   },
-   backgroundImage:
-      'https://www.geexolotls.com/images/bg.jpg',
+      secondary: '#ff18d0',
+
+      accent: '#ff18d0',
+    },
+    backgroundImage: 'https://www.geexolotls.com/images/bg.jpg',
   },
   {
     name: 'particlesnft',
     displayName: 'ParticlesNFT',
-    stakePoolAddress: new PublicKey(
-      'CQq4qfsM6D7zdw6pnGSo3FZ1LhNAvdMU1f3dRkH5cXKs'
-    ),
+    stakePoolAddress: 'CQq4qfsM6D7zdw6pnGSo3FZ1LhNAvdMU1f3dRkH5cXKs',
     websiteUrl: 'https://www.particlesnft.io/',
     nameInHeader: true,
     description: 'Stake your particles NFT to earn $OOO',
@@ -155,9 +148,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
   {
     name: 'bearmarketbeavers',
     displayName: 'Bear Market Beavers',
-    stakePoolAddress: new PublicKey(
-      'GevXdzt3GXEZHG8TMyPyAF9KGT2zsksCfgHM2Vwpn5ks'
-    ),
+    stakePoolAddress: 'GevXdzt3GXEZHG8TMyPyAF9KGT2zsksCfgHM2Vwpn5ks',
     websiteUrl: 'https://bearmarketbeaver.com/',
     imageUrl:
       'https://gateway.pinata.cloud/ipfs/QmW5BaXo2FDyBogVUP4WMuFFMtQ8MpQC5wUWTyPjLSinfD',
@@ -191,9 +182,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
   {
     name: 'metatattooclub',
     displayName: 'Meta Tattoo Club',
-    stakePoolAddress: new PublicKey(
-      '4CnsdUSFCFKa9zBupuxFesZZJm64Eq3WgrAePF2KCuXv'
-    ),
+    stakePoolAddress: '4CnsdUSFCFKa9zBupuxFesZZJm64Eq3WgrAePF2KCuXv',
     websiteUrl: 'https://metatattooclub.io/',
     imageUrl:
       'https://gateway.pinata.cloud/ipfs/QmQniSw9U7jKXk7fVJcvdkhVfqsLTyNHnukWwm7kfLEmuN',
@@ -228,17 +217,13 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     displayName: 'The Lotus',
     hostname: 'legendary.thelotus.io',
     websiteUrl: 'https://www.thelotus.io',
-    stakePoolAddress: new PublicKey(
-      'BeT8h9E5BcgcMBxF7Si5GSRuB6zHcSpFuMpp6uTcVRFN'
-    ),
+    stakePoolAddress: 'BeT8h9E5BcgcMBxF7Si5GSRuB6zHcSpFuMpp6uTcVRFN',
     receiptType: ReceiptType.Receipt,
   },
   {
     name: 'portals',
     displayName: 'Portals',
-    stakePoolAddress: new PublicKey(
-      '8Da8qPqSwc2DNenp5wwK7HWxpSrvxw8LUNoBZ2gAYjaz'
-    ),
+    stakePoolAddress: '8Da8qPqSwc2DNenp5wwK7HWxpSrvxw8LUNoBZ2gAYjaz',
     description: 'Portals staking pool provided by The BuildersDAO.',
     imageUrl: '/logos/portals-nft.jpg',
     colors: {
@@ -251,9 +236,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
   {
     name: 'thenewexplorersclub',
     displayName: 'The New Explorers Club',
-    stakePoolAddress: new PublicKey(
-      '49GnPoU2eexWaSo1n7wDFJov7WLiQ71fvpLj1ZoMxTVL'
-    ),
+    stakePoolAddress: '49GnPoU2eexWaSo1n7wDFJov7WLiQ71fvpLj1ZoMxTVL',
     description:
       'The New Explorers Club staking pool provided by The BuildersDAO.',
     imageUrl: '/logos/tnec-nft.jpg',
@@ -267,9 +250,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
   {
     name: 'thebuildersdao',
     displayName: 'The BuildersDAO',
-    stakePoolAddress: new PublicKey(
-      'FLJa7J28f2LBFJYqQLhhjaXR4WnfU2RHpSrr32p8bnSz'
-    ),
+    stakePoolAddress: 'FLJa7J28f2LBFJYqQLhhjaXR4WnfU2RHpSrr32p8bnSz',
     description: 'The BuildersDAO is a community of metaverse builders.',
     imageUrl: '/logos/buildersdao-nft.png',
     colors: {
@@ -282,9 +263,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
   {
     name: 'shadiesboosted',
     displayName: 'SHADIES BOOSTED 2X STAKING',
-    stakePoolAddress: new PublicKey(
-      '29MgtLuX8ByGMZoreUoY7hsP2YY935gJ3wRB1fhiSF8o'
-    ),
+    stakePoolAddress: '29MgtLuX8ByGMZoreUoY7hsP2YY935gJ3wRB1fhiSF8o',
     hostname: 'https://staking2x.theshadyclass.xyz',
     hidden: false,
     notFound: false,
@@ -313,9 +292,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     name: 'goodskellas',
     displayName: 'Good Skellas',
     hostname: 'stake.goodskellas.xyz',
-    stakePoolAddress: new PublicKey(
-      'FqBj7uVDHfy6cDDoihX3cQSCmV347SoFXUtvUe5auMQ8'
-    ),
+    stakePoolAddress: 'FqBj7uVDHfy6cDDoihX3cQSCmV347SoFXUtvUe5auMQ8',
     websiteUrl: 'https://www.goodskellas.xyz/',
     nameInHeader: true,
     description: 'Stake your Skellas NFT to earn $BONES',
@@ -352,9 +329,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
   {
     name: 'shadiesstandard',
     displayName: 'SHADIES STANDARD STAKING',
-    stakePoolAddress: new PublicKey(
-      'zNt5nnEaL87rG9DT2cxvdVMf8sLBe6qEuZK8D5K4r9M'
-    ),
+    stakePoolAddress: 'zNt5nnEaL87rG9DT2cxvdVMf8sLBe6qEuZK8D5K4r9M',
     hostname: 'https://staking1x.theshadyclass.xyz',
     hidden: false,
     notFound: false,
@@ -382,9 +357,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
   {
     name: 'Learn2Earn',
     displayName: 'Learn 2 Earn DOTS',
-    stakePoolAddress: new PublicKey(
-      'DgrtWV95DP3ix4GFMKDLwqMNZ213KJk9NgM6vmdPtyk1'
-    ),
+    stakePoolAddress: 'DgrtWV95DP3ix4GFMKDLwqMNZ213KJk9NgM6vmdPtyk1',
     contrastHomepageBkg: true,
     maxStaked: 5000,
     receiptType: ReceiptType.Original,
@@ -411,9 +384,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
   {
     name: 'AOM',
     displayName: 'AOM',
-    stakePoolAddress: new PublicKey(
-      'Hj1xfWP4qYq7N6eJxFRFGqNDiwMFRMo361ay5rFUThbk'
-    ),
+    stakePoolAddress: 'Hj1xfWP4qYq7N6eJxFRFGqNDiwMFRMo361ay5rFUThbk',
     redirect: 'https://frame.artofmob.io',
     hidden: false,
     notFound: true,
@@ -423,9 +394,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
   {
     name: 'blockasset',
     displayName: 'Blockasset',
-    stakePoolAddress: new PublicKey(
-      '3BZCupFU6X3wYJwgTsKS2vTs4VeMrhSZgx4P2TfzExtP'
-    ),
+    stakePoolAddress: '3BZCupFU6X3wYJwgTsKS2vTs4VeMrhSZgx4P2TfzExtP',
     logoPadding: true,
     description:
       'Blockasset is creating a revolutionary way for fans and athletes to interact and connect with each other by way of multiple touchpoints that provide benefits for both the fan and the athlete.',
@@ -456,9 +425,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
   {
     name: 'blockasset-smesh-bros',
     displayName: 'Blockasset Smesh Bros',
-    stakePoolAddress: new PublicKey(
-      'Bce4Aq4YheBo5hENeoMhjywdvMhEMc8sUh21S87Qv4q6'
-    ),
+    stakePoolAddress: 'Bce4Aq4YheBo5hENeoMhjywdvMhEMc8sUh21S87Qv4q6',
     websiteUrl: 'https://hub.blockasset.co/smesh-staking',
     receiptType: ReceiptType.Original,
     imageUrl: '/logos/blockasset.png',
@@ -494,9 +461,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
   {
     name: 'block-token',
     displayName: 'Blockasset Token',
-    stakePoolAddress: new PublicKey(
-      'jhksrHQqRKBEFuker9buKw4zDDrmENGTTKnUn2QzsUD'
-    ),
+    stakePoolAddress: 'jhksrHQqRKBEFuker9buKw4zDDrmENGTTKnUn2QzsUD',
     websiteUrl: 'https://hub.blockasset.co/token-staking-v2',
     imageUrl: '/logos/blockasset.png',
     links: [
@@ -524,9 +489,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
   {
     name: 'meta-ops',
     displayName: 'MetaOps PFP Vault',
-    stakePoolAddress: new PublicKey(
-      'FP9BRAohGJDximSTa9HR3UNCd9KA5QUApyctMpASrsJp'
-    ),
+    stakePoolAddress: 'FP9BRAohGJDximSTa9HR3UNCd9KA5QUApyctMpASrsJp',
     websiteUrl: 'https://metaopsgaming.com/',
     receiptType: ReceiptType.Original,
     imageUrl:
@@ -548,9 +511,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
   {
     name: 'meta-ops-founders-vault',
     displayName: 'MetaOps Founders Passes Vault',
-    stakePoolAddress: new PublicKey(
-      'BeunK2rKRNXbL6YsMkKDPD4f24Ms4dcj2JpsN6KCjBjY'
-    ),
+    stakePoolAddress: 'BeunK2rKRNXbL6YsMkKDPD4f24Ms4dcj2JpsN6KCjBjY',
     websiteUrl: 'https://metaopsgaming.com/',
     receiptType: ReceiptType.Original,
     imageUrl:
@@ -573,9 +534,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     name: 'spaceboys',
     displayName: 'Space Boys',
     hostname: 'stake.spaceboys.xyz',
-    stakePoolAddress: new PublicKey(
-      'EchAuMJeaVhbitnEns7QPYh2mFqxWFY8QsQmchn4LRVz'
-    ),
+    stakePoolAddress: 'EchAuMJeaVhbitnEns7QPYh2mFqxWFY8QsQmchn4LRVz',
     nameInHeader: true,
     description: 'Stake your Space Boy to earn $SPACE',
     hideFooter: true,
@@ -611,9 +570,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
   {
     name: 'META',
     displayName: 'META collections',
-    stakePoolAddress: new PublicKey(
-      'BCtcLrKhiZbFTRMB2W8iQWttYF82cLJzo7ZnnnkqXnnC'
-    ),
+    stakePoolAddress: 'BCtcLrKhiZbFTRMB2W8iQWttYF82cLJzo7ZnnnkqXnnC',
     hostname: 'stake.metaladsai.com',
     websiteUrl: 'https://metaladsai.com',
     imageUrl:
@@ -634,9 +591,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
   {
     name: 'METALADS',
     displayName: 'META LADS',
-    stakePoolAddress: new PublicKey(
-      'CQK61z8JRqoaowTLXhM61vY2bwLct2L2fiHdTNcZZx4v'
-    ),
+    stakePoolAddress: 'CQK61z8JRqoaowTLXhM61vY2bwLct2L2fiHdTNcZZx4v',
     hostname: 'stake-lads.metaladsai.com',
     websiteUrl: 'https://metaladsai.com',
     imageUrl:
@@ -657,9 +612,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
   {
     name: 'okaybulls',
     displayName: 'Okaybulls',
-    stakePoolAddress: new PublicKey(
-      '34Mu6xQSWzJDwyXrQcbmuRA6JjJQEWwwzhFubmrGD2qx'
-    ),
+    stakePoolAddress: '34Mu6xQSWzJDwyXrQcbmuRA6JjJQEWwwzhFubmrGD2qx',
     websiteUrl: 'https://okaybulls.com/',
     receiptType: ReceiptType.Original,
     imageUrl:
@@ -675,9 +628,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
   {
     name: 'friendly-frogs',
     displayName: 'Friendly Frogs',
-    stakePoolAddress: new PublicKey(
-      'AHighyKxRsD6oo6SebbW6nQfuJ1GQBSmU2BnVFbtcFmz'
-    ),
+    stakePoolAddress: 'AHighyKxRsD6oo6SebbW6nQfuJ1GQBSmU2BnVFbtcFmz',
     websiteUrl: 'https://ffsc.io/',
     receiptType: ReceiptType.Original,
     maxStaked: 2121,
@@ -691,9 +642,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
   {
     name: 'monsta-scientist',
     displayName: 'Monsta Scientist',
-    stakePoolAddress: new PublicKey(
-      '4hYMymEkyvBvY5ipLjiedvZu7Dp7oTshAsXcFVJZ9Bhv'
-    ),
+    stakePoolAddress: '4hYMymEkyvBvY5ipLjiedvZu7Dp7oTshAsXcFVJZ9Bhv',
     websiteUrl: 'https://www.monstascientist.io/',
     receiptType: ReceiptType.Original,
     maxStaked: 4444,
@@ -708,9 +657,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
   {
     name: 'monsta-potion',
     displayName: 'Monsta Potion',
-    stakePoolAddress: new PublicKey(
-      'FXuwtxvrL8BsTmW9ZBpYHyntKYciBRz9KX9z19iQjn8h'
-    ),
+    stakePoolAddress: 'FXuwtxvrL8BsTmW9ZBpYHyntKYciBRz9KX9z19iQjn8h',
     websiteUrl: 'https://www.monstascientist.io/',
     receiptType: ReceiptType.Original,
     maxStaked: 150,
@@ -725,9 +672,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
   {
     name: 'gemmy',
     displayName: 'Gemmy',
-    stakePoolAddress: new PublicKey(
-      'GFT4PQfgB1ySCr826GhdstzTMndwvoqkBJuZsG7Uxrw1'
-    ),
+    stakePoolAddress: 'GFT4PQfgB1ySCr826GhdstzTMndwvoqkBJuZsG7Uxrw1',
     websiteUrl: 'https://gemmy.club/',
     receiptType: ReceiptType.Original,
     maxStaked: 5000,
@@ -742,9 +687,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
   {
     name: 'seanies',
     displayName: 'Seanies',
-    stakePoolAddress: new PublicKey(
-      'EWfauqUC6PQTzXGR4h4LT1KMqd28W8Vjk5XLPfkLFeSA'
-    ),
+    stakePoolAddress: 'EWfauqUC6PQTzXGR4h4LT1KMqd28W8Vjk5XLPfkLFeSA',
     websiteUrl: 'https://seanies.art/',
     receiptType: ReceiptType.Original,
     imageUrl:
@@ -754,9 +697,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     name: 'whales',
     displayName: 'Catalina Whales',
     redirect: 'https://floating.catalinawhalemixer.com/',
-    stakePoolAddress: new PublicKey(
-      'BrR1W8bNBfJZGqzsSvMQ8tUJL9tm963E6qR7R99YReiD'
-    ),
+    stakePoolAddress: 'BrR1W8bNBfJZGqzsSvMQ8tUJL9tm963E6qR7R99YReiD',
     receiptType: ReceiptType.Original,
     imageUrl: '/logos/whales.jpg',
     colors: {
@@ -769,9 +710,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
   {
     name: 'stoned-farms',
     displayName: 'Stoned Farms',
-    stakePoolAddress: new PublicKey(
-      'BdqcbcwaX5YpQPDLh9m9u89QH46WXcnQB5r7vK3h54U4'
-    ),
+    stakePoolAddress: 'BdqcbcwaX5YpQPDLh9m9u89QH46WXcnQB5r7vK3h54U4',
     websiteUrl: 'https://stonedfarms.io/',
     receiptType: ReceiptType.Original,
     maxStaked: 2500,
@@ -791,9 +730,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
   {
     name: 'honeyland',
     displayName: 'Honeyland',
-    stakePoolAddress: new PublicKey(
-      '8YMcgMZFCFNmGzBNh2458T5CX5Q4SJX3H9zojJQT8G6N'
-    ),
+    stakePoolAddress: '8YMcgMZFCFNmGzBNh2458T5CX5Q4SJX3H9zojJQT8G6N',
     websiteUrl: 'https://honey.land/',
     receiptType: ReceiptType.Receipt,
     maxStaked: 5525,
@@ -814,9 +751,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
   {
     name: 'presidential-peanuts',
     displayName: 'Presidential Peanuts',
-    stakePoolAddress: new PublicKey(
-      '4B3sqjzhE8ceUaVgyKmMKaHcXojAVM43wfnfNzKmqoPd'
-    ),
+    stakePoolAddress: '4B3sqjzhE8ceUaVgyKmMKaHcXojAVM43wfnfNzKmqoPd',
     websiteUrl: 'https://stake.presidentialpeanuts.com/',
     receiptType: ReceiptType.Original,
     imageUrl: 'https://i.ibb.co/mtbNN9x/Iype-WV3-H-400x400.jpg',
@@ -831,9 +766,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
   {
     name: 'plane-x',
     displayName: 'PLANE-X',
-    stakePoolAddress: new PublicKey(
-      '5oaTiYTSuz5HwcFSFyZ3FXGMaAtV8UgKvAUFTdi8gS7y'
-    ),
+    stakePoolAddress: '5oaTiYTSuz5HwcFSFyZ3FXGMaAtV8UgKvAUFTdi8gS7y',
     websiteUrl: 'https://plane-x.io/',
     receiptType: ReceiptType.Original,
     maxStaked: 3910,
@@ -849,9 +782,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
   {
     name: 'rogue-sharks',
     displayName: 'Rogue Sharks',
-    stakePoolAddress: new PublicKey(
-      '8eqFBjdYYN4f2ibFQ1SADBbGrQKPcfDuYQn32t3NuEoW'
-    ),
+    stakePoolAddress: '8eqFBjdYYN4f2ibFQ1SADBbGrQKPcfDuYQn32t3NuEoW',
     websiteUrl: 'https://www.roguesharks.org/',
     receiptType: ReceiptType.Original,
     hostname: 'stake.roguesharks',
@@ -875,9 +806,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
   {
     name: 'cannaverse',
     displayName: 'Cannaverse',
-    stakePoolAddress: new PublicKey(
-      '5DoGTq3ciQ1aDFUuTFLhFLdiXuPjnWmjhTSWdzLpZkgY'
-    ),
+    stakePoolAddress: '5DoGTq3ciQ1aDFUuTFLhFLdiXuPjnWmjhTSWdzLpZkgY',
     websiteUrl: 'https://cannaverse.gg/',
     receiptType: ReceiptType.Original,
     maxStaked: 1700,
@@ -891,9 +820,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
   {
     name: 'glc',
     displayName: 'Ghostlife Club',
-    stakePoolAddress: new PublicKey(
-      'G5YtkSQPsQKnTASbHF5XSfAsFqhTYH8Ajo4yFfCuPpLM'
-    ),
+    stakePoolAddress: 'G5YtkSQPsQKnTASbHF5XSfAsFqhTYH8Ajo4yFfCuPpLM',
     websiteUrl: 'https://ghostlifeclub.com',
     receiptType: ReceiptType.Receipt,
     maxStaked: 4444,
@@ -909,9 +836,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
   {
     name: 'degengod',
     displayName: 'Degen God',
-    stakePoolAddress: new PublicKey(
-      'DU293HnmfVLw793DEB4iajgYZS4KnvuvEjbZRpKJtXXm'
-    ),
+    stakePoolAddress: 'DU293HnmfVLw793DEB4iajgYZS4KnvuvEjbZRpKJtXXm',
     websiteUrl: 'http://www.degengod.xyz/',
     receiptType: ReceiptType.Original,
     maxStaked: 1112,
@@ -927,9 +852,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
   {
     name: '00RR0R',
     displayName: '00RR0R C01NS',
-    stakePoolAddress: new PublicKey(
-      '4RMzeQMV8Dnbb3p3EH8UoF6GaK1PSU3FbJUQi1zbiSR3'
-    ),
+    stakePoolAddress: '4RMzeQMV8Dnbb3p3EH8UoF6GaK1PSU3FbJUQi1zbiSR3',
     websiteUrl: 'https://00RR0R.com/',
     receiptType: ReceiptType.Original,
     imageUrl: 'https://www.00rr0r.com/logo-stake.png',
@@ -944,9 +867,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
   {
     name: 'Sussy Sol Cats',
     displayName: 'Sussy Sol Cats',
-    stakePoolAddress: new PublicKey(
-      'EJCu7UwEsnRTTuz2qjsSksxwCZmk66aRXLGgeq7hvQUt'
-    ),
+    stakePoolAddress: 'EJCu7UwEsnRTTuz2qjsSksxwCZmk66aRXLGgeq7hvQUt',
     websiteUrl: 'https://thesussycats.netlify.app/',
     receiptType: ReceiptType.Original,
     imageUrl:
@@ -958,9 +879,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     displayName: 'Orbit',
     hostname: 'stake.unfrgtn.space',
     hideFooter: true,
-    stakePoolAddress: new PublicKey(
-      '4TMt9ehagkdFgZJBnyBRBTNfXUD8xLX18JyPVeGDpaKb'
-    ),
+    stakePoolAddress: '4TMt9ehagkdFgZJBnyBRBTNfXUD8xLX18JyPVeGDpaKb',
     websiteUrl: 'https://unfrgtn.space/',
     receiptType: ReceiptType.Original,
     imageUrl:
@@ -980,9 +899,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
   {
     name: 'The Frontier',
     displayName: 'The Frontier',
-    stakePoolAddress: new PublicKey(
-      'DQkaEQUH2Qwr3BfUZnCarnWoTM4mBrhDqxGNL2M5yJ2F'
-    ),
+    stakePoolAddress: 'DQkaEQUH2Qwr3BfUZnCarnWoTM4mBrhDqxGNL2M5yJ2F',
     receiptType: ReceiptType.Original,
     imageUrl:
       'https://raw.githack.com/solanafrontier/logos/main/TheFrontier_logo.png',
@@ -997,9 +914,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
   {
     name: 'skatex-founders',
     displayName: 'SkateX Founders',
-    stakePoolAddress: new PublicKey(
-      '5cYt8tVpVc1ECPohiUhKgBVUnRAHv9mEpE3WJzSpRaSh'
-    ),
+    stakePoolAddress: '5cYt8tVpVc1ECPohiUhKgBVUnRAHv9mEpE3WJzSpRaSh',
     websiteUrl: 'https://www.skatex.io/',
     receiptType: ReceiptType.Original,
     imageUrl: '/logos/skatex-logo.png',
@@ -1018,9 +933,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
   {
     name: 'skatex-c2c',
     displayName: 'SkateX Coast2Coast',
-    stakePoolAddress: new PublicKey(
-      'FcVePnNEFFt1SdbTT1dHWWsRft8DAeCF3TRPBZFyLGpZ'
-    ),
+    stakePoolAddress: 'FcVePnNEFFt1SdbTT1dHWWsRft8DAeCF3TRPBZFyLGpZ',
     websiteUrl: 'https://www.skatex.io/',
     receiptType: ReceiptType.Original,
     imageUrl: '/logos/skatex-logo.png',
@@ -1039,9 +952,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
   {
     name: 'skatex-combo',
     displayName: 'SkateX Collection Combo',
-    stakePoolAddress: new PublicKey(
-      'CUwNn2VrgQ3R7znBXoTzUyYR1WoSAMHXw38GZNKmY4u3'
-    ),
+    stakePoolAddress: 'CUwNn2VrgQ3R7znBXoTzUyYR1WoSAMHXw38GZNKmY4u3',
     websiteUrl: 'https://www.skatex.io/',
     receiptType: ReceiptType.Original,
     imageUrl: '/logos/skatex-logo.png',
@@ -1059,9 +970,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
   {
     name: 'sla',
     displayName: 'Secret Llama Agency',
-    stakePoolAddress: new PublicKey(
-      'DFXwKJK2UCEVhujYPDmLmPUBKgEK58cKaUJzC3UGhysf'
-    ),
+    stakePoolAddress: 'DFXwKJK2UCEVhujYPDmLmPUBKgEK58cKaUJzC3UGhysf',
     websiteUrl: 'https://www.secretllamaagency.com/',
     receiptType: ReceiptType.Original,
     imageUrl: 'https://www.secretllamaagency.com/images/Logo-7-p-500.png',
@@ -1069,9 +978,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
   {
     name: 'reverb',
     displayName: 'Reverb',
-    stakePoolAddress: new PublicKey(
-      'J2kvKqkTMbXdbWS3eGmJFv35tKTrzy7wxkJmCzEJ7KAG'
-    ),
+    stakePoolAddress: 'J2kvKqkTMbXdbWS3eGmJFv35tKTrzy7wxkJmCzEJ7KAG',
     maxStaked: 1100,
     websiteUrl: 'https://pinclub.io/',
     receiptType: ReceiptType.Original,
@@ -1085,9 +992,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
   {
     name: 'faceless-souls',
     displayName: 'Faceless Souls',
-    stakePoolAddress: new PublicKey(
-      'H3GrgtE1HhSgpjm9XQNegHQeXdnhC2iLuaNuMy9bmcja'
-    ),
+    stakePoolAddress: 'H3GrgtE1HhSgpjm9XQNegHQeXdnhC2iLuaNuMy9bmcja',
     websiteUrl: 'https://stake.cardinal.so/faceless-souls',
     receiptType: ReceiptType.Receipt,
     imageUrl:
@@ -1104,9 +1009,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
   {
     name: 'the-pilgrims',
     displayName: 'The Pilgrims',
-    stakePoolAddress: new PublicKey(
-      'FmFr9KurNcUpwHiKgbwVf9Q8Dvy7e6k5XHNdtHrvoaBJ'
-    ),
+    stakePoolAddress: 'FmFr9KurNcUpwHiKgbwVf9Q8Dvy7e6k5XHNdtHrvoaBJ',
     websiteUrl: 'https://thepilgrims.xyz',
     receiptType: ReceiptType.Original,
     imageUrl:
@@ -1126,9 +1029,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
   {
     name: 'lil-weenees',
     displayName: 'lil weenees',
-    stakePoolAddress: new PublicKey(
-      'E7nfWVcpiFHXtpWg35ePPPnRtmL5k9s2QamzwBhy8pUd'
-    ),
+    stakePoolAddress: 'E7nfWVcpiFHXtpWg35ePPPnRtmL5k9s2QamzwBhy8pUd',
     receiptType: ReceiptType.Original,
     imageUrl:
       'https://zm3lmtsddpfcnybf2dohyvv3zecbol5voddwqba7ocx66zjdaq3q.arweave.net/yza2TkMbyibgJdDcfFa7yQQXL7Vwx2gEH3Cv72UjBDc',
@@ -1147,9 +1048,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
   {
     name: 'yoyoyetis',
     displayName: 'Yo Yo Yetis',
-    stakePoolAddress: new PublicKey(
-      'ConmspDbxLQsm9rs612vPT2UiTvaKoQrJjGBTx6A3AzK'
-    ),
+    stakePoolAddress: 'ConmspDbxLQsm9rs612vPT2UiTvaKoQrJjGBTx6A3AzK',
     websiteUrl: 'https://www.yoyoyetis.com/',
     receiptType: ReceiptType.Receipt,
     imageUrl:
@@ -1165,9 +1064,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
   {
     name: 'dictators',
     displayName: 'Dictators',
-    stakePoolAddress: new PublicKey(
-      'FGwmVFD2b8UcdwUzwcaPzTSd8UCiyp5EoeNjoaqwnAy6'
-    ),
+    stakePoolAddress: 'FGwmVFD2b8UcdwUzwcaPzTSd8UCiyp5EoeNjoaqwnAy6',
     websiteUrl: 'https://citadel.thedictator.xyz',
     receiptType: ReceiptType.Original,
     maxStaked: 5000, // update with collection size
@@ -1191,9 +1088,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
   {
     name: 'thornode-elite',
     displayName: 'Elite Pass',
-    stakePoolAddress: new PublicKey(
-      'J79xX6CYxXZzXQSy6g6hkBnnfFs7pRDjqy4nFKjnXvu9'
-    ),
+    stakePoolAddress: 'J79xX6CYxXZzXQSy6g6hkBnnfFs7pRDjqy4nFKjnXvu9',
     websiteUrl: 'https://stake.thornode.io',
     receiptType: ReceiptType.Original,
     maxStaked: 33, // update with collection size
@@ -1215,9 +1110,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
   {
     name: 'thornode-classic',
     displayName: 'Classic Pass',
-    stakePoolAddress: new PublicKey(
-      '54LKhj2FY5Vg5uR6NBEQ4SiLJNRYCUX1oWxTZcUXZ8cE'
-    ),
+    stakePoolAddress: '54LKhj2FY5Vg5uR6NBEQ4SiLJNRYCUX1oWxTZcUXZ8cE',
     websiteUrl: 'https://stake.thornode.io',
     receiptType: ReceiptType.Original,
     maxStaked: 300, // update with collection size
@@ -1238,9 +1131,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
   {
     name: 'onespace',
     displayName: 'ONESPACE NFT STAKING',
-    stakePoolAddress: new PublicKey(
-      'FBTqpPynmDdVsYP4eep6pJonwMsFoVhaXcCpah3yYLZY'
-    ),
+    stakePoolAddress: 'FBTqpPynmDdVsYP4eep6pJonwMsFoVhaXcCpah3yYLZY',
     websiteUrl: 'https://1space.me/',
     receiptType: ReceiptType.Original,
     tokenStandard: TokenStandard.NonFungible,
@@ -1298,9 +1189,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
   {
     name: 'onespace-1sp',
     displayName: 'ONESPACE 1SP STAKING',
-    stakePoolAddress: new PublicKey(
-      '33cp8KDrzJpJDDRTSyTght2FuXCbUDmAiecFRw8qgem4'
-    ),
+    stakePoolAddress: '33cp8KDrzJpJDDRTSyTght2FuXCbUDmAiecFRw8qgem4',
     websiteUrl: 'https://1space.me/',
     receiptType: ReceiptType.Original,
     tokenStandard: TokenStandard.Fungible,
@@ -1358,9 +1247,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
   {
     name: 'spaceman',
     displayName: 'SPACEMAN NFT STAKING',
-    stakePoolAddress: new PublicKey(
-      'AYtjirk6EJMSXNwkbteoGqu8hZbbGkzw3hUvmfHALkP3'
-    ),
+    stakePoolAddress: 'AYtjirk6EJMSXNwkbteoGqu8hZbbGkzw3hUvmfHALkP3',
     websiteUrl: 'https://1space.me/',
     receiptType: ReceiptType.Original,
     tokenStandard: TokenStandard.NonFungible,
@@ -1420,9 +1307,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     name: 'trust-in-pat',
     displayName: 'Trust in Pat',
     nameInHeader: true,
-    stakePoolAddress: new PublicKey(
-      '84zubayRdBg8s47QUDLfmHUZekmmBktKptwfagGNHjjL'
-    ),
+    stakePoolAddress: '84zubayRdBg8s47QUDLfmHUZekmmBktKptwfagGNHjjL',
     websiteUrl: 'https://trustinpat.com/',
     receiptType: ReceiptType.Receipt,
     tokenStandard: TokenStandard.NonFungible,
@@ -1450,9 +1335,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     name: 'KingChipsRoyale',
     displayName: 'KingChipsRoyale',
     nameInHeader: true,
-    stakePoolAddress: new PublicKey(
-      'Du8zgvZ6dNZ2GmDJ18e6kQNxYeqg8oSTFqsekXyNy533'
-    ),
+    stakePoolAddress: 'Du8zgvZ6dNZ2GmDJ18e6kQNxYeqg8oSTFqsekXyNy533',
     websiteUrl: 'https://www.kingchips.xyz/',
     receiptType: ReceiptType.Original,
     tokenStandard: TokenStandard.NonFungible,
@@ -1479,9 +1362,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     name: 'cyborgeddon-fueling-station',
     displayName: 'Borg Fueling Station',
     nameInHeader: true,
-    stakePoolAddress: new PublicKey(
-      '9muf4BWmQntjgsU3wx5cxqiZoXqRaCMxyEH7Gx8J1erG'
-    ),
+    stakePoolAddress: '9muf4BWmQntjgsU3wx5cxqiZoXqRaCMxyEH7Gx8J1erG',
     websiteUrl: 'https://cyborgeddon.com/',
     receiptType: ReceiptType.Original,
     tokenStandard: TokenStandard.NonFungible,
@@ -1502,9 +1383,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     name: 'koala-koalition',
     displayName: 'Koala Koalition Eucalyptus Tree',
     nameInHeader: true,
-    stakePoolAddress: new PublicKey(
-      'FB4365jze3wkBGKMQqFyJMDryQBzknpZp61niKsjUNW6'
-    ),
+    stakePoolAddress: 'FB4365jze3wkBGKMQqFyJMDryQBzknpZp61niKsjUNW6',
     websiteUrl: 'https://www.koalakoalition.com',
     receiptType: ReceiptType.Original,
     tokenStandard: TokenStandard.NonFungible,
@@ -1525,9 +1404,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
   {
     name: 'rebellionbots',
     displayName: 'The Rebellion Bots',
-    stakePoolAddress: new PublicKey(
-      'AzFdEKtqanvPeQ7chcKNXJHAzcZRLc8GbkSzG8JUrT4W'
-    ),
+    stakePoolAddress: 'AzFdEKtqanvPeQ7chcKNXJHAzcZRLc8GbkSzG8JUrT4W',
     hostname: 'stake.rebellionbots.io',
     hideFooter: true,
     websiteUrl: 'https://www.rebellionbots.io',
@@ -1551,9 +1428,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
   {
     name: 'sentries',
     displayName: 'Sentries',
-    stakePoolAddress: new PublicKey(
-      '3WS5GJSUAPXeLBbcPQRocxDYRtWbcX9PXb87J1TzFnmX'
-    ),
+    stakePoolAddress: '3WS5GJSUAPXeLBbcPQRocxDYRtWbcX9PXb87J1TzFnmX',
     websiteUrl: 'https://www.sentries.io/',
     receiptType: ReceiptType.Original,
     maxStaked: 8000, // update with collection size
@@ -1570,9 +1445,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
   {
     name: 'Soulless-AI',
     displayName: 'Soulless-AI',
-    stakePoolAddress: new PublicKey(
-      '4mW9Q1PxiBzs2YqdWBfS51yMcP3A1r2aQsBoSvQUhtjJ'
-    ),
+    stakePoolAddress: '4mW9Q1PxiBzs2YqdWBfS51yMcP3A1r2aQsBoSvQUhtjJ',
     styles: {
       fontFamily: 'Multivac Interference',
     },
@@ -1594,9 +1467,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
   {
     name: 'slayerz',
     displayName: 'Slayerz',
-    stakePoolAddress: new PublicKey(
-      '2f3Sdr7hgf3RnJMxKW8oYgmKRRkD8eaVGeDZyprUstM6'
-    ),
+    stakePoolAddress: '2f3Sdr7hgf3RnJMxKW8oYgmKRRkD8eaVGeDZyprUstM6',
     websiteUrl: 'https://www.dragonslayerz.io/',
     receiptType: ReceiptType.Original,
     maxStaked: 4332,
@@ -1611,9 +1482,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
   {
     name: 'hoa-referral',
     displayName: 'Parcl HOA Referral Program',
-    stakePoolAddress: new PublicKey(
-      '3JXoAsm4YZGzC2VGtSBdN8EX36wW8uuoXX9nWFqamUu2'
-    ),
+    stakePoolAddress: '3JXoAsm4YZGzC2VGtSBdN8EX36wW8uuoXX9nWFqamUu2',
     websiteUrl: 'https://www.hoa.house/',
     receiptType: ReceiptType.Original,
     tokenStandard: TokenStandard.NonFungible,
@@ -1630,9 +1499,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
   {
     name: 'parcl-san-francisco',
     displayName: 'Parcl San Francisco',
-    stakePoolAddress: new PublicKey(
-      '3woMMfxPCzyGHdtosNtWLKZCWNvok4k3Eup97eayXxWk'
-    ),
+    stakePoolAddress: '3woMMfxPCzyGHdtosNtWLKZCWNvok4k3Eup97eayXxWk',
     websiteUrl: 'https://parcl.co/',
     receiptType: ReceiptType.None,
     tokenStandard: TokenStandard.Fungible,
@@ -1674,9 +1541,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
   {
     name: 'parcl-miami',
     displayName: 'Parcl Miami',
-    stakePoolAddress: new PublicKey(
-      '74Zf3B2y6GVsHpoUQ6My8NktzHjT7Cgn6VRkUB946C62'
-    ),
+    stakePoolAddress: '74Zf3B2y6GVsHpoUQ6My8NktzHjT7Cgn6VRkUB946C62',
     websiteUrl: 'https://parcl.co/',
     receiptType: ReceiptType.None,
     tokenStandard: TokenStandard.Fungible,
@@ -1718,9 +1583,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
   {
     name: 'parcl-los-angeles',
     displayName: 'Parcl Los Angeles',
-    stakePoolAddress: new PublicKey(
-      '8kbX53gQnpXqHQKg4Z3T1uSHsDHaP7Q7VnMbfnBWtJvk'
-    ),
+    stakePoolAddress: '8kbX53gQnpXqHQKg4Z3T1uSHsDHaP7Q7VnMbfnBWtJvk',
     websiteUrl: 'https://parcl.co/',
     receiptType: ReceiptType.None,
     tokenStandard: TokenStandard.Fungible,
@@ -1762,9 +1625,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
   {
     name: 'parcl-manhattan',
     displayName: 'Parcl Manhattan',
-    stakePoolAddress: new PublicKey(
-      '8ZBEzrvBZiSnCS9cQHpL8orWvMukPCZ4y4nyxzZ8H9i'
-    ),
+    stakePoolAddress: '8ZBEzrvBZiSnCS9cQHpL8orWvMukPCZ4y4nyxzZ8H9i',
     websiteUrl: 'https://parcl.co/',
     receiptType: ReceiptType.None,
     tokenStandard: TokenStandard.Fungible,
@@ -1807,9 +1668,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
   {
     name: 'parcl-brooklyn',
     displayName: 'Parcl Brooklyn',
-    stakePoolAddress: new PublicKey(
-      '9jnTHkJzxL14dE2CxAufBsTa19oeuNSMBuyqzZP1kDYh'
-    ),
+    stakePoolAddress: '9jnTHkJzxL14dE2CxAufBsTa19oeuNSMBuyqzZP1kDYh',
     websiteUrl: 'https://parcl.co/',
     receiptType: ReceiptType.None,
     tokenStandard: TokenStandard.Fungible,
@@ -1851,9 +1710,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
   {
     name: 'parcl-phoenix',
     displayName: 'Parcl Phoenix',
-    stakePoolAddress: new PublicKey(
-      'ESbcGhaddmgKWkW63txisKP6HwS3491brbP2hJuTrVY6'
-    ),
+    stakePoolAddress: 'ESbcGhaddmgKWkW63txisKP6HwS3491brbP2hJuTrVY6',
     websiteUrl: 'https://parcl.co/',
     receiptType: ReceiptType.None,
     tokenStandard: TokenStandard.Fungible,
@@ -1896,9 +1753,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     name: 'the-suites',
     displayName: 'The Suites',
     nameInHeader: true,
-    stakePoolAddress: new PublicKey(
-      '2AbgA81PK3E5k6n7yfhp3k6jUE1tMXdSGWsCT17uGpUc'
-    ),
+    stakePoolAddress: '2AbgA81PK3E5k6n7yfhp3k6jUE1tMXdSGWsCT17uGpUc',
     websiteUrl: 'https://thesuites.app/',
     receiptType: ReceiptType.Original,
     tokenStandard: TokenStandard.NonFungible,
@@ -1926,9 +1781,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     name: 'meta-hunters',
     displayName: 'Meta Hunters',
     nameInHeader: true,
-    stakePoolAddress: new PublicKey(
-      'AjuWPVKFZBLZSSJS2xso9zBsfKSzXt14ebEMH6DbAAKg'
-    ),
+    stakePoolAddress: 'AjuWPVKFZBLZSSJS2xso9zBsfKSzXt14ebEMH6DbAAKg',
     websiteUrl: 'https://www.doubleupnft.com/',
     receiptType: ReceiptType.Original,
     tokenStandard: TokenStandard.NonFungible,
@@ -1954,9 +1807,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     name: 'moonshine-labs',
     displayName: 'Moonshine Labs',
     nameInHeader: true,
-    stakePoolAddress: new PublicKey(
-      '79ZGVZuP93wChsjiqvpCUZtTq6xYc8Edaid4ng8BHxp1'
-    ),
+    stakePoolAddress: '79ZGVZuP93wChsjiqvpCUZtTq6xYc8Edaid4ng8BHxp1',
     websiteUrl: 'https://warp.moonshinelabs.io/caps',
     receiptType: ReceiptType.Original,
     tokenStandard: TokenStandard.NonFungible,
@@ -2034,9 +1885,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     displayName: 'Test Guys',
     hostname: 'research.moonshinelabs.io',
     nameInHeader: true,
-    stakePoolAddress: new PublicKey(
-      'z4x4twXzrw8XVEFqQs9EcmgeXfhMqRpwYVpJEeRAbVN'
-    ),
+    stakePoolAddress: 'z4x4twXzrw8XVEFqQs9EcmgeXfhMqRpwYVpJEeRAbVN',
     websiteUrl: 'https://warp.moonshinelabs.io/caps',
     receiptType: ReceiptType.Original,
     tokenStandard: TokenStandard.NonFungible,
@@ -2087,9 +1936,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     name: 'computation-units',
     displayName: 'Computation Units',
     nameInHeader: true,
-    stakePoolAddress: new PublicKey(
-      '4Nmq5mM747qbA53Yik6KFw4G4nvoSRPsJqRSSGJUwWVa'
-    ),
+    stakePoolAddress: '4Nmq5mM747qbA53Yik6KFw4G4nvoSRPsJqRSSGJUwWVa',
     websiteUrl: 'https://warp.moonshinelabs.io/cu',
     receiptType: ReceiptType.None,
     tokenStandard: TokenStandard.NonFungible,
@@ -2135,9 +1982,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     name: '666starmoon',
     displayName: '666starmoon',
     hidden: true,
-    stakePoolAddress: new PublicKey(
-      'B72Unafq2Y5DqkeN4BGSZ7gyqVTfXjigNrQkgDPxSCjo'
-    ),
+    stakePoolAddress: 'B72Unafq2Y5DqkeN4BGSZ7gyqVTfXjigNrQkgDPxSCjo',
     websiteUrl: 'https://666starmoon.my.id/',
     receiptType: ReceiptType.Original,
     maxStaked: 666,
@@ -2153,9 +1998,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     name: 'Sweet-Apocalypse',
     displayName: 'Sweet Apocalypse',
     nameInHeader: true,
-    stakePoolAddress: new PublicKey(
-      'GzmFJFc7rZpULuJMhs8XRRxnEFFCJi4U5YFnUPZsuHPN'
-    ),
+    stakePoolAddress: 'GzmFJFc7rZpULuJMhs8XRRxnEFFCJi4U5YFnUPZsuHPN',
     receiptType: ReceiptType.Original,
     tokenStandard: TokenStandard.NonFungible,
     // styles to apply to the whole stake pool
@@ -2205,9 +2048,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
   {
     name: 'annoyed-rex-udder-chaos',
     displayName: 'Annoyed Rex Club x Udder Chaos',
-    stakePoolAddress: new PublicKey(
-      '9NvrvM3Ji5RbbJtuAqXAzQL6cwHAv7n4KQQoUyUHqgT1'
-    ),
+    stakePoolAddress: '9NvrvM3Ji5RbbJtuAqXAzQL6cwHAv7n4KQQoUyUHqgT1',
     websiteUrl: 'https://udderchaos.io/',
     imageUrl:
       'https://oh66ydzlqmacybmraeswa7nxlpv4fogsvikmihqosj3rel6qixfa.arweave.net/cf3sDyuDACwFkQElYH23W-vCuNKqFMQeDpJ3Ei_QRco',
@@ -2234,9 +2075,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
   {
     name: 'steamland',
     displayName: 'Harvesting - Steamland',
-    stakePoolAddress: new PublicKey(
-      '5n9G7o9ZZFmfx4dcbd4HgNYcGWFiQ2wGKaKHYT8bWDf7'
-    ),
+    stakePoolAddress: '5n9G7o9ZZFmfx4dcbd4HgNYcGWFiQ2wGKaKHYT8bWDf7',
     contrastHomepageBkg: true,
     maxStaked: 2222,
     receiptType: ReceiptType.Original,
@@ -2263,9 +2102,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
   {
     name: 'y00topia',
     displayName: 'y00topia staking',
-    stakePoolAddress: new PublicKey(
-      'GJtJVCBCXVkPuzmS45zWDEkztG1EGGvNcnddL2dsbDmh'
-    ),
+    stakePoolAddress: 'GJtJVCBCXVkPuzmS45zWDEkztG1EGGvNcnddL2dsbDmh',
     websiteUrl: 'https://twitter.com/ABCy00topia',
     imageUrl:
       'https://cdn.discordapp.com/attachments/1017836201685823549/1027266302894669824/white.png',
@@ -2306,9 +2143,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     name: 'Pixel-Y00ts',
     displayName: 'Pixel Y0ots',
     nameInHeader: true,
-    stakePoolAddress: new PublicKey(
-      '6JAjWAWhzAdZRVXmLKpzXy8idqPY3Jb5AUUXzBPm3FGt'
-    ),
+    stakePoolAddress: '6JAjWAWhzAdZRVXmLKpzXy8idqPY3Jb5AUUXzBPm3FGt',
     hostname: 'staking.pixely00ts.xyz',
     hideFooter: true,
     websiteUrl: 'https://www.pixely00ts.xyz/',
@@ -2356,9 +2191,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
   {
     name: 'hellshade',
     displayName: 'Hellshade Staking',
-    stakePoolAddress: new PublicKey(
-      'GHZ671W39u4d4ELFvqfVeKor1fGGTunrS56PZQqM1wFM'
-    ),
+    stakePoolAddress: 'GHZ671W39u4d4ELFvqfVeKor1fGGTunrS56PZQqM1wFM',
     description:
       "Stake your artwork by @Hellshade here to start earning your $BBT '$Blackberry' Tokens for future art drops",
     hidden: true,
@@ -2387,9 +2220,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
   {
     name: 'azl-nutzzz-world',
     displayName: 'AZL Nutzz World Staking',
-    stakePoolAddress: new PublicKey(
-      'APhntuf48ME176zvV3feCo9pN5mQuXqQFsC2gBiBw895'
-    ),
+    stakePoolAddress: 'APhntuf48ME176zvV3feCo9pN5mQuXqQFsC2gBiBw895',
     contrastHomepageBkg: true,
     maxStaked: 3333,
     links: [
@@ -2431,9 +2262,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     name: 'MetaMercs',
     displayName: 'METAMERCS',
     nameInHeader: true,
-    stakePoolAddress: new PublicKey(
-      'G9nryHatSzQQ93ehjNejhiZpmgzQsRxZVTzLSxiDp8uU'
-    ),
+    stakePoolAddress: 'G9nryHatSzQQ93ehjNejhiZpmgzQsRxZVTzLSxiDp8uU',
     hostname: 'vaults.metacreed.com',
     hideFooter: true,
     websiteUrl: 'https://www.metacreed.com/',
@@ -2482,9 +2311,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
   {
     name: 'gnarafdao',
     displayName: 'GnarAF DAO',
-    stakePoolAddress: new PublicKey(
-      '3hdpn7vkfASdzWvqrLgT83TZLNWdhkG3C1LeubWk7RRZ'
-    ),
+    stakePoolAddress: '3hdpn7vkfASdzWvqrLgT83TZLNWdhkG3C1LeubWk7RRZ',
     websiteUrl: 'https://bobbyrabbits.com/#/GnarAFDAO',
     imageUrl: 'https://arweave.net/H-9FITsB2SdPfJXhYq2QWMMSi7SG4LA_0MHbNnN_zN8',
     maxStaked: 3333,
@@ -2515,9 +2342,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
   {
     name: 'thepolarians',
     displayName: 'The Polarians',
-    stakePoolAddress: new PublicKey(
-      'HSLsc3fyHYyBjTnSPSGyyxubcGdtw4ih8odTcHturZrU'
-    ),
+    stakePoolAddress: 'HSLsc3fyHYyBjTnSPSGyyxubcGdtw4ih8odTcHturZrU',
     websiteUrl: 'https://twitter.com/polariansnft',
     receiptType: ReceiptType.Original,
     maxStaked: 2400, // update with collection size
@@ -2540,9 +2365,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
   {
     name: 'steamland',
     displayName: 'Harvesting - Steamland',
-    stakePoolAddress: new PublicKey(
-      '5n9G7o9ZZFmfx4dcbd4HgNYcGWFiQ2wGKaKHYT8bWDf7'
-    ),
+    stakePoolAddress: '5n9G7o9ZZFmfx4dcbd4HgNYcGWFiQ2wGKaKHYT8bWDf7',
     contrastHomepageBkg: true,
     maxStaked: 2222,
     receiptType: ReceiptType.Original,
@@ -2569,9 +2392,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
   {
     name: 'rejected y00ts club',
     displayName: 'RYC staking',
-    stakePoolAddress: new PublicKey(
-      '7YPHMXpiFAMSeGpxYE66aGPH6UUJGe6samYhzKiEpEqR'
-    ),
+    stakePoolAddress: '7YPHMXpiFAMSeGpxYE66aGPH6UUJGe6samYhzKiEpEqR',
     websiteUrl: 'https://twitter.com/rejected_y00ts',
     imageUrl:
       'https://bafybeiex3lqiug7djuyl2vws47syaji6of7calc67tt3we4ps4nz5kbpnq.ipfs.nftstorage.link/',
@@ -2611,9 +2432,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     name: 'Degen Strays Club',
     displayName: 'Cave of Treasure',
     nameInHeader: true,
-    stakePoolAddress: new PublicKey(
-      'HM4KxPucFiFzJBr1saM1n7Hd4HhkLnp9FQXWaGv6gh5s'
-    ),
+    stakePoolAddress: 'HM4KxPucFiFzJBr1saM1n7Hd4HhkLnp9FQXWaGv6gh5s',
     description: 'Stake your Strays, earn $STRYS',
     hideFooter: true,
     receiptType: ReceiptType.Receipt,
@@ -2660,9 +2479,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
   {
     name: 'BioHumans ',
     displayName: 'BioHumans ',
-    stakePoolAddress: new PublicKey(
-      '7yFb4AQfz88mZzuQVSkCQZzLoA8UEVK8ySHmpHKnGqa2'
-    ),
+    stakePoolAddress: '7yFb4AQfz88mZzuQVSkCQZzLoA8UEVK8ySHmpHKnGqa2',
     websiteUrl: 'https://t.co/QIAhGtpiaU',
     imageUrl:
       'https://raw.githubusercontent.com/conqueror1234/crypto/main/logo.png',
@@ -2689,9 +2506,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
   {
     name: 'BioHumans ',
     displayName: 'BioHumans ',
-    stakePoolAddress: new PublicKey(
-      '2iA21TAv7JBmRGTKeRHrSdb8FaPxzEgn8kfVbTd6AkGY'
-    ),
+    stakePoolAddress: '2iA21TAv7JBmRGTKeRHrSdb8FaPxzEgn8kfVbTd6AkGY',
     websiteUrl: 'https://t.co/QIAhGtpiaU',
     imageUrl:
       'https://raw.githubusercontent.com/conqueror1234/crypto/main/logo.png',
@@ -2719,9 +2534,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     name: 'Sound Family DAO',
     displayName: 'Sound Family DAO Staking',
     nameInHeader: true,
-    stakePoolAddress: new PublicKey(
-      'BGnayVs2xtEjzR42Kdq7vXnmRSjBqP9byP4xkmsmF23f'
-    ),
+    stakePoolAddress: 'BGnayVs2xtEjzR42Kdq7vXnmRSjBqP9byP4xkmsmF23f',
     hostname: 'stake-soundfamily.herokuapp.com',
     hideFooter: true,
     websiteUrl: 'https://catchtherecord.com/',
@@ -2777,9 +2590,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     name: 'DustCityStaking',
     displayName: 'Dust City Staking',
     nameInHeader: true,
-    stakePoolAddress: new PublicKey(
-      '6NsLz577nf9eRSfXtH18rDdJHik3PePpKwVVLPrXPtWx'
-    ),
+    stakePoolAddress: '6NsLz577nf9eRSfXtH18rDdJHik3PePpKwVVLPrXPtWx',
     contrastHomepageBkg: true,
     hostname: 'staking.dustcity.world',
     hideFooter: true,
@@ -2821,9 +2632,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     name: 'RektvilleStaking',
     displayName: 'Rektville Staking',
     nameInHeader: true,
-    stakePoolAddress: new PublicKey(
-      'ENPEvNwSMxN6K63YwDMirSVnd9TUisDkY6cuPZiN7unS'
-    ),
+    stakePoolAddress: 'ENPEvNwSMxN6K63YwDMirSVnd9TUisDkY6cuPZiN7unS',
     contrastHomepageBkg: true,
     hostname: 'rektville.dustcity.world',
     hideFooter: true,
@@ -2870,9 +2679,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     name: 'Honored Strays',
     displayName: 'VIP Lounge',
     nameInHeader: true,
-    stakePoolAddress: new PublicKey(
-      '5fFECqpAuECrwm2S6avLLm1dtvT53H4pWn5QwG96mR64'
-    ),
+    stakePoolAddress: '5fFECqpAuECrwm2S6avLLm1dtvT53H4pWn5QwG96mR64',
     description: 'Stake your Strays, earn $STRYS',
     hideFooter: true,
     receiptType: ReceiptType.Receipt,
@@ -2920,9 +2727,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     name: 'Mod Cats Club',
     displayName: 'Pot of Gold',
     nameInHeader: true,
-    stakePoolAddress: new PublicKey(
-      '8RwHHTxfSHhcj1VQ5NZstx4JkTwWWiLvjzG2tthttk4s'
-    ),
+    stakePoolAddress: '8RwHHTxfSHhcj1VQ5NZstx4JkTwWWiLvjzG2tthttk4s',
     description: 'Stake your Strays, earn $STRYS',
     hideFooter: true,
     receiptType: ReceiptType.Receipt,
@@ -2971,9 +2776,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     displayName: 'Bweed Bakery',
     hostname: 'stake.duckzwitattitudes.com',
     description: 'Stake your D.W.A to earn $Bweed',
-    stakePoolAddress: new PublicKey(
-      'EAhYUAhAiGKuRzb6Sc249SM4DjCxQtsTzTqgogx6HYmM'
-    ),
+    stakePoolAddress: 'EAhYUAhAiGKuRzb6Sc249SM4DjCxQtsTzTqgogx6HYmM',
     websiteUrl: 'https://duckzwitattitudes.com',
     imageUrl:
       'https://raw.githubusercontent.com/WildyPixel/dwa_img/main/logo2.png',
@@ -3011,9 +2814,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     displayName: 'Vandals',
     description:
       'Train your Vandals to earn $VAULT. You can stake and unstake at any time. $VAULT is a a reward mechanism for Vandals holders to show to reward those who train the hardest.',
-    stakePoolAddress: new PublicKey(
-      'ndu643uUkFBt4YbXgHEfstkU25eEe4kDLjTD5uziEKx'
-    ),
+    stakePoolAddress: 'ndu643uUkFBt4YbXgHEfstkU25eEe4kDLjTD5uziEKx',
     websiteUrl: 'https://twitter.com/VandalCityCorp',
     imageUrl: '/logos/vandals.png',
     maxStaked: 10000,
@@ -3039,9 +2840,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     name: 'the-castle',
     displayName: 'The Castle',
     nameInHeader: true,
-    stakePoolAddress: new PublicKey(
-      '9af9HiyQ7EHjMNB14temaoKpViFD3D96o2MvBor7xxf3'
-    ),
+    stakePoolAddress: '9af9HiyQ7EHjMNB14temaoKpViFD3D96o2MvBor7xxf3',
     description:
       'Keep your King safe in his castle. You can stake and unstake at any time. $KING allows you to buy discord whitelist roles',
     imageUrl: '/logos/the-castle-logo.jpg',
@@ -3088,9 +2887,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     description:
       'Stake your dudes to earn rewards from various reward mechanisms including $EDD, merchandise, redeemable rewards by the Supportive Dudes pool!',
     nameInHeader: true,
-    stakePoolAddress: new PublicKey(
-      '9gkXb3eciDNbxqe9NZpFUbwh7QnmFb3HU3tVtxA4pwUR'
-    ),
+    stakePoolAddress: '9gkXb3eciDNbxqe9NZpFUbwh7QnmFb3HU3tVtxA4pwUR',
     contrastHomepageBkg: true,
     hideFooter: true,
     receiptType: ReceiptType.Original,
@@ -3116,9 +2913,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     name: 'hyperion',
     displayName: 'Hyperion Staking',
     nameInHeader: true,
-    stakePoolAddress: new PublicKey(
-      '6ZKWsXn9QHnubteRE6v4UcnMddkzJAhRkWfWVEhFKiMd'
-    ),
+    stakePoolAddress: '6ZKWsXn9QHnubteRE6v4UcnMddkzJAhRkWfWVEhFKiMd',
     description:
       'Earn HyperX by staking your Hyperion Drifters, You can stake/unstake anytime. Drifters earn 1 HyperX per day',
     imageUrl:
@@ -3156,9 +2951,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     name: 'SOLANA MCS',
     displayName: 'SMCS Staking',
     nameInHeader: true,
-    stakePoolAddress: new PublicKey(
-      'HBsam1w2i35vUVfg7ZdngqFQ8m9vmJEhTmn3VAkgmYhM'
-    ),
+    stakePoolAddress: 'HBsam1w2i35vUVfg7ZdngqFQ8m9vmJEhTmn3VAkgmYhM',
     description: 'Official staking pool for solana mcs NFT collection',
     imageUrl:
       'https://pbs.twimg.com/profile_images/1597210461665206273/qt3OgPGt_400x400.jpg',
@@ -3186,9 +2979,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     name: 'howly',
     displayName: 'Howly Finance',
     nameInHeader: true,
-    stakePoolAddress: new PublicKey(
-      '9A95mxSKUt4eFmX87JC18HKmg8NweLNF299ArK45kie7'
-    ),
+    stakePoolAddress: '9A95mxSKUt4eFmX87JC18HKmg8NweLNF299ArK45kie7',
     description:
       'First meme coin and nft powered defi on solana. Giving free access for the whole howly ecosystem with exclusive perks and privileges',
     imageUrl:
@@ -3226,9 +3017,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     name: 'forest_gemmys',
     displayName: 'Forest Gemmys',
     nameInHeader: true,
-    stakePoolAddress: new PublicKey(
-      '5xCCp3y57oRDjgK6RKhkHUKzYyo4dzW8qp1eV12CATg7'
-    ),
+    stakePoolAddress: '5xCCp3y57oRDjgK6RKhkHUKzYyo4dzW8qp1eV12CATg7',
     description:
       'Come frolic with the Forest Gemmys! The first Gemmy limited edition series.',
     imageUrl:
@@ -3264,9 +3053,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     name: 'Fronkme',
     displayName: 'Fronkme Staking',
     nameInHeader: true,
-    stakePoolAddress: new PublicKey(
-      '8xnC5wbXAgXoDghKGWTuxbw76U7HAHAwRuU3AKKovGif'
-    ),
+    stakePoolAddress: '8xnC5wbXAgXoDghKGWTuxbw76U7HAHAwRuU3AKKovGif',
     description: 'Stake Collection Proof',
     imageUrl:
       'https://bafybeiehzl5pc5gf4rdlg44bcxzalouhoovwdixdxzeszdmqbyh5nerxj4.ipfs.nftstorage.link/pixelTree.PNG',
@@ -3303,9 +3090,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     description:
       'Stake your dudes to earn rewards from various reward mechanisms including $EDD, merchandise, redeemable rewards by the Pixel Dudes pool!',
     nameInHeader: true,
-    stakePoolAddress: new PublicKey(
-      'F2tzjza3o6qWoyL9ufTG5K5zpTiAm5GebqsFYbB1cKxx'
-    ),
+    stakePoolAddress: 'F2tzjza3o6qWoyL9ufTG5K5zpTiAm5GebqsFYbB1cKxx',
     contrastHomepageBkg: true,
     hideFooter: true,
     receiptType: ReceiptType.Original,
@@ -3331,9 +3116,7 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
   {
     name: 'DevilBots',
     displayName: 'DEVIL BOTS STAKING',
-    stakePoolAddress: new PublicKey(
-      'Fkk1D46RjHP2jtjcHCYRbGcTweEARewb5XqHBTTvyNdm'
-    ),
+    stakePoolAddress: 'Fkk1D46RjHP2jtjcHCYRbGcTweEARewb5XqHBTTvyNdm',
     websiteUrl: 'https://twitter.com/DevilBotNFT',
     receiptType: ReceiptType.Original,
     maxStaked: 1666, // update with collection size
@@ -3353,33 +3136,33 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
   {
     name: 'ScalpGang',
     displayName: 'Scalp Gang',
-    stakePoolAddress: new PublicKey(
-      '2js8aAATzV5u4qzGqpTjKYBuxEXZK2KJoMJYNNpEoERb'
-    ),
+    stakePoolAddress: '2js8aAATzV5u4qzGqpTjKYBuxEXZK2KJoMJYNNpEoERb',
     websiteUrl: 'https://www.scalp-gang.com',
     nameInHeader: true,
-    description: "Scalp Empire Nestor Edition, Trading Apes Gang and TAG Raffle NFT staking",
+    description:
+      'Scalp Empire Nestor Edition, Trading Apes Gang and TAG Raffle NFT staking',
     hideFooter: true,
-    imageUrl: 'https://scalp-metadata.s3.eu-central-1.amazonaws.com/gang/logo_discord.png',
+    imageUrl:
+      'https://scalp-metadata.s3.eu-central-1.amazonaws.com/gang/logo_discord.png',
     logoPadding: false,
     links: [
       {
         text: 'Scalp Empire',
-        value: 'https://www.scalp-empire.com'
+        value: 'https://www.scalp-empire.com',
       },
       {
         text: 'Scalp Gang Raffles',
-        value: 'https://raffles.scalp-gang.com'
+        value: 'https://raffles.scalp-gang.com',
       },
       {
         text: 'Discord',
-        value: 'https://discord.gg/scalpgang'
-      }
+        value: 'https://discord.gg/scalpgang',
+      },
     ],
     colors: {
       primary: '#12263f',
       secondary: '#2c7be5',
-      backgroundSecondary: '#152e4d'
+      backgroundSecondary: '#152e4d',
     },
     maxStaked: 3328,
     receiptType: ReceiptType.Original,
@@ -3392,16 +3175,15 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
     // Display name to be displayed in the header. Often the same as name but with capital letters and spaces
     displayName: 'Meta Tune Club',
     // Publickey for this stake pool
-    stakePoolAddress: new PublicKey(
-      '6NL1Dw5bEPSFDdFMPuZiYzDQdUXLF84VUZzK5D6v4Jg1'
-    ),
+    stakePoolAddress: '6NL1Dw5bEPSFDdFMPuZiYzDQdUXLF84VUZzK5D6v4Jg1',
     description:
       'Meta Tune Coin is designed to pay back homeowners for good maintenance practices. Period.  Use with a Meta Tune Provider near you.',
     // Optional hostname to remap -- SEE NOTE BELOW
     tokenStandard: TokenStandard.NonFungible,
     receiptType: ReceiptType.Original,
     // Image url to be used as the icon in the pool selector and the header
-    imageUrl: 'https://bafybeifxyklvwpfpel2ck6hyzudiwsa2xt4brhfwb2pemtxsetsp4zocwe.ipfs.nftstorage.link/',
+    imageUrl:
+      'https://bafybeifxyklvwpfpel2ck6hyzudiwsa2xt4brhfwb2pemtxsetsp4zocwe.ipfs.nftstorage.link/',
     // Website url if specified will be navigated to when the image in the header is clicked
     websiteUrl: 'https://www.themetatune.com/',
     maxStaked: 38,
@@ -3418,14 +3200,12 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
   {
     name: 'dabloons',
     displayName: 'dabloons',
-    stakePoolAddress: new PublicKey(
-      'Deoogx369ZNvrr6HBHw19mookHyFtWGL2g8zzPi924bo'
-    ),
-    description:
-      'dabloons is a viral meme currency.',
+    stakePoolAddress: 'Deoogx369ZNvrr6HBHw19mookHyFtWGL2g8zzPi924bo',
+    description: 'dabloons is a viral meme currency.',
     tokenStandard: TokenStandard.NonFungible,
     receiptType: ReceiptType.Original,
-    imageUrl: 'https://nftstorage.link/ipfs/bafkreicdbk4dreaunyq7t3c4yx5hfdpz7w5gmownc7j4x745pembfezoy4',
+    imageUrl:
+      'https://nftstorage.link/ipfs/bafkreicdbk4dreaunyq7t3c4yx5hfdpz7w5gmownc7j4x745pembfezoy4',
     websiteUrl: 'https://www.dabloons.town/',
     maxStaked: 10000,
     links: [

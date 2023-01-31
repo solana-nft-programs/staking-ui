@@ -23,7 +23,7 @@ import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 import { useQuery } from 'react-query'
 
 export const useStakePoolData = () => {
-  const stakePoolId = useStakePoolId()
+  const { data: stakePoolId } = useStakePoolId()
   const { connection } = useEnvironmentCtx()
 
   return useQuery<

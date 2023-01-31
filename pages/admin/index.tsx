@@ -1,11 +1,11 @@
-import { useStakePoolMetadataCtx } from 'providers/StakePoolMetadataProvider'
+import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
 
 import Admin from '@/components/admin/Admin'
 
 import AdminStakePool from './[stakePoolId]'
 
 function Home() {
-  const { stakePoolMetadata } = useStakePoolMetadataCtx()
+  const { data: stakePoolMetadata } = useStakePoolMetadata()
   return <>{stakePoolMetadata ? <AdminStakePool /> : <Admin />}</>
 }
 

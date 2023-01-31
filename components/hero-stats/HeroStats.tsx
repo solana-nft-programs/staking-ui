@@ -13,7 +13,7 @@ export const HeroStats: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({
 }: React.HTMLAttributes<HTMLDivElement>) => {
   const rewardDistributorData = useRewardDistributorData()
   const stakePoolEntries = useStakePoolEntries()
-  const maxStaked = useStakePoolMaxStaked()
+  const { data: maxStaked } = useStakePoolMaxStaked()
   const totalStaked = useStakePoolTotalStaked()
   const { data: stakePoolMetadata } = useStakePoolMetadata()
 

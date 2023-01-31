@@ -15,7 +15,7 @@ export const Header = () => {
   const { environment, secondaryConnection } = useEnvironmentCtx()
   const wallet = useWallet()
   const walletModal = useWalletModal()
-  const stakePoolId = useStakePoolId()
+  const { data: stakePoolId } = useStakePoolId()
   const { data: stakePoolMetadata } = useStakePoolMetadata()
 
   return (
@@ -89,7 +89,9 @@ export const Header = () => {
             <AccountConnect
               dark={
                 stakePoolMetadata?.colors?.backgroundSecondary
-                  ? contrastColorMode(stakePoolMetadata?.colors?.primary)[1]
+                  ? contrastColorMode(
+                      stakePoolMetadata?.colors?.backgroundSecondary
+                    )[1]
                   : true
               }
               connection={secondaryConnection}
