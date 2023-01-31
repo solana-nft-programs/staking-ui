@@ -1,4 +1,7 @@
-import { getBatchedMultipleAccounts } from '@cardinal/common'
+import {
+  getBatchedMultipleAccounts,
+  tryDecodeIdlAccount,
+} from '@cardinal/common'
 import { CONFIGS_IDL } from '@cardinal/configs/dist/cjs/programs/constants'
 import { findConfigEntryId } from '@cardinal/configs/dist/cjs/programs/pda'
 import type { IdlAccountData } from '@cardinal/rewards-center'
@@ -118,19 +121,16 @@ export const useAllStakePools = () => {
         (acc, stakePoolData, index) => {
           const stakePoolMetadataInfo = configAccountInfos[index]
           if (stakePoolMetadataInfo) {
-            const configEntry: TypeDef<
-              AllAccountsMap<typeof CONFIGS_IDL>['configEntry'],
-              IdlTypes<typeof CONFIGS_IDL>
-            > = new BorshAccountsCoder(CONFIGS_IDL).decode(
+            const configEntry = tryDecodeIdlAccount<
               'configEntry',
-              stakePoolMetadataInfo.data
-            )
+              typeof CONFIGS_IDL
+            >(stakePoolMetadataInfo, 'configEntry', CONFIGS_IDL)
             return [
               [
                 ...acc[0],
                 {
                   stakePoolMetadata: JSON.parse(
-                    configEntry.value
+                    configEntry.parsed!.value
                   ) as StakePoolMetadata,
                   stakePoolData,
                 },

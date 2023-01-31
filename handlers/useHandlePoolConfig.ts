@@ -12,19 +12,18 @@ import type { StakePoolMetadata } from 'api/mapping'
 import { handleError } from 'common/errors'
 import { notify } from 'common/Notification'
 import { asWallet } from 'common/Wallets'
-import { useRewardDistributorData } from 'hooks/useRewardDistributorData'
-import { useMutation } from 'react-query'
+import { useMutation, useQueryClient } from 'react-query'
 
 import { useStakePoolData } from '../hooks/useStakePoolData'
 import { useEnvironmentCtx } from '../providers/EnvironmentProvider'
 
-const CONFIG_VALUE_LIMIT = 801
+const CONFIG_VALUE_LIMIT = 790
 
 export const useHandlePoolConfig = () => {
   const wallet = asWallet(useWallet())
   const { connection, environment } = useEnvironmentCtx()
   const stakePool = useStakePoolData()
-  const rewardDistributor = useRewardDistributorData()
+  const queryClient = useQueryClient()
 
   return useMutation(
     async ({ config }: { config: StakePoolMetadata }): Promise<string[]> => {
@@ -175,7 +174,6 @@ export const useHandlePoolConfig = () => {
         txids.push(txid)
       }
 
-      console.log('txids', txids)
       return txids
     },
     {
@@ -187,10 +185,7 @@ export const useHandlePoolConfig = () => {
           cluster: environment.label,
           type: 'success',
         })
-        setTimeout(() => {
-          stakePool.refetch()
-          rewardDistributor.refetch()
-        }, 1000)
+        queryClient.resetQueries()
       },
       onError: (e) => {
         if (`${e}`.includes('RangeError') || `${e}`.includes('too large')) {
