@@ -286,8 +286,8 @@ export const AdvancedConfigForm = () => {
           value={String(values.tokenStandard) || ''}
           setValue={(v) => setFieldValue('tokenStandard', v)}
           options={[
-            { label: 'Fungible', value: String(TokenStandard.Fungible) },
             { label: 'Non-fungible', value: String(TokenStandard.NonFungible) },
+            { label: 'Fungible', value: String(TokenStandard.Fungible) },
             { label: 'None', value: String(TokenStandard.None) },
           ]}
         />
