@@ -289,7 +289,6 @@ export const AdvancedConfigForm = () => {
             'Default empty. Setting this will tell the UI to only show tokens of that standard. Supports fungible or non-fungible'
           }
         />
-        {JSON.stringify(values.tokenStandard)}
         <Selector<TokenStandardOptions>
           className="rounded-l-none"
           onChange={(e) => setFieldValue('tokenStandard', e?.value)}
