@@ -33,7 +33,11 @@ function Homepage() {
       <div className="mx-auto flex flex-col gap-16 px-8 md:px-16">
         <CollectionsView
           configs={allStakePools.data?.stakePoolsWithMetadata.filter(
-            (pool) => !pool.stakePoolMetadata?.hidden
+            (pool) =>
+              !(
+                pool.stakePoolMetadata?.hidden ||
+                pool.stakePoolMetadata?.notFound
+              )
           )}
         />
         <CollectionsView
