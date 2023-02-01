@@ -19,14 +19,12 @@ import {
   SolflareWalletAdapter,
   TorusWalletAdapter,
 } from '@solana/wallet-adapter-wallets'
-import type { StakePoolMetadata } from 'api/mapping'
 import { ToastContainer } from 'common/Notification'
 import type { AppProps } from 'next/app'
 import {
   EnvironmentProvider,
   getInitialProps,
 } from 'providers/EnvironmentProvider'
-import { StakePoolMetadataProvider } from 'providers/StakePoolMetadataProvider'
 import { UTCNowProvider } from 'providers/UTCNowProvider'
 import { useMemo } from 'react'
 import { QueryClient, QueryClientProvider } from 'react-query'
@@ -48,10 +46,8 @@ const App = ({
   Component,
   pageProps,
   cluster,
-  poolMapping,
 }: AppProps & {
   cluster: string
-  poolMapping: StakePoolMetadata | undefined
 }) => {
   const network = useMemo(() => {
     switch (cluster) {
@@ -84,23 +80,21 @@ const App = ({
   )
   return (
     <EnvironmentProvider defaultCluster={cluster}>
-      <StakePoolMetadataProvider poolMapping={poolMapping}>
-        <UTCNowProvider>
-          <WalletProvider autoConnect wallets={wallets}>
-            <WalletIdentityProvider>
-              <WalletModalProvider>
-                <QueryClientProvider client={queryClient}>
-                  <>
-                    <ToastContainer />
-                    <Component {...pageProps} />
-                    <ReactQueryDevtools initialIsOpen={false} />
-                  </>
-                </QueryClientProvider>
-              </WalletModalProvider>
-            </WalletIdentityProvider>
-          </WalletProvider>
-        </UTCNowProvider>
-      </StakePoolMetadataProvider>
+      <UTCNowProvider>
+        <WalletProvider autoConnect wallets={wallets}>
+          <WalletIdentityProvider>
+            <WalletModalProvider>
+              <QueryClientProvider client={queryClient}>
+                <>
+                  <ToastContainer />
+                  <Component {...pageProps} />
+                  <ReactQueryDevtools initialIsOpen={false} />
+                </>
+              </QueryClientProvider>
+            </WalletModalProvider>
+          </WalletIdentityProvider>
+        </WalletProvider>
+      </UTCNowProvider>
     </EnvironmentProvider>
   )
 }

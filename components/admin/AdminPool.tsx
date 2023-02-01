@@ -11,6 +11,8 @@ import Image from 'next/image'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 import { useState } from 'react'
 
+import { AdvancedConfigForm } from '@/components/admin/AdvancedConfigForm'
+
 import { AuthorizeMints } from '../AuthorizeMints'
 import { MintMultiplierLookup } from '../MintMultiplierLookup'
 import { MintMultipliers } from '../MintMultipliers'
@@ -29,6 +31,7 @@ export type PANE_OPTIONS =
   | 'reward-multipliers'
   | 'reward-funds'
   | 'snapshot'
+  | 'advanced-config'
 
 export const AdminStakePool = ({
   onSuccess,
@@ -37,7 +40,7 @@ export const AdminStakePool = ({
 }) => {
   const { environment } = useEnvironmentCtx()
   const { data: config } = useStakePoolMetadata()
-  const stakePoolId = useStakePoolId()
+  const { data: stakePoolId } = useStakePoolId()
   const stakePool = useStakePoolData()
   const rewardDistributor = useRewardDistributorData()
   const [pane, setPane] = useState<PANE_OPTIONS>('stake-pool')
@@ -93,6 +96,11 @@ export const AdminStakePool = ({
         ? `Enabled once pool is created to receive snapshot of staked tokens`
         : `Tool to get pool's snapshot of staked tokens`,
     },
+    {
+      label: <div className="flex items-center gap-2">Config</div>,
+      value: 'advanced-config',
+      tooltip: 'Set advanced configuration settings',
+    },
   ]
 
   return (
@@ -117,7 +125,10 @@ export const AdminStakePool = ({
           </a>
           <a
             className="transition hover:text-blue-500"
-            href={withCluster(`/${stakePoolId}`, environment.label)}
+            href={withCluster(
+              `/${config?.name ?? stakePoolId}`,
+              environment.label
+            )}
           >
             <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gray-700 outline outline-gray-700 hover:outline-orange-500">
               <LinkIcon className="h-4 w-4 text-gray-400" />
@@ -156,6 +167,11 @@ export const AdminStakePool = ({
             snapshot: (
               <div className="w-full">
                 <Snapshot />
+              </div>
+            ),
+            'advanced-config': (
+              <div className="w-full">
+                <AdvancedConfigForm />
               </div>
             ),
           }[pane]

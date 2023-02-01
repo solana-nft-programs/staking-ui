@@ -13,6 +13,7 @@ function Home() {
   const router = useRouter()
   const { environment } = useEnvironmentCtx()
   const { data: config } = useStakePoolMetadata()
+
   return (
     <div className="flex min-h-screen flex-col">
       <Head>

@@ -73,7 +73,7 @@ export const useHandleStake = (callback?: () => void) => {
   const wallet = asWallet(useWallet())
   const { connection } = useEnvironmentCtx()
   const queryClient = useQueryClient()
-  const stakePoolId = useStakePoolId()
+  const { data: stakePoolId } = useStakePoolId()
   const { data: stakePoolData } = useStakePoolData()
 
   return useMutation(
@@ -93,16 +93,8 @@ export const useHandleStake = (callback?: () => void) => {
       if (!isStakePoolV2(stakePoolData.parsed)) {
         const stakeInfos = stakeInfosFromTokenData(tokenDatas)
         const stakeEntryIds = await Promise.all(
-          stakeInfos.map(
-            async ({ mintId, fungible }) =>
-              (
-                await findStakeEntryId(
-                  wallet.publicKey,
-                  stakePoolId,
-                  mintId,
-                  fungible
-                )
-              )[0]
+          stakeInfos.map(async ({ mintId, fungible }) =>
+            findStakeEntryId(wallet.publicKey, stakePoolId, mintId, fungible)
           )
         )
         let stakeEntries = await getStakeEntries(connection, stakeEntryIds)

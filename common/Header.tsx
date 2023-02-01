@@ -1,4 +1,5 @@
 import { AccountConnect } from '@cardinal/namespaces-components'
+import { getLuminance } from '@mui/material'
 import { useWallet } from '@solana/wallet-adapter-react'
 import { useWalletModal } from '@solana/wallet-adapter-react-ui'
 import { GlyphWallet } from 'assets/GlyphWallet'
@@ -8,14 +9,13 @@ import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 
 import { Airdrop } from './Airdrop'
 import { ButtonSmall } from './ButtonSmall'
-import { contrastColorMode } from './utils'
 import { asWallet } from './Wallets'
 
 export const Header = () => {
   const { environment, secondaryConnection } = useEnvironmentCtx()
   const wallet = useWallet()
   const walletModal = useWalletModal()
-  const stakePoolId = useStakePoolId()
+  const { data: stakePoolId } = useStakePoolId()
   const { data: stakePoolMetadata } = useStakePoolMetadata()
 
   return (
@@ -88,8 +88,8 @@ export const Header = () => {
           {wallet.connected && wallet.publicKey ? (
             <AccountConnect
               dark={
-                stakePoolMetadata?.colors?.backgroundSecondary
-                  ? contrastColorMode(stakePoolMetadata?.colors?.primary)[1]
+                stakePoolMetadata?.colors?.primary
+                  ? getLuminance(stakePoolMetadata?.colors?.primary) < 0.5
                   : true
               }
               connection={secondaryConnection}
