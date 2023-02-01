@@ -19,7 +19,6 @@ import {
   SolflareWalletAdapter,
   TorusWalletAdapter,
 } from '@solana/wallet-adapter-wallets'
-import type { StakePoolMetadata } from 'api/mapping'
 import { ToastContainer } from 'common/Notification'
 import type { AppProps } from 'next/app'
 import {
@@ -48,10 +47,10 @@ const App = ({
   Component,
   pageProps,
   cluster,
-  poolMapping,
+  hostname,
 }: AppProps & {
   cluster: string
-  poolMapping: StakePoolMetadata | undefined
+  hostname: string
 }) => {
   const network = useMemo(() => {
     switch (cluster) {
@@ -84,23 +83,23 @@ const App = ({
   )
   return (
     <EnvironmentProvider defaultCluster={cluster}>
-      <StakePoolMetadataProvider poolMapping={poolMapping}>
-        <UTCNowProvider>
-          <WalletProvider autoConnect wallets={wallets}>
-            <WalletIdentityProvider>
-              <WalletModalProvider>
-                <QueryClientProvider client={queryClient}>
+      <QueryClientProvider client={queryClient}>
+        <StakePoolMetadataProvider hostname={hostname}>
+          <UTCNowProvider>
+            <WalletProvider autoConnect wallets={wallets}>
+              <WalletIdentityProvider>
+                <WalletModalProvider>
                   <>
                     <ToastContainer />
                     <Component {...pageProps} />
                     <ReactQueryDevtools initialIsOpen={false} />
                   </>
-                </QueryClientProvider>
-              </WalletModalProvider>
-            </WalletIdentityProvider>
-          </WalletProvider>
-        </UTCNowProvider>
-      </StakePoolMetadataProvider>
+                </WalletModalProvider>
+              </WalletIdentityProvider>
+            </WalletProvider>
+          </UTCNowProvider>
+        </StakePoolMetadataProvider>
+      </QueryClientProvider>
     </EnvironmentProvider>
   )
 }

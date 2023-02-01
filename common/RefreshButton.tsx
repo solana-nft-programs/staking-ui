@@ -1,6 +1,6 @@
 import { secondsToString } from '@cardinal/common'
 import { css } from '@emotion/react'
-import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
+import { useStakePoolMetadataCtx } from 'providers/StakePoolMetadataProvider'
 import { useUTCNow } from 'providers/UTCNowProvider'
 import { BiRefresh } from 'react-icons/bi'
 
@@ -27,7 +27,7 @@ export const RefreshButton: React.FC<Props> = ({
   dataUpdatdAtMs,
   handleClick,
 }: Props) => {
-  const { data: stakePoolMetadata } = useStakePoolMetadata()
+  const { data: stakePoolMetadata } = useStakePoolMetadataCtx()
   const { UTCNow } = useUTCNow()
   return (
     <Tooltip title="Click to refresh latest data">

@@ -35,7 +35,7 @@ export const fetchRewardEntry = async (
     )
     return await fetchIdlAccount(connection, rewardEntryId, 'rewardEntry')
   } else {
-    const [rewardEntryId] = await findRewardEntryId(
+    const rewardEntryId = findRewardEntryId(
       rewardDistributorData.pubkey,
       stakeEntryId
     )
