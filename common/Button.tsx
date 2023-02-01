@@ -1,5 +1,5 @@
 import { css } from '@emotion/react'
-import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
+import { useStakePoolMetadataCtx } from 'providers/StakePoolMetadataProvider'
 import { useState } from 'react'
 import { twMerge } from 'tailwind-merge'
 
@@ -30,7 +30,7 @@ export const AsyncButton: React.FC<Props> = ({
   ...rest
 }: Props) => {
   const [loadingClick, setLoadingClick] = useState(false)
-  const { data: stakePoolMetadata } = useStakePoolMetadata()
+  const { data: stakePoolMetadata } = useStakePoolMetadataCtx()
   const loaderElement = loader || (
     <LoadingSpinner height="15" className="flex items-center justify-center" />
   )

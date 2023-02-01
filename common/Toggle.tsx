@@ -1,5 +1,5 @@
 import { css } from '@emotion/react'
-import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
+import { useStakePoolMetadataCtx } from 'providers/StakePoolMetadataProvider'
 import { useState } from 'react'
 
 import { Tooltip } from './Tooltip'
@@ -22,7 +22,7 @@ export const Toggle = ({
   onChange,
 }: Props) => {
   const [value, setValue] = useState(defaultValue)
-  const { data: stakePoolMetadata } = useStakePoolMetadata()
+  const { data: stakePoolMetadata } = useStakePoolMetadataCtx()
   return (
     <Tooltip title={tooltip || ''}>
       <div
