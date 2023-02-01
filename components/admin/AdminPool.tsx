@@ -125,7 +125,10 @@ export const AdminStakePool = ({
           </a>
           <a
             className="transition hover:text-blue-500"
-            href={withCluster(`/${stakePoolId}`, environment.label)}
+            href={withCluster(
+              `/${config?.name ?? stakePoolId}`,
+              environment.label
+            )}
           >
             <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gray-700 outline outline-gray-700 hover:outline-orange-500">
               <LinkIcon className="h-4 w-4 text-gray-400" />
