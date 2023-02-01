@@ -25,7 +25,7 @@ export const StakePoolInfo = () => {
   const rewardDistributorData = useRewardDistributorData()
   const rewardMintInfo = useRewardMintInfo()
   const stakePoolEntries = useStakePoolEntries()
-  const { data: maxStaked } = useStakePoolMaxStaked()
+  const maxStaked = useStakePoolMaxStaked()
   const rewards = useRewards()
   const totalStaked = useStakePoolTotalStaked()
   const rewardsRate = useRewardsRate()

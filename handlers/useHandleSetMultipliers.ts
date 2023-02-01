@@ -87,12 +87,14 @@ export const useHandleSetMultipliers = () => {
         const mintId = pubKeysToSetMultiplier[i]!
         const stakeEntryId = isStakePoolV2(stakePoolData.parsed)
           ? findStakeEntryId(stakePoolData.pubkey, mintId, wallet.publicKey)
-          : await findStakeEntryIdFromMint(
-              connection,
-              wallet.publicKey!,
-              stakePoolData.pubkey,
-              mintId
-            )
+          : (
+              await findStakeEntryIdFromMint(
+                connection,
+                wallet.publicKey!,
+                stakePoolData.pubkey,
+                mintId
+              )
+            )[0]
         await withFindOrInitAssociatedTokenAccount(
           transaction,
           connection,
@@ -140,7 +142,12 @@ export const useHandleSetMultipliers = () => {
 
         const rewardEntryId = isStakePoolV2(stakePoolData.parsed)
           ? findRewardEntryIdV2(rewardDistributorData.pubkey, stakeEntryId)
-          : findRewardEntryId(rewardDistributorData.pubkey, stakeEntryId)
+          : (
+              await findRewardEntryId(
+                rewardDistributorData.pubkey,
+                stakeEntryId
+              )
+            )[0]
         const rewardEntry = await tryGetAccount(() =>
           fetchRewardEntry(connection, rewardDistributorData, stakeEntryId)
         )

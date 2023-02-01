@@ -21,7 +21,7 @@ import { useStakePoolId } from './useStakePoolId'
 import { useWalletId } from './useWalletId'
 
 export const useMintMultiplier = (mint: string) => {
-  const { data: stakePoolId } = useStakePoolId()
+  const stakePoolId = useStakePoolId()
   const walletId = useWalletId()
   const rewardDistributor = useRewardDistributorData()
   const { connection } = useEnvironmentCtx()
@@ -60,16 +60,18 @@ export const useMintMultiplier = (mint: string) => {
         )
       } else {
         try {
-          stakeEntryId = await findStakeEntryIdFromMint(
-            connection,
-            walletId,
-            stakePoolId,
-            mintId
-          )
+          stakeEntryId = (
+            await findStakeEntryIdFromMint(
+              connection,
+              walletId,
+              stakePoolId,
+              mintId
+            )
+          )[0]
         } catch (e) {
           throw 'Invalid mint ID or no reward entry for mint'
         }
-        const rewardEntryId = findRewardEntryId(
+        const [rewardEntryId] = await findRewardEntryId(
           rewardDistributor.data.pubkey,
           stakeEntryId
         )
