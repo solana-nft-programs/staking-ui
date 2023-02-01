@@ -5,9 +5,9 @@ import { useHandleStake } from 'handlers/useHandleStake'
 import { useHandleUnstake } from 'handlers/useHandleUnstake'
 import type { AllowedTokenData } from 'hooks/useAllowedTokenDatas'
 import type { StakeEntryTokenData } from 'hooks/useStakedTokenDatas'
-import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
 import { lighten } from 'polished'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
+import { useStakePoolMetadataCtx } from 'providers/StakePoolMetadataProvider'
 import { AiFillLock, AiFillUnlock, AiOutlineDatabase } from 'react-icons/ai'
 import { BsBookmarkCheck } from 'react-icons/bs'
 import { FaEllipsisH } from 'react-icons/fa'
@@ -31,7 +31,7 @@ export const QuickActions = ({
   selectUnstakedToken: (tk: AllowedTokenData) => void
   selectStakedToken: (tk: StakeEntryTokenData) => void
 }) => {
-  const { data: stakePoolMetadata } = useStakePoolMetadata()
+  const { data: stakePoolMetadata } = useStakePoolMetadataCtx()
   const ctx = useEnvironmentCtx()
   const handleStake = useHandleStake()
   const handleUnstake = useHandleUnstake()

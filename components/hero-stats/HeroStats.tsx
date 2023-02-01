@@ -2,8 +2,8 @@ import { BN } from '@project-serum/anchor'
 import { useRewardDistributorData } from 'hooks/useRewardDistributorData'
 import { useStakePoolEntries } from 'hooks/useStakePoolEntries'
 import { useStakePoolMaxStaked } from 'hooks/useStakePoolMaxStaked'
-import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
 import { useStakePoolTotalStaked } from 'hooks/useStakePoolTotalStaked'
+import { useStakePoolMetadataCtx } from 'providers/StakePoolMetadataProvider'
 
 import { RewardsRate } from '@/components/hero-stats/RewardsRate'
 import { TreasuryBalance } from '@/components/hero-stats/TreasuryBalance'
@@ -13,9 +13,9 @@ export const HeroStats: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({
 }: React.HTMLAttributes<HTMLDivElement>) => {
   const rewardDistributorData = useRewardDistributorData()
   const stakePoolEntries = useStakePoolEntries()
-  const maxStaked = useStakePoolMaxStaked()
+  const { data: maxStaked } = useStakePoolMaxStaked()
   const totalStaked = useStakePoolTotalStaked()
-  const { data: stakePoolMetadata } = useStakePoolMetadata()
+  const { data: stakePoolMetadata } = useStakePoolMetadataCtx()
 
   return (
     <div

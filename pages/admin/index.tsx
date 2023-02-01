@@ -5,7 +5,7 @@ import Admin from '@/components/admin/Admin'
 import AdminStakePool from './[stakePoolId]'
 
 function Home() {
-  const { stakePoolMetadata } = useStakePoolMetadataCtx()
+  const { data: stakePoolMetadata } = useStakePoolMetadataCtx()
   return <>{stakePoolMetadata ? <AdminStakePool /> : <Admin />}</>
 }
 

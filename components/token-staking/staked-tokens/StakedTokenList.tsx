@@ -2,7 +2,7 @@ import { useWallet } from '@solana/wallet-adapter-react'
 import { useHandleClaimRewards } from 'handlers/useHandleClaimRewards'
 import type { StakeEntryTokenData } from 'hooks/useStakedTokenDatas'
 import { useStakedTokenDatas } from 'hooks/useStakedTokenDatas'
-import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
+import { useStakePoolMetadataCtx } from 'providers/StakePoolMetadataProvider'
 import { useState } from 'react'
 import type { UseMutationResult } from 'react-query'
 
@@ -33,7 +33,7 @@ export const StakedTokenList = ({
   const handleClaimRewards = useHandleClaimRewards()
 
   const wallet = useWallet()
-  const { data: stakePoolMetadata } = useStakePoolMetadata()
+  const { data: stakePoolMetadata } = useStakePoolMetadataCtx()
 
   const isStakedTokenSelected = (tk: StakeEntryTokenData) =>
     stakedSelected.some(

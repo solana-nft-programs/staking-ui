@@ -1,8 +1,14 @@
 import { ButtonSmall } from 'common/ButtonSmall'
-import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
+import { withCluster } from 'common/utils'
+import { useStakePoolId } from 'hooks/useStakePoolId'
+import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
+import { useStakePoolMetadataCtx } from 'providers/StakePoolMetadataProvider'
 
 export const StakePoolImage = () => {
-  const { data: config } = useStakePoolMetadata()
+  const { environment } = useEnvironmentCtx()
+  const { data: config } = useStakePoolMetadataCtx()
+  const { data: stakePoolId } = useStakePoolId()
+
   return config?.imageUrl ? (
     <div className="relative flex w-1/4 grow items-center justify-center rounded-xl">
       <img
@@ -20,7 +26,18 @@ export const StakePoolImage = () => {
         rel="noreferrer"
         href={`https://github.com/cardinal-labs/cardinal-staking-ui#customizing-your-stake-pool`}
       >
-        <ButtonSmall onClick={() => {}}>Add image</ButtonSmall>
+        <ButtonSmall
+          onClick={() => {
+            window.open(
+              withCluster(
+                `/admin/${config?.name ?? stakePoolId}`,
+                environment.label
+              )
+            )
+          }}
+        >
+          Add image
+        </ButtonSmall>
       </a>
     </div>
   )
