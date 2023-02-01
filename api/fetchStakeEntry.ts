@@ -43,7 +43,7 @@ export const fetchStakeEntry = async (
     )
     return await fetchIdlAccount(connection, stakeEntryId, 'stakeEntry')
   } else {
-    const [stakeEntryId] = await findStakeEntryIdFromMint(
+    const stakeEntryId = await findStakeEntryIdFromMint(
       connection,
       wallet.publicKey,
       stakePoolData.pubkey,

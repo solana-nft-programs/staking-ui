@@ -39,7 +39,6 @@ export const useHandleStakePoolCreate = () => {
         .map((c) => tryPublicKey(c))
         .filter((c) => c) as PublicKey[]
 
-      console.log(values)
       const transaction = new Transaction()
       const program = rewardsCenterProgram(connection, wallet)
       const identifier = `pool-name-${Math.random()}`

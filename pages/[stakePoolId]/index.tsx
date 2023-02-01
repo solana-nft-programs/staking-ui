@@ -1,4 +1,3 @@
-import { stakePoolMetadatas } from 'api/mapping'
 import { Footer } from 'common/Footer'
 import { FooterSlim } from 'common/FooterSlim'
 import { Header } from 'common/Header'
@@ -226,20 +225,6 @@ function StakePoolHome(props: { stakePoolMetadataName: string | null }) {
       )}
     </div>
   )
-}
-
-export async function getServerSideProps(context: {
-  params: { stakePoolId: string }
-}) {
-  const stakePoolId = context.params.stakePoolId
-  if (!stakePoolId) return { props: { stakePoolMetadataName: null } }
-  const stakePoolMetadata = stakePoolMetadatas.find(
-    (p) =>
-      p.name === stakePoolId.toString() ||
-      p.stakePoolAddress.toString() === stakePoolId.toString()
-  )
-  if (!stakePoolMetadata) return { props: { stakePoolMetadataName: null } }
-  return { props: { stakePoolMetadataName: stakePoolMetadata?.displayName } }
 }
 
 export default StakePoolHome

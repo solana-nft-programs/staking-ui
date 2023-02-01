@@ -21,7 +21,7 @@ export const useHandleUnstake = (callback?: () => void) => {
   const queryClient = useQueryClient()
   const { data: stakePool } = useStakePoolData()
   const rewardDistributorData = useRewardDistributorData()
-  const stakePoolId = useStakePoolId()
+  const { data: stakePoolId } = useStakePoolId()
 
   return useMutation(
     async ({
