@@ -3,6 +3,7 @@ import { TokenStandard } from 'api/mapping'
 import { AsyncButton } from 'common/Button'
 import { FormFieldTitleInput } from 'common/FormFieldInput'
 import { LoadingSpinner } from 'common/LoadingSpinner'
+import { Selector } from 'common/Selector'
 import { SelectorBoolean } from 'common/SelectorBoolean'
 import { Tooltip } from 'common/Tooltip'
 import { useFormik } from 'formik'
@@ -17,7 +18,6 @@ import * as Yup from 'yup'
 
 import { publicKeyValidationTest } from '@/components/stake-pool-creation/Schema'
 import { NumberInput } from '@/components/UI/inputs/NumberInput'
-import { SelectInput } from '@/components/UI/inputs/SelectInput'
 import { TextInput } from '@/components/UI/inputs/TextInput'
 import { HeadingSecondary } from '@/components/UI/typography/HeadingSecondary'
 
@@ -59,6 +59,14 @@ const colorOptions = [
     description: 'Secondary background color',
   },
 ] as const
+
+export type TokenStandardOptions = 'non-fungible' | 'fungible' | 'none'
+
+// const tokenStandardOptions = [
+//   { label: 'Non-fungible', value: String(TokenStandard.NonFungible) },
+//   { label: 'Fungible', value: String(TokenStandard.Fungible) },
+//   { label: 'None', value: String(TokenStandard.None) },
+// ]
 
 const validationSchema = Yup.object({
   name: Yup.string().required(),
@@ -281,14 +289,27 @@ export const AdvancedConfigForm = () => {
             'Default empty. Setting this will tell the UI to only show tokens of that standard. Supports fungible or non-fungible'
           }
         />
-        <SelectInput
-          className="w-full"
-          value={String(values.tokenStandard) || ''}
-          setValue={(v) => setFieldValue('tokenStandard', v)}
+        {JSON.stringify(values.tokenStandard)}
+        <Selector<TokenStandardOptions>
+          className="rounded-l-none"
+          onChange={(e) => setFieldValue('tokenStandard', e?.value)}
+          defaultOption={{
+            label: 'Non-fungible',
+            value: String(TokenStandard.NonFungible) as TokenStandardOptions,
+          }}
           options={[
-            { label: 'Non-fungible', value: String(TokenStandard.NonFungible) },
-            { label: 'Fungible', value: String(TokenStandard.Fungible) },
-            { label: 'None', value: String(TokenStandard.None) },
+            {
+              label: 'Non-fungible',
+              value: String(TokenStandard.NonFungible) as TokenStandardOptions,
+            },
+            {
+              label: 'Fungible',
+              value: String(TokenStandard.Fungible) as TokenStandardOptions,
+            },
+            {
+              label: 'None',
+              value: String(TokenStandard.None) as TokenStandardOptions,
+            },
           ]}
         />
       </div>
