@@ -1,12 +1,12 @@
 import { ButtonSmall } from 'common/ButtonSmall'
 import { withCluster } from 'common/utils'
 import { useStakePoolId } from 'hooks/useStakePoolId'
-import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
+import { useStakePoolMetadataCtx } from 'providers/StakePoolMetadataProvider'
 
 export const StakePoolImage = () => {
   const { environment } = useEnvironmentCtx()
-  const { data: config } = useStakePoolMetadata()
+  const { data: config } = useStakePoolMetadataCtx()
   const { data: stakePoolId } = useStakePoolId()
 
   return config?.imageUrl ? (

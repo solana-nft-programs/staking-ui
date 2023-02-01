@@ -25,6 +25,7 @@ import {
   EnvironmentProvider,
   getInitialProps,
 } from 'providers/EnvironmentProvider'
+import { StakePoolMetadataProvider } from 'providers/StakePoolMetadataProvider'
 import { UTCNowProvider } from 'providers/UTCNowProvider'
 import { useMemo } from 'react'
 import { QueryClient, QueryClientProvider } from 'react-query'
@@ -46,8 +47,10 @@ const App = ({
   Component,
   pageProps,
   cluster,
+  hostname,
 }: AppProps & {
   cluster: string
+  hostname: string
 }) => {
   const network = useMemo(() => {
     switch (cluster) {
@@ -80,21 +83,23 @@ const App = ({
   )
   return (
     <EnvironmentProvider defaultCluster={cluster}>
-      <UTCNowProvider>
-        <WalletProvider autoConnect wallets={wallets}>
-          <WalletIdentityProvider>
-            <WalletModalProvider>
-              <QueryClientProvider client={queryClient}>
-                <>
-                  <ToastContainer />
-                  <Component {...pageProps} />
-                  <ReactQueryDevtools initialIsOpen={false} />
-                </>
-              </QueryClientProvider>
-            </WalletModalProvider>
-          </WalletIdentityProvider>
-        </WalletProvider>
-      </UTCNowProvider>
+      <QueryClientProvider client={queryClient}>
+        <StakePoolMetadataProvider hostname={hostname}>
+          <UTCNowProvider>
+            <WalletProvider autoConnect wallets={wallets}>
+              <WalletIdentityProvider>
+                <WalletModalProvider>
+                  <>
+                    <ToastContainer />
+                    <Component {...pageProps} />
+                    <ReactQueryDevtools initialIsOpen={false} />
+                  </>
+                </WalletModalProvider>
+              </WalletIdentityProvider>
+            </WalletProvider>
+          </UTCNowProvider>
+        </StakePoolMetadataProvider>
+      </QueryClientProvider>
     </EnvironmentProvider>
   )
 }

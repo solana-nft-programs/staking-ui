@@ -6,9 +6,9 @@ import { withCluster } from 'common/utils'
 import { useRewardDistributorData } from 'hooks/useRewardDistributorData'
 import { useStakePoolData } from 'hooks/useStakePoolData'
 import { useStakePoolId } from 'hooks/useStakePoolId'
-import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
 import Image from 'next/image'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
+import { useStakePoolMetadataCtx } from 'providers/StakePoolMetadataProvider'
 import { useState } from 'react'
 
 import { AdvancedConfigForm } from '@/components/admin/AdvancedConfigForm'
@@ -39,7 +39,7 @@ export const AdminStakePool = ({
   onSuccess?: (p: PublicKey | undefined) => void
 }) => {
   const { environment } = useEnvironmentCtx()
-  const { data: config } = useStakePoolMetadata()
+  const { data: config } = useStakePoolMetadataCtx()
   const { data: stakePoolId } = useStakePoolId()
   const stakePool = useStakePoolData()
   const rewardDistributor = useRewardDistributorData()

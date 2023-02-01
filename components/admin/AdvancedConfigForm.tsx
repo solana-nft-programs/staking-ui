@@ -9,7 +9,7 @@ import { useFormik } from 'formik'
 import { useHandlePoolConfig } from 'handlers/useHandlePoolConfig'
 import { useStakePoolData } from 'hooks/useStakePoolData'
 import { useStakePoolId } from 'hooks/useStakePoolId'
-import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
+import { useStakePoolMetadataCtx } from 'providers/StakePoolMetadataProvider'
 import { HexColorPicker } from 'react-colorful'
 import { BsFillInfoCircleFill } from 'react-icons/bs'
 import validateColor from 'validate-color'
@@ -186,7 +186,7 @@ export const AdvancedConfigForm = () => {
   const handlePoolConfig = useHandlePoolConfig()
   const stakePooldId = useStakePoolId()
   const stakePool = useStakePoolData()
-  const stakePoolMetadata = useStakePoolMetadata()
+  const stakePoolMetadata = useStakePoolMetadataCtx()
   const initialValues = stakePoolMetadata?.data
     ? defaultValues({
         disallowRegions: stakePoolMetadata?.data?.disallowRegions || [],

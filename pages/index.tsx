@@ -1,15 +1,20 @@
-import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
+import { useStakePoolMetadataCtx } from 'providers/StakePoolMetadataProvider'
 
 import Homepage from '../components/Homepage'
 import StakePoolHome from './[stakePoolId]'
 
 function Home() {
-  const { data: stakePoolMetadata } = useStakePoolMetadata()
+  const stakePoolMetadata = useStakePoolMetadataCtx()
+
+  if (!stakePoolMetadata.isFetched) {
+    return <></>
+  }
+
   return (
     <div>
-      {stakePoolMetadata ? (
+      {stakePoolMetadata.data ? (
         <StakePoolHome
-          stakePoolMetadataName={stakePoolMetadata.displayName ?? null}
+          stakePoolMetadataName={stakePoolMetadata.data?.displayName ?? null}
         />
       ) : (
         <Homepage />

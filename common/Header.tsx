@@ -4,8 +4,8 @@ import { useWallet } from '@solana/wallet-adapter-react'
 import { useWalletModal } from '@solana/wallet-adapter-react-ui'
 import { GlyphWallet } from 'assets/GlyphWallet'
 import { useStakePoolId } from 'hooks/useStakePoolId'
-import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
+import { useStakePoolMetadataCtx } from 'providers/StakePoolMetadataProvider'
 
 import { Airdrop } from './Airdrop'
 import { ButtonSmall } from './ButtonSmall'
@@ -16,7 +16,7 @@ export const Header = () => {
   const wallet = useWallet()
   const walletModal = useWalletModal()
   const { data: stakePoolId } = useStakePoolId()
-  const { data: stakePoolMetadata } = useStakePoolMetadata()
+  const { data: stakePoolMetadata } = useStakePoolMetadataCtx()
 
   return (
     <div>

@@ -16,9 +16,9 @@ import { useRewardsRate } from 'hooks/useRewardsRate'
 import { useStakePoolData } from 'hooks/useStakePoolData'
 import { useStakePoolEntries } from 'hooks/useStakePoolEntries'
 import { useStakePoolMaxStaked } from 'hooks/useStakePoolMaxStaked'
-import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
 import { useStakePoolTotalStaked } from 'hooks/useStakePoolTotalStaked'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
+import { useStakePoolMetadataCtx } from 'providers/StakePoolMetadataProvider'
 
 export const StakePoolInfo = () => {
   const { environment } = useEnvironmentCtx()
@@ -30,7 +30,7 @@ export const StakePoolInfo = () => {
   const totalStaked = useStakePoolTotalStaked()
   const rewardsRate = useRewardsRate()
   const { isFetched: stakePoolLoaded } = useStakePoolData()
-  const { data: stakePoolMetadata } = useStakePoolMetadata()
+  const { data: stakePoolMetadata } = useStakePoolMetadataCtx()
   const rewardDistributorTokenAccountData = useRewardDistributorTokenAccount()
 
   if (

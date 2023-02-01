@@ -3,12 +3,12 @@ import { useWalletModal } from '@solana/wallet-adapter-react-ui'
 import { defaultSecondaryColor } from 'api/mapping'
 import { contrastify } from 'common/colors'
 import { useStakePoolData } from 'hooks/useStakePoolData'
-import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
+import { useStakePoolMetadataCtx } from 'providers/StakePoolMetadataProvider'
 
 export const StakePoolNotice = () => {
   const wallet = useWallet()
   const walletModal = useWalletModal()
-  const { data: stakePoolMetadata } = useStakePoolMetadata()
+  const { data: stakePoolMetadata } = useStakePoolMetadataCtx()
   const { data: stakePool, isFetched: stakePoolLoaded } = useStakePoolData()
 
   return (

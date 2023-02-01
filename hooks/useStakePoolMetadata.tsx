@@ -5,24 +5,28 @@ import {
 } from '@cardinal/configs/dist/cjs/programs/accounts'
 import type { Connection } from '@solana/web3.js'
 import type { StakePoolMetadata } from 'api/mapping'
+import { stakePoolsWithHostnames } from 'api/mapping'
 import { useRouter } from 'next/router'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 import { useQuery } from 'react-query'
 
-export const useStakePoolMetadata = () => {
+export const useStakePoolMetadata = (hostname?: string) => {
   const { connection } = useEnvironmentCtx()
   const {
     query: { stakePoolId },
   } = useRouter()
 
   return useQuery<StakePoolMetadata | undefined>(
-    ['usePoolConfig', stakePoolId?.toString()],
+    ['useStakePoolMetadata', stakePoolId?.toString()],
     async () => {
-      if (!stakePoolId) return
-      return stakePoolConfig(connection, stakePoolId.toString())
-    },
-    {
-      enabled: !!stakePoolId,
+      const hostnameConfigFound = stakePoolsWithHostnames.find((config) =>
+        hostname?.includes(config.hostname)
+      )
+      if (!hostnameConfigFound && !stakePoolId) return
+      return stakePoolConfig(
+        connection,
+        hostnameConfigFound?.stakePoolAddress ?? stakePoolId!.toString()
+      )
     }
   )
 }

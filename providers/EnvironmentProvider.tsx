@@ -43,6 +43,7 @@ export const getInitialProps = async ({
   ctx: NextPageContext
 }): Promise<{
   cluster: string
+  hostname: string
 }> => {
   const host = ctx.req?.headers.host || ctx.query.host
   const cluster = host?.includes('dev')
@@ -53,6 +54,7 @@ export const getInitialProps = async ({
 
   return {
     cluster: firstParam(cluster),
+    hostname: (ctx.req?.headers.host || ctx.query.host)?.toString() || '',
   }
 }
 

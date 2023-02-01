@@ -12,10 +12,10 @@ import { StakePoolNotice } from 'components/StakePoolNotice'
 import { useRewardDistributorData } from 'hooks/useRewardDistributorData'
 import { useStakedTokenDatas } from 'hooks/useStakedTokenDatas'
 import { useStakePoolData } from 'hooks/useStakePoolData'
-import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
 import { useUserRegion } from 'hooks/useUserRegion'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
+import { useStakePoolMetadataCtx } from 'providers/StakePoolMetadataProvider'
 import { useState } from 'react'
 
 import { StakedTokens } from '@/components/token-staking/staked-tokens/StakedTokens'
@@ -51,7 +51,7 @@ function StakePoolHome(props: { stakePoolMetadataName: string | null }) {
     ? props.stakePoolMetadataName.replace(' Staking', '') + ' Staking'
     : 'Cardinal NFT Staking'
 
-  const { data: stakePoolMetadata } = useStakePoolMetadata()
+  const { data: stakePoolMetadata } = useStakePoolMetadataCtx()
 
   if (stakePoolMetadata?.redirect) {
     router.push(stakePoolMetadata?.redirect)

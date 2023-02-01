@@ -1,10 +1,10 @@
 import { FooterSlim } from 'common/FooterSlim'
 import { HeaderSlim } from 'common/HeaderSlim'
 import { withCluster } from 'common/utils'
-import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
+import { useStakePoolMetadataCtx } from 'providers/StakePoolMetadataProvider'
 import { VscChevronLeft } from 'react-icons/vsc'
 
 import { AdminStakePool } from '@/components/admin/AdminPool'
@@ -12,7 +12,7 @@ import { AdminStakePool } from '@/components/admin/AdminPool'
 function Home() {
   const router = useRouter()
   const { environment } = useEnvironmentCtx()
-  const { data: config } = useStakePoolMetadata()
+  const { data: config } = useStakePoolMetadataCtx()
 
   return (
     <div className="flex min-h-screen flex-col">
