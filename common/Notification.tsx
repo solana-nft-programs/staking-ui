@@ -1,7 +1,7 @@
 import { css } from '@emotion/react'
 import styled from '@emotion/styled'
 import type { Cluster } from '@solana/web3.js'
-import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
+import { useStakePoolMetadataCtx } from 'providers/StakePoolMetadataProvider'
 import React from 'react'
 import toast, { resolveValue, ToastBar, Toaster } from 'react-hot-toast'
 import { VscClose } from 'react-icons/vsc'
@@ -86,7 +86,7 @@ const TxContainer = styled.div`
 `
 
 export function ToastContainer() {
-  const { data: stakePoolMetadata } = useStakePoolMetadata()
+  const { data: stakePoolMetadata } = useStakePoolMetadataCtx()
   return (
     <Toaster position="top-right">
       {(t) => (

@@ -4,7 +4,7 @@ import { useStakePoolId } from 'hooks/useStakePoolId'
 import { HeroStats } from '../components/hero-stats/HeroStats'
 
 export const HeroSmall: React.FC = () => {
-  const stakePoolId = useStakePoolId()
+  const { data: stakePoolId } = useStakePoolId()
   return (
     <div className="flex w-full flex-wrap items-center justify-center gap-16 py-8 px-4 lg:justify-between lg:px-10">
       <div className="flex items-center gap-4">

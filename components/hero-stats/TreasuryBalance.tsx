@@ -7,7 +7,7 @@ import {
 } from 'hooks/useRewardDistributorData'
 import { useRewardDistributorTokenAccount } from 'hooks/useRewardDistributorTokenAccount'
 import { useRewardMintInfo } from 'hooks/useRewardMintInfo'
-import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
+import { useStakePoolMetadataCtx } from 'providers/StakePoolMetadataProvider'
 
 export type Props = React.HTMLAttributes<HTMLDivElement> & {
   className?: string
@@ -16,7 +16,7 @@ export type Props = React.HTMLAttributes<HTMLDivElement> & {
 export const TreasuryBalance = ({ className }: Props) => {
   const rewardDistributorData = useRewardDistributorData()
   const rewardMintInfo = useRewardMintInfo()
-  const { data: stakePoolMetadata } = useStakePoolMetadata()
+  const { data: stakePoolMetadata } = useStakePoolMetadataCtx()
   const rewardDistributorTokenAccountData = useRewardDistributorTokenAccount()
 
   const isZeroBalance = () => {

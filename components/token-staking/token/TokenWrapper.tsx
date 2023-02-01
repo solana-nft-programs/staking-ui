@@ -1,6 +1,6 @@
 import classNames from 'classnames'
 import type { AllowedTokenData } from 'hooks/useAllowedTokenDatas'
-import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
+import { useStakePoolMetadataCtx } from 'providers/StakePoolMetadataProvider'
 
 export interface TokenWrapperProps {
   select: (tokenData: any) => void
@@ -15,7 +15,7 @@ export const TokenWrapper = ({
   selected,
   select,
 }: TokenWrapperProps) => {
-  const { data: stakePoolMetadata } = useStakePoolMetadata()
+  const { data: stakePoolMetadata } = useStakePoolMetadataCtx()
 
   return (
     <div
