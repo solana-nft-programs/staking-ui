@@ -1,14 +1,12 @@
+import { SelectorBoolean } from 'common/SelectorBoolean'
 import type { FormikHandlers, FormikState, FormikValues } from 'formik'
 import type { Dispatch, SetStateAction } from 'react'
-import { useEffect, useState } from 'react'
 
 import { SlavePanelScreens } from '@/components/stake-pool-creation/SlavePanel'
 import { InfoTipButtons } from '@/components/UI/buttons/InfoTipButtons'
 import { DateInput } from '@/components/UI/inputs/DateInput'
 import { DurationInput } from '@/components/UI/inputs/DurationInput'
-import { SelectInput } from '@/components/UI/inputs/SelectInput'
 import { LabelText } from '@/components/UI/typography/LabelText'
-import { booleanOptions } from '@/types/index'
 
 export type AdditionalFeaturesProps = {
   setActiveSlavePanelScreen: Dispatch<SetStateAction<SlavePanelScreens>>
@@ -28,17 +26,7 @@ export const AdditionalFeatures = ({
   formState,
   activeSlavePanelScreen,
 }: AdditionalFeaturesProps) => {
-  const [resetOnStake, setResetOnStake] = useState('')
   const { values, setFieldValue } = formState
-
-  const handleResetOnStakeChange = (value: string) => {
-    values.resetOnStake = !!(value === 'yes')
-    setResetOnStake(value)
-  }
-
-  useEffect(() => {
-    setResetOnStake(values.resetOnStake ? 'yes' : 'no')
-  }, [values.resetOnStake])
 
   return (
     <div className="flex flex-col gap-6 pb-14">
@@ -81,11 +69,8 @@ export const AdditionalFeatures = ({
             activeScreen={activeSlavePanelScreen}
           />
         </div>
-        <SelectInput
-          className="w-full"
-          value={resetOnStake}
-          setValue={handleResetOnStakeChange}
-          options={booleanOptions}
+        <SelectorBoolean
+          handleChange={(v) => setFieldValue('resetOnStake', v)}
         />
       </div>
       <div>

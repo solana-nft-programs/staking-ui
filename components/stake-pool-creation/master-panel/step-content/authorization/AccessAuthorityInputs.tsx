@@ -1,12 +1,10 @@
+import { SelectorBoolean } from 'common/SelectorBoolean'
 import type { FormikHandlers, FormikState, FormikValues } from 'formik'
 import type { Dispatch, SetStateAction } from 'react'
-import { useEffect, useState } from 'react'
 
 import { SlavePanelScreens } from '@/components/stake-pool-creation/SlavePanel'
 import { InfoTipButtons } from '@/components/UI/buttons/InfoTipButtons'
-import { SelectInput } from '@/components/UI/inputs/SelectInput'
 import { LabelText } from '@/components/UI/typography/LabelText'
-import { booleanOptions } from '@/types/index'
 
 export type AccessAuthorityInputsProps = {
   activeSlavePanelScreen: SlavePanelScreens
@@ -20,18 +18,8 @@ export const AccessAuthorityInputs = ({
   formState,
 }: AccessAuthorityInputsProps) => {
   const { AUTHORIZATION_3 } = SlavePanelScreens
-  const [requireAuthorization, setRequireAuthorization] = useState('')
 
-  const { values } = formState
-
-  const handleResetOnStakeChange = (value: string) => {
-    values.requiresAuthorization = !!(value === 'yes')
-    setRequireAuthorization(value)
-  }
-
-  useEffect(() => {
-    setRequireAuthorization(values.requiresAuthorization ? 'yes' : 'no')
-  }, [values.requiresAuthorization])
+  const { setFieldValue } = formState
 
   return (
     <div className="space-y-2 pt-4">
@@ -43,11 +31,8 @@ export const AccessAuthorityInputs = ({
           activeScreen={activeSlavePanelScreen}
         />
       </div>
-      <SelectInput
-        className="mb-6 w-full"
-        value={requireAuthorization}
-        setValue={handleResetOnStakeChange}
-        options={booleanOptions}
+      <SelectorBoolean
+        handleChange={(v) => setFieldValue('requiresAuthorization', v)}
       />
     </div>
   )
