@@ -115,9 +115,7 @@ export type StakePoolMetadata = {
 }
 ```
 
-In `api/mapping.ts`, add your own object to the stakePoolMetadatas array. You'll now be able to access your project at http://localhost:3000/[name].
-
-In order to get a custom Cardinal URL, **deploy your pool** on mainnet and then **make a PR** to our `api/mapping.ts` file in this repo with updates containing your pool's metadata.
+In your pool's admin portal (eg. https://stake.cardinal.so/admin/[poolId]), create your own config on-chain under the `Config` tab. You'll now be able to access your project at https://stake.cardinal.so/[name].
 
 ## Stake Pool Fees
 
