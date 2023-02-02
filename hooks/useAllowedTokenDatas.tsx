@@ -100,7 +100,7 @@ export const allowedTokensForPool = (
   })
 
 export const useAllowedTokenDatas = (showFungibleTokens: boolean) => {
-  const { data: stakePoolId } = useStakePoolId()
+  const stakePoolId = useStakePoolId()
   const walletId = useWalletId()
   const { connection } = useEnvironmentCtx()
   const tokenList = useTokenList()

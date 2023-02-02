@@ -1,8 +1,9 @@
-import { useStakePoolMetadataCtx } from 'providers/StakePoolMetadataProvider'
 import { useQuery } from 'react-query'
 
+import { useStakePoolMetadata } from './useStakePoolMetadata'
+
 export const useUserRegion = () => {
-  const { data: stakePoolMetadata } = useStakePoolMetadataCtx()
+  const { data: stakePoolMetadata } = useStakePoolMetadata()
 
   return useQuery<{
     countryCode: string

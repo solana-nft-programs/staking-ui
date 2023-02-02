@@ -12,8 +12,8 @@ import { useRewardMintInfo } from 'hooks/useRewardMintInfo'
 import { useRewards } from 'hooks/useRewards'
 import { useRewardsRate } from 'hooks/useRewardsRate'
 import { useStakedTokenDatas } from 'hooks/useStakedTokenDatas'
+import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
-import { useStakePoolMetadataCtx } from 'providers/StakePoolMetadataProvider'
 
 export const PerformanceStats: React.FC<
   React.HTMLAttributes<HTMLDivElement>
@@ -22,7 +22,7 @@ export const PerformanceStats: React.FC<
   const rewardDistributorData = useRewardDistributorData()
   const rewardMintInfo = useRewardMintInfo()
   const rewardsRate = useRewardsRate()
-  const { data: stakePoolMetadata } = useStakePoolMetadataCtx()
+  const { data: stakePoolMetadata } = useStakePoolMetadata()
   const stakedTokenDatas = useStakedTokenDatas()
   const rewards = useRewards()
   const handleClaimRewards = useHandleClaimRewards()

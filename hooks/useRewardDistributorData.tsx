@@ -37,7 +37,7 @@ export const useRewardDistributorData = () => {
     async () => {
       if (!stakePoolData?.pubkey || !stakePoolData?.parsed) return
       if (!isStakePoolV2(stakePoolData.parsed)) {
-        const rewardDistributorId = findRewardDistributorId(
+        const [rewardDistributorId] = await findRewardDistributorId(
           stakePoolData.pubkey
         )
         const rewardDistributorData = await getRewardDistributor(

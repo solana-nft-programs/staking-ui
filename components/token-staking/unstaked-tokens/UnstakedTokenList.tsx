@@ -3,7 +3,7 @@ import { notify } from 'common/Notification'
 import type { AllowedTokenData } from 'hooks/useAllowedTokenDatas'
 import { useAllowedTokenDatas } from 'hooks/useAllowedTokenDatas'
 import { isStakePoolV2, useStakePoolData } from 'hooks/useStakePoolData'
-import { useStakePoolMetadataCtx } from 'providers/StakePoolMetadataProvider'
+import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
 import { useState } from 'react'
 import type { UseMutationResult } from 'react-query'
 
@@ -36,7 +36,7 @@ export const UnstakedTokenList = ({
   handleStake,
   setUnstakedSelected,
 }: UnstakedTokensProps) => {
-  const { data: stakePoolMetadata } = useStakePoolMetadataCtx()
+  const { data: stakePoolMetadata } = useStakePoolMetadata()
   const { data: stakePoolData } = useStakePoolData()
   const [pageNum, setPageNum] = useState<[number, number]>(DEFAULT_PAGE)
   const allowedTokenDatas = useAllowedTokenDatas(showFungibleTokens)

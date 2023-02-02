@@ -1,25 +1,25 @@
-import { tryPublicKey } from '@cardinal/common'
+import { tryPublicKey } from '@cardinal/namespaces-components'
 import { PublicKey } from '@solana/web3.js'
+import { stakePoolMetadatas } from 'api/mapping'
 import { useRouter } from 'next/router'
 import { useStakePoolMetadataCtx } from 'providers/StakePoolMetadataProvider'
-import { useQuery } from 'react-query'
 
 export const useStakePoolId = () => {
-  const stakePoolMetadata = useStakePoolMetadataCtx()
   const {
     query: { stakePoolId },
   } = useRouter()
+  const { stakePoolMetadata } = useStakePoolMetadataCtx()
 
-  return useQuery<PublicKey | undefined>(
-    [
-      'useStakePoolId',
-      stakePoolId?.toString(),
-      stakePoolMetadata.data?.stakePoolAddress.toString(),
-    ],
-    async () => {
-      if (stakePoolMetadata.data)
-        return new PublicKey(stakePoolMetadata.data.stakePoolAddress)
-      return tryPublicKey(stakePoolId) ?? undefined
-    }
+  if (stakePoolMetadata)
+    return new PublicKey(stakePoolMetadata.stakePoolAddress)
+  const nameMapping = stakePoolMetadatas.find((p) => p.name === stakePoolId)
+  const addressMapping = stakePoolMetadatas.find(
+    (p) => p.stakePoolAddress.toString() === stakePoolId
   )
+  const publicKey =
+    nameMapping?.stakePoolAddress ||
+    addressMapping?.stakePoolAddress ||
+    tryPublicKey(stakePoolId)
+
+  return publicKey
 }

@@ -1,5 +1,5 @@
 import { contrastify } from 'common/colors'
-import { useStakePoolMetadataCtx } from 'providers/StakePoolMetadataProvider'
+import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
 import { useRef } from 'react'
 
 interface TokenListWrapperProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -11,7 +11,7 @@ export const TokenListWrapper = ({
   children,
   setPageNum,
 }: TokenListWrapperProps) => {
-  const { data: stakePoolMetadata } = useStakePoolMetadataCtx()
+  const { data: stakePoolMetadata } = useStakePoolMetadata()
   const ref = useRef<HTMLDivElement | null>(null)
 
   const handlePaging = () => {

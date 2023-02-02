@@ -1,15 +1,21 @@
 import type { AccountData } from '@cardinal/common'
+import {
+  executeTransaction,
+  withFindOrInitAssociatedTokenAccount,
+} from '@cardinal/common'
 import type { RewardDistributorData } from '@cardinal/staking/dist/cjs/programs/rewardDistributor'
 import type { StakePoolData } from '@cardinal/staking/dist/cjs/programs/stakePool'
 import { useWallet } from '@solana/wallet-adapter-react'
-import { PublicKey } from '@solana/web3.js'
+import { PublicKey, Transaction } from '@solana/web3.js'
+import { handleError } from 'common/errors'
 import { notify } from 'common/Notification'
+import { asWallet } from 'common/Wallets'
 import { useFormik } from 'formik'
 import { useHandleCreationForm } from 'handlers/useHandleCreationForm'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 import { useEffect, useMemo, useState } from 'react'
-import type { Mint } from 'spl-token-v3'
-import { getMint } from 'spl-token-v3'
+import type { Account, Mint } from 'spl-token-v3'
+import { getAccount, getMint } from 'spl-token-v3'
 
 import { MasterPanel } from '@/components/stake-pool-creation/master-panel/MasterPanel'
 import type { CreationForm } from '@/components/stake-pool-creation/Schema'
@@ -105,6 +111,7 @@ export const StakePoolCreationFlow = ({
   const [_processingMintAddress, setProcessingMintAddress] =
     useState<boolean>(false)
   const [mintInfo, setMintInfo] = useState<Mint>()
+  const [_userRewardAmount, setUserRewardAmount] = useState<string>()
 
   useMemo(async () => {
     if (!values.rewardMintAddress) {
@@ -112,6 +119,13 @@ export const StakePoolCreationFlow = ({
       return
     }
     if (values.rewardMintAddress) {
+      if (!wallet?.connected || !wallet.publicKey) {
+        notify({
+          message: `Wallet not connected`,
+          type: 'error',
+        })
+        return
+      }
       setSubmitDisabled(true)
       setProcessingMintAddress(true)
       try {
@@ -127,6 +141,38 @@ export const StakePoolCreationFlow = ({
           return
         }
 
+        let userAta: Account | undefined = undefined
+        try {
+          const transaction = new Transaction()
+          const mintAta = await withFindOrInitAssociatedTokenAccount(
+            transaction,
+            connection,
+            mint,
+            wallet.publicKey,
+            wallet.publicKey,
+            true
+          )
+          if (transaction.instructions.length > 0) {
+            await executeTransaction(
+              connection,
+              transaction,
+              asWallet(wallet),
+              {}
+            )
+          }
+          userAta = await getAccount(connection, mintAta)
+        } catch (e) {
+          notify({
+            message: handleError(
+              e,
+              `Failed to get user's associated token address for given mint: ${e}`
+            ),
+            type: 'error',
+          })
+        }
+        if (userAta) {
+          setUserRewardAmount(userAta.amount.toString())
+        }
         setSubmitDisabled(false)
         setProcessingMintAddress(false)
         notify({ message: `Valid reward mint address`, type: 'success' })

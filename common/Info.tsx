@@ -1,7 +1,7 @@
 import { GlyphActivity } from 'assets/GlyphActivity'
 import { GlyphPerformance } from 'assets/GlyphPerformance'
 import { GlyphQuestion } from 'assets/GlyphQuestion'
-import { useStakePoolMetadataCtx } from 'providers/StakePoolMetadataProvider'
+import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
 import { AiFillStar } from 'react-icons/ai'
 import { MdAccessTimeFilled, MdSell } from 'react-icons/md'
 
@@ -27,7 +27,7 @@ export const Info: React.FC<Props> = ({
   content,
   className,
 }: Props) => {
-  const { data: config } = useStakePoolMetadataCtx()
+  const { data: config } = useStakePoolMetadata()
   return (
     <div
       className={`relative z-0 flex flex-col items-center overflow-hidden rounded-xl bg-white bg-opacity-5 px-8 py-4 text-center text-xl md:flex-row md:text-left ${className}`}

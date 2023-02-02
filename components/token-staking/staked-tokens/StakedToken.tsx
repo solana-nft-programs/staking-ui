@@ -6,8 +6,8 @@ import { QuickActions } from 'common/QuickActions'
 import { getNameFromTokenData } from 'common/tokenDataUtils'
 import { useMintMetadata } from 'hooks/useMintMetadata'
 import type { StakeEntryTokenData } from 'hooks/useStakedTokenDatas'
+import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
-import { useStakePoolMetadataCtx } from 'providers/StakePoolMetadataProvider'
 import type { UseMutationResult } from 'react-query'
 
 import { TokenImage } from '@/components/token-staking/token/TokenImage'
@@ -41,7 +41,7 @@ export const StakedToken = ({
 }) => {
   const wallet = useWallet()
   const { connection } = useEnvironmentCtx()
-  const { data: stakePoolMetadata } = useStakePoolMetadataCtx()
+  const { data: stakePoolMetadata } = useStakePoolMetadata()
   const mintMetadata = useMintMetadata(tk)
 
   return (

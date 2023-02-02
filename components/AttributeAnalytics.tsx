@@ -1,9 +1,9 @@
 import { usePoolAnalytics } from 'hooks/usePoolAnalytics'
-import { useStakePoolMetadataCtx } from 'providers/StakePoolMetadataProvider'
+import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
 
 export const AttributeAnalytics = () => {
   const analytics = usePoolAnalytics()
-  const { data: stakePoolMetadata } = useStakePoolMetadataCtx()
+  const { data: stakePoolMetadata } = useStakePoolMetadata()
   const data = analytics.data
   if (!data || Object.keys(data).length === 0) return <></>
   return (

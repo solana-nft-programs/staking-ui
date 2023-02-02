@@ -9,8 +9,8 @@ import { useHandleStake } from 'handlers/useHandleStake'
 import type { AllowedTokenData } from 'hooks/useAllowedTokenDatas'
 import { useAllowedTokenDatas } from 'hooks/useAllowedTokenDatas'
 import { isStakePoolV2, useStakePoolData } from 'hooks/useStakePoolData'
+import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
 import { useTokenAccounts } from 'hooks/useTokenAccounts'
-import { useStakePoolMetadataCtx } from 'providers/StakePoolMetadataProvider'
 import { useEffect, useState } from 'react'
 import { FaInfoCircle } from 'react-icons/fa'
 
@@ -18,7 +18,7 @@ import { UnstakedTokenList } from '@/components/token-staking/unstaked-tokens/Un
 
 export const UnstakedTokens = () => {
   const { data: stakePoolData } = useStakePoolData()
-  const { data: stakePoolMetadata } = useStakePoolMetadataCtx()
+  const { data: stakePoolMetadata } = useStakePoolMetadata()
 
   const [unstakedSelected, setUnstakedSelected] = useState<AllowedTokenData[]>(
     []

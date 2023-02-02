@@ -1,5 +1,5 @@
 import { css } from '@emotion/react'
-import { useStakePoolMetadataCtx } from 'providers/StakePoolMetadataProvider'
+import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
 import { useState } from 'react'
 
 import { Tooltip } from './Tooltip'
@@ -23,7 +23,7 @@ export const Switch = <T,>({
   options = [],
   style,
 }: Props<T>) => {
-  const { data: stakePoolMetadata } = useStakePoolMetadataCtx()
+  const { data: stakePoolMetadata } = useStakePoolMetadata()
   const [value, setValue] = useState<SwitchOption<T> | undefined>(defaultOption)
   return (
     <div

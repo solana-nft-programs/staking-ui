@@ -17,8 +17,8 @@ import type { Connection } from '@solana/web3.js'
 import { Keypair, LAMPORTS_PER_SOL } from '@solana/web3.js'
 import { notify } from 'common/Notification'
 import { useAllowedTokenDatas } from 'hooks/useAllowedTokenDatas'
+import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
-import { useStakePoolMetadataCtx } from 'providers/StakePoolMetadataProvider'
 
 import { AsyncButton } from './Button'
 import { asWallet } from './Wallets'
@@ -102,7 +102,7 @@ export const Airdrop = () => {
   const { connection } = useEnvironmentCtx()
   const wallet = useWallet()
   const allowedTokenDatas = useAllowedTokenDatas(true)
-  const { data: stakePoolMetadata } = useStakePoolMetadataCtx()
+  const { data: stakePoolMetadata } = useStakePoolMetadata()
 
   return (
     <AsyncButton

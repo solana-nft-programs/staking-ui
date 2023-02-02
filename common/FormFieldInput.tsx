@@ -1,5 +1,5 @@
 export const FormFieldTitleInput = (props: {
-  title: string | React.ReactNode
+  title: string
   description: React.ReactNode
 }) => (
   <>

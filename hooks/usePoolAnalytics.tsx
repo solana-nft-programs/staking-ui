@@ -7,16 +7,16 @@ import type { Connection } from '@solana/web3.js'
 import { stakeEntryDataToV2 } from 'api/fetchStakeEntry'
 import { asWallet } from 'common/Wallets'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
-import { useStakePoolMetadataCtx } from 'providers/StakePoolMetadataProvider'
 import { useQuery } from 'react-query'
 
 import { TOKEN_DATAS_KEY } from './useAllowedTokenDatas'
 import { isStakePoolV2, useStakePoolData } from './useStakePoolData'
+import { useStakePoolMetadata } from './useStakePoolMetadata'
 
 export const usePoolAnalytics = () => {
   const { connection } = useEnvironmentCtx()
   const { data: stakePoolData } = useStakePoolData()
-  const { data: stakePoolMetadata } = useStakePoolMetadataCtx()
+  const { data: stakePoolMetadata } = useStakePoolMetadata()
   const wallet = useWallet()
 
   return useQuery<{ [trait: string]: number } | undefined>(

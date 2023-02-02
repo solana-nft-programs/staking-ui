@@ -2,23 +2,21 @@ import classNames from 'classnames'
 
 import type { InputOption } from '@/types/index'
 
-interface SelectInputProps extends React.HTMLAttributes<HTMLSelectElement> {
+export type SelectInputProps = {
   value: string
   setValue: (value: string) => void
   options: InputOption[]
   className?: string
 }
 
-export const SelectInput: React.FC<SelectInputProps> = ({
+export const SelectInput = ({
   value,
   setValue,
   options,
   className,
-  ...props
 }: SelectInputProps) => {
   return (
     <select
-      {...props}
       value={value}
       onChange={(e) => setValue(e.target.value)}
       className={classNames([

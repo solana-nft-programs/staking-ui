@@ -1,3 +1,4 @@
+import { stakePoolMetadatas } from 'api/mapping'
 import { Footer } from 'common/Footer'
 import { FooterSlim } from 'common/FooterSlim'
 import { Header } from 'common/Header'
@@ -12,10 +13,10 @@ import { StakePoolNotice } from 'components/StakePoolNotice'
 import { useRewardDistributorData } from 'hooks/useRewardDistributorData'
 import { useStakedTokenDatas } from 'hooks/useStakedTokenDatas'
 import { useStakePoolData } from 'hooks/useStakePoolData'
+import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
 import { useUserRegion } from 'hooks/useUserRegion'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
-import { useStakePoolMetadataCtx } from 'providers/StakePoolMetadataProvider'
 import { useState } from 'react'
 
 import { StakedTokens } from '@/components/token-staking/staked-tokens/StakedTokens'
@@ -51,7 +52,7 @@ function StakePoolHome(props: { stakePoolMetadataName: string | null }) {
     ? props.stakePoolMetadataName.replace(' Staking', '') + ' Staking'
     : 'Cardinal NFT Staking'
 
-  const { data: stakePoolMetadata } = useStakePoolMetadataCtx()
+  const { data: stakePoolMetadata } = useStakePoolMetadata()
 
   if (stakePoolMetadata?.redirect) {
     router.push(stakePoolMetadata?.redirect)
@@ -225,6 +226,20 @@ function StakePoolHome(props: { stakePoolMetadataName: string | null }) {
       )}
     </div>
   )
+}
+
+export async function getServerSideProps(context: {
+  params: { stakePoolId: string }
+}) {
+  const stakePoolId = context.params.stakePoolId
+  if (!stakePoolId) return { props: { stakePoolMetadataName: null } }
+  const stakePoolMetadata = stakePoolMetadatas.find(
+    (p) =>
+      p.name === stakePoolId.toString() ||
+      p.stakePoolAddress.toString() === stakePoolId.toString()
+  )
+  if (!stakePoolMetadata) return { props: { stakePoolMetadataName: null } }
+  return { props: { stakePoolMetadataName: stakePoolMetadata?.displayName } }
 }
 
 export default StakePoolHome

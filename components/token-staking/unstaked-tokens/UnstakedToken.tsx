@@ -7,7 +7,7 @@ import { getNameFromTokenData } from 'common/tokenDataUtils'
 import { formatAmountAsDecimal } from 'common/units'
 import type { AllowedTokenData } from 'hooks/useAllowedTokenDatas'
 import { useMintMetadata } from 'hooks/useMintMetadata'
-import { useStakePoolMetadataCtx } from 'providers/StakePoolMetadataProvider'
+import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
 import type { UseMutationResult } from 'react-query'
 
 import { TokenImage } from '@/components/token-staking/token/TokenImage'
@@ -37,7 +37,7 @@ export const UnstakedToken = ({
     unknown
   >
 }) => {
-  const { data: stakePoolMetadata } = useStakePoolMetadataCtx()
+  const { data: stakePoolMetadata } = useStakePoolMetadata()
   const mintMetadata = useMintMetadata(tk)
   return (
     <div

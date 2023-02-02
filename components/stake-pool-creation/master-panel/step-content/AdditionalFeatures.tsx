@@ -101,6 +101,7 @@ export const AdditionalFeatures = ({
           placeholder="Select date and time"
           value={values.endDate}
           setValue={(v) => {
+            console.log(v)
             setFieldValue('endDate', v)
           }}
         />

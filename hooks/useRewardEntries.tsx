@@ -70,8 +70,11 @@ export const useRewardEntries = () => {
         return rewardEntryData
       } else {
         const rewardEntryIds = await Promise.all(
-          stakeEntryIds.map(async (stakeEntryId) =>
-            findRewardEntryId(rewardDistibutorId, stakeEntryId)
+          stakeEntryIds.map(
+            async (stakeEntryId) =>
+              (
+                await findRewardEntryId(rewardDistibutorId, stakeEntryId)
+              )[0]
           )
         )
 
