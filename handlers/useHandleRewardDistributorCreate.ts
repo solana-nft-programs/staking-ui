@@ -4,6 +4,7 @@ import {
   findRewardDistributorId,
   rewardsCenterProgram,
 } from '@cardinal/rewards-center'
+import { RewardDistributorKind } from '@cardinal/staking/dist/cjs/programs/rewardDistributor'
 import { withInitRewardDistributor } from '@cardinal/staking/dist/cjs/programs/rewardDistributor/transaction'
 import { BN } from '@project-serum/anchor'
 import { useWallet } from '@solana/wallet-adapter-react'
@@ -74,8 +75,9 @@ export const useHandleRewardDistributorCreate = () => {
         transaction.add(ix)
       } else {
         /////////////////// V1 ///////////////////
-
         await withInitRewardDistributor(transaction, connection, wallet, {
+          kind: RewardDistributorKind.Treasury,
+          supply: new BN(0),
           stakePoolId: stakePool.data.pubkey,
           defaultMultiplier: values.defaultMultiplier
             ? new BN(values.defaultMultiplier)
