@@ -1,6 +1,7 @@
 import {
   executeTransaction,
   withFindOrInitAssociatedTokenAccount,
+  withWrapSol,
 } from '@cardinal/common'
 import { useWallet } from '@solana/wallet-adapter-react'
 import { Transaction } from '@solana/web3.js'
@@ -9,7 +10,7 @@ import { asWallet } from 'common/Wallets'
 import { useRewardDistributorData } from 'hooks/useRewardDistributorData'
 import { useRewardMintInfo } from 'hooks/useRewardMintInfo'
 import { useMutation } from 'react-query'
-import { createTransferCheckedInstruction } from 'spl-token-v3'
+import { createTransferCheckedInstruction, NATIVE_MINT } from 'spl-token-v3'
 
 import { useStakePoolData } from '../hooks/useStakePoolData'
 import { useEnvironmentCtx } from '../providers/EnvironmentProvider'
@@ -35,6 +36,12 @@ export const useHandleTransferFunds = () => {
       if (!transferAmount) throw 'Transfer amount missing'
 
       const transaction = new Transaction()
+      if (
+        rewardDistributor.data.parsed.rewardMint.toString() ===
+        NATIVE_MINT.toString()
+      ) {
+        await withWrapSol(transaction, connection, wallet, transferAmount)
+      }
       const ownerAtaId = await withFindOrInitAssociatedTokenAccount(
         transaction,
         connection,
