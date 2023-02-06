@@ -3,6 +3,10 @@ import {
   withFindOrInitAssociatedTokenAccount,
   withWrapSol,
 } from '@cardinal/common'
+import {
+  createTransferCheckedInstruction,
+  NATIVE_MINT,
+} from '@solana/spl-token'
 import { useWallet } from '@solana/wallet-adapter-react'
 import { Transaction } from '@solana/web3.js'
 import { notify } from 'common/Notification'
@@ -10,7 +14,6 @@ import { asWallet } from 'common/Wallets'
 import { useRewardDistributorData } from 'hooks/useRewardDistributorData'
 import { useRewardMintInfo } from 'hooks/useRewardMintInfo'
 import { useMutation } from 'react-query'
-import { createTransferCheckedInstruction, NATIVE_MINT } from 'spl-token-v3'
 
 import { useStakePoolData } from '../hooks/useStakePoolData'
 import { useEnvironmentCtx } from '../providers/EnvironmentProvider'

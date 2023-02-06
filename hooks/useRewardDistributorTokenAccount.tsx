@@ -1,9 +1,9 @@
 import { findAta } from '@cardinal/common'
+import type { Account } from '@solana/spl-token'
+import { getAccount } from '@solana/spl-token'
 import { REWARD_QUERY_KEY } from 'handlers/useHandleClaimRewards'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 import { useQuery } from 'react-query'
-import type { Account } from 'spl-token-v3'
-import { getAccount } from 'spl-token-v3'
 
 import { useRewardDistributorData } from './useRewardDistributorData'
 

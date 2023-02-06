@@ -1,5 +1,8 @@
 import type { AccountData } from '@cardinal/common'
-import { getBatchedMultipleAccounts } from '@cardinal/common'
+import {
+  findMintMetadataId,
+  getBatchedMultipleAccounts,
+} from '@cardinal/common'
 import { findMintManagerId } from '@cardinal/creator-standard'
 import { MintManager } from '@cardinal/creator-standard/dist/cjs/generated'
 import type { IdlAccountData } from '@cardinal/rewards-center'
@@ -22,7 +25,7 @@ export const TOKEN_DATAS_KEY = 'tokenDatas'
 
 export type AllowedTokenData = {
   tokenAccount?: AccountData<ParsedTokenAccountData>
-  metaplexData?: { pubkey: PublicKey; data: metaplex.MetadataData } | null
+  metaplexData?: { pubkey: PublicKey; data: metaplex.Metadata } | null
   mintManagerData?: { pubkey: PublicKey; data: MintManager } | null
   tokenListData?: TokenListData
   amountToStake?: string
@@ -68,7 +71,8 @@ export const allowedTokensForPool = (
           if (
             token?.metaplexData?.data?.data?.creators &&
             (token?.metaplexData?.data?.data?.creators).some(
-              (c) => c.address === filterCreator.toString() && c.verified
+              (c) =>
+                c.address.toString() === filterCreator.toString() && c.verified
             )
           ) {
             isAllowed = true
@@ -122,15 +126,8 @@ export const useAllowedTokenDatas = (showFungibleTokens: boolean) => {
       if (!stakePoolId || !stakePool.data || !walletId) return
 
       const tokenAccounts = allTokenAccounts.data ?? []
-      const metaplexIds = await Promise.all(
-        tokenAccounts.map(
-          async (tokenAccount) =>
-            (
-              await metaplex.MetadataProgram.findMetadataAccount(
-                new PublicKey(tokenAccount.parsed.mint)
-              )
-            )[0]
-        )
+      const metaplexIds = tokenAccounts.map((tokenAccount) =>
+        findMintMetadataId(new PublicKey(tokenAccount.parsed.mint))
       )
       const metaplexAccountInfos = await getBatchedMultipleAccounts(
         connection,
@@ -139,12 +136,12 @@ export const useAllowedTokenDatas = (showFungibleTokens: boolean) => {
       const metaplexData = metaplexAccountInfos.reduce(
         (acc, accountInfo, i) => {
           try {
-            acc[tokenAccounts[i]!.pubkey.toString()] = {
-              pubkey: metaplexIds[i]!,
-              ...accountInfo,
-              data: metaplex.MetadataData.deserialize(
-                accountInfo?.data as Buffer
-              ) as metaplex.MetadataData,
+            if (accountInfo) {
+              acc[tokenAccounts[i]!.pubkey.toString()] = {
+                pubkey: metaplexIds[i]!,
+                ...accountInfo,
+                data: metaplex.Metadata.deserialize(accountInfo?.data)[0],
+              }
             }
           } catch (e) {}
           return acc
@@ -152,7 +149,7 @@ export const useAllowedTokenDatas = (showFungibleTokens: boolean) => {
         {} as {
           [tokenAccountId: string]: {
             pubkey: PublicKey
-            data: metaplex.MetadataData
+            data: metaplex.Metadata
           }
         }
       )

@@ -1,10 +1,13 @@
-import { getBatchedMultipleAccounts } from '@cardinal/common'
+import {
+  findMintMetadataId,
+  getBatchedMultipleAccounts,
+} from '@cardinal/common'
 import * as metaplex from '@metaplex-foundation/mpl-token-metadata'
+import { TOKEN_PROGRAM_ID } from '@solana/spl-token'
 import type { AccountInfo, ParsedAccountData } from '@solana/web3.js'
 import { PublicKey } from '@solana/web3.js'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 import { useQuery } from 'react-query'
-import { TOKEN_PROGRAM_ID } from 'spl-token-v3'
 
 import type { TokenListData } from './useTokenList'
 import { useTokenList } from './useTokenList'
@@ -15,7 +18,7 @@ export type UserTokenData = {
     pubkey: PublicKey
     account: AccountInfo<ParsedAccountData>
   }
-  metaplexData?: { pubkey: PublicKey; data: metaplex.MetadataData } | null
+  metaplexData?: { pubkey: PublicKey; data: metaplex.Metadata } | null
   tokenListData?: TokenListData
 }
 
@@ -38,14 +41,9 @@ export const useUserTokenDatas = () => {
         )
         .sort((a, b) => a.pubkey.toBase58().localeCompare(b.pubkey.toBase58()))
 
-      const metaplexIds = await Promise.all(
-        tokenAccounts.map(
-          async (tokenAccount) =>
-            (
-              await metaplex.MetadataProgram.findMetadataAccount(
-                new PublicKey(tokenAccount.account.data.parsed.info.mint)
-              )
-            )[0]
+      const metaplexIds = tokenAccounts.map((tokenAccount) =>
+        findMintMetadataId(
+          new PublicKey(tokenAccount.account.data.parsed.info.mint)
         )
       )
       const metaplexAccountInfos = await getBatchedMultipleAccounts(
@@ -55,12 +53,12 @@ export const useUserTokenDatas = () => {
       const metaplexData = metaplexAccountInfos.reduce(
         (acc, accountInfo, i) => {
           try {
-            acc[tokenAccounts[i]!.pubkey.toString()] = {
-              pubkey: metaplexIds[i]!,
-              ...accountInfo,
-              data: metaplex.MetadataData.deserialize(
-                accountInfo?.data as Buffer
-              ) as metaplex.MetadataData,
+            if (accountInfo) {
+              acc[tokenAccounts[i]!.pubkey.toString()] = {
+                pubkey: metaplexIds[i]!,
+                ...accountInfo,
+                data: metaplex.Metadata.deserialize(accountInfo?.data)[0],
+              }
             }
           } catch (e) {}
           return acc
@@ -68,7 +66,7 @@ export const useUserTokenDatas = () => {
         {} as {
           [tokenAccountId: string]: {
             pubkey: PublicKey
-            data: metaplex.MetadataData
+            data: metaplex.Metadata
           }
         }
       )
