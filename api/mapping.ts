@@ -3489,4 +3489,36 @@ export const stakePoolMetadatas: StakePoolMetadata[] = [
       },
     ],
   },
+  {
+    name: 'BurgerNights',
+    displayName: 'Burger Nights',
+    stakePoolAddress: new PublicKey(
+      'ArPQY6r161CqNtmAinyBwLTq1jpm3ertnkkWmfQzrvyi'
+    ),
+    description:
+      'Burger Nights by -kichen.sol',
+    tokenStandard: TokenStandard.NonFungible,
+    receiptType: ReceiptType.Original,
+    imageUrl: 'https://ipfs.filebase.io/ipfs/QmWPCNtBwmuUgBXENMyMFTrWEes7T5bH12QsfYA8yZtUq4/QmVKV8GKhJXGWEfcQ6FnSZYG1T4S34Btp1WM9AmZPN7QQq',
+    websiteUrl: 'https://twitter.com/BurgerKichen',
+    maxStaked: 177,
+    colors: {
+      primary: '#010000',
+      secondary: '#fb5f4a',
+      accent: '#fb5f4a',
+      fontColor: '#fb5f4a',
+      fontColorSecondary: '#000000',
+      backgroundSecondary: '#000000',
+    },
+    links: [
+      { text: 'Discord', value: 'https://discord.gg/ddhjJB7d99' },
+      { text: 'Twitter', value: 'https://twitter.com/BurgerKichen' },
+      {
+        text: 'Magic Eden',
+        value: 'https://magiceden.io/marketplace/burger_forest',
+      },
+    ],
+  },
+]
+
 ]
