@@ -1,8 +1,9 @@
-import { Metadata, MetadataData } from '@metaplex-foundation/mpl-token-metadata'
+import { findMintMetadataId } from '@cardinal/common'
+import { Metadata } from '@metaplex-foundation/mpl-token-metadata'
+import type { Mint } from '@solana/spl-token'
+import { getMint } from '@solana/spl-token'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 import { useQuery } from 'react-query'
-import type { Mint } from 'spl-token-v3'
-import { getMint } from 'spl-token-v3'
 
 import { useRewardDistributorData } from './useRewardDistributorData'
 import type { TokenListData } from './useTokenList'
@@ -16,7 +17,7 @@ export const useRewardMintInfo = () => {
     | {
         mintInfo: Mint
         tokenListData: TokenListData | undefined
-        metaplexMintData: MetadataData | undefined
+        metaplexMintData: Metadata | undefined
       }
     | undefined
   >(
@@ -36,15 +37,15 @@ export const useRewardMintInfo = () => {
       )
 
       // Metaplex metadata
-      const metadataId = await Metadata.getPDA(
+      const metadataId = findMintMetadataId(
         rewardDistibutor.data.parsed.rewardMint
       )
       const accountInfo = await secondaryConnection.getAccountInfo(metadataId)
-      let metaplexMintData: MetadataData | undefined
+      let metaplexMintData: Metadata | undefined
       try {
-        metaplexMintData = MetadataData.deserialize(
-          accountInfo?.data as Buffer
-        ) as MetadataData
+        if (accountInfo) {
+          metaplexMintData = Metadata.deserialize(accountInfo?.data)[0]
+        }
       } catch (e) {}
 
       // Mint info

@@ -1,6 +1,6 @@
+import { getMint } from '@solana/spl-token'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 import { useQuery } from 'react-query'
-import { getMint } from 'spl-token-v3'
 
 import { useStakePoolEntries } from './useStakePoolEntries'
 

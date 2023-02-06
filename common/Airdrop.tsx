@@ -5,13 +5,8 @@ import {
   findMintMetadataId,
   findRulesetId,
 } from '@cardinal/creator-standard/dist/cjs/pda'
-import {
-  CreateMetadataV2,
-  Creator,
-  DataV2,
-  Metadata,
-} from '@metaplex-foundation/mpl-token-metadata'
-import type { Wallet } from '@saberhq/solana-contrib'
+import { createCreateMetadataAccountV3Instruction } from '@metaplex-foundation/mpl-token-metadata'
+import type { Wallet } from '@project-serum/anchor/dist/cjs/provider'
 import { useWallet } from '@solana/wallet-adapter-react'
 import type { Connection } from '@solana/web3.js'
 import { Keypair, LAMPORTS_PER_SOL } from '@solana/web3.js'
@@ -41,29 +36,35 @@ export async function airdropNFT(
     wallet.publicKey
   )
 
-  const masterEditionMetadataId = await Metadata.getPDA(mintKeypair.publicKey)
-  const metadataTx = new CreateMetadataV2(
-    { feePayer: wallet.publicKey },
+  const masterEditionMetadataId = findMintMetadataId(mintKeypair.publicKey)
+  const metadataIx = createCreateMetadataAccountV3Instruction(
     {
       metadata: masterEditionMetadataId,
-      metadataData: new DataV2({
-        name: metadata.name,
-        symbol: metadata.symbol,
-        uri: metadata.uri,
-        sellerFeeBasisPoints: 10,
-        creators: [
-          new Creator({
-            address: wallet.publicKey.toString(),
-            verified: false,
-            share: 100,
-          }),
-        ],
-        collection: null,
-        uses: null,
-      }),
       updateAuthority: wallet.publicKey,
       mint: mintKeypair.publicKey,
       mintAuthority: wallet.publicKey,
+      payer: wallet.publicKey,
+    },
+    {
+      createMetadataAccountArgsV3: {
+        data: {
+          name: metadata.name,
+          symbol: metadata.symbol,
+          uri: metadata.uri,
+          sellerFeeBasisPoints: 10,
+          creators: [
+            {
+              address: wallet.publicKey,
+              verified: false,
+              share: 100,
+            },
+          ],
+          collection: null,
+          uses: null,
+        },
+        collectionDetails: null,
+        isMutable: true,
+      },
     }
   )
 
@@ -85,7 +86,7 @@ export async function airdropNFT(
 
   transaction.instructions = [
     ...transaction.instructions,
-    ...metadataTx.instructions,
+    metadataIx,
     initMintManagerIx,
   ]
 

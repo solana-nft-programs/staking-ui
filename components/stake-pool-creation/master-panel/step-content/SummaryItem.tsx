@@ -1,4 +1,5 @@
 import { tryPublicKey } from '@cardinal/common'
+import type { Mint } from '@solana/spl-token'
 import { PublicKey } from '@solana/web3.js'
 import { BN } from 'bn.js'
 import { ShortPubKeyUrl } from 'common/Pubkeys'
@@ -6,7 +7,6 @@ import { formatMintNaturalAmountAsDecimal } from 'common/units'
 import { camelCaseToTitle } from 'common/utils'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 import { Fragment } from 'react'
-import type { Mint } from 'spl-token-v3'
 
 export type SummaryItemProps = {
   item: LabelKey

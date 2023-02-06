@@ -1,6 +1,6 @@
 import type { BN } from '@project-serum/anchor'
+import type { Mint } from '@solana/spl-token'
 import { BigNumber } from 'bignumber.js'
-import type { Mint } from 'spl-token-v3'
 
 const SECONDS_PER_DAY = 86400
 
