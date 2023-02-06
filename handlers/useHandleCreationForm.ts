@@ -16,7 +16,7 @@ import { notify } from 'common/Notification'
 import { asWallet } from 'common/Wallets'
 import { useRewardDistributorData } from 'hooks/useRewardDistributorData'
 import { useMutation } from 'react-query'
-import type { Mint } from 'spl-token-v3'
+import type { Mint } from '@solana/spl-token'
 
 import type { CreationForm } from '@/components/stake-pool-creation/Schema'
 

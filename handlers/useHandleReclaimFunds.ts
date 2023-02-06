@@ -12,7 +12,7 @@ import { notify } from 'common/Notification'
 import { asWallet } from 'common/Wallets'
 import { useRewardDistributorData } from 'hooks/useRewardDistributorData'
 import { useMutation } from 'react-query'
-import { TOKEN_PROGRAM_ID } from 'spl-token-v3'
+import { TOKEN_PROGRAM_ID } from '@solana/spl-token'
 
 import { isStakePoolV2, useStakePoolData } from '../hooks/useStakePoolData'
 import { useEnvironmentCtx } from '../providers/EnvironmentProvider'

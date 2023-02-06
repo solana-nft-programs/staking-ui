@@ -4,7 +4,7 @@ import type { FormikHandlers, FormikState, FormikValues } from 'formik'
 import { useRouter } from 'next/router'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 import type { Dispatch, SetStateAction } from 'react'
-import type { Mint } from 'spl-token-v3'
+import type { Mint } from '@solana/spl-token'
 
 import type { FlowType } from '@/components/stake-pool-creation/master-panel/step-content/StepContent'
 import { StepContent } from '@/components/stake-pool-creation/master-panel/step-content/StepContent'

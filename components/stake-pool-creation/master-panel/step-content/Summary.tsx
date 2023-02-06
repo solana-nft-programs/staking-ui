@@ -1,5 +1,5 @@
 import type { FormikHandlers, FormikState, FormikValues } from 'formik'
-import type { Mint } from 'spl-token-v3'
+import type { Mint } from '@solana/spl-token'
 
 import type { LabelKey } from '@/components/stake-pool-creation/master-panel/step-content/SummaryItem'
 import { SummaryItem } from '@/components/stake-pool-creation/master-panel/step-content/SummaryItem'

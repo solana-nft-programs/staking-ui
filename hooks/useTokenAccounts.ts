@@ -2,7 +2,7 @@ import type { AccountData } from '@cardinal/common'
 import type { Connection, PublicKey } from '@solana/web3.js'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 import { useQuery } from 'react-query'
-import { TOKEN_PROGRAM_ID } from 'spl-token-v3'
+import { TOKEN_PROGRAM_ID } from '@solana/spl-token'
 
 import { TOKEN_DATAS_KEY } from './useAllowedTokenDatas'
 import { useWalletId } from './useWalletId'

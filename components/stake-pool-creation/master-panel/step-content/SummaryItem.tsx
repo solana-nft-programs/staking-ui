@@ -6,7 +6,7 @@ import { formatMintNaturalAmountAsDecimal } from 'common/units'
 import { camelCaseToTitle } from 'common/utils'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 import { Fragment } from 'react'
-import type { Mint } from 'spl-token-v3'
+import type { Mint } from '@solana/spl-token'
 
 export type SummaryItemProps = {
   item: LabelKey
