@@ -5,6 +5,7 @@ import {
 } from '@cardinal/common'
 import {
   createTransferCheckedInstruction,
+  getAssociatedTokenAddressSync,
   NATIVE_MINT,
 } from '@solana/spl-token'
 import { useWallet } from '@solana/wallet-adapter-react'
@@ -45,11 +46,8 @@ export const useHandleTransferFunds = () => {
       ) {
         await withWrapSol(transaction, connection, wallet, transferAmount)
       }
-      const ownerAtaId = await withFindOrInitAssociatedTokenAccount(
-        transaction,
-        connection,
+      const ownerAtaId = getAssociatedTokenAddressSync(
         rewardDistributor.data.parsed?.rewardMint,
-        wallet.publicKey,
         wallet.publicKey,
         true
       )

@@ -242,10 +242,10 @@
     polished "^4.2.2"
     tslib "^2.4.0"
 
-"@cardinal/common@^6.1.4":
-  version "6.1.4"
-  resolved "https://registry.yarnpkg.com/@cardinal/common/-/common-6.1.4.tgz#6e0b627a47e15854cd2bef266a9eb414c23e849b"
-  integrity sha512-d1g710CBiwLfiMbBI0DTrRZBQp/KIsoDEF1dsLE3DTy5rRdxZ1WVHWLGhirOLg5StsBApvPBsYUvotAQh7mLJg==
+"@cardinal/common@^6.1.5":
+  version "6.1.5"
+  resolved "https://registry.yarnpkg.com/@cardinal/common/-/common-6.1.5.tgz#f70d1fa4534946e709702edcb48adcccddf9260c"
+  integrity sha512-/lUCyq0FOorXVzWYE7r8RH04ic0rzGowkBaMW3OeC1XxQ4jcIi6FXT4usxfP0HQprp9rcl2eOJIjYX156uFJkA==
   dependencies:
     "@coral-xyz/anchor" "^0.26.0"
     "@solana/buffer-layout" "^4.0.0"
