@@ -174,8 +174,8 @@ export const stakePoolsWithHostnames: {
     hostname: 'harvest.steamland.io',
   },
   {
-    stakePoolAddress: 'BGnayVs2xtEjzR42Kdq7vXnmRSjBqP9byP4xkmsmF23f',
-    hostname: 'stake-soundfamily.herokuapp.com',
+    stakePoolAddress: '7pNPvbCwHBt5aVqcAUbSxrr2xNbs7r7Fgrov4ydkpMN9',
+    hostname: 'https://catchtherecord.com/staking',
   },
   {
     stakePoolAddress: '6NsLz577nf9eRSfXtH18rDdJHik3PePpKwVVLPrXPtWx',
