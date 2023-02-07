@@ -3,14 +3,24 @@ import { Selector } from './Selector'
 export const SelectorBoolean = ({
   handleChange,
   defaultChecked,
+  value,
   ...props
-}: Omit<Parameters<typeof Selector>[0], 'defaultOptions' | 'options'> & {
+}: {
   handleChange: (b: boolean) => void
   defaultChecked?: boolean
+  value?: boolean
 }) => {
   return (
     <Selector<'yes' | 'no'>
       {...props}
+      value={
+        value
+          ? {
+              value: value ? 'yes' : 'no',
+              label: value ? 'Yes' : 'No',
+            }
+          : undefined
+      }
       onChange={(e) => handleChange(e?.value === 'yes')}
       defaultOption={
         defaultChecked

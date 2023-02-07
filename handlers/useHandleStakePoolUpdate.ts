@@ -79,17 +79,25 @@ export const useHandleStakePoolUpdate = () => {
         /////////////////// V1 ///////////////////
         await withUpdateStakePool(transaction, connection, wallet, {
           stakePoolId: stakePool.data.pubkey,
-          requiresCollections: collectionPublicKeys,
-          requiresCreators: creatorPublicKeys,
-          requiresAuthorization: values.requiresAuthorization,
+          requiresCollections:
+            collectionPublicKeys ?? stakePool.data.parsed.allowedCreators,
+          requiresCreators:
+            creatorPublicKeys ?? stakePool.data.parsed.allowedCollections,
+          requiresAuthorization:
+            values.requiresAuthorization ??
+            stakePool.data.parsed.requiresAuthorization,
           overlayText: '',
           resetOnStake:
             values.resetOnStake ?? stakePool.data.parsed.resetOnUnstake,
-          cooldownSeconds: values.cooldownPeriodSeconds,
-          minStakeSeconds: values.minStakeSeconds,
+          cooldownSeconds:
+            values.cooldownPeriodSeconds ??
+            (stakePool.data.parsed.cooldownSeconds || undefined),
+          minStakeSeconds:
+            values.minStakeSeconds ??
+            (stakePool.data.parsed.minStakeSeconds || undefined),
           endDate: values.endDateSeconds
             ? new BN(values.endDateSeconds)
-            : undefined,
+            : stakePool.data.parsed.endDate || undefined,
           doubleOrResetEnabled: false, // TODO
         })
       }

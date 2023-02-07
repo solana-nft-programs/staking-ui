@@ -253,6 +253,8 @@ export const AdvancedConfigForm = () => {
           description={'Whether or not to show name in header'}
         />
         <SelectorBoolean
+          defaultChecked={values.nameInHeader}
+          value={values.nameInHeader}
           handleChange={(v) => setFieldValue('nameInHeader', v)}
         />
       </div>
@@ -297,7 +299,11 @@ export const AdvancedConfigForm = () => {
           title={'Not found'}
           description={'Optional config to disable finding this pool'}
         />
-        <SelectorBoolean handleChange={(v) => setFieldValue('notFound', v)} />
+        <SelectorBoolean
+          defaultChecked={values.notFound}
+          value={values.notFound}
+          handleChange={(v) => setFieldValue('notFound', v)}
+        />
       </div>
       <div>
         <FormFieldTitleInput
@@ -340,7 +346,11 @@ export const AdvancedConfigForm = () => {
           title={'Hide footer'}
           description={'Optional config to disable finding this pool'}
         />
-        <SelectorBoolean handleChange={(v) => setFieldValue('notFound', v)} />
+        <SelectorBoolean
+          defaultChecked={values.hideFooter}
+          value={values.hideFooter}
+          handleChange={(v) => setFieldValue('hideFooter', v)}
+        />
       </div>
       <div>
         <FormFieldTitleInput
@@ -367,6 +377,8 @@ export const AdvancedConfigForm = () => {
           description={'Whether or not to contrast the background'}
         />
         <SelectorBoolean
+          defaultChecked={values.contrastHomepageBkg}
+          value={values.contrastHomepageBkg}
           handleChange={(v) => setFieldValue('contrastHomepageBkg', v)}
         />
       </div>
@@ -408,6 +420,8 @@ export const AdvancedConfigForm = () => {
             description={'If the logo should be displayed with paddding'}
           />
           <SelectorBoolean
+            defaultChecked={values.logoPadding}
+            value={values.logoPadding}
             handleChange={(v) => setFieldValue('logoPadding', v)}
           />
         </div>

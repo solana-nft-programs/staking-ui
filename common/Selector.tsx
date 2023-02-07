@@ -21,6 +21,7 @@ type Props<T> = {
   colorized?: boolean
   highlight?: boolean
   position?: SelectorPositions
+  value?: Option<T>
 }
 
 export const Selector = <T,>({
@@ -31,11 +32,21 @@ export const Selector = <T,>({
   className,
   onChange,
   isClearable,
+  value,
   options = [],
   position = 'from-top',
 }: Props<T>) => {
   const [isOpen, setIsOpen] = useState(false)
-  const [value, setValue] = useState<Option<T> | undefined>(defaultOption)
+  const [internalValue, setInternalValue] = useState<Option<T> | undefined>(
+    defaultOption
+  )
+
+  useEffect(() => {
+    value?.label &&
+      value?.label !== internalValue?.label &&
+      setInternalValue(value)
+  }, [value?.label])
+
   const ref = useRef(null)
   useEffect(() => {
     function handleClick(event: MouseEvent) {
@@ -59,18 +70,18 @@ export const Selector = <T,>({
         ])}
         onClick={() => !disabled && setIsOpen((v) => !v)}
       >
-        {value ? (
-          <div className="text-light-0">{value.label}</div>
+        {internalValue ? (
+          <div className="text-light-0">{internalValue.label}</div>
         ) : (
           <div className="text-medium-3">{placeholder}</div>
         )}
         <div className="flex items-center gap-1">
-          {isClearable && value ? (
+          {isClearable && internalValue ? (
             <div
               className="opacity-80 hover:opacity-100"
               onClick={(e) => {
                 e.stopPropagation()
-                setValue(undefined)
+                setInternalValue(undefined)
                 onChange && onChange(undefined)
               }}
             >
@@ -93,7 +104,7 @@ export const Selector = <T,>({
             key={o.label}
             className="flex cursor-pointer items-center justify-between p-3 text-light-0 transition-colors hover:text-primary"
             onClick={() => {
-              setValue(o)
+              setInternalValue(o)
               setIsOpen((v) => !v)
               onChange && onChange(o)
             }}

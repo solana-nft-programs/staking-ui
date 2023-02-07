@@ -103,7 +103,7 @@ export function RewardDistributorUpdate() {
   const { values, errors, setFieldValue, setValues } = formState
   useEffect(() => {
     setValues(defaultValues(rewardDistributorData))
-  }, [JSON.stringify(rewardDistributorData)])
+  }, [JSON.stringify(rewardDistributorData?.parsed)])
 
   const mintInfo = useMintInfo(
     tryPublicKey(values.rewardMintAddress) ?? undefined

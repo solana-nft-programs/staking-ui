@@ -48,10 +48,10 @@ const defaultValues = (
 ): StakePoolUpdateForm => {
   return {
     requireCollections: (stakePoolData?.parsed?.allowedCollections ?? []).map(
-      (pk) => pk.toString()
+      (pk) => pk?.toString()
     ),
     requireCreators: (stakePoolData?.parsed?.allowedCreators ?? []).map((pk) =>
-      pk.toString()
+      pk?.toString()
     ),
     requiresAuthorization:
       stakePoolData?.parsed?.requiresAuthorization ?? false,
@@ -84,7 +84,7 @@ export function StakePoolUpdate({
 
   useEffect(() => {
     setValues(defaultValues(stakePool.data))
-  }, [JSON.stringify(stakePool)])
+  }, [JSON.stringify(stakePool.data?.parsed)])
 
   if (stakePooldId && !stakePool.isFetched) return <LoadingSpinner />
   return (
@@ -199,6 +199,8 @@ export function StakePoolUpdate({
             }
           />
           <SelectorBoolean
+            value={values.requiresAuthorization}
+            defaultChecked={values.requiresAuthorization}
             handleChange={(v) => setFieldValue('requiresAuthorization', v)}
           />
         </div>
@@ -263,6 +265,8 @@ export function StakePoolUpdate({
             }
           />
           <SelectorBoolean
+            value={values.resetOnStake}
+            // defaultChecked={values.resetOnStake}
             handleChange={(v) => setFieldValue('resetOnStake', v)}
           />
         </div>
