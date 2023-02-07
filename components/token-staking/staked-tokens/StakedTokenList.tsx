@@ -16,7 +16,7 @@ export type StakedTokenListProps = {
   stakedSelected: StakeEntryTokenData[]
   setStakedSelected: (stakedSelected: StakeEntryTokenData[]) => void
   handleUnstake: UseMutationResult<
-    string[],
+    [(string | null)[][], number],
     unknown,
     { tokenDatas: StakeEntryTokenData[] },
     unknown
