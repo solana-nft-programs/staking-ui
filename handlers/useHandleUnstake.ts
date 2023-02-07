@@ -106,9 +106,13 @@ export const useHandleUnstake = (callback?: () => void) => {
         const filteredTxids = txids.flat().filter((x): x is string => !!x)
         if (filteredTxids.length !== 0) {
           notify({
-            message: `Successfully initiated cooldown for ${cooldownTokens} tokens and unstaked ${
-              filteredTxids.length - cooldownTokens
-            }/${txids.flat().length - cooldownTokens}`,
+            message: `Successfully ${
+              cooldownTokens > 0
+                ? `initiated cooldown for ${cooldownTokens} tokens and`
+                : ''
+            } unstaked ${filteredTxids.length - cooldownTokens}/${
+              txids.flat().length - cooldownTokens
+            }`,
             description: 'Stake progress will now dynamically update',
           })
           queryClient.resetQueries([TOKEN_DATAS_KEY])
