@@ -122,9 +122,9 @@ export const useHandleStake = (callback?: () => void) => {
             }`,
             description: 'Stake progress will now dynamically update',
           })
-          queryClient.resetQueries([TOKEN_DATAS_KEY])
-          if (callback) callback
         }
+        queryClient.resetQueries([TOKEN_DATAS_KEY])
+        if (callback) callback
       },
       onError: (e) => {
         notify({ message: 'Failed to stake', description: `${e}` })

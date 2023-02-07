@@ -28,7 +28,7 @@ export const UnstakedToken = ({
   loading: boolean
   select: (tokenData: AllowedTokenData, amount?: string) => void
   handleStake: UseMutationResult<
-    string[],
+    (string | null)[][],
     unknown,
     {
       tokenDatas: AllowedTokenData[]

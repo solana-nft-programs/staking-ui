@@ -33,7 +33,7 @@ export const StakedToken = ({
   loadingClaim: boolean
   select: (tokenData: StakeEntryTokenData, amount?: string) => void
   handleUnstake: UseMutationResult<
-    string[],
+    [(string | null)[][], number],
     unknown,
     { tokenDatas: StakeEntryTokenData[] },
     unknown

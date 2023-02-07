@@ -19,7 +19,7 @@ export type UnstakedTokensProps = {
   unstakedSelected: AllowedTokenData[]
   setUnstakedSelected: (unstakedSelected: AllowedTokenData[]) => void
   handleStake: UseMutationResult<
-    string[],
+    (string | null)[][],
     unknown,
     {
       tokenDatas: AllowedTokenData[]

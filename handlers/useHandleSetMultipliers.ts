@@ -129,6 +129,7 @@ export const useHandleSetMultipliers = () => {
           } else {
             await withInitStakeEntry(transaction, connection, wallet, {
               stakePoolId: stakePoolData.pubkey,
+              stakeEntryId: stakeEntryId,
               originalMintId: mintId,
             })
           }
