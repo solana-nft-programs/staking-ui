@@ -1,4 +1,4 @@
-import { executeTransactionSequence, tryNull } from '@cardinal/common'
+import { executeTransactionSequence, logError, tryNull } from '@cardinal/common'
 import { claimRewards as claimRewardsV2 } from '@cardinal/rewards-center'
 import { claimRewardsAll } from '@cardinal/staking'
 import {
@@ -95,6 +95,7 @@ export const useHandleClaimRewards = () => {
         confirmOptions: { skipPreflight: true },
         errorHandler: (e) => {
           notify({ message: 'Failed to claim rewards', description: `${e}` })
+          logError(e)
           return null
         },
       })

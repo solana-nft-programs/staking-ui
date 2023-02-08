@@ -1,4 +1,4 @@
-import { executeTransactionSequence, tryNull } from '@cardinal/common'
+import { executeTransactionSequence, logError, tryNull } from '@cardinal/common'
 import { unstake as unstakeV2 } from '@cardinal/rewards-center'
 import { unstakeAll } from '@cardinal/staking'
 import type { Account } from '@solana/spl-token'
@@ -108,9 +108,12 @@ export const useHandleUnstake = (callback?: () => void) => {
         })
       }
       const txids = await executeTransactionSequence(connection, txs, wallet, {
-        confirmOptions: { skipPreflight: true },
-        errorHandler: (e) => {
-          notify({ message: 'Failed to stake', description: `${e}` })
+        errorHandler: (e, { count }) => {
+          notify({
+            message: `Failed to stake ${count}/${txs.flat().length}`,
+            description: `Please try again later`,
+          })
+          logError(e)
           return null
         },
       })
