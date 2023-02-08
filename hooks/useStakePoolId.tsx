@@ -1,8 +1,8 @@
 import { tryPublicKey } from '@cardinal/common'
 import { PublicKey } from '@solana/web3.js'
+import { useQuery } from '@tanstack/react-query'
 import { useRouter } from 'next/router'
 import { useStakePoolMetadataCtx } from 'providers/StakePoolMetadataProvider'
-import { useQuery } from '@tanstack/react-query'
 
 export const useStakePoolId = () => {
   const stakePoolMetadata = useStakePoolMetadataCtx()
@@ -10,7 +10,7 @@ export const useStakePoolId = () => {
     query: { stakePoolId },
   } = useRouter()
 
-  return useQuery<PublicKey | undefined>(
+  return useQuery(
     [
       'useStakePoolId',
       stakePoolId?.toString(),
@@ -19,7 +19,7 @@ export const useStakePoolId = () => {
     async () => {
       if (stakePoolMetadata.data)
         return new PublicKey(stakePoolMetadata.data.stakePoolAddress)
-      return tryPublicKey(stakePoolId) ?? undefined
+      return tryPublicKey(stakePoolId) ?? null
     }
   )
 }
