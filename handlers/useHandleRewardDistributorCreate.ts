@@ -9,12 +9,12 @@ import { withInitRewardDistributor } from '@cardinal/staking/dist/cjs/programs/r
 import { BN } from '@project-serum/anchor'
 import { useWallet } from '@solana/wallet-adapter-react'
 import { PublicKey, Transaction } from '@solana/web3.js'
+import { useMutation } from '@tanstack/react-query'
 import { handleError } from 'common/errors'
 import { notify } from 'common/Notification'
 import { asWallet } from 'common/Wallets'
 import { useRewardDistributorData } from 'hooks/useRewardDistributorData'
 import { isStakePoolV2, useStakePoolData } from 'hooks/useStakePoolData'
-import { useMutation } from 'react-query'
 
 import type { RewardDistributorForm } from '@/components/admin/RewardDistributorUpdate'
 

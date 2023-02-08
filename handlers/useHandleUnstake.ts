@@ -9,11 +9,11 @@ import {
 } from '@solana/spl-token'
 import { useWallet } from '@solana/wallet-adapter-react'
 import type { PublicKey, Signer, Transaction } from '@solana/web3.js'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { BN } from 'bn.js'
 import { notify } from 'common/Notification'
 import { asWallet } from 'common/Wallets'
 import type { StakeEntryTokenData } from 'hooks/useStakedTokenDatas'
-import { useMutation, useQueryClient } from 'react-query'
 
 import { TOKEN_DATAS_KEY } from '../hooks/useAllowedTokenDatas'
 import { useRewardDistributorData } from '../hooks/useRewardDistributorData'

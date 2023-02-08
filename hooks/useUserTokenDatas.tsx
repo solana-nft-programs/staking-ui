@@ -7,7 +7,7 @@ import { TOKEN_PROGRAM_ID } from '@solana/spl-token'
 import type { AccountInfo, ParsedAccountData } from '@solana/web3.js'
 import { PublicKey } from '@solana/web3.js'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
-import { useQuery } from 'react-query'
+import { useQuery } from '@tanstack/react-query'
 
 import type { TokenListData } from './useTokenList'
 import { useTokenList } from './useTokenList'

@@ -4,7 +4,7 @@ import { getStakeAuthorizationsForPool } from '@cardinal/staking/dist/cjs/progra
 import { useWallet } from '@solana/wallet-adapter-react'
 import { asWallet } from 'common/Wallets'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
-import { useQuery } from 'react-query'
+import { useQuery } from '@tanstack/react-query'
 
 import { isStakePoolV2, useStakePoolData } from './useStakePoolData'
 

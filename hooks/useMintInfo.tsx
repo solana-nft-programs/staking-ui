@@ -2,7 +2,7 @@ import type { Mint } from '@solana/spl-token'
 import { getMint } from '@solana/spl-token'
 import { PublicKey } from '@solana/web3.js'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
-import { useQuery } from 'react-query'
+import { useQuery } from '@tanstack/react-query'
 
 export const useMintInfo = (mint: PublicKey | undefined) => {
   const isSol = mint?.toString() === PublicKey.default.toString()

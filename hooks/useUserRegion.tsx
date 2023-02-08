@@ -1,5 +1,5 @@
+import { useQuery } from '@tanstack/react-query'
 import { useStakePoolMetadataCtx } from 'providers/StakePoolMetadataProvider'
-import { useQuery } from 'react-query'
 
 export const useUserRegion = () => {
   const { data: stakePoolMetadata } = useStakePoolMetadataCtx()

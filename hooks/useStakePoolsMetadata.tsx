@@ -1,6 +1,6 @@
 import type { PublicKey } from '@solana/web3.js'
 import type { StakePoolMetadata } from 'api/mapping'
-import { useQuery } from 'react-query'
+import { useQuery } from '@tanstack/react-query'
 
 import { useAllStakePools } from './useAllStakePools'
 

@@ -1,6 +1,6 @@
 import { PublicKey } from '@solana/web3.js'
 import { useTokenList } from 'hooks/useTokenList'
-import { useQuery } from 'react-query'
+import { useQuery } from '@tanstack/react-query'
 
 export const useMintSymbol = (mint: PublicKey | undefined) => {
   const isSol = mint?.toString() === PublicKey.default.toString()

@@ -8,7 +8,7 @@ import { findRewardEntryId } from '@cardinal/staking/dist/cjs/programs/rewardDis
 import { rewardEntryDataToV2 } from 'api/fetchRewardEntry'
 import { REWARD_QUERY_KEY } from 'handlers/useHandleClaimRewards'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
-import { useQuery } from 'react-query'
+import { useQuery } from '@tanstack/react-query'
 
 import {
   isRewardDistributorV2,

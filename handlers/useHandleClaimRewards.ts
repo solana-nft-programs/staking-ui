@@ -8,11 +8,11 @@ import {
 } from '@solana/spl-token'
 import { useWallet } from '@solana/wallet-adapter-react'
 import type { Transaction } from '@solana/web3.js'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { notify } from 'common/Notification'
 import { asWallet } from 'common/Wallets'
 import { TOKEN_DATAS_KEY } from 'hooks/useAllowedTokenDatas'
 import type { StakeEntryTokenData } from 'hooks/useStakedTokenDatas'
-import { useMutation, useQueryClient } from 'react-query'
 
 import {
   isRewardDistributorV2,

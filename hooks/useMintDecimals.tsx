@@ -1,6 +1,6 @@
 import type { PublicKey } from '@solana/web3.js'
+import { useQuery } from '@tanstack/react-query'
 import { useMintInfo } from 'hooks/useMintInfo'
-import { useQuery } from 'react-query'
 
 export const useMintDecimals = (mint: PublicKey | undefined) => {
   const mintInfo = useMintInfo(mint)

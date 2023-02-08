@@ -6,9 +6,9 @@ import {
 import { withAuthorizeStakeEntry } from '@cardinal/staking/dist/cjs/programs/stakePool/transaction'
 import { useWallet } from '@solana/wallet-adapter-react'
 import { PublicKey, SystemProgram, Transaction } from '@solana/web3.js'
+import { useMutation } from '@tanstack/react-query'
 import { notify } from 'common/Notification'
 import { asWallet } from 'common/Wallets'
-import { useMutation } from 'react-query'
 
 import { isStakePoolV2, useStakePoolData } from '../hooks/useStakePoolData'
 import { useEnvironmentCtx } from '../providers/EnvironmentProvider'

@@ -12,11 +12,11 @@ import { BN } from '@project-serum/anchor'
 import type { Mint } from '@solana/spl-token'
 import { useWallet } from '@solana/wallet-adapter-react'
 import { PublicKey, SystemProgram, Transaction } from '@solana/web3.js'
+import { useMutation } from '@tanstack/react-query'
 import { handleError } from 'common/errors'
 import { notify } from 'common/Notification'
 import { asWallet } from 'common/Wallets'
 import { useRewardDistributorData } from 'hooks/useRewardDistributorData'
-import { useMutation } from 'react-query'
 
 import type { CreationForm } from '@/components/stake-pool-creation/Schema'
 

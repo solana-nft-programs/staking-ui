@@ -7,10 +7,10 @@ import { withCloseRewardDistributor } from '@cardinal/staking/dist/cjs/programs/
 import { TOKEN_PROGRAM_ID } from '@solana/spl-token'
 import { useWallet } from '@solana/wallet-adapter-react'
 import { Transaction } from '@solana/web3.js'
+import { useMutation } from '@tanstack/react-query'
 import { notify } from 'common/Notification'
 import { asWallet } from 'common/Wallets'
 import { useRewardDistributorData } from 'hooks/useRewardDistributorData'
-import { useMutation } from 'react-query'
 
 import { isStakePoolV2, useStakePoolData } from '../hooks/useStakePoolData'
 import { useEnvironmentCtx } from '../providers/EnvironmentProvider'

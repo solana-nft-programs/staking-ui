@@ -19,12 +19,12 @@ import { findStakeEntryIdFromMint } from '@cardinal/staking/dist/cjs/programs/st
 import { BN } from '@project-serum/anchor'
 import { useWallet } from '@solana/wallet-adapter-react'
 import { PublicKey, SystemProgram, Transaction } from '@solana/web3.js'
+import { useMutation } from '@tanstack/react-query'
 import { fetchRewardEntry } from 'api/fetchRewardEntry'
 import { fetchStakeEntry } from 'api/fetchStakeEntry'
 import { notify } from 'common/Notification'
 import { asWallet } from 'common/Wallets'
 import { useRewardDistributorData } from 'hooks/useRewardDistributorData'
-import { useMutation } from 'react-query'
 
 import { isStakePoolV2, useStakePoolData } from '../hooks/useStakePoolData'
 import { useEnvironmentCtx } from '../providers/EnvironmentProvider'

@@ -31,9 +31,10 @@ export const UnstakeFee: React.FC = () => {
             <div className="text-medium-4">Unstake Fee:</div>
             <div>
               {!!unstakePaymentMintDecimals &&
+                !!unstakePaymentInfo.data &&
                 formatAmountAsDecimal(
                   unstakePaymentMintDecimals,
-                  new BN(unstakePaymentInfo.data.parsed.paymentAmount),
+                  new BN(unstakePaymentInfo.data?.parsed.paymentAmount),
                   unstakePaymentMintDecimals
                 )}
             </div>
