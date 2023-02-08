@@ -368,12 +368,12 @@
     "@solana/web3.js" "^1.66.2"
     bn.js "^5.2.0"
 
-"@cardinal/staking@^2.0.1":
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/@cardinal/staking/-/staking-2.0.1.tgz#3c0ab9edae7bf622c332688f5dc35cb41865f050"
-  integrity sha512-kKlEU2whK8CWxGlvQXPYPCX+h7JsnaPcZ9Rx4Oag4ab6DQwpiL1ahgpewy1FnRIYWbrlE8CCUNU9OjbA0uUQgQ==
+"@cardinal/staking@^2.0.3":
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/@cardinal/staking/-/staking-2.0.3.tgz#7086c2a4d8e245c39260143e00eca6e1fc094d8d"
+  integrity sha512-Pg3FlryJD8+xyPO7JtMUNvfe+c36DsEI2B0fkIoDDpxR2iKsqi0V0sJzzYUG9BJf7+RlccI9Ko1NAk53W8uVsw==
   dependencies:
-    "@cardinal/common" "^6.1.3"
+    "@cardinal/common" "^6.1.7"
     "@cardinal/payment-manager" "^2.1.1"
     "@cardinal/rewards-center" "^2.4.0"
     "@cardinal/token-manager" "^4.0.0"
