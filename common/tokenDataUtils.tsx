@@ -4,7 +4,7 @@ import type { StakeEntryTokenData } from 'hooks/useStakedTokenDatas'
 
 export const getNameFromTokenData = (
   tokenData: AllowedTokenData | StakeEntryTokenData,
-  mintMetadata?: MintMetadata,
+  mintMetadata?: MintMetadata | null,
   defaultName?: string
 ) => {
   return (
@@ -17,7 +17,7 @@ export const getNameFromTokenData = (
 
 export const getImageFromTokenData = (
   tokenData: AllowedTokenData | StakeEntryTokenData,
-  mintMetadata?: MintMetadata
+  mintMetadata?: MintMetadata | null
 ) => {
   return mintMetadata?.parsed?.image || tokenData.tokenListData?.logoURI
 }

@@ -4,11 +4,11 @@ import {
   getConfigEntryById,
 } from '@cardinal/configs/dist/cjs/programs/accounts'
 import type { Connection } from '@solana/web3.js'
+import { useQuery } from '@tanstack/react-query'
 import type { StakePoolMetadata } from 'api/mapping'
 import { stakePoolsWithHostnames } from 'api/mapping'
 import { useRouter } from 'next/router'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
-import { useQuery } from '@tanstack/react-query'
 
 export const useStakePoolMetadata = (hostname?: string) => {
   const { connection } = useEnvironmentCtx()
@@ -16,13 +16,13 @@ export const useStakePoolMetadata = (hostname?: string) => {
     query: { stakePoolId },
   } = useRouter()
 
-  return useQuery<StakePoolMetadata | undefined>(
+  return useQuery(
     ['useStakePoolMetadata', stakePoolId?.toString()],
     async () => {
       const hostnameConfigFound = stakePoolsWithHostnames.find((config) =>
         hostname?.includes(config.hostname)
       )
-      if (!hostnameConfigFound && !stakePoolId) return
+      if (!hostnameConfigFound && !stakePoolId) return null
       return stakePoolConfig(
         connection,
         hostnameConfigFound?.stakePoolAddress ?? stakePoolId!.toString()
@@ -34,7 +34,7 @@ export const useStakePoolMetadata = (hostname?: string) => {
 export const stakePoolConfig = async (
   connection: Connection,
   key: string
-): Promise<StakePoolMetadata | undefined> => {
+): Promise<StakePoolMetadata | null> => {
   const stakePoolIdPubkey = tryPublicKey(key)
   if (!stakePoolIdPubkey) {
     const configEntryData = await tryNull(
@@ -68,4 +68,5 @@ export const stakePoolConfig = async (
       }
     }
   }
+  return null
 }
