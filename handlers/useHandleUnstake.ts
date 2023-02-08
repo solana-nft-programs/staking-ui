@@ -103,6 +103,7 @@ export const useHandleUnstake = (callback?: () => void) => {
           stakePoolId,
           mintInfos: tokenDatas.map((token) => ({
             mintId: token.stakeEntry!.parsed.stakeMint,
+            stakeEntryId: token.stakeEntry?.pubkey,
             fungible: token.stakeEntry?.parsed.amount.gt(new BN(1)),
           })),
         })
