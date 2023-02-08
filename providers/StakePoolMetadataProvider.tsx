@@ -4,7 +4,7 @@ import { useStakePoolMetadata } from 'hooks/useStakePoolMetadata'
 import React, { useContext } from 'react'
 
 export interface StakePoolMetadataValues {
-  stakePoolMetadata: UseQueryResult<StakePoolMetadata | undefined>
+  stakePoolMetadata: UseQueryResult<StakePoolMetadata | undefined | null>
 }
 
 const StakePoolMetadataContext: React.Context<null | StakePoolMetadataValues> =
@@ -27,7 +27,7 @@ export function StakePoolMetadataProvider({
 }
 
 export function useStakePoolMetadataCtx(): UseQueryResult<
-  StakePoolMetadata | undefined
+  StakePoolMetadata | undefined | null
 > {
   const context = useContext(StakePoolMetadataContext)
   if (!context) {

@@ -30,6 +30,7 @@ export const RewardClaimFee: React.FC = () => {
             <div className="text-medium-4">Reward Claim Fee: </div>
             <div>
               {!!claimRewardsPaymentMintDecimals &&
+                claimRewardsPaymentInfo.data &&
                 formatAmountAsDecimal(
                   claimRewardsPaymentMintDecimals,
                   new BN(claimRewardsPaymentInfo.data.parsed.paymentAmount),

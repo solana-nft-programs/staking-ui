@@ -38,12 +38,13 @@ export const mintMetadataQuery = async (
       parsed: json,
     }
   }
+  return null
 }
 
 export const useMintMetadata = (
   tokenData: AllowedTokenData | StakeEntryTokenData
 ) => {
-  return useQuery<MintMetadata | undefined>(
+  return useQuery<MintMetadata | null>(
     mintMetadataQueryKey(tokenData),
     () => mintMetadataQuery(tokenData),
     {
