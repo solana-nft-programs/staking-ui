@@ -3,7 +3,7 @@ import type { Account } from '@solana/spl-token'
 import { getAccount } from '@solana/spl-token'
 import { REWARD_QUERY_KEY } from 'handlers/useHandleClaimRewards'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
-import { useQuery } from 'react-query'
+import { useQuery } from '@tanstack/react-query'
 
 import { useRewardDistributorData } from './useRewardDistributorData'
 

@@ -1,6 +1,6 @@
 import { getStatsEntry } from '@cardinal/stats/dist/cjs/programs/cardinalStats'
+import { useQuery } from '@tanstack/react-query'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
-import { useQuery } from 'react-query'
 
 export type StatName = 'total-active-staked-tokens'
 

@@ -31,6 +31,7 @@ export const StakeFee: React.FC = () => {
             <div className="text-medium-4">Stake Fee:</div>
             <div>
               {!!stakePaymentMintDecimals &&
+                !!stakePaymentInfo.data &&
                 formatAmountAsDecimal(
                   stakePaymentMintDecimals,
                   new BN(stakePaymentInfo.data.parsed.paymentAmount),

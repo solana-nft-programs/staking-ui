@@ -1,6 +1,6 @@
 import { getMint } from '@solana/spl-token'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
-import { useQuery } from 'react-query'
+import { useQuery } from '@tanstack/react-query'
 
 import { useStakePoolEntries } from './useStakePoolEntries'
 

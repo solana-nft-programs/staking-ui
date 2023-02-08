@@ -8,7 +8,7 @@ import { stakeEntryDataToV2 } from 'api/fetchStakeEntry'
 import { asWallet } from 'common/Wallets'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 import { useStakePoolMetadataCtx } from 'providers/StakePoolMetadataProvider'
-import { useQuery } from 'react-query'
+import { useQuery } from '@tanstack/react-query'
 
 import { TOKEN_DATAS_KEY } from './useAllowedTokenDatas'
 import { isStakePoolV2, useStakePoolData } from './useStakePoolData'

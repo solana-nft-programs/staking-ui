@@ -8,10 +8,10 @@ import { BN } from '@project-serum/anchor'
 import { useWallet } from '@solana/wallet-adapter-react'
 import type { PublicKey } from '@solana/web3.js'
 import { SystemProgram, Transaction } from '@solana/web3.js'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { handleError } from 'common/errors'
 import { notify } from 'common/Notification'
 import { asWallet } from 'common/Wallets'
-import { useMutation, useQueryClient } from 'react-query'
 
 import type { StakePoolUpdateForm } from '@/components/admin/StakePoolUpdate'
 

@@ -2,7 +2,7 @@ import { fetchIdlAccount } from '@cardinal/rewards-center'
 import { useRewardDistributorData } from 'hooks/useRewardDistributorData'
 import { useTokenList } from 'hooks/useTokenList'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
-import { useQuery } from 'react-query'
+import { useQuery } from '@tanstack/react-query'
 
 export const useClaimRewardsPaymentInfo = () => {
   const { data: rewardDistributorData } = useRewardDistributorData()

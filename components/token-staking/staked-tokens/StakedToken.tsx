@@ -8,7 +8,7 @@ import { useMintMetadata } from 'hooks/useMintMetadata'
 import type { StakeEntryTokenData } from 'hooks/useStakedTokenDatas'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 import { useStakePoolMetadataCtx } from 'providers/StakePoolMetadataProvider'
-import type { UseMutationResult } from 'react-query'
+import type { UseMutationResult } from '@tanstack/react-query'
 
 import { TokenImage } from '@/components/token-staking/token/TokenImage'
 import { TokenImageWrapper } from '@/components/token-staking/token/TokenImageWrapper'

@@ -9,7 +9,7 @@ import type { Connection, PublicKey } from '@solana/web3.js'
 import { fetchStakeEntriesForUser } from 'api/fetchStakeEntry'
 import { asWallet } from 'common/Wallets'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
-import { useQuery } from 'react-query'
+import { useQuery } from '@tanstack/react-query'
 
 import * as useAllowedTokenDatas from './useAllowedTokenDatas'
 import { useStakePoolData } from './useStakePoolData'

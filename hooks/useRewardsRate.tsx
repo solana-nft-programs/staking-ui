@@ -4,7 +4,7 @@ import { RewardDistributorKind } from '@cardinal/staking/dist/cjs/programs/rewar
 import { BN } from '@project-serum/anchor'
 import { rewardEntryDataToV1 } from 'api/fetchRewardEntry'
 import { stakeEntryDataToV1 } from 'api/fetchStakeEntry'
-import { useQuery } from 'react-query'
+import { useQuery } from '@tanstack/react-query'
 
 import {
   isRewardDistributorV2,

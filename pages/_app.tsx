@@ -20,6 +20,8 @@ import {
   SolflareWalletAdapter,
   TorusWalletAdapter,
 } from '@solana/wallet-adapter-wallets'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { ToastContainer } from 'common/Notification'
 import type { AppProps } from 'next/app'
 import {
@@ -29,8 +31,6 @@ import {
 import { StakePoolMetadataProvider } from 'providers/StakePoolMetadataProvider'
 import { UTCNowProvider } from 'providers/UTCNowProvider'
 import { useMemo } from 'react'
-import { QueryClient, QueryClientProvider } from 'react-query'
-import { ReactQueryDevtools } from 'react-query/devtools'
 
 require('@solana/wallet-adapter-react-ui/styles.css')
 

@@ -19,7 +19,7 @@ import { Keypair } from '@solana/web3.js'
 import type { StakePoolMetadata } from 'api/mapping'
 import { asWallet } from 'common/Wallets'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
-import { useQuery } from 'react-query'
+import { useQuery } from '@tanstack/react-query'
 
 import { stakePoolDataToV2 } from './useStakePoolData'
 

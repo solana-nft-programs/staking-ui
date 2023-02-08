@@ -11,7 +11,7 @@ import { findStakeEntryIdFromMint } from '@cardinal/staking/dist/cjs/programs/st
 import type { PublicKey } from '@solana/web3.js'
 import { notify } from 'common/Notification'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
-import { useQuery } from 'react-query'
+import { useQuery } from '@tanstack/react-query'
 
 import {
   isRewardDistributorV2,

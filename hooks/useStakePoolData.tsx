@@ -18,9 +18,9 @@ import type {
   TypeDef,
 } from '@project-serum/anchor/dist/cjs/program/namespace/types'
 import { PublicKey } from '@solana/web3.js'
+import { useQuery } from '@tanstack/react-query'
 import { useStakePoolId } from 'hooks/useStakePoolId'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
-import { useQuery } from 'react-query'
 
 export const useStakePoolData = () => {
   const { data: stakePoolId } = useStakePoolId()

@@ -8,7 +8,7 @@ import type { StakePoolMetadata } from 'api/mapping'
 import { stakePoolsWithHostnames } from 'api/mapping'
 import { useRouter } from 'next/router'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
-import { useQuery } from 'react-query'
+import { useQuery } from '@tanstack/react-query'
 
 export const useStakePoolMetadata = (hostname?: string) => {
   const { connection } = useEnvironmentCtx()

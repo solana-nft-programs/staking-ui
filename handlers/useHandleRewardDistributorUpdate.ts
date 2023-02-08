@@ -4,6 +4,7 @@ import { withUpdateRewardDistributor } from '@cardinal/staking/dist/cjs/programs
 import { BN } from '@project-serum/anchor'
 import { useWallet } from '@solana/wallet-adapter-react'
 import { Transaction } from '@solana/web3.js'
+import { useMutation } from '@tanstack/react-query'
 import { handleError } from 'common/errors'
 import { notify } from 'common/Notification'
 import { asWallet } from 'common/Wallets'
@@ -12,7 +13,6 @@ import {
   useRewardDistributorData,
 } from 'hooks/useRewardDistributorData'
 import { useStakePoolData } from 'hooks/useStakePoolData'
-import { useMutation } from 'react-query'
 
 import type { RewardDistributorForm } from '@/components/admin/RewardDistributorUpdate'
 

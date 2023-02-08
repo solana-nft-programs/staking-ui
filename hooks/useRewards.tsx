@@ -1,10 +1,10 @@
 import { getRewardMap } from '@cardinal/staking'
 import { RewardDistributorKind } from '@cardinal/staking/dist/cjs/programs/rewardDistributor'
 import { BN } from '@project-serum/anchor'
+import { useQuery } from '@tanstack/react-query'
 import { rewardEntryDataToV1 } from 'api/fetchRewardEntry'
 import { stakeEntryDataToV1 } from 'api/fetchStakeEntry'
 import { useUTCNow } from 'providers/UTCNowProvider'
-import { useQuery } from 'react-query'
 
 import {
   rewardDistributorDataToV1,
