@@ -1,4 +1,4 @@
-import { executeTransactionSequence } from '@cardinal/common'
+import { executeTransactionSequence, logError } from '@cardinal/common'
 import { stake as stakeV2 } from '@cardinal/rewards-center'
 import { stakeAll } from '@cardinal/staking'
 import { ReceiptType } from '@cardinal/staking/dist/cjs/programs/stakePool'
@@ -108,6 +108,7 @@ export const useHandleStake = (callback?: () => void) => {
       return executeTransactionSequence(connection, txs, wallet, {
         errorHandler: (e) => {
           notify({ message: 'Failed to stake', description: `${e}` })
+          logError(e)
           return null
         },
       })
