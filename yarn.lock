@@ -255,6 +255,19 @@
     polished "^4.2.2"
     tslib "^2.4.0"
 
+"@cardinal/common@^7.0.0":
+  version "7.0.0"
+  resolved "https://registry.yarnpkg.com/@cardinal/common/-/common-7.0.0.tgz#eec9bba897e85a2d5b81444f405e1462da06ee3a"
+  integrity sha512-X7plp4uuyH7eeKISQoD70nO4QDfvLdSgvPBMyq+iv6Emkj7UA8Jn3EyJGNFyQUe9o1fSgPua6deor/ZjfJjOCQ==
+  dependencies:
+    "@coral-xyz/anchor" "^0.26.0"
+    "@solana/buffer-layout" "^4.0.0"
+    "@solana/spl-token" "^0.3.5"
+    "@solana/web3.js" "^1.66.2"
+    bignumber.js "^9.1.0"
+    polished "^4.2.2"
+    tslib "^2.4.0"
+
 "@cardinal/configs@^1.3.5":
   version "1.3.5"
   resolved "https://registry.yarnpkg.com/@cardinal/configs/-/configs-1.3.5.tgz#7717a9f5c3162b63b2de01b7689e92fe5b7408a4"
@@ -368,12 +381,12 @@
     "@solana/web3.js" "^1.66.2"
     bn.js "^5.2.0"
 
-"@cardinal/staking@^2.0.4":
-  version "2.0.4"
-  resolved "https://registry.yarnpkg.com/@cardinal/staking/-/staking-2.0.4.tgz#fe0168b2bbfc0e41b49ae61630f66ac3910f7b18"
-  integrity sha512-hMQk6CP08IXra9E5P+hz6R3EeljgotfvaPJ0g5TWqF1xedaJeHEo4di/EuljkSqWI1R0bBUgMlZUMobkAlZotw==
+"@cardinal/staking@^2.0.5":
+  version "2.0.5"
+  resolved "https://registry.yarnpkg.com/@cardinal/staking/-/staking-2.0.5.tgz#687f057f6d778eb6685d2dc5203677f0f19212f1"
+  integrity sha512-csRyFbsj9sw43sJdlPfmVd8oPjNj0dQQL3rSY4+06BSCuOrE+IB8YNsqKXrq0doT8e87lAQfr5d+CFDHyY7yqw==
   dependencies:
-    "@cardinal/common" "^6.1.7"
+    "@cardinal/common" "^7.0.0"
     "@cardinal/payment-manager" "^2.1.1"
     "@cardinal/rewards-center" "^2.4.0"
     "@cardinal/token-manager" "^4.0.3"
