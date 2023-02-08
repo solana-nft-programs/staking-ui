@@ -1,13 +1,14 @@
-import { executeTransactionSequence } from '@cardinal/common'
+import { executeTransactionSequence, tryNull } from '@cardinal/common'
 import { unstake as unstakeV2 } from '@cardinal/rewards-center'
 import { unstakeAll } from '@cardinal/staking'
+import type { Account } from '@solana/spl-token'
 import {
   createAssociatedTokenAccountIdempotentInstruction,
+  getAccount,
   getAssociatedTokenAddressSync,
 } from '@solana/spl-token'
 import { useWallet } from '@solana/wallet-adapter-react'
-import type { Signer } from '@solana/web3.js'
-import { Transaction } from '@solana/web3.js'
+import type { PublicKey, Signer, Transaction } from '@solana/web3.js'
 import { BN } from 'bn.js'
 import { notify } from 'common/Notification'
 import { asWallet } from 'common/Wallets'
@@ -48,42 +49,56 @@ export const useHandleUnstake = (callback?: () => void) => {
       })
 
       if (isStakePoolV2(stakePool.parsed!)) {
-        if (rewardDistributorData.data && rewardDistributorData.data.parsed) {
-          // create user reward mint ata
-          const tx = new Transaction()
-          const userRewardMintTokenAccountId = getAssociatedTokenAddressSync(
-            rewardDistributorData.data.parsed.rewardMint,
-            wallet.publicKey,
-            true
-          )
-          tx.add(
-            createAssociatedTokenAccountIdempotentInstruction(
-              wallet.publicKey,
-              userRewardMintTokenAccountId,
-              wallet.publicKey,
-              rewardDistributorData.data.parsed.rewardMint
-            )
-          )
-          txs.push([{ tx }])
-        }
         // TODO Handle fungible
-        txs.push(
-          (
-            await unstakeV2(
-              connection,
-              wallet,
-              stakePool.parsed?.identifier,
-              tokenDatas.map((token) => ({
-                mintId: token.stakeEntry!.parsed.stakeMint,
-                fungible: token.stakeEntry?.parsed.amount.gt(new BN(1)),
-              })),
-              rewardDistributorData.data
-                ? [rewardDistributorData.data?.pubkey]
-                : undefined
-            )
-          ).map((tx) => ({ tx }))
+        const unstakeTxs = await unstakeV2(
+          connection,
+          wallet,
+          stakePool.parsed?.identifier,
+          tokenDatas.map((token) => ({
+            mintId: token.stakeEntry!.parsed.stakeMint,
+            fungible: token.stakeEntry?.parsed.amount.gt(new BN(1)),
+          })),
+          rewardDistributorData.data
+            ? [rewardDistributorData.data?.pubkey]
+            : undefined
         )
+
+        // create ata if not exists in first tx and execute first
+        let rewardTokenAccount: Account | null = null
+        let userRewardTokenAccountId: PublicKey | null = null
+        if (rewardDistributorData.data?.parsed) {
+          userRewardTokenAccountId = getAssociatedTokenAddressSync(
+            rewardDistributorData.data.parsed.rewardMint,
+            wallet.publicKey
+          )
+          rewardTokenAccount = await tryNull(
+            getAccount(connection, userRewardTokenAccountId)
+          )
+        }
+        txs =
+          rewardDistributorData.data?.parsed &&
+          userRewardTokenAccountId &&
+          !rewardTokenAccount
+            ? [
+                unstakeTxs.slice(0, 1).map((tx) => {
+                  if (userRewardTokenAccountId && rewardDistributorData.data) {
+                    tx.instructions = [
+                      createAssociatedTokenAccountIdempotentInstruction(
+                        wallet.publicKey,
+                        userRewardTokenAccountId,
+                        wallet.publicKey,
+                        rewardDistributorData.data?.parsed.rewardMint
+                      ),
+                      ...tx.instructions,
+                    ]
+                  }
+                  return { tx }
+                }),
+                unstakeTxs.slice(1).map((tx) => ({ tx })),
+              ]
+            : [unstakeTxs.map((tx) => ({ tx }))]
       } else {
+        // ata creation handled inside of transaction sequence
         txs = await unstakeAll(connection, wallet, {
           stakePoolId,
           mintInfos: tokenDatas.map((token) => ({
