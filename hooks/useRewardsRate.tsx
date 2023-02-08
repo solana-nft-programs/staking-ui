@@ -2,9 +2,9 @@ import type { IdlAccountData } from '@cardinal/rewards-center'
 import { calculatePendingRewards } from '@cardinal/staking'
 import { RewardDistributorKind } from '@cardinal/staking/dist/cjs/programs/rewardDistributor'
 import { BN } from '@project-serum/anchor'
+import { useQuery } from '@tanstack/react-query'
 import { rewardEntryDataToV1 } from 'api/fetchRewardEntry'
 import { stakeEntryDataToV1 } from 'api/fetchStakeEntry'
-import { useQuery } from '@tanstack/react-query'
 
 import {
   isRewardDistributorV2,
@@ -53,15 +53,12 @@ export const useRewardsRate = () => {
     useRewardDistributorTokenAccount()
   const { data: rewardMintInfo } = useRewardMintInfo()
 
-  return useQuery<
-    | {
-        dailyRewards: BN
-        rewardsRateMap: {
-          [stakeEntryId: string]: { dailyRewards: BN }
-        }
-      }
-    | undefined
-  >(
+  return useQuery<{
+    dailyRewards: BN
+    rewardsRateMap: {
+      [stakeEntryId: string]: { dailyRewards: BN }
+    }
+  } | null>(
     [
       'useRewardsRate',
       rewardDistributorData?.pubkey?.toString(),
@@ -81,7 +78,7 @@ export const useRewardsRate = () => {
         !rewardMintInfo ||
         !stakedTokenData
       ) {
-        return undefined
+        return null
       }
 
       const rewardsRateMap: {
