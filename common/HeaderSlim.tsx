@@ -5,7 +5,10 @@ import { GlyphWallet } from 'assets/GlyphWallet'
 import { LogoTitled } from 'assets/LogoTitled'
 import { useRouter } from 'next/router'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
+import { useModal } from 'providers/ModalProvider'
 import { useEffect, useState } from 'react'
+
+import { useTermsOfServiceModal } from '@/components/modals/TermsOfService'
 
 import { Airdrop } from './Airdrop'
 import { ButtonSmall } from './ButtonSmall'
@@ -16,8 +19,11 @@ export const HeaderSlim = () => {
   const router = useRouter()
   const wallet = useWallet()
   const walletModal = useWalletModal()
+  const termsOfServiceModal = useTermsOfServiceModal()
   const { secondaryConnection, environment } = useEnvironmentCtx()
   const [tab, setTab] = useState<string>('browse')
+
+  const { onDismiss } = useModal()
 
   useEffect(() => {
     const anchor = router.asPath.split('#')[1]
@@ -61,7 +67,14 @@ export const HeaderSlim = () => {
           ) : (
             <ButtonSmall
               className="text-xs"
-              onClick={() => walletModal.setVisible(true)}
+              onClick={() =>
+                termsOfServiceModal.showModal({
+                  handleAccept: () => {
+                    onDismiss()
+                    setTimeout(() => walletModal.setVisible(true)) // delay to prevent body scroll lock
+                  },
+                })
+              }
             >
               <>
                 <GlyphWallet />

@@ -28,6 +28,7 @@ import {
   EnvironmentProvider,
   getInitialProps,
 } from 'providers/EnvironmentProvider'
+import { ModalProvider } from 'providers/ModalProvider'
 import { StakePoolMetadataProvider } from 'providers/StakePoolMetadataProvider'
 import { UTCNowProvider } from 'providers/UTCNowProvider'
 import { useMemo } from 'react'
@@ -91,11 +92,13 @@ const App = ({
             <WalletProvider autoConnect wallets={wallets}>
               <WalletIdentityProvider>
                 <WalletModalProvider>
+                <ModalProvider>
                   <>
                     <ToastContainer />
                     <Component {...pageProps} />
                     <ReactQueryDevtools initialIsOpen={false} />
                   </>
+                  </ModalProvider>
                 </WalletModalProvider>
               </WalletIdentityProvider>
             </WalletProvider>

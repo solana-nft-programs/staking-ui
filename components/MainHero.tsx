@@ -22,7 +22,9 @@ export const MainHero = () => {
       <HeaderSlim />
       <div className="flex flex-wrap justify-between gap-10 px-8 py-24 md:px-16">
         <div className="flex flex-col gap-2">
-          <HeadingPrimary className="mb-2">Staking</HeadingPrimary>
+          <HeadingPrimary className="mb-2">
+            NFT Staking on Solana
+          </HeadingPrimary>
           <div className="text-lg text-medium-3">
             Lock your NFTs or tokens to earn rewards from various reward
             mechanisms including
