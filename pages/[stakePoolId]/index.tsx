@@ -60,7 +60,9 @@ function StakePoolHome(props: { stakePoolMetadataName: string | null }) {
 
   if (
     !stakePoolLoaded ||
-    (stakePoolMetadata?.disallowRegions && !userRegion.isFetched)
+    (stakePoolMetadata?.disallowRegions?.length &&
+      stakePoolMetadata?.disallowRegions.length > 0 &&
+      !userRegion.isFetched)
   ) {
     return (
       <>
@@ -98,6 +100,7 @@ function StakePoolHome(props: { stakePoolMetadataName: string | null }) {
 
   if (
     stakePoolMetadata?.disallowRegions &&
+    stakePoolMetadata?.disallowRegions.length > 0 &&
     !userRegion.data?.isAllowed &&
     !process.env.BYPASS_REGION_CHECK
   ) {

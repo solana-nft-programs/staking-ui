@@ -2,9 +2,9 @@ import type { IdlAccountData } from '@cardinal/rewards-center'
 import { rewardsCenterProgram } from '@cardinal/rewards-center'
 import { getStakeAuthorizationsForPool } from '@cardinal/staking/dist/cjs/programs/stakePool/accounts'
 import { useWallet } from '@solana/wallet-adapter-react'
+import { useQuery } from '@tanstack/react-query'
 import { asWallet } from 'common/Wallets'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
-import { useQuery } from '@tanstack/react-query'
 
 import { isStakePoolV2, useStakePoolData } from './useStakePoolData'
 
@@ -28,7 +28,7 @@ export const useStakeAuthorizationsForPool = () => {
           const stakeAuth = await program.account.stakeAuthorizationRecord.all([
             {
               memcmp: {
-                offset: 10,
+                offset: 9,
                 bytes: stakePoolData.pubkey.toString(),
               },
             },
