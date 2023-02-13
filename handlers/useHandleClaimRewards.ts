@@ -50,8 +50,7 @@ export const useHandleClaimRewards = () => {
           tokenDatas.map((token) => ({
             mintId: token.stakeEntry!.parsed.stakeMint,
           })),
-          rewardDistributorData.data ? [rewardDistributorData.data.pubkey] : [],
-          true
+          rewardDistributorData.data ? [rewardDistributorData.data.pubkey] : []
         )
 
         // create ata if not exists in first tx and execute first

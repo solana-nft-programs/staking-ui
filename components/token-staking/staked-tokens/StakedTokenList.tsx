@@ -1,10 +1,10 @@
 import { useWallet } from '@solana/wallet-adapter-react'
+import type { UseMutationResult } from '@tanstack/react-query'
 import { useHandleClaimRewards } from 'handlers/useHandleClaimRewards'
 import type { StakeEntryTokenData } from 'hooks/useStakedTokenDatas'
 import { useStakedTokenDatas } from 'hooks/useStakedTokenDatas'
 import { useStakePoolMetadataCtx } from 'providers/StakePoolMetadataProvider'
 import { useState } from 'react'
-import type { UseMutationResult } from '@tanstack/react-query'
 
 import { DEFAULT_PAGE, PAGE_SIZE } from '@/components/token-staking/constants'
 import { StakedToken } from '@/components/token-staking/staked-tokens/StakedToken'
