@@ -81,7 +81,8 @@ export const useGenerateClaimRewardsForHoldersTxs = () => {
                     mintId: entry.parsed.stakeMint,
                   }
                 }),
-                [rewardDistributor.data!.pubkey]
+                [rewardDistributor.data!.pubkey],
+                true
               )
               transaction.instructions = txs.map((tx) => tx.instructions).flat()
               transactions.push(transaction)
