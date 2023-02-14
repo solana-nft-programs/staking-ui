@@ -14,6 +14,14 @@ import { useRouter } from 'next/router'
 import { transparentize } from 'polished'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 
+export function trySeq<T>(fn: () => T): T | null {
+  try {
+    return fn()
+  } catch {
+    return null
+  }
+}
+
 export const CollectionsGrid = ({ configs }: { configs?: StakePool[] }) => {
   const router = useRouter()
   const { environment } = useEnvironmentCtx()
@@ -43,6 +51,12 @@ export const CollectionsGrid = ({ configs }: { configs?: StakePool[] }) => {
               css={css`
                 &:hover {
                   background: ${config.stakePoolMetadata?.colors?.primary &&
+                  !!trySeq(() =>
+                    transparentize(
+                      0.8,
+                      config.stakePoolMetadata?.colors?.primary ?? ''
+                    )
+                  ) &&
                   transparentize(
                     0.8,
                     config.stakePoolMetadata?.colors?.primary
