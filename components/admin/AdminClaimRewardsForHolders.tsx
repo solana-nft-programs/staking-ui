@@ -51,7 +51,8 @@ export const AdminClaimRewardsForHolders = () => {
                   setFailedTxs: setFailedTxs,
                 },
                 {
-                  onSuccess: () => {
+                  onSuccess: (txids) => {
+                    console.log('txids', txids)
                     notify({
                       message: 'Successfully claimed rewards for users',
                       type: 'success',
