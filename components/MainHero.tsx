@@ -10,6 +10,8 @@ import { ButtonPrimary } from '@/components/UI/buttons/ButtonPrimary'
 import { BodyCopy } from '@/components/UI/typography/BodyCopy'
 import { HeadingPrimary } from '@/components/UI/typography/HeadingPrimary'
 
+import { ButtonWidths } from '../types'
+
 export const MainHero = () => {
   const { environment } = useEnvironmentCtx()
   const allStakePools = useAllStakePools()
@@ -32,12 +34,13 @@ export const MainHero = () => {
             tokens, merchandise, redeemable rewards, referral tokens and more.
           </div>
         </div>
-        <div className="flex flex-col items-end justify-end gap-5 ">
-          <div className="flex items-center gap-2 lg:gap-6">
-            <BodyCopy className="text-right">
+        <div className="flex flex-col items-center gap-5 ">
+          <div className="flex w-full flex-wrap items-center justify-between gap-2 lg:gap-6">
+            <BodyCopy className="">
               Does your NFT collection or tokens need staking?
             </BodyCopy>
             <ButtonPrimary
+              width={ButtonWidths.NARROW}
               onClick={() => {
                 router.push(withCluster('/admin/create', environment.label))
               }}
