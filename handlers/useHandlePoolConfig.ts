@@ -43,6 +43,9 @@ export const useHandlePoolConfig = () => {
       const checkConfigEntry = await tryNull(
         getConfigEntry(connection, prefixBuffer, keyBuffer)
       )
+      const checkConfigReverseEntry = await tryNull(
+        getConfigEntry(connection, prefixBuffer, reverseKeyBuffer)
+      )
 
       // reorder
       const { stakePoolAddress: _, ...otherObject } = config
@@ -50,7 +53,6 @@ export const useHandlePoolConfig = () => {
         stakePoolAddress: stakePool.data.pubkey.toString(),
         ...otherObject,
       })
-      // configString = `Lorem Ipsum is simply dummy textsimply dummy textsimply dummy textsimply dummy textsimplytextsimplytextsimplytextsimplytextsimplytextsimplytextsimplytextsimplytextsimply dummy textsimply dummy textsimply dummy textsimply dummy textsimply dummy textsimply dummy textsimply dummy textsimply dummy textsimply dummy textsimply textsimply textsimply textsimply textsimply textsimply textsimply textsimply textsimply textsimply textsimply textsimply textsimply textsimply textsimpl  of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.`
       const configChunks = chunkArray(
         configString.split(''),
         CONFIG_VALUE_LIMIT
@@ -80,31 +82,7 @@ export const useHandlePoolConfig = () => {
             },
           ])
           .instruction()
-        const reverseMappingIx = await program.methods
-          .initConfigEntry({
-            prefix: prefixBuffer,
-            key: reverseKeyBuffer,
-            value: '',
-            extends: [configEntryId],
-          })
-          .accountsStrict({
-            configEntry: reverseConfigEntryId,
-            authority: wallet.publicKey,
-            systemProgram: SystemProgram.programId,
-          })
-          .remainingAccounts([
-            {
-              pubkey: stakePool.data.pubkey,
-              isSigner: false,
-              isWritable: false,
-            },
-          ])
-          .instruction()
-        transaction.instructions = [
-          ...transaction.instructions,
-          initIx,
-          reverseMappingIx,
-        ]
+        transaction.instructions = [...transaction.instructions, initIx]
         transactions.push(transaction)
 
         for (let index = 1; index < configChunks.length; index++) {
@@ -158,6 +136,53 @@ export const useHandlePoolConfig = () => {
           transactions.push(transaction)
         }
       }
+
+      const transaction = new Transaction()
+      if (!checkConfigReverseEntry?.parsed) {
+        const reverseMappingIx = await program.methods
+          .initConfigEntry({
+            prefix: prefixBuffer,
+            key: reverseKeyBuffer,
+            value: '',
+            extends: [configEntryId],
+          })
+          .accountsStrict({
+            configEntry: reverseConfigEntryId,
+            authority: wallet.publicKey,
+            systemProgram: SystemProgram.programId,
+          })
+          .remainingAccounts([
+            {
+              pubkey: stakePool.data.pubkey,
+              isSigner: false,
+              isWritable: false,
+            },
+          ])
+          .instruction()
+        transaction.add(reverseMappingIx)
+      } else {
+        const reverseMappingIx = await program.methods
+          .updateConfigEntry({
+            value: '',
+            extends: [configEntryId],
+            append: true,
+          })
+          .accountsStrict({
+            configEntry: reverseConfigEntryId,
+            authority: wallet.publicKey,
+            systemProgram: SystemProgram.programId,
+          })
+          .remainingAccounts([
+            {
+              pubkey: stakePool.data.pubkey,
+              isSigner: false,
+              isWritable: false,
+            },
+          ])
+          .instruction()
+        transaction.add(reverseMappingIx)
+      }
+      transactions.push(transaction)
 
       const recentBlockhash = (await connection.getRecentBlockhash('max'))
         .blockhash
