@@ -1,3 +1,4 @@
+import { ReceiptType } from '@cardinal/staking/dist/cjs/programs/stakePool'
 import type { StakePoolMetadata } from 'api/mapping'
 import { TokenStandard } from 'api/mapping'
 import { AsyncButton } from 'common/Button'
@@ -291,6 +292,24 @@ export const AdvancedConfigForm = () => {
             { label: 'Non-fungible', value: String(TokenStandard.NonFungible) },
             { label: 'Fungible', value: String(TokenStandard.Fungible) },
             { label: 'None', value: String(TokenStandard.None) },
+          ]}
+        />
+      </div>
+      <div>
+        <FormFieldTitleInput
+          title={'Stake Receipts'}
+          description={
+            'Receive stake receipts when staking. Using original enables non-custodial staked, `Receipt` creates a new mint that represents the staked token and `None` stakes tokens custodial. Original is default and recommended unless your tokens have no freeze authority or you want custom staking image overlay.'
+          }
+        />
+        <SelectInput
+          className="w-full"
+          value={String(values.receiptType) || ''}
+          setValue={(v) => setFieldValue('receiptType', v)}
+          options={[
+            { label: 'Original', value: String(ReceiptType.Original) },
+            { label: 'Receipt', value: String(ReceiptType.Receipt) },
+            { label: 'None', value: String(ReceiptType.None) },
           ]}
         />
       </div>
