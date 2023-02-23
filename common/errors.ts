@@ -1,4 +1,8 @@
 import {
+  CONFIGS_ADDRESS,
+  CONFIGS_IDL,
+} from '@cardinal/configs/dist/cjs/programs/constants'
+import {
   REWARDS_CENTER_ADDRESS,
   REWARDS_CENTER_IDL,
 } from '@cardinal/rewards-center'
@@ -280,6 +284,7 @@ export const handleError = (
       { programId: STAKE_POOL_ADDRESS, idl: STAKE_POOL_IDL },
       { programId: REWARD_DISTRIBUTOR_ADDRESS, idl: REWARD_DISTRIBUTOR_IDL },
       { programId: REWARDS_CENTER_ADDRESS, idl: REWARDS_CENTER_IDL },
+      { programId: CONFIGS_ADDRESS, idl: CONFIGS_IDL },
     ],
     additionalErrors: NATIVE_ERRORS,
   }

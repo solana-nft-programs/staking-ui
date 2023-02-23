@@ -353,6 +353,17 @@
     "@solana/spl-token" "^0.3.6"
     "@solana/web3.js" "^1.66.2"
 
+"@cardinal/payment-manager@^4.0.0":
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/@cardinal/payment-manager/-/payment-manager-4.0.0.tgz#fc29a5e2c78583cc63ededae04d346db8716bbc9"
+  integrity sha512-AXPaKhwTW+fi+S8uBfYNOGFgT1K+tvrXGzCTXjBHGRu+fp6eI8rW/wE91gZbYZJIFKeVjNugmYVQ1jDNgERHaw==
+  dependencies:
+    "@cardinal/common" "^7.0.0"
+    "@metaplex-foundation/mpl-token-metadata" "^2.8.3"
+    "@project-serum/anchor" "^0.26.0"
+    "@solana/spl-token" "^0.3.6"
+    "@solana/web3.js" "^1.66.2"
+
 "@cardinal/rewards-center@^2.4.0":
   version "2.5.2"
   resolved "https://registry.yarnpkg.com/@cardinal/rewards-center/-/rewards-center-2.5.2.tgz#cecae1b2030c7c9d35d827a5b493c7c7e8b4b917"
@@ -379,15 +390,15 @@
     "@solana/web3.js" "^1.66.2"
     bn.js "^5.2.0"
 
-"@cardinal/staking@^2.0.7":
-  version "2.0.7"
-  resolved "https://registry.yarnpkg.com/@cardinal/staking/-/staking-2.0.7.tgz#894411c3688e85ef39e4be7c014f7796cd89dc7d"
-  integrity sha512-IDm0WcPw02utzoA/NJd2XOtejA8y8f8DWoruUHwCzxWVWFv0XBhs3Mv5gcZrZwGzMCPspdkbGO57adcMi6w8sQ==
+"@cardinal/staking@^2.1.1":
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/@cardinal/staking/-/staking-2.1.1.tgz#359d1c3168b6a7e98e160352732eee81319e2738"
+  integrity sha512-ZWJINGnYFtWRf7/6jw/Z8ZXDtuyOvQ6iuCssS9C/xWK+1rIexscnwrBfVcZUcskt5eKZkC4FjETuzW4p+LJ22A==
   dependencies:
     "@cardinal/common" "^7.0.0"
     "@cardinal/payment-manager" "^2.1.1"
     "@cardinal/rewards-center" "^2.4.0"
-    "@cardinal/token-manager" "^4.0.3"
+    "@cardinal/token-manager" "^4.3.2"
     "@metaplex-foundation/mpl-token-auth-rules" "^1.1.0"
     "@metaplex-foundation/mpl-token-metadata" "^2.8.1"
     "@project-serum/anchor" "0.26.0"
@@ -418,20 +429,20 @@
     "@solana/web3.js" "^1.34.0"
     mplx-beta "npm:@metaplex-foundation/mpl-token-metadata@2.8.0"
 
-"@cardinal/token-manager@^4.0.3":
-  version "4.0.3"
-  resolved "https://registry.yarnpkg.com/@cardinal/token-manager/-/token-manager-4.0.3.tgz#9d39b405072e9befd35be21c0ee7b49851e88657"
-  integrity sha512-WIqikDBTfb7+d4eWD+icPvPwNOraPMnTLOUATMwmvNWmBYUnhHkQ8CuLtyybLJOV67DlLvQrV7u4fY2Cku4EwQ==
+"@cardinal/token-manager@^4.3.2":
+  version "4.3.2"
+  resolved "https://registry.yarnpkg.com/@cardinal/token-manager/-/token-manager-4.3.2.tgz#26a9f3614ee6b84e7ac3a0daa3274d321c032b1b"
+  integrity sha512-+cBzMA7UmHoV4+AZ1li96wYI7L4cUdFb6lycvapeaXNv9AFSRC78goHJgaKTTV1Wvdz/xaXWKIwTC/kYgVjgNw==
   dependencies:
     "@cardinal/common" "^6.1.5"
     "@cardinal/creator-standard" "^2.1.7"
-    "@cardinal/payment-manager" "^3.0.0"
+    "@cardinal/payment-manager" "^4.0.0"
     "@metaplex-foundation/mpl-token-auth-rules" "^1.0.0"
+    "@metaplex-foundation/mpl-token-metadata" "^2.8.3"
     "@msgpack/msgpack" "^2.8.0"
     "@project-serum/anchor" "^0.26.0"
     "@solana/spl-token" "^0.3.6"
     "@solana/web3.js" "^1.34.0"
-    mplx-beta "npm:@metaplex-foundation/mpl-token-metadata@2.8.0"
 
 "@censo-custody/solana-wallet-adapter@^0.1.0":
   version "0.1.0"
@@ -963,6 +974,19 @@
   version "2.8.1"
   resolved "https://registry.yarnpkg.com/@metaplex-foundation/mpl-token-metadata/-/mpl-token-metadata-2.8.1.tgz#c4b137b7d7bfb8e7594a3cecb0a91fab05fe6e57"
   integrity sha512-zk4neFTPaI5atCiosOHGzLX/7sLbWg4ne7zwJXVsJ0O3RYnj5ynwrWLrnvMaE+qR/6gcFy28JvxPvMexIxjbfA==
+  dependencies:
+    "@metaplex-foundation/beet" "^0.7.1"
+    "@metaplex-foundation/beet-solana" "^0.4.0"
+    "@metaplex-foundation/cusper" "^0.0.2"
+    "@solana/spl-token" "^0.3.6"
+    "@solana/web3.js" "^1.66.2"
+    bn.js "^5.2.0"
+    debug "^4.3.4"
+
+"@metaplex-foundation/mpl-token-metadata@^2.8.3":
+  version "2.8.4"
+  resolved "https://registry.yarnpkg.com/@metaplex-foundation/mpl-token-metadata/-/mpl-token-metadata-2.8.4.tgz#ef73e17060a2bb7a75f5aa9201070f16db462364"
+  integrity sha512-QhEMjmYzwBAiJAzDv8M9GuNLfqExt46oVrIYlKml7htP3RpkG7aEzr24wWlgLos2YoGwabWwg2d+iT9DergCQw==
   dependencies:
     "@metaplex-foundation/beet" "^0.7.1"
     "@metaplex-foundation/beet-solana" "^0.4.0"
