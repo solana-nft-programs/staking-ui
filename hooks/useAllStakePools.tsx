@@ -7,12 +7,6 @@ import { findConfigEntryId } from '@cardinal/configs/dist/cjs/programs/pda'
 import type { IdlAccountData } from '@cardinal/rewards-center'
 import { rewardsCenterProgram } from '@cardinal/rewards-center'
 import { getAllStakePools } from '@cardinal/staking/dist/cjs/programs/stakePool/accounts'
-import type { IdlTypes } from '@coral-xyz/anchor'
-import { BorshAccountsCoder } from '@project-serum/anchor'
-import type {
-  AllAccountsMap,
-  TypeDef,
-} from '@project-serum/anchor/dist/cjs/program/namespace/types'
 import { useWallet } from '@solana/wallet-adapter-react'
 import type { PublicKey } from '@solana/web3.js'
 import { Keypair } from '@solana/web3.js'
@@ -103,14 +97,15 @@ export const useAllStakePools = () => {
       connection,
       reverseConfigAccountInfos.reduce((acc, info) => {
         if (info) {
-          const configEntry: TypeDef<
-            AllAccountsMap<typeof CONFIGS_IDL>['configEntry'],
-            IdlTypes<typeof CONFIGS_IDL>
-          > = new BorshAccountsCoder(CONFIGS_IDL).decode(
+          const configEntry = tryDecodeIdlAccount<
             'configEntry',
-            info.data
-          )
-          return [...acc, configEntry.extends[0]!]
+            typeof CONFIGS_IDL
+          >(info, 'configEntry', CONFIGS_IDL)
+          if (configEntry?.parsed?.extends) {
+            return [...acc, configEntry.parsed.extends[0]!]
+          } else {
+            return acc
+          }
         }
         return [...acc, Keypair.generate().publicKey]
       }, [] as PublicKey[])

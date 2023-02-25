@@ -2,7 +2,6 @@ import { ChevronLeftIcon } from '@heroicons/react/24/outline'
 import type { PublicKey } from '@solana/web3.js'
 import { HeaderSlim } from 'common/HeaderSlim'
 import { withCluster } from 'common/utils'
-import { useStakePoolsByAuthority } from 'hooks/useStakePoolsByAuthority'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
@@ -20,7 +19,6 @@ const { TRANSPARENT } = ButtonColors
 export const SuccessPanel = ({ stakePoolId }: { stakePoolId?: PublicKey }) => {
   const router = useRouter()
   const { environment } = useEnvironmentCtx()
-  const stakePoolsByAuthority = useStakePoolsByAuthority()
 
   return (
     <div className="absolute top-0 left-0 right-0 bottom-0 flex h-screen flex-col">

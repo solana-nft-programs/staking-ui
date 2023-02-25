@@ -9,9 +9,9 @@ import {
 import { BorshAccountsCoder, utils } from '@project-serum/anchor'
 import { useWallet } from '@solana/wallet-adapter-react'
 import type { Connection, PublicKey } from '@solana/web3.js'
+import { useQuery } from '@tanstack/react-query'
 import { asWallet } from 'common/Wallets'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
-import { useQuery } from '@tanstack/react-query'
 
 import { stakePoolDataToV2 } from './useStakePoolData'
 

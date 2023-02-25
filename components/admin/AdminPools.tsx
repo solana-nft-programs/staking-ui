@@ -31,7 +31,7 @@ export const AdminPools = () => {
     [[] as StakePool[], [] as StakePool[]]
   )
 
-  const allPoolds = stakePoolsWithMetadata.concat(stakePoolsWithoutMetadata)
+  const allPools = stakePoolsWithMetadata.concat(stakePoolsWithoutMetadata)
   return (
     <div className="">
       {!walletId ? (
@@ -42,13 +42,13 @@ export const AdminPools = () => {
         <div className="my-16 flex items-center justify-center text-gray-500">
           <LoadingSpinner />
         </div>
-      ) : allPoolds.length === 0 ? (
+      ) : allPools.length === 0 ? (
         <div className="my-16 flex items-center justify-center text-gray-500">
           No stake pools found...
         </div>
       ) : (
         <div className="grid-grid-cols-1 grid gap-5 py-10 md:grid-cols-3">
-          {allPoolds.map((stakePool) => (
+          {allPools.map((stakePool) => (
             <div
               key={stakePool.stakePoolData.pubkey.toString()}
               className="h-[300px] cursor-pointer rounded-lg bg-white bg-opacity-5 p-10 transition-all duration-100 hover:scale-[1.01]"
