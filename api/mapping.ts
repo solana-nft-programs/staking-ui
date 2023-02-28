@@ -213,4 +213,8 @@ export const stakePoolsWithHostnames: {
     stakePoolAddress: 'EBeHpw9byuS55Znu4qrpsPC9LJvtrgNRKNwzWQPHk2g1',
     hostname: 'v2stake.senseilabs.xyz',
   },
+   {
+    stakePoolAddress: '9A3tS3sJ4DrPcVdshZTKHLDUUy1zoSLp47rPPhmyvNGD',
+    hostname: 'http://dig-staking.xyz/',
+  },
 ]
