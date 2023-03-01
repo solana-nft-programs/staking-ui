@@ -16,6 +16,12 @@ export const useUserRegion = () => {
       ),
     ],
     async () => {
+      // temporarily disabled
+      return {
+        countryCode: '',
+        countryName: '',
+        isAllowed: true,
+      }
       const response = await fetch(
         `https://api.ipgeolocation.io/ipgeo?apiKey=${process.env.GEO_LOCATION_API_KEY}`
       )

@@ -57,7 +57,6 @@ function StakePoolHome(props: { stakePoolMetadataName: string | null }) {
     router.push(stakePoolMetadata?.redirect)
     return <></>
   }
-
   if (
     !stakePoolLoaded ||
     (stakePoolMetadata?.disallowRegions?.length &&
