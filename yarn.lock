@@ -229,7 +229,7 @@
     polished "^4.2.2"
     tslib "^2.4.0"
 
-"@cardinal/common@^6.1.5", "@cardinal/common@^6.1.7":
+"@cardinal/common@^6.1.5":
   version "6.1.7"
   resolved "https://registry.yarnpkg.com/@cardinal/common/-/common-6.1.7.tgz#ad150bd669e1453dc4ac08bdd6fac9830e4be60a"
   integrity sha512-EO2DOEbm0Jqble1iLf1dpKu0MMQq+Iagh3gptnhMXMZIPK6IZ4QuaGgVXo5RgJXX+csvB2boJ0thKcJDb/uBww==
