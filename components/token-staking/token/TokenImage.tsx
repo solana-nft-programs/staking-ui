@@ -3,15 +3,14 @@ import {
   getNameFromTokenData,
 } from 'common/tokenDataUtils'
 import type { AllowedTokenData } from 'hooks/useAllowedTokenDatas'
-import { useMintMetadata } from 'hooks/useMintMetadata'
+import { useMintJson } from 'hooks/useMintJson'
 
 export interface TokenImageProps {
   token: AllowedTokenData
 }
 
 export const TokenImage = ({ token }: TokenImageProps) => {
-  const mintMetadata = useMintMetadata(token)
-
+  const mintMetadata = useMintJson(token)
   return (
     <>
       {mintMetadata.isFetched &&

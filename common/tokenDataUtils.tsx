@@ -1,10 +1,10 @@
 import type { AllowedTokenData } from 'hooks/useAllowedTokenDatas'
-import type { MintMetadata } from 'hooks/useMintMetadata'
+import type { MintJson } from 'hooks/useMintJson'
 import type { StakeEntryTokenData } from 'hooks/useStakedTokenDatas'
 
 export const getNameFromTokenData = (
   tokenData: AllowedTokenData | StakeEntryTokenData,
-  mintMetadata?: MintMetadata | null,
+  mintMetadata?: MintJson | null,
   defaultName?: string
 ) => {
   return (
@@ -17,7 +17,7 @@ export const getNameFromTokenData = (
 
 export const getImageFromTokenData = (
   tokenData: AllowedTokenData | StakeEntryTokenData,
-  mintMetadata?: MintMetadata | null
+  mintMetadata?: MintJson | null
 ) => {
   return mintMetadata?.parsed?.image || tokenData.tokenListData?.logoURI
 }

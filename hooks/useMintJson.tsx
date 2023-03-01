@@ -5,16 +5,16 @@ import { useQueries, useQuery } from '@tanstack/react-query'
 import type { AllowedTokenData } from './useAllowedTokenDatas'
 import type { StakeEntryTokenData } from './useStakedTokenDatas'
 
-export type MintMetadata = AccountData<{
+export type MintJson = AccountData<{
   image?: string
   name?: string
   attributes?: { trait_type: string; value: string }[]
 }>
 
-export const mintMetadataQueryKey = (
+export const mintJsonQueryKey = (
   tokenData: AllowedTokenData | StakeEntryTokenData
 ) => {
-  return ['useMintMetadata', getMintfromTokenData(tokenData)?.toString()]
+  return ['useMintJson', getMintfromTokenData(tokenData)?.toString()]
 }
 
 export const getMintfromTokenData = (
@@ -27,7 +27,7 @@ export const getMintfromTokenData = (
   )
 }
 
-export const mintMetadataQuery = async (
+export const mintJsonQuery = async (
   tokenData: AllowedTokenData | StakeEntryTokenData
 ) => {
   if ('metaplexData' in tokenData && tokenData?.metaplexData?.data.data.uri) {
@@ -41,26 +41,26 @@ export const mintMetadataQuery = async (
   return null
 }
 
-export const useMintMetadata = (
+export const useMintJson = (
   tokenData: AllowedTokenData | StakeEntryTokenData
 ) => {
-  return useQuery<MintMetadata | null>(
-    mintMetadataQueryKey(tokenData),
-    () => mintMetadataQuery(tokenData),
+  return useQuery<MintJson | null>(
+    mintJsonQueryKey(tokenData),
+    () => mintJsonQuery(tokenData),
     {
       refetchOnMount: false,
     }
   )
 }
 
-export const useMintMetadatas = (
+export const useMintJsons = (
   tokenDatas: (AllowedTokenData | StakeEntryTokenData)[]
 ) => {
   return useQueries({
     queries: tokenDatas.map((tokenData) => {
       return {
-        queryKey: mintMetadataQueryKey(tokenData),
-        queryFn: () => mintMetadataQuery(tokenData),
+        queryKey: mintJsonQueryKey(tokenData),
+        queryFn: () => mintJsonQuery(tokenData),
       }
     }),
   })

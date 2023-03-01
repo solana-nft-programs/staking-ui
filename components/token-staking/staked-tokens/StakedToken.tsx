@@ -5,7 +5,7 @@ import { defaultSecondaryColor } from 'api/mapping'
 import { LoadingSpinner } from 'common/LoadingSpinner'
 import { QuickActions } from 'common/QuickActions'
 import { getNameFromTokenData } from 'common/tokenDataUtils'
-import { useMintMetadata } from 'hooks/useMintMetadata'
+import { useMintJson } from 'hooks/useMintJson'
 import type { StakeEntryTokenData } from 'hooks/useStakedTokenDatas'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 import { useStakePoolMetadataCtx } from 'providers/StakePoolMetadataProvider'
@@ -42,7 +42,7 @@ export const StakedToken = ({
   const wallet = useWallet()
   const { connection } = useEnvironmentCtx()
   const { data: stakePoolMetadata } = useStakePoolMetadataCtx()
-  const mintMetadata = useMintMetadata(tk)
+  const mintJson = useMintJson(tk)
 
   return (
     <div key={tk?.stakeEntry?.pubkey.toBase58()}>
@@ -106,7 +106,7 @@ export const StakedToken = ({
           }}
         >
           <div className="truncate px-2 text-xl font-bold">
-            {getNameFromTokenData(tk, mintMetadata?.data)}
+            {getNameFromTokenData(tk, mintJson?.data)}
           </div>
           <div className="truncate font-semibold">
             {tk.tokenListData?.symbol}

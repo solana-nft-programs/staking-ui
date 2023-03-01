@@ -1,14 +1,14 @@
 import type { ReceiptType } from '@cardinal/staking/dist/cjs/programs/stakePool'
 import { BN } from '@project-serum/anchor'
+import type { UseMutationResult } from '@tanstack/react-query'
 import { defaultSecondaryColor } from 'api/mapping'
 import { LoadingSpinner } from 'common/LoadingSpinner'
 import { QuickActions } from 'common/QuickActions'
 import { getNameFromTokenData } from 'common/tokenDataUtils'
 import { formatAmountAsDecimal } from 'common/units'
 import type { AllowedTokenData } from 'hooks/useAllowedTokenDatas'
-import { useMintMetadata } from 'hooks/useMintMetadata'
+import { useMintJson } from 'hooks/useMintJson'
 import { useStakePoolMetadataCtx } from 'providers/StakePoolMetadataProvider'
-import type { UseMutationResult } from '@tanstack/react-query'
 
 import { TokenImage } from '@/components/token-staking/token/TokenImage'
 import { TokenImageWrapper } from '@/components/token-staking/token/TokenImageWrapper'
@@ -38,7 +38,7 @@ export const UnstakedToken = ({
   >
 }) => {
   const { data: stakePoolMetadata } = useStakePoolMetadataCtx()
-  const mintMetadata = useMintMetadata(tk)
+  const mintJson = useMintJson(tk)
   return (
     <div
       key={tk.tokenAccount?.pubkey.toString()}
@@ -80,7 +80,7 @@ export const UnstakedToken = ({
           }}
         >
           <div className="mb-2 truncate px-2 text-xl font-bold">
-            {getNameFromTokenData(tk, mintMetadata?.data)}
+            {getNameFromTokenData(tk, mintJson?.data)}
           </div>
           {!!tk.tokenListData?.symbol && (
             <div className="mb-2 truncate font-semibold">
