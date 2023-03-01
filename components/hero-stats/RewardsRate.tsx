@@ -44,7 +44,10 @@ export const RewardsRate = () => {
             )}
             rel="noreferrer"
           >
-            {rewardMintInfo.data.metaplexMintData?.data.symbol ||
+            {rewardMintInfo.data.metaplexMintData?.data.symbol.replace(
+              /\0/g,
+              ''
+            ) ||
               rewardMintInfo.data.tokenListData?.symbol ||
               '???'}
           </a>{' '}

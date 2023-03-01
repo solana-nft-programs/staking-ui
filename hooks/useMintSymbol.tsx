@@ -15,7 +15,7 @@ export const useMintSymbol = (mint: PublicKey | undefined) => {
       if (!mint) return
       if (isSol) return 'SOL'
       if (mintMetadata.data) {
-        return mintMetadata.data.data.symbol
+        return mintMetadata.data.data.symbol.replace(/\0/g, '')
       }
       const token = await tokenList?.data?.find((token) => {
         return token.address === mint.toString()
