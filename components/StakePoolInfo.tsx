@@ -32,7 +32,6 @@ export const StakePoolInfo = () => {
   const { isFetched: stakePoolLoaded } = useStakePoolData()
   const { data: stakePoolMetadata } = useStakePoolMetadataCtx()
   const rewardDistributorTokenAccountData = useRewardDistributorTokenAccount()
-
   if (
     !stakePoolLoaded ||
     stakePoolMetadata?.notFound ||
@@ -125,8 +124,8 @@ export const StakePoolInfo = () => {
                 )}
                 rel="noreferrer"
               >
-                {rewardMintInfo.data.tokenListData?.symbol ||
-                  rewardMintInfo.data.metaplexMintData?.data.symbol ||
+                {rewardMintInfo.data.metaplexMintData?.data.symbol ||
+                  rewardMintInfo.data.tokenListData?.symbol ||
                   '???'}
               </a>{' '}
               {rewardDistributorData.data.parsed?.maxRewardSecondsReceived?.eq(
@@ -152,8 +151,8 @@ export const StakePoolInfo = () => {
                       rewards.data?.claimableRewards,
                       Math.min(rewardMintInfo.data.mintInfo.decimals, 6)
                     )}{' '}
-                    {rewardMintInfo.data.tokenListData?.name ||
-                      rewardMintInfo.data.metaplexMintData?.data.name ||
+                    {rewardMintInfo.data.metaplexMintData?.data.name ||
+                      rewardMintInfo.data.tokenListData?.name ||
                       '???'}
                   </div>
                   <div className="text-xs text-gray-500">

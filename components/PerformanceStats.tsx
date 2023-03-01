@@ -93,8 +93,8 @@ export const PerformanceStats: React.FC<
               )}
               rel="noreferrer"
             >
-              {rewardMintInfo.data.tokenListData?.symbol ||
-                rewardMintInfo.data.metaplexMintData?.data.symbol ||
+              {rewardMintInfo.data.metaplexMintData?.data.symbol ||
+                rewardMintInfo.data.tokenListData?.symbol ||
                 '???'}
             </a>{' '}
             {rewardDistributorData.data.parsed?.maxRewardSecondsReceived?.eq(
