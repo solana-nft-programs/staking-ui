@@ -42,16 +42,13 @@ export const useGenerateClaimRewardsForHoldersTxs = () => {
         'pubkey' | 'parsed'
       >[] = []
       if (isStakePoolV2(stakePool.data.parsed)) {
-        stakeEntriesV2 = await getActiveStakePoolEntriesV2(
-          connection,
-          wallet,
-          stakePool.data
-        )
+        stakeEntriesV2 = (
+          await getActiveStakePoolEntriesV2(connection, wallet, stakePool.data)
+        ).filter((entry) => !entry.parsed.cooldownStartSeconds)
       } else {
-        stakeEntriesV1 = await getActiveStakeEntriesForPool(
-          connection,
-          stakePool.data.pubkey
-        )
+        stakeEntriesV1 = (
+          await getActiveStakeEntriesForPool(connection, stakePool.data.pubkey)
+        ).filter((entry) => !entry.parsed.cooldownStartSeconds)
       }
 
       console.log(
