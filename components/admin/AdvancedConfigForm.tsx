@@ -10,6 +10,7 @@ import { useFormik } from 'formik'
 import { useHandlePoolConfig } from 'handlers/useHandlePoolConfig'
 import { useStakePoolData } from 'hooks/useStakePoolData'
 import { useStakePoolId } from 'hooks/useStakePoolId'
+import { useWalletId } from 'hooks/useWalletId'
 import { useStakePoolMetadataCtx } from 'providers/StakePoolMetadataProvider'
 import { HexColorPicker } from 'react-colorful'
 import { BsFillInfoCircleFill } from 'react-icons/bs'
@@ -184,6 +185,7 @@ const validationSchema = Yup.object({
 })
 
 export const AdvancedConfigForm = () => {
+  const walletId = useWalletId()
   const handlePoolConfig = useHandlePoolConfig()
   const stakePooldId = useStakePoolId()
   const stakePool = useStakePoolData()
@@ -543,6 +545,10 @@ export const AdvancedConfigForm = () => {
         </div>
         <AsyncButton
           loading={handlePoolConfig.isLoading}
+          disabled={
+            stakePool.data &&
+            walletId?.toString() !== stakePool.data?.parsed.authority.toString()
+          }
           onClick={() => {
             handlePoolConfig.mutate({
               config: values,
