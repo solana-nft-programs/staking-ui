@@ -217,4 +217,8 @@ export const stakePoolsWithHostnames: {
     stakePoolAddress: '9A3tS3sJ4DrPcVdshZTKHLDUUy1zoSLp47rPPhmyvNGD',
     hostname: 'dig-staking.xyz',
   },
+  {
+    stakePoolAddress: 'H7CFeUboerg7w3RaU8apsPJwkU4zW1fPXenQygiHPFn3',
+    hostname: 'cheesecomputer-staking.vercel.app',
+  },
 ]
