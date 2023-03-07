@@ -221,7 +221,9 @@ function StakePoolHome(props: { stakePoolMetadataName: string | null }) {
         }
       </div>
       {!stakePoolMetadata?.hideFooter ? (
-        <Footer bgColor={stakePoolMetadata?.colors?.primary.replace(' ', '')} />
+        <Footer
+          bgColor={stakePoolMetadata?.colors?.primary?.replace(' ', '')}
+        />
       ) : (
         <div className="h-24"></div>
       )}
