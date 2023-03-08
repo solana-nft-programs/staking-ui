@@ -261,7 +261,7 @@ export function StakePoolUpdate({
           <FormFieldTitleInput
             title={'Reset on stake'}
             description={
-              'If selected, everytime a user stakes the stake timer will reset rather than accumulate.'
+              'If selected, everytime a user stakes the stake timer will reset rather than accumulate. They will have to re-accumulate all their stake time to start gaining rewards again which can display as a negative balance until they catch back up.'
             }
           />
           <SelectorBoolean
