@@ -9,33 +9,30 @@ import { getRewardEntry } from '@cardinal/staking/dist/cjs/programs/rewardDistri
 import { findRewardEntryId } from '@cardinal/staking/dist/cjs/programs/rewardDistributor/pda'
 import { findStakeEntryIdFromMint } from '@cardinal/staking/dist/cjs/programs/stakePool/utils'
 import type { PublicKey } from '@solana/web3.js'
+import { useQuery } from '@tanstack/react-query'
 import { notify } from 'common/Notification'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
-import { useQuery } from '@tanstack/react-query'
 
 import {
   isRewardDistributorV2,
   useRewardDistributorData,
 } from './useRewardDistributorData'
 import { useStakePoolId } from './useStakePoolId'
-import { useWalletId } from './useWalletId'
 
 export const useMintMultiplier = (mint: string) => {
   const { data: stakePoolId } = useStakePoolId()
-  const walletId = useWalletId()
   const rewardDistributor = useRewardDistributorData()
   const { connection } = useEnvironmentCtx()
-  return useQuery<number | undefined>(
+  return useQuery<number | null>(
     ['useMintMultiplier', mint?.toString()],
     async () => {
-      if (!walletId) throw 'Wallet not found'
       if (!stakePoolId) throw 'No stake pool found'
       if (!rewardDistributor.data || !rewardDistributor.data.parsed)
         throw 'No reward distributor found'
       const mintId = tryPublicKey(mint)
       if (!mintId) {
         notify({ message: 'Invalid mint' })
-        return undefined
+        return null
       }
       let stakeEntryId: PublicKey
       let rewardEntryData: Pick<
@@ -46,9 +43,10 @@ export const useMintMultiplier = (mint: string) => {
         const stakeEntryId = findStakeEntryId(
           stakePoolId,
           mintId,
-          walletId,
+          // TODO change for fungible
+          undefined,
           false
-        ) // TODO change for fungible
+        )
         const rewardEntryId = findRewardEntryIdV2(
           rewardDistributor.data.pubkey,
           stakeEntryId
@@ -62,7 +60,8 @@ export const useMintMultiplier = (mint: string) => {
         try {
           stakeEntryId = await findStakeEntryIdFromMint(
             connection,
-            walletId,
+            // TODO change for fungible
+            stakePoolId,
             stakePoolId,
             mintId
           )
@@ -75,12 +74,12 @@ export const useMintMultiplier = (mint: string) => {
         )
         rewardEntryData = await getRewardEntry(connection, rewardEntryId)
       }
-      if (!rewardEntryData.parsed) return
+      if (!rewardEntryData.parsed) return null
       return (
         rewardEntryData.parsed.multiplier.toNumber() /
         10 ** (rewardDistributor.data.parsed?.multiplierDecimals || 0)
       )
     },
-    { enabled: !!stakePoolId && mint.length > 0 }
+    { enabled: !!stakePoolId && mint.length > 0, retry: false }
   )
 }

@@ -22,9 +22,9 @@ export const MintMultiplierLookup = () => {
           }}
         />
         <div className="w-1/6">
-          <div className="flex items-center justify-center rounded-md border border-gray-500 py-3 px-4">
-            {mintMultiplier.isLoading ? (
-              <LoadingSpinner height="30" />
+          <div className="flex items-center justify-center rounded-md border border-gray-500 py-[11px] px-4">
+            {mintMultiplier.isFetching ? (
+              <LoadingSpinner height="24" />
             ) : (
               mintMultiplier.data ?? '-'
             )}
