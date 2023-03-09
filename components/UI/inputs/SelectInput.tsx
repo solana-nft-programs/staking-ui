@@ -22,7 +22,7 @@ export const SelectInput: React.FC<SelectInputProps> = ({
       value={value}
       onChange={(e) => setValue(e.target.value)}
       className={classNames([
-        'rounded-lg bg-gray-800 px-2 py-[10px] outline outline-gray-600 focus:outline-orange-500',
+        'rounded-lg bg-gray-800 px-2 py-[10px] ring-[1px] ring-gray-600 focus:ring-orange-500',
         className,
       ])}
     >

@@ -94,7 +94,7 @@ export const Selector = <T,>({
       </div>
       <div
         className={classNames([
-          'absolute z-50 -mb-1 w-full rounded-md bg-gray-800 outline outline-2 outline-gray-700 transition-all',
+          'absolute z-50 -mb-1 w-full rounded-md border-2 border-gray-700 bg-gray-800 transition-all',
           isOpen ? 'h-auto opacity-100' : 'h-0 overflow-hidden opacity-0',
           position === 'from-top' ? 'top-0' : 'bottom-1',
         ])}

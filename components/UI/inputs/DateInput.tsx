@@ -25,9 +25,9 @@ export const DateInput = ({
       onChange={(e) => setValue(e.target.value)}
       value={value}
       className={classNames([
-        'w-full rounded-lg bg-gray-800 p-2 outline outline-gray-600',
-        hasError && 'outline outline-red-500',
-        !hasError && 'focus:outline-orange-500',
+        'w-full rounded-lg bg-gray-800 p-2 ring-[1px] ring-gray-600',
+        hasError && 'ring-red-500',
+        !hasError && 'focus:ring-orange-500',
         className,
       ])}
     />
