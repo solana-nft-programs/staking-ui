@@ -119,7 +119,7 @@ export const AdminStakePool = ({
             href={pubKeyUrl(stakePoolId, environment.label)}
             rel="noreferrer"
           >
-            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gray-700 outline outline-gray-700 hover:outline-orange-500">
+            <div className="flex h-8 w-8 items-center justify-center rounded-full border-[2px] border-gray-700 bg-gray-700 transition hover:border-orange-500">
               <Image src="/logos/solana-explorer.png" width={12} height={12} />
             </div>
           </a>
@@ -130,7 +130,7 @@ export const AdminStakePool = ({
               environment.label
             )}
           >
-            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gray-700 outline outline-gray-700 hover:outline-orange-500">
+            <div className="flex h-8 w-8 items-center justify-center rounded-full border-[2px] border-gray-700 bg-gray-700 transition hover:border-orange-500">
               <LinkIcon className="h-4 w-4 text-gray-400" />
             </div>
           </a>
