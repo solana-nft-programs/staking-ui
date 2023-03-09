@@ -217,4 +217,8 @@ export const stakePoolsWithHostnames: {
     stakePoolAddress: '9A3tS3sJ4DrPcVdshZTKHLDUUy1zoSLp47rPPhmyvNGD',
     hostname: 'dig-staking.xyz',
   },
+  {
+    stakePoolAddress: '3DZR7nW82bNB1hVaZUwwbAUBhEYdTrhzD5MkQrWuYzBb',
+    hostname: 'stake.retrogoons.xyz',
+  },
 ]
