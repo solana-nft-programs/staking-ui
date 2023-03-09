@@ -20,16 +20,16 @@ export const TokenWrapper = ({
   return (
     <div
       className={classNames([
-        'relative flex cursor-pointer flex-col rounded-xl outline outline-4',
+        'relative flex cursor-pointer flex-col rounded-xl border border-4',
         {
-          'shadow-lg outline-orange-500':
+          'border-orange-500 shadow-lg':
             selected && !stakePoolMetadata?.colors?.secondary,
-          'outline-gray-700': !selected,
+          'border-gray-700': !selected,
         },
       ])}
       onClick={() => select(token)}
       style={{
-        outlineColor: selected ? stakePoolMetadata?.colors?.secondary : '',
+        borderColor: selected ? stakePoolMetadata?.colors?.secondary : '',
         boxShadow: selected
           ? `0px 0px 20px ${stakePoolMetadata?.colors?.secondary || '#FFFFFF'}`
           : '',
