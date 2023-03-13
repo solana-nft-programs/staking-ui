@@ -1,4 +1,4 @@
-import { BN } from '@project-serum/anchor'
+import { BN } from '@coral-xyz/anchor'
 import { AsyncButton } from 'common/Button'
 import { LoadingSpinner } from 'common/LoadingSpinner'
 import {

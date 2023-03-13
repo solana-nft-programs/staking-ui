@@ -12,8 +12,8 @@ import { findRewardEntryId } from '@cardinal/staking/dist/cjs/programs/rewardDis
 import type {
   AllAccountsMap,
   TypeDef,
-} from '@project-serum/anchor/dist/cjs/program/namespace/types'
-import type { IdlTypes } from '@project-serum/anchor/dist/esm'
+} from '@coral-xyz/anchor/dist/cjs/program/namespace/types'
+import type { IdlTypes } from '@coral-xyz/anchor/dist/esm'
 import type { Connection, PublicKey } from '@solana/web3.js'
 import { isRewardDistributorV2 } from 'hooks/useRewardDistributorData'
 

@@ -16,7 +16,7 @@ import {
 } from '@cardinal/staking/dist/cjs/programs/rewardDistributor/transaction'
 import { withInitStakeEntry } from '@cardinal/staking/dist/cjs/programs/stakePool/transaction'
 import { findStakeEntryIdFromMint } from '@cardinal/staking/dist/cjs/programs/stakePool/utils'
-import { BN } from '@project-serum/anchor'
+import { BN } from '@coral-xyz/anchor'
 import { useWallet } from '@solana/wallet-adapter-react'
 import { PublicKey, SystemProgram, Transaction } from '@solana/web3.js'
 import { useMutation } from '@tanstack/react-query'

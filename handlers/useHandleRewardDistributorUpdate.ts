@@ -1,7 +1,7 @@
 import { executeTransaction } from '@cardinal/common'
 import { rewardsCenterProgram } from '@cardinal/rewards-center'
 import { withUpdateRewardDistributor } from '@cardinal/staking/dist/cjs/programs/rewardDistributor/transaction'
-import { BN } from '@project-serum/anchor'
+import { BN } from '@coral-xyz/anchor'
 import { useWallet } from '@solana/wallet-adapter-react'
 import { Transaction } from '@solana/web3.js'
 import { useMutation } from '@tanstack/react-query'

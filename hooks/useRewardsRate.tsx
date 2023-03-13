@@ -1,7 +1,7 @@
 import type { IdlAccountData } from '@cardinal/rewards-center'
 import { calculatePendingRewards } from '@cardinal/staking'
 import { RewardDistributorKind } from '@cardinal/staking/dist/cjs/programs/rewardDistributor'
-import { BN } from '@project-serum/anchor'
+import { BN } from '@coral-xyz/anchor'
 import { useQuery } from '@tanstack/react-query'
 import { rewardEntryDataToV1 } from 'api/fetchRewardEntry'
 import { stakeEntryDataToV1 } from 'api/fetchStakeEntry'

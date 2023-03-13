@@ -1,5 +1,5 @@
 import { RewardDistributorKind } from '@cardinal/staking/dist/cjs/programs/rewardDistributor'
-import { BN } from '@project-serum/anchor'
+import { BN } from '@coral-xyz/anchor'
 import { formatMintNaturalAmountAsDecimal } from 'common/units'
 import {
   isRewardDistributorV2,

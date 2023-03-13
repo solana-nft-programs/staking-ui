@@ -1,4 +1,4 @@
-import { BN } from '@project-serum/anchor'
+import { BN } from '@coral-xyz/anchor'
 import { formatAmountAsDecimal } from 'common/units'
 import { pubKeyUrl } from 'common/utils'
 import { useRewardDistributorData } from 'hooks/useRewardDistributorData'

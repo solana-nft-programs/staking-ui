@@ -6,7 +6,7 @@ import {
   findRulesetId,
 } from '@cardinal/creator-standard/dist/cjs/pda'
 import { createCreateMetadataAccountV3Instruction } from '@metaplex-foundation/mpl-token-metadata'
-import type { Wallet } from '@project-serum/anchor/dist/cjs/provider'
+import type { Wallet } from '@coral-xyz/anchor/dist/cjs/provider'
 import { useWallet } from '@solana/wallet-adapter-react'
 import type { Connection } from '@solana/web3.js'
 import { Keypair, LAMPORTS_PER_SOL } from '@solana/web3.js'

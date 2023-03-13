@@ -11,12 +11,12 @@ import {
   STAKE_POOL_ADDRESS,
   STAKE_POOL_IDL,
 } from '@cardinal/staking/dist/cjs/programs/stakePool'
-import { BorshAccountsCoder } from '@project-serum/anchor'
+import { BorshAccountsCoder } from '@coral-xyz/anchor'
 import type {
   AllAccountsMap,
   IdlTypes,
   TypeDef,
-} from '@project-serum/anchor/dist/cjs/program/namespace/types'
+} from '@coral-xyz/anchor/dist/cjs/program/namespace/types'
 import { PublicKey } from '@solana/web3.js'
 import { useQuery } from '@tanstack/react-query'
 import { useStakePoolId } from 'hooks/useStakePoolId'

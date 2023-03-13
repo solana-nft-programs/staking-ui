@@ -419,10 +419,10 @@
     "@solana/web3.js" "^1.66.2"
     bn.js "^5.2.0"
 
-"@cardinal/rewards-center@^2.7.2":
-  version "2.7.2"
-  resolved "https://registry.yarnpkg.com/@cardinal/rewards-center/-/rewards-center-2.7.2.tgz#90005e67746200f11d8ba9e1f633edd09c68a6f1"
-  integrity sha512-hTnzaP+UMOmEfYXFuYbPq6/NR44hytG/EGuK6zMpmRIBsYk4tlb27628YOjdB2vaGyEgQ+pQDfAHFWa3K/Ykgg==
+"@cardinal/rewards-center@^2.7.3":
+  version "2.7.3"
+  resolved "https://registry.yarnpkg.com/@cardinal/rewards-center/-/rewards-center-2.7.3.tgz#1e2105fe9ff117bcb5594a2a25453ef17b9739f3"
+  integrity sha512-xB2uYm0/02Na6+9t/pqSnwQgaX7T6ec9Dcj705Hd3OHEvc8YnyIEfwlnU1lQKzkq4U63nlTTd4zXcraGmTEtGw==
   dependencies:
     "@cardinal/common" "^7.0.0"
     "@cardinal/creator-standard" "^2.4.0"

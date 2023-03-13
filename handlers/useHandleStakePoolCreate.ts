@@ -4,7 +4,7 @@ import {
   findStakePoolId,
   rewardsCenterProgram,
 } from '@cardinal/rewards-center'
-import { BN } from '@project-serum/anchor'
+import { BN } from '@coral-xyz/anchor'
 import { useWallet } from '@solana/wallet-adapter-react'
 import type { PublicKey } from '@solana/web3.js'
 import { SystemProgram, Transaction } from '@solana/web3.js'

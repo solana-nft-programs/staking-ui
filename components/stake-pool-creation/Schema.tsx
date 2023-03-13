@@ -1,4 +1,4 @@
-import { BN } from '@project-serum/anchor'
+import { BN } from '@coral-xyz/anchor'
 import { tryPublicKey } from 'common/utils'
 import * as Yup from 'yup'
 

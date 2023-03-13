@@ -6,7 +6,7 @@ import {
   STAKE_POOL_ADDRESS,
   STAKE_POOL_IDL,
 } from '@cardinal/staking/dist/cjs/programs/stakePool'
-import { BorshAccountsCoder, utils } from '@project-serum/anchor'
+import { BorshAccountsCoder, utils } from '@coral-xyz/anchor'
 import { useWallet } from '@solana/wallet-adapter-react'
 import type { Connection, PublicKey } from '@solana/web3.js'
 import { useQuery } from '@tanstack/react-query'

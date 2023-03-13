@@ -10,12 +10,12 @@ import {
 import type { RewardDistributorData } from '@cardinal/staking/dist/cjs/programs/rewardDistributor'
 import { getRewardDistributor } from '@cardinal/staking/dist/cjs/programs/rewardDistributor/accounts'
 import { findRewardDistributorId } from '@cardinal/staking/dist/cjs/programs/rewardDistributor/pda'
-import { BN } from '@project-serum/anchor'
+import { BN } from '@coral-xyz/anchor'
 import type {
   AllAccountsMap,
   IdlTypes,
   TypeDef,
-} from '@project-serum/anchor/dist/cjs/program/namespace/types'
+} from '@coral-xyz/anchor/dist/cjs/program/namespace/types'
 import { PublicKey } from '@solana/web3.js'
 import { REWARD_QUERY_KEY } from 'handlers/useHandleClaimRewards'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'

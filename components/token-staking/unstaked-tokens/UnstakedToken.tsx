@@ -1,5 +1,5 @@
 import type { ReceiptType } from '@cardinal/staking/dist/cjs/programs/stakePool'
-import { BN } from '@project-serum/anchor'
+import { BN } from '@coral-xyz/anchor'
 import type { UseMutationResult } from '@tanstack/react-query'
 import { defaultSecondaryColor } from 'api/mapping'
 import { LoadingSpinner } from 'common/LoadingSpinner'

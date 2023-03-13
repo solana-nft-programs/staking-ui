@@ -1,4 +1,4 @@
-import { BN } from '@project-serum/anchor'
+import { BN } from '@coral-xyz/anchor'
 import { useRewardDistributorData } from 'hooks/useRewardDistributorData'
 import { useStakePoolEntries } from 'hooks/useStakePoolEntries'
 import { useStakePoolMaxStaked } from 'hooks/useStakePoolMaxStaked'

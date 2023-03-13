@@ -14,11 +14,11 @@ import {
   getStakeEntry,
 } from '@cardinal/staking/dist/cjs/programs/stakePool/accounts'
 import { findStakeEntryIdFromMint } from '@cardinal/staking/dist/cjs/programs/stakePool/utils'
-import type { IdlTypes } from '@project-serum/anchor'
+import type { IdlTypes } from '@coral-xyz/anchor'
 import type {
   AllAccountsMap,
   TypeDef,
-} from '@project-serum/anchor/dist/cjs/program/namespace/types'
+} from '@coral-xyz/anchor/dist/cjs/program/namespace/types'
 import type { Connection } from '@solana/web3.js'
 import { PublicKey } from '@solana/web3.js'
 import { BN } from 'bn.js'

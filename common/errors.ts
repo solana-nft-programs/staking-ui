@@ -14,7 +14,7 @@ import {
   STAKE_POOL_ADDRESS,
   STAKE_POOL_IDL,
 } from '@cardinal/staking/dist/cjs/programs/stakePool'
-import type { Idl } from '@project-serum/anchor'
+import type { Idl } from '@coral-xyz/anchor'
 import type { PublicKey, SendTransactionError } from '@solana/web3.js'
 
 type ErrorCode = {
