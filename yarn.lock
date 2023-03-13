@@ -403,10 +403,10 @@
     "@solana/web3.js" "^1.66.2"
     bn.js "^5.2.0"
 
-"@cardinal/rewards-center@^2.6.5":
-  version "2.6.5"
-  resolved "https://registry.yarnpkg.com/@cardinal/rewards-center/-/rewards-center-2.6.5.tgz#5887c099de2125547a374bc605222e9667cae20d"
-  integrity sha512-TA+W+mc1SXuVq0U0V1xNyyK4n9Qao5pSbSa2WcGfcQElRxv0SLrzKPtoCjcBFrezMOvGo1M9KVej/vX0Iv2iiQ==
+"@cardinal/rewards-center@^2.7.0":
+  version "2.7.0"
+  resolved "https://registry.yarnpkg.com/@cardinal/rewards-center/-/rewards-center-2.7.0.tgz#4b780339ecb0cc8dc6d71cf68354805195bb439a"
+  integrity sha512-jTpgdwpS5o17hv5jo7nhgbD2ljHNE6iaAvzOsp6LgxAZZxYk5Fuc0m55jk/Pbw4r4fHN0ugCf378AogumpXlzg==
   dependencies:
     "@cardinal/common" "^7.0.0"
     "@cardinal/creator-standard" "^2.4.0"
@@ -417,10 +417,10 @@
     "@solana/web3.js" "^1.66.2"
     bn.js "^5.2.0"
 
-"@cardinal/staking@^2.1.3":
-  version "2.1.3"
-  resolved "https://registry.yarnpkg.com/@cardinal/staking/-/staking-2.1.3.tgz#5163fbc786dd976133755812412fb9f010ba2507"
-  integrity sha512-4PCGjG2hvTgDrsAuci7UkpG0cqTpCojMAAOyLdGBSSb4i5GwTS0ySoIBgVB3GjLFXguFC+F7Dm9AL6TyWSRG3g==
+"@cardinal/staking@^2.2.0":
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/@cardinal/staking/-/staking-2.2.0.tgz#210bd5187724944031a313c024fdc7ccb9ac6ef6"
+  integrity sha512-gSeL6O3u/T8zIlqJS3kV2xd0CB44is8CrOJmLdtzhuN69u/+26pJcWhzVNeTMS9o7rwO8VJD55zNg/L5NjxOFA==
   dependencies:
     "@cardinal/common" "^7.0.0"
     "@cardinal/payment-manager" "^2.1.1"
