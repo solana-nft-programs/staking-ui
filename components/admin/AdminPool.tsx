@@ -106,10 +106,7 @@ export const AdminStakePool = ({
   return (
     <div className="mx-auto flex w-full flex-grow flex-col items-center gap-6">
       <div className="flex w-full flex-col items-center justify-center gap-6">
-        <div
-          className="text-4xl text-light-0"
-          style={{ color: config?.colors?.fontColor }}
-        >
+        <div className="text-4xl text-light-0">
           {config?.displayName ?? shortPubKey(stakePoolId)}
         </div>
         <div className="flex space-x-3">
