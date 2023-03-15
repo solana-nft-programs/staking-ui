@@ -1,3 +1,4 @@
+import { Tooltip } from 'common/Tooltip'
 import type { StakeEntryTokenData } from 'hooks/useStakedTokenDatas'
 import { useStakePoolData } from 'hooks/useStakePoolData'
 
@@ -21,12 +22,16 @@ export const TokenStatCooldownBadge = ({
   return (
     <>
       {hasCooldown({ tokenData, stakePool }) && (
-        <Badge className={className}>
-          <div className="text-xs">🧊</div>
+        <Tooltip title="Cooldown time remaining">
           <div>
-            <TokenStatCooldownValue tokenData={tokenData} />
+            <Badge className={className}>
+              <div className="text-base">🧊</div>
+              <div>
+                <TokenStatCooldownValue tokenData={tokenData} />
+              </div>
+            </Badge>
           </div>
-        </Badge>
+        </Tooltip>
       )}
     </>
   )
