@@ -112,8 +112,8 @@ export function RewardDistributorUpdate() {
   return (
     <div className="flex w-full flex-col gap-4">
       <div className="relative w-full">
-        {mintInfo.isLoading ? (
-          <div className="absolute right-2 bottom-[22px]">
+        {mintInfo.isFetching ? (
+          <div className="absolute right-2 bottom-[12px]">
             <LoadingSpinner height="25px" />
           </div>
         ) : (
