@@ -35,12 +35,12 @@ export const TokenStatCooldownValue = ({
         secondstoDuration(stakePool.parsed.cooldownSeconds)
       ) : tokenData.stakeEntry?.parsed.cooldownStartSeconds.toNumber() +
           stakePool.parsed.cooldownSeconds -
-          UTCNow >=
+          Math.floor(UTCNow) >
         0 ? (
         getExpirationString(
           tokenData.stakeEntry?.parsed.cooldownStartSeconds.toNumber() +
             stakePool.parsed.cooldownSeconds,
-          UTCNow
+          Math.floor(UTCNow)
         )
       ) : (
         <FaCheck />
