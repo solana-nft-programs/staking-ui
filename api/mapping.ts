@@ -217,4 +217,8 @@ export const stakePoolsWithHostnames: {
     stakePoolAddress: '9A3tS3sJ4DrPcVdshZTKHLDUUy1zoSLp47rPPhmyvNGD',
     hostname: 'dig-staking.xyz',
   },
+  {
+    stakePoolAddress: '4CnsdUSFCFKa9zBupuxFesZZJm64Eq3WgrAePF2KCuXv',
+    hostname: 'inkbank.metatattooclub.io',
+  },
 ]
