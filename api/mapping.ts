@@ -219,6 +219,6 @@ export const stakePoolsWithHostnames: {
   },
   {
     stakePoolAddress: '4CnsdUSFCFKa9zBupuxFesZZJm64Eq3WgrAePF2KCuXv',
-    hostname: 'inkbank.metatattooclub.io',
+    hostname: 'inkbank.io',
   },
 ]
