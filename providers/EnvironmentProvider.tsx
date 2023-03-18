@@ -21,10 +21,8 @@ export interface EnvironmentContextValues {
 export const ENVIRONMENTS: Environment[] = [
   {
     label: 'mainnet-beta',
-    primary:
-      process.env.MAINNET_PRIMARY || 'https://rpc.ankr.com/solana',
-    secondary:
-      process.env.MAINNET_SECONDARY || 'https://rpc.ankr.com/solana',
+    primary: process.env.MAINNET_PRIMARY || 'https://rpc.ankr.com/solana',
+    secondary: process.env.MAINNET_SECONDARY || 'https://rpc.ankr.com/solana',
   },
   {
     label: 'testnet',

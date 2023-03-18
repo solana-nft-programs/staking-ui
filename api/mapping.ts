@@ -95,8 +95,8 @@ export const stakePoolsWithHostnames: {
 }[] = [
   {
     stakePoolAddress: 'BKEAfh7ta4SDx7LHiuUK96uBUJMLWcsPPNwLhZthzZd7',
-    hostname: 'https://stake.liminality.app',
-  },  
+    hostname: 'stake.liminality.app',
+  },
   {
     stakePoolAddress: '6LGoJWDEQWGQQ6s2oZWbLqRGfjLbyrzVUtLcXDKc5hED',
     hostname: 'https://www.geexolotls.com/staking',
