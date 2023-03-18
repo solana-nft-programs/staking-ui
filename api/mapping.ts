@@ -94,6 +94,10 @@ export const stakePoolsWithHostnames: {
   hostname: string
 }[] = [
   {
+    stakePoolAddress: 'BKEAfh7ta4SDx7LHiuUK96uBUJMLWcsPPNwLhZthzZd7',
+    hostname: 'https://stake2.liminality.app',
+  },  
+  {
     stakePoolAddress: '6LGoJWDEQWGQQ6s2oZWbLqRGfjLbyrzVUtLcXDKc5hED',
     hostname: 'https://www.geexolotls.com/staking',
   },
@@ -220,9 +224,5 @@ export const stakePoolsWithHostnames: {
   {
     stakePoolAddress: '4CnsdUSFCFKa9zBupuxFesZZJm64Eq3WgrAePF2KCuXv',
     hostname: 'inkbank.io',
-  },
-  {
-    stakePoolAddress: 'BKEAfh7ta4SDx7LHiuUK96uBUJMLWcsPPNwLhZthzZd7',
-    hostname: 'https://stake2.liminality.app',
-  },
+  }, 
 ]
