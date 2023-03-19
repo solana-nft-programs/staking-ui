@@ -11,8 +11,9 @@ export const getNameFromTokenData = (
     mintMetadata?.parsed?.name ||
     tokenData.metaplexData?.data.data.name ||
     tokenData.tokenListData?.name ||
-    defaultName
-  )
+    defaultName ||
+    ''
+  ).replace(/\0/g, '')
 }
 
 export const getImageFromTokenData = (
