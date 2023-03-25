@@ -225,4 +225,8 @@ export const stakePoolsWithHostnames: {
     stakePoolAddress: '4CnsdUSFCFKa9zBupuxFesZZJm64Eq3WgrAePF2KCuXv',
     hostname: 'inkbank.io',
   },
+  {
+    stakePoolAddress: 'ETtip5yn9T7FtFgYV7k8RUkcryuoiPSj9hxC3mX7dKzq',
+    hostname: 'stake.moonroll.io',
+  },
 ]
