@@ -154,11 +154,11 @@ export const StakePoolInfo = () => {
                       rewards.data?.claimableRewards,
                       Math.min(rewardMintInfo.data.mintInfo.decimals, 6)
                     )}{' '}
-                    {rewardMintInfo.data.metaplexMintData?.data.name.replace(
+                    {rewardMintInfo.data.metaplexMintData?.data.symbol.replace(
                       /\0/g,
                       ''
                     ) ||
-                      rewardMintInfo.data.tokenListData?.name ||
+                      rewardMintInfo.data.tokenListData?.symbol ||
                       '???'}
                   </div>
                   <div className="text-xs text-gray-500">
