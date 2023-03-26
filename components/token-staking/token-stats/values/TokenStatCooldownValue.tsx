@@ -12,8 +12,8 @@ export interface CooldownArgs {
 
 export const hasCooldown = ({ tokenData, stakePool }: CooldownArgs) => {
   return (
-    tokenData.stakeEntry?.parsed.cooldownStartSeconds ||
-    stakePool?.parsed.cooldownSeconds
+    !!tokenData.stakeEntry?.parsed.cooldownStartSeconds ||
+    !!stakePool?.parsed.cooldownSeconds
   )
 }
 
