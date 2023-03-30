@@ -123,7 +123,10 @@ export const PerformanceStats: React.FC<
               Math.min(rewardMintInfo.data.mintInfo.decimals, 6)
             )}{' '}
             {rewardMintInfo.data.tokenListData?.name ||
-              rewardMintInfo.data.metaplexMintData?.data.name ||
+              rewardMintInfo.data.metaplexMintData?.data.name.replace(
+                /\0/g,
+                ''
+              ) ||
               '???'}
           </div>
         )}
