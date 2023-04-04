@@ -51,13 +51,15 @@ export const useGenerateClaimRewardsForHoldersTxs = () => {
         ).filter((entry) => !entry.parsed.cooldownStartSeconds)
       }
 
-      console.log(
-        `Estimated SOL needed to claim rewards for ${
-          [...stakeEntriesV1, ...stakeEntriesV2].length
-        } staked tokens:`,
-        0.002 * [...stakeEntriesV1, ...stakeEntriesV2].length,
-        'SOL'
-      )
+      const costLog = `Estimated SOL needed to claim rewards for ${
+        [...stakeEntriesV1, ...stakeEntriesV2].length
+      } staked tokens:`
+      0.002 * [...stakeEntriesV1, ...stakeEntriesV2].length, 'SOL'
+      notify({
+        message: costLog,
+        type: 'info',
+      })
+      console.log(costLog)
 
       const transactions: Transaction[] = []
       if (isStakePoolV2(stakePool.data.parsed)) {
