@@ -27,10 +27,10 @@ export const useHandleExecuteTransactions = () => {
 
       const unsignedChunks = chunkArray(transactions, BATCH_SIZE)
       const unsignedTransactions: Transaction[] = []
+      const recentBlockhash = (await connection.getRecentBlockhash('max'))
+        .blockhash
       for (let i = 0; i < unsignedChunks.length; i++) {
         const txs = unsignedChunks[i]!
-        const recentBlockhash = (await connection.getRecentBlockhash('max'))
-          .blockhash
         for (const tx of txs) {
           tx.feePayer = wallet.publicKey
           tx.recentBlockhash = recentBlockhash
