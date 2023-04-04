@@ -1,11 +1,13 @@
+import { emptyWallet } from '@cardinal/common'
 import type { IdlAccountData } from '@cardinal/rewards-center'
 import { rewardsCenterProgram } from '@cardinal/rewards-center'
 import { getActiveStakeEntriesForPool } from '@cardinal/staking/dist/cjs/programs/stakePool/accounts'
+import type { Wallet } from '@project-serum/anchor/dist/cjs/provider'
 import { useWallet } from '@solana/wallet-adapter-react'
-import { PublicKey } from '@solana/web3.js'
+import type { Connection } from '@solana/web3.js'
+import { Keypair, PublicKey } from '@solana/web3.js'
 import { useQuery } from '@tanstack/react-query'
 import { stakeEntryDataToV2 } from 'api/fetchStakeEntry'
-import { asWallet } from 'common/Wallets'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 
 import { TOKEN_DATAS_KEY } from './useAllowedTokenDatas'
@@ -23,27 +25,11 @@ export const useStakePoolEntries = () => {
     async () => {
       if (stakePoolData?.pubkey && stakePoolData?.parsed) {
         if (isStakePoolV2(stakePoolData.parsed)) {
-          const program = rewardsCenterProgram(
+          return getActiveStakePoolEntriesV2(
             secondaryConnection,
-            asWallet(wallet)
+            emptyWallet(wallet.publicKey || Keypair.generate().publicKey),
+            stakePoolData
           )
-          const stakeEntries = await program.account.stakeEntry.all([
-            {
-              memcmp: {
-                offset: 10,
-                bytes: stakePoolData.pubkey.toString(),
-              },
-            },
-          ])
-          return stakeEntries
-            .filter(
-              (entry) =>
-                entry.account.lastStaker.toString() !==
-                PublicKey.default.toString()
-            )
-            .map((e) => {
-              return { pubkey: e.publicKey, parsed: e.account }
-            })
         } else {
           return (
             await getActiveStakeEntriesForPool(
@@ -61,4 +47,28 @@ export const useStakePoolEntries = () => {
     },
     { enabled: !!stakePoolData?.pubkey }
   )
+}
+
+export const getActiveStakePoolEntriesV2 = async (
+  connection: Connection,
+  wallet: Wallet,
+  stakePoolData: Pick<IdlAccountData<'stakePool'>, 'pubkey' | 'parsed'>
+): Promise<Pick<IdlAccountData<'stakeEntry'>, 'pubkey' | 'parsed'>[]> => {
+  const program = rewardsCenterProgram(connection, wallet)
+  const stakeEntries = await program.account.stakeEntry.all([
+    {
+      memcmp: {
+        offset: 10,
+        bytes: stakePoolData.pubkey.toString(),
+      },
+    },
+  ])
+  return stakeEntries
+    .filter(
+      (entry) =>
+        entry.account.lastStaker.toString() !== PublicKey.default.toString()
+    )
+    .map((e) => {
+      return { pubkey: e.publicKey, parsed: e.account }
+    })
 }
