@@ -1,3 +1,4 @@
+import { chunkArray } from '@cardinal/common'
 import { useWallet } from '@solana/wallet-adapter-react'
 import type { Transaction } from '@solana/web3.js'
 import { sendAndConfirmRawTransaction } from '@solana/web3.js'
@@ -8,11 +9,6 @@ import type { Dispatch, SetStateAction } from 'react'
 import { useMutation } from 'react-query'
 
 const BATCH_SIZE = 50
-
-export const chunkArray = (arr: any[], size: number): any[][] =>
-  arr.length > size
-    ? [arr.slice(0, size), ...chunkArray(arr.slice(size), size)]
-    : [arr]
 
 export const useHandleExecuteTransactions = () => {
   const wallet = asWallet(useWallet())
