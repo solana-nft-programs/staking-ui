@@ -26,7 +26,7 @@ export const AdminClaimRewardsForHolders = () => {
       <FormFieldTitleInput
         title={'Claim Rewards for Stakers'}
         description={
-          'As the authority of the pool, you can claim the stake pool rewards for your holders'
+          'As the authority of the pool, you can claim the stake pool rewards for your holders. Clicking generate will show all transactions and allow you to execute them individually or as a batch'
         }
       />
       <div className="flex w-full flex-row justify-center">
