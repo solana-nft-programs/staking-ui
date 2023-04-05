@@ -1,9 +1,7 @@
 import { pubKeyUrl, shortPubKey } from '@cardinal/common'
 import { LinkIcon } from '@heroicons/react/24/outline'
-import type { PublicKey } from '@solana/web3.js'
 import { TabSelector } from 'common/TabSelector'
 import { withCluster } from 'common/utils'
-import { useRewardDistributorData } from 'hooks/useRewardDistributorData'
 import { useStakePoolData } from 'hooks/useStakePoolData'
 import { useStakePoolId } from 'hooks/useStakePoolId'
 import Image from 'next/image'
@@ -14,36 +12,26 @@ import { useState } from 'react'
 import { AdvancedConfigForm } from '@/components/admin/AdvancedConfigForm'
 
 import { AuthorizeMints } from '../AuthorizeMints'
-import { MintMultiplierLookup } from '../MintMultiplierLookup'
-import { MintMultipliers } from '../MintMultipliers'
 import { StakePoolImage } from '../StakePoolImage'
-import { AdminClaimRewardsForHolders } from './AdminClaimRewardsForHolders'
-import { ReclaimFunds } from './ReclaimFunds'
-import { RewardDistributorUpdate } from './RewardDistributorUpdate'
+import { AdminFungibleRewards } from './AdminFungibleRewards'
+import { AdminPoints } from './AdminPoints'
 import { Snapshot } from './Snapshot'
 import { StakePoolBalance } from './StakePoolBalance'
 import { StakePoolUpdate } from './StakePoolUpdate'
-import { TransferFunds } from './TransferFunds'
 
 export type PANE_OPTIONS =
   | 'stake-pool'
   | 'mint-authorization'
-  | 'reward-distributor'
-  | 'reward-multipliers'
-  | 'reward-funds'
+  | 'fungible-rewards'
+  | 'points'
   | 'snapshot'
   | 'advanced-config'
 
-export const AdminStakePool = ({
-  onSuccess,
-}: {
-  onSuccess?: (p: PublicKey | undefined) => void
-}) => {
+export const AdminStakePool = () => {
   const { environment } = useEnvironmentCtx()
   const { data: config } = useStakePoolMetadataCtx()
   const { data: stakePoolId } = useStakePoolId()
   const stakePool = useStakePoolData()
-  const rewardDistributor = useRewardDistributorData()
   const [pane, setPane] = useState<PANE_OPTIONS>('stake-pool')
   const paneTabs: {
     label: JSX.Element
@@ -66,28 +54,17 @@ export const AdminStakePool = ({
           : 'Edit mint authorizations',
     },
     {
-      label: <div className="flex items-center gap-2">Reward distributor</div>,
-      value: 'reward-distributor',
+      label: <div className="flex items-center gap-2">Token Rewards</div>,
+      value: 'fungible-rewards',
       disabled: !stakePool.data,
       tooltip: !stakePool.data
         ? 'Can be added after stake pool creation'
         : 'Edit reward distributor',
     },
     {
-      label: <div className="flex items-center gap-2">Reward multipliers</div>,
-      value: 'reward-multipliers',
-      disabled: !rewardDistributor.data,
-      tooltip: !rewardDistributor.data
-        ? 'Only applicable for stake pools that have reward distribution'
-        : 'Edit reward multipliers',
-    },
-    {
-      label: <div className="flex items-center gap-2">Reward funds</div>,
-      value: 'reward-funds',
-      disabled: !rewardDistributor.data,
-      tooltip: !rewardDistributor.data
-        ? 'Only applicable for stake pools that have reward distribution'
-        : 'Manage reward distributor funds',
+      label: <div className="flex items-center gap-2">Point Rewards</div>,
+      value: 'points',
+      tooltip: 'Adjust point settings for tokens',
     },
     {
       label: <div className="flex items-center gap-2">Snapshot</div>,
@@ -144,32 +121,28 @@ export const AdminStakePool = ({
           }}
         />
       </div>
-      <div className="mt-4 flex w-full max-w-[640px] flex-grow justify-center">
+      <div className="flex w-full max-w-[640px] flex-grow justify-center">
         {
           {
-            'stake-pool': <StakePoolUpdate onSuccess={onSuccess} />,
-            'mint-authorization': <AuthorizeMints />,
-            'reward-distributor': <RewardDistributorUpdate />,
-            'reward-multipliers': (
-              <div>
-                <MintMultiplierLookup />
-                <MintMultipliers />
+            'stake-pool': (
+              <div className="mt-4">
+                <StakePoolUpdate />{' '}
               </div>
             ),
-            'reward-funds': (
-              <div className="w-full">
-                <ReclaimFunds />
-                <TransferFunds />
-                <AdminClaimRewardsForHolders />
+            'mint-authorization': (
+              <div className="mt-4">
+                <AuthorizeMints />
               </div>
             ),
+            'fungible-rewards': <AdminFungibleRewards />,
+            points: <AdminPoints />,
             snapshot: (
-              <div className="w-full">
+              <div className="mt-4 w-full">
                 <Snapshot />
               </div>
             ),
             'advanced-config': (
-              <div className="w-full">
+              <div className="mt-4 w-full">
                 <AdvancedConfigForm />
               </div>
             ),
