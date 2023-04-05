@@ -19,6 +19,7 @@ import type {
   AllAccountsMap,
   TypeDef,
 } from '@coral-xyz/anchor/dist/cjs/program/namespace/types'
+import type { Wallet } from '@coral-xyz/anchor/dist/cjs/provider'
 import type { Connection } from '@solana/web3.js'
 import { PublicKey } from '@solana/web3.js'
 import { BN } from 'bn.js'
@@ -26,7 +27,7 @@ import { isStakePoolV2 } from 'hooks/useStakePoolData'
 
 export const fetchStakeEntry = async (
   connection: Connection,
-  wallet: Parameters<typeof rewardsCenterProgram>[1],
+  wallet: Wallet,
   stakePoolData: Pick<IdlAccountData<'stakePool'>, 'pubkey' | 'parsed'>,
   mintId: PublicKey,
   isFungible = false
@@ -124,6 +125,8 @@ export const stakeEntryDataToV2 = (
       totalStakeSeconds: entryData.totalStakeSeconds,
       usedStakeSeconds: new BN(0),
       cooldownStartSeconds: entryData.cooldownStartSeconds,
+      multiplierStakeSeconds: null,
+      multiplierBasisPoints: null,
     }
   }
   return stakeEntryData as TypeDef<
