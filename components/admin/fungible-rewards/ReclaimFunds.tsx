@@ -12,7 +12,7 @@ import { useRewardDistributorTokenAccount } from 'hooks/useRewardDistributorToke
 import { useRewardMintInfo } from 'hooks/useRewardMintInfo'
 import { useState } from 'react'
 
-import { TextInputIcon } from '../UI/inputs/TextInputIcon'
+import { TextInputIcon } from '@/components/UI/inputs/TextInputIcon'
 
 export const ReclaimFunds = () => {
   const [reclaimAmount, setReclaimAmount] = useState<string>()

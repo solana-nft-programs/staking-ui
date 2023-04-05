@@ -10,11 +10,11 @@ import { useStakePoolMetadataCtx } from 'providers/StakePoolMetadataProvider'
 import { useState } from 'react'
 
 import { AdvancedConfigForm } from '@/components/admin/AdvancedConfigForm'
+import { AdminPointsRewards } from '@/components/admin/points-rewards/AdminPointsRewards'
 
 import { AuthorizeMints } from '../AuthorizeMints'
 import { StakePoolImage } from '../StakePoolImage'
-import { AdminFungibleRewards } from './AdminFungibleRewards'
-import { AdminPoints } from './AdminPoints'
+import { AdminFungibleRewards } from './fungible-rewards/AdminFungibleRewards'
 import { Snapshot } from './Snapshot'
 import { StakePoolBalance } from './StakePoolBalance'
 import { StakePoolUpdate } from './StakePoolUpdate'
@@ -135,7 +135,7 @@ export const AdminStakePool = () => {
               </div>
             ),
             'fungible-rewards': <AdminFungibleRewards />,
-            points: <AdminPoints />,
+            points: <AdminPointsRewards />,
             snapshot: (
               <div className="mt-4 w-full">
                 <Snapshot />

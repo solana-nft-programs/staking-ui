@@ -14,7 +14,7 @@ import {
 } from 'hooks/useRewardDistributorData'
 import { useStakePoolData } from 'hooks/useStakePoolData'
 
-import type { RewardDistributorForm } from '@/components/admin/RewardDistributorUpdate'
+import type { RewardDistributorForm } from '@/components/admin/fungible-rewards/RewardDistributorUpdate'
 
 import { useEnvironmentCtx } from '../providers/EnvironmentProvider'
 

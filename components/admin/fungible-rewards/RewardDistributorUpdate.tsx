@@ -17,9 +17,9 @@ import {
   bnValidationTest,
   optionalBnValidationTest,
   publicKeyValidationTest,
-} from '../stake-pool-creation/Schema'
-import { BNInput } from '../UI/inputs/BNInput'
-import { TextInput } from '../UI/inputs/TextInput'
+} from '@/components/stake-pool-creation/Schema'
+import { BNInput } from '@/components/UI/inputs/BNInput'
+import { TextInput } from '@/components/UI/inputs/TextInput'
 
 const rewardDistributorSchema = Yup.object({
   rewardMintAddress: Yup.string().test(

@@ -16,7 +16,7 @@ import { asWallet } from 'common/Wallets'
 import { useRewardDistributorData } from 'hooks/useRewardDistributorData'
 import { isStakePoolV2, useStakePoolData } from 'hooks/useStakePoolData'
 
-import type { RewardDistributorForm } from '@/components/admin/RewardDistributorUpdate'
+import type { RewardDistributorForm } from '@/components/admin/fungible-rewards/RewardDistributorUpdate'
 
 import { useEnvironmentCtx } from '../providers/EnvironmentProvider'
 

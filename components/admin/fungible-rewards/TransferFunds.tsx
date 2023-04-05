@@ -9,7 +9,7 @@ import {
 import { useRewardMintInfo } from 'hooks/useRewardMintInfo'
 import { useState } from 'react'
 
-import { BNInput } from '../UI/inputs/BNInput'
+import { BNInput } from '@/components/UI/inputs/BNInput'
 
 export const TransferFunds = () => {
   const [transferAmount, setTransferAmount] = useState<string>()
