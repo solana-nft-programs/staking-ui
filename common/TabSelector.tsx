@@ -45,7 +45,7 @@ export const TabSelector = <T,>({
 
   return (
     <div
-      className="flex rounded-lg border-[1px] border-border bg-dark-4"
+      className="flex flex-wrap rounded-lg border-[1px] border-border bg-dark-4"
       css={css`
         background: ${colors?.background} !important;
       `}

@@ -1,4 +1,3 @@
-import type { PublicKey } from '@solana/web3.js'
 import { AsyncButton } from 'common/Button'
 import { FormFieldTitleInput } from 'common/FormFieldInput'
 import { LoadingSpinner } from 'common/LoadingSpinner'
@@ -64,11 +63,7 @@ const defaultValues = (
 
 export type StakePoolUpdateForm = Yup.InferType<typeof stakePoolUpdateSchema>
 
-export function StakePoolUpdate({
-  onSuccess,
-}: {
-  onSuccess?: (p: PublicKey | undefined) => void
-}) {
+export function StakePoolUpdate() {
   const walletId = useWalletId()
   const stakePooldId = useStakePoolId()
   const stakePool = useStakePoolData()
@@ -279,10 +274,7 @@ export function StakePoolUpdate({
         onClick={async () => {
           stakePool.data
             ? handleStakePoolUpdate.mutate({ values })
-            : handleStakePoolCreate.mutate(
-                { values },
-                { onSuccess: ([, pk]) => onSuccess && onSuccess(pk) }
-              )
+            : handleStakePoolCreate.mutate({ values })
         }}
         loading={
           handleStakePoolUpdate.isLoading || handleStakePoolCreate.isLoading

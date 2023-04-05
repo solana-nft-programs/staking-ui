@@ -8,9 +8,13 @@ export const Snapshot = () => {
   function downloadSnapshot(
     data: Pick<IdlAccountData<'stakeEntry'>, 'pubkey' | 'parsed'>[]
   ) {
-    let body = `Total Staked Tokens,${data.length}\n\nMint Address,Staker Address\n`
+    let body = `Total Staked Tokens,${
+      data.length
+    }\nSnapshot Timestamp,${Math.floor(
+      Date.now() / 1000
+    )}\n\nMint Address,Staker Address,Total Stake Seconds,Last Staked At,\n`
     data.forEach((data) => {
-      body += `${data.parsed.stakeMint.toString()},${data.parsed.lastStaker.toString()}\n`
+      body += `${data.parsed.stakeMint.toString()},${data.parsed.lastStaker.toString()},${data.parsed.totalStakeSeconds.toString()},${data.parsed.lastStakedAt.toString()}\n`
     })
     const element = document.createElement('a')
     element.setAttribute(
