@@ -1,13 +1,22 @@
 import type { AccountData } from '@cardinal/common'
-import { chunkArray } from '@cardinal/common'
+import { chunkArray, getBatchedMultipleAccounts } from '@cardinal/common'
 import type { IdlAccountData } from '@cardinal/rewards-center'
 import { claimRewards } from '@cardinal/rewards-center'
-import { withClaimRewards } from '@cardinal/staking/dist/cjs/programs/rewardDistributor/transaction'
+import {
+  REWARD_MANAGER,
+  rewardDistributorProgram,
+} from '@cardinal/staking/dist/cjs/programs/rewardDistributor'
+import { findRewardEntryId } from '@cardinal/staking/dist/cjs/programs/rewardDistributor/pda'
 import type { StakeEntryData } from '@cardinal/staking/dist/cjs/programs/stakePool'
 import { getActiveStakeEntriesForPool } from '@cardinal/staking/dist/cjs/programs/stakePool/accounts'
 import { withUpdateTotalStakeSeconds } from '@cardinal/staking/dist/cjs/programs/stakePool/transaction'
+import {
+  createAssociatedTokenAccountIdempotentInstruction,
+  getAssociatedTokenAddressSync,
+  TOKEN_PROGRAM_ID,
+} from '@solana/spl-token'
 import { useWallet } from '@solana/wallet-adapter-react'
-import { Transaction } from '@solana/web3.js'
+import { SystemProgram, Transaction } from '@solana/web3.js'
 import { notify } from 'common/Notification'
 import { asWallet } from 'common/Wallets'
 import { useRewardDistributorData } from 'hooks/useRewardDistributorData'
@@ -25,17 +34,20 @@ export const useGenerateClaimRewardsForHoldersTxs = () => {
   const rewardDistributor = useRewardDistributorData()
   const rewardMintInfo = useRewardMintInfo()
 
-  const batchSize = 4
-  const parallelTransactions = 100
-
   return useMutation(
-    async (): Promise<Transaction[]> => {
+    async ({
+      batchSize = 4,
+    }: {
+      batchSize?: number
+    }): Promise<Transaction[]> => {
       if (!wallet.publicKey) throw 'Wallet is not connected'
-      if (!stakePool.data || !stakePool.data.parsed || !stakePool.data.pubkey)
+      if (!stakePool.data || !stakePool.data.parsed || !stakePool.data.pubkey) {
         throw 'No stake pool found'
+      }
       if (!rewardDistributor.data) throw 'No reward distributor found'
       if (!rewardMintInfo.data) throw 'No reward mint info found'
 
+      const stakePoolId = stakePool.data.pubkey
       let stakeEntriesV1: AccountData<StakeEntryData>[] = []
       let stakeEntriesV2: Pick<
         IdlAccountData<'stakeEntry'>,
@@ -61,65 +73,106 @@ export const useGenerateClaimRewardsForHoldersTxs = () => {
       })
       console.log(costLog)
 
-      const transactions: Transaction[] = []
       if (isStakePoolV2(stakePool.data.parsed)) {
-        const chunkedEntries = chunkArray(stakeEntriesV2, batchSize)
-        const batchedChunks = chunkArray(chunkedEntries, parallelTransactions)
-        for (let i = 0; i < batchedChunks.length; i++) {
-          const chunk = batchedChunks[i]!
-          console.log(`> ${i + 1}/ ${batchedChunks.length}`)
-          await Promise.all(
-            chunk.map(async (entries) => {
-              const transaction = new Transaction()
-              const txs = await claimRewards(
-                connection,
-                wallet,
-                stakePool.data!.parsed.identifier,
-                entries.map((entry) => {
-                  return {
-                    mintId: entry.parsed.stakeMint,
-                  }
-                }),
-                [rewardDistributor.data!.pubkey],
-                true
-              )
-              transaction.instructions = txs.map((tx) => tx.instructions).flat()
-              transactions.push(transaction)
-            })
-          )
-        }
+        const txs = await claimRewards(
+          connection,
+          wallet,
+          stakePool.data!.parsed.identifier,
+          stakeEntriesV2.map((entry) => {
+            return {
+              mintId: entry.parsed.stakeMint,
+            }
+          }),
+          [rewardDistributor.data!.pubkey],
+          true
+        )
+        const batchedTxs = chunkArray(txs, batchSize)
+        return batchedTxs.map((txs) => {
+          const transaction = new Transaction()
+          transaction.instructions = txs.map((tx) => tx.instructions).flat()
+          return transaction
+        })
       } else {
-        const chunkedEntries = chunkArray(stakeEntriesV1, batchSize)
-        const batchedChunks = chunkArray(chunkedEntries, parallelTransactions)
-        for (let i = 0; i < batchedChunks.length; i++) {
-          const chunk = batchedChunks[i]!
-          console.log(`> ${i + 1}/ ${batchedChunks.length}`)
-          await Promise.all(
-            chunk.map(async (entries) => {
-              const transaction = new Transaction()
-              for (let j = 0; j < entries.length; j++) {
-                console.log(`>> ${j + 1}/ ${entries.length}`)
-                const stakeEntryData = entries[j]!
-                withUpdateTotalStakeSeconds(transaction, connection, wallet, {
-                  stakeEntryId: stakeEntryData.pubkey,
-                  lastStaker: stakeEntryData.parsed.lastStaker,
-                })
-                await withClaimRewards(transaction, connection, wallet, {
-                  stakePoolId: stakePool.data!.pubkey,
-                  stakeEntryId: stakeEntryData.pubkey,
-                  lastStaker: stakeEntryData.parsed.lastStaker,
-                  payer: wallet.publicKey,
-                })
-              }
-              if (transaction.instructions.length !== 0) {
-                transactions.push(transaction)
-              }
-            })
-          )
-        }
-      }
+        const txs: Transaction[] = []
+        const rewardEntryIds = stakeEntriesV1.map((e) =>
+          findRewardEntryId(rewardDistributor.data!.pubkey, e.pubkey)
+        )
+        const rewardEntryInfos = await getBatchedMultipleAccounts(
+          connection,
+          rewardEntryIds
+        )
 
-      return transactions
+        for (let i = 0; i < stakeEntriesV1.length; i++) {
+          const stakeEntry = stakeEntriesV1[i]!
+          const stakeEntryId = stakeEntry.pubkey
+          const rewardEntryId = rewardEntryIds[i]
+
+          const tx = new Transaction()
+          const rewardMintTokenAccountId = getAssociatedTokenAddressSync(
+            rewardDistributor.data.parsed.rewardMint,
+            stakeEntry.parsed.lastStaker,
+            true
+          )
+          /////// update seconds ///////
+          await withUpdateTotalStakeSeconds(tx, connection, wallet, {
+            stakeEntryId: stakeEntry.pubkey,
+            lastStaker: wallet.publicKey,
+          })
+          /////// init ata ///////
+          tx.add(
+            createAssociatedTokenAccountIdempotentInstruction(
+              wallet.publicKey,
+              rewardMintTokenAccountId,
+              stakeEntry.parsed.lastStaker,
+              rewardDistributor.data.parsed.rewardMint
+            )
+          )
+          /////// init entry ///////
+          if (!rewardEntryInfos[i]?.data) {
+            const ix = await rewardDistributorProgram(connection, wallet)
+              .methods.initRewardEntry()
+              .accounts({
+                rewardEntry: rewardEntryId,
+                stakeEntry: stakeEntryId,
+                rewardDistributor: rewardDistributor.data.pubkey,
+                payer: wallet.publicKey,
+                systemProgram: SystemProgram.programId,
+              })
+              .instruction()
+            tx.add(ix)
+          }
+          /////// claim rewards ///////
+          const ix = await rewardDistributorProgram(connection, wallet)
+            .methods.claimRewards()
+            .accounts({
+              rewardEntry: rewardEntryId,
+              rewardDistributor: rewardDistributor.data.pubkey,
+              stakeEntry: stakeEntryId,
+              stakePool: stakePoolId,
+              rewardMint: rewardDistributor.data.parsed.rewardMint,
+              userRewardMintTokenAccount: rewardMintTokenAccountId,
+              rewardManager: REWARD_MANAGER,
+              user: wallet.publicKey,
+              tokenProgram: TOKEN_PROGRAM_ID,
+              systemProgram: SystemProgram.programId,
+            })
+            .remainingAccounts([
+              {
+                pubkey: getAssociatedTokenAddressSync(
+                  rewardDistributor.data.parsed.rewardMint,
+                  rewardDistributor.data.pubkey,
+                  true
+                ),
+                isSigner: false,
+                isWritable: true,
+              },
+            ])
+            .instruction()
+          tx.add(ix)
+          txs.push(tx)
+        }
+        return txs
+      }
     },
     {
       onSuccess: (txs) => {
