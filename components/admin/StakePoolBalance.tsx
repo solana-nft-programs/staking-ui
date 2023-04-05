@@ -16,7 +16,7 @@ export const StakePoolBalance = ({ setPane }: StakePoolBalanceProps) => {
       <TreasuryBalance />
       <PlusCircleIcon
         className="h-6 w-6 cursor-pointer text-orange-500"
-        onClick={() => setPane('reward-funds')}
+        onClick={() => setPane('fungible-rewards')}
       />
     </div>
   )

@@ -3,12 +3,12 @@ import { useRewardDistributorData } from 'hooks/useRewardDistributorData'
 import { useStakePoolData } from 'hooks/useStakePoolData'
 import { useState } from 'react'
 
-import { MintMultiplierLookup } from '../MintMultiplierLookup'
-import { MintMultipliers } from '../MintMultipliers'
-import { AdminClaimRewardsForHolders } from './AdminClaimRewardsForHolders'
-import { ReclaimFunds } from './ReclaimFunds'
-import { RewardDistributorUpdate } from './RewardDistributorUpdate'
-import { TransferFunds } from './TransferFunds'
+import { AdminClaimRewardsForHolders } from '@/components/admin/fungible-rewards/AdminClaimRewardsForHolders'
+import { MintMultiplierLookup } from '@/components/admin/fungible-rewards/MintMultiplierLookup'
+import { MintMultipliers } from '@/components/admin/fungible-rewards/MintMultipliers'
+import { ReclaimFunds } from '@/components/admin/fungible-rewards/ReclaimFunds'
+import { RewardDistributorUpdate } from '@/components/admin/fungible-rewards/RewardDistributorUpdate'
+import { TransferFunds } from '@/components/admin/fungible-rewards/TransferFunds'
 
 export type PANE_OPTIONS =
   | 'reward-distributor'

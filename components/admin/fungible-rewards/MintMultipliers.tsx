@@ -5,9 +5,9 @@ import { useHandleSetMultipliers } from 'handlers/useHandleSetMultipliers'
 import { useRewardDistributorData } from 'hooks/useRewardDistributorData'
 import * as Yup from 'yup'
 
-import { publicKeyValidationTest } from './stake-pool-creation/Schema'
-import { TextInput } from './UI/inputs/TextInput'
-import { TextInputIcon } from './UI/inputs/TextInputIcon'
+import { publicKeyValidationTest } from '@/components/stake-pool-creation/Schema'
+import { TextInput } from '@/components/UI/inputs/TextInput'
+import { TextInputIcon } from '@/components/UI/inputs/TextInputIcon'
 
 const multiplierFormSchema = Yup.object({
   multipliers: Yup.array().of(Yup.string()),

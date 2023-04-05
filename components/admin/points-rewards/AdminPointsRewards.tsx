@@ -4,7 +4,7 @@ import { useState } from 'react'
 
 export type PANE_OPTIONS = 'points-lookup' | 'point-multipliers' | 'set-points'
 
-export const AdminPoints = () => {
+export const AdminPointsRewards = () => {
   const stakePool = useStakePoolData()
   const [pane, setPane] = useState<PANE_OPTIONS>('points-lookup')
   const paneTabs: {
