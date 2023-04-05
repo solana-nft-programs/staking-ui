@@ -11,21 +11,18 @@ export const AdminClaimRewardsForHoldersRow = ({
 }) => {
   const handleExecuteTransaction = useHandleExecuteTransaction()
   return (
-    <div
-      key={index}
-      className="flex gap-4 border-b border-border py-4 md:flex-row"
-    >
-      <div className="flex-[2]">{index + 1}</div>
-      <div className="flex-1">
+    <div className="flex gap-4 border-b border-border py-4 md:flex-row">
+      <div className="flex-1">{index + 1}</div>
+      <div className="flex flex-1 items-center justify-end">
         <AsyncButton
-          className="w-1/2 justify-center rounded-md py-1 text-sm"
+          className="justify-center rounded-md py-1 text-sm"
           loading={handleExecuteTransaction.isLoading}
           inlineLoader
           onClick={() => handleExecuteTransaction.mutate({ transaction: tx })}
         >
           Retry
         </AsyncButton>
-      </div>{' '}
+      </div>
     </div>
   )
 }

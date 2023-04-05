@@ -16,45 +16,46 @@ export const useHandleExecuteTransactions = () => {
   return useMutation(
     async ({
       transactions,
-      setFailedTxs,
+      setFailedTxIxs,
+      setSuccessfulTxIxs,
     }: {
       transactions: Transaction[]
-      setFailedTxs: Dispatch<SetStateAction<Transaction[]>>
+      setFailedTxIxs: Dispatch<SetStateAction<number[]>>
+      setSuccessfulTxIxs: Dispatch<SetStateAction<number[]>>
     }): Promise<(string | null)[]> => {
       if (!wallet.publicKey) throw 'Wallet is not connected'
       let allTxids = []
-      const failedTxs: Transaction[] = []
-
-      const unsignedChunks = chunkArray(transactions, BATCH_SIZE)
-      const unsignedTransactions: Transaction[] = []
       const recentBlockhash = (await connection.getRecentBlockhash('max'))
         .blockhash
-      for (let i = 0; i < unsignedChunks.length; i++) {
-        const txs = unsignedChunks[i]!
-        for (const tx of txs) {
-          tx.feePayer = wallet.publicKey
-          tx.recentBlockhash = recentBlockhash
-        }
-        unsignedTransactions.push(...txs)
-      }
-
+      const unsignedTransactions: Transaction[] = transactions.map((tx) => {
+        tx.feePayer = wallet.publicKey
+        tx.recentBlockhash = recentBlockhash
+        return tx
+      })
       const signedTransactions = await wallet.signAllTransactions(
         unsignedTransactions
       )
 
-      const signedChunks = chunkArray(signedTransactions, BATCH_SIZE)
-      for (let i = 0; i < signedChunks.length; i++) {
-        const txs = signedChunks[i]!
+      const txChunks = chunkArray(signedTransactions, BATCH_SIZE)
+      const failedTxIxs: number[] = []
+      const successfulTxIxs: number[] = []
+      for (let i = 0; i < txChunks.length; i++) {
+        const txs = txChunks[i]!
         const txids = await Promise.all(
-          txs.map(async (tx) => {
+          txs.map(async (tx, j) => {
+            const txix = i * BATCH_SIZE + j
             try {
+              if (Math.random() > 0.2) {
+                throw 'FAILED'
+              }
               const txid = await sendAndConfirmRawTransaction(
                 connection,
                 tx.serialize()
               )
+              successfulTxIxs.push(txix)
               return txid
             } catch (e) {
-              failedTxs.push(tx)
+              failedTxIxs.push(txix)
               console.log('e', e)
             }
           })
@@ -62,7 +63,9 @@ export const useHandleExecuteTransactions = () => {
         allTxids.push(...txids)
       }
 
-      setFailedTxs(failedTxs)
+      setFailedTxIxs((v) => [...v, ...failedTxIxs])
+      setSuccessfulTxIxs((v) => [...v, ...successfulTxIxs])
+
       allTxids = allTxids.filter((x): x is string => x !== undefined)
       notify({
         message: `${'Successful transactions'} ${

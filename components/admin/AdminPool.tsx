@@ -2,7 +2,7 @@ import { pubKeyUrl, shortPubKey } from '@cardinal/common'
 import { LinkIcon } from '@heroicons/react/24/outline'
 import { TabSelector } from 'common/TabSelector'
 import { withCluster } from 'common/utils'
-import { useStakePoolData } from 'hooks/useStakePoolData'
+import { isStakePoolV2, useStakePoolData } from 'hooks/useStakePoolData'
 import { useStakePoolId } from 'hooks/useStakePoolId'
 import Image from 'next/image'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
@@ -63,8 +63,12 @@ export const AdminStakePool = () => {
     },
     {
       label: <div className="flex items-center gap-2">Point Rewards</div>,
+      disabled: !stakePool.data || !isStakePoolV2(stakePool.data.parsed),
       value: 'points',
-      tooltip: 'Adjust point settings for tokens',
+      tooltip:
+        !stakePool.data || !isStakePoolV2(stakePool.data.parsed)
+          ? 'Create a new pool for access to point rewards'
+          : 'Adjust point settings for tokens',
     },
     {
       label: <div className="flex items-center gap-2">Snapshot</div>,
