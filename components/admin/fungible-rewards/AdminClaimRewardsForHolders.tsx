@@ -35,7 +35,7 @@ export const AdminClaimRewardsForHolders = () => {
           hidden={!!handleGenerateClaimRewardsForHoldersTxs.data}
           loading={handleGenerateClaimRewardsForHoldersTxs.isLoading}
           inlineLoader
-          onClick={() => handleGenerateClaimRewardsForHoldersTxs.mutate()}
+          onClick={() => handleGenerateClaimRewardsForHoldersTxs.mutate({})}
         >
           Generate
         </AsyncButton>
