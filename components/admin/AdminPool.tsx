@@ -114,8 +114,12 @@ export const AdminStakePool = () => {
             </div>
           </a>
         </div>
-        {stakePool.data && <StakePoolBalance setPane={setPane} />}
-        {stakePool.data && <StakePoolImage />}
+        {stakePool.data && (
+          <StakePoolBalance onClick={() => setPane('fungible-rewards')} />
+        )}
+        {stakePool.data && (
+          <StakePoolImage onClick={() => setPane('advanced-config')} />
+        )}
         <TabSelector<PANE_OPTIONS>
           defaultOption={paneTabs[0]}
           options={paneTabs}
