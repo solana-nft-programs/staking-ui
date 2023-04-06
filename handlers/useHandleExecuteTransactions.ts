@@ -45,9 +45,6 @@ export const useHandleExecuteTransactions = () => {
           txs.map(async (tx, j) => {
             const txix = i * BATCH_SIZE + j
             try {
-              if (Math.random() > 0.2) {
-                throw 'FAILED'
-              }
               const txid = await sendAndConfirmRawTransaction(
                 connection,
                 tx.serialize()
