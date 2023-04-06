@@ -1,14 +1,12 @@
 import { chunkArray, findMintMetadataId } from '@cardinal/common'
-import type { StakePool } from '@cardinal/rewards-center'
 import {
   BASIS_POINTS_DIVISOR,
   fetchIdlAccountDataById,
-  findStakeAuthorizationRecordId,
   findStakeEntryId,
+  remainingAccountsForAuthorization,
   rewardsCenterProgram,
 } from '@cardinal/rewards-center'
 import { BN } from '@coral-xyz/anchor'
-import type { Metadata } from '@metaplex-foundation/mpl-token-metadata'
 import { useWallet } from '@solana/wallet-adapter-react'
 import type { PublicKey } from '@solana/web3.js'
 import { SystemProgram, Transaction } from '@solana/web3.js'
@@ -18,36 +16,6 @@ import { useMutation } from 'react-query'
 
 import { isStakePoolV2, useStakePoolData } from '../hooks/useStakePoolData'
 import { useEnvironmentCtx } from '../providers/EnvironmentProvider'
-
-export const remainingAccountsForAuthorization = (
-  stakePool: Pick<StakePool, 'parsed' | 'pubkey'>,
-  mintId: PublicKey,
-  mintMetadata: Metadata | null
-) => {
-  if (
-    stakePool.parsed.requiresAuthorization &&
-    !mintMetadata?.data.creators?.some((c) =>
-      stakePool.parsed.allowedCreators
-        .map((c) => c.toString())
-        .includes(c.address.toString())
-    ) &&
-    !(
-      mintMetadata?.collection?.key &&
-      stakePool.parsed.allowedCollections
-        .map((c) => c.toString())
-        .includes(mintMetadata?.collection?.key?.toString())
-    )
-  ) {
-    return [
-      {
-        pubkey: findStakeAuthorizationRecordId(stakePool.pubkey, mintId),
-        isSigner: false,
-        isWritable: false,
-      },
-    ]
-  }
-  return []
-}
 
 export const useGenerateStakeEntryMultiplierTxs = () => {
   const wallet = asWallet(useWallet())
@@ -95,6 +63,7 @@ export const useGenerateStakeEntryMultiplierTxs = () => {
             const authorizationAccounts = remainingAccountsForAuthorization(
               stakePool.data,
               mintId,
+              // assuming its either using requires authorization or creators/collections but not both to avoid looking up the metadata
               null
             )
             const ix = await rewardsCenterProgram(connection, wallet)
