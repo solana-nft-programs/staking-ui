@@ -10,12 +10,13 @@ export function shortPubKey(pubkey: PublicKey | string | null | undefined) {
 
 export function pubKeyUrl(
   pubkey: PublicKey | null | undefined,
-  cluster: string
+  cluster: string,
+  endpoint?: 'anchor-account' | 'metadata'
 ) {
   if (!pubkey) return 'https://explorer.solana.com'
   return `https://explorer.solana.com/address/${pubkey.toString()}${
-    cluster === 'devnet' ? '?cluster=devnet' : ''
-  }`
+    endpoint ? `/${endpoint}` : ''
+  }${cluster === 'devnet' ? '?cluster=devnet' : ''}`
 }
 
 export function metadataUrl(
