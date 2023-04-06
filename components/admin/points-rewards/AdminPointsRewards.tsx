@@ -2,7 +2,9 @@ import { TabSelector } from 'common/TabSelector'
 import { useStakePoolData } from 'hooks/useStakePoolData'
 import { useState } from 'react'
 
+import { AdminPointsLookup } from './AdminPointsLookup'
 import { AdminPointsMultipliers } from './AdminPointsMultipliers'
+import { AdminPointsSetPoints } from './AdminPointsSetPoints'
 
 export type PANE_OPTIONS = 'points-lookup' | 'point-multipliers' | 'set-points'
 
@@ -48,9 +50,9 @@ export const AdminPointsRewards = () => {
       <div className="flex w-full flex-grow justify-center">
         {
           {
-            'points-lookup': <div className="w-full"></div>,
+            'points-lookup': <AdminPointsLookup />,
             'point-multipliers': <AdminPointsMultipliers />,
-            'set-points': <div className="w-full"></div>,
+            'set-points': <AdminPointsSetPoints />,
           }[pane]
         }
       </div>
