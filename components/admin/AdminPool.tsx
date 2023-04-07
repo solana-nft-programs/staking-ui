@@ -2,6 +2,7 @@ import { pubKeyUrl, shortPubKey } from '@cardinal/common'
 import { LinkIcon } from '@heroicons/react/24/outline'
 import { TabSelector } from 'common/TabSelector'
 import { withCluster } from 'common/utils'
+import { useRewardDistributorData } from 'hooks/useRewardDistributorData'
 import { isStakePoolV2, useStakePoolData } from 'hooks/useStakePoolData'
 import { useStakePoolId } from 'hooks/useStakePoolId'
 import Image from 'next/image'
@@ -32,6 +33,7 @@ export const AdminStakePool = () => {
   const { data: config } = useStakePoolMetadataCtx()
   const { data: stakePoolId } = useStakePoolId()
   const stakePool = useStakePoolData()
+  const rewardDistributor = useRewardDistributorData()
   const [pane, setPane] = useState<PANE_OPTIONS>('stake-pool')
   const paneTabs: {
     label: JSX.Element
@@ -114,7 +116,7 @@ export const AdminStakePool = () => {
             </div>
           </a>
         </div>
-        {stakePool.data && (
+        {stakePool.data && rewardDistributor.data && (
           <StakePoolBalance onClick={() => setPane('fungible-rewards')} />
         )}
         {stakePool.data && (
