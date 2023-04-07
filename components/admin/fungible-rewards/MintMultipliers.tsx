@@ -1,43 +1,22 @@
+import { PublicKey } from '@solana/web3.js'
 import { AsyncButton } from 'common/Button'
 import { FormFieldTitleInput } from 'common/FormFieldInput'
-import { useFormik } from 'formik'
-import { useHandleSetMultipliers } from 'handlers/useHandleSetMultipliers'
+import { notify } from 'common/Notification'
+import { useGenerateRewardEntryMultiplierTxs } from 'generators/useGenerateRewardEntryMultiplierTxs'
 import { useRewardDistributorData } from 'hooks/useRewardDistributorData'
-import * as Yup from 'yup'
+import { useState } from 'react'
 
-import { publicKeyValidationTest } from '@/components/stake-pool-creation/Schema'
-import { TextInput } from '@/components/UI/inputs/TextInput'
-import { TextInputIcon } from '@/components/UI/inputs/TextInputIcon'
+import { TextAreaInput } from '@/components/UI/inputs/TextAreaInput'
 
-const multiplierFormSchema = Yup.object({
-  multipliers: Yup.array().of(Yup.string()),
-  multiplierMints: Yup.array().of(
-    Yup.string().test(
-      'is-public-key',
-      'Invalid multplier mint address',
-      publicKeyValidationTest
-    )
-  ),
-})
-export type MultipliersForm = Yup.InferType<typeof multiplierFormSchema>
+import { TransactionExector } from '../TransactionExecutor'
 
 export const MintMultipliers = () => {
   const rewardDistributor = useRewardDistributorData()
-  const handleSetMultipliers = useHandleSetMultipliers()
+  const [entryDatas, setEntryDatas] =
+    useState<{ mintId: PublicKey; multiplier: number }[]>()
+  const generateRewardEntryMultiplierTxs = useGenerateRewardEntryMultiplierTxs()
 
-  const initialValues: MultipliersForm = {
-    multipliers: [''],
-    multiplierMints: [''],
-  }
-  const formState = useFormik({
-    initialValues,
-    onSubmit: () => {},
-    validationSchema: multiplierFormSchema,
-  })
-  const { values, setFieldValue } = formState
-
-  const { multipliers, multiplierMints } = values
-  if (!rewardDistributor.data || !multipliers || !multiplierMints) return <></>
+  if (!rewardDistributor.data) return <></>
   return (
     <div>
       <FormFieldTitleInput
@@ -67,85 +46,59 @@ export const MintMultipliers = () => {
               1500 ...
             </p>
             <p className="mt-2 mb-5 text-sm italic text-gray-300">
-              <b>WARNING</b> Do not set more than a few at at time. If needed
-              take a look at the scripts in{' '}
-              <a
-                href="https://github.com/cardinal-labs/cardinal-staking/tree/main/tools"
-                className="text-blue-500"
-                target="_blank"
-                rel="noreferrer"
-              >
-                tools
-              </a>{' '}
-              to set many at a time.
+              Input a CSV (comma-separated rows) of token address and multiplier
             </p>
           </div>
         }
       />
-      <div className="flex flex-row gap-2">
-        <TextInput
-          className="w-1/6"
-          placeholder="0"
-          onChange={(e) => {
-            setFieldValue('multipliers[0]', e.target.value)
-          }}
-        />
-        <TextInputIcon
-          icon="Add"
-          placeholder={'CmAy...A3fD'}
-          onChange={(e) => {
-            setFieldValue('multiplierMints[0]', e.target.value)
-          }}
-          onIconClick={() => {
-            setFieldValue(`multiplierMints`, ['', ...multiplierMints])
-            setFieldValue(`multipliers`, ['', ...multipliers])
-          }}
-        />
+      <div className="mb-5 w-full">
+        <div className="flex gap-4">
+          <TextAreaInput
+            placeholder="tokenId,multiplier"
+            onChange={(e) => {
+              try {
+                const rows = e.target.value
+                  .split('\n')
+                  .filter((r) => r.length > 0)
+                const entrys = rows.map((row) => {
+                  const [mintString, multiplierString] = row.split(',')
+                  if (!mintString) throw 'Mint not found'
+                  return {
+                    mintId: new PublicKey(mintString),
+                    multiplier: Number(multiplierString),
+                  }
+                })
+                setEntryDatas(entrys)
+              } catch (e) {
+                notify({ message: 'Error parsing input', description: `${e}` })
+              }
+            }}
+          />
+          <div>
+            <AsyncButton
+              className="flex items-center justify-center rounded-md px-3 py-2"
+              hidden={!!generateRewardEntryMultiplierTxs.data}
+              loading={generateRewardEntryMultiplierTxs.isLoading}
+              inlineLoader
+              disabled={!entryDatas || entryDatas.length <= 0}
+              onClick={() =>
+                generateRewardEntryMultiplierTxs.mutate({
+                  entryDatas: entryDatas ?? [],
+                })
+              }
+            >
+              Generate
+            </AsyncButton>
+          </div>
+        </div>
+        {generateRewardEntryMultiplierTxs.data &&
+          generateRewardEntryMultiplierTxs.data.length > 0 && (
+            <TransactionExector
+              className="mt-6"
+              txs={generateRewardEntryMultiplierTxs.data}
+            />
+          )}
       </div>
-      {multiplierMints.map(
-        (v, i) =>
-          i > 0 && (
-            <div key={i} className="mt-3 flex flex-row gap-2">
-              <TextInput
-                className="w-1/6"
-                placeholder="0"
-                onChange={(e) => {
-                  setFieldValue(`multipliers[${i}]`, e.target.value)
-                }}
-              />
-              <TextInputIcon
-                icon="Remove"
-                placeholder={'CmAy...A3fD'}
-                onChange={(e) => {
-                  setFieldValue(`multiplierMints[${i}]`, e.target.value)
-                }}
-                onIconClick={() => {
-                  setFieldValue(
-                    `multiplierMints`,
-                    multiplierMints.filter((_, ix) => ix !== i)
-                  )
-                  setFieldValue(
-                    `multipliers`,
-                    multipliers.filter((_, ix) => ix !== i)
-                  )
-                }}
-              />
-            </div>
-          )
-      )}
-      <AsyncButton
-        loading={handleSetMultipliers.isLoading}
-        onClick={() =>
-          handleSetMultipliers.mutate({
-            multiplierMints: multiplierMints,
-            multipliers: multipliers,
-          })
-        }
-        inlineLoader
-        className="mt-3 flex items-center justify-center"
-      >
-        Set Multipliers
-      </AsyncButton>
     </div>
   )
 }
