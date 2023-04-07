@@ -1,25 +1,43 @@
 import { tryPublicKey } from '@cardinal/common'
+import { GlyphPlus } from 'assets/GlyphPlus'
+import { AsyncButton } from 'common/Button'
 import { FormFieldTitleInput } from 'common/FormFieldInput'
 import { LoadingSpinner } from 'common/LoadingSpinner'
-import { pubKeyUrl } from 'common/utils'
+import { ParsedAccount } from 'common/ParsedAccount'
+import { useHandleMultiplierBasisPoints } from 'handlers/useHandleMultiplierBasisPoints'
+import { useHandleMultiplierStakeSecondsDecrement } from 'handlers/useHandleMultiplierStakeSecondsDecrement'
+import { useHandleMultiplierStakeSecondsIncrement } from 'handlers/useHandleMultiplierStakeSecondsIncrement'
+import { useHandleMultiplierStakeSecondsSet } from 'handlers/useHandleMultiplierStakeSecondsSet'
 import { useStakeEntry } from 'hooks/useStakeEntry'
-import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 import { useUTCNow } from 'providers/UTCNowProvider'
 import { useState } from 'react'
+import { BiMinus } from 'react-icons/bi'
 
+import { NumberInput } from '@/components/UI/inputs/NumberInput'
 import { TextInput } from '@/components/UI/inputs/TextInput'
 
 export const AdminPointsLookup = () => {
   const [mintLookupId, setMintLookupId] = useState<string>('')
-  const { environment } = useEnvironmentCtx()
   const stakeEntry = useStakeEntry(tryPublicKey(mintLookupId))
   const { UTCNow } = useUTCNow()
+  const [multiplierBasisPoints, setMultiplierBasisPoints] = useState<number>()
+  const [incrementPoints, setIncrementPoints] = useState<number>()
+  const [decrementPoints, setDecrementPoints] = useState<number>()
+  const [totalStakeSeconds, setTotalStakeSeconds] = useState<number>()
+  const handleMultiplierBasisPoints = useHandleMultiplierBasisPoints()
+  const handleMultiplierStakeSecondsSet = useHandleMultiplierStakeSecondsSet()
+  const handleMultiplierStakeSecondsIncrement =
+    useHandleMultiplierStakeSecondsIncrement()
+  const handleMultiplierStakeSecondsDecrement =
+    useHandleMultiplierStakeSecondsDecrement()
 
   return (
     <div className="mb-5 w-full">
       <FormFieldTitleInput
-        title="Lookup mint multiplier"
-        description="Remember to account for multiplier decimals"
+        title="Lookup mint"
+        description={
+          'Points is computed based on the following formula: (multiplierStakeSeconds || totalStakeSeconds) + (UTCNow - lastUpdatedAt).'
+        }
       />
       <div className="flex items-center gap-2">
         <TextInput
@@ -44,21 +62,159 @@ export const AdminPointsLookup = () => {
           </div>
         </div>
       </div>
-      <div className="mt-2 flex underline">
-        {stakeEntry.data?.pubkey && (
-          <a
-            href={pubKeyUrl(
-              stakeEntry.data?.pubkey,
-              environment.label,
-              'anchor-account'
-            )}
-            target={'_blank'}
-            rel="noreferrer"
-          >
-            View in explorer
-          </a>
-        )}
-      </div>
+      {stakeEntry.data?.pubkey && (
+        <div className="mt-4 flex flex-col gap-4">
+          <div>
+            <FormFieldTitleInput
+              title={'Set multiplier basis points'}
+              description={
+                'Input multiplier to set in basis points (10,000 = 1x, 15,000 = 1.5x)'
+              }
+            />
+            <div className="flex items-center justify-between gap-2">
+              <NumberInput
+                placeholder="Multiplier basis points"
+                value={
+                  multiplierBasisPoints?.toString() ??
+                  stakeEntry.data.parsed.multiplierBasisPoints?.toString() ??
+                  ''
+                }
+                onChange={(e) =>
+                  setMultiplierBasisPoints(Number(e.target.value))
+                }
+              />
+              <AsyncButton
+                inlineLoader
+                loading={handleMultiplierBasisPoints.isLoading}
+                onClick={() =>
+                  !!multiplierBasisPoints &&
+                  stakeEntry.data?.pubkey &&
+                  handleMultiplierBasisPoints.mutate(
+                    {
+                      stakeEntryId: stakeEntry.data.pubkey,
+                      multiplierBasisPoints,
+                    },
+                    {
+                      onSuccess: () => stakeEntry.remove(),
+                    }
+                  )
+                }
+              >
+                Update
+              </AsyncButton>
+            </div>
+          </div>
+          <div>
+            <FormFieldTitleInput
+              title={'Increment points'}
+              description={
+                'Points is computed based on the following formula: (multiplierStakeSeconds || totalStakeSeconds) + (UTCNow - lastUpdatedAt). This will updated lastUpdatedAt and increment points by the specified amount.'
+              }
+            />
+            <div className="flex items-center justify-between gap-2">
+              <NumberInput
+                placeholder="Value to set"
+                value={incrementPoints?.toString() ?? ''}
+                onChange={(e) => setIncrementPoints(Number(e.target.value))}
+              />
+              <AsyncButton
+                inlineLoader
+                loading={handleMultiplierStakeSecondsIncrement.isLoading}
+                onClick={() =>
+                  !!incrementPoints &&
+                  stakeEntry.data?.pubkey &&
+                  handleMultiplierStakeSecondsIncrement.mutate(
+                    {
+                      stakeEntryId: stakeEntry.data.pubkey,
+                      multiplierStakeSeconds: incrementPoints,
+                    },
+                    {
+                      onSuccess: () => stakeEntry.remove(),
+                    }
+                  )
+                }
+              >
+                {`Add`}
+                <GlyphPlus />
+              </AsyncButton>
+            </div>
+          </div>
+          <div>
+            <FormFieldTitleInput
+              title={'Decrement points'}
+              description={
+                'Points is computed based on the following formula: (multiplierStakeSeconds || totalStakeSeconds) + (UTCNow - lastUpdatedAt). This will updated lastUpdatedAt and decrement points by the specified amount.'
+              }
+            />
+            <div className="flex items-center justify-between gap-2">
+              <NumberInput
+                placeholder="Value to set"
+                value={decrementPoints?.toString() ?? ''}
+                onChange={(e) => setDecrementPoints(Number(e.target.value))}
+              />
+              <AsyncButton
+                className="bg-red-500 hover:bg-red-600"
+                inlineLoader
+                loading={handleMultiplierStakeSecondsDecrement.isLoading}
+                onClick={() =>
+                  !!decrementPoints &&
+                  stakeEntry.data?.pubkey &&
+                  handleMultiplierStakeSecondsDecrement.mutate(
+                    {
+                      stakeEntryId: stakeEntry.data.pubkey,
+                      multiplierStakeSeconds: decrementPoints,
+                    },
+                    {
+                      onSuccess: () => stakeEntry.remove(),
+                    }
+                  )
+                }
+              >
+                Sub <BiMinus className="text-xl" />
+              </AsyncButton>
+            </div>
+          </div>
+          <div>
+            <FormFieldTitleInput
+              title={'Set points'}
+              description={
+                'This will set multiplierStakeSeconds to a desired value. Points is computed based on the following formula: (multiplierStakeSeconds || totalStakeSeconds) + (UTCNow - lastUpdatedAt)'
+              }
+            />
+            <div className="flex items-center justify-between gap-2">
+              <NumberInput
+                placeholder="Value to set"
+                value={totalStakeSeconds?.toString() ?? ''}
+                onChange={(e) => setTotalStakeSeconds(Number(e.target.value))}
+              />
+              <AsyncButton
+                inlineLoader
+                loading={handleMultiplierStakeSecondsSet.isLoading}
+                onClick={() =>
+                  totalStakeSeconds !== undefined &&
+                  stakeEntry.data?.pubkey &&
+                  handleMultiplierStakeSecondsSet.mutate(
+                    {
+                      stakeEntryId: stakeEntry.data.pubkey,
+                      multiplierStakeSeconds: totalStakeSeconds,
+                    },
+                    {
+                      onSuccess: () => {
+                        stakeEntry.remove()
+                        setTotalStakeSeconds(undefined)
+                      },
+                    }
+                  )
+                }
+              >
+                Update
+              </AsyncButton>
+            </div>
+          </div>
+
+          <ParsedAccount data={stakeEntry.data} />
+        </div>
+      )}
     </div>
   )
 }
