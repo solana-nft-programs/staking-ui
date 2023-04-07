@@ -3,7 +3,6 @@ import { AsyncButton } from 'common/Button'
 import { FormFieldTitleInput } from 'common/FormFieldInput'
 import { notify } from 'common/Notification'
 import { useGenerateStakeEntryMultiplierTxs } from 'generators/useGenerateStakeEntryMultiplierTxs'
-import { useHandleExecuteTransactions } from 'handlers/useHandleExecuteTransactions'
 import { useState } from 'react'
 
 import { TextAreaInput } from '@/components/UI/inputs/TextAreaInput'
@@ -13,7 +12,6 @@ import { TransactionExector } from '../TransactionExecutor'
 export const AdminPointsMultipliers = () => {
   const [entryDatas, setEntryDatas] =
     useState<{ mintId: PublicKey; multiplierBasisPoints: number }[]>()
-  const handleExecuteTransactions = useHandleExecuteTransactions()
   const generateStakeEntryMultiplierTxs = useGenerateStakeEntryMultiplierTxs()
   return (
     <div className="mb-5 w-full">
@@ -52,12 +50,11 @@ export const AdminPointsMultipliers = () => {
             loading={generateStakeEntryMultiplierTxs.isLoading}
             inlineLoader
             disabled={!entryDatas || entryDatas.length <= 0}
-            onClick={() => {
+            onClick={() =>
               generateStakeEntryMultiplierTxs.mutate({
                 entryDatas: entryDatas ?? [],
               })
-              handleExecuteTransactions.reset()
-            }}
+            }
           >
             Generate
           </AsyncButton>
