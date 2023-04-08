@@ -20,27 +20,19 @@ export const AuthorizeMints = () => {
         description={
           <div>
             <p className="mb-2 text-sm italic text-gray-300">
-              Allow any specific mints access to the stake pool (separated by
-              commas)
+              Allow any specific mints access to the stake pool (1 mint per
+              line)
             </p>
             <p className="mb-5 text-sm italic text-gray-300">
-              <b>WARNING</b> Do not set more than a few at at time. If needed
-              take a look at the scripts in{' '}
-              <a
-                href="https://github.com/cardinal-labs/cardinal-staking/tree/main/tools"
-                className="text-blue-500"
-                target="_blank"
-                rel="noreferrer"
-              >
-                tools
-              </a>{' '}
-              to set many at a time.
+              This will just generate the transactions and allow you to execute
+              one or all transactions. They will be batched multiple per
+              transaction.
             </p>
           </div>
         }
       />
       <TextAreaInput
-        placeholder="mintId"
+        placeholder={`mintId\nmintId`}
         onChange={(e) => {
           try {
             const rows = e.target.value.split('\n').filter((r) => r.length > 0)
