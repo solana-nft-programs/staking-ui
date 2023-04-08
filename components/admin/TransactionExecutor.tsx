@@ -1,8 +1,10 @@
+import { transactionUrl } from '@cardinal/common'
 import { css } from '@emotion/react'
 import type { Transaction } from '@solana/web3.js'
 import { AsyncButton } from 'common/Button'
 import { useHandleExecuteTransaction } from 'handlers/useHandleExecuteTransaction'
 import { useHandleExecuteTransactions } from 'handlers/useHandleExecuteTransactions'
+import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 import type { Dispatch, SetStateAction } from 'react'
 import { useState } from 'react'
 
@@ -13,6 +15,7 @@ export const TransactionExector = ({ txs, ...props }: Props) => {
   const handleExecuteTransactions = useHandleExecuteTransactions()
   const [successfulTxIxs, setSuccessfulTxIxs] = useState<number[]>([])
   const [failedTxIxs, setFailedTxIxs] = useState<number[]>([])
+  const [txids, setTxids] = useState<(string | null)[]>()
   const [viewAll, setViewAll] = useState(false)
   return (
     <div {...props}>
@@ -45,6 +48,7 @@ export const TransactionExector = ({ txs, ...props }: Props) => {
                     key={i}
                     txix={i}
                     tx={tx}
+                    txids={txids}
                     successfulTxIxs={successfulTxIxs}
                     failedTxIxs={failedTxIxs}
                     setSuccessfulTxIxs={setSuccessfulTxIxs}
@@ -59,13 +63,20 @@ export const TransactionExector = ({ txs, ...props }: Props) => {
               loading={handleExecuteTransactions.isLoading}
               inlineLoader
               onClick={() =>
-                handleExecuteTransactions.mutate({
-                  transactions: txs.filter(
-                    (_, i) => !successfulTxIxs.includes(i)
-                  ),
-                  setFailedTxIxs: setFailedTxIxs,
-                  setSuccessfulTxIxs: setSuccessfulTxIxs,
-                })
+                handleExecuteTransactions.mutate(
+                  {
+                    transactions: txs.filter(
+                      (_, i) => !successfulTxIxs.includes(i)
+                    ),
+                    setFailedTxIxs: setFailedTxIxs,
+                    setSuccessfulTxIxs: setSuccessfulTxIxs,
+                  },
+                  {
+                    onSuccess: (txids) => {
+                      setTxids(txids)
+                    },
+                  }
+                )
               }
             >
               Send{' '}
@@ -83,27 +94,28 @@ export const TransactionExector = ({ txs, ...props }: Props) => {
 export const TxRow = ({
   txix,
   tx,
+  txids,
   successfulTxIxs,
   failedTxIxs,
   setSuccessfulTxIxs,
 }: {
   txix: number
   tx: Transaction
+  txids?: (string | null)[]
   successfulTxIxs: number[]
   failedTxIxs: number[]
   setSuccessfulTxIxs: Dispatch<SetStateAction<number[]>>
 }) => {
+  const { environment } = useEnvironmentCtx()
   const handleExecuteTransaction = useHandleExecuteTransaction()
   return (
     <div className="flex gap-4 border-b border-border py-4 md:flex-row">
       <div className="flex-1">{txix + 1}</div>
-      <div className="flex flex-1 items-center justify-end">
+      <div className="flex flex-1 items-center justify-end gap-2">
         <AsyncButton
-          className="justify-center rounded-md py-1 text-sm"
+          className="justify-center rounded-md bg-gray-700 py-1 text-sm hover:bg-gray-800"
           css={css`
-            background-color: ${successfulTxIxs.includes(txix)
-              ? 'green !important'
-              : failedTxIxs.includes(txix) && 'red !important'};
+            background-color: ${failedTxIxs.includes(txix) && 'red !important'};
           `}
           loading={handleExecuteTransaction.isLoading}
           inlineLoader
@@ -124,6 +136,18 @@ export const TxRow = ({
             ? 'Retry'
             : 'Send'}
         </AsyncButton>
+        {successfulTxIxs.includes(txix) && txids?.at(txix) && (
+          <AsyncButton
+            className="justify-center rounded-md py-1 text-sm"
+            onClick={() =>
+              window.open(
+                transactionUrl(txids?.at(txix) ?? '', environment.label)
+              )
+            }
+          >
+            View
+          </AsyncButton>
+        )}
       </div>
     </div>
   )
@@ -138,7 +162,7 @@ export const TxProgress = ({
 }) => {
   const pct = progress / total
   return (
-    <div className="relative h-8 w-full overflow-hidden rounded-xl bg-white bg-opacity-10">
+    <div className="relative h-8 w-full overflow-hidden rounded-lg bg-white bg-opacity-10">
       <div
         className="absolute h-full bg-primary"
         css={css`

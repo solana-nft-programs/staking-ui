@@ -81,7 +81,8 @@ export const useGenerateRewardEntryMultiplierTxs = () => {
             const { mintId, stakeEntryId, rewardEntryId, multiplier } =
               chunk[j]!
             console.log(`>>[${j}/${chunk.length}] ${mintId.toString()}`)
-            const stakeEntry = accountDataById[stakeEntryId.toString()]
+            const stakeEntryAccountInfo =
+              accountDataById[stakeEntryId.toString()]
 
             // // initialize stake entry ata
             // tx.add(
@@ -94,7 +95,7 @@ export const useGenerateRewardEntryMultiplierTxs = () => {
             // )
 
             // init stake entry
-            if (!stakeEntry?.parsed) {
+            if (!stakeEntryAccountInfo) {
               const authorizationAccounts = remainingAccountsForAuthorization(
                 stakePoolData,
                 mintId,
@@ -124,7 +125,7 @@ export const useGenerateRewardEntryMultiplierTxs = () => {
             // init reward entry
             const rewardEntryAccountInfo =
               accountDataById[rewardEntryId.toString()]
-            if (!rewardEntryAccountInfo?.parsed) {
+            if (!rewardEntryAccountInfo) {
               const ix = await rewardsCenterProgram(connection)
                 .methods.initRewardEntry()
                 .accountsStrict({
@@ -213,8 +214,8 @@ export const useGenerateRewardEntryMultiplierTxs = () => {
             const { mintId, stakeEntryId, rewardEntryId, multiplier } =
               chunk[j]!
             console.log(`>>[${j}/${chunk.length}] ${mintId.toString()}`)
-            const stakeEntry = accountDataById[stakeEntryId.toString()]
-
+            const stakeEntryAccountInfo =
+              accountDataById[stakeEntryId.toString()]
             // // initialize stake entry ata
             // tx.add(
             //   createAssociatedTokenAccountIdempotentInstruction(
@@ -226,7 +227,7 @@ export const useGenerateRewardEntryMultiplierTxs = () => {
             // )
 
             // init stake entry
-            if (!stakeEntry?.parsed) {
+            if (!stakeEntryAccountInfo) {
               await withInitStakeEntry(tx, connection, wallet, {
                 stakePoolId: stakePoolData.pubkey,
                 stakeEntryId: stakeEntryId,
@@ -242,7 +243,7 @@ export const useGenerateRewardEntryMultiplierTxs = () => {
             // init reward entry
             const rewardEntryAccountInfo =
               accountDataById[rewardEntryId.toString()]
-            if (!rewardEntryAccountInfo?.parsed) {
+            if (!rewardEntryAccountInfo) {
               await withInitRewardEntry(tx, connection, wallet, {
                 stakeEntryId,
                 rewardDistributorId: rewardDistributorData.pubkey,

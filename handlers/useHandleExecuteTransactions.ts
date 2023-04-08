@@ -24,7 +24,7 @@ export const useHandleExecuteTransactions = () => {
       setSuccessfulTxIxs: Dispatch<SetStateAction<number[]>>
     }): Promise<(string | null)[]> => {
       if (!wallet.publicKey) throw 'Wallet is not connected'
-      let allTxids = []
+      const allTxids = []
       const recentBlockhash = (await connection.getRecentBlockhash('max'))
         .blockhash
       const unsignedTransactions: Transaction[] = transactions.map((tx) => {
@@ -54,6 +54,7 @@ export const useHandleExecuteTransactions = () => {
             } catch (e) {
               failedTxIxs.push(txix)
               console.log('e', e)
+              return null
             }
           })
         )
@@ -62,8 +63,6 @@ export const useHandleExecuteTransactions = () => {
 
       setFailedTxIxs((v) => [...v, ...failedTxIxs])
       setSuccessfulTxIxs((v) => [...v, ...successfulTxIxs])
-
-      allTxids = allTxids.filter((x): x is string => x !== undefined)
       notify({
         message: `${'Successful transactions'} ${
           allTxids.filter((txid) => !!txid).length
