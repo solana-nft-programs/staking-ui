@@ -8,6 +8,8 @@ import { useWalletId } from 'hooks/useWalletId'
 import { useRouter } from 'next/router'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 
+import { PoolVersionIndicator } from '../fee-info/PoolVersionIndicator'
+
 export const AdminPools = () => {
   const router = useRouter()
   const walletId = useWalletId()
@@ -76,9 +78,10 @@ export const AdminPools = () => {
               <div className="text-gray text-center text-xs text-gray-500">
                 {shortPubKey(stakePool.stakePoolData.pubkey)}
               </div>
+
               {stakePool.stakePoolMetadata?.imageUrl ? (
                 <img
-                  className="mx-auto mt-5 h-[150px] w-[150px] rounded-md"
+                  className="mx-auto mt-5 h-full max-h-[100px] rounded-md"
                   src={stakePool.stakePoolMetadata.imageUrl}
                   alt={stakePool.stakePoolMetadata.name}
                 />
@@ -93,6 +96,10 @@ export const AdminPools = () => {
                   </div>
                 </div>
               )}
+              <PoolVersionIndicator
+                className="mt-10 text-xs"
+                stakePoolData={stakePool.stakePoolData.parsed}
+              />
             </div>
           ))}
         </div>

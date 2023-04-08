@@ -21,7 +21,6 @@ export const RewardClaimFee: React.FC = () => {
       : undefined
   )
 
-  console.log(claimRewardsPaymentInfo.data?.parsed.paymentAmount)
   return (
     <>
       {!!stakePool.isFetched &&
