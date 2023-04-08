@@ -40,13 +40,10 @@ export const AdminClaimRewardsForHolders = () => {
           Generate
         </AsyncButton>
       </div>
-      {handleGenerateClaimRewardsForHoldersTxs.data &&
-        handleGenerateClaimRewardsForHoldersTxs.data.length > 0 && (
-          <TransactionExector
-            className="mt-6"
-            txs={handleGenerateClaimRewardsForHoldersTxs.data}
-          />
-        )}
+      <TransactionExector
+        className="mt-6"
+        txs={handleGenerateClaimRewardsForHoldersTxs.data}
+      />
     </div>
   )
 }
