@@ -97,7 +97,7 @@ export const AdminPools = () => {
                 </div>
               )}
               <PoolVersionIndicator
-                className="mt-10 text-xs"
+                className="mt-8 text-xs"
                 stakePoolData={stakePool.stakePoolData.parsed}
               />
             </div>
