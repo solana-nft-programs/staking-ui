@@ -60,13 +60,10 @@ export const AdminPointsMultipliers = () => {
           </AsyncButton>
         </div>
       </div>
-      {generateStakeEntryMultiplierTxs.data &&
-        generateStakeEntryMultiplierTxs.data.length > 0 && (
-          <TransactionExector
-            className="mt-6"
-            txs={generateStakeEntryMultiplierTxs.data}
-          />
-        )}
+      <TransactionExector
+        className="mt-6"
+        txs={generateStakeEntryMultiplierTxs.data}
+      />
     </div>
   )
 }

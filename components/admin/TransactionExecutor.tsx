@@ -9,7 +9,7 @@ import type { Dispatch, SetStateAction } from 'react'
 import { useState } from 'react'
 
 interface Props extends React.HTMLAttributes<HTMLDivElement> {
-  txs: Transaction[]
+  txs?: Transaction[]
 }
 export const TransactionExector = ({ txs, ...props }: Props) => {
   const handleExecuteTransactions = useHandleExecuteTransactions()
@@ -17,6 +17,7 @@ export const TransactionExector = ({ txs, ...props }: Props) => {
   const [failedTxIxs, setFailedTxIxs] = useState<number[]>([])
   const [txids, setTxids] = useState<(string | null)[]>()
   const [viewAll, setViewAll] = useState(false)
+  if (!txs || txs.length <= 0) return <></>
   return (
     <div {...props}>
       {txs.length > 0 && (

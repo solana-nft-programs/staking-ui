@@ -91,13 +91,10 @@ export const MintMultipliers = () => {
             </AsyncButton>
           </div>
         </div>
-        {generateRewardEntryMultiplierTxs.data &&
-          generateRewardEntryMultiplierTxs.data.length > 0 && (
-            <TransactionExector
-              className="mt-6"
-              txs={generateRewardEntryMultiplierTxs.data}
-            />
-          )}
+        <TransactionExector
+          className="mt-6"
+          txs={generateRewardEntryMultiplierTxs.data}
+        />
       </div>
     </div>
   )
