@@ -7,13 +7,12 @@ import {
   STAKE_POOL_IDL,
 } from '@cardinal/staking/dist/cjs/programs/stakePool'
 import { BorshAccountsCoder, utils } from '@coral-xyz/anchor'
-import { useWallet } from '@solana/wallet-adapter-react'
 import type { Connection, PublicKey } from '@solana/web3.js'
 import { useQuery } from '@tanstack/react-query'
-import { asWallet } from 'common/Wallets'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 
 import { stakePoolDataToV2 } from './useStakePoolData'
+import { useWalletId } from './useWalletId'
 
 export const getStakePoolsByAuthority = async (
   connection: Connection,
@@ -64,20 +63,16 @@ export const getStakePoolsByAuthority = async (
 
 export const useStakePoolsByAuthority = () => {
   const { secondaryConnection } = useEnvironmentCtx()
-  const wallet = useWallet()
+  const walletId = useWalletId()
 
   return useQuery<
     Pick<IdlAccountData<'stakePool'>, 'pubkey' | 'parsed'>[] | undefined
   >(
-    ['useStakePoolsByAuthority', wallet.publicKey?.toString()],
+    ['useStakePoolsByAuthority', walletId?.toString()],
     async () => {
-      if (!wallet.publicKey) return
-      const program = rewardsCenterProgram(
-        secondaryConnection,
-        asWallet(wallet)
-      )
+      if (!walletId) return
       const stakePoolsV1 = (
-        await getStakePoolsByAuthority(secondaryConnection, wallet.publicKey)
+        await getStakePoolsByAuthority(secondaryConnection, walletId)
       ).map((pool) => {
         return {
           pubkey: pool.pubkey,
@@ -85,11 +80,11 @@ export const useStakePoolsByAuthority = () => {
         }
       })
       const stakePoolsV2 = (
-        await program.account.stakePool.all([
+        await rewardsCenterProgram(secondaryConnection).account.stakePool.all([
           {
             memcmp: {
               offset: 9,
-              bytes: wallet.publicKey.toString(),
+              bytes: walletId.toString(),
             },
           },
         ])
@@ -99,7 +94,7 @@ export const useStakePoolsByAuthority = () => {
       return [...stakePoolsV1, ...stakePoolsV2]
     },
     {
-      enabled: !!wallet.publicKey,
+      enabled: !!walletId,
     }
   )
 }
