@@ -14,6 +14,7 @@ import { AdvancedConfigForm } from '@/components/admin/AdvancedConfigForm'
 import { AdminPointsRewards } from '@/components/admin/points-rewards/AdminPointsRewards'
 
 import { AuthorizeMints } from '../AuthorizeMints'
+import { PoolVersionIndicator } from '../fee-info/PoolVersionIndicator'
 import { StakePoolImage } from '../StakePoolImage'
 import { AdminFungibleRewards } from './fungible-rewards/AdminFungibleRewards'
 import { Snapshot } from './Snapshot'
@@ -90,8 +91,11 @@ export const AdminStakePool = () => {
   return (
     <div className="mx-auto flex w-full flex-grow flex-col items-center gap-6">
       <div className="flex w-full flex-col items-center justify-center gap-6">
-        <div className="text-4xl text-light-0">
-          {config?.displayName ?? shortPubKey(stakePoolId)}
+        <div className="flex flex-col items-center justify-center gap-2">
+          <div className="text-4xl text-light-0">
+            {config?.displayName ?? shortPubKey(stakePoolId)}
+          </div>
+          <PoolVersionIndicator />
         </div>
         <div className="flex space-x-3">
           <a
