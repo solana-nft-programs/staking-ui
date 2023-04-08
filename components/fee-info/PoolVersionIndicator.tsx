@@ -1,6 +1,6 @@
 import { Tooltip } from 'common/Tooltip'
 import { isStakePoolV2, useStakePoolData } from 'hooks/useStakePoolData'
-import { BsFillCreditCardFill, BsFillInfoCircleFill } from 'react-icons/bs'
+import { BsFillInfoCircleFill } from 'react-icons/bs'
 
 export const PoolVersionIndicator: React.FC = () => {
   const stakePool = useStakePoolData()
@@ -22,22 +22,6 @@ export const PoolVersionIndicator: React.FC = () => {
           </Tooltip>
         </div>
       )}
-      {!!stakePool.isFetched &&
-        stakePool?.data?.parsed &&
-        !isStakePoolV2(stakePool.data.parsed) && (
-          <div className="flex flex-row items-center justify-center gap-2">
-            <BsFillCreditCardFill className="text-medium-4" />
-            <div className="text-medium-4">Fee: </div>
-            <a
-              className="text-gray-400 underline"
-              target="_blank"
-              rel="noreferrer"
-              href="//cardinal-labs.notion.site/Cardinal-Staking-Costs-14e66a64fb2d4615892937c5dbaa91cc"
-            >
-              View staking costs
-            </a>
-          </div>
-        )}
     </>
   )
 }
