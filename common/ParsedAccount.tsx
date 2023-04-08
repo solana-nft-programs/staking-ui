@@ -8,9 +8,10 @@ import { ShortPubKeyUrl } from './Pubkeys'
 export const ParsedAccount = ({
   data,
 }: {
-  data: { parsed: { [k: string]: any }; pubkey: PublicKey }
+  data?: { parsed: { [k: string]: any }; pubkey: PublicKey } | null
 }) => {
   const { environment } = useEnvironmentCtx()
+  if (!data) return <></>
   return (
     <div className="overflow-hidden rounded-t-lg border-[1px] border-border">
       <div className="bold flex justify-between gap-4 bg-border py-2 px-2 font-bold">
