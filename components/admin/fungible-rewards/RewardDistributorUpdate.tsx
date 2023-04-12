@@ -171,10 +171,11 @@ export function RewardDistributorUpdate() {
         <FormFieldTitleInput
           title={'Maximum reward seconds'}
           description={
-            'The maximum seconds a reward entry can receive rewards for'
+            'The maximum seconds a reward entry can receive rewards for. This is to cap the amount of rewards a single NFT can claim.'
           }
         />
         <BNInput
+          optional
           disabled={!mintInfo.data}
           hasError={!!errors.maxRewardSecondsReceived}
           placeholder={'None'}

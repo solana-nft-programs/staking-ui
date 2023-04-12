@@ -40,7 +40,7 @@ export const useHandleRewardDistributorUpdate = () => {
       const transaction = new Transaction()
 
       if (isRewardDistributorV2(rewardDistributor.data.parsed)) {
-        /////////////////// V1 ///////////////////
+        /////////////////// V2 ///////////////////
         if (
           !values.defaultMultiplier ||
           !values.rewardAmount ||
