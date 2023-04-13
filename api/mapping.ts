@@ -229,4 +229,8 @@ export const stakePoolsWithHostnames: {
     stakePoolAddress: 'ETtip5yn9T7FtFgYV7k8RUkcryuoiPSj9hxC3mX7dKzq',
     hostname: 'stake.moonroll.io',
   },
+  {
+    stakePoolAddress: 'H7CFeUboerg7w3RaU8apsPJwkU4zW1fPXenQygiHPFn3',
+    hostname: 'cheese-computer.aarrohan.com',
+  },
 ]
