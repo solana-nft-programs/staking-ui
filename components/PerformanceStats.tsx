@@ -122,11 +122,11 @@ export const PerformanceStats: React.FC<
               rewards.data?.claimableRewards,
               Math.min(rewardMintInfo.data.mintInfo.decimals, 6)
             )}{' '}
-            {rewardMintInfo.data.tokenListData?.name ||
-              rewardMintInfo.data.metaplexMintData?.data.name.replace(
-                /\0/g,
-                ''
-              ) ||
+            {rewardMintInfo.data.metaplexMintData?.data.name.replace(
+              /\0/g,
+              ''
+            ) ||
+              rewardMintInfo.data.tokenListData?.name ||
               '???'}
           </div>
         )}
