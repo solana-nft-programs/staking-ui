@@ -231,6 +231,7 @@ export const stakePoolsWithHostnames: {
   },
   {
     stakePoolAddress: 'H7CFeUboerg7w3RaU8apsPJwkU4zW1fPXenQygiHPFn3',
-    hostname: 'cheese-computer.aarrohan.com',
+    hostname: 'cheesecomputer.draftjourney.io',
   },
+  
 ]
