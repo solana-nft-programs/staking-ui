@@ -48,13 +48,12 @@ export const AsyncButton: React.FC<Props> = ({
         colorized &&
         css`
           background: ${stakePoolMetadata?.colors?.secondary} !important;
-          color: ${stakePoolMetadata?.colors?.secondary &&
-          stakePoolMetadata?.colors?.secondary.length > 2 &&
-          contrastify(1, stakePoolMetadata?.colors?.secondary)} !important;
+          color: ${contrastify(
+            1,
+            stakePoolMetadata?.colors?.secondary
+          )} !important;
           &:hover {
             background: ${!disabled &&
-            stakePoolMetadata?.colors?.secondary &&
-            stakePoolMetadata?.colors?.secondary.length > 2 &&
             contrastify(0.05, stakePoolMetadata?.colors?.secondary)} !important;
           }
         `
