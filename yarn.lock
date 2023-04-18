@@ -434,10 +434,10 @@
     "@solana/web3.js" "^1.66.2"
     bn.js "^5.2.0"
 
-"@cardinal/staking@^2.2.1":
-  version "2.2.1"
-  resolved "https://registry.yarnpkg.com/@cardinal/staking/-/staking-2.2.1.tgz#60aa94cb426a10c1d5cf3d9961bb39b3854dc7b3"
-  integrity sha512-tI8wo17FQFk+rxijosVqviJX7XYEmeUyO7bWifhiP4xBkjuWB+4sOZtgtJv43Gv0BPTP4Bt7Tfo7tI7nblQe7w==
+"@cardinal/staking@^2.3.0":
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/@cardinal/staking/-/staking-2.3.0.tgz#ddfeab6985c3cfa245840bd45ad5b2aa57caabe6"
+  integrity sha512-0tYopG3LW/XDRsCZTt7znAREuLwgdSQJMvG+DpkljwsKHTTVUKBGx9/yTLynuQeJVmvNiwfT8QJKW18X1lKWkQ==
   dependencies:
     "@cardinal/common" "^7.2.3"
     "@cardinal/payment-manager" "^2.1.1"
