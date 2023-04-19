@@ -423,12 +423,14 @@ export const AdvancedConfigForm = () => {
                   !!errors.colors?.[value as keyof typeof errors.colors]
                 }
                 placeholder={'Enter color hex code'}
-                value={values.colors?.[value]}
-                onChange={({ target }) =>
-                  target.value[0] === '#'
+                value={values.colors?.[value] ?? ''}
+                onChange={({ target }) => {
+                  target.value.length === 0
+                    ? setFieldValue(`colors.${value}`, undefined)
+                    : target.value[0] === '#'
                     ? setFieldValue(`colors.${value}`, target.value)
                     : setFieldValue(`colors.${value}`, `#${target.value}`)
-                }
+                }}
               />
             </div>
           </div>
