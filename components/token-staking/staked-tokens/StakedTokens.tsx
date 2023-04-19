@@ -1,5 +1,5 @@
-import { Tooltip } from '@mui/material'
 import { BN } from '@coral-xyz/anchor'
+import { Tooltip } from '@mui/material'
 import { defaultSecondaryColor } from 'api/mapping'
 import { LoadingSpinner } from 'common/LoadingSpinner'
 import { notify } from 'common/Notification'

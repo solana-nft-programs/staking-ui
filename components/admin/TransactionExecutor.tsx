@@ -6,7 +6,7 @@ import { useHandleExecuteTransaction } from 'handlers/useHandleExecuteTransactio
 import { useHandleExecuteTransactions } from 'handlers/useHandleExecuteTransactions'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 import type { Dispatch, SetStateAction } from 'react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 interface Props extends React.HTMLAttributes<HTMLDivElement> {
   txs?: Transaction[]
@@ -17,6 +17,7 @@ export const TransactionExector = ({ txs, ...props }: Props) => {
   const [failedTxIxs, setFailedTxIxs] = useState<number[]>([])
   const [txids, setTxids] = useState<(string | null)[]>()
   const [viewAll, setViewAll] = useState(false)
+  useEffect(() => setSuccessfulTxIxs([]), [txs?.length])
   if (!txs || txs.length <= 0) return <></>
   return (
     <div {...props}>
@@ -38,7 +39,7 @@ export const TransactionExector = ({ txs, ...props }: Props) => {
             total={txs.length}
           />
           {viewAll && (
-            <div className="mt-2 w-full overflow-x-scroll rounded-xl border border-border p-4">
+            <div className="mt-2 w-full overflow-y-scroll rounded-xl border border-border p-4">
               <div className="flex w-full gap-4 rounded-xl bg-dark-4 px-8 py-2">
                 <div className="flex-1">Transaction</div>
                 <div className="flex-1 text-right">Status</div>
