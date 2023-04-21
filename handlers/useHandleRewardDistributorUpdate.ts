@@ -1,6 +1,6 @@
 import { executeTransaction } from '@cardinal/common'
 import { rewardsCenterProgram } from '@cardinal/rewards-center'
-import { withUpdateRewardDistributor } from '@cardinal/staking/dist/cjs/programs/rewardDistributor/transaction'
+import { rewardDistributorProgram } from '@cardinal/staking/dist/cjs/programs/rewardDistributor'
 import { BN } from '@coral-xyz/anchor'
 import { useWallet } from '@solana/wallet-adapter-react'
 import { Transaction } from '@solana/web3.js'
@@ -76,24 +76,22 @@ export const useHandleRewardDistributorUpdate = () => {
         ) {
           throw 'Reward distributor params missing'
         }
-        await withUpdateRewardDistributor(transaction, connection, wallet, {
-          stakePoolId: rewardDistributor.data.parsed.stakePool,
-          defaultMultiplier: values.defaultMultiplier
-            ? new BN(values.defaultMultiplier)
-            : undefined,
-          multiplierDecimals: values.multiplierDecimals
-            ? Number(values.multiplierDecimals)
-            : undefined,
-          rewardAmount: values.rewardAmount
-            ? new BN(values.rewardAmount)
-            : undefined,
-          rewardDurationSeconds: values.rewardDurationSeconds
-            ? new BN(values.rewardDurationSeconds)
-            : undefined,
-          maxRewardSecondsReceived: values.maxRewardSecondsReceived
-            ? new BN(values.maxRewardSecondsReceived)
-            : undefined,
-        })
+        const ix = await rewardDistributorProgram(connection, wallet)
+          .methods.updateRewardDistributor({
+            defaultMultiplier: new BN(values.defaultMultiplier),
+            multiplierDecimals: Number(values.multiplierDecimals),
+            rewardAmount: new BN(values.rewardAmount),
+            rewardDurationSeconds: new BN(values.rewardDurationSeconds),
+            maxRewardSecondsReceived: values.maxRewardSecondsReceived
+              ? new BN(values.maxRewardSecondsReceived)
+              : null,
+          })
+          .accounts({
+            rewardDistributor: rewardDistributor.data?.pubkey,
+            authority: wallet.publicKey,
+          })
+          .instruction()
+        transaction.add(ix)
       }
 
       return executeTransaction(connection, transaction, wallet, {})
