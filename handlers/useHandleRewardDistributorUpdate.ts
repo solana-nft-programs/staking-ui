@@ -35,6 +35,9 @@ export const useHandleRewardDistributorUpdate = () => {
       if (!rewardDistributor.data?.pubkey) {
         throw 'Reward distributor pubkey not found'
       }
+      if (values.rewardDurationSeconds === '0') {
+        throw 'Reward duration seconds invalid'
+      }
 
       const program = rewardsCenterProgram(connection, wallet)
       const transaction = new Transaction()
