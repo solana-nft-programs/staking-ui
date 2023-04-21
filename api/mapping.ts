@@ -237,5 +237,8 @@ export const stakePoolsWithHostnames: {
     stakePoolAddress: '3pB1r3QNeN37yd4aUhL3VCV6wFWGtPLWHyzJi7bGwG2k',
     hostname: 'cheesecomputer.giraffesjourney.io',
   },
-  
+  {
+    stakePoolAddress: 'BKMvs9v2s34ot25ygzewJSVCmkoCuzvtPofaiA1yBWyF',
+    hostname: 'staking.mavericknft.net',
+  },
 ]
