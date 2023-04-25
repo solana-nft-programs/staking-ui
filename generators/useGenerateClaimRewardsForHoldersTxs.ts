@@ -27,6 +27,8 @@ import { useMutation } from 'react-query'
 import { isStakePoolV2, useStakePoolData } from '../hooks/useStakePoolData'
 import { useEnvironmentCtx } from '../providers/EnvironmentProvider'
 
+const LOOKUP_BATCH_SIZE = 5000
+
 export const useGenerateClaimRewardsForHoldersTxs = () => {
   const wallet = asWallet(useWallet())
   const { connection } = useEnvironmentCtx()
@@ -72,20 +74,31 @@ export const useGenerateClaimRewardsForHoldersTxs = () => {
         type: 'info',
       })
       console.log(costLog)
+      notify({
+        message:
+          'Transaction generation process might take a while in large size pools ...',
+        type: 'info',
+      })
 
       if (isStakePoolV2(stakePool.data.parsed)) {
-        const txs = await claimRewards(
-          connection,
-          wallet,
-          stakePool.data!.parsed.identifier,
-          stakeEntriesV2.map((entry) => {
-            return {
-              mintId: entry.parsed.stakeMint,
-            }
-          }),
-          [rewardDistributor.data!.pubkey],
-          true
-        )
+        const batchStakeEntries = chunkArray(stakeEntriesV2, LOOKUP_BATCH_SIZE)
+        let txs: Transaction[] = []
+        for (const entries of batchStakeEntries) {
+          const batchTxs = await claimRewards(
+            connection,
+            wallet,
+            stakePool.data!.parsed.identifier,
+            entries.map((entry) => {
+              return {
+                mintId: entry.parsed.stakeMint,
+              }
+            }),
+            [rewardDistributor.data!.pubkey],
+            true
+          )
+          txs = [...txs, ...batchTxs]
+        }
+
         const batchedTxs = chunkArray(txs, batchSize)
         return batchedTxs.map((txs) => {
           const transaction = new Transaction()
