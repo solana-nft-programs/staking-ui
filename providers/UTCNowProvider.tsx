@@ -1,6 +1,6 @@
 import type { Connection } from '@solana/web3.js'
-import type { ReactChild} from 'react';
-import React, { useContext, useEffect, useMemo , useState } from 'react'
+import type { ReactChild } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 
 import { useEnvironmentCtx } from './EnvironmentProvider'
 
@@ -40,19 +40,38 @@ export function UTCNowProvider({ children }: { children: ReactChild }) {
     return () => clearInterval(interval)
   }, [])
 
-  useMemo(async () => {
-    try {
-      const solanaClock = await getSolanaClock(secondaryConnection)
-      if (
-        solanaClock &&
-        Math.abs(Date.now() / 1000 - solanaClock) >
-          CLOCK_DRIFT_WARNING_THRESHOLD_SECONDS
-      ) {
-        setClockDrift(Date.now() / 1000 - solanaClock)
-        setUTCNow(solanaClock)
-      }
-    } catch (e) {}
-  }, [environment])
+  useEffect(() => {
+    const interval = setInterval(
+      (function fetchInterval(): () => void {
+        setUTCNow(Date.now() / 1000)
+        return fetchInterval
+      })(),
+      120000 // 2 minutes
+    )
+    return () => clearInterval(interval)
+  }, [])
+
+  useEffect(() => {
+    const interval = setInterval(
+      (function fetchInterval(): () => void {
+        getSolanaClock(secondaryConnection)
+          .then((solanaClock) => {
+            if (
+              solanaClock &&
+              Math.abs(Date.now() / 1000 - solanaClock) >
+                CLOCK_DRIFT_WARNING_THRESHOLD_SECONDS
+            ) {
+              setClockDrift(Date.now() / 1000 - solanaClock)
+              setUTCNow(solanaClock)
+            }
+          })
+          .catch((e) => {})
+        return fetchInterval
+      })(),
+      120000 // 2 minutes
+    )
+    return () => clearInterval(interval)
+  }, [environment.label])
 
   return (
     <UTCNowContext.Provider
