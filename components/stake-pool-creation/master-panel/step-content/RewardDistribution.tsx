@@ -80,9 +80,7 @@ export const RewardDistribution = ({
             disabled={!mintInfo}
             decimals={mintInfo?.decimals}
             value={values.rewardAmount}
-            handleChange={(v) => {
-              setFieldValue('rewardAmount', v)
-            }}
+            handleChange={(v) => setFieldValue('rewardAmount', v)}
           />
         </div>
         <div>
@@ -94,13 +92,13 @@ export const RewardDistribution = ({
               activeScreen={activeSlavePanelScreen}
             />
           </div>
-          <TextInput
+          <BNInput
             disabled={!mintInfo}
-            placeholder="0"
+            hasError={!!errors.rewardDurationSeconds}
+            placeholder={'1'}
             value={values.rewardDurationSeconds}
-            onChange={(e) => {
-              setFieldValue('rewardDurationSeconds', e.target.value)
-            }}
+            decimals={0}
+            handleChange={(v) => setFieldValue('rewardDurationSeconds', v)}
           />
         </div>
         <div className="flex gap-6">
@@ -113,14 +111,13 @@ export const RewardDistribution = ({
                 activeScreen={activeSlavePanelScreen}
               />
             </div>
-            <TextInput
+            <BNInput
               disabled={!mintInfo}
-              className="w-full"
-              placeholder="0"
+              hasError={!!errors.multiplierDecimals}
+              placeholder={'0'}
               value={values.multiplierDecimals}
-              onChange={(e) => {
-                setFieldValue('multiplierDecimals', e.target.value)
-              }}
+              decimals={0}
+              handleChange={(v) => setFieldValue('multiplierDecimals', v)}
             />
           </div>
           <div className="w-1/2">
@@ -132,14 +129,13 @@ export const RewardDistribution = ({
                 activeScreen={activeSlavePanelScreen}
               />
             </div>
-            <TextInput
+            <BNInput
               disabled={!mintInfo}
-              className="w-full"
-              placeholder="1"
+              hasError={!!errors.defaultMultiplier}
+              placeholder={'1'}
               value={values.defaultMultiplier}
-              onChange={(e) => {
-                setFieldValue('defaultMultiplier', e.target.value)
-              }}
+              decimals={0}
+              handleChange={(v) => setFieldValue('defaultMultiplier', v)}
             />
           </div>
         </div>
