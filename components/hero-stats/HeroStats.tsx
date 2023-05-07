@@ -45,7 +45,7 @@ export const HeroStats: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({
           >
             {totalStaked.data?.toLocaleString()}{' '}
             {stakePoolMetadata?.maxStaked
-              ? `/ ${stakePoolMetadata?.maxStaked.toLocaleString()}`
+              ? `/ ${Number(stakePoolMetadata?.maxStaked).toLocaleString()}`
               : ''}
           </div>
         )}
