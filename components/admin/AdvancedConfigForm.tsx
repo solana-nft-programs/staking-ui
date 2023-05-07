@@ -85,61 +85,42 @@ const validationSchema = Yup.object({
   colors: Yup.object({
     primary: Yup.string()
       .required()
-      .test('is-color', 'Invalid color', (value) => {
-        return (
-          (value !== undefined && validateColor(value)) ||
-          validateColor(`#${value}`)
-        )
-      }),
+      .test(
+        'is-color',
+        'Invalid color',
+        (value) => value !== undefined && validateColor(value)
+      ),
     secondary: Yup.string()
       .required()
-      .test('is-color', 'Invalid color', (value) => {
-        return (
-          (value !== undefined && validateColor(value)) ||
-          validateColor(`#${value}`)
-        )
-      }),
-    accent: Yup.string().test('is-color', 'Invalid color', (value) => {
-      return (
-        (value !== undefined && validateColor(value)) ||
-        validateColor(`#${value}`)
-      )
-    }),
-    fontColor: Yup.string().test('is-color', 'Invalid color', (value) => {
-      return (
-        (value !== undefined && validateColor(value)) ||
-        validateColor(`#${value}`)
-      )
-    }),
+      .test(
+        'is-color',
+        'Invalid color',
+        (value) => value !== undefined && validateColor(value)
+      ),
+    accent: Yup.string().test(
+      'is-color',
+      'Invalid color',
+      (value) => value !== undefined && validateColor(value)
+    ),
+    fontColor: Yup.string().test(
+      'is-color',
+      'Invalid color',
+      (value) => value !== undefined && validateColor(value)
+    ),
     fontColorSecondary: Yup.string().test(
       'is-color',
       'Invalid color',
-      (value) => {
-        return (
-          (value !== undefined && validateColor(value)) ||
-          validateColor(`#${value}`)
-        )
-      }
+      (value) => value !== undefined && validateColor(value)
     ),
     backgroundSecondary: Yup.string().test(
       'is-color',
       'Invalid color',
-      (value) => {
-        return (
-          (value !== undefined && validateColor(value)) ||
-          validateColor(`#${value}`)
-        )
-      }
+      (value) => value !== undefined && validateColor(value)
     ),
     fontColorTertiary: Yup.string().test(
       'is-color',
       'Invalid color',
-      (value) => {
-        return (
-          (value !== undefined && validateColor(value)) ||
-          validateColor(`#${value}`)
-        )
-      }
+      (value) => value !== undefined && validateColor(value)
     ),
   }),
   disallowRegions: Yup.array().of(
@@ -425,11 +406,10 @@ export const AdvancedConfigForm = () => {
                 placeholder={'Enter color hex code'}
                 value={values.colors?.[value] ?? ''}
                 onChange={({ target }) => {
+                  console.log(target.value, validateColor(target.value))
                   target.value.length === 0
                     ? setFieldValue(`colors.${value}`, undefined)
-                    : target.value[0] === '#'
-                    ? setFieldValue(`colors.${value}`, target.value)
-                    : setFieldValue(`colors.${value}`, `#${target.value}`)
+                    : setFieldValue(`colors.${value}`, target.value)
                 }}
               />
             </div>
