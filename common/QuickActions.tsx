@@ -14,6 +14,8 @@ import { FaEllipsisH } from 'react-icons/fa'
 import { FiExternalLink } from 'react-icons/fi'
 import { RiMoneyDollarCircleFill } from 'react-icons/ri'
 
+import { trySeq } from '@/components/CollectionsGrid'
+
 import { LoadingSpinner } from './LoadingSpinner'
 import { Popover, PopoverItem } from './Popover'
 import { metadataUrl, pubKeyUrl } from './utils'
@@ -45,9 +47,16 @@ export const QuickActions = ({
           style={{
             background: lighten(
               0.07,
-              stakePoolMetadata?.colors?.primary || '#000'
+              trySeq(() =>
+                lighten(0.07, stakePoolMetadata?.colors?.primary || '#000')
+              ) || '#000'
             ),
-            color: contrastify(1, stakePoolMetadata?.colors?.primary || '#000'),
+            color: contrastify(
+              1,
+              trySeq(() =>
+                lighten(0.07, stakePoolMetadata?.colors?.primary || '#000')
+              ) || '#000'
+            ),
           }}
         >
           <PopoverItem>
@@ -164,10 +173,10 @@ export const QuickActions = ({
         className={`absolute top-2 right-2 z-50 flex h-5 w-5 cursor-pointer items-center justify-center rounded-md text-xs text-white`}
         style={{
           transition: '0.2s all',
-          background: lighten(
-            0.07,
-            stakePoolMetadata?.colors?.primary || '#000'
-          ),
+          background:
+            trySeq(() =>
+              lighten(0.07, stakePoolMetadata?.colors?.primary || '#000')
+            ) ?? '',
         }}
         key={
           unstakedTokenData?.tokenAccount?.parsed.mint.toString() ??
