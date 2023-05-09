@@ -57,7 +57,7 @@ export const useGenerateClaimRewardsForHoldersTxs = () => {
       >[] = []
       if (isStakePoolV2(stakePool.data.parsed)) {
         stakeEntriesV2 = (
-          await getActiveStakePoolEntriesV2(connection, wallet, stakePool.data)
+          await getActiveStakePoolEntriesV2(connection, stakePool.data)
         ).filter((entry) => !entry.parsed.cooldownStartSeconds)
       } else {
         stakeEntriesV1 = (

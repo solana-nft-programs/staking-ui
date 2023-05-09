@@ -287,6 +287,22 @@
     polished "^4.2.2"
     tslib "^2.4.0"
 
+"@cardinal/common@^8.0.0":
+  version "8.0.0"
+  resolved "https://registry.yarnpkg.com/@cardinal/common/-/common-8.0.0.tgz#716c1f6f944c7521b7750cbd4211fca2c68830d5"
+  integrity sha512-kgjPoD7owZ0vyX0vJ0oSOgyJCx/yzCek+w5gjPVFZxFtLWwxssBAbd1NnZ6qIq0er8S0wFsLZnBRNh32drprEw==
+  dependencies:
+    "@coral-xyz/anchor" "^0.27.0"
+    "@metaplex-foundation/mpl-token-auth-rules" "^1.2.0"
+    "@metaplex-foundation/mpl-token-metadata" "^2.8.3"
+    "@msgpack/msgpack" "^2.8.0"
+    "@solana/buffer-layout" "^4.0.0"
+    "@solana/spl-token" "^0.3.5"
+    "@solana/web3.js" "^1.73.3"
+    bignumber.js "^9.1.0"
+    polished "^4.2.2"
+    tslib "^2.4.0"
+
 "@cardinal/configs@^1.3.5":
   version "1.3.5"
   resolved "https://registry.yarnpkg.com/@cardinal/configs/-/configs-1.3.5.tgz#7717a9f5c3162b63b2de01b7689e92fe5b7408a4"
@@ -419,25 +435,25 @@
     "@solana/web3.js" "^1.66.2"
     bn.js "^5.2.0"
 
-"@cardinal/rewards-center@^3.3.0":
-  version "3.3.0"
-  resolved "https://registry.yarnpkg.com/@cardinal/rewards-center/-/rewards-center-3.3.0.tgz#b7457116b909d1ab26b3b8cb1d226b6a6b05661b"
-  integrity sha512-OkZDifbxH0c+BpEuQaxGym00ZR9OzK6JyNDyAyjvHHwzXF1n1+dRCGE1Mvq/2HzJ57zNe/pRj/7YnU+ft4nivQ==
+"@cardinal/rewards-center@^3.5.0":
+  version "3.5.0"
+  resolved "https://registry.yarnpkg.com/@cardinal/rewards-center/-/rewards-center-3.5.0.tgz#5a846f8c70d3d436b5ee5a7d1b4664eb7dfe48e2"
+  integrity sha512-Ty/N7mM1OWzUi6U7AcFb2Yyv2ylHNl4RDDohg7H7J10lgFtv0Zb3WTmtrck1jj3R8xnOcVkJU7X37iXTgLkbNA==
   dependencies:
-    "@cardinal/common" "^7.0.0"
+    "@cardinal/common" "^8.0.0"
     "@cardinal/creator-standard" "^2.4.0"
-    "@coral-xyz/anchor" "0.26.0"
+    "@coral-xyz/anchor" "^0.27.0"
     "@metaplex-foundation/mpl-token-auth-rules" "^1.1.0"
-    "@metaplex-foundation/mpl-token-metadata" "^2.8.0"
+    "@metaplex-foundation/mpl-token-metadata" "^2.11.0"
     "@msgpack/msgpack" "^2.8.0"
     "@solana/spl-token" "^0.3.6"
     "@solana/web3.js" "^1.66.2"
     bn.js "^5.2.0"
 
-"@cardinal/staking@^2.3.0":
-  version "2.3.0"
-  resolved "https://registry.yarnpkg.com/@cardinal/staking/-/staking-2.3.0.tgz#ddfeab6985c3cfa245840bd45ad5b2aa57caabe6"
-  integrity sha512-0tYopG3LW/XDRsCZTt7znAREuLwgdSQJMvG+DpkljwsKHTTVUKBGx9/yTLynuQeJVmvNiwfT8QJKW18X1lKWkQ==
+"@cardinal/staking@^2.4.0":
+  version "2.4.0"
+  resolved "https://registry.yarnpkg.com/@cardinal/staking/-/staking-2.4.0.tgz#be5e71dfbe95e7c9fb051bf7557d7e1d597bd4c5"
+  integrity sha512-fak1FNEgL9ujS6CQBCALtVYnkps7I5R6j5KTwAUzocaaRLwrhcmqcatPK/gOsQpFcgzuRvBQE4dLXBCIyC7u4w==
   dependencies:
     "@cardinal/common" "^7.2.3"
     "@cardinal/payment-manager" "^2.1.1"
@@ -445,7 +461,7 @@
     "@cardinal/token-manager" "^4.3.2"
     "@coral-xyz/anchor" "0.27.0"
     "@metaplex-foundation/mpl-token-auth-rules" "^1.1.0"
-    "@metaplex-foundation/mpl-token-metadata" "^2.8.1"
+    "@metaplex-foundation/mpl-token-metadata" "^2.11.0"
     "@solana/spl-token" "^0.3.6"
     "@solana/web3.js" "^1.34.0"
 
@@ -1041,10 +1057,10 @@
     "@solana/spl-token" "^0.3.6"
     "@solana/web3.js" "^1.66.2"
 
-"@metaplex-foundation/mpl-token-metadata@^2.5.2":
-  version "2.7.0"
-  resolved "https://registry.yarnpkg.com/@metaplex-foundation/mpl-token-metadata/-/mpl-token-metadata-2.7.0.tgz#3d404d27fb65c638263bff115e10115c30f94c96"
-  integrity sha512-dF20BAD5Kvd/qNOa8xmANO5//xvsmleCsD98HHeqBiz20HwC01y6VMkfwjXgVmrg8WSLpzojlQgMYO6jKhuZtg==
+"@metaplex-foundation/mpl-token-metadata@^2.11.0":
+  version "2.11.0"
+  resolved "https://registry.yarnpkg.com/@metaplex-foundation/mpl-token-metadata/-/mpl-token-metadata-2.11.0.tgz#e1118687a88dbfffa2bbd252e490a1ad2f620de7"
+  integrity sha512-pwuufw3QuSk0Z/oOmB7gpnlxiIR0bc5RVHLEpwOJ5/4KHEq7PIFxVsNcwDFzLoZJWTcQdvwZTy0d1J/qJMoxxg==
   dependencies:
     "@metaplex-foundation/beet" "^0.7.1"
     "@metaplex-foundation/beet-solana" "^0.4.0"
@@ -1054,10 +1070,10 @@
     bn.js "^5.2.0"
     debug "^4.3.4"
 
-"@metaplex-foundation/mpl-token-metadata@^2.8.0":
-  version "2.9.1"
-  resolved "https://registry.yarnpkg.com/@metaplex-foundation/mpl-token-metadata/-/mpl-token-metadata-2.9.1.tgz#79b548b60ac4065b438b78e28b0139751f16b186"
-  integrity sha512-QmeWBG7y2Uu9FyD1JiclPmJtkYA1sd/Vh9US9H9zTGNWnyogM60hqZ9yVcibvkO+aSsWd0ZJIsMXZlewXIx0IQ==
+"@metaplex-foundation/mpl-token-metadata@^2.5.2":
+  version "2.7.0"
+  resolved "https://registry.yarnpkg.com/@metaplex-foundation/mpl-token-metadata/-/mpl-token-metadata-2.7.0.tgz#3d404d27fb65c638263bff115e10115c30f94c96"
+  integrity sha512-dF20BAD5Kvd/qNOa8xmANO5//xvsmleCsD98HHeqBiz20HwC01y6VMkfwjXgVmrg8WSLpzojlQgMYO6jKhuZtg==
   dependencies:
     "@metaplex-foundation/beet" "^0.7.1"
     "@metaplex-foundation/beet-solana" "^0.4.0"

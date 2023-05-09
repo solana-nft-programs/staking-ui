@@ -1,11 +1,8 @@
-import { emptyWallet } from '@cardinal/common'
 import type { IdlAccountData } from '@cardinal/rewards-center'
 import { rewardsCenterProgram } from '@cardinal/rewards-center'
 import { getActiveStakeEntriesForPool } from '@cardinal/staking/dist/cjs/programs/stakePool/accounts'
-import type { Wallet } from '@project-serum/anchor/dist/cjs/provider'
-import { useWallet } from '@solana/wallet-adapter-react'
 import type { Connection } from '@solana/web3.js'
-import { Keypair, PublicKey } from '@solana/web3.js'
+import { PublicKey } from '@solana/web3.js'
 import { useQuery } from '@tanstack/react-query'
 import { stakeEntryDataToV2 } from 'api/fetchStakeEntry'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
@@ -16,8 +13,6 @@ import { isStakePoolV2, useStakePoolData } from './useStakePoolData'
 export const useStakePoolEntries = () => {
   const { secondaryConnection } = useEnvironmentCtx()
   const { data: stakePoolData } = useStakePoolData()
-  const wallet = useWallet()
-
   return useQuery<
     Pick<IdlAccountData<'stakeEntry'>, 'pubkey' | 'parsed'>[] | undefined
   >(
@@ -25,11 +20,7 @@ export const useStakePoolEntries = () => {
     async () => {
       if (stakePoolData?.pubkey && stakePoolData?.parsed) {
         if (isStakePoolV2(stakePoolData.parsed)) {
-          return getActiveStakePoolEntriesV2(
-            secondaryConnection,
-            emptyWallet(wallet.publicKey || Keypair.generate().publicKey),
-            stakePoolData
-          )
+          return getActiveStakePoolEntriesV2(secondaryConnection, stakePoolData)
         } else {
           return (
             await getActiveStakeEntriesForPool(
@@ -51,10 +42,9 @@ export const useStakePoolEntries = () => {
 
 export const getActiveStakePoolEntriesV2 = async (
   connection: Connection,
-  wallet: Wallet,
   stakePoolData: Pick<IdlAccountData<'stakePool'>, 'pubkey' | 'parsed'>
 ): Promise<Pick<IdlAccountData<'stakeEntry'>, 'pubkey' | 'parsed'>[]> => {
-  const program = rewardsCenterProgram(connection, wallet)
+  const program = rewardsCenterProgram(connection)
   const stakeEntries = await program.account.stakeEntry.all([
     {
       memcmp: {
