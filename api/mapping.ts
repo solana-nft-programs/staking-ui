@@ -241,4 +241,8 @@ export const stakePoolsWithHostnames: {
     stakePoolAddress: 'BKMvs9v2s34ot25ygzewJSVCmkoCuzvtPofaiA1yBWyF',
     hostname: 'staking.mavericknft.net',
   },
+  {
+    stakePoolAddress: 'Homs8QhXVvqwDGjxyVkkDtJxMPaZDgYuXdLyAoUtVvAs',
+    hostname: 'stake.cryptofarmnft.xyz',
+  },
 ]
