@@ -245,4 +245,8 @@ export const stakePoolsWithHostnames: {
     stakePoolAddress: 'Homs8QhXVvqwDGjxyVkkDtJxMPaZDgYuXdLyAoUtVvAs',
     hostname: 'stake.cryptofarmnft.xyz',
   },
+  {
+    stakePoolAddress: '7LUEhBscLj1sKxUtJorHsDPoHV2fSUcNN7EdKJqoeuMb',
+    hostname: 'stake.jalnft.xyz',
+  },
 ]
