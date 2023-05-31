@@ -40,12 +40,6 @@ export const useHandleTransferFunds = () => {
       if (!transferAmount) throw 'Transfer amount missing'
 
       const transaction = new Transaction()
-      if (
-        rewardDistributor.data.parsed.rewardMint.toString() ===
-        NATIVE_MINT.toString()
-      ) {
-        await withWrapSol(transaction, connection, wallet, transferAmount)
-      }
       const ownerAtaId = getAssociatedTokenAddressSync(
         rewardDistributor.data.parsed?.rewardMint,
         wallet.publicKey,
@@ -62,7 +56,7 @@ export const useHandleTransferFunds = () => {
 
       if (
         rewardDistributor.data.parsed.rewardMint.toString() ===
-        'So11111111111111111111111111111111111111112'
+        NATIVE_MINT.toString()
       ) {
         await withWrapSol(transaction, connection, wallet, transferAmount)
       }
