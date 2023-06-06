@@ -28,7 +28,7 @@
     "@cardinal/configs": "^1.3.5",
     "@cardinal/namespaces-components": "^5.1.0",
     "@cardinal/rewards-center": "^3.5.0",
-    "@cardinal/staking": "^2.4.0",
+    "@cardinal/staking": "2.4.1-beta.0",
     "@cardinal/stats": "^1.1.0",
     "@coral-xyz/anchor": "^0.27.0",
     "@emotion/babel-plugin": "^11.7.2",
