@@ -90,8 +90,9 @@ export const Header = () => {
             <AccountConnect
               dark={
                 tryColor(stakePoolMetadata?.colors?.primary)
-                  ? getLuminance(tryColor(stakePoolMetadata?.colors?.primary)) <
-                    0.5
+                  ? getLuminance(
+                      tryColor(stakePoolMetadata?.colors?.primary)!
+                    ) < 0.5
                   : true
               }
               connection={secondaryConnection}
