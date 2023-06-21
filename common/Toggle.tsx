@@ -40,8 +40,8 @@ export const Toggle = ({
         }}
       >
         <div
-          className={`absolute h-5 w-5 rounded-full bg-white transition-all ${
-            value ? 'left-4' : 'left-0'
+          className={`absolute top-[2px] h-5 w-5 rounded-full bg-white transition-all ${
+            value ? 'left-[18px]' : 'left-[2px]'
           }`}
         />
       </div>
