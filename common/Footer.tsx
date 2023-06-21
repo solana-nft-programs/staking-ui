@@ -1,7 +1,6 @@
-import { darken, lighten } from 'polished'
+import { contrastify } from '@cardinal/common'
+import { darken, getLuminance, lighten } from 'polished'
 import { FaDiscord, FaGithub, FaMedium, FaTwitter } from 'react-icons/fa'
-
-import { contrastColorMode } from './utils'
 
 export const SOCIALS = {
   discord: { icon: <FaDiscord />, link: 'https://discord.gg/byq6uNTugq' },
@@ -30,14 +29,14 @@ export const Footer = ({
             alt={bgColor}
             className="inline-block h-[28px]"
             src={
-              contrastColorMode(bgColor)[1]
+              getLuminance(bgColor) < 0.5
                 ? '/cardinal-crosshair.svg'
                 : '/cardinal-crosshair-dark.svg'
             }
           />
           <span
             className="ml-3 text-2xl font-semibold"
-            style={{ color: lighten(0.4, contrastColorMode(bgColor)[0]) }}
+            style={{ color: contrastify(100, bgColor) }}
           >
             Cardinal
           </span>
@@ -46,7 +45,7 @@ export const Footer = ({
           <span className="flex flex-col items-start gap-1">
             <div
               className="mb-2 text-lg font-semibold"
-              style={{ color: lighten(0.4, contrastColorMode(bgColor)[0]) }}
+              style={{ color: contrastify(100, bgColor) }}
             >
               App
             </div>
@@ -60,7 +59,7 @@ export const Footer = ({
           <span className="flex flex-col items-start gap-1">
             <div
               className="mb-2 text-lg font-semibold"
-              style={{ color: lighten(0.4, contrastColorMode(bgColor)[0]) }}
+              style={{ color: contrastify(100, bgColor) }}
             >
               Resources
             </div>

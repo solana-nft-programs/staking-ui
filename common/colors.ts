@@ -10,3 +10,13 @@ export const contrastify = (
     ? darken(amount, color)
     : lighten(amount, color)
 }
+
+export const tryColor = (
+  color: string | null | undefined,
+  defaultColor?: string
+): string => {
+  if (!color) return defaultColor ?? ''
+  const validColor = /^#[0-9A-F]{6}$/i.test(color)
+  const validColorHash = /^#[0-9A-F]{6}$/i.test(`#${color}`)
+  return validColor ? color : validColorHash ? `#${color}` : defaultColor ?? ''
+}

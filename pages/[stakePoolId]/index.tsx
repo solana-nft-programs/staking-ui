@@ -1,3 +1,4 @@
+import { tryColor } from 'common/colors'
 import { Footer } from 'common/Footer'
 import { FooterSlim } from 'common/FooterSlim'
 import { Header } from 'common/Header'
@@ -135,7 +136,7 @@ function StakePoolHome(props: { stakePoolMetadataName: string | null }) {
   return (
     <div
       style={{
-        background: stakePoolMetadata?.colors?.primary,
+        background: tryColor(stakePoolMetadata?.colors?.primary),
         backgroundSize: 'cover',
         backgroundImage: `url(${stakePoolMetadata?.backgroundImage})`,
       }}
@@ -221,9 +222,7 @@ function StakePoolHome(props: { stakePoolMetadataName: string | null }) {
         }
       </div>
       {!stakePoolMetadata?.hideFooter ? (
-        <Footer
-          bgColor={stakePoolMetadata?.colors?.primary?.replace(' ', '')}
-        />
+        <Footer bgColor={tryColor(stakePoolMetadata?.colors?.primary)} />
       ) : (
         <div className="h-24"></div>
       )}

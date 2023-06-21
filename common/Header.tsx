@@ -9,6 +9,7 @@ import { useStakePoolMetadataCtx } from 'providers/StakePoolMetadataProvider'
 
 import { Airdrop } from './Airdrop'
 import { ButtonSmall } from './ButtonSmall'
+import { tryColor } from './colors'
 import { asWallet } from './Wallets'
 
 export const Header = () => {
@@ -88,8 +89,9 @@ export const Header = () => {
           {wallet.connected && wallet.publicKey ? (
             <AccountConnect
               dark={
-                stakePoolMetadata?.colors?.primary
-                  ? getLuminance(stakePoolMetadata?.colors?.primary) < 0.5
+                tryColor(stakePoolMetadata?.colors?.primary)
+                  ? getLuminance(tryColor(stakePoolMetadata?.colors?.primary)) <
+                    0.5
                   : true
               }
               connection={secondaryConnection}
