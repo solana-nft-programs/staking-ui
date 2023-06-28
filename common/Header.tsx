@@ -8,6 +8,7 @@ import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 import { useStakePoolMetadataCtx } from 'providers/StakePoolMetadataProvider'
 
 import { Airdrop } from './Airdrop'
+import { Announcement } from './Announcement'
 import { ButtonSmall } from './ButtonSmall'
 import { tryColor } from './colors'
 import { asWallet } from './Wallets'
@@ -21,6 +22,7 @@ export const Header = () => {
 
   return (
     <div>
+      <Announcement />
       <div
         className={`mb-5 flex flex-wrap justify-center gap-6 px-10 pt-5 text-white md:justify-between`}
         style={{ color: stakePoolMetadata?.colors?.fontColor }}

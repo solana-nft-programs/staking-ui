@@ -27,7 +27,6 @@ function Homepage() {
           src="https://plausible.io/js/plausible.js"
         ></script>
       </Head>
-
       <Banner />
       <MainHero />
       <div className="mx-auto flex flex-col gap-16 px-8 md:px-16">
