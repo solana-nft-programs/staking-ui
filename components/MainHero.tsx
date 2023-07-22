@@ -2,7 +2,6 @@ import { PlusIcon } from '@heroicons/react/24/solid'
 import { HeaderSlim } from 'common/HeaderSlim'
 import { withCluster } from 'common/utils'
 import { useAllStakePools } from 'hooks/useAllStakePools'
-import { useStat } from 'hooks/useStat'
 import { useRouter } from 'next/router'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 
@@ -15,7 +14,6 @@ import { ButtonWidths } from '../types'
 export const MainHero = () => {
   const { environment } = useEnvironmentCtx()
   const allStakePools = useAllStakePools()
-  const totalStakedTokens = useStat('total-active-staked-tokens')
   const router = useRouter()
   return (
     <div className="relative z-0 text-sm">
@@ -34,7 +32,7 @@ export const MainHero = () => {
             tokens, merchandise, redeemable rewards, referral tokens and more.
           </div>
         </div>
-        <div className="flex flex-col items-center gap-5 ">
+        <div className="flex flex-col items-end gap-5 ">
           <div className="flex w-full flex-wrap items-center justify-between gap-2 lg:gap-6">
             <BodyCopy className="">
               Does your NFT collection or tokens need staking?
@@ -50,7 +48,7 @@ export const MainHero = () => {
             </ButtonPrimary>
           </div>
           <div className="flex w-fit flex-wrap gap-3 rounded-xl border-[2px] border-border p-4">
-            <div className="flex items-center gap-2">
+            {/* <div className="flex items-center gap-2">
               <div className="text-medium-3">Total Staked Tokens</div>
               <div className="text-light-0">
                 {totalStakedTokens.data?.parsed ? (
@@ -61,7 +59,7 @@ export const MainHero = () => {
                   <div className="mt-[1px] h-5 w-12 animate-pulse rounded-md bg-border" />
                 )}
               </div>
-            </div>
+            </div> */}
             <div className="flex items-center gap-2">
               <div className="text-medium-3">Total Staked NFTs</div>
               <div className="text-light-0">
