@@ -1,14 +1,13 @@
 import { contrastify, tryPublicKey } from '@cardinal/common'
 import type { ReceiptType } from '@cardinal/staking/dist/cjs/programs/stakePool'
 import { useHandleClaimRewards } from 'handlers/useHandleClaimRewards'
-import { useHandleStake } from 'handlers/useHandleStake'
 import { useHandleUnstake } from 'handlers/useHandleUnstake'
 import type { AllowedTokenData } from 'hooks/useAllowedTokenDatas'
 import type { StakeEntryTokenData } from 'hooks/useStakedTokenDatas'
 import { lighten } from 'polished'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 import { useStakePoolMetadataCtx } from 'providers/StakePoolMetadataProvider'
-import { AiFillLock, AiFillUnlock, AiOutlineDatabase } from 'react-icons/ai'
+import { AiFillUnlock, AiOutlineDatabase } from 'react-icons/ai'
 import { BsBookmarkCheck } from 'react-icons/bs'
 import { FaEllipsisH } from 'react-icons/fa'
 import { FiExternalLink } from 'react-icons/fi'
@@ -35,7 +34,6 @@ export const QuickActions = ({
 }) => {
   const { data: stakePoolMetadata } = useStakePoolMetadataCtx()
   const ctx = useEnvironmentCtx()
-  const handleStake = useHandleStake()
   const handleUnstake = useHandleUnstake()
   const handleClaimRewards = useHandleClaimRewards()
 
@@ -124,22 +122,6 @@ export const QuickActions = ({
               </div>
             </PopoverItem>
           )}
-          {unstakedTokenData?.tokenAccount && (
-            <PopoverItem>
-              <div
-                className="flex cursor-pointer items-center gap-2"
-                onClick={async () => {
-                  handleStake.mutate({
-                    tokenDatas: [unstakedTokenData],
-                    receiptType,
-                  })
-                }}
-              >
-                <AiFillLock />
-                Stake
-              </div>
-            </PopoverItem>
-          )}
           {stakedTokenData?.stakeEntry && (
             <PopoverItem>
               <div
@@ -183,9 +165,7 @@ export const QuickActions = ({
           stakedTokenData?.stakeEntry?.parsed?.stakeMint.toString()
         }
       >
-        {handleClaimRewards.isLoading ||
-        handleUnstake.isLoading ||
-        handleStake.isLoading ? (
+        {handleClaimRewards.isLoading || handleUnstake.isLoading ? (
           <div>
             <LoadingSpinner
               fill={

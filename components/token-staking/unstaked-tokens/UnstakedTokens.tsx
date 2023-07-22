@@ -141,8 +141,9 @@ export const UnstakedTokens = () => {
           <></>
         )}
         <div className="flex gap-5">
-          <Tooltip title="Click on tokens to select them">
+          <Tooltip title="Cardinal is shutting down operations">
             <button
+              disabled={true}
               onClick={() => {
                 if (unstakedSelected.length === 0) {
                   notify({
@@ -162,6 +163,7 @@ export const UnstakedTokens = () => {
                 color:
                   stakePoolMetadata?.colors?.fontColorSecondary ||
                   stakePoolMetadata?.colors?.fontColor,
+                opacity: '0.5',
               }}
               className="my-auto flex items-center justify-center rounded-md px-4 py-2 hover:scale-[1.03]"
             >

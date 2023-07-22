@@ -1,5 +1,5 @@
 import type { Mint } from '@solana/spl-token'
-import { LoadingSpinner } from 'common/LoadingSpinner'
+import { Tooltip } from 'common/Tooltip'
 import { withCluster } from 'common/utils'
 import type { FormikHandlers, FormikState, FormikValues } from 'formik'
 import { useRouter } from 'next/router'
@@ -104,19 +104,9 @@ export const MasterPanel = ({
               {currentStep === 0 ? 'Start' : 'Next'}
             </ButtonPrimary>
           ) : (
-            <ButtonPrimary
-              onClick={() => handleSubmit()}
-              width={ButtonWidths.NARROW}
-              disabled={submitDisabled}
-            >
-              {isLoading ? (
-                <LoadingSpinner fill={'#FFF'} height="25px" />
-              ) : type === 'create' ? (
-                'Create'
-              ) : (
-                'Update'
-              )}
-            </ButtonPrimary>
+            <Tooltip title="Cardinal is shutting down operations">
+              <div className="ml-5">Create</div>
+            </Tooltip>
           )}
           {currentStep > 0 && (
             <BodyCopy className="ml-4">Step {currentStep}/4</BodyCopy>
