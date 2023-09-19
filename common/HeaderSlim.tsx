@@ -1,4 +1,4 @@
-import { AccountConnect } from '@cardinal/namespaces-components'
+import { AccountConnect } from '@solana-nft-programs/namespaces-components'
 import { useWallet } from '@solana/wallet-adapter-react'
 import { useWalletModal } from '@solana/wallet-adapter-react-ui'
 import { GlyphWallet } from 'assets/GlyphWallet'

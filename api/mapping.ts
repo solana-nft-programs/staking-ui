@@ -1,4 +1,4 @@
-import type { ReceiptType } from '@cardinal/staking/dist/cjs/programs/stakePool'
+import type { ReceiptType } from '@solana-nft-programs/staking/dist/cjs/programs/stakePool'
 import type { CSSProperties } from 'react'
 
 import type { AirdropMetadata } from '../common/Airdrop'
@@ -211,7 +211,7 @@ export const stakePoolsWithHostnames: {
   },
   {
     stakePoolAddress: 'Fkk1D46RjHP2jtjcHCYRbGcTweEARewb5XqHBTTvyNdm',
-    hostname: 'https://stake.cardinal.so/DevilBots',
+    hostname: 'https://stake.host.so/DevilBots',
   },
   {
     stakePoolAddress: 'EBeHpw9byuS55Znu4qrpsPC9LJvtrgNRKNwzWQPHk2g1',

@@ -1,4 +1,4 @@
-import { getActiveStakeEntriesForPool } from '@cardinal/staking/dist/cjs/programs/stakePool/accounts'
+import { getActiveStakeEntriesForPool } from '@solana-nft-programs/staking/dist/cjs/programs/stakePool/accounts'
 import { Connection } from '@solana/web3.js'
 import { firstParam, tryPublicKey } from 'common/utils'
 import type { NextApiHandler } from 'next'

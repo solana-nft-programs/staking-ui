@@ -1,8 +1,8 @@
-import { tryNull, tryPublicKey } from '@cardinal/common'
+import { tryNull, tryPublicKey } from '@solana-nft-programs/common'
 import {
   getConfigEntry,
   getConfigEntryById,
-} from '@cardinal/configs/dist/cjs/programs/accounts'
+} from '@solana-nft-programs/configs/dist/cjs/programs/accounts'
 import type { Connection } from '@solana/web3.js'
 import { useQuery } from '@tanstack/react-query'
 import type { StakePoolMetadata } from 'api/mapping'

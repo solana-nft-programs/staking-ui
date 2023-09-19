@@ -1,4 +1,4 @@
-import { tryFormatInput, tryParseInput } from '@cardinal/common'
+import { tryFormatInput, tryParseInput } from '@solana-nft-programs/common'
 
 import { TextInput } from './TextInput'
 

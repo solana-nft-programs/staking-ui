@@ -1,5 +1,5 @@
-import { getRewardMap } from '@cardinal/staking'
-import { RewardDistributorKind } from '@cardinal/staking/dist/cjs/programs/rewardDistributor'
+import { getRewardMap } from '@solana-nft-programs/staking'
+import { RewardDistributorKind } from '@solana-nft-programs/staking/dist/cjs/programs/rewardDistributor'
 import { BN } from '@coral-xyz/anchor'
 import { useQuery } from '@tanstack/react-query'
 import { rewardEntryDataToV1 } from 'api/fetchRewardEntry'

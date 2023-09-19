@@ -2,7 +2,7 @@ import {
   executeTransaction,
   withFindOrInitAssociatedTokenAccount,
   withWrapSol,
-} from '@cardinal/common'
+} from '@solana-nft-programs/common'
 import {
   createTransferCheckedInstruction,
   getAssociatedTokenAddressSync,

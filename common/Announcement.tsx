@@ -2,10 +2,10 @@ export const Announcement: React.FC = ({}) => {
   return (
     <div className="z-100 mt-4 flex w-full items-center justify-center rounded-md px-5 text-center">
       <div className="text-xs font-semibold text-yellow-500">
-        Cardinal is in the process of winding down protocols and UIs (
+         is in the process of winding down protocols and UIs (
         <a
           className="text-blue-500"
-          href="https://twitter.com/cardinal_labs/status/1674092964124176387?s=20"
+          href="https://twitter.com/_labs/status/1674092964124176387?s=20"
         >
           announcement
         </a>

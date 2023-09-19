@@ -1,4 +1,4 @@
-import { shortPubKey } from '@cardinal/common'
+import { shortPubKey } from '@solana-nft-programs/common'
 import { LoadingSpinner } from 'common/LoadingSpinner'
 import { withCluster } from 'common/utils'
 import type { StakePool } from 'hooks/useAllStakePools'
@@ -90,7 +90,7 @@ export const AdminPools = () => {
                   <div className="mt-5 flex h-[100px] w-[100px] items-center justify-center rounded-full text-5xl text-white text-opacity-40">
                     <img
                       className="mx-auto mt-5 h-[100px] w-[100px] rounded-md"
-                      src={'/cardinal-crosshair.svg'}
+                      src={'/-crosshair.svg'}
                       alt={stakePool.stakePoolData.pubkey.toString()}
                     />
                   </div>

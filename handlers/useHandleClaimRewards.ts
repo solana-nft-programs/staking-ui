@@ -1,6 +1,6 @@
-import { executeTransactionSequence, logError, tryNull } from '@cardinal/common'
-import { claimRewards as claimRewardsV2 } from '@cardinal/rewards-center'
-import { claimRewardsAll } from '@cardinal/staking'
+import { executeTransactionSequence, logError, tryNull } from '@solana-nft-programs/common'
+import { claimRewards as claimRewardsV2 } from '@solana-nft-programs/rewards-center'
+import { claimRewardsAll } from '@solana-nft-programs/staking'
 import {
   createAssociatedTokenAccountIdempotentInstruction,
   getAccount,

@@ -1,4 +1,4 @@
-import type { IdlAccountData } from '@cardinal/rewards-center'
+import type { IdlAccountData } from '@solana-nft-programs/rewards-center'
 import { PublicKey } from '@solana/web3.js'
 import { formatAmountAsDecimal } from 'common/units'
 import { useRewardDistributorData } from 'hooks/useRewardDistributorData'

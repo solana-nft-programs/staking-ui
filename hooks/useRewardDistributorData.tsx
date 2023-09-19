@@ -1,15 +1,15 @@
-import type { AccountData } from '@cardinal/common'
+import type { AccountData } from '@solana-nft-programs/common'
 import type {
-  CardinalRewardsCenter,
+  RewardsCenter,
   IdlAccountData,
-} from '@cardinal/rewards-center'
+} from '@solana-nft-programs/rewards-center'
 import {
   fetchIdlAccount,
   findRewardDistributorId as findRewardDistributorIdV2,
-} from '@cardinal/rewards-center'
-import type { RewardDistributorData } from '@cardinal/staking/dist/cjs/programs/rewardDistributor'
-import { getRewardDistributor } from '@cardinal/staking/dist/cjs/programs/rewardDistributor/accounts'
-import { findRewardDistributorId } from '@cardinal/staking/dist/cjs/programs/rewardDistributor/pda'
+} from '@solana-nft-programs/rewards-center'
+import type { RewardDistributorData } from '@solana-nft-programs/staking/dist/cjs/programs/rewardDistributor'
+import { getRewardDistributor } from '@solana-nft-programs/staking/dist/cjs/programs/rewardDistributor/accounts'
+import { findRewardDistributorId } from '@solana-nft-programs/staking/dist/cjs/programs/rewardDistributor/pda'
 import { BN } from '@coral-xyz/anchor'
 import type {
   AllAccountsMap,
@@ -75,8 +75,8 @@ export const isRewardDistributorV2 = (
   rewardDistributorData: (
     | RewardDistributorData
     | TypeDef<
-        AllAccountsMap<CardinalRewardsCenter>['rewardDistributor'],
-        IdlTypes<CardinalRewardsCenter>
+        AllAccountsMap<RewardsCenter>['rewardDistributor'],
+        IdlTypes<RewardsCenter>
       >
   ) & { type?: 'v1' | 'v2' }
 ): boolean =>
@@ -86,12 +86,12 @@ export const rewardDistributorDataToV2 = (
   rewardDistributorData:
     | RewardDistributorData
     | TypeDef<
-        AllAccountsMap<CardinalRewardsCenter>['rewardDistributor'],
-        IdlTypes<CardinalRewardsCenter>
+        AllAccountsMap<RewardsCenter>['rewardDistributor'],
+        IdlTypes<RewardsCenter>
       >
 ): TypeDef<
-  AllAccountsMap<CardinalRewardsCenter>['rewardDistributor'],
-  IdlTypes<CardinalRewardsCenter>
+  AllAccountsMap<RewardsCenter>['rewardDistributor'],
+  IdlTypes<RewardsCenter>
 > & { type: 'v1' | 'v2' } => {
   if (!('identifier' in rewardDistributorData)) {
     const rwdData = rewardDistributorData as RewardDistributorData

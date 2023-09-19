@@ -2,8 +2,8 @@ import {
   chunkArray,
   findMintMetadataId,
   tryDecodeIdlAccount,
-} from '@cardinal/common'
-import type { CardinalRewardsCenter } from '@cardinal/rewards-center'
+} from '@solana-nft-programs/common'
+import type { RewardsCenter } from '@solana-nft-programs/rewards-center'
 import {
   fetchIdlAccountDataById,
   findRewardEntryId,
@@ -11,13 +11,13 @@ import {
   remainingAccountsForAuthorization,
   REWARDS_CENTER_IDL,
   rewardsCenterProgram,
-} from '@cardinal/rewards-center'
-import * as v1 from '@cardinal/staking'
+} from '@solana-nft-programs/rewards-center'
+import * as v1 from '@solana-nft-programs/staking'
 import {
   withInitRewardEntry,
   withUpdateRewardEntry,
-} from '@cardinal/staking/dist/cjs/programs/rewardDistributor/transaction'
-import { withInitStakeEntry } from '@cardinal/staking/dist/cjs/programs/stakePool/transaction'
+} from '@solana-nft-programs/staking/dist/cjs/programs/rewardDistributor/transaction'
+import { withInitStakeEntry } from '@solana-nft-programs/staking/dist/cjs/programs/stakePool/transaction'
 import { BN } from '@coral-xyz/anchor'
 import { useWallet } from '@solana/wallet-adapter-react'
 import type { PublicKey } from '@solana/web3.js'
@@ -146,7 +146,7 @@ export const useGenerateRewardEntryMultiplierTxs = () => {
 
             // decode reward entry
             const rewardEntry = rewardEntryAccountInfo
-              ? tryDecodeIdlAccount<'rewardEntry', CardinalRewardsCenter>(
+              ? tryDecodeIdlAccount<'rewardEntry', RewardsCenter>(
                   rewardEntryAccountInfo,
                   'rewardEntry',
                   REWARDS_CENTER_IDL

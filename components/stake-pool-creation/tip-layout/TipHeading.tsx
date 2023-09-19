@@ -1,4 +1,4 @@
-import { CardinalLogoIcon } from 'assets/icons/CardinalLogoIcon'
+import { LogoIcon } from 'assets/icons/LogoIcon'
 
 import { HorizontalDivider } from '@/components/UI/HorizontalDivider'
 import { BodyCopy } from '@/components/UI/typography/BodyCopy'
@@ -10,7 +10,7 @@ export const TipHeading = ({ text }: TipHeadingProps) => {
   return (
     <div className="flex flex-col items-center">
       <div className="mb-6">
-        <CardinalLogoIcon />
+        <LogoIcon />
       </div>
       <HeadingSecondary>{text}</HeadingSecondary>
       <BodyCopy>Tips & Tricks</BodyCopy>

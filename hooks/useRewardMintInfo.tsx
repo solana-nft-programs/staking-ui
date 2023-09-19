@@ -1,4 +1,4 @@
-import { findMintMetadataId } from '@cardinal/common'
+import { findMintMetadataId } from '@solana-nft-programs/common'
 import { Metadata } from '@metaplex-foundation/mpl-token-metadata'
 import type { Mint } from '@solana/spl-token'
 import { getMint } from '@solana/spl-token'

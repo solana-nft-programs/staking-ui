@@ -1,14 +1,14 @@
 import type {
-  CardinalRewardsCenter,
+  RewardsCenter,
   IdlAccountData,
-} from '@cardinal/rewards-center'
+} from '@solana-nft-programs/rewards-center'
 import {
   fetchIdlAccount,
   findRewardEntryId as findRewardEntryIdV2,
-} from '@cardinal/rewards-center'
-import type { RewardEntryData } from '@cardinal/staking/dist/cjs/programs/rewardDistributor'
-import { getRewardEntry } from '@cardinal/staking/dist/cjs/programs/rewardDistributor/accounts'
-import { findRewardEntryId } from '@cardinal/staking/dist/cjs/programs/rewardDistributor/pda'
+} from '@solana-nft-programs/rewards-center'
+import type { RewardEntryData } from '@solana-nft-programs/staking/dist/cjs/programs/rewardDistributor'
+import { getRewardEntry } from '@solana-nft-programs/staking/dist/cjs/programs/rewardDistributor/accounts'
+import { findRewardEntryId } from '@solana-nft-programs/staking/dist/cjs/programs/rewardDistributor/pda'
 import type {
   AllAccountsMap,
   TypeDef,
@@ -51,8 +51,8 @@ export const isRewardEntryV2 = (
   rewardEntryData:
     | RewardEntryData
     | TypeDef<
-        AllAccountsMap<CardinalRewardsCenter>['rewardEntry'],
-        IdlTypes<CardinalRewardsCenter>
+        AllAccountsMap<RewardsCenter>['rewardEntry'],
+        IdlTypes<RewardsCenter>
       >
 ): boolean => !('original_mint' in rewardEntryData)
 
@@ -60,12 +60,12 @@ export const rewardEntryDataToV2 = (
   rewardEntryData:
     | RewardEntryData
     | TypeDef<
-        AllAccountsMap<CardinalRewardsCenter>['rewardEntry'],
-        IdlTypes<CardinalRewardsCenter>
+        AllAccountsMap<RewardsCenter>['rewardEntry'],
+        IdlTypes<RewardsCenter>
       >
 ): TypeDef<
-  AllAccountsMap<CardinalRewardsCenter>['rewardEntry'],
-  IdlTypes<CardinalRewardsCenter>
+  AllAccountsMap<RewardsCenter>['rewardEntry'],
+  IdlTypes<RewardsCenter>
 > => {
   if (!isRewardEntryV2(rewardEntryData)) {
     const entryData = rewardEntryData as RewardEntryData
@@ -78,8 +78,8 @@ export const rewardEntryDataToV2 = (
     }
   }
   return rewardEntryData as TypeDef<
-    AllAccountsMap<CardinalRewardsCenter>['rewardEntry'],
-    IdlTypes<CardinalRewardsCenter>
+    AllAccountsMap<RewardsCenter>['rewardEntry'],
+    IdlTypes<RewardsCenter>
   >
 }
 
@@ -87,8 +87,8 @@ export const rewardEntryDataToV1 = (
   rewardEntryData:
     | RewardEntryData
     | TypeDef<
-        AllAccountsMap<CardinalRewardsCenter>['rewardEntry'],
-        IdlTypes<CardinalRewardsCenter>
+        AllAccountsMap<RewardsCenter>['rewardEntry'],
+        IdlTypes<RewardsCenter>
       >
 ): RewardEntryData => {
   if (!isRewardEntryV2(rewardEntryData)) {
@@ -96,8 +96,8 @@ export const rewardEntryDataToV1 = (
   }
 
   const entryData = rewardEntryData as TypeDef<
-    AllAccountsMap<CardinalRewardsCenter>['rewardEntry'],
-    IdlTypes<CardinalRewardsCenter>
+    AllAccountsMap<RewardsCenter>['rewardEntry'],
+    IdlTypes<RewardsCenter>
   >
   return {
     bump: entryData.bump,

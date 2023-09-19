@@ -1,10 +1,10 @@
-import { createMintTx, executeTransaction } from '@cardinal/common'
-import { createInitMintManagerInstruction } from '@cardinal/creator-standard/dist/cjs/generated'
+import { createMintTx, executeTransaction } from '@solana-nft-programs/common'
+import { createInitMintManagerInstruction } from '@solana-nft-programs/creator-standard/dist/cjs/generated'
 import {
   findMintManagerId,
   findMintMetadataId,
   findRulesetId,
-} from '@cardinal/creator-standard/dist/cjs/pda'
+} from '@solana-nft-programs/creator-standard/dist/cjs/pda'
 import type { Wallet } from '@coral-xyz/anchor/dist/cjs/provider'
 import { createCreateMetadataAccountV3Instruction } from '@metaplex-foundation/mpl-token-metadata'
 import { useWallet } from '@solana/wallet-adapter-react'

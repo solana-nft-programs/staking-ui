@@ -1,11 +1,11 @@
-import { executeTransaction } from '@cardinal/common'
+import { executeTransaction } from '@solana-nft-programs/common'
 import {
   DEFAULT_PAYMENT_INFO,
   findRewardDistributorId,
   rewardsCenterProgram,
-} from '@cardinal/rewards-center'
-import { RewardDistributorKind } from '@cardinal/staking/dist/cjs/programs/rewardDistributor'
-import { withInitRewardDistributor } from '@cardinal/staking/dist/cjs/programs/rewardDistributor/transaction'
+} from '@solana-nft-programs/rewards-center'
+import { RewardDistributorKind } from '@solana-nft-programs/staking/dist/cjs/programs/rewardDistributor'
+import { withInitRewardDistributor } from '@solana-nft-programs/staking/dist/cjs/programs/rewardDistributor/transaction'
 import { BN } from '@coral-xyz/anchor'
 import { useWallet } from '@solana/wallet-adapter-react'
 import { PublicKey, Transaction } from '@solana/web3.js'

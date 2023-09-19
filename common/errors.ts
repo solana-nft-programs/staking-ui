@@ -1,19 +1,19 @@
 import {
   CONFIGS_ADDRESS,
   CONFIGS_IDL,
-} from '@cardinal/configs/dist/cjs/programs/constants'
+} from '@solana-nft-programs/configs/dist/cjs/programs/constants'
 import {
   REWARDS_CENTER_ADDRESS,
   REWARDS_CENTER_IDL,
-} from '@cardinal/rewards-center'
+} from '@solana-nft-programs/rewards-center'
 import {
   REWARD_DISTRIBUTOR_ADDRESS,
   REWARD_DISTRIBUTOR_IDL,
-} from '@cardinal/staking/dist/cjs/programs/rewardDistributor'
+} from '@solana-nft-programs/staking/dist/cjs/programs/rewardDistributor'
 import {
   STAKE_POOL_ADDRESS,
   STAKE_POOL_IDL,
-} from '@cardinal/staking/dist/cjs/programs/stakePool'
+} from '@solana-nft-programs/staking/dist/cjs/programs/stakePool'
 import type { Idl } from '@coral-xyz/anchor'
 import type { PublicKey, SendTransactionError } from '@solana/web3.js'
 

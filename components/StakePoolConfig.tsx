@@ -1,4 +1,4 @@
-import { secondstoDuration } from '@cardinal/common'
+import { secondstoDuration } from '@solana-nft-programs/common'
 import { Tooltip } from 'common/Tooltip'
 import { useStakePoolData } from 'hooks/useStakePoolData'
 import { BsFillInfoCircleFill } from 'react-icons/bs'

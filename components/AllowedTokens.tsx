@@ -1,4 +1,4 @@
-import type { IdlAccountData } from '@cardinal/rewards-center'
+import type { IdlAccountData } from '@solana-nft-programs/rewards-center'
 import { useStakeAuthorizationsForPool } from 'hooks/useStakeAuthorizationsForPool'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 

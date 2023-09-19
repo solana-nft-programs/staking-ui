@@ -1,6 +1,6 @@
-import { executeTransactionSequence, logError, tryNull } from '@cardinal/common'
-import { unstake as unstakeV2 } from '@cardinal/rewards-center'
-import { unstakeAll } from '@cardinal/staking'
+import { executeTransactionSequence, logError, tryNull } from '@solana-nft-programs/common'
+import { unstake as unstakeV2 } from '@solana-nft-programs/rewards-center'
+import { unstakeAll } from '@solana-nft-programs/staking'
 import type { Account } from '@solana/spl-token'
 import {
   createAssociatedTokenAccountIdempotentInstruction,

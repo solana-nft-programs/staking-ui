@@ -1,11 +1,11 @@
-import { chunkArray } from '@cardinal/common'
+import { chunkArray } from '@solana-nft-programs/common'
 import {
   fetchIdlAccountDataById,
   findStakeAuthorizationRecordId,
   rewardsCenterProgram,
-} from '@cardinal/rewards-center'
-import { findStakeAuthorizationId } from '@cardinal/staking/dist/cjs/programs/stakePool/pda'
-import { withAuthorizeStakeEntry } from '@cardinal/staking/dist/cjs/programs/stakePool/transaction'
+} from '@solana-nft-programs/rewards-center'
+import { findStakeAuthorizationId } from '@solana-nft-programs/staking/dist/cjs/programs/stakePool/pda'
+import { withAuthorizeStakeEntry } from '@solana-nft-programs/staking/dist/cjs/programs/stakePool/transaction'
 import { useWallet } from '@solana/wallet-adapter-react'
 import type { PublicKey } from '@solana/web3.js'
 import { SystemProgram, Transaction } from '@solana/web3.js'

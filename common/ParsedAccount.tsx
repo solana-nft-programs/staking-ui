@@ -1,4 +1,4 @@
-import { tryPublicKey } from '@cardinal/common'
+import { tryPublicKey } from '@solana-nft-programs/common'
 import type { PublicKey } from '@solana/web3.js'
 import Image from 'next/image'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'

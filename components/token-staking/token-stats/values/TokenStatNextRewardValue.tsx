@@ -1,4 +1,4 @@
-import { secondstoDuration } from '@cardinal/common'
+import { secondstoDuration } from '@solana-nft-programs/common'
 import type BN from 'bn.js'
 import { BN as BigNumber } from 'bn.js'
 import type { useRewardDistributorData } from 'hooks/useRewardDistributorData'

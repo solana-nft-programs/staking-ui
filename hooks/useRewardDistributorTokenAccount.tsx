@@ -1,4 +1,4 @@
-import { findAta } from '@cardinal/common'
+import { findAta } from '@solana-nft-programs/common'
 import type { Account } from '@solana/spl-token'
 import { getAccount } from '@solana/spl-token'
 import { REWARD_QUERY_KEY } from 'handlers/useHandleClaimRewards'

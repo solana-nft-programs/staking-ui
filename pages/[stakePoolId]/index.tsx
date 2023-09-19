@@ -50,7 +50,7 @@ function StakePoolHome(props: { stakePoolMetadataName: string | null }) {
   const [pane, setPane] = useState<PANE_OPTIONS>('dashboard')
   const stakePoolDisplayName = props.stakePoolMetadataName
     ? props.stakePoolMetadataName.replace(' Staking', '') + ' Staking'
-    : 'Cardinal NFT Staking'
+    : ' NFT Staking'
 
   const { data: stakePoolMetadata } = useStakePoolMetadataCtx()
 
@@ -75,14 +75,14 @@ function StakePoolHome(props: { stakePoolMetadataName: string | null }) {
               props.stakePoolMetadataName
                 ? 'Stake your ' +
                   props.stakePoolMetadataName.replace(' Staking', '') +
-                  ' NFTs powered by Cardinal Staking'
-                : 'Stake your Solana NFTs powered by Cardinal Staking'
+                  ' NFTs powered by  Staking'
+                : 'Stake your Solana NFTs powered by  Staking'
             }
           />
-          <meta name="image" content="https://stake.cardinal.so/preview.png" />
+          <meta name="image" content="https://stake.host.so/preview.png" />
           <meta
             name="og:image"
-            content="https://stake.cardinal.so/preview.png"
+            content="https://stake.host.so/preview.png"
           />
           <link
             rel="icon"
@@ -90,7 +90,7 @@ function StakePoolHome(props: { stakePoolMetadataName: string | null }) {
           />
           <script
             defer
-            data-domain="stake.cardinal.so"
+            data-domain="stake.host.so"
             src="https://plausible.io/js/plausible.js"
           ></script>
         </Head>
@@ -150,16 +150,16 @@ function StakePoolHome(props: { stakePoolMetadataName: string | null }) {
             props.stakePoolMetadataName
               ? 'Stake your ' +
                 props.stakePoolMetadataName.replace(' Staking', '') +
-                ' NFTs powered by Cardinal Staking'
-              : 'Stake your Solana NFTs powered by Cardinal Staking'
+                ' NFTs powered by  Staking'
+              : 'Stake your Solana NFTs powered by  Staking'
           }
         />
-        <meta name="image" content="https://stake.cardinal.so/preview.png" />
-        <meta name="og:image" content="https://stake.cardinal.so/preview.png" />
+        <meta name="image" content="https://stake.host.so/preview.png" />
+        <meta name="og:image" content="https://stake.host.so/preview.png" />
         <link rel="icon" href={stakePoolMetadata?.imageUrl ?? `/favicon.ico`} />
         <script
           defer
-          data-domain="stake.cardinal.so"
+          data-domain="stake.host.so"
           src="https://plausible.io/js/plausible.js"
         ></script>
       </Head>

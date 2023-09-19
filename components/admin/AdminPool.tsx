@@ -1,4 +1,4 @@
-import { pubKeyUrl, shortPubKey } from '@cardinal/common'
+import { pubKeyUrl, shortPubKey } from '@solana-nft-programs/common'
 import { LinkIcon } from '@heroicons/react/24/outline'
 import { TabSelector } from 'common/TabSelector'
 import { withCluster } from 'common/utils'

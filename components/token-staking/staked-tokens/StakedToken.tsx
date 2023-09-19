@@ -1,4 +1,4 @@
-import { DisplayAddress } from '@cardinal/namespaces-components'
+import { DisplayAddress } from '@solana-nft-programs/namespaces-components'
 import { useWallet } from '@solana/wallet-adapter-react'
 import type { UseMutationResult } from '@tanstack/react-query'
 import { defaultSecondaryColor } from 'api/mapping'

@@ -1,4 +1,4 @@
-import type { AccountData } from '@cardinal/common'
+import type { AccountData } from '@solana-nft-programs/common'
 import { TOKEN_PROGRAM_ID } from '@solana/spl-token'
 import type { Connection, PublicKey } from '@solana/web3.js'
 import { useQuery } from '@tanstack/react-query'

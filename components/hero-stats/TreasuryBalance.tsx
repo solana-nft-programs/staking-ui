@@ -1,4 +1,4 @@
-import { RewardDistributorKind } from '@cardinal/staking/dist/cjs/programs/rewardDistributor'
+import { RewardDistributorKind } from '@solana-nft-programs/staking/dist/cjs/programs/rewardDistributor'
 import { BN } from '@coral-xyz/anchor'
 import { formatMintNaturalAmountAsDecimal } from 'common/units'
 import {

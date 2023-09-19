@@ -1,4 +1,4 @@
-import { fetchIdlAccount } from '@cardinal/rewards-center'
+import { fetchIdlAccount } from '@solana-nft-programs/rewards-center'
 import { useQuery } from '@tanstack/react-query'
 import { useStakePoolData } from 'hooks/useStakePoolData'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'

@@ -1,16 +1,16 @@
 import type {
-  CardinalRewardsCenter,
+  RewardsCenter,
   IdlAccountData,
-} from '@cardinal/rewards-center'
+} from '@solana-nft-programs/rewards-center'
 import {
   REWARDS_CENTER_ADDRESS,
   REWARDS_CENTER_IDL,
-} from '@cardinal/rewards-center'
-import type { StakePoolData } from '@cardinal/staking/dist/cjs/programs/stakePool'
+} from '@solana-nft-programs/rewards-center'
+import type { StakePoolData } from '@solana-nft-programs/staking/dist/cjs/programs/stakePool'
 import {
   STAKE_POOL_ADDRESS,
   STAKE_POOL_IDL,
-} from '@cardinal/staking/dist/cjs/programs/stakePool'
+} from '@solana-nft-programs/staking/dist/cjs/programs/stakePool'
 import { BorshAccountsCoder } from '@coral-xyz/anchor'
 import type {
   AllAccountsMap,
@@ -48,8 +48,8 @@ export const useStakePoolData = () => {
         REWARDS_CENTER_ADDRESS.toString()
       ) {
         const stakePoolData: TypeDef<
-          AllAccountsMap<CardinalRewardsCenter>['stakePool'],
-          IdlTypes<CardinalRewardsCenter>
+          AllAccountsMap<RewardsCenter>['stakePool'],
+          IdlTypes<RewardsCenter>
         > = new BorshAccountsCoder(REWARDS_CENTER_IDL).decode(
           'stakePool',
           stakePoolAccountInfo.data
@@ -70,8 +70,8 @@ export const isStakePoolV2 = (
   stakePoolData: (
     | StakePoolData
     | TypeDef<
-        AllAccountsMap<CardinalRewardsCenter>['stakePool'],
-        IdlTypes<CardinalRewardsCenter>
+        AllAccountsMap<RewardsCenter>['stakePool'],
+        IdlTypes<RewardsCenter>
       >
   ) & { type?: string }
 ): boolean =>
@@ -81,12 +81,12 @@ export const stakePoolDataToV2 = (
   stakePoolData:
     | StakePoolData
     | TypeDef<
-        AllAccountsMap<CardinalRewardsCenter>['stakePool'],
-        IdlTypes<CardinalRewardsCenter>
+        AllAccountsMap<RewardsCenter>['stakePool'],
+        IdlTypes<RewardsCenter>
       >
 ): TypeDef<
-  AllAccountsMap<CardinalRewardsCenter>['stakePool'],
-  IdlTypes<CardinalRewardsCenter>
+  AllAccountsMap<RewardsCenter>['stakePool'],
+  IdlTypes<RewardsCenter>
 > & { type: string } => {
   if (!isStakePoolV2(stakePoolData)) {
     const poolData = stakePoolData as StakePoolData
@@ -108,7 +108,7 @@ export const stakePoolDataToV2 = (
     }
   }
   return { ...stakePoolData, type: 'v2' } as TypeDef<
-    AllAccountsMap<CardinalRewardsCenter>['stakePool'],
-    IdlTypes<CardinalRewardsCenter>
+    AllAccountsMap<RewardsCenter>['stakePool'],
+    IdlTypes<RewardsCenter>
   > & { type: string }
 }

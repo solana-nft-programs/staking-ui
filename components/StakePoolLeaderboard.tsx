@@ -1,4 +1,4 @@
-import { DisplayAddress } from '@cardinal/namespaces-components'
+import { DisplayAddress } from '@solana-nft-programs/namespaces-components'
 import { InformationCircleIcon } from '@heroicons/react/24/outline'
 import type { PublicKey } from '@solana/web3.js'
 import { BN } from 'bn.js'

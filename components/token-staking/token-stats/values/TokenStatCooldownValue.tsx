@@ -1,5 +1,5 @@
-import { getExpirationString, secondstoDuration } from '@cardinal/common'
-import type { IdlAccountData } from '@cardinal/rewards-center'
+import { getExpirationString, secondstoDuration } from '@solana-nft-programs/common'
+import type { IdlAccountData } from '@solana-nft-programs/rewards-center'
 import type { StakeEntryTokenData } from 'hooks/useStakedTokenDatas'
 import { useStakePoolData } from 'hooks/useStakePoolData'
 import { useUTCNow } from 'providers/UTCNowProvider'

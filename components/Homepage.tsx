@@ -12,18 +12,18 @@ function Homepage() {
   return (
     <div className="bg-dark-5">
       <Head>
-        <title>Cardinal NFT Staking</title>
+        <title> NFT Staking</title>
         <meta name="title" content="NFT Staking on Solana" />
         <meta
           name="description"
           content="Launch staking for your NFT collection on Solana with reward distribution"
         />
-        <meta name="image" content="https://stake.cardinal.so/preview.png" />
-        <meta name="og:image" content="https://stake.cardinal.so/preview.png" />
+        <meta name="image" content="https://stake.host.so/preview.png" />
+        <meta name="og:image" content="https://stake.host.so/preview.png" />
         <link rel="icon" href={'/favicon.ico'} />
         <script
           defer
-          data-domain="stake.cardinal.so"
+          data-domain="stake.host.so"
           src="https://plausible.io/js/plausible.js"
         ></script>
       </Head>

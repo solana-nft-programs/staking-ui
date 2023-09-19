@@ -1,11 +1,11 @@
-import type { AccountData } from '@cardinal/common'
-import type { IdlAccountData } from '@cardinal/rewards-center'
-import { rewardsCenterProgram } from '@cardinal/rewards-center'
-import type { StakePoolData } from '@cardinal/staking/dist/cjs/programs/stakePool'
+import type { AccountData } from '@solana-nft-programs/common'
+import type { IdlAccountData } from '@solana-nft-programs/rewards-center'
+import { rewardsCenterProgram } from '@solana-nft-programs/rewards-center'
+import type { StakePoolData } from '@solana-nft-programs/staking/dist/cjs/programs/stakePool'
 import {
   STAKE_POOL_ADDRESS,
   STAKE_POOL_IDL,
-} from '@cardinal/staking/dist/cjs/programs/stakePool'
+} from '@solana-nft-programs/staking/dist/cjs/programs/stakePool'
 import { BorshAccountsCoder, utils } from '@coral-xyz/anchor'
 import type { Connection, PublicKey } from '@solana/web3.js'
 import { useQuery } from '@tanstack/react-query'

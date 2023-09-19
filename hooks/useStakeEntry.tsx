@@ -1,10 +1,10 @@
-import type { IdlAccountData } from '@cardinal/rewards-center'
+import type { IdlAccountData } from '@solana-nft-programs/rewards-center'
 import {
   fetchIdlAccount,
   findStakeEntryId as findStakeEntryIdV2,
-} from '@cardinal/rewards-center'
-import { getStakeEntry } from '@cardinal/staking/dist/cjs/programs/stakePool/accounts'
-import { findStakeEntryId } from '@cardinal/staking/dist/cjs/programs/stakePool/pda'
+} from '@solana-nft-programs/rewards-center'
+import { getStakeEntry } from '@solana-nft-programs/staking/dist/cjs/programs/stakePool/accounts'
+import { findStakeEntryId } from '@solana-nft-programs/staking/dist/cjs/programs/stakePool/pda'
 import type { PublicKey } from '@solana/web3.js'
 import { useQuery } from '@tanstack/react-query'
 import { stakeEntryDataToV2 } from 'api/fetchStakeEntry'

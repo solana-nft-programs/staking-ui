@@ -1,9 +1,9 @@
-import { executeTransaction, tryPublicKey } from '@cardinal/common'
+import { executeTransaction, tryPublicKey } from '@solana-nft-programs/common'
 import {
   DEFAULT_PAYMENT_INFO,
   findStakePoolId,
   rewardsCenterProgram,
-} from '@cardinal/rewards-center'
+} from '@solana-nft-programs/rewards-center'
 import { BN } from '@coral-xyz/anchor'
 import { useWallet } from '@solana/wallet-adapter-react'
 import type { PublicKey } from '@solana/web3.js'

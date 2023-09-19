@@ -1,5 +1,5 @@
-import { contrastify, tryPublicKey } from '@cardinal/common'
-import type { ReceiptType } from '@cardinal/staking/dist/cjs/programs/stakePool'
+import { contrastify, tryPublicKey } from '@solana-nft-programs/common'
+import type { ReceiptType } from '@solana-nft-programs/staking/dist/cjs/programs/stakePool'
 import { useHandleClaimRewards } from 'handlers/useHandleClaimRewards'
 import { useHandleUnstake } from 'handlers/useHandleUnstake'
 import type { AllowedTokenData } from 'hooks/useAllowedTokenDatas'

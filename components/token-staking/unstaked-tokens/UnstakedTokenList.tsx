@@ -1,4 +1,4 @@
-import type { ReceiptType } from '@cardinal/staking/dist/cjs/programs/stakePool'
+import type { ReceiptType } from '@solana-nft-programs/staking/dist/cjs/programs/stakePool'
 import { notify } from 'common/Notification'
 import type { AllowedTokenData } from 'hooks/useAllowedTokenDatas'
 import { useAllowedTokenDatas } from 'hooks/useAllowedTokenDatas'

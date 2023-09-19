@@ -1,9 +1,9 @@
 import {
   getBatchedMultipleAccounts,
   tryDecodeIdlAccount,
-} from '@cardinal/common'
-import { CONFIGS_IDL } from '@cardinal/configs/dist/cjs/programs/constants'
-import { findConfigEntryId } from '@cardinal/configs/dist/cjs/programs/pda'
+} from '@solana-nft-programs/common'
+import { CONFIGS_IDL } from '@solana-nft-programs/configs/dist/cjs/programs/constants'
+import { findConfigEntryId } from '@solana-nft-programs/configs/dist/cjs/programs/pda'
 import type { PublicKey } from '@solana/web3.js'
 import { Keypair } from '@solana/web3.js'
 import { useQuery } from '@tanstack/react-query'

@@ -1,12 +1,12 @@
-import { contrastify } from '@cardinal/common'
+import { contrastify } from '@solana-nft-programs/common'
 import { darken, getLuminance, lighten } from 'polished'
 import { FaDiscord, FaGithub, FaMedium, FaTwitter } from 'react-icons/fa'
 
 export const SOCIALS = {
   discord: { icon: <FaDiscord />, link: 'https://discord.gg/byq6uNTugq' },
-  github: { icon: <FaGithub />, link: 'https://github.com/cardinal-labs' },
-  medium: { icon: <FaMedium />, link: 'https://cardinal-labs.medium.com/' },
-  twitter: { icon: <FaTwitter />, link: 'https://twitter.com/cardinal_labs' },
+  github: { icon: <FaGithub />, link: 'https://github.com/-labs' },
+  medium: { icon: <FaMedium />, link: 'https://-labs.medium.com/' },
+  twitter: { icon: <FaTwitter />, link: 'https://twitter.com/_labs' },
 }
 
 export const Footer = ({
@@ -30,15 +30,15 @@ export const Footer = ({
             className="inline-block h-[28px]"
             src={
               getLuminance(bgColor) < 0.5
-                ? '/cardinal-crosshair.svg'
-                : '/cardinal-crosshair-dark.svg'
+                ? '/-crosshair.svg'
+                : '/-crosshair-dark.svg'
             }
           />
           <span
             className="ml-3 text-2xl font-semibold"
             style={{ color: contrastify(100, bgColor) }}
           >
-            Cardinal
+            
           </span>
         </div>
         <div className="flex gap-10 self-end text-center md:gap-20">
@@ -63,16 +63,16 @@ export const Footer = ({
             >
               Resources
             </div>
-            <a href="https://docs.cardinal.so/" className="text-gray-400">
+            <a href="https://docs.host.so/" className="text-gray-400">
               Documentation
             </a>
             <a
-              href="https://github.com/cardinal-labs"
+              href="https://github.com/-labs"
               className="text-gray-400"
             >
               Github
             </a>
-            <a href="mailto:team@cardinal.so" className="text-gray-400">
+            <a href="mailto:team@.so" className="text-gray-400">
               Contact
             </a>
             {/*<a href="" className="text-gray-400">
@@ -81,14 +81,14 @@ export const Footer = ({
           </span>
           {/* <span className="flex flex-col items-start">
             <div className="mb-5 text-lg font-semibold">Company</div>
-            <a href="https://www.cardinal.so/" className="text-gray-400">
+            <a href="https://www.host.so/" className="text-gray-400">
               Website
             </a>
             <a href="" className="text-gray-400">
               Blog
             </a>
             <a
-              href="https://twitter.com/cardinal_labs"
+              href="https://twitter.com/_labs"
               className="text-gray-400"
             >
               Twitter
@@ -107,7 +107,7 @@ export const Footer = ({
         style={{ borderColor: lighten(0.2, bgColor) }}
       >
         <div className="flex items-center justify-center gap-2 text-gray-400">
-          Powered by Cardinal
+          Powered by 
         </div>
         <div className="flex gap-4 text-gray-200">
           {Object.entries(SOCIALS).map(([id, { icon, link }]) => {
@@ -127,7 +127,7 @@ export const Footer = ({
         </div>
       </div>
       {/* <div className="text-md flex flex-row justify-center font-medium">
-        Copyright 2022 Cardinal Labs. All rights reserved
+        Copyright 2022  Labs. All rights reserved
       </div> */}
     </div>
   )

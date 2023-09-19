@@ -104,7 +104,7 @@ export const MasterPanel = ({
               {currentStep === 0 ? 'Start' : 'Next'}
             </ButtonPrimary>
           ) : (
-            <Tooltip title="Cardinal is shutting down operations">
+            <Tooltip title="Shutting down operations">
               <div className="ml-5">Create</div>
             </Tooltip>
           )}

@@ -1,4 +1,4 @@
-import { capitalizeFirstLetter } from '@cardinal/common'
+import { capitalizeFirstLetter } from '@solana-nft-programs/common'
 import type { SelectorPositions } from 'common/Selector'
 import { Selector } from 'common/Selector'
 import { useEffect, useState } from 'react'

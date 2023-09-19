@@ -12,12 +12,12 @@ const TermsOfService = ({ handleAccept }: Props) => {
       <div className="flex w-full items-center justify-center py-4">
         <img
           className={`max-h-28 rounded-xl fill-red-600`}
-          src={'/cardinal-crosshair.svg'}
-          alt="Cardinal logo"
+          src={'/-crosshair.svg'}
+          alt=" logo"
         />
       </div>
       <div className="p-2 text-xl leading-8">
-        By connecting your wallet and using Cardinal services, you agree to our{' '}
+        By connecting your wallet and using  services, you agree to our{' '}
         <a href="/docs/tos-staking.pdf" className="text-primary underline">
           Terms of Service
         </a>{' '}

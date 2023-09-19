@@ -1,4 +1,4 @@
-import { transactionUrl } from '@cardinal/common'
+import { transactionUrl } from '@solana-nft-programs/common'
 import { css } from '@emotion/react'
 import type { Transaction } from '@solana/web3.js'
 import { AsyncButton } from 'common/Button'

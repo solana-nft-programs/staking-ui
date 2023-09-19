@@ -1,4 +1,4 @@
-import { tryPublicKey } from '@cardinal/namespaces-components'
+import { tryPublicKey } from '@solana-nft-programs/namespaces-components'
 import { useWallet } from '@solana/wallet-adapter-react'
 import type { PublicKey } from '@solana/web3.js'
 import { firstParam } from 'common/utils'

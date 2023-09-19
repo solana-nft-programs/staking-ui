@@ -1,4 +1,4 @@
-import { shortPubKey } from '@cardinal/common'
+import { shortPubKey } from '@solana-nft-programs/common'
 import { css } from '@emotion/react'
 import type { StakePool } from 'hooks/useAllStakePools'
 import { compareStakePools, totalStaked } from 'hooks/useAllStakePools'
@@ -73,7 +73,7 @@ export const CollectionsList = ({ configs }: { configs?: StakePool[] }) => {
                         <div className="flex h-[50px] w-[50px] items-center justify-center rounded-full text-lg text-white text-opacity-40">
                           <img
                             className={`h-full max-h-[40px] max-w-[150px] rounded-xl`}
-                            src={'/cardinal-crosshair.svg'}
+                            src={'/-crosshair.svg'}
                             alt={config.stakePoolData.pubkey.toString()}
                           />
                         </div>

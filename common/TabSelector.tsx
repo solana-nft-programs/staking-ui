@@ -1,4 +1,4 @@
-import { contrastify } from '@cardinal/common'
+import { contrastify } from '@solana-nft-programs/common'
 import type { Interpolation, Theme } from '@emotion/react'
 import { css } from '@emotion/react'
 import { useEffect, useState } from 'react'

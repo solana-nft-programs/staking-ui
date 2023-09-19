@@ -1,4 +1,4 @@
-import { RewardDistributorKind } from '@cardinal/staking/dist/cjs/programs/rewardDistributor'
+import { RewardDistributorKind } from '@solana-nft-programs/staking/dist/cjs/programs/rewardDistributor'
 import { AsyncButton } from 'common/Button'
 import { FormFieldTitleInput } from 'common/FormFieldInput'
 import { notify } from 'common/Notification'

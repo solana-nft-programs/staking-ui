@@ -1,5 +1,5 @@
-import { executeTransaction } from '@cardinal/common'
-import { rewardsCenterProgram } from '@cardinal/rewards-center'
+import { executeTransaction } from '@solana-nft-programs/common'
+import { rewardsCenterProgram } from '@solana-nft-programs/rewards-center'
 import { BN } from '@coral-xyz/anchor'
 import { useWallet } from '@solana/wallet-adapter-react'
 import type { PublicKey } from '@solana/web3.js'

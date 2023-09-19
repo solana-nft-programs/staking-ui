@@ -1,10 +1,10 @@
-import type { IdlAccountData, RewardEntry } from '@cardinal/rewards-center'
+import type { IdlAccountData, RewardEntry } from '@solana-nft-programs/rewards-center'
 import {
   fetchIdlAccountDataById,
   findRewardEntryId as findRewardEntryIdV2,
-} from '@cardinal/rewards-center'
-import { getRewardEntries } from '@cardinal/staking/dist/cjs/programs/rewardDistributor/accounts'
-import { findRewardEntryId } from '@cardinal/staking/dist/cjs/programs/rewardDistributor/pda'
+} from '@solana-nft-programs/rewards-center'
+import { getRewardEntries } from '@solana-nft-programs/staking/dist/cjs/programs/rewardDistributor/accounts'
+import { findRewardEntryId } from '@solana-nft-programs/staking/dist/cjs/programs/rewardDistributor/pda'
 import { rewardEntryDataToV2 } from 'api/fetchRewardEntry'
 import { REWARD_QUERY_KEY } from 'handlers/useHandleClaimRewards'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'

@@ -1,8 +1,8 @@
 import {
   findMintMetadataId,
   getBatchedMultipleAccounts,
-} from '@cardinal/common'
-import type { IdlAccountData } from '@cardinal/rewards-center'
+} from '@solana-nft-programs/common'
+import type { IdlAccountData } from '@solana-nft-programs/rewards-center'
 import * as metaplex from '@metaplex-foundation/mpl-token-metadata'
 import { useWallet } from '@solana/wallet-adapter-react'
 import type { Connection, PublicKey } from '@solana/web3.js'

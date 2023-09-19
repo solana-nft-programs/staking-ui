@@ -1,15 +1,15 @@
-import type { AccountData } from '@cardinal/common'
-import { chunkArray, getBatchedMultipleAccounts } from '@cardinal/common'
-import type { IdlAccountData } from '@cardinal/rewards-center'
-import { claimRewards } from '@cardinal/rewards-center'
+import type { AccountData } from '@solana-nft-programs/common'
+import { chunkArray, getBatchedMultipleAccounts } from '@solana-nft-programs/common'
+import type { IdlAccountData } from '@solana-nft-programs/rewards-center'
+import { claimRewards } from '@solana-nft-programs/rewards-center'
 import {
   REWARD_MANAGER,
   rewardDistributorProgram,
-} from '@cardinal/staking/dist/cjs/programs/rewardDistributor'
-import { findRewardEntryId } from '@cardinal/staking/dist/cjs/programs/rewardDistributor/pda'
-import type { StakeEntryData } from '@cardinal/staking/dist/cjs/programs/stakePool'
-import { getActiveStakeEntriesForPool } from '@cardinal/staking/dist/cjs/programs/stakePool/accounts'
-import { withUpdateTotalStakeSeconds } from '@cardinal/staking/dist/cjs/programs/stakePool/transaction'
+} from '@solana-nft-programs/staking/dist/cjs/programs/rewardDistributor'
+import { findRewardEntryId } from '@solana-nft-programs/staking/dist/cjs/programs/rewardDistributor/pda'
+import type { StakeEntryData } from '@solana-nft-programs/staking/dist/cjs/programs/stakePool'
+import { getActiveStakeEntriesForPool } from '@solana-nft-programs/staking/dist/cjs/programs/stakePool/accounts'
+import { withUpdateTotalStakeSeconds } from '@solana-nft-programs/staking/dist/cjs/programs/stakePool/transaction'
 import {
   createAssociatedTokenAccountIdempotentInstruction,
   getAssociatedTokenAddressSync,

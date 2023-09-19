@@ -1,4 +1,4 @@
-import { ReceiptType } from '@cardinal/staking/dist/cjs/programs/stakePool'
+import { ReceiptType } from '@solana-nft-programs/staking/dist/cjs/programs/stakePool'
 import { Tooltip } from '@mui/material'
 import { defaultSecondaryColor, TokenStandard } from 'api/mapping'
 import { LoadingSpinner } from 'common/LoadingSpinner'
@@ -141,7 +141,7 @@ export const UnstakedTokens = () => {
           <></>
         )}
         <div className="flex gap-5">
-          <Tooltip title="Cardinal is shutting down operations">
+          <Tooltip title=" is shutting down operations">
             <button
               disabled={true}
               onClick={() => {

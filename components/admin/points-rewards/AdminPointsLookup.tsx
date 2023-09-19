@@ -1,4 +1,4 @@
-import { tryPublicKey } from '@cardinal/common'
+import { tryPublicKey } from '@solana-nft-programs/common'
 import { GlyphPlus } from 'assets/GlyphPlus'
 import { AsyncButton } from 'common/Button'
 import { FormFieldTitleInput } from 'common/FormFieldInput'

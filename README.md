@@ -1,6 +1,6 @@
-e# Cardinal Staking UI
+e#  Staking UI
 
-This repository hosts the UI inteface that powers **https://stake.cardinal.so** for staking NFTs on Solana.
+This repository hosts the UI inteface that powers **https://stake.host.so** for staking NFTs on Solana.
 
 Use this repo to create and deploy stake pools with built-in reward distribution, or build your own custom interface with our underlying staking protocol.
 
@@ -14,11 +14,11 @@ For questions or technical help, join our **[Discord](https://discord.gg/stX2FAY
 
 ## Create a Stake Pool
 
-To create a stake pool, navigate to the admin page located at https://stake.cardinal.so/admin. This page hosts a form to create a stake pool with various configurations.
+To create a stake pool, navigate to the admin page located at https://stake.host.so/admin. This page hosts a form to create a stake pool with various configurations.
 
 **Note:** All configurations in the admin page are optional. Also, filters in the stake pool configuration are **union-based**, if any one of the conditions is met, then the NFT will be allowed to stake in the pool.
 
-After creating your stake pool, you will receive a **`Stake Pool Id`**. View your stake pool at https://stake.cardinal.so/[stakePoolId]
+After creating your stake pool, you will receive a **`Stake Pool Id`**. View your stake pool at https://stake.host.so/[stakePoolId]
 
 Pools by default will have no metadata. View the section titled "Customizing your Stake Pool" to learn about adding images, colors and custom pool name.
 
@@ -49,18 +49,18 @@ export type RewardDistributionParams {
   }
 ```
 
-There are two types of reward distribution (RewardDistributionKind) with Cardinal Staking.
+There are two types of reward distribution (RewardDistributionKind) with  Staking.
 
 1. **Mint** - give mint authority of your reward token to the stake pool so the pool can mint on demand
 2. **Treasury** - transfer reward tokens from your wallet to the stake pool, top-up the stake pool treasury balance whenever needed.
 
 ## Environments
 
-The program and related UIs are deployed on Solana mainnet-beta and devnet. By default the UI will point to mainnet. You can ovverride this by using `?cluster=devnet` in the URL or navigating to https://dev-stake.cardinal.so. All configuration is scoped to that environment, and no data including pools, reward distributors, tokens, NFTs or sol will be carried over from mainnet to devnet and vice-versa.
+The program and related UIs are deployed on Solana mainnet-beta and devnet. By default the UI will point to mainnet. You can ovverride this by using `?cluster=devnet` in the URL or navigating to https://dev-stake.host.so. All configuration is scoped to that environment, and no data including pools, reward distributors, tokens, NFTs or sol will be carried over from mainnet to devnet and vice-versa.
 
 ## Customizing your Stake Pool
 
-In order to easily access your stake pool, airdrop NFTs on devnet for your specific collection and get a stake.cardinal.so/[projectName] url, you'll need to create a Stake Pool metadata object. NOTE if you specified a verified creator in a devnet pool, airdropped NFTs will not be allowed into that pool because your creator will not be verified.
+In order to easily access your stake pool, airdrop NFTs on devnet for your specific collection and get a stake.host.so/[projectName] url, you'll need to create a Stake Pool metadata object. NOTE if you specified a verified creator in a devnet pool, airdropped NFTs will not be allowed into that pool because your creator will not be verified.
 
 ```typescript
 export type StakePoolMetadata = {
@@ -115,11 +115,11 @@ export type StakePoolMetadata = {
 }
 ```
 
-In your pool's admin portal (eg. https://stake.cardinal.so/admin/[poolId]), create your own config on-chain under the `Config` tab. You'll now be able to access your project at https://stake.cardinal.so/[name].
+In your pool's admin portal (eg. https://stake.host.so/admin/[poolId]), create your own config on-chain under the `Config` tab. You'll now be able to access your project at https://stake.host.so/[name].
 
 ## Stake Pool Fees
 
-https://www.notion.so/cardinal-labs/Cardinal-Staking-Fees-14e66a64fb2d4615892937c5dbaa91cc
+https://www.notion.so/-labs/-Staking-Fees-14e66a64fb2d4615892937c5dbaa91cc
 
 ## Custom hostname
 
@@ -136,7 +136,7 @@ CNAME {your subdomain} cname.vercel-dns.com
 
 ## Deployment and Beyond
 
-Now that you've made and deployed your Cardinal stake pool, you can either stick with Cardinal's UX for the stake pool experience or build your own.
+Now that you've made and deployed your  stake pool, you can either stick with 's UX for the stake pool experience or build your own.
 
 Simply modify `pages/[stakePoolId]/index.tsx` with your own react styling, and host the stake pool on your own domain.
 
@@ -168,6 +168,6 @@ The default cluster set is **mainnet**. It's recommended to ensure you have `?cl
 
 ## Have questions?
 
-Join our **[Discord](https://discord.gg/cardinallabs)** to get technical support as you build on Cardinal.
+Join our **[Discord](https://discord.gg/labs)** to get technical support as you build on .
 
 ---

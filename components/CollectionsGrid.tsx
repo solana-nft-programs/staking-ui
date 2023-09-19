@@ -94,7 +94,7 @@ export const CollectionsGrid = ({ configs }: { configs?: StakePool[] }) => {
                       <div className="flex h-[150px] w-[150px] items-center justify-center rounded-full text-5xl">
                         <img
                           className={`max-h-28 rounded-xl fill-red-600`}
-                          src={'/cardinal-crosshair.svg'}
+                          src={'/-crosshair.svg'}
                           alt={`${config.stakePoolData.pubkey.toString()}`}
                         />
                       </div>

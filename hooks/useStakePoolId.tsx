@@ -1,4 +1,4 @@
-import { tryPublicKey } from '@cardinal/common'
+import { tryPublicKey } from '@solana-nft-programs/common'
 import { PublicKey } from '@solana/web3.js'
 import { useQuery } from '@tanstack/react-query'
 import { useRouter } from 'next/router'

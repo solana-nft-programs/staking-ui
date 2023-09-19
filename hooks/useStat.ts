@@ -1,4 +1,4 @@
-import { getStatsEntry } from '@cardinal/stats/dist/cjs/programs/cardinalStats'
+import { getStatsEntry } from '@solana-nft-programs/stats/dist/cjs/programs/Stats'
 import { useQuery } from '@tanstack/react-query'
 import { useEnvironmentCtx } from 'providers/EnvironmentProvider'
 

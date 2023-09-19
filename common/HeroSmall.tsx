@@ -1,4 +1,4 @@
-import { shortPubKey } from '@cardinal/namespaces-components'
+import { shortPubKey } from '@solana-nft-programs/namespaces-components'
 import { useStakePoolId } from 'hooks/useStakePoolId'
 
 import { HeroStats } from '../components/hero-stats/HeroStats'

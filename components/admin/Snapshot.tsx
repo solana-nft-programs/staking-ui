@@ -1,4 +1,4 @@
-import type { IdlAccountData } from '@cardinal/rewards-center'
+import type { IdlAccountData } from '@solana-nft-programs/rewards-center'
 import { AsyncButton } from 'common/Button'
 import { useHandlePoolSnapshot } from 'handlers/useHandlePoolSnapshot'
 

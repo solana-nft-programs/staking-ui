@@ -5,7 +5,7 @@ import { LargeCopy } from '@/components/UI/typography/LargeCopy'
 
 export const Intro = () => {
   return (
-    <PrimaryTipLayout title="Cardinal Team">
+    <PrimaryTipLayout title=" Team">
       <LargeCopy>
         To display useful tips here simply click on the icon next to a{' '}
         <InformationCircleIcon className="inline-block h-7 w-7 text-gray-500" />{' '}

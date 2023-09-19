@@ -1,4 +1,4 @@
-import { tryPublicKey } from '@cardinal/common'
+import { tryPublicKey } from '@solana-nft-programs/common'
 import type { Mint } from '@solana/spl-token'
 import { PublicKey } from '@solana/web3.js'
 import { BN } from 'bn.js'

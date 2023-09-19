@@ -1,4 +1,4 @@
-import type { ReceiptType } from '@cardinal/staking/dist/cjs/programs/stakePool'
+import type { ReceiptType } from '@solana-nft-programs/staking/dist/cjs/programs/stakePool'
 import { BN } from '@coral-xyz/anchor'
 import type { UseMutationResult } from '@tanstack/react-query'
 import { defaultSecondaryColor } from 'api/mapping'

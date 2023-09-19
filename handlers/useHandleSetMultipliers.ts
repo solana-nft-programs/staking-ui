@@ -1,21 +1,21 @@
 import {
   tryGetAccount,
   withFindOrInitAssociatedTokenAccount,
-} from '@cardinal/common'
-import { findMintMetadataId } from '@cardinal/creator-standard/dist/cjs/pda'
+} from '@solana-nft-programs/common'
+import { findMintMetadataId } from '@solana-nft-programs/creator-standard/dist/cjs/pda'
 import {
   findRewardEntryId as findRewardEntryIdV2,
   findStakeEntryId,
   rewardsCenterProgram,
-} from '@cardinal/rewards-center'
-import { executeTransaction, handleError } from '@cardinal/staking'
-import { findRewardEntryId } from '@cardinal/staking/dist/cjs/programs/rewardDistributor/pda'
+} from '@solana-nft-programs/rewards-center'
+import { executeTransaction, handleError } from '@solana-nft-programs/staking'
+import { findRewardEntryId } from '@solana-nft-programs/staking/dist/cjs/programs/rewardDistributor/pda'
 import {
   withInitRewardEntry,
   withUpdateRewardEntry,
-} from '@cardinal/staking/dist/cjs/programs/rewardDistributor/transaction'
-import { withInitStakeEntry } from '@cardinal/staking/dist/cjs/programs/stakePool/transaction'
-import { findStakeEntryIdFromMint } from '@cardinal/staking/dist/cjs/programs/stakePool/utils'
+} from '@solana-nft-programs/staking/dist/cjs/programs/rewardDistributor/transaction'
+import { withInitStakeEntry } from '@solana-nft-programs/staking/dist/cjs/programs/stakePool/transaction'
+import { findStakeEntryIdFromMint } from '@solana-nft-programs/staking/dist/cjs/programs/stakePool/utils'
 import { BN } from '@coral-xyz/anchor'
 import { useWallet } from '@solana/wallet-adapter-react'
 import { PublicKey, SystemProgram, Transaction } from '@solana/web3.js'

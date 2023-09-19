@@ -1,19 +1,19 @@
 import type {
-  CardinalRewardsCenter,
+  RewardsCenter,
   IdlAccountData,
   StakeEntry,
-} from '@cardinal/rewards-center'
+} from '@solana-nft-programs/rewards-center'
 import {
   fetchIdlAccount,
   findStakeEntryId,
   rewardsCenterProgram,
-} from '@cardinal/rewards-center'
-import type { StakeEntryData } from '@cardinal/staking/dist/cjs/programs/stakePool'
+} from '@solana-nft-programs/rewards-center'
+import type { StakeEntryData } from '@solana-nft-programs/staking/dist/cjs/programs/stakePool'
 import {
   getStakeEntriesForUser,
   getStakeEntry,
-} from '@cardinal/staking/dist/cjs/programs/stakePool/accounts'
-import { findStakeEntryIdFromMint } from '@cardinal/staking/dist/cjs/programs/stakePool/utils'
+} from '@solana-nft-programs/staking/dist/cjs/programs/stakePool/accounts'
+import { findStakeEntryIdFromMint } from '@solana-nft-programs/staking/dist/cjs/programs/stakePool/utils'
 import type { IdlTypes } from '@coral-xyz/anchor'
 import type {
   AllAccountsMap,
@@ -95,8 +95,8 @@ export const isStakeEntryV2 = (
     | StakeEntryData
     | StakeEntry
     | TypeDef<
-        AllAccountsMap<CardinalRewardsCenter>['stakeEntry'],
-        IdlTypes<CardinalRewardsCenter>
+        AllAccountsMap<RewardsCenter>['stakeEntry'],
+        IdlTypes<RewardsCenter>
       >
 ): boolean => !('originalMint' in stakePoolData)
 
@@ -104,12 +104,12 @@ export const stakeEntryDataToV2 = (
   stakeEntryData:
     | StakeEntryData
     | TypeDef<
-        AllAccountsMap<CardinalRewardsCenter>['stakeEntry'],
-        IdlTypes<CardinalRewardsCenter>
+        AllAccountsMap<RewardsCenter>['stakeEntry'],
+        IdlTypes<RewardsCenter>
       >
 ): TypeDef<
-  AllAccountsMap<CardinalRewardsCenter>['stakeEntry'],
-  IdlTypes<CardinalRewardsCenter>
+  AllAccountsMap<RewardsCenter>['stakeEntry'],
+  IdlTypes<RewardsCenter>
 > => {
   if (!isStakeEntryV2(stakeEntryData)) {
     const entryData = stakeEntryData as StakeEntryData
@@ -130,8 +130,8 @@ export const stakeEntryDataToV2 = (
     }
   }
   return stakeEntryData as TypeDef<
-    AllAccountsMap<CardinalRewardsCenter>['stakeEntry'],
-    IdlTypes<CardinalRewardsCenter>
+    AllAccountsMap<RewardsCenter>['stakeEntry'],
+    IdlTypes<RewardsCenter>
   >
 }
 
@@ -139,8 +139,8 @@ export const stakeEntryDataToV1 = (
   stakeEntryData:
     | StakeEntryData
     | TypeDef<
-        AllAccountsMap<CardinalRewardsCenter>['stakeEntry'],
-        IdlTypes<CardinalRewardsCenter>
+        AllAccountsMap<RewardsCenter>['stakeEntry'],
+        IdlTypes<RewardsCenter>
       >
 ): StakeEntryData => {
   if (!isStakeEntryV2(stakeEntryData)) {
@@ -148,8 +148,8 @@ export const stakeEntryDataToV1 = (
   }
 
   const entryData = stakeEntryData as TypeDef<
-    AllAccountsMap<CardinalRewardsCenter>['stakeEntry'],
-    IdlTypes<CardinalRewardsCenter>
+    AllAccountsMap<RewardsCenter>['stakeEntry'],
+    IdlTypes<RewardsCenter>
   >
   return {
     bump: entryData.bump,

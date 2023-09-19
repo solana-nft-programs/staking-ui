@@ -18,13 +18,13 @@ function Home() {
     <div className="flex min-h-screen flex-col">
       <Head>
         <title>{`${
-          config ? config.displayName : 'Cardinal'
+          config ? config.displayName : ''
         } NFT Staking`}</title>
-        <meta name="description" content="Cardinal NFT Staking" />
+        <meta name="description" content=" NFT Staking" />
         <link rel="icon" href={config ? config.imageUrl : `/favicon.ico`} />
         <script
           defer
-          data-domain="stake.cardinal.so"
+          data-domain="stake.host.so"
           src="https://plausible.io/js/plausible.js"
         />
       </Head>

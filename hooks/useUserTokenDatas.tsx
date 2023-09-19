@@ -1,7 +1,7 @@
 import {
   findMintMetadataId,
   getBatchedMultipleAccounts,
-} from '@cardinal/common'
+} from '@solana-nft-programs/common'
 import * as metaplex from '@metaplex-foundation/mpl-token-metadata'
 import { TOKEN_PROGRAM_ID } from '@solana/spl-token'
 import type { AccountInfo, ParsedAccountData } from '@solana/web3.js'

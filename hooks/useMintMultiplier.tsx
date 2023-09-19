@@ -1,13 +1,13 @@
-import { tryPublicKey } from '@cardinal/common'
-import type { IdlAccountData } from '@cardinal/rewards-center'
+import { tryPublicKey } from '@solana-nft-programs/common'
+import type { IdlAccountData } from '@solana-nft-programs/rewards-center'
 import {
   fetchIdlAccount,
   findRewardEntryId as findRewardEntryIdV2,
   findStakeEntryId,
-} from '@cardinal/rewards-center'
-import { getRewardEntry } from '@cardinal/staking/dist/cjs/programs/rewardDistributor/accounts'
-import { findRewardEntryId } from '@cardinal/staking/dist/cjs/programs/rewardDistributor/pda'
-import { findStakeEntryIdFromMint } from '@cardinal/staking/dist/cjs/programs/stakePool/utils'
+} from '@solana-nft-programs/rewards-center'
+import { getRewardEntry } from '@solana-nft-programs/staking/dist/cjs/programs/rewardDistributor/accounts'
+import { findRewardEntryId } from '@solana-nft-programs/staking/dist/cjs/programs/rewardDistributor/pda'
+import { findStakeEntryIdFromMint } from '@solana-nft-programs/staking/dist/cjs/programs/stakePool/utils'
 import type { PublicKey } from '@solana/web3.js'
 import { useQuery } from '@tanstack/react-query'
 import { notify } from 'common/Notification'

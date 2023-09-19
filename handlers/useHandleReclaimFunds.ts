@@ -2,9 +2,9 @@ import {
   executeTransaction,
   findAta,
   withFindOrInitAssociatedTokenAccount,
-} from '@cardinal/common'
-import { rewardsCenterProgram } from '@cardinal/rewards-center'
-import { withReclaimFunds } from '@cardinal/staking/dist/cjs/programs/rewardDistributor/transaction'
+} from '@solana-nft-programs/common'
+import { rewardsCenterProgram } from '@solana-nft-programs/rewards-center'
+import { withReclaimFunds } from '@solana-nft-programs/staking/dist/cjs/programs/rewardDistributor/transaction'
 import { BN } from '@coral-xyz/anchor'
 import { TOKEN_PROGRAM_ID } from '@solana/spl-token'
 import { useWallet } from '@solana/wallet-adapter-react'

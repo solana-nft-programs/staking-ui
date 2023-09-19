@@ -1,7 +1,7 @@
-import { chunkArray, tryNull } from '@cardinal/common'
-import { getConfigEntry } from '@cardinal/configs/dist/cjs/programs/accounts'
-import { configsProgram } from '@cardinal/configs/dist/cjs/programs/constants'
-import { findConfigEntryId } from '@cardinal/configs/dist/cjs/programs/pda'
+import { chunkArray, tryNull } from '@solana-nft-programs/common'
+import { getConfigEntry } from '@solana-nft-programs/configs/dist/cjs/programs/accounts'
+import { configsProgram } from '@solana-nft-programs/configs/dist/cjs/programs/constants'
+import { findConfigEntryId } from '@solana-nft-programs/configs/dist/cjs/programs/pda'
 import { useWallet } from '@solana/wallet-adapter-react'
 import {
   sendAndConfirmRawTransaction,

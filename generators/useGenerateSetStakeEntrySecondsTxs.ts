@@ -1,10 +1,10 @@
-import { chunkArray, findMintMetadataId } from '@cardinal/common'
+import { chunkArray, findMintMetadataId } from '@solana-nft-programs/common'
 import {
   fetchIdlAccountDataById,
   findStakeEntryId,
   remainingAccountsForAuthorization,
   rewardsCenterProgram,
-} from '@cardinal/rewards-center'
+} from '@solana-nft-programs/rewards-center'
 import { BN } from '@coral-xyz/anchor'
 import { useWallet } from '@solana/wallet-adapter-react'
 import type { PublicKey } from '@solana/web3.js'

@@ -1,4 +1,4 @@
-import { chunkArray } from '@cardinal/common'
+import { chunkArray } from '@solana-nft-programs/common'
 import { useWallet } from '@solana/wallet-adapter-react'
 import type { Transaction } from '@solana/web3.js'
 import { sendAndConfirmRawTransaction } from '@solana/web3.js'

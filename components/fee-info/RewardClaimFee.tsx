@@ -53,7 +53,7 @@ export const RewardClaimFee: React.FC = () => {
               className="text-gray-400 underline"
               target="_blank"
               rel="noreferrer"
-              href="//cardinal-labs.notion.site/Cardinal-Staking-Costs-14e66a64fb2d4615892937c5dbaa91cc"
+              href="//-labs.notion.site/-Staking-Costs-14e66a64fb2d4615892937c5dbaa91cc"
             >
               View staking costs
             </a>

@@ -1,12 +1,12 @@
 import {
   getBatchedMultipleAccounts,
   tryDecodeIdlAccount,
-} from '@cardinal/common'
-import { CONFIGS_IDL } from '@cardinal/configs/dist/cjs/programs/constants'
-import { findConfigEntryId } from '@cardinal/configs/dist/cjs/programs/pda'
-import type { IdlAccountData } from '@cardinal/rewards-center'
-import { rewardsCenterProgram } from '@cardinal/rewards-center'
-import { getAllStakePools } from '@cardinal/staking/dist/cjs/programs/stakePool/accounts'
+} from '@solana-nft-programs/common'
+import { CONFIGS_IDL } from '@solana-nft-programs/configs/dist/cjs/programs/constants'
+import { findConfigEntryId } from '@solana-nft-programs/configs/dist/cjs/programs/pda'
+import type { IdlAccountData } from '@solana-nft-programs/rewards-center'
+import { rewardsCenterProgram } from '@solana-nft-programs/rewards-center'
+import { getAllStakePools } from '@solana-nft-programs/staking/dist/cjs/programs/stakePool/accounts'
 import { useWallet } from '@solana/wallet-adapter-react'
 import type { PublicKey } from '@solana/web3.js'
 import { Keypair } from '@solana/web3.js'
